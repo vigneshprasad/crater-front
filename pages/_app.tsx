@@ -1,7 +1,16 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { ThemeProvider } from "styled-components";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
-export default MyApp
+import type { AppProps } from "next/app";
+
+import { darkTheme } from "@styles/theme.styled";
+
+import GlobalStyle from "../styles/global.styled";
+
+const App: React.FC<AppProps> = ({ Component, pageProps }) => (
+  <ThemeProvider theme={darkTheme}>
+    <GlobalStyle />
+    <Component {...pageProps} />
+  </ThemeProvider>
+);
+
+export default App;
