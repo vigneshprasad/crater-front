@@ -1,9 +1,11 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 
+import AuthPage from "@components/pages/AuthPage";
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (session) {
+  if (session !== null) {
     return {
       redirect: {
         permanent: true,
@@ -11,13 +13,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
+
   return {
-    redirect: {
-      permanent: true,
-      destination: "/auth",
-    },
+    props: {},
   };
 };
-const Home: React.FC = () => null;
 
-export default Home;
+const Auth: React.FC = () => {
+  return <AuthPage />;
+};
+
+export default Auth;
