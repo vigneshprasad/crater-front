@@ -2,7 +2,7 @@
 export const API_URL_CONSTANTS = {
   auth: {
     getUser: "/user/auth/user/",
-    getOtp: "/crater/auth/login/",
+    getOtp: "/crater/auth/otp/",
     phoneLogin: "/crater/auth/verify/",
   },
 };
