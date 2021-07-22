@@ -15,12 +15,12 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@styles/*": ["lib/styles/*"],
-      "@components/*": ["lib/components/*"],
-      "@hooks/*": ["lib/hooks/*"],
-      "@constants/*": ["lib/constants/*"],
+      "@constants/*": ["lib/common/constants/*"],
+      "@common/styles/*": ["lib/common/styles/*"],
+      "@common/components/*": ["lib/common/components/*"],
+      "@common/hooks/*": ["lib/common/hooks/*"],
     }
   },
-  "include": ["next-env.d.ts","lib/types/**/*.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts","lib/common/types/**/*.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

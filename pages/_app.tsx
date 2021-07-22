@@ -1,10 +1,10 @@
-import { darkTheme } from "lib/styles/theme.styled";
+import { darkTheme } from "lib/common/styles/theme.styled";
 import { Provider } from "next-auth/client";
 import { ThemeProvider } from "styled-components";
 
 import type { AppProps } from "next/app";
 
-import GlobalStyle from "../lib/styles/global.styled";
+import GlobalStyle from "../lib/common/styles/global.styled";
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => (
   <Provider session={pageProps.session}>

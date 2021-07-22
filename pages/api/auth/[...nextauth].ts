@@ -1,7 +1,7 @@
-import { API_URL_CONSTANTS } from "lib/constants/url.constants";
-import fetcher from "lib/utils/fetcher";
+import ApiClient from "lib/common/api";
+import { API_URL_CONSTANTS } from "lib/common/constants/url.constants";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import NextAuth, { CallbacksOptions, NextAuthOptions, User } from "next-auth";
+import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import Providers, { AppProviders } from "next-auth/providers";
 
 export const CREDENTIAL_AUTH_TYPE = {
@@ -13,7 +13,7 @@ const providers: AppProviders = [
   Providers.Credentials({
     name: CREDENTIAL_AUTH_TYPE.phoneLogin,
     credentials: {
-      phoneNUmber: {
+      username: {
         label: "Phone Number",
         type: "tel",
         placeholder: "Enter Phone Number",
@@ -26,13 +26,11 @@ const providers: AppProviders = [
     },
     async authorize(credentials) {
       try {
-        const res = await fetcher<{ user?: User; token?: string }>(
-          API_URL_CONSTANTS.auth.phoneLogin,
-          {
-            method: "POST",
-            data: credentials,
-          }
-        );
+        const res = await ApiClient({
+          url: API_URL_CONSTANTS.auth.phoneLogin,
+          method: "POST",
+          data: credentials,
+        });
 
         const { user, token } = res.data;
         if (user && token) {
