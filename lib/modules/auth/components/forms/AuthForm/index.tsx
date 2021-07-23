@@ -64,7 +64,6 @@ const AuthForm: React.FC = () => {
       fieldErrorSetter("otp", errorInfo.otp);
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log(err);
     }
   };
 
