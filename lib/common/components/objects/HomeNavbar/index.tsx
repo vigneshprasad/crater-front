@@ -1,16 +1,11 @@
 import Logo from "@common/components/atoms/Logo";
+import { IMenuItem } from "@constants/ui.constants";
 import Svg from "public/svg";
 import styled from "styled-components";
 
 import Link from "next/link";
 
 import { NavWrapper, ItemContainer, MenuWrapper } from "./styles";
-
-export interface IMenuItem {
-  id: string;
-  label: string;
-  title: string;
-}
 
 interface IProps {
   menuItems: IMenuItem[];
@@ -24,7 +19,7 @@ const HomeNavbar: React.FC<IProps> = ({ menuItems, selected }) => {
       <MenuWrapper count={menuItems.length}>
         {menuItems.map((item) => {
           const icon = {
-            trading: Svg.Chart,
+            clubs: Svg.Chart,
             wallet: Svg.Wallet,
             account: Svg.Activity,
           }[item.id];

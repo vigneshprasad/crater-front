@@ -2,15 +2,14 @@ import HomePageLayout from "lib/common/components/layouts/HomePageLayout";
 import Page from "lib/common/components/layouts/Page";
 import AccountTab from "lib/common/components/objects/AccountTab";
 import HomeNavbar from "lib/common/components/objects/HomeNavbar";
-import { HOME_MENU_ITEMS } from "lib/common/constants/ui.constants";
+import { HOME_MENU_ITEMS, MenuKeys } from "lib/common/constants/ui.constants";
+import { useEffect, useState } from "react";
 
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
 
-import { useEffect, useState } from "react";
-
-const TradingFloorTab = dynamic(
-  () => import("lib/common/components/objects/TradingFloorTab")
+const ClubTab = dynamic(
+  () => import("lib/modules/creator/components/objects/ClubsTab")
 );
 
 const HomePage: React.FC = () => {
@@ -19,7 +18,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const slug = router.query.tab?.[0] ?? "";
     if (slug) {
-      setActiveTab(slug);
+      setActiveTab(slug as MenuKeys);
     }
   }, [router]);
 
@@ -29,7 +28,7 @@ const HomePage: React.FC = () => {
     <Page title={`Home | ${title}`}>
       <HomePageLayout>
         <HomeNavbar menuItems={HOME_MENU_ITEMS} selected={activeTab} />
-        {activeTab === "trading" && <TradingFloorTab heading="Trading Floor" />}
+        {activeTab === "clubs" && <ClubTab />}
         {activeTab === "account" && <AccountTab heading="Account Settings" />}
       </HomePageLayout>
     </Page>

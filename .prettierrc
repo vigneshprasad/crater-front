@@ -8,7 +8,7 @@
   "parser": "typescript",
   "importOrder": [
     "next/(.*)$",
-    "react",
+    "react/(.*)$",
     "^@components/(.*)$",
     "^@styles/(.*)$",
     "^[./]"
