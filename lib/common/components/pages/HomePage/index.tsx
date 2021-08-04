@@ -1,5 +1,7 @@
+import { useState, useMemo } from "react";
+
 import HomePageLayout from "../../layouts/HomePageLayout";
-import { HomeNavBar } from "../../objects/HomeNavBar";
+import { HomeNavBar, INavItem, MenuKeys } from "../../objects/HomeNavBar";
 import Page from "../../objects/Page";
 
 type IProps = {
@@ -7,6 +9,19 @@ type IProps = {
 };
 
 const HomePage: React.FC<IProps> = () => {
+  const [activeTab] = useState<MenuKeys>("clubs");
+
+  const MENU_ITEMS: INavItem[] = useMemo(
+    () => [
+      {
+        icon: "Chart",
+        slug: "clubs",
+        url: "/home/",
+      },
+    ],
+    []
+  );
+
   return (
     <Page
       seo={{
@@ -16,7 +31,7 @@ const HomePage: React.FC<IProps> = () => {
     >
       <HomePageLayout>
         {{
-          navbar: <HomeNavBar />,
+          navbar: <HomeNavBar active={activeTab} items={MENU_ITEMS} />,
           tabContent: <div>Hello</div>,
         }}
       </HomePageLayout>
