@@ -1,3 +1,4 @@
+import * as CSS from "csstype";
 import { HTMLAttributes } from "react";
 import styled from "styled-components";
 import {
@@ -49,6 +50,10 @@ export type BoxProps = BackgroundProps &
     textTransform?:
       | TextTransformOption
       | (TextTransformOption | null | string)[];
+    cursor?: CSS.Property.Cursor | CSS.Property.Cursor[];
+    transform?: CSS.Property.Transform | CSS.Property.Transform[];
+    w?: CSS.Property.Width | CSS.Property.Width[];
+    h?: CSS.Property.Height | CSS.Property.Height[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } & HTMLAttributes<any>;
 
@@ -62,7 +67,29 @@ const textTransform = style({
   cssProperty: "textTransform",
 });
 
+const cursor = style({
+  prop: "cursor",
+  cssProperty: "cursor",
+});
+
+const transform = style({
+  prop: "transform",
+  cssProperty: "transform",
+});
+
+const w = style({
+  prop: "w",
+  cssProperty: "width",
+});
+
+const h = style({
+  prop: "h",
+  cssProperty: "height",
+});
+
 export const Box = styled.div<BoxProps>`
+  ${w}
+  ${h}
   ${borders}
   ${background}
   ${color}
@@ -75,6 +102,8 @@ export const Box = styled.div<BoxProps>`
   ${textStyle}
   ${textDecoration}
   ${textTransform}
+  ${cursor}
+  ${transform}
   ${typography}
   ${variant({
     prop: "variant",

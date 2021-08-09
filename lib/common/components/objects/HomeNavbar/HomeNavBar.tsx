@@ -24,7 +24,7 @@ export const HomeNavBar: React.FC<INavbarProps> = ({ active, items }) => {
     <Grid
       bg={colors.black[2]}
       p={`${space.xs}px`}
-      borderRight={`1px solid  ${borders.main}`}
+      borderRight={`1px solid ${borders.main}`}
       gridRowGap={space.xs}
       gridTemplateRows="56px 1fr 1fr"
       justifyItems="center"

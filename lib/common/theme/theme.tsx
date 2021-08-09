@@ -5,6 +5,7 @@ import * as iconComponents from "@/common/components/atoms/Icon/icons";
 import colors from "./colors";
 
 const fontSizes = {
+  xxxxs: 4,
   xxxs: 12,
   xxs: 16,
   xs: 20,
@@ -27,7 +28,7 @@ const space = {
 };
 
 const borders = {
-  main: "rgba(228, 228, 228, 0.1)",
+  main: "rgba(228, 228, 228, 0.2)",
 };
 
 const fonts = {

@@ -10,7 +10,9 @@ const Page: React.FC<IProps> = ({ seo, children }) => {
   return (
     <>
       <NextSeo {...seo} />
-      <Box minHeight="100vh">{children}</Box>
+      <Box minHeight="100vh" w="100vw" overflow="hidden">
+        {children}
+      </Box>
     </>
   );
 };

@@ -1,5 +1,7 @@
 import { useState, useMemo } from "react";
 
+import { ClubTab } from "@/creators/components/objects/ClubTab";
+
 import HomePageLayout from "../../layouts/HomePageLayout";
 import { HomeNavBar, INavItem, MenuKeys } from "../../objects/HomeNavBar";
 import Page from "../../objects/Page";
@@ -32,7 +34,7 @@ const HomePage: React.FC<IProps> = () => {
       <HomePageLayout>
         {{
           navbar: <HomeNavBar active={activeTab} items={MENU_ITEMS} />,
-          tabContent: <div>Hello</div>,
+          tabContent: <ClubTab />,
         }}
       </HomePageLayout>
     </Page>
