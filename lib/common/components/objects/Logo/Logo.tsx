@@ -1,4 +1,6 @@
-import { Grid } from "../../atoms";
+import { theme } from "@/common/theme";
+
+import { Grid, Text } from "../../atoms";
 import { Icon } from "../../atoms/Icon";
 
 export type ILogoProps = {
@@ -6,10 +8,15 @@ export type ILogoProps = {
 };
 
 export const Logo: React.FC<ILogoProps> = ({ withText = false }) => {
+  const { space } = theme;
   return (
-    <Grid>
+    <Grid gridTemplateColumns={["48px max-content"]} gridGap={[space.xxxs]}>
       <Icon size={48} icon="Logo" />
-      {withText && <p>Crater.Club</p>}
+      {withText && (
+        <Text textStyle="logo" m="auto auto">
+          Crater.Club
+        </Text>
+      )}
     </Grid>
   );
 };

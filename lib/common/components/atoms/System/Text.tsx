@@ -6,38 +6,69 @@ import { theme } from "@/common/theme";
 
 import { Box, BoxProps } from "./Box";
 
-const { fonts } = theme;
+const { fonts, colors } = theme;
 
 const variants = {
   headline3: {
     fontFamily: fonts.heading,
     fontSize: ["4rem"],
     fontWeight: "500",
+    lineHeight: ["5.2rem"],
+    color: colors.white[0],
   },
   headline5: {
     fontFamily: fonts.heading,
     fontSize: ["2.4rem"],
     fontWeight: "500",
+    color: colors.white[0],
+  },
+  headline6: {
+    fontFamily: fonts.heading,
+    fontSize: ["1.8rem"],
+    fontWeight: "500",
+    color: colors.white[0],
+  },
+  logo: {
+    fontFamily: fonts.heading,
+    fontSize: ["2.4rem"],
+    fontWeight: "500",
+    color: colors.white[0],
   },
   menu: {
     fontFamily: fonts.body,
     fontSize: ["1.4rem"],
-    fontWeight: "600",
+    fontVariationSettings: `'wght' 600`,
+    color: colors.white[0],
   },
   body: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    fontWeight: "400",
+    fontVariationSettings: `'wght' 400`,
+    color: colors.white[0],
   },
   bodyLarge: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    fontWeight: "400",
+    fontVariationSettings: `'wght' 700`,
+    color: colors.white[0],
+  },
+  button: {
+    fontFamily: fonts.body,
+    fontSize: ["1.3rem"],
+    color: colors.white[0],
+    fontVariationSettings: `'wght' 600`,
   },
   buttonLarge: {
     fontFamily: fonts.body,
+    fontSize: ["1.4rem"],
+    fontVariationSettings: `'wght' 400`,
+    color: colors.white[0],
+  },
+  error: {
+    fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    fontWeight: "400",
+    fontVariationSettings: `'wght' 500`,
+    color: colors.error,
   },
 };
 

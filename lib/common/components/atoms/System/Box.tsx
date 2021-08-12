@@ -27,12 +27,17 @@ import {
   typography,
   TypographyProps,
   variant,
+  ResponsiveValue,
 } from "styled-system";
 
 type TextDecorationOption = "overline" | "line-through" | "underline";
 type TextTransformOption = "uppercase" | "lowercase" | "capitalize";
 
-export type BoxProps = BackgroundProps &
+export type ResponsiveCSS = {
+  [K in keyof CSS.Properties]: ResponsiveValue<CSS.Properties[K]> | undefined;
+};
+
+export type BaseBoxProps = BackgroundProps &
   ButtonStyleProps &
   ColorProps &
   ColorStyleProps &
@@ -50,12 +55,13 @@ export type BoxProps = BackgroundProps &
     textTransform?:
       | TextTransformOption
       | (TextTransformOption | null | string)[];
-    cursor?: CSS.Property.Cursor | CSS.Property.Cursor[];
-    transform?: CSS.Property.Transform | CSS.Property.Transform[];
-    w?: CSS.Property.Width | CSS.Property.Width[];
-    h?: CSS.Property.Height | CSS.Property.Height[];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } & HTMLAttributes<any>;
+    cursor?: ResponsiveValue<CSS.Property.Cursor>;
+    transform?: ResponsiveValue<CSS.Property.Transform>;
+    w?: ResponsiveValue<CSS.Property.Width>;
+    h?: ResponsiveValue<CSS.Property.Height>;
+  };
+
+export type BoxProps = BaseBoxProps & HTMLAttributes<HTMLDivElement>;
 
 const textDecoration = style({
   prop: "textDecoration",

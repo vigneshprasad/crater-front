@@ -1,12 +1,11 @@
-import * as CSS from "csstype";
 import styled from "styled-components";
-import { variant } from "styled-system";
+import { variant, grid, GridProps } from "styled-system";
 
-import { Box, BoxProps } from "./Box";
+import { Box, BoxProps, ResponsiveCSS } from "./Box";
 
 export type ScrollVariants = "vertical" | "horizontal";
 
-const variants: Record<ScrollVariants, CSS.Properties> = {
+const variants: Record<ScrollVariants, ResponsiveCSS> = {
   vertical: {
     overflowY: "auto",
   },
@@ -15,14 +14,16 @@ const variants: Record<ScrollVariants, CSS.Properties> = {
   },
 };
 
-export type ScrollProps = BoxProps & {
-  scroll?: ScrollVariants;
-};
+export type ScrollProps = BoxProps &
+  GridProps & {
+    scroll?: ScrollVariants;
+  };
 
 const Container = styled(Box)<ScrollProps>`
-  width: "100%";
-  height: "100%";
-  overflow: "hidden";
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  ${grid}
   ${variant({
     prop: "scroll",
     variants,

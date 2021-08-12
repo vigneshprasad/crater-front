@@ -36,6 +36,13 @@ const fonts = {
   body: "Inter",
 };
 
+const radii = {
+  xxs: 8,
+  xs: 12,
+  s: 16,
+  m: 24,
+};
+
 export const icons = iconComponents;
 
 export type IconOptions = keyof typeof icons;
@@ -47,6 +54,7 @@ export interface CustomTheme {
   space: typeof space;
   fonts: typeof fonts;
   colors: typeof colors;
+  radii: typeof radii;
   outline?: string;
 }
 
@@ -57,5 +65,6 @@ export const theme: DefaultTheme = {
   borders,
   fonts,
   colors,
+  radii,
   outline: `5px auto #52bcdf`,
 };
