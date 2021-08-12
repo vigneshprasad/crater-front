@@ -9,8 +9,7 @@
   "importOrder": [
     "next/(.*)$",
     "react/(.*)$",
-    "^@components/(.*)$",
-    "^@styles/(.*)$",
+    "^@/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true

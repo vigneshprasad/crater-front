@@ -15,10 +15,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@constants/*": ["lib/common/constants/*"],
-      "@common/styles/*": ["lib/common/styles/*"],
-      "@common/components/*": ["lib/common/components/*"],
-      "@common/hooks/*": ["lib/common/hooks/*"],
+      "@/*": ["./lib/*"]
     }
   },
   "include": ["next-env.d.ts","lib/common/types/**/*.d.ts", "**/*.ts", "**/*.tsx"],

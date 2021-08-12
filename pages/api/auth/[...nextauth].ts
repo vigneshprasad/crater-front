@@ -1,19 +1,15 @@
-import ApiClient from "lib/common/api";
-import { API_URL_CONSTANTS } from "lib/common/constants/url.constants";
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { NextApiHandler } from "next";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import Providers, { AppProviders } from "next-auth/providers";
 
-export const CREDENTIAL_AUTH_TYPE = {
-  phoneLogin: "PHONE_LOGIN",
-  phoneSignup: "PHONE_SIGNUP",
-};
+import ApiClient from "@/common/api";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
 const providers: AppProviders = [
   Providers.Credentials({
-    name: CREDENTIAL_AUTH_TYPE.phoneLogin,
+    name: "PhoneAuth",
     credentials: {
-      username: {
+      phoneNumber: {
         label: "Phone Number",
         type: "tel",
         placeholder: "Enter Phone Number",
@@ -26,12 +22,10 @@ const providers: AppProviders = [
     },
     async authorize(credentials) {
       try {
-        const res = await ApiClient({
-          url: API_URL_CONSTANTS.auth.phoneLogin,
-          method: "POST",
-          data: credentials,
-        });
-
+        const res = await ApiClient.post(
+          API_URL_CONSTANTS.auth.phoneLogin,
+          credentials
+        );
         const { user, token } = res.data;
         if (user && token) {
           return {
@@ -75,7 +69,6 @@ const options: NextAuthOptions = {
   },
 };
 
-const auth: NextApiHandler = (req: NextApiRequest, res: NextApiResponse) =>
-  NextAuth(req, res, options);
+const Auth: NextApiHandler = (req, res) => NextAuth(req, res, options);
 
-export default auth;
+export default Auth;

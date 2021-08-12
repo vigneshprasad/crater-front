@@ -1,11 +1,22 @@
-import { BaseWrapper } from "lib/common/styles/base.styled";
+import { ReactNode } from "react";
 
-import { GridLayout } from "./styles";
+import { Grid } from "../../atoms";
 
-const HomePageLayout: React.FC = ({ children }) => (
-  <BaseWrapper>
-    <GridLayout>{children}</GridLayout>
-  </BaseWrapper>
-);
+interface Props {
+  children: {
+    navbar?: ReactNode;
+    tabContent?: ReactNode;
+  };
+}
+
+const HomePageLayout: React.FC<Props> = ({ children }) => {
+  const { navbar, tabContent } = children;
+  return (
+    <Grid minHeight="100vh" gridTemplateColumns={["96px 1fr"]} as="main">
+      {navbar}
+      {tabContent}
+    </Grid>
+  );
+};
 
 export default HomePageLayout;

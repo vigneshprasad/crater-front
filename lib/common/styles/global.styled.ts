@@ -1,6 +1,8 @@
 import Fonts from "lib/common/styles/fonts.styled";
 import { createGlobalStyle, css } from "styled-components";
 
+import { theme } from "../theme";
+
 const resetCss = css`
   /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -140,13 +142,14 @@ const GlobalStyle = createGlobalStyle`
     ${Fonts}
 
     html {
-      font-size: 10px;
+      font-size: 62.5%;
     }
-    
+
     body {
-        font-family: "Inter";
-        background: ${(props) => props.theme.pallete.dark};
-        color: ${(props) => props.theme.pallete.textPrimary};
+        font-family: ${theme.fonts.body};
+        background: ${theme.colors.black[1]};
+        color: ${theme.colors.white[0]};
+        line-height: 1.8;
     }
 `;
 
