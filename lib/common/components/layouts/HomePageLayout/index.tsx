@@ -12,7 +12,7 @@ interface Props {
 const HomePageLayout: React.FC<Props> = ({ children }) => {
   const { navbar, tabContent } = children;
   return (
-    <Grid minHeight="100vh" gridTemplateColumns={["96px 1fr"]} as="main">
+    <Grid h="100vh" gridTemplateColumns={["96px 1fr"]} as="main">
       {navbar}
       {tabContent}
     </Grid>

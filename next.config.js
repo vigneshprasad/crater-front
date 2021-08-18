@@ -10,6 +10,13 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {},
   future: {},
+  images: {
+    domains: [
+      "randomuser.me",
+      "1worknetwork-dev.s3.amazonaws.com",
+      "1worknetwork-prod.s3.ap-south-1.amazonaws.com",
+    ],
+  },
   i18n: {
     locales: ["en-IN"],
     defaultLocale: "en-IN",

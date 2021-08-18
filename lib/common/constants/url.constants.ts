@@ -5,4 +5,14 @@ export const API_URL_CONSTANTS = {
     getOtp: "/crater/auth/otp/",
     phoneLogin: "/crater/auth/verify/",
   },
+  creator: {
+    getCreatorList: "/crater/creator/",
+    getMembersList: "/crater/community/members/",
+    retrieveCreator: (id: number): string => `/crater/creator/${id}/`,
+  },
+  community: {
+    getCommunityList: "/crater/community/",
+    getCommunityMembers: "/crater/community/members/",
+    getAllRooms: "/crater/community/rooms/",
+  },
 };

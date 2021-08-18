@@ -1,8 +1,7 @@
-import * as CSS from "csstype";
 import styled from "styled-components";
 import { variant } from "styled-system";
 
-import { Scroll, ScrollProps } from "../../atoms";
+import { ResponsiveCSS, Scroll, ScrollProps } from "../../atoms";
 
 export type ScrollVariants = "base" | "grid";
 
@@ -10,7 +9,7 @@ type Props = ScrollProps & {
   variant?: ScrollVariants;
 };
 
-const variants: Record<ScrollVariants, CSS.Properties> = {
+const variants: Record<ScrollVariants, ResponsiveCSS> = {
   base: {},
   grid: { display: "grid" },
 };

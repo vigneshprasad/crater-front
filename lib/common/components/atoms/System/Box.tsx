@@ -30,11 +30,13 @@ import {
   ResponsiveValue,
 } from "styled-system";
 
+import { CustomTheme } from "@/common/theme";
+
 type TextDecorationOption = "overline" | "line-through" | "underline";
 type TextTransformOption = "uppercase" | "lowercase" | "capitalize";
 
 export type ResponsiveCSS = {
-  [K in keyof CSS.Properties]: ResponsiveValue<CSS.Properties[K]> | undefined;
+  [K in keyof CSS.Properties]?: ResponsiveValue<CSS.Properties[K], CustomTheme>;
 };
 
 export type BaseBoxProps = BackgroundProps &
@@ -55,10 +57,10 @@ export type BaseBoxProps = BackgroundProps &
     textTransform?:
       | TextTransformOption
       | (TextTransformOption | null | string)[];
-    cursor?: ResponsiveValue<CSS.Property.Cursor>;
-    transform?: ResponsiveValue<CSS.Property.Transform>;
-    w?: ResponsiveValue<CSS.Property.Width>;
-    h?: ResponsiveValue<CSS.Property.Height>;
+    cursor?: ResponsiveValue<CSS.Property.Cursor, CustomTheme>;
+    transform?: ResponsiveValue<CSS.Property.Transform, CustomTheme>;
+    w?: ResponsiveValue<CSS.Property.Width | number, CustomTheme>;
+    h?: ResponsiveValue<CSS.Property.Height | number, CustomTheme>;
   };
 
 export type BoxProps = BaseBoxProps & HTMLAttributes<HTMLDivElement>;

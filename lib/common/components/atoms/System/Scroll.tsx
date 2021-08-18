@@ -7,9 +7,12 @@ export type ScrollVariants = "vertical" | "horizontal";
 
 const variants: Record<ScrollVariants, ResponsiveCSS> = {
   vertical: {
+    width: "100%",
+    height: "100%",
     overflowY: "auto",
   },
   horizontal: {
+    width: "100%",
     overflowX: "auto",
   },
 };
@@ -20,8 +23,7 @@ export type ScrollProps = BoxProps &
   };
 
 const Container = styled(Box)<ScrollProps>`
-  width: 100%;
-  height: 100%;
+  -webkit-overflow-scrolling: touch;
   overflow: hidden;
   ${grid}
   ${variant({

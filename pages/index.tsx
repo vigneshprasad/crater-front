@@ -18,6 +18,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
-const Home: React.FC = () => null;
+const Index: React.FC = () => null;
 
-export default Home;
+export default Index;

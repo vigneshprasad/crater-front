@@ -1,6 +1,6 @@
 import { HTMLAttributes } from "react";
 import styled, { css } from "styled-components";
-import { variant, TypographyProps } from "styled-system";
+import { variant, TypographyProps, typography } from "styled-system";
 
 import { theme } from "@/common/theme";
 
@@ -14,61 +14,58 @@ const variants = {
     fontSize: ["4rem"],
     fontWeight: "500",
     lineHeight: ["5.2rem"],
-    color: colors.white[0],
   },
   headline5: {
-    fontFamily: fonts.heading,
+    fontFamily: fonts.body,
     fontSize: ["2.4rem"],
-    fontWeight: "500",
-    color: colors.white[0],
+    fontVariationSettings: `'wght' 500`,
+    lineHeight: ["2.6rem"],
   },
   headline6: {
-    fontFamily: fonts.heading,
+    fontFamily: fonts.body,
     fontSize: ["1.8rem"],
-    fontWeight: "500",
-    color: colors.white[0],
+    fontVariationSettings: `'wght' 500`,
   },
   logo: {
     fontFamily: fonts.heading,
     fontSize: ["2.4rem"],
     fontWeight: "500",
-    color: colors.white[0],
   },
   menu: {
     fontFamily: fonts.body,
     fontSize: ["1.4rem"],
     fontVariationSettings: `'wght' 600`,
-    color: colors.white[0],
+  },
+  title: {
+    fontFamily: fonts.body,
+    fontSize: ["1.6rem"],
+    fontVariationSettings: `'wght' 600`,
+    lineHeight: ["1.8rem"],
   },
   body: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
     fontVariationSettings: `'wght' 400`,
-    color: colors.white[0],
   },
   bodyLarge: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    fontVariationSettings: `'wght' 700`,
-    color: colors.white[0],
+    fontVariationSettings: `'wght' 400`,
   },
   button: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    color: colors.white[0],
     fontVariationSettings: `'wght' 600`,
   },
   buttonLarge: {
     fontFamily: fonts.body,
     fontSize: ["1.4rem"],
     fontVariationSettings: `'wght' 400`,
-    color: colors.white[0],
   },
   error: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
     fontVariationSettings: `'wght' 500`,
-    color: colors.error,
   },
 };
 
@@ -110,10 +107,12 @@ export const Text = styled(Box)<TextProps>`
       overflow: hidden;
       text-overflow: ellipsis;
     `}
+  ${typography}
 `;
 
 Text.defaultProps = {
   as: "p",
   textStyle: "bodyLarge",
   singleLine: false,
+  color: colors.white[0],
 };

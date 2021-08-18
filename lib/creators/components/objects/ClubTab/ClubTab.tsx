@@ -1,9 +1,15 @@
-import { Box, Text, Flex, Scroll } from "@/common/components/atoms";
+import { signOut } from "next-auth/client";
+
+import Image from "next/image";
+
+import { Box, Text } from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/Button";
 import { TabBar } from "@/common/components/objects/TabBar";
 import { theme } from "@/common/theme";
 
 import ClubTabLayout from "../../layouts/ClubTabLayout";
-import CreatorCard from "../CreatorCard";
+import CreatorsList from "../CreatorsList";
+import { MembersList } from "../MembersList";
 
 export type IClubTabProps = {
   clubs?: string;
@@ -36,17 +42,20 @@ export const ClubTab: React.FC<IClubTabProps> = () => {
           )}
         />
       </Box>
-      <Scroll py={[24]} scroll="horizontal">
-        <Flex px={[space.s]} py={[space.s]}>
-          <CreatorCard image="https://media.beam.usnews.com/d1/d8/8501ba714a21aed9a7327e02ade1/180515-10thingselonmusk-editorial.jpg" />
-          <CreatorCard image="https://media.beam.usnews.com/d1/d8/8501ba714a21aed9a7327e02ade1/180515-10thingselonmusk-editorial.jpg" />
-          <CreatorCard image="https://media.beam.usnews.com/d1/d8/8501ba714a21aed9a7327e02ade1/180515-10thingselonmusk-editorial.jpg" />
-          <CreatorCard image="https://media.beam.usnews.com/d1/d8/8501ba714a21aed9a7327e02ade1/180515-10thingselonmusk-editorial.jpg" />
-          <CreatorCard image="https://media.beam.usnews.com/d1/d8/8501ba714a21aed9a7327e02ade1/180515-10thingselonmusk-editorial.jpg" />
-          <CreatorCard image="https://media.beam.usnews.com/d1/d8/8501ba714a21aed9a7327e02ade1/180515-10thingselonmusk-editorial.jpg" />
-          <CreatorCard image="https://media.beam.usnews.com/d1/d8/8501ba714a21aed9a7327e02ade1/180515-10thingselonmusk-editorial.jpg" />
-        </Flex>
-      </Scroll>
+      <CreatorsList />
+      <Box position="relative" h="172px">
+        <Image
+          objectFit="cover"
+          layout="fill"
+          src="/images/img_banner.png"
+          alt="Banner image"
+        />
+      </Box>
+      <Box px={[space.s]} pt={[space.xl]} pb={[space.m]}>
+        <Text textStyle="headline5">Member Only</Text>
+      </Box>
+      <MembersList />
+      <Button text="Signout" onClick={() => signOut()} />
     </ClubTabLayout>
   );
 };
