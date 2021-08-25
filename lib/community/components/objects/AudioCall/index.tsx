@@ -1,7 +1,7 @@
 import { useTheme } from "styled-components";
 
+import { IRtcUser } from "@/agora/types/rtc";
 import { useUser } from "@/auth/hooks";
-import { UserProfile } from "@/auth/types/auth";
 import { Box, Grid, Text, Flex } from "@/common/components/atoms";
 import { Room } from "@/creators/types/community";
 
@@ -11,7 +11,7 @@ import SpeakersList from "../SpeakersList";
 type IProps = {
   muted: boolean;
   room: Room;
-  remoteUsers: Map<string, UserProfile>;
+  remoteUsers: Map<string, IRtcUser>;
   onLeaveClick: () => void | Promise<void>;
   onMutedClick: () => void | Promise<void>;
 };

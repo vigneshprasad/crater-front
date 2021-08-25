@@ -3,6 +3,8 @@ import { AxiosResponse } from "axios";
 import ApiClient from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
+import { UserProfile } from "../types/auth";
+
 const AuthApiClient = {
   async getPhoneOtp(
     phoneNumber: string
@@ -20,7 +22,7 @@ const AuthApiClient = {
       throw new Error(err.response.data);
     }
   },
-  async getUserProfile(pk: string): Promise<AxiosResponse<unknown>> {
+  async getUserProfile(pk: string): Promise<AxiosResponse<UserProfile>> {
     try {
       const res = await ApiClient({
         method: "GET",

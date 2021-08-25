@@ -3,7 +3,7 @@ import { useTheme } from "styled-components";
 import Image from "next/image";
 
 import { useUser } from "@/auth/hooks";
-import { Box, Text, Flex } from "@/common/components/atoms";
+import { Box, Text, Flex, Link } from "@/common/components/atoms";
 import { Logo } from "@/common/components/objects/Logo";
 
 type IProps = {
@@ -21,7 +21,10 @@ const HorizontalNav: React.FC<IProps> = ({ showUser = false }) => {
       py={space.xxs}
       px={space.xs}
     >
-      <Logo withText />
+      <Link href="/">
+        <Logo withText />
+      </Link>
+
       {showUser && (
         <Flex flexDirection="row" alignItems="center">
           <Text mr={space.xxs} textStyle="title">

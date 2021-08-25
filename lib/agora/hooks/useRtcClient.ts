@@ -10,7 +10,8 @@ import AgoraRTC, {
 import { useEffect, useState } from "react";
 
 import AuthApiClient from "@/auth/api";
-import { UserProfile } from "@/auth/types/auth";
+
+import { IRtcUser } from "../types/rtc";
 
 type IVolumeLevel = {
   level: number;
@@ -25,7 +26,7 @@ export type IUseRtcClientState = {
   muted: boolean;
   volumeLevels: IVolumeLevel[];
   connectionState: ConnectionState;
-  remoteUsers: Map<string, UserProfile>;
+  remoteUsers: Map<string, IRtcUser>;
   localAudioTrack?: ILocalAudioTrack;
   joinChannel: (channel: string, token: string, uid?: string) => Promise<void>;
   leave: () => Promise<void>;
@@ -41,11 +42,12 @@ export function useRtcClient({
     ILocalAudioTrack | undefined
   >(undefined);
 
-  const [remoteUsers, setRemoteUsers] = useState<Map<string, UserProfile>>(
+  const [remoteUsers, setRemoteUsers] = useState<Map<string, IRtcUser>>(
     new Map()
   );
-  const [connectionState, setConnectionState] =
-    useState<ConnectionState>("DISCONNECTED");
+  const [connectionState, setConnectionState] = useState<ConnectionState>(
+    client.connectionState
+  );
   const [volumeLevels, setVolumeLevels] = useState<IVolumeLevel[]>([]);
   const [localMuted, setLocalMuted] = useState(false);
 
@@ -81,15 +83,20 @@ export function useRtcClient({
   async function mute(): Promise<void> {
     if (localAudioTrack) {
       await localAudioTrack.setMuted(!localMuted);
-      setLocalMuted(!localMuted);
+      setLocalMuted((state) => !state);
     }
   }
 
   useEffect(() => {
     const handleUserJoined = async (user: IAgoraRTCRemoteUser) => {
       const res = await AuthApiClient.getUserProfile(user.uid.toString());
-      const data = res.data as UserProfile;
-      setRemoteUsers((state) => state.set(data.uuid, data));
+      const { data } = res;
+      setRemoteUsers((state) =>
+        state.set(data.uuid, {
+          remoteUser: user,
+          profile: data,
+        })
+      );
     };
 
     const handleConnectionChange = (state: ConnectionState) => {
@@ -111,9 +118,10 @@ export function useRtcClient({
       remoteUser: IAgoraRTCRemoteUser,
       mediaType: "audio" | "video"
     ) => {
-      await client.subscribe(remoteUser, mediaType);
-      if (mediaType === "audio") {
-        remoteUser.audioTrack?.play();
+      const track = await client.subscribe(remoteUser, mediaType);
+
+      if (track.trackMediaType === "audio") {
+        track.play();
       }
     };
 

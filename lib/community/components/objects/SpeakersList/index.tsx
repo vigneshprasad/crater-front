@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useTheme } from "styled-components";
 
-import { UserProfile } from "@/auth/types/auth";
+import { IRtcUser } from "@/agora/types/rtc";
 import { Grid } from "@/common/components/atoms";
 import { Speaker } from "@/creators/types/community";
 
@@ -9,7 +9,7 @@ import SpeakerItem from "../SpeakerItem";
 
 type IProps = {
   host?: Speaker;
-  remoteUsers: Map<string, UserProfile>;
+  remoteUsers: Map<string, IRtcUser>;
 };
 
 const SpeakersList: React.FC<IProps> = ({ host, remoteUsers }) => {
@@ -18,7 +18,12 @@ const SpeakersList: React.FC<IProps> = ({ host, remoteUsers }) => {
   const renderRemoteUsers = useCallback(() => {
     const array = Array.from(remoteUsers.values());
     return array.map((value) => (
-      <SpeakerItem key={value.uuid} photo={value.photo} name={value.name} />
+      <SpeakerItem
+        key={value.profile.uuid}
+        photo={value.profile.photo}
+        name={value.profile.name}
+        remoteUser={value.remoteUser}
+      />
     ));
   }, [remoteUsers]);
 

@@ -42,6 +42,18 @@ const variants = {
     fontVariationSettings: `'wght' 600`,
     lineHeight: ["1.8rem"],
   },
+  caption: {
+    fontFamily: fonts.body,
+    fontSize: ["1.2rem"],
+    fontVariationSettings: `'wght' 500`,
+    lineHeight: ["1.8rem"],
+  },
+  captionLarge: {
+    fontFamily: fonts.body,
+    fontSize: ["1.3rem"],
+    fontVariationSettings: `'wght' 500`,
+    lineHeight: ["1.8rem"],
+  },
   body: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],

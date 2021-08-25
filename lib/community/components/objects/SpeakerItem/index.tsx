@@ -1,45 +1,38 @@
+import { IAgoraRTCRemoteUser } from "agora-rtc-sdk-ng";
 import { useTheme } from "styled-components";
 
-import Image from "next/image";
-
-import { Box, Flex, Text } from "@/common/components/atoms";
+import { Avatar, Box, Text, Grid, Flex } from "@/common/components/atoms";
 
 type IProps = {
+  remoteUser?: IAgoraRTCRemoteUser;
   photo?: string;
-  size?: number;
   isHost?: boolean;
   name: string;
 };
 
-const SpeakerItem: React.FC<IProps> = ({
-  photo,
-  size = 72,
-  isHost = false,
-  name,
-}) => {
+const SpeakerItem: React.FC<IProps> = ({ remoteUser, photo, name }) => {
   const { radii, borders, space } = useTheme();
+
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="center"
-      flexDirection="column"
+    <Grid
+      gridTemplateRows="36px 1fr 48px"
       border={`2px solid ${borders.main}`}
       borderRadius={[radii.s]}
     >
-      <Box
-        overflow="hidden"
-        position="relative"
-        h={size}
-        w={size}
-        borderRadius="50%"
-        mb={[space.xs]}
-      >
-        {photo && <Image layout="fill" src={photo} alt={name} />}
-      </Box>
-      <Text>{name}</Text>
-      {isHost && <Text>Host</Text>}
-    </Flex>
+      <Box />
+      <Avatar m="auto auto" size={96} alt={name} image={photo} />
+      <Flex px={[space.xs]} alignItems="center" justifyContent="space-between">
+        <Text singleLine textStyle="captionLarge">
+          {name}
+        </Text>
+        {!remoteUser && <Text textStyle="caption">(Offline)</Text>}
+      </Flex>
+    </Grid>
   );
+};
+
+SpeakerItem.defaultProps = {
+  isHost: false,
 };
 
 export default SpeakerItem;
