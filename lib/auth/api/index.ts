@@ -20,6 +20,17 @@ const AuthApiClient = {
       throw new Error(err.response.data);
     }
   },
+  async getUserProfile(pk: string): Promise<AxiosResponse<unknown>> {
+    try {
+      const res = await ApiClient({
+        method: "GET",
+        url: `${API_URL_CONSTANTS.network.getUserProfile}${pk}/`,
+      });
+      return res;
+    } catch (err) {
+      throw new Error(err.response.data);
+    }
+  },
 };
 
 export default AuthApiClient;

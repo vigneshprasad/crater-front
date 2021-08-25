@@ -15,4 +15,10 @@ export const API_URL_CONSTANTS = {
     getCommunityMembers: "/crater/community/members/",
     getAllRooms: "/crater/community/rooms/",
   },
+  agora: {
+    getToken: "/integrations/agora/token/",
+  },
+  network: {
+    getUserProfile: "/user/auth/network/",
+  },
 };

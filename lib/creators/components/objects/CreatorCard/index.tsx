@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
-import { Flex, Box, FlexProps, Text } from "@/common/components/atoms";
-import Link from "@/common/components/atoms/Link";
+import { Flex, Box, FlexProps, Text, Link } from "@/common/components/atoms";
 
 type Props = {
   id: number;

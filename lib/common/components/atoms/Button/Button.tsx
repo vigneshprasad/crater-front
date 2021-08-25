@@ -30,7 +30,7 @@ export const Button: React.FC<ButtonProps> = ({
     <StyledButton
       type={type}
       borderRadius={[radii.xxs]}
-      px={[space.xxxs]}
+      px={[space.xs]}
       py={[space.xs]}
       as="button"
       {...rest}

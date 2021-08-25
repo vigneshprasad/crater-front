@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@types/styled-system": "^5.1.12",
+    "agora-rtc-sdk-ng": "^4.6.3",
     "axios": "^0.21.1",
     "csstype": "^3.0.8",
     "framer-motion": "^4.1.17",

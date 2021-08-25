@@ -28,6 +28,8 @@ import {
   TypographyProps,
   variant,
   ResponsiveValue,
+  boxShadow,
+  BoxShadowProps,
 } from "styled-system";
 
 import { CustomTheme } from "@/common/theme";
@@ -50,6 +52,7 @@ export type BaseBoxProps = BackgroundProps &
   SpaceProps &
   TextStyleProps &
   BorderProps &
+  BoxShadowProps &
   TypographyProps & {
     textDecoration?:
       | TextDecorationOption
@@ -113,6 +116,7 @@ export const Box = styled.div<BoxProps>`
   ${cursor}
   ${transform}
   ${typography}
+  ${boxShadow}
   ${variant({
     prop: "variant",
     scale: "buttons",

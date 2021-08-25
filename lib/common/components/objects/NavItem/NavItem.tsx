@@ -2,9 +2,8 @@ import styled from "styled-components";
 
 import { IconOptions } from "@/common/theme";
 
-import { Grid } from "../../atoms";
+import { Grid, Link } from "../../atoms";
 import { Icon } from "../../atoms/Icon";
-import Link from "../../atoms/Link";
 
 export type INavItemProps = {
   active: boolean;

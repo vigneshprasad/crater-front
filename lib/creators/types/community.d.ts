@@ -20,7 +20,7 @@ export type Speaker = {
   email: string;
   introduction: string;
   name: string;
-  photo: string;
+  photo?: string;
   pk: string;
 };
 
