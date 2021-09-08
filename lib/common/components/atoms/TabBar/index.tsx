@@ -73,7 +73,7 @@ const TabBar: React.FC<IProps> = ({ tabs, selected, onChangeTab }) => {
         <Box
           onClick={() => {
             setSelectedTab(tab);
-            tabChangeCallback(selected);
+            tabChangeCallback(tab);
           }}
           key={tab}
           px={[space.xs]}
