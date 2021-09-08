@@ -1,7 +1,5 @@
 import { Text } from "@/common/components/atoms";
 
-const EmptyState = () => {
+export default function EmptyState(): JSX.Element {
   return <Text m="auto auto">Waiting for members...</Text>;
-};
-
-export default EmptyState;
+}

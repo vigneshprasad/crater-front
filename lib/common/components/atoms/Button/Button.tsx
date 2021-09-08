@@ -19,12 +19,12 @@ const StyledButton = styled(Box)<ButtonProps>`
   cursor: pointer;
 `;
 
-export const Button = ({
+export function Button({
   type = "button",
   text,
   children,
   ...rest
-}: ButtonProps) => {
+}: ButtonProps): JSX.Element {
   const { space, radii } = theme;
   return (
     <StyledButton
@@ -38,4 +38,4 @@ export const Button = ({
       <Text textStyle="button">{text}</Text>
     </StyledButton>
   );
-};
+}

@@ -1,7 +1,9 @@
+import { PropsWithChildren } from "react";
+
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 
-const CreatorPageLayout = ({ children }) => {
+export default function CreatorPageLayout({
+  children,
+}: PropsWithChildren<unknown>): JSX.Element {
   return <BaseLayout>{children}</BaseLayout>;
-};
-
-export default CreatorPageLayout;
+}

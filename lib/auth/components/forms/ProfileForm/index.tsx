@@ -29,7 +29,10 @@ type IProps = {
   onSubmit: (data: Partial<Profile>) => void;
 };
 
-const ProfileForm = ({ profile, onSubmit }: IProps) => {
+export default function ProfileForm({
+  profile,
+  onSubmit,
+}: IProps): JSX.Element {
   const { space, colors } = useTheme();
   const { fields, fieldValueSetter, getValidatedData } = useForm<IFormProps>({
     fields: {
@@ -55,12 +58,12 @@ const ProfileForm = ({ profile, onSubmit }: IProps) => {
     [onSubmit]
   );
 
-  const handleProfilePhotoChange = async (file: File) => {
+  const handleProfilePhotoChange = async (file: File): Promise<void> => {
     const data = (await toBase64(file)) as string;
     fieldValueSetter("photo", data);
   };
 
-  const handleSubmit = async (event: SyntheticEvent) => {
+  const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
     const data = getValidatedData();
     if (data) {
@@ -125,6 +128,4 @@ const ProfileForm = ({ profile, onSubmit }: IProps) => {
       <Button type="submit" text="Submit" />
     </Form>
   );
-};
-
-export default ProfileForm;
+}

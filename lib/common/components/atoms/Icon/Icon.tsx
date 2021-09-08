@@ -20,7 +20,7 @@ const StyledIconWrapper = styled(Box)<BoxProps & { rotate?: number }>`
   align-items: center;
 `;
 
-export const Icon = ({ icon, color, size, ...rest }: IconProps) => {
+export function Icon({ icon, color, size, ...rest }: IconProps): JSX.Element {
   const IconComponent = icons[icon];
   return (
     <StyledIconWrapper
@@ -41,4 +41,4 @@ export const Icon = ({ icon, color, size, ...rest }: IconProps) => {
       />
     </StyledIconWrapper>
   );
-};
+}

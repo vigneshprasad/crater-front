@@ -3,12 +3,10 @@ function template({ template }, opts, { componentName, props, jsx }) {
 
   componentName.name = componentName.name.slice(3);
 
-  const formattedName = `${componentName.name}: React.FC<Props>`;
-
   return typeScriptTpl.ast`
-  type Props = React.SVGProps<SVGSVGElement>;
-  const ${formattedName} = (${props}) => ${jsx};
-  export default ${componentName}
-`;
+    export default function ${componentName}(props: React.SVGProps<SVGSVGElement>): JSX.Element {
+      return ${jsx};
+    } 
+  `;
 }
 module.exports = template;

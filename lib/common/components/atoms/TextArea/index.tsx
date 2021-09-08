@@ -9,6 +9,6 @@ const StyledTextArea = styled(Input)<TextAreaProps>`
   resize: none;
 `;
 
-export const TextArea = ({ ...rest }: TextAreaProps) => {
+export function TextArea({ ...rest }: TextAreaProps): JSX.Element {
   return <StyledTextArea as="textarea" rows={5} {...rest} />;
-};
+}

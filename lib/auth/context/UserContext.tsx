@@ -3,13 +3,10 @@ import { createContext } from "react";
 
 export const UserContext = createContext<User | undefined>(undefined);
 
-export const UserProvider = ({
+export function UserProvider({
   initialData,
-  children,
 }: {
   initialData?: User;
-}) => {
-  return (
-    <UserContext.Provider value={initialData}>{children}</UserContext.Provider>
-  );
-};
+}): JSX.Element {
+  return <UserContext.Provider value={initialData} />;
+}

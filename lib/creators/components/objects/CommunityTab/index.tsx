@@ -13,7 +13,7 @@ interface IProps {
 
 const { space } = theme;
 
-const CommunityTab = ({ creator }: IProps) => {
+export default function CommunityTab({ creator }: IProps): JSX.Element | null {
   const { data } = useCommunityMembers({
     communityId: creator.default_community?.id,
   });
@@ -66,6 +66,4 @@ const CommunityTab = ({ creator }: IProps) => {
       </Grid>
     </Box>
   );
-};
-
-export default CommunityTab;
+}

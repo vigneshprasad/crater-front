@@ -12,7 +12,10 @@ type IProps = {
   remoteUsers: Map<string, IRtcUser>;
 };
 
-const SpeakersList = ({ host, remoteUsers }: IProps) => {
+export default function SpeakersList({
+  host,
+  remoteUsers,
+}: IProps): JSX.Element {
   const { space } = useTheme();
 
   const renderRemoteUsers = useCallback(() => {
@@ -40,6 +43,4 @@ const SpeakersList = ({ host, remoteUsers }: IProps) => {
       {renderRemoteUsers()}
     </Grid>
   );
-};
-
-export default SpeakersList;
+}

@@ -1,9 +1,13 @@
+import { PropsWithChildren } from "react";
+
 import { Box } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import { Logo } from "@/common/components/objects/Logo";
 import { theme } from "@/common/theme";
 
-const AuthPageLayout = ({ children }) => {
+export default function AuthPageLayout({
+  children,
+}: PropsWithChildren<unknown>): JSX.Element {
   const { space } = theme;
   return (
     <BaseLayout
@@ -18,6 +22,4 @@ const AuthPageLayout = ({ children }) => {
       {children}
     </BaseLayout>
   );
-};
-
-export default AuthPageLayout;
+}

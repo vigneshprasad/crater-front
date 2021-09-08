@@ -1,3 +1,4 @@
+import { PropsWithChildren, ReactPortal } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
 
@@ -6,11 +7,11 @@ import { Box } from "../System/Box";
 import { Flex } from "../System/Flex";
 import { Text } from "../System/Text";
 
-export interface IModalProps {
+export type IModalProps = PropsWithChildren<{
   onClose: () => void;
-}
+}>;
 
-export const Modal = ({ children, onClose }: IModalProps) => {
+export function Modal({ children, onClose }: IModalProps): ReactPortal {
   const { colors, radii, space } = useTheme();
   return createPortal(
     <Box
@@ -43,4 +44,4 @@ export const Modal = ({ children, onClose }: IModalProps) => {
     </Box>,
     document.querySelector("body")
   );
-};
+}

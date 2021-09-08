@@ -10,7 +10,7 @@ export type IMembersListProps = {
 
 const { space } = theme;
 
-export const MembersList = () => {
+export function MembersList(): JSX.Element {
   const { creators } = useCreatorList({ certified: false });
 
   return (
@@ -24,4 +24,4 @@ export const MembersList = () => {
       ))}
     </Grid>
   );
-};
+}

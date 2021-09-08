@@ -1,5 +1,5 @@
 /**
- *
+ * Convers Image File to Base64 string
  *
  * @export
  * @param {File} file

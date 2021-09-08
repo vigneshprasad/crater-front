@@ -1,16 +1,14 @@
-import { useState } from "react";
-
 import { useProfile } from "@/auth/hooks";
 import { Profile } from "@/auth/types/auth";
-import { Box, Modal } from "@/common/components/atoms";
+import { Box } from "@/common/components/atoms";
 
 import ProfileForm from "../../forms/ProfileForm";
 import AccountTabLayout from "../../layouts/AccountTabLayout";
 
-const AccountTab = () => {
+export default function AccountTab(): JSX.Element {
   const { profile } = useProfile();
 
-  const handleFormSubmit = (data: Partial<Profile>) => {
+  const handleFormSubmit = (data: Partial<Profile>): void => {
     console.log(data);
   };
 
@@ -21,6 +19,4 @@ const AccountTab = () => {
       <ProfileForm profile={profile} onSubmit={handleFormSubmit} />
     </AccountTabLayout>
   );
-};
-
-export default AccountTab;
+}

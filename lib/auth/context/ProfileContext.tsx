@@ -14,12 +14,12 @@ export type IProfileState = {
 
 export const ProfileContext = createContext<IProfileState>({} as IProfileState);
 
-export const ProfileProvider = ({
+export function ProfileProvider({
   initial,
   ...rest
 }: {
   initial?: Profile;
-}) => {
+}): JSX.Element {
   const {
     data: profile,
     error,
@@ -38,4 +38,4 @@ export const ProfileProvider = ({
     [profile, error, mutateProfile]
   );
   return <ProfileContext.Provider value={value} {...rest} />;
-};
+}

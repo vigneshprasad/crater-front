@@ -16,13 +16,13 @@ type IProps = {
   onMutedClick: () => void | Promise<void>;
 };
 
-const AudioCall = ({
+export default function AudioCall({
   muted,
   room,
   remoteUsers,
   onMutedClick,
   onLeaveClick,
-}: IProps) => {
+}: IProps): JSX.Element {
   const { user } = useUser();
   const { colors, space, radii } = useTheme();
   return (
@@ -61,6 +61,4 @@ const AudioCall = ({
       />
     </Grid>
   );
-};
-
-export default AudioCall;
+}

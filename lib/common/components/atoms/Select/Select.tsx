@@ -36,7 +36,7 @@ const Container = styled(Box)`
   }
 `;
 
-export const Select = ({ label, items }: SelectProps) => {
+export function Select({ label, items }: SelectProps): JSX.Element {
   const [value, setValue] = useState<SelectItem>();
   const [opened, setOpened] = useState(false);
 
@@ -44,11 +44,11 @@ export const Select = ({ label, items }: SelectProps) => {
 
   const animate = useAnimation();
 
-  const handleContainerClick = () => {
+  const handleContainerClick = (): void => {
     setOpened((state) => !state);
   };
 
-  const handleItemClick = (item: SelectItem) => {
+  const handleItemClick = (item: SelectItem): void => {
     setValue(item);
     setOpened((state) => !state);
   };
@@ -107,4 +107,4 @@ export const Select = ({ label, items }: SelectProps) => {
       </AnimatedBox>
     </Container>
   );
-};
+}

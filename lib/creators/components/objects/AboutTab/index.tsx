@@ -8,13 +8,11 @@ type IProps = {
   creator: Creator;
 };
 
-const AboutTab = ({ creator }: IProps) => {
+export default function AboutTab({ creator }: IProps): JSX.Element {
   return (
     <Box px={[space.m]} py={[space.s]}>
       <Text textStyle="headline6">About Me</Text>
       <Text>{creator.about}</Text>
     </Box>
   );
-};
-
-export default AboutTab;
+}

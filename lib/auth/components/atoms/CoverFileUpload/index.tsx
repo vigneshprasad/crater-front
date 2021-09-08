@@ -36,7 +36,10 @@ const Container = styled(motion(Box))`
   }
 `;
 
-const CoverFileUpload = ({ coverImage, alt }: IProps) => {
+export default function CoverFileUpload({
+  coverImage,
+  alt,
+}: IProps): JSX.Element {
   const [photoFile, setPhotoFile] = useState<File>();
   const inputRef = useRef<HTMLInputElement>(null);
   const handleOnDrop: DragEventHandler<HTMLDivElement> = (event) => {
@@ -88,6 +91,4 @@ const CoverFileUpload = ({ coverImage, alt }: IProps) => {
       </Container>
     </>
   );
-};
-
-export default CoverFileUpload;
+}

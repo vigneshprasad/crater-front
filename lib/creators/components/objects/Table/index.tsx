@@ -50,7 +50,7 @@ const StyledBox = styled(Box)<BoxProps>`
   }
 `;
 
-const Table = ({ speakers = [], roomId }: IProps) => {
+export default function Table({ speakers = [], roomId }: IProps): JSX.Element {
   return (
     <Link href={`/community/rooms/audio/${roomId}`}>
       <StyledBox>
@@ -70,6 +70,4 @@ const Table = ({ speakers = [], roomId }: IProps) => {
       </StyledBox>
     </Link>
   );
-};
-
-export default Table;
+}

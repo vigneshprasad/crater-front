@@ -10,7 +10,7 @@ export type IMemberItemProps = {
 
 const { space } = theme;
 
-export const MemberItem = ({ name, image }: IMemberItemProps) => {
+export function MemberItem({ name, image }: IMemberItemProps): JSX.Element {
   return (
     <Flex flexDirection="column" alignItems="center">
       {image && (
@@ -33,4 +33,4 @@ export const MemberItem = ({ name, image }: IMemberItemProps) => {
       <Text textAlign="center">Founder</Text>
     </Flex>
   );
-};
+}

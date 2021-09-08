@@ -15,7 +15,11 @@ type SliderPosProps = {
   right?: number;
 };
 
-const TabBar = ({ tabs, selected, onChangeTab }: IProps) => {
+export default function TabBar({
+  tabs,
+  selected,
+  onChangeTab,
+}: IProps): JSX.Element {
   const containerRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef(new Map());
   const { space, colors } = useTheme();
@@ -92,6 +96,4 @@ const TabBar = ({ tabs, selected, onChangeTab }: IProps) => {
       />
     </Grid>
   );
-};
-
-export default TabBar;
+}

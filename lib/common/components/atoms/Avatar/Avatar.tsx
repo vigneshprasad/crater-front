@@ -10,12 +10,12 @@ export type IAvatarProps = BoxProps & {
   alt: string;
 };
 
-export const Avatar = ({
+export function Avatar({
   size = 72,
   image = defaultAvtaar,
   alt,
   ...rest
-}: IAvatarProps) => {
+}: IAvatarProps): JSX.Element {
   return (
     <Box
       overflow="hidden"
@@ -28,4 +28,4 @@ export const Avatar = ({
       <Image src={image as string} layout="fill" objectFit="cover" alt={alt} />
     </Box>
   );
-};
+}

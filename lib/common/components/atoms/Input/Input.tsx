@@ -102,20 +102,20 @@ const Container = styled(Flex)<FlexProps>`
   }
 `;
 
-const InputWithRef = ({
+function InputWithRef({
   inputRef,
   prefixElement,
   ...rest
 }: InputProps & {
   inputRef: ForwardedRef<HTMLInputElement>;
-}) => {
+}): JSX.Element {
   return (
     <Container>
       {prefixElement && prefixElement}
       <StyledInput ref={inputRef} {...rest} />
     </Container>
   );
-};
+}
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => (
   <InputWithRef {...props} inputRef={ref} />

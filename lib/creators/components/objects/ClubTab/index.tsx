@@ -15,7 +15,7 @@ export type IClubTabProps = {
   clubs?: string;
 };
 
-const ClubTab = () => {
+export default function ClubTab(): JSX.Element {
   const items = ["All", "Owned"];
   const { space, colors } = theme;
 
@@ -58,6 +58,4 @@ const ClubTab = () => {
       <Button text="Signout" onClick={() => signOut()} />
     </ClubTabLayout>
   );
-};
-
-export default ClubTab;
+}

@@ -16,7 +16,7 @@ import CreatorTabBar from "../../objects/CreatorTabBar";
 
 const { space, colors } = theme;
 
-const CreatorPage = () => {
+function CreatorPage(): JSX.Element | null {
   const router = useRouter();
   const [creatorId, setCreatorId] = useState<number>();
   const [activeTab, setActiveTab] = useState<string>("about");
@@ -86,6 +86,6 @@ const CreatorPage = () => {
       </CreatorPageLayout>
     </Page>
   );
-};
+}
 
 export default memo(CreatorPage);

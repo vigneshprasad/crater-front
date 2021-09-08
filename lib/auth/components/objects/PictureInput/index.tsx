@@ -46,7 +46,12 @@ const Container = styled(Box)`
   }
 `;
 
-const PictureInput = ({ photo, alt, onChange, disabled = false }: IProps) => {
+export default function PictureInput({
+  photo,
+  alt,
+  onChange,
+  disabled = false,
+}: IProps): JSX.Element {
   const [photoFile, setPhotoFile] = useState<File | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -93,6 +98,4 @@ const PictureInput = ({ photo, alt, onChange, disabled = false }: IProps) => {
       )}
     </Container>
   );
-};
-
-export default PictureInput;
+}

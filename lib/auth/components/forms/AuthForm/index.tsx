@@ -17,7 +17,7 @@ type AuthFormArgs = {
   otp: string;
 };
 
-const AuthForm = () => {
+export default function AuthForm(): JSX.Element {
   const router = useRouter();
   const { fields, fieldValueSetter, validateField, getValidatedData } =
     useForm<AuthFormArgs>({
@@ -44,7 +44,7 @@ const AuthForm = () => {
     });
   const [otpVisible, setOtpVisible] = useState(false);
 
-  const getPhoneOtp = async (phoneNumber: string) => {
+  const getPhoneOtp = async (phoneNumber: string): Promise<void> => {
     try {
       await AuthApiClient.getPhoneOtp(phoneNumber);
       setOtpVisible(true);
@@ -53,7 +53,10 @@ const AuthForm = () => {
     }
   };
 
-  const performLogin = async (phoneNumber: string, otp: string) => {
+  const performLogin = async (
+    phoneNumber: string,
+    otp: string
+  ): Promise<void> => {
     try {
       await Login(phoneNumber, otp);
       router.push("/home");
@@ -62,7 +65,7 @@ const AuthForm = () => {
     }
   };
 
-  const handlePhoneNumberSubmit = () => {
+  const handlePhoneNumberSubmit = (): void => {
     const valid = validateField("phoneNumber");
 
     if (valid) {
@@ -71,12 +74,12 @@ const AuthForm = () => {
     }
   };
 
-  const handlePhoneInputChange = (val: string) => {
+  const handlePhoneInputChange = (val: string): void => {
     setOtpVisible(false);
     fieldValueSetter("phoneNumber", val);
   };
 
-  const handleLogin = (event: SyntheticEvent) => {
+  const handleLogin = (event: SyntheticEvent): void => {
     event.preventDefault();
     const data = getValidatedData();
 
@@ -118,6 +121,4 @@ const AuthForm = () => {
       </AnimatePresence>
     </Form>
   );
-};
-
-export default AuthForm;
+}

@@ -17,7 +17,12 @@ type IProps = {
   selected?: string;
 };
 
-const CreatorTabBar = ({ initial, tabs, onChange, selected }: IProps) => {
+export default function CreatorTabBar({
+  initial,
+  tabs,
+  onChange,
+  selected,
+}: IProps): JSX.Element {
   const childRefs = useRef(new Map());
   const tabListRef = useRef<HTMLDivElement>(null);
   const [sliderPos, setSliderPos] = useState<SliderPosProps>({
@@ -104,6 +109,4 @@ const CreatorTabBar = ({ initial, tabs, onChange, selected }: IProps) => {
       />
     </Grid>
   );
-};
-
-export default CreatorTabBar;
+}

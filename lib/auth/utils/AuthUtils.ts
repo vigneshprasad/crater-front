@@ -1,6 +1,9 @@
-import { signin, signOut } from "next-auth/client";
+import { signin, SignInResponse, signOut } from "next-auth/client";
 
-export const Login = async (phoneNumber: string, otp: string) => {
+export async function Login(
+  phoneNumber: string,
+  otp: string
+): Promise<SignInResponse | undefined> {
   const res = await signin("credentials", {
     username: phoneNumber,
     otp,
@@ -12,8 +15,8 @@ export const Login = async (phoneNumber: string, otp: string) => {
   }
 
   return res;
-};
+}
 
-export const Logout = async () => {
+export async function Logout(): Promise<void> {
   await signOut();
-};
+}

@@ -11,12 +11,15 @@ type IProps = GridProps & {
   onClick?: MouseEventHandler<HTMLDivElement>;
 };
 
-const IconButton = ({ icon, onClick, ...rest }: IProps) => {
+export default function IconButton({
+  icon,
+  onClick,
+  ...rest
+}: IProps): JSX.Element {
   const { colors } = useTheme();
   return (
     <Grid
-      h={56}
-      w={56}
+      size={56}
       borderRadius="50%"
       bg={colors.accent}
       onClick={onClick}
@@ -26,6 +29,4 @@ const IconButton = ({ icon, onClick, ...rest }: IProps) => {
       <Icon m="auto auto" icon={icon} />
     </Grid>
   );
-};
-
-export default IconButton;
+}

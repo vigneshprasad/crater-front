@@ -1,7 +1,9 @@
+import { PropsWithChildren } from "react";
+
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 
-const AccountTabLayout = ({ children }) => {
+export default function AccountTabLayout({
+  children,
+}: PropsWithChildren<unknown>): JSX.Element {
   return <BaseLayout>{children}</BaseLayout>;
-};
-
-export default AccountTabLayout;
+}

@@ -31,9 +31,9 @@ const Container = styled(Box)<ScrollProps>`
   })}
 `;
 
-export const Scroll = ({ children, ...rest }: ScrollProps) => {
+export function Scroll({ children, ...rest }: ScrollProps): JSX.Element {
   return <Container {...rest}>{children}</Container>;
-};
+}
 
 Scroll.defaultProps = {
   scroll: "vertical",

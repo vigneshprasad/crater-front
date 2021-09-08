@@ -1,13 +1,18 @@
+import { PropsWithChildren } from "react";
+
 import { Box } from "@/common/components/atoms/System";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import TabHeading from "@/common/components/objects/TabHeading";
 import { theme } from "@/common/theme";
 
-type IProps = {
+type IProps = PropsWithChildren<{
   heading: string;
-};
+}>;
 
-const ClubTabLayout = ({ heading, children }: IProps) => {
+export default function ClubTabLayout({
+  heading,
+  children,
+}: IProps): JSX.Element {
   const { space } = theme;
   return (
     <BaseLayout pb={[space.l]}>
@@ -17,6 +22,4 @@ const ClubTabLayout = ({ heading, children }: IProps) => {
       {children}
     </BaseLayout>
   );
-};
-
-export default ClubTabLayout;
+}

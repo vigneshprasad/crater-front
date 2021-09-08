@@ -7,7 +7,7 @@ import AuthPageLayout from "../../layouts/AuthPageLayout";
 
 const { space } = theme;
 
-const AuthPage = () => {
+export default function AuthPage(): JSX.Element {
   return (
     <Page
       seo={{
@@ -26,6 +26,4 @@ const AuthPage = () => {
       </AuthPageLayout>
     </Page>
   );
-};
-
-export default AuthPage;
+}

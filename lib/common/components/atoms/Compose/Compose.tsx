@@ -1,14 +1,14 @@
-import { ComponentType } from "react";
+import { ComponentType, PropsWithChildren } from "react";
 
 type ProviderComponent =
   | ComponentType
   | [ComponentType, { [key: string]: unknown }];
 
-export interface IComposeProps {
+export type IComposeProps = PropsWithChildren<{
   providers: ProviderComponent[];
-}
+}>;
 
-export const Compose = ({ providers, children }: IComposeProps) => {
+export function Compose({ providers, children }: IComposeProps): JSX.Element {
   return (
     <>
       {providers.reduceRight((acc, curr) => {
@@ -19,4 +19,4 @@ export const Compose = ({ providers, children }: IComposeProps) => {
       }, children)}
     </>
   );
-};
+}

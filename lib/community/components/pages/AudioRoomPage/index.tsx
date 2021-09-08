@@ -15,7 +15,7 @@ import { useRoom } from "@/community/hooks";
 import AudioRoomLayout from "../../layout/AudioRoomLayout";
 import AudioCall from "../../objects/AudioCall";
 
-const AudioRoomPage = () => {
+export default function AudioRoomPage(): JSX.Element | null {
   const router = useRouter();
   const param = router.query.roomId as string;
   const id = parseInt(param, 10);
@@ -36,11 +36,11 @@ const AudioRoomPage = () => {
     }
   };
 
-  const handleLeaveCall = async () => {
+  const handleLeaveCall = async (): Promise<void> => {
     await leave();
   };
 
-  const handleMutedClick = () => {
+  const handleMutedClick = (): void => {
     mute();
   };
 
@@ -84,6 +84,4 @@ const AudioRoomPage = () => {
       </AudioRoomLayout>
     </Page>
   );
-};
-
-export default AudioRoomPage;
+}

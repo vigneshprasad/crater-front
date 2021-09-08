@@ -7,7 +7,10 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[typescript]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+     "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    }
   },
   "files.exclude": {
     "**/.git": true,

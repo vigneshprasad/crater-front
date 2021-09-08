@@ -4,7 +4,7 @@ import { useCreatorList } from "@/creators/hooks";
 
 import CreatorCard from "../CreatorCard";
 
-const CreatorsList = () => {
+export default function CreatorsList(): JSX.Element {
   const { creators } = useCreatorList({});
 
   return (
@@ -27,6 +27,4 @@ const CreatorsList = () => {
       ))}
     </Grid>
   );
-};
-
-export default CreatorsList;
+}

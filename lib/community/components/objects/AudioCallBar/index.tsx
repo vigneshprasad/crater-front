@@ -4,14 +4,19 @@ import { Grid, Text } from "@/common/components/atoms";
 import IconButton from "@/common/components/atoms/IconButton";
 import { IconOptions } from "@/common/theme";
 
-type IProps = {
+interface IProps {
   name?: string;
   muted: boolean;
   onLeaveClick: () => void | Promise<void>;
   onMutedClick: () => void | Promise<void>;
-};
+}
 
-const AudioCallBar = ({ muted, name, onLeaveClick, onMutedClick }: IProps) => {
+export default function AudioCallBar({
+  muted,
+  name,
+  onLeaveClick,
+  onMutedClick,
+}: IProps): JSX.Element {
   const { space, colors } = useTheme();
   const muteIcon: IconOptions = muted ? "MicOff" : "MicOn";
   const muteBg = muted ? colors.error : colors.black[3];
@@ -33,6 +38,4 @@ const AudioCallBar = ({ muted, name, onLeaveClick, onMutedClick }: IProps) => {
       </Grid>
     </Grid>
   );
-};
-
-export default AudioCallBar;
+}
