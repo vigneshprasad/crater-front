@@ -12,7 +12,6 @@ export type IFormValidatorEntry<T> = {
 };
 
 export type IFieldConfig<T> = {
-  required: boolean;
   intialValue: T;
   validators: IFormValidatorEntry<T>[];
 };

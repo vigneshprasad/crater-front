@@ -99,6 +99,9 @@ const h = style({
 });
 
 export const Box = styled.div<BoxProps>`
+  display: block;
+  box-sizing: border-box;
+
   ${w}
   ${h}
   ${borders}
@@ -124,6 +127,4 @@ export const Box = styled.div<BoxProps>`
       primary: {},
     },
   })}
-
-  box-sizing: border-box;
 `;

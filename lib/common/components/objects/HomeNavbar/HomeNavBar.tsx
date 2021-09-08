@@ -1,6 +1,9 @@
+import DefaultAvatar from "public/images/img_default_avatar.png";
+
+import { useUser } from "@/auth/hooks";
 import { IconOptions, theme } from "@/common/theme";
 
-import { Grid } from "../../atoms";
+import { Avatar, Grid, Link } from "../../atoms";
 import { Logo } from "../Logo";
 import { NavItem } from "../NavItem";
 
@@ -19,6 +22,9 @@ export type INavbarProps = {
 
 export const HomeNavBar: React.FC<INavbarProps> = ({ active, items }) => {
   const { space, colors, borders } = theme;
+  const { user } = useUser();
+
+  const photo = user?.photo ? user?.photo : DefaultAvatar;
 
   return (
     <Grid
@@ -26,7 +32,7 @@ export const HomeNavBar: React.FC<INavbarProps> = ({ active, items }) => {
       p={`${space.xs}px`}
       borderRight={`1px solid ${borders.main}`}
       gridRowGap={space.xs}
-      gridTemplateRows="56px 1fr 1fr"
+      gridTemplateRows="56px 1fr min-content"
       justifyItems="center"
       alignItems="start"
     >
@@ -44,6 +50,11 @@ export const HomeNavBar: React.FC<INavbarProps> = ({ active, items }) => {
           />
         ))}
       </Grid>
+      {user && (
+        <Link href="/home/account/">
+          <Avatar size={48} image={photo} alt={user.name} />
+        </Link>
+      )}
     </Grid>
   );
 };

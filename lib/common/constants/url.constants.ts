@@ -4,6 +4,11 @@ export const API_URL_CONSTANTS = {
     getUser: "/user/auth/user/",
     getOtp: "/crater/auth/otp/",
     phoneLogin: "/crater/auth/verify/",
+    getProfile: "user/auth/profile/",
+    postProfileCoverFile: "user/auth/profile/cover_file/",
+  },
+  user: {
+    profile: "user/auth/profile/",
   },
   creator: {
     getCreatorList: "/crater/creator/",

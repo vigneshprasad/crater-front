@@ -3,3 +3,8 @@ export * from "./Icon";
 export * from "./Link";
 export * from "./Animated";
 export * from "./Avatar";
+export * from "./Input";
+export * from "./TextArea";
+export * from "./Select";
+export * from "./Compose";
+export { default as TabBar } from "./TabBar";

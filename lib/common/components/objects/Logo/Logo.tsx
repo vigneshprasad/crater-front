@@ -10,10 +10,10 @@ export type ILogoProps = {
 export const Logo: React.FC<ILogoProps> = ({ withText = false }) => {
   const { space } = theme;
   return (
-    <Grid gridTemplateColumns={["48px max-content"]} gridGap={[space.xxxs]}>
+    <Grid gridTemplateColumns={["48px max-content"]}>
       <Icon size={48} icon="Logo" />
       {withText && (
-        <Text textStyle="logo" m="auto auto">
+        <Text ml={[space.xxxs]} textStyle="logo" m="auto auto">
           Crater.Club
         </Text>
       )}

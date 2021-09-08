@@ -34,7 +34,6 @@ const variants = {
   menu: {
     fontFamily: fonts.body,
     fontSize: ["1.4rem"],
-    fontVariationSettings: `'wght' 600`,
   },
   title: {
     fontFamily: fonts.body,
@@ -78,6 +77,12 @@ const variants = {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
     fontVariationSettings: `'wght' 500`,
+  },
+  placeholder: {
+    fontFamily: fonts.body,
+    fontSize: ["1.1rem"],
+    fontVariationSettings: `'wght' 700`,
+    textTransform: "uppercase",
   },
 };
 

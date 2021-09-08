@@ -1,18 +1,18 @@
+import defaultAvtaar from "public/images/img_default_avatar.png";
+
 import Image from "next/image";
 
 import { Box, BoxProps } from "../System/Box";
 
 export type IAvatarProps = BoxProps & {
-  image?: string;
+  image?: string | StaticImageData;
   size?: number;
   alt: string;
 };
 
-const DEFAULT_AVATAR = "/images/img_default_avatar.png";
-
 export const Avatar: React.FC<IAvatarProps> = ({
   size = 72,
-  image = DEFAULT_AVATAR,
+  image = defaultAvtaar,
   alt,
   ...rest
 }) => {
@@ -25,7 +25,7 @@ export const Avatar: React.FC<IAvatarProps> = ({
       borderRadius="50%"
       {...rest}
     >
-      <Image src={image} layout="fill" objectFit="cover" alt={alt} />
+      <Image src={image as string} layout="fill" objectFit="cover" alt={alt} />
     </Box>
   );
 };

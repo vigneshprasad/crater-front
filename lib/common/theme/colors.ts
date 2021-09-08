@@ -5,6 +5,8 @@ const colors = {
   lightGrey: "#8C8C8C",
   whiteAlpha: ["rgba(288,288,288,0.1)", "rgba(288,288,288,0.05)"],
   error: "#FF6628",
+  twitter: "#1DA1F2",
+  linkedin: "#2867B2",
 };
 
 export default colors;

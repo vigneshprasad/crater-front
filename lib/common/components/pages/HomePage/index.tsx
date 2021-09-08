@@ -1,28 +1,52 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
-import { ClubTab } from "@/creators/components/objects/ClubTab";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 import HomePageLayout from "../../layouts/HomePageLayout";
 import { HomeNavBar, INavItem, MenuKeys } from "../../objects/HomeNavBar";
 import Page from "../../objects/Page";
 
+const ClubTab = dynamic(() => import("@/creators/components/objects/ClubTab"));
+const AccountTab = dynamic(
+  () => import("@/auth/components/objects/AccountTab")
+);
+
 type IProps = {
   tab?: string;
 };
 
+const TAB_CONTENT_MAP: Record<MenuKeys, React.ComponentType> = {
+  clubs: ClubTab,
+  wallet: ClubTab,
+  account: AccountTab,
+};
+
 const HomePage: React.FC<IProps> = () => {
-  const [activeTab] = useState<MenuKeys>("clubs");
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<MenuKeys | undefined>();
 
   const MENU_ITEMS: INavItem[] = useMemo(
     () => [
       {
         icon: "Chart",
         slug: "clubs",
-        url: "/home/",
+        url: "/home/clubs/",
       },
     ],
     []
   );
+
+  useEffect(() => {
+    const params = router.query.tab?.[0] as MenuKeys;
+    if (params) {
+      setActiveTab(params);
+    }
+  }, [router]);
+
+  if (!activeTab) return null;
+
+  const Component = TAB_CONTENT_MAP[activeTab];
 
   return (
     <Page
@@ -34,7 +58,7 @@ const HomePage: React.FC<IProps> = () => {
       <HomePageLayout>
         {{
           navbar: <HomeNavBar active={activeTab} items={MENU_ITEMS} />,
-          tabContent: <ClubTab />,
+          tabContent: <Component />,
         }}
       </HomePageLayout>
     </Page>

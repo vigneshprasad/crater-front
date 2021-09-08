@@ -23,7 +23,6 @@ const AuthForm: React.FC = () => {
     useForm<AuthFormArgs>({
       fields: {
         phoneNumber: {
-          required: true,
           intialValue: "",
           validators: [
             {
@@ -33,7 +32,6 @@ const AuthForm: React.FC = () => {
           ],
         },
         otp: {
-          required: true,
           intialValue: "",
           validators: [
             {

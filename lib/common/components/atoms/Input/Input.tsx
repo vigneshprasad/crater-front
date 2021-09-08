@@ -28,7 +28,8 @@ import {
 
 import { theme as BaseTheme } from "@/common/theme";
 
-import { ResponsiveCSS } from "..";
+import { ResponsiveCSS } from "../System/Box";
+import { Grid, GridProps } from "../System/Grid";
 
 export type InputVariants = "form";
 
@@ -55,20 +56,15 @@ export type InputProps = BackgroundProps &
   BorderProps &
   InputHTMLAttributes<HTMLInputElement> & {
     inputType?: InputVariants;
+    prefixElement?: React.ReactNode;
   };
 
-export const Input = styled.input<InputProps>`
-  padding: 16px 20px;
+const StyledInput = styled.input<InputProps>`
   color: ${({ theme }) => theme.colors.white};
-  background: ${({ theme }) => theme.colors.black[3]};
+  background: transparent;
   box-shadow: none;
   border: 2px solid transparent;
-  border-radius: ${({ theme }) => theme.radii.xxs}px;
   outline: none;
-
-  &:focus {
-    border: 2px solid ${({ theme }) => theme.colors.accent};
-  }
 
   &::placeholder {
     font-size: 1.1rem;
@@ -92,6 +88,27 @@ export const Input = styled.input<InputProps>`
     variants,
   })}
 `;
+
+const Container = styled(Grid)<GridProps>`
+  padding: 16px 20px;
+  background: ${({ theme }) => theme.colors.black[3]};
+  border-radius: ${({ theme }) => theme.radii.xxs}px;
+  border: 2px solid transparent;
+
+  &:focus-within {
+    border: 2px solid ${({ theme }) => theme.colors.accent};
+  }
+`;
+
+export const Input: React.FC<InputProps> = ({ prefixElement, ...rest }) => {
+  const gridTemplateColumns = `${prefixElement && "min-content"} 1fr`;
+  return (
+    <Container gridTemplateColumns={gridTemplateColumns} gridGap={8}>
+      {prefixElement && prefixElement}
+      <StyledInput {...rest} />
+    </Container>
+  );
+};
 
 Input.defaultProps = {
   type: "text",
