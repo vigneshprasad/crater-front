@@ -34,7 +34,6 @@ const TabBar: React.FC<IProps> = ({ tabs, selected, onChangeTab }) => {
   useEffect(() => {
     if (selected && tabs.includes(selected)) {
       setSelectedTab(selected);
-      tabChangeCallback(selected);
     }
   }, [selected, tabs, tabChangeCallback]);
 
@@ -72,7 +71,10 @@ const TabBar: React.FC<IProps> = ({ tabs, selected, onChangeTab }) => {
     >
       {tabs.map((tab) => (
         <Box
-          onClick={() => setSelectedTab(tab)}
+          onClick={() => {
+            setSelectedTab(tab);
+            tabChangeCallback(selected);
+          }}
           key={tab}
           px={[space.xs]}
           cursor="pointer"
