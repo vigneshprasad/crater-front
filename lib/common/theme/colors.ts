@@ -7,6 +7,7 @@ const colors = {
   error: "#FF6628",
   twitter: "#1DA1F2",
   linkedin: "#2867B2",
+  modalOverlay: "rgba(0,0,0,0.6)",
 };
 
 export default colors;

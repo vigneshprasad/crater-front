@@ -7,4 +7,5 @@ export * from "./Input";
 export * from "./TextArea";
 export * from "./Select";
 export * from "./Compose";
+export * from "./Modal";
 export { default as TabBar } from "./TabBar";
