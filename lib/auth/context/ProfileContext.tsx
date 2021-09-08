@@ -2,7 +2,6 @@ import { createContext, useMemo } from "react";
 import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import fetcher from "@/common/utils/fetcher";
 
 import { Profile } from "../types/auth";
 
@@ -23,7 +22,7 @@ export const ProfileProvider: React.FC<{ initial?: Profile }> = ({
     data: profile,
     error,
     mutate: mutateProfile,
-  } = useSWR<Profile>(API_URL_CONSTANTS.auth.getProfile, fetcher, {
+  } = useSWR<Profile>(API_URL_CONSTANTS.auth.getProfile, {
     initialData: initial,
   });
 

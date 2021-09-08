@@ -2,7 +2,6 @@ import { useContext } from "react";
 import useSWR from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import fetcher from "@/common/utils/fetcher";
 import { Room } from "@/creators/types/community";
 
 import { RoomContext } from "../context/RoomContext";
@@ -21,7 +20,6 @@ export function useRoom({ id }: IUseRoomProps): IUseRoomState {
   const intial = useContext(RoomContext);
   const { data, error } = useSWR<Room>(
     id ? `${API_URL_CONSTANTS.community.getAllRooms}${id}/` : null,
-    fetcher,
     { initialData: intial }
   );
   return {

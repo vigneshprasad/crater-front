@@ -2,7 +2,6 @@ import useSWR from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
-import fetcher from "@/common/utils/fetcher";
 
 import { CommunityMember } from "../types/community";
 
@@ -20,8 +19,7 @@ export function useCommunityMembers({
 }: IUseCommunityMembersProps): IUseCommunityMembersState {
   const url = `${API_URL_CONSTANTS.community.getCommunityMembers}?community=${communityId}`;
   const { data, error } = useSWR<PageResponse<CommunityMember>>(
-    communityId ? url : null,
-    fetcher
+    communityId ? url : null
   );
 
   return {

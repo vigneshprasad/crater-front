@@ -1,7 +1,6 @@
 import useSWR from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import fetcher from "@/common/utils/fetcher";
 
 import { Creator } from "../types/creator";
 
@@ -17,8 +16,7 @@ export type IUseCreatorState = {
 
 export function useCreator({ id }: IUseCreatorProps): IUseCreatorState {
   const { data, error } = useSWR<Creator>(
-    id ? API_URL_CONSTANTS.creator.retrieveCreator(id) : null,
-    fetcher
+    id ? API_URL_CONSTANTS.creator.retrieveCreator(id) : null
   );
   return {
     creator: data,

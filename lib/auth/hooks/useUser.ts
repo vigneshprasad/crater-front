@@ -3,7 +3,6 @@ import { useContext } from "react";
 import useSWR from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import fetcher from "@/common/utils/fetcher";
 
 import { UserContext } from "../context/UserContext";
 
@@ -16,13 +15,9 @@ export type IUseUserState = {
 
 export function useUser(): IUseUserState {
   const initial = useContext(UserContext);
-  const { data, error } = useSWR<User>(
-    API_URL_CONSTANTS.auth.getUser,
-    fetcher,
-    {
-      initialData: initial,
-    }
-  );
+  const { data, error } = useSWR<User>(API_URL_CONSTANTS.auth.getUser, {
+    initialData: initial,
+  });
 
   return {
     user: data,
