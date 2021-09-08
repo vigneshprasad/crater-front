@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from "react";
+import { ForwardedRef, forwardRef, InputHTMLAttributes } from "react";
 import styled from "styled-components";
 import {
   BackgroundProps,
@@ -29,7 +29,7 @@ import {
 import { theme as BaseTheme } from "@/common/theme";
 
 import { ResponsiveCSS } from "../System/Box";
-import { Grid, GridProps } from "../System/Grid";
+import { Flex, FlexProps } from "../System/Flex";
 
 export type InputVariants = "form";
 
@@ -60,11 +60,13 @@ export type InputProps = BackgroundProps &
   };
 
 const StyledInput = styled.input<InputProps>`
+  box-sizing: border-box;
   color: ${({ theme }) => theme.colors.white};
   background: transparent;
   box-shadow: none;
   border: 2px solid transparent;
   outline: none;
+  width: 100%;
 
   &::placeholder {
     font-size: 1.1rem;
@@ -89,7 +91,7 @@ const StyledInput = styled.input<InputProps>`
   })}
 `;
 
-const Container = styled(Grid)<GridProps>`
+const Container = styled(Flex)<FlexProps>`
   padding: 16px 20px;
   background: ${({ theme }) => theme.colors.black[3]};
   border-radius: ${({ theme }) => theme.radii.xxs}px;
@@ -100,15 +102,22 @@ const Container = styled(Grid)<GridProps>`
   }
 `;
 
-export const Input: React.FC<InputProps> = ({ prefixElement, ...rest }) => {
-  const gridTemplateColumns = `${prefixElement && "min-content"} 1fr`;
+const InputWithRef: React.FC<
+  InputProps & { inputRef: ForwardedRef<HTMLInputElement> }
+> = ({ inputRef, prefixElement, ...rest }) => {
   return (
-    <Container gridTemplateColumns={gridTemplateColumns} gridGap={8}>
+    <Container>
       {prefixElement && prefixElement}
-      <StyledInput {...rest} />
+      <StyledInput ref={inputRef} {...rest} />
     </Container>
   );
 };
+
+export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => (
+  <InputWithRef {...props} inputRef={ref} />
+));
+
+Input.displayName = "Input";
 
 Input.defaultProps = {
   type: "text",
