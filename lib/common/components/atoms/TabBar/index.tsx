@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { AnimatedBox } from "../Animated";
@@ -7,6 +7,7 @@ import { Box, Grid, Text } from "../System";
 type IProps = {
   tabs: string[];
   selected?: string;
+  onChangeTab?: (tab: string) => void;
 };
 
 type SliderPosProps = {
@@ -14,18 +15,28 @@ type SliderPosProps = {
   right?: number;
 };
 
-const TabBar: React.FC<IProps> = ({ tabs, selected }) => {
+const TabBar: React.FC<IProps> = ({ tabs, selected, onChangeTab }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef(new Map());
   const { space, colors } = useTheme();
   const [selectedTab, setSelectedTab] = useState(selected || tabs[0]);
   const [sliderPos, setSliderPos] = useState<SliderPosProps>({});
 
+  const tabChangeCallback = useCallback(
+    (tab: string) => {
+      if (onChangeTab) {
+        onChangeTab(tab);
+      }
+    },
+    [onChangeTab]
+  );
+
   useEffect(() => {
     if (selected && tabs.includes(selected)) {
       setSelectedTab(selected);
+      tabChangeCallback(selected);
     }
-  }, [selected, tabs]);
+  }, [selected, tabs, tabChangeCallback]);
 
   useEffect(() => {
     const target = tabRefs.current?.get(selectedTab);
@@ -64,6 +75,7 @@ const TabBar: React.FC<IProps> = ({ tabs, selected }) => {
           onClick={() => setSelectedTab(tab)}
           key={tab}
           px={[space.xs]}
+          cursor="pointer"
           ref={(el) => tabRefs.current?.set(tab, el)}
         >
           <Text textStyle="title">{tab}</Text>
