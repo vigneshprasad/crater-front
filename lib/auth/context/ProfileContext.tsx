@@ -14,9 +14,11 @@ export type IProfileState = {
 
 export const ProfileContext = createContext<IProfileState>({} as IProfileState);
 
-export const ProfileProvider: React.FC<{ initial?: Profile }> = ({
+export const ProfileProvider = ({
   initial,
   ...rest
+}: {
+  initial?: Profile;
 }) => {
   const {
     data: profile,

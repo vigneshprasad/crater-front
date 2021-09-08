@@ -16,13 +16,13 @@ type IProps = {
   onMutedClick: () => void | Promise<void>;
 };
 
-const AudioCall: React.FC<IProps> = ({
+const AudioCall = ({
   muted,
   room,
   remoteUsers,
   onMutedClick,
   onLeaveClick,
-}) => {
+}: IProps) => {
   const { user } = useUser();
   const { colors, space, radii } = useTheme();
   return (

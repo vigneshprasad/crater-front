@@ -20,7 +20,7 @@ export type INavbarProps = {
   items: INavItem[];
 };
 
-export const HomeNavBar: React.FC<INavbarProps> = ({ active, items }) => {
+export const HomeNavBar = ({ active, items }: INavbarProps) => {
   const { space, colors, borders } = theme;
   const { user } = useUser();
 

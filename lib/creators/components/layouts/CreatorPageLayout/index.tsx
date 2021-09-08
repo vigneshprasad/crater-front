@@ -1,6 +1,6 @@
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 
-const CreatorPageLayout: React.FC = ({ children }) => {
+const CreatorPageLayout = ({ children }) => {
   return <BaseLayout>{children}</BaseLayout>;
 };
 

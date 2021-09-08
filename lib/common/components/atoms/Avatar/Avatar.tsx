@@ -10,12 +10,12 @@ export type IAvatarProps = BoxProps & {
   alt: string;
 };
 
-export const Avatar: React.FC<IAvatarProps> = ({
+export const Avatar = ({
   size = 72,
   image = defaultAvtaar,
   alt,
   ...rest
-}) => {
+}: IAvatarProps) => {
   return (
     <Box
       overflow="hidden"

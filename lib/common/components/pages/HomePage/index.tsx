@@ -12,17 +12,13 @@ const AccountTab = dynamic(
   () => import("@/auth/components/objects/AccountTab")
 );
 
-type IProps = {
-  tab?: string;
-};
-
 const TAB_CONTENT_MAP: Record<MenuKeys, React.ComponentType> = {
   clubs: ClubTab,
   wallet: ClubTab,
   account: AccountTab,
 };
 
-const HomePage: React.FC<IProps> = () => {
+export default function HomePage(): JSX.Element | null {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<MenuKeys | undefined>();
 
@@ -63,6 +59,4 @@ const HomePage: React.FC<IProps> = () => {
       </HomePageLayout>
     </Page>
   );
-};
-
-export default HomePage;
+}

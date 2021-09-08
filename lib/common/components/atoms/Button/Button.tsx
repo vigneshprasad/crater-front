@@ -19,12 +19,12 @@ const StyledButton = styled(Box)<ButtonProps>`
   cursor: pointer;
 `;
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button = ({
   type = "button",
   text,
   children,
   ...rest
-}) => {
+}: ButtonProps) => {
   const { space, radii } = theme;
   return (
     <StyledButton

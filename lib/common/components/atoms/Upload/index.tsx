@@ -1,6 +1,6 @@
 import { Box } from "../System/Box";
 
-const Upload: React.FC = () => {
+const Upload = () => {
   return <Box>Upload</Box>;
 };
 

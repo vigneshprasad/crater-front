@@ -1,6 +1,6 @@
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 
-const AccountTabLayout: React.FC = ({ children }) => {
+const AccountTabLayout = ({ children }) => {
   return <BaseLayout>{children}</BaseLayout>;
 };
 

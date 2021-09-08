@@ -34,7 +34,7 @@ StyledText.defaultProps = {
   textStyle: "headline3",
 };
 
-const TabHeading: React.FC<Props> = ({ children, ...rest }) => {
+const TabHeading = ({ children, ...rest }: Props) => {
   return (
     <StyledText as="h4" {...rest}>
       {children}

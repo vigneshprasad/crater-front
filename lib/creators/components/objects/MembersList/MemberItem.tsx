@@ -10,7 +10,7 @@ export type IMemberItemProps = {
 
 const { space } = theme;
 
-export const MemberItem: React.FC<IMemberItemProps> = ({ name, image }) => {
+export const MemberItem = ({ name, image }: IMemberItemProps) => {
   return (
     <Flex flexDirection="column" alignItems="center">
       {image && (

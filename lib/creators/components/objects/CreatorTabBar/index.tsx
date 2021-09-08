@@ -17,12 +17,7 @@ type IProps = {
   selected?: string;
 };
 
-const CreatorTabBar: React.FC<IProps> = ({
-  initial,
-  tabs,
-  onChange,
-  selected,
-}) => {
+const CreatorTabBar = ({ initial, tabs, onChange, selected }: IProps) => {
   const childRefs = useRef(new Map());
   const tabListRef = useRef<HTMLDivElement>(null);
   const [sliderPos, setSliderPos] = useState<SliderPosProps>({

@@ -10,7 +10,7 @@ export type IMembersListProps = {
 
 const { space } = theme;
 
-export const MembersList: React.FC = () => {
+export const MembersList = () => {
   const { creators } = useCreatorList({ certified: false });
 
   return (

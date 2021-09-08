@@ -3,7 +3,7 @@ import BaseLayout from "@/common/components/layouts/BaseLayout";
 import { Logo } from "@/common/components/objects/Logo";
 import { theme } from "@/common/theme";
 
-const AuthPageLayout: React.FC = ({ children }) => {
+const AuthPageLayout = ({ children }) => {
   const { space } = theme;
   return (
     <BaseLayout

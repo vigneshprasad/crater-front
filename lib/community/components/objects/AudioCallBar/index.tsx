@@ -11,12 +11,7 @@ type IProps = {
   onMutedClick: () => void | Promise<void>;
 };
 
-const AudioCallBar: React.FC<IProps> = ({
-  muted,
-  name,
-  onLeaveClick,
-  onMutedClick,
-}) => {
+const AudioCallBar = ({ muted, name, onLeaveClick, onMutedClick }: IProps) => {
   const { space, colors } = useTheme();
   const muteIcon: IconOptions = muted ? "MicOff" : "MicOn";
   const muteBg = muted ? colors.error : colors.black[3];

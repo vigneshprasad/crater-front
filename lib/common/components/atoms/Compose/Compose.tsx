@@ -8,7 +8,7 @@ export interface IComposeProps {
   providers: ProviderComponent[];
 }
 
-export const Compose: React.FC<IComposeProps> = ({ providers, children }) => {
+export const Compose = ({ providers, children }: IComposeProps) => {
   return (
     <>
       {providers.reduceRight((acc, curr) => {

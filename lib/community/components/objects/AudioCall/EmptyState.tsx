@@ -1,6 +1,6 @@
 import { Text } from "@/common/components/atoms";
 
-const EmptyState: React.FC = () => {
+const EmptyState = () => {
   return <Text m="auto auto">Waiting for members...</Text>;
 };
 

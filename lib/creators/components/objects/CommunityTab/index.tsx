@@ -13,7 +13,7 @@ interface IProps {
 
 const { space } = theme;
 
-const CommunityTab: React.FC<IProps> = ({ creator }) => {
+const CommunityTab = ({ creator }: IProps) => {
   const { data } = useCommunityMembers({
     communityId: creator.default_community?.id,
   });

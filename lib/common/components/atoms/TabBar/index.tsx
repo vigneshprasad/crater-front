@@ -15,7 +15,7 @@ type SliderPosProps = {
   right?: number;
 };
 
-const TabBar: React.FC<IProps> = ({ tabs, selected, onChangeTab }) => {
+const TabBar = ({ tabs, selected, onChangeTab }: IProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef(new Map());
   const { space, colors } = useTheme();

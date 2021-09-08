@@ -15,7 +15,7 @@ import { useRoom } from "@/community/hooks";
 import AudioRoomLayout from "../../layout/AudioRoomLayout";
 import AudioCall from "../../objects/AudioCall";
 
-const AudioRoomPage: React.FC = () => {
+const AudioRoomPage = () => {
   const router = useRouter();
   const param = router.query.roomId as string;
   const id = parseInt(param, 10);

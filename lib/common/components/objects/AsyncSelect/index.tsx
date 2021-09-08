@@ -5,5 +5,5 @@ interface IProps<T> {
 }
 
 export default function AsyncSelect<T>(props: IProps<T>) {
-  return <Box></Box>;
+  return <Box />;
 }

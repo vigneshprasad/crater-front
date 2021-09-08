@@ -9,11 +9,7 @@ export type IDigitInputProps = InputProps & {
   focus?: boolean;
 };
 
-export const DigitInput: React.FC<IDigitInputProps> = ({
-  focus,
-  autoFocus,
-  ...rest
-}) => {
+export const DigitInput = ({ focus, autoFocus, ...rest }: IDigitInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const prevFocus = usePrevious(!!focus);
 
@@ -40,14 +36,14 @@ export type IOtpInputProps = {
   isNumberInput?: boolean;
 };
 
-const InputComponent: React.FC<IOtpInputProps> = ({
+const InputComponent = ({
   length = 4,
   error,
   autoFocus,
   onChange,
   isNumberInput = true,
   disabled = false,
-}) => {
+}: IOtpInputProps) => {
   // Define state activeInput = 0
   const [activeInput, setActiveInput] = useState(0);
   const [otpValues, setOTPValues] = useState(new Array(length).fill(""));

@@ -12,7 +12,7 @@ type IProps = {
   remoteUsers: Map<string, IRtcUser>;
 };
 
-const SpeakersList: React.FC<IProps> = ({ host, remoteUsers }) => {
+const SpeakersList = ({ host, remoteUsers }: IProps) => {
   const { space } = useTheme();
 
   const renderRemoteUsers = useCallback(() => {

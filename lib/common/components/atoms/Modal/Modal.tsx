@@ -10,7 +10,7 @@ export interface IModalProps {
   onClose: () => void;
 }
 
-export const Modal: React.FC<IModalProps> = ({ children, onClose }) => {
+export const Modal = ({ children, onClose }: IModalProps) => {
   const { colors, radii, space } = useTheme();
   return createPortal(
     <Box

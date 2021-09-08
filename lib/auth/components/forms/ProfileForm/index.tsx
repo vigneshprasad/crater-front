@@ -29,7 +29,7 @@ type IProps = {
   onSubmit: (data: Partial<Profile>) => void;
 };
 
-const ProfileForm: React.FC<IProps> = ({ profile, onSubmit }) => {
+const ProfileForm = ({ profile, onSubmit }: IProps) => {
   const { space, colors } = useTheme();
   const { fields, fieldValueSetter, getValidatedData } = useForm<IFormProps>({
     fields: {

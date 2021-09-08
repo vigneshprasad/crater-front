@@ -8,7 +8,7 @@ type IProps = {
   creator: Creator;
 };
 
-const AboutTab: React.FC<IProps> = ({ creator }) => {
+const AboutTab = ({ creator }: IProps) => {
   return (
     <Box px={[space.m]} py={[space.s]}>
       <Text textStyle="headline6">About Me</Text>

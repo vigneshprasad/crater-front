@@ -7,7 +7,7 @@ import { Box, Modal } from "@/common/components/atoms";
 import ProfileForm from "../../forms/ProfileForm";
 import AccountTabLayout from "../../layouts/AccountTabLayout";
 
-const AccountTab: React.FC = () => {
+const AccountTab = () => {
   const { profile } = useProfile();
 
   const handleFormSubmit = (data: Partial<Profile>) => {

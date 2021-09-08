@@ -20,7 +20,7 @@ const StyledContainer = styled(Scroll)<Props>`
   })}
 `;
 
-const BaseLayout: React.FC<Props> = ({ children, ...rest }) => {
+const BaseLayout = ({ children, ...rest }: Props) => {
   return <StyledContainer {...rest}>{children}</StyledContainer>;
 };
 

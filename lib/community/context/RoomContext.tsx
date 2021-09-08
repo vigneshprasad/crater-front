@@ -8,10 +8,7 @@ export type IRoomProviderProps = {
   intialData: Room;
 };
 
-export const RoomProvider: React.FC<IRoomProviderProps> = ({
-  children,
-  intialData,
-}) => {
+export const RoomProvider = ({ children, intialData }: IRoomProviderProps) => {
   return (
     <RoomContext.Provider value={intialData}>{children}</RoomContext.Provider>
   );

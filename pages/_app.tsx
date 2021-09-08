@@ -1,21 +1,31 @@
 import { theme } from "lib/common/theme";
 import { Provider } from "next-auth/client";
 import { ThemeProvider } from "styled-components";
+import { SWRConfig } from "swr";
 
 import type { AppProps } from "next/app";
 
+import fetcher from "@/common/utils/fetcher";
+
 import GlobalStyle from "../lib/common/styles/global.styled";
 
-const App: React.FC<AppProps> = ({
+export default function App({
   Component,
   pageProps: { session, ...pageProps },
-}) => (
-  <Provider session={session}>
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Component {...pageProps} />
-    </ThemeProvider>
-  </Provider>
-);
-
-export default App;
+}: AppProps): JSX.Element {
+  return (
+    <SWRConfig
+      value={{
+        refreshInterval: 3000,
+        fetcher,
+      }}
+    >
+      <Provider session={session}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </Provider>
+    </SWRConfig>
+  );
+}

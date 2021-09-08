@@ -102,9 +102,13 @@ const Container = styled(Flex)<FlexProps>`
   }
 `;
 
-const InputWithRef: React.FC<
-  InputProps & { inputRef: ForwardedRef<HTMLInputElement> }
-> = ({ inputRef, prefixElement, ...rest }) => {
+const InputWithRef = ({
+  inputRef,
+  prefixElement,
+  ...rest
+}: InputProps & {
+  inputRef: ForwardedRef<HTMLInputElement>;
+}) => {
   return (
     <Container>
       {prefixElement && prefixElement}

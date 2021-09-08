@@ -50,7 +50,7 @@ const StyledBox = styled(Box)<BoxProps>`
   }
 `;
 
-const Table: React.FC<IProps> = ({ speakers = [], roomId }) => {
+const Table = ({ speakers = [], roomId }: IProps) => {
   return (
     <Link href={`/community/rooms/audio/${roomId}`}>
       <StyledBox>

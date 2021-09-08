@@ -7,7 +7,7 @@ import AuthPageLayout from "../../layouts/AuthPageLayout";
 
 const { space } = theme;
 
-const AuthPage: React.FC = () => {
+const AuthPage = () => {
   return (
     <Page
       seo={{

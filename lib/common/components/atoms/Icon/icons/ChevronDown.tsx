@@ -1,6 +1,6 @@
 type Props = React.SVGProps<SVGSVGElement>;
 
-const ChevronDown: React.FC<Props> = (props) => (
+const ChevronDown = (props: Props) => (
   <svg
     width="1em"
     height="1em"

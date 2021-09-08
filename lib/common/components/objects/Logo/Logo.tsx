@@ -7,7 +7,7 @@ export type ILogoProps = {
   withText?: boolean;
 };
 
-export const Logo: React.FC<ILogoProps> = ({ withText = false }) => {
+export const Logo = ({ withText = false }: ILogoProps) => {
   const { space } = theme;
   return (
     <Grid gridTemplateColumns={["48px max-content"]}>

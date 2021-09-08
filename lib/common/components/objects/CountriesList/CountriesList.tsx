@@ -19,7 +19,7 @@ export type ICountriesListProps = {
   onItemPressed: (country: CountryCode) => void;
 };
 
-export const CountriesList: React.FC<ICountriesListProps> = () => {
+export const CountriesList = () => {
   const countries = phone_utils.countryData;
 
   const elRefs = useMemo(

@@ -7,7 +7,7 @@ type IProps = {
   heading: string;
 };
 
-const ClubTabLayout: React.FC<IProps> = ({ heading, children }) => {
+const ClubTabLayout = ({ heading, children }: IProps) => {
   const { space } = theme;
   return (
     <BaseLayout pb={[space.l]}>

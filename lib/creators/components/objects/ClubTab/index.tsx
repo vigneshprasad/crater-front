@@ -15,7 +15,7 @@ export type IClubTabProps = {
   clubs?: string;
 };
 
-const ClubTab: React.FC<IClubTabProps> = () => {
+const ClubTab = () => {
   const items = ["All", "Owned"];
   const { space, colors } = theme;
 

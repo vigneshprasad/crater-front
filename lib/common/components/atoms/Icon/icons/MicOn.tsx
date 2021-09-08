@@ -1,6 +1,6 @@
 type Props = React.SVGProps<SVGSVGElement>;
 
-const MicOn: React.FC<Props> = (props) => (
+const MicOn = (props: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="1em"

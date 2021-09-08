@@ -6,11 +6,16 @@ import { Avatar, Box, Text, Grid, Flex } from "@/common/components/atoms";
 type IProps = {
   remoteUser?: IAgoraRTCRemoteUser;
   photo?: string;
+  // eslint-disable-next-line react/no-unused-prop-types
   isHost?: boolean;
   name: string;
 };
 
-const SpeakerItem: React.FC<IProps> = ({ remoteUser, photo, name }) => {
+export default function SpeakerItem({
+  remoteUser,
+  photo,
+  name,
+}: IProps): JSX.Element {
   const { radii, borders, space } = useTheme();
 
   return (
@@ -29,10 +34,8 @@ const SpeakerItem: React.FC<IProps> = ({ remoteUser, photo, name }) => {
       </Flex>
     </Grid>
   );
-};
+}
 
 SpeakerItem.defaultProps = {
   isHost: false,
 };
-
-export default SpeakerItem;

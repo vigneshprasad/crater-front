@@ -1,12 +1,13 @@
+import { PropsWithChildren } from "react";
 import styled from "styled-components";
 
 import { Flex, Box, FlexProps, Text, Link } from "@/common/components/atoms";
 
-type Props = {
+type Props = PropsWithChildren<{
   id: number;
   image?: string;
   name?: string;
-};
+}>;
 
 const Container = styled(Flex)<FlexProps & { image?: string }>`
   position: relative;
@@ -30,7 +31,7 @@ const Container = styled(Flex)<FlexProps & { image?: string }>`
   }
 `;
 
-const CreatorCard: React.FC<Props> = ({ id, image, name }) => {
+export default function CreatorCard({ id, image, name }: Props): JSX.Element {
   return (
     <Link href={`/creator/${id}`}>
       <Container h="100%" px={[20]} image={image}>
@@ -53,6 +54,4 @@ const CreatorCard: React.FC<Props> = ({ id, image, name }) => {
       </Container>
     </Link>
   );
-};
-
-export default CreatorCard;
+}

@@ -31,7 +31,7 @@ const Container = styled(Box)<ScrollProps>`
   })}
 `;
 
-export const Scroll: React.FC<ScrollProps> = ({ children, ...rest }) => {
+export const Scroll = ({ children, ...rest }: ScrollProps) => {
   return <Container {...rest}>{children}</Container>;
 };
 

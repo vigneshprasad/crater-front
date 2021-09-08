@@ -19,6 +19,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const Auth: React.FC = () => <AuthPage />;
+const Auth = () => <AuthPage />;
 
 export default Auth;

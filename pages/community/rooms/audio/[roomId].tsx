@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps<{
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const AudioRoom: React.FC<Props> = ({ room, user }) => {
+const AudioRoom = ({ room, user }: Props) => {
   return (
     <RoomProvider intialData={room}>
       <UserProvider initialData={user}>

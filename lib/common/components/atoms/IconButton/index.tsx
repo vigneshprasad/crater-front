@@ -11,7 +11,7 @@ type IProps = GridProps & {
   onClick?: MouseEventHandler<HTMLDivElement>;
 };
 
-const IconButton: React.FC<IProps> = ({ icon, onClick, ...rest }) => {
+const IconButton = ({ icon, onClick, ...rest }: IProps) => {
   const { colors } = useTheme();
   return (
     <Grid

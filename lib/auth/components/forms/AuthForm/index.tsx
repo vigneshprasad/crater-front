@@ -17,7 +17,7 @@ type AuthFormArgs = {
   otp: string;
 };
 
-const AuthForm: React.FC = () => {
+const AuthForm = () => {
   const router = useRouter();
   const { fields, fieldValueSetter, validateField, getValidatedData } =
     useForm<AuthFormArgs>({

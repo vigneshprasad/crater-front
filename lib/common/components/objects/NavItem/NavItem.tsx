@@ -15,7 +15,7 @@ const StyledIcon = styled(Icon)`
   margin: auto auto;
 `;
 
-export const NavItem: React.FC<INavItemProps> = ({ icon, url }) => {
+export const NavItem = ({ icon, url }: INavItemProps) => {
   return (
     <Link href={url}>
       <Grid width={[56]} height={[56]}>

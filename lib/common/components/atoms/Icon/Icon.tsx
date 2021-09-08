@@ -20,7 +20,7 @@ const StyledIconWrapper = styled(Box)<BoxProps & { rotate?: number }>`
   align-items: center;
 `;
 
-export const Icon: React.FC<IconProps> = ({ icon, color, size, ...rest }) => {
+export const Icon = ({ icon, color, size, ...rest }: IconProps) => {
   const IconComponent = icons[icon];
   return (
     <StyledIconWrapper

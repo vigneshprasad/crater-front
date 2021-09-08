@@ -36,7 +36,7 @@ const Container = styled(Box)`
   }
 `;
 
-export const Select: React.FC<SelectProps> = ({ label, items }) => {
+export const Select = ({ label, items }: SelectProps) => {
   const [value, setValue] = useState<SelectItem>();
   const [opened, setOpened] = useState(false);
 

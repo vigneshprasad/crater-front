@@ -10,7 +10,7 @@ type IProps = {
   showUser?: boolean;
 };
 
-const HorizontalNav: React.FC<IProps> = ({ showUser = false }) => {
+const HorizontalNav = ({ showUser = false }: IProps) => {
   const { user } = useUser();
   const { space } = useTheme();
   return (

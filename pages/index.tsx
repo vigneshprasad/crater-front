@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/client";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -18,6 +18,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
-const Index: React.FC = () => null;
+const Index: NextPage = () => null;
 
 export default Index;

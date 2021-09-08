@@ -36,7 +36,7 @@ const Container = styled(motion(Box))`
   }
 `;
 
-const CoverFileUpload: React.FC<IProps> = ({ coverImage, alt }) => {
+const CoverFileUpload = ({ coverImage, alt }: IProps) => {
   const [photoFile, setPhotoFile] = useState<File>();
   const inputRef = useRef<HTMLInputElement>(null);
   const handleOnDrop: DragEventHandler<HTMLDivElement> = (event) => {

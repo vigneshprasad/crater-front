@@ -46,12 +46,7 @@ const Container = styled(Box)`
   }
 `;
 
-const PictureInput: React.FC<IProps> = ({
-  photo,
-  alt,
-  onChange,
-  disabled = false,
-}) => {
+const PictureInput = ({ photo, alt, onChange, disabled = false }: IProps) => {
   const [photoFile, setPhotoFile] = useState<File | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
 

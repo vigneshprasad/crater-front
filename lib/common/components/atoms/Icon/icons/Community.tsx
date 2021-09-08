@@ -1,6 +1,6 @@
 type Props = React.SVGProps<SVGSVGElement>;
 
-const Community: React.FC<Props> = (props) => (
+const Community = (props: Props) => (
   <svg
     width="1em"
     height="1em"

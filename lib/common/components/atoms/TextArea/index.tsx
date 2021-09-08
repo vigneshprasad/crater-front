@@ -9,6 +9,6 @@ const StyledTextArea = styled(Input)<TextAreaProps>`
   resize: none;
 `;
 
-export const TextArea: React.FC<TextAreaProps> = ({ ...rest }) => {
+export const TextArea = ({ ...rest }: TextAreaProps) => {
   return <StyledTextArea as="textarea" rows={5} {...rest} />;
 };

@@ -1,6 +1,6 @@
 type Props = React.SVGProps<SVGSVGElement>;
 
-const Logo: React.FC<Props> = (props) => (
+const Logo = (props: Props) => (
   <svg
     width="1em"
     height="1em"

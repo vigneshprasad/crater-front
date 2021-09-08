@@ -1,24 +1,15 @@
 import { NextSeo, NextSeoProps } from "next-seo";
-import { SWRConfig } from "swr";
+import { PropsWithChildren } from "react";
 
-import fetcher from "@/common/utils/fetcher";
-
-interface IProps {
+type IProps = PropsWithChildren<{
   seo: NextSeoProps;
-}
+}>;
 
-const Page: React.FC<IProps> = ({ seo, children }) => {
+export default function Page({ seo, children }: IProps): JSX.Element {
   return (
-    <SWRConfig
-      value={{
-        refreshInterval: 3000,
-        fetcher,
-      }}
-    >
+    <>
       <NextSeo {...seo} />
       {children}
-    </SWRConfig>
+    </>
   );
-};
-
-export default Page;
+}

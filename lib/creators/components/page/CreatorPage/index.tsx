@@ -16,7 +16,7 @@ import CreatorTabBar from "../../objects/CreatorTabBar";
 
 const { space, colors } = theme;
 
-const CreatorPage: React.FC = () => {
+const CreatorPage = () => {
   const router = useRouter();
   const [creatorId, setCreatorId] = useState<number>();
   const [activeTab, setActiveTab] = useState<string>("about");

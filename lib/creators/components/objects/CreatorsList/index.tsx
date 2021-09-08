@@ -4,7 +4,7 @@ import { useCreatorList } from "@/creators/hooks";
 
 import CreatorCard from "../CreatorCard";
 
-const CreatorsList: React.FC = () => {
+const CreatorsList = () => {
   const { creators } = useCreatorList({});
 
   return (
