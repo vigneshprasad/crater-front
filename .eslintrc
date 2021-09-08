@@ -23,13 +23,15 @@
     "react/jsx-props-no-spreading": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "arrow-parens": [2, "always", { "requireForBlockBody": true }],
-    // Taken from https://github.com/iamturns/create-exposed-app/blob/master/.eslintrc.js
     "no-prototype-builtins": "off",
     "react/destructuring-assignment": "off",
     "no-use-before-define": [
       "error",
       { "functions": false, "classes": true, "variables": true }
     ],
+    "@typescript-eslint/explicit-function-return-type": {
+      "allowExpressions": true
+    },
     "@typescript-eslint/no-use-before-define": [
       "error",
       {
