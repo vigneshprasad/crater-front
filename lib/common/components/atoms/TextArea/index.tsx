@@ -1,14 +1,24 @@
 import { HTMLAttributes } from "react";
 import styled from "styled-components";
 
-import { Input, InputProps } from "../Input";
+import { StyledInput, InputContainer, InputProps } from "../Input";
 
 export type TextAreaProps = InputProps & HTMLAttributes<HTMLTextAreaElement>;
 
-const StyledTextArea = styled(Input)<TextAreaProps>`
+const StyledTextArea = styled(StyledInput)<TextAreaProps>`
   resize: none;
+
+  &::placeholder {
+    font-size: 1.1rem;
+    font-variation-settings: "wght" 700;
+    text-transform: uppercase;
+  }
 `;
 
 export function TextArea({ ...rest }: TextAreaProps): JSX.Element {
-  return <StyledTextArea as="textarea" rows={5} {...rest} />;
+  return (
+    <InputContainer>
+      <StyledTextArea as="textarea" rows={5} {...rest} />
+    </InputContainer>
+  );
 }

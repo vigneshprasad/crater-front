@@ -34,12 +34,10 @@ StyledText.defaultProps = {
   textStyle: "headline3",
 };
 
-const TabHeading = ({ children, ...rest }: Props) => {
+export default function TabHeading({ children, ...rest }: Props): JSX.Element {
   return (
     <StyledText as="h4" {...rest}>
       {children}
     </StyledText>
   );
-};
-
-export default TabHeading;
+}

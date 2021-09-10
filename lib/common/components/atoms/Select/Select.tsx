@@ -1,25 +1,27 @@
 import { useAnimation } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled, { useTheme } from "styled-components";
+import useSWR from "swr";
 
 import { AnimatedBox } from "../Animated";
 import { Icon } from "../Icon";
 import { Box, Grid, Text } from "../System";
 
-export type SelectItem = {
-  value: string | number;
-  id: string | number;
-};
-
-export type SelectProps = {
+export type SelectProps<T> = {
+  async?: boolean;
+  items?: T[];
+  dataUrl?: string;
+  value?: unknown;
+  itemLabelGetter: (val: T) => string;
   label: string;
-  items: SelectItem[];
+  onChange?: (val: unknown) => void;
+  dataTransform?: (val: T) => unknown;
 };
 
 const Container = styled(Box)`
   position: relative;
-  background: ${({ theme: { colors } }) => colors.black[3]};
-  padding: 16px 18px;
+  background: ${({ theme: { colors } }) => colors.black[4]};
+  padding: 12px 16px;
   border-radius: ${({ theme: { radii } }) => radii.xxs}px;
   border: 2px solid transparent;
   cursor: pointer;
@@ -27,7 +29,6 @@ const Container = styled(Box)`
 
   &:hover {
     background: ${({ theme: { colors } }) => colors.black[2]};
-    border: 2px solid ${({ theme: { colors } }) => colors.accent};
   }
 
   &:focus {
@@ -36,27 +37,79 @@ const Container = styled(Box)`
   }
 `;
 
-export function Select({ label, items }: SelectProps): JSX.Element {
-  const [value, setValue] = useState<SelectItem>();
+export function Select<T>({
+  value: controlledValue,
+  async = false,
+  dataUrl,
+  itemLabelGetter,
+  label,
+  items: intialItems,
+  onChange,
+  dataTransform,
+}: SelectProps<T>): JSX.Element {
+  const [items, setItems] = useState<T[]>(intialItems ?? []);
+  const [value, setValue] = useState<T>();
   const [opened, setOpened] = useState(false);
+  const { data: itemData, error } = useSWR<T[]>(dataUrl || null);
 
   const { colors, space, radii } = useTheme();
 
   const animate = useAnimation();
 
+  useEffect(() => {
+    if (itemData) {
+      setItems(itemData);
+    }
+  }, [itemData, setItems]);
+
+  const handleItemChange = useCallback(
+    (item: T) => {
+      if (onChange) {
+        const data = dataTransform ? dataTransform(item) : item;
+        onChange(data);
+      }
+    },
+    [onChange, dataTransform]
+  );
+
   const handleContainerClick = (): void => {
     setOpened((state) => !state);
   };
 
-  const handleItemClick = (item: SelectItem): void => {
-    setValue(item);
+  const handleItemClick = (item: T): void => {
+    if (!controlledValue) {
+      setValue(item);
+    }
+
     setOpened((state) => !state);
+    handleItemChange(item);
   };
 
   useEffect(() => {
     const variant = opened ? "opened" : "closed";
     animate.start(variant);
   }, [opened, animate]);
+
+  useEffect(() => {
+    if (controlledValue && items) {
+      const val = items.filter((item) => {
+        if (dataTransform) {
+          return dataTransform(item) === controlledValue;
+        }
+        return controlledValue === item;
+      })[0];
+
+      if (val) {
+        setValue(val);
+      }
+    }
+  }, [controlledValue, items, dataTransform]);
+
+  if (async) {
+    if (!itemData || error) {
+      return <Box>Loading...</Box>;
+    }
+  }
 
   return (
     <Container tabIndex={0} onBlur={() => setOpened(false)}>
@@ -65,7 +118,13 @@ export function Select({ label, items }: SelectProps): JSX.Element {
         gridTemplateColumns="1fr min-content"
         onClick={handleContainerClick}
       >
-        <Text textStyle="menu">{value ? value.value : label}</Text>
+        {value ? (
+          <Text textStyle="menu">{itemLabelGetter(value)}</Text>
+        ) : (
+          <Text textStyle="body" color={colors.slate}>
+            {label}
+          </Text>
+        )}
         <Icon icon="ExpandMore" />
       </Grid>
       <AnimatedBox
@@ -89,19 +148,21 @@ export function Select({ label, items }: SelectProps): JSX.Element {
         right={4}
         left={4}
         bg={colors.black[2]}
+        maxHeight={200}
+        overflowY="auto"
       >
         {items.map((item) => (
           <Box
             cursor="pointer"
-            key={item.id}
+            key={itemLabelGetter(item)}
             px={space.xs}
-            py={space.xs}
+            py={space.xxs}
             onClick={(event) => {
               event.stopPropagation();
               handleItemClick(item);
             }}
           >
-            <Text>{item.value}</Text>
+            <Text>{itemLabelGetter(item)}</Text>
           </Box>
         ))}
       </AnimatedBox>

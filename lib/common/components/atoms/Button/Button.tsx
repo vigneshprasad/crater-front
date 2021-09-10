@@ -14,9 +14,23 @@ export type ButtonProps = BoxProps &
   };
 
 const StyledButton = styled(Box)<ButtonProps>`
+  height: 48px;
   background: ${(props) => props.theme.colors.accent};
   border: none;
   cursor: pointer;
+  max-width: fit-content;
+  transition: all 200ms ease-in-out;
+  color: ${(props) => props.theme.colors.white};
+
+  &:hover {
+    background: ${(props) => props.theme.colors.accentHover};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: ${(props) => props.theme.colors.black[1]};
+    color: ${(props) => props.theme.colors.slate};
+  }
 `;
 
 export function Button({
@@ -28,14 +42,15 @@ export function Button({
   const { space, radii } = theme;
   return (
     <StyledButton
+      px={space.s}
       type={type}
       borderRadius={[radii.xxs]}
-      px={[space.xs]}
-      py={[space.xs]}
       as="button"
       {...rest}
     >
-      <Text textStyle="button">{text}</Text>
+      <Text color="inherit" textStyle="button">
+        {text}
+      </Text>
     </StyledButton>
   );
 }

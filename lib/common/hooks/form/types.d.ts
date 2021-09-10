@@ -26,7 +26,7 @@ export type IFieldStateMap<T, U> = {
   [K in U]: IFieldState<T[K]>;
 };
 
-type IUseFormProps<T, U extends keyof T> = {
+export type IUseFormProps<T, U extends keyof T> = {
   fields: {
     [K in U]: IFieldConfig<T[K]>;
   };

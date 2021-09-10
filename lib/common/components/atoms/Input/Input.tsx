@@ -23,25 +23,9 @@ import {
   textStyle,
   BorderProps,
   border,
-  variant,
 } from "styled-system";
 
-import { theme as BaseTheme } from "@/common/theme";
-
-import { ResponsiveCSS } from "../System/Box";
 import { Flex, FlexProps } from "../System/Flex";
-
-export type InputVariants = "form";
-
-const { fonts } = BaseTheme;
-
-export const variants: Record<InputVariants, ResponsiveCSS> = {
-  form: {
-    fontSize: ["1.4rem"],
-    fontWeight: 600,
-    fontFamily: fonts.body,
-  },
-};
 
 export type InputProps = BackgroundProps &
   ColorProps &
@@ -55,11 +39,13 @@ export type InputProps = BackgroundProps &
   TypographyProps &
   BorderProps &
   InputHTMLAttributes<HTMLInputElement> & {
-    inputType?: InputVariants;
     prefixElement?: React.ReactNode;
   };
 
-const StyledInput = styled.input<InputProps>`
+export const StyledInput = styled.input<InputProps>`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 1.4 rem;
+  font-weight: 600;
   box-sizing: border-box;
   color: ${({ theme }) => theme.colors.white};
   background: transparent;
@@ -85,15 +71,11 @@ const StyledInput = styled.input<InputProps>`
   ${textStyle}
   ${typography}
   ${border}
-  ${variant({
-    prop: "inputType",
-    variants,
-  })}
 `;
 
-const Container = styled(Flex)<FlexProps>`
-  padding: 16px 20px;
-  background: ${({ theme }) => theme.colors.black[3]};
+export const InputContainer = styled(Flex)<FlexProps>`
+  padding: 12px 12px;
+  background: ${({ theme }) => theme.colors.black[4]};
   border-radius: ${({ theme }) => theme.radii.xxs}px;
   border: 2px solid transparent;
 
@@ -110,10 +92,10 @@ function InputWithRef({
   inputRef: ForwardedRef<HTMLInputElement>;
 }): JSX.Element {
   return (
-    <Container>
+    <InputContainer>
       {prefixElement && prefixElement}
       <StyledInput ref={inputRef} {...rest} />
-    </Container>
+    </InputContainer>
   );
 }
 
@@ -125,5 +107,4 @@ Input.displayName = "Input";
 
 Input.defaultProps = {
   type: "text",
-  inputType: "form",
 };

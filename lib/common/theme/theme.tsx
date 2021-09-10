@@ -18,8 +18,8 @@ const fontSizes = {
 
 const space = {
   xxxs: 8,
-  xxs: 12,
-  xs: 16,
+  xxs: 16,
+  xs: 24,
   s: 40,
   m: 60,
   l: 80,

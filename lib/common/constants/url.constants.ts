@@ -26,4 +26,10 @@ export const API_URL_CONSTANTS = {
   network: {
     getUserProfile: "/user/auth/network/",
   },
+  meta: {
+    userTags: "/tags/user/",
+    education: "/user/meta/profile/education/",
+    experience: "/user/meta/profile/experience/",
+    sector: "/user/meta/profile/sector/",
+  },
 };

@@ -8,4 +8,5 @@ export * from "./TextArea";
 export * from "./Select";
 export * from "./Compose";
 export * from "./Modal";
+export * from "./Card";
 export { default as TabBar } from "./TabBar";

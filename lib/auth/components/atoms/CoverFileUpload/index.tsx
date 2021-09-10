@@ -1,6 +1,12 @@
 import { motion } from "framer-motion";
 import DEFAULT_COVER from "public/images/img_cover_example.jpg";
-import { ChangeEventHandler, DragEventHandler, useRef, useState } from "react";
+import {
+  ChangeEventHandler,
+  DragEventHandler,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import styled from "styled-components";
 
 import Image from "next/image";
@@ -10,6 +16,7 @@ import { Box, Icon } from "@/common/components/atoms";
 type IProps = {
   coverImage?: string;
   alt: string;
+  onChange?: (file: File) => void;
 };
 
 const Overlay = styled(Box)`
@@ -39,15 +46,27 @@ const Container = styled(motion(Box))`
 export default function CoverFileUpload({
   coverImage,
   alt,
+  onChange,
 }: IProps): JSX.Element {
   const [photoFile, setPhotoFile] = useState<File>();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleOnChange = useCallback(
+    (file: File) => {
+      if (onChange) {
+        onChange(file);
+      }
+    },
+    [onChange]
+  );
+
   const handleOnDrop: DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
     event.stopPropagation();
     const file = event.dataTransfer.files?.[0];
     if (file) {
       setPhotoFile(file);
+      handleOnChange(file);
     }
   };
 
@@ -65,6 +84,7 @@ export default function CoverFileUpload({
     const file = event.target.files?.[0];
     if (file) {
       setPhotoFile(file);
+      handleOnChange(file);
     }
   };
 
