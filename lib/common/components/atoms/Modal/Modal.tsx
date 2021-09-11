@@ -42,6 +42,6 @@ export function Modal({ children, onClose }: IModalProps): ReactPortal {
         {children}
       </Box>
     </Box>,
-    document.querySelector("body")
+    document.querySelector("body") as HTMLElement
   );
 }

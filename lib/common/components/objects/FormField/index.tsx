@@ -18,7 +18,7 @@ export default function FormField({
   const { space, colors } = useTheme();
   return (
     <Grid
-      borderBottom={border && "1px solid rgba(228,228,228,0.1)"}
+      borderBottom={border ? "1px solid rgba(228,228,228,0.1)" : "none"}
       py={space.xs}
       gridTemplateColumns="1fr 3fr"
       alignItems="start"
