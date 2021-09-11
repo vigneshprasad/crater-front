@@ -1,7 +1,15 @@
 const colors = {
   accent: "#355DFF",
   accentHover: "#5575f7",
-  black: ["#333333", "#1B1D21", "#1F2128", "#242731", "#191B20", "#000000"],
+  black: [
+    "#333333",
+    "#1B1D21",
+    "#1F2128",
+    "#242731",
+    "#191B20",
+    "#0e0e10",
+    "#000000",
+  ],
   white: ["#FFFFFF"],
   lightGrey: "#8C8C8C",
   greenSuccess: "#4FBF67",

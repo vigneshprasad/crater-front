@@ -1,25 +1,27 @@
-import { createContext, useMemo } from "react";
+import { createContext, PropsWithChildren, useMemo } from "react";
 import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
 import { Profile } from "../types/auth";
 
-export type IProfileState = {
+export interface IProfileState {
   profile?: Profile;
   loading: boolean;
   error?: unknown;
   mutateProfile: SWRResponse<Profile, unknown>["mutate"];
-};
+}
 
 export const ProfileContext = createContext<IProfileState>({} as IProfileState);
+
+export type IProfileProviderProps = PropsWithChildren<{
+  initial?: Profile;
+}>;
 
 export function ProfileProvider({
   initial,
   ...rest
-}: {
-  initial?: Profile;
-}): JSX.Element {
+}: IProfileProviderProps): JSX.Element {
   const {
     data: profile,
     error,

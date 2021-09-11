@@ -19,6 +19,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const Auth = () => <AuthPage />;
-
-export default Auth;
+export default function Auth(): JSX.Element {
+  return <AuthPage />;
+}

@@ -1,27 +1,14 @@
-import { User } from "next-auth";
 import { useContext } from "react";
-import useSWR from "swr";
 
-import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { IUserState, UserContext } from "../context/UserContext";
 
-import { UserContext } from "../context/UserContext";
+// eslint-disable-next-line import/prefer-default-export
+export function useUser(): IUserState {
+  const context = useContext(UserContext);
 
-// export type IUseUserProps = {};
-export type IUseUserState = {
-  user?: User;
-  loading: boolean;
-  error: unknown;
-};
+  if (!context) {
+    throw new Error("You need to wrap UserProivder.");
+  }
 
-export function useUser(): IUseUserState {
-  const initial = useContext(UserContext);
-  const { data, error } = useSWR<User>(API_URL_CONSTANTS.auth.getUser, {
-    initialData: initial,
-  });
-
-  return {
-    user: data,
-    loading: !data && !error,
-    error,
-  };
+  return { ...context } as const;
 }

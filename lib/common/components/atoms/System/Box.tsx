@@ -26,7 +26,6 @@ import {
   TextStyleProps,
   typography,
   TypographyProps,
-  variant,
   ResponsiveValue,
   boxShadow,
   BoxShadowProps,
@@ -120,11 +119,4 @@ export const Box = styled.div<BoxProps>`
   ${transform}
   ${typography}
   ${boxShadow}
-  ${variant({
-    prop: "variant",
-    scale: "buttons",
-    variants: {
-      primary: {},
-    },
-  })}
 `;

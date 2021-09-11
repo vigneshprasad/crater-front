@@ -1,4 +1,5 @@
-// eslint-disable-next-line import/prefer-default-export
+export const HOST_URL = process.env.HOST_URL as string;
+
 export const API_URL_CONSTANTS = {
   auth: {
     getUser: "/user/auth/user/",
@@ -8,12 +9,19 @@ export const API_URL_CONSTANTS = {
     postProfileCoverFile: "user/auth/profile/cover_file/",
   },
   user: {
+    user: "/user/auth/user/",
     profile: "user/auth/profile/",
+  },
+  conversations: {
+    retrieveGroup: (id: string): string => `/groups/groups/${id}`,
   },
   creator: {
     getCreatorList: "/crater/creator/",
     getMembersList: "/crater/community/members/",
     retrieveCreator: (id: number): string => `/crater/creator/${id}/`,
+  },
+  groups: {
+    retrieveGroup: (id: string): string => `/groups/requests/${id}`,
   },
   community: {
     getCommunityList: "/crater/community/",

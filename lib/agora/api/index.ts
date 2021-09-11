@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 
-import ApiClient from "@/common/api";
+import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
 export type IAgoraTokenResponse = {
@@ -13,7 +13,7 @@ const AgoraApiClient = {
     channel_id: number
   ): Promise<AxiosResponse<IAgoraTokenResponse>> {
     try {
-      const res = await ApiClient.post<IAgoraTokenResponse>(
+      const res = await API().post<IAgoraTokenResponse>(
         API_URL_CONSTANTS.agora.getToken,
         {
           channel_id,

@@ -147,9 +147,10 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         font-family: ${theme.fonts.body};
-        background: ${theme.colors.black[1]};
+        background: ${theme.colors.black[5]};
         color: ${theme.colors.white[0]};
         line-height: 1.8;
+        overflow: hidden;
     }
 `;
 

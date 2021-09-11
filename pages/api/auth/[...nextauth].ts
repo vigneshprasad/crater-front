@@ -2,7 +2,7 @@ import { NextApiHandler } from "next";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import Providers, { AppProviders } from "next-auth/providers";
 
-import ApiClient from "@/common/api";
+import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
 const providers: AppProviders = [
@@ -22,7 +22,7 @@ const providers: AppProviders = [
     },
     async authorize(credentials) {
       try {
-        const res = await ApiClient.post(
+        const res = await API().post(
           API_URL_CONSTANTS.auth.phoneLogin,
           credentials
         );
@@ -66,6 +66,20 @@ const options: NextAuthOptions = {
   callbacks,
   pages: {
     error: "/auth",
+  },
+  logger: {
+    error(code, metadata) {
+      // eslint-disable-next-line no-console
+      console.error(code, metadata);
+    },
+    warn(code) {
+      // eslint-disable-next-line no-console
+      console.warn(code);
+    },
+    debug(code, metadata) {
+      // eslint-disable-next-line no-console
+      console.debug(code, metadata);
+    },
   },
 };
 

@@ -28,7 +28,7 @@ const space = {
 };
 
 const borders = {
-  main: "rgba(228, 228, 228, 0.2)",
+  main: "rgba(228, 228, 228, 0.1)",
 };
 
 const fonts = {

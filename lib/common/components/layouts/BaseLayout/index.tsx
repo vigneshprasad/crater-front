@@ -1,27 +1,45 @@
-import styled from "styled-components";
-import { variant } from "styled-system";
+import { ReactNode, useMemo } from "react";
 
-import { ResponsiveCSS, Scroll, ScrollProps } from "../../atoms";
+import { BoxProps, Box, Grid } from "../../atoms";
+import AppNavBar from "../../objects/AppNavBar";
 
 export type ScrollVariants = "base" | "grid";
 
-type Props = ScrollProps & {
-  variant?: ScrollVariants;
+type Props = BoxProps & {
+  aside?: ReactNode;
 };
 
-const variants: Record<ScrollVariants, ResponsiveCSS> = {
-  base: {},
-  grid: { display: "grid" },
-};
+export default function BaseLayout({
+  children,
+  aside,
+  ...rest
+}: Props): JSX.Element {
+  const content = useMemo(() => {
+    if (aside) {
+      return (
+        <Grid
+          gridTemplateColumns="min-content 1fr"
+          gridTemplateRows="calc(100vh - 56px)"
+        >
+          {aside}
+          <Box {...rest}>{children}</Box>
+        </Grid>
+      );
+    }
 
-const StyledContainer = styled(Scroll)<Props>`
-  ${variant({
-    variants,
-  })}
-`;
-
-const BaseLayout = ({ children, ...rest }: Props) => {
-  return <StyledContainer {...rest}>{children}</StyledContainer>;
-};
-
-export default BaseLayout;
+    return <Box {...rest}>{children}</Box>;
+  }, [aside, children, rest]);
+  return (
+    <Grid
+      as="main"
+      gridTemplateColumns="100vw"
+      gridTemplateRows="100vh"
+      overflow="hidden"
+    >
+      <Grid gridTemplateRows="56px 1fr">
+        <AppNavBar />
+        {content}
+      </Grid>
+    </Grid>
+  );
+}

@@ -38,7 +38,7 @@ export type Topic = {
   root?: number;
 };
 
-export type Room = {
+export type Group = {
   attendees: unknown[];
   closed: boolean;
   closed_at?: string;
@@ -67,3 +67,17 @@ export type Room = {
   topic_detail?: Topic;
   type: number;
 };
+
+export interface GroupRequest {
+  pk: number;
+  requester: string;
+  group: number;
+  status: number;
+  is_recommended: boolean;
+  group_detail: Group;
+  participant_type: number;
+}
+
+export type Room = Group;
+
+export type Webinar = Group;

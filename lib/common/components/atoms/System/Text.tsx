@@ -28,7 +28,7 @@ const variants = {
   },
   logo: {
     fontFamily: fonts.heading,
-    fontSize: ["2.4rem"],
+    fontSize: ["2.2rem"],
     fontWeight: "500",
   },
   menu: {
@@ -60,18 +60,18 @@ const variants = {
   },
   bodyLarge: {
     fontFamily: fonts.body,
-    fontSize: ["1.3rem"],
-    fontVariationSettings: `'wght' 400`,
+    fontSize: ["1.5rem"],
+    fontVariationSettings: `'wght' 500`,
   },
   button: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    fontVariationSettings: `'wght' 600`,
+    fontVariationSettings: `'wght'600`,
   },
   buttonLarge: {
     fontFamily: fonts.body,
-    fontSize: ["1.4rem"],
-    fontVariationSettings: `'wght' 400`,
+    fontSize: ["1.5rem"],
+    fontVariationSettings: `'wght' 500`,
   },
   error: {
     fontFamily: fonts.body,

@@ -2,12 +2,10 @@ import { ProfileProvider } from "@/auth/context/ProfileContext";
 import { Compose } from "@/common/components/atoms";
 import HomePage from "@/common/components/pages/HomePage";
 
-const Home = () => {
+export default function Home(): JSX.Element {
   return (
     <Compose providers={[ProfileProvider]}>
       <HomePage />
     </Compose>
   );
-};
-
-export default Home;
+}

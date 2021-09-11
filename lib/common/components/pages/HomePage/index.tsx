@@ -3,8 +3,9 @@ import { useState, useMemo, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
-import HomePageLayout from "../../layouts/HomePageLayout";
-import { HomeNavBar, INavItem, MenuKeys } from "../../objects/HomeNavBar";
+import BaseLayout from "../../layouts/BaseLayout";
+import AsideNav from "../../objects/AsideNav";
+import { INavItem, MenuKeys } from "../../objects/HomeNavBar";
 import Page from "../../objects/Page";
 
 const ClubTab = dynamic(() => import("@/creators/components/objects/ClubTab"));
@@ -22,6 +23,7 @@ export default function HomePage(): JSX.Element | null {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<MenuKeys | undefined>();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const MENU_ITEMS: INavItem[] = useMemo(
     () => [
       {
@@ -51,12 +53,9 @@ export default function HomePage(): JSX.Element | null {
         description: "Crater Club",
       }}
     >
-      <HomePageLayout>
-        {{
-          navbar: <HomeNavBar active={activeTab} items={MENU_ITEMS} />,
-          tabContent: <Component />,
-        }}
-      </HomePageLayout>
+      <BaseLayout overflowY="auto" aside={<AsideNav />}>
+        <Component />
+      </BaseLayout>
     </Page>
   );
 }
