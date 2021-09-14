@@ -125,7 +125,7 @@ export function Select<T>({
             {label}
           </Text>
         )}
-        <Icon icon="ExpandMore" />
+        <Icon icon="ExpandMore" color={colors.white[0]} fill />
       </Grid>
       <AnimatedBox
         animate={animate}

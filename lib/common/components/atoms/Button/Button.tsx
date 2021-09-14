@@ -22,7 +22,7 @@ const StyledButton = styled(Box)<ButtonProps>`
   border: none;
   cursor: pointer;
   transition: all 200ms ease-in-out;
-  color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.white[0]};
   ${variant({
     prop: "variant",
     variants: {

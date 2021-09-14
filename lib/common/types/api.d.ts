@@ -5,3 +5,5 @@ export interface PageResponse<T> {
   previous?: string;
   results: T[];
 }
+
+export type ApiResult<T, E> = [T | undefined, E | undefined];

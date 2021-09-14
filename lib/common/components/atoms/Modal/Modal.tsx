@@ -1,47 +1,76 @@
-import { PropsWithChildren, ReactPortal } from "react";
+import { AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
-import { Icon } from "../Icon";
-import { Box } from "../System/Box";
-import { Flex } from "../System/Flex";
-import { Text } from "../System/Text";
+import IconButton from "../IconButton";
+import { Box, BoxProps } from "../System/Box";
 
-export type IModalProps = PropsWithChildren<{
+export type IModalProps = BoxProps & {
+  visible?: boolean;
   onClose: () => void;
-}>;
+};
 
-export function Modal({ children, onClose }: IModalProps): ReactPortal {
+const Overlay = styled(Box)`
+  display: grid;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+`;
+
+export function Modal({
+  children,
+  onClose,
+  visible = false,
+  ...rest
+}: IModalProps): JSX.Element | null {
+  const [showModal, setShowModal] = useState(visible);
   const { colors, radii, space } = useTheme();
+  const [node, setNode] = useState<HTMLElement | undefined>();
+
+  useEffect(() => {
+    const element = document.getElementById("modal-root");
+    if (element != null) {
+      setNode(element);
+    }
+  }, []);
+
+  useEffect(() => {
+    setShowModal(visible);
+  }, [visible]);
+
+  if (!node) return null;
+
   return createPortal(
-    <Box
-      position="absolute"
-      top={0}
-      right={0}
-      left={0}
-      bottom={0}
-      bg={colors.modalOverlay}
-      onClick={onClose}
-    >
-      <Box
-        px={space.s}
-        py={space.s}
-        borderRadius={radii.s}
-        minWidth={["60vw"]}
-        minHeight={["60vh"]}
-        bg={colors.black[1]}
-        position="absolute"
-        top="50%"
-        right="50%"
-        transform="translate(50%,-50%)"
-      >
-        <Flex>
-          <Text flex="1">Header</Text>
-          <Icon icon="Close" onClick={onClose} />
-        </Flex>
-        {children}
-      </Box>
-    </Box>,
-    document.querySelector("body") as HTMLElement
+    <AnimatePresence exitBeforeEnter>
+      {showModal && (
+        <Overlay bg={colors.modalOverlay} onClick={onClose}>
+          <Box
+            m="auto auto"
+            p={space.xs}
+            borderRadius={radii.s}
+            minHeight={340}
+            w="100%"
+            maxWidth={720}
+            bg={colors.black[1]}
+            position="relative"
+            {...rest}
+          >
+            <IconButton
+              variant="roundSmall"
+              right={16}
+              top={16}
+              position="absolute"
+              icon="Close"
+              onClick={onClose}
+            />
+            {children}
+          </Box>
+        </Overlay>
+      )}
+    </AnimatePresence>,
+    node
   );
 }

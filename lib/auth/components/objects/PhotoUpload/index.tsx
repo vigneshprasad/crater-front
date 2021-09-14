@@ -1,4 +1,5 @@
 import { AnimatePresence } from "framer-motion";
+import DEFAULT_IMAGE from "public/images/img_default_avatar.png";
 import { useState, useRef, ChangeEvent, useCallback } from "react";
 import styled, { useTheme } from "styled-components";
 
@@ -82,6 +83,7 @@ export default function PhotoUpload({
           setShowToast(false);
         }
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.log(err);
       }
     },
@@ -94,8 +96,8 @@ export default function PhotoUpload({
     }
   };
 
-  const staticImage = value ?? "/images/img_default_avatar.png";
-  const src = photo ? URL.createObjectURL(photo) : staticImage;
+  const staticImage = !value || value == null ? DEFAULT_IMAGE : value;
+  const src = photo ? URL.createObjectURL(photo) : (staticImage as string);
 
   return (
     <Box>

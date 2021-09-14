@@ -1,7 +1,6 @@
 import { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/client";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async () => {
   return {
     redirect: {
       permanent: true,

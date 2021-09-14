@@ -49,6 +49,7 @@ export default function AuthForm(): JSX.Element {
       await AuthApiClient.getPhoneOtp(phoneNumber);
       setOtpVisible(true);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
     }
   };
@@ -61,6 +62,7 @@ export default function AuthForm(): JSX.Element {
       await Login(phoneNumber, otp);
       router.push("/home");
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
     }
   };

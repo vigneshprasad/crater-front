@@ -1,6 +1,13 @@
+import * as CSS from "csstype";
 import { HTMLAttributes } from "react";
-import styled, { css } from "styled-components";
-import { variant, TypographyProps, typography } from "styled-system";
+import styled, { css, DefaultTheme } from "styled-components";
+import {
+  variant,
+  TypographyProps,
+  typography,
+  style,
+  ResponsiveValue,
+} from "styled-system";
 
 import { theme } from "@/common/theme";
 
@@ -14,6 +21,12 @@ const variants = {
     fontSize: ["4rem"],
     fontWeight: "500",
     lineHeight: ["5.2rem"],
+  },
+  headline4: {
+    fontFamily: fonts.heading,
+    fontSize: ["3.2rem"],
+    fontWeight: "500",
+    lineHeight: ["4rem"],
   },
   headline5: {
     fontFamily: fonts.body,
@@ -43,9 +56,9 @@ const variants = {
   },
   caption: {
     fontFamily: fonts.body,
-    fontSize: ["1.2rem"],
+    fontSize: ["1.3rem"],
     fontVariationSettings: `'wght' 500`,
-    lineHeight: ["1.8rem"],
+    lineHeight: ["2.2rem"],
   },
   captionLarge: {
     fontFamily: fonts.body,
@@ -60,8 +73,9 @@ const variants = {
   },
   bodyLarge: {
     fontFamily: fonts.body,
-    fontSize: ["1.5rem"],
-    fontVariationSettings: `'wght' 500`,
+    fontSize: ["1.4rem"],
+    fontVariationSettings: `'wght' 400`,
+    lineHeight: ["2.4rem"],
   },
   button: {
     fontFamily: fonts.body,
@@ -107,15 +121,27 @@ export type TextProps = BoxProps &
       | "label";
     target?: string;
     singleLine?: boolean;
+    maxLines?: number;
     textStyle?: TextVariants;
+    textOverflow?: ResponsiveValue<CSS.Property.TextOverflow, DefaultTheme>;
+    whiteSpace?: ResponsiveValue<CSS.Property.WhiteSpace, DefaultTheme>;
   };
+
+const textOverflow = style({
+  prop: "textOverflow",
+  cssProperty: "text-overflow",
+});
+
+const whiteSpace = style({
+  prop: "whiteSpace",
+  cssProperty: "white-space",
+});
 
 export const Text = styled(Box)<TextProps>`
   ${variant({
     prop: "textStyle",
     variants,
   })}
-
   ${({ singleLine }) =>
     singleLine &&
     css`
@@ -124,6 +150,17 @@ export const Text = styled(Box)<TextProps>`
       overflow: hidden;
       text-overflow: ellipsis;
     `}
+  ${({ maxLines }) =>
+    maxLines &&
+    css`
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: ${maxLines};
+      -webkit-box-orient: vertical;
+    `}
+
+  ${whiteSpace}
+  ${textOverflow}
   ${typography}
 `;
 

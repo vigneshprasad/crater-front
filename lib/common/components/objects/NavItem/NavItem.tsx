@@ -15,7 +15,7 @@ const StyledIcon = styled(Icon)`
   margin: auto auto;
 `;
 
-export const NavItem = ({ icon, url }: INavItemProps) => {
+export function NavItem({ icon, url }: INavItemProps): JSX.Element {
   return (
     <Link href={url}>
       <Grid width={[56]} height={[56]}>
@@ -23,4 +23,4 @@ export const NavItem = ({ icon, url }: INavItemProps) => {
       </Grid>
     </Link>
   );
-};
+}

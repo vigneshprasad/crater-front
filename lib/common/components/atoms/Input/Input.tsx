@@ -44,10 +44,11 @@ export type InputProps = BackgroundProps &
 
 export const StyledInput = styled.input<InputProps>`
   font-family: ${({ theme }) => theme.fonts.body};
-  font-size: 1.4 rem;
+  font-size: 1.4rem;
   font-weight: 600;
+  line-height: 2.4rem;
   box-sizing: border-box;
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white[0]};
   background: transparent;
   box-shadow: none;
   border: 2px solid transparent;

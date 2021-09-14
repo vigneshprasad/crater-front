@@ -10,7 +10,7 @@ export type IMenuItem = {
 export const SIDE_NAV_ITEMS: IMenuItem[] = [
   {
     label: "Home",
-    icon: "Community",
+    icon: "Tv",
     url: "/home/clubs",
     key: "clubs",
   },

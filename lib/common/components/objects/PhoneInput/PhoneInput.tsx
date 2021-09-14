@@ -13,13 +13,13 @@ export type IPhoneInputProps = InputProps & {
   onValueChanged?: (val: string) => void;
 };
 
-export const PhoneInput = ({
+export function PhoneInput({
   error,
   initialValue,
   placeholder = "Enter Phone Number",
   onValueChanged,
   ...rest
-}: IPhoneInputProps) => {
+}: IPhoneInputProps): JSX.Element {
   const [state, setState] = useState(initialValue ?? "");
 
   const handleValueChange = useCallback(
@@ -53,4 +53,4 @@ export const PhoneInput = ({
       </AnimatePresence>
     </>
   );
-};
+}

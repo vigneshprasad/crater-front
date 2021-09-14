@@ -38,6 +38,7 @@ export default function AccountTab(): JSX.Element {
       } as Partial<Profile>);
       mutateProfile(profileResponse);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
     }
   };

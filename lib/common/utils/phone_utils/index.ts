@@ -1,17 +1,24 @@
 import {
+  CountryCallingCode,
   CountryCode,
   getCountries,
   getCountryCallingCode,
 } from "libphonenumber-js";
-import countries from "world-countries";
+import countries, { Country } from "world-countries";
 
-const PhoneUtils = () => {
+interface IPhoneUtils {
+  countryData: Country[];
+  countryCodes: CountryCode[];
+  getCountryDialingCode: (country: CountryCode) => CountryCallingCode;
+}
+
+function PhoneUtils(): IPhoneUtils {
   const countryCodes = getCountries();
   const countryData = countries.filter(
     (country) => countryCodes.indexOf(country.cca2 as CountryCode) > -1
   );
 
-  const getCountryDialingCode = (country: CountryCode) =>
+  const getCountryDialingCode = (country: CountryCode): CountryCallingCode =>
     getCountryCallingCode(country);
 
   return {
@@ -19,6 +26,6 @@ const PhoneUtils = () => {
     countryCodes,
     getCountryDialingCode,
   };
-};
+}
 
 export default PhoneUtils();

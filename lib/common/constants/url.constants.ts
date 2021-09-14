@@ -12,8 +12,16 @@ export const API_URL_CONSTANTS = {
     user: "/user/auth/user/",
     profile: "user/auth/profile/",
   },
+  integrations: {
+    dyte: {
+      getParticpant: (groupId: string): string =>
+        `integrations/dyte/participant/${groupId}`,
+    },
+  },
   conversations: {
     retrieveGroup: (id: string): string => `/groups/groups/${id}`,
+    retrieveWebinar: (id: string): string =>
+      `/groups/conversations/webinars/${id}`,
   },
   creator: {
     getCreatorList: "/crater/creator/",
@@ -21,7 +29,10 @@ export const API_URL_CONSTANTS = {
     retrieveCreator: (id: number): string => `/crater/creator/${id}/`,
   },
   groups: {
-    retrieveGroup: (id: string): string => `/groups/requests/${id}`,
+    retrieveGroupRequest: (id: string): string => `/groups/requests/${id}`,
+    postGroupRequest: "/groups/requests/",
+    getAllUpcomintWebinars: "/groups/public/conversations/webinars/upcoming/",
+    getGroups: "/groups/groups/",
   },
   community: {
     getCommunityList: "/crater/community/",

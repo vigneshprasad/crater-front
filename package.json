@@ -10,10 +10,12 @@
     "svgr": "npx @svgr/cli ./public/svg --template ./public/svg/svgrtemplate.js --icon --ext tsx --out-dir ./lib/common/components/atoms/Icon/icons"
   },
   "dependencies": {
+    "@lottiefiles/react-lottie-player": "^3.4.1",
     "@types/styled-system": "^5.1.12",
     "agora-rtc-sdk-ng": "^4.6.3",
     "axios": "^0.21.1",
     "csstype": "^3.0.8",
+    "dyte-client": "^0.6.0",
     "framer-motion": "^4.1.17",
     "libphonenumber-js": "^1.9.22",
     "moment": "^2.29.1",

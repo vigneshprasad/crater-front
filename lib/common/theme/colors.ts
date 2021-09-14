@@ -10,7 +10,7 @@ const colors = {
     "#0e0e10",
     "#000000",
   ],
-  white: ["#FFFFFF"],
+  white: ["#FFFFFF", "#b9b9b9"],
   lightGrey: "#8C8C8C",
   greenSuccess: "#4FBF67",
   whiteAlpha: ["rgba(288,288,288,0.1)", "rgba(288,288,288,0.05)"],

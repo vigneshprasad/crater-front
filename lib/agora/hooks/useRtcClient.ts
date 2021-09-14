@@ -88,7 +88,9 @@ export function useRtcClient({
   }
 
   useEffect(() => {
-    const handleUserJoined = async (user: IAgoraRTCRemoteUser) => {
+    const handleUserJoined = async (
+      user: IAgoraRTCRemoteUser
+    ): Promise<void> => {
       const res = await AuthApiClient.getUserProfile(user.uid.toString());
       const { data } = res;
       setRemoteUsers((state) =>
@@ -99,25 +101,25 @@ export function useRtcClient({
       );
     };
 
-    const handleConnectionChange = (state: ConnectionState) => {
+    const handleConnectionChange = (state: ConnectionState): void => {
       setConnectionState(state);
     };
 
-    const handleUserLeft = (user: IAgoraRTCRemoteUser) => {
+    const handleUserLeft = (user: IAgoraRTCRemoteUser): void => {
       setRemoteUsers((state) => {
         state.delete(user.uid.toString());
         return state;
       });
     };
 
-    const handleVolumeIndicatorChange = (volumes: IVolumeLevel[]) => {
+    const handleVolumeIndicatorChange = (volumes: IVolumeLevel[]): void => {
       setVolumeLevels(volumes);
     };
 
     const handleUserPublished = async (
       remoteUser: IAgoraRTCRemoteUser,
       mediaType: "audio" | "video"
-    ) => {
+    ): Promise<void> => {
       const track = await client.subscribe(remoteUser, mediaType);
 
       if (track.trackMediaType === "audio") {
@@ -128,7 +130,7 @@ export function useRtcClient({
     const handleUserUnpublished = async (
       remoteUser: IAgoraRTCRemoteUser,
       mediaType: "audio" | "video"
-    ) => {
+    ): Promise<void> => {
       await client.unsubscribe(remoteUser, mediaType);
       if (mediaType === "audio") {
         if (remoteUser.audioTrack?.isPlaying) {

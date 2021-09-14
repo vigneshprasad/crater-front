@@ -29,7 +29,7 @@ export default function AsideNav(): JSX.Element {
     >
       {SIDE_NAV_ITEMS.map(({ icon, key }) => (
         <AnimatedBox display="grid" w={32} h={32} key={key} gridGap={space.xxs}>
-          <Icon size={20} m="auto auto" icon={icon} />
+          <Icon color={colors.white[1]} size={20} m="auto auto" icon={icon} />
         </AnimatedBox>
       ))}
     </AnimatedBox>

@@ -4,17 +4,18 @@ import { variant } from "styled-system";
 
 import { IconOptions, theme } from "@/common/theme";
 
-import { Icon } from "../Icon/Icon";
+import { Icon, IconProps } from "../Icon/Icon";
 import { Grid, GridProps } from "../System";
 
 const { colors } = theme;
 
-type Variants = "flat" | "round";
+type Variants = "flat" | "round" | "roundSmall";
 
 type IProps = GridProps & {
   icon: IconOptions;
   onClick?: MouseEventHandler<HTMLDivElement>;
   variant?: Variants;
+  iconProps?: Partial<IconProps>;
 };
 
 const Container = styled(Grid)`
@@ -37,6 +38,16 @@ const Container = styled(Grid)`
         background: "accent",
         borderRadius: "50%",
       },
+      roundSmall: {
+        height: "32px",
+        width: "32px",
+        background: colors.black[5],
+        borderRadius: "50%",
+        transition: "all 50ms ease-in-out",
+        ":hover": {
+          background: colors.black[0],
+        },
+      },
     },
   })}
 `;
@@ -44,11 +55,12 @@ const Container = styled(Grid)`
 export default function IconButton({
   icon,
   onClick,
+  iconProps,
   ...rest
 }: IProps): JSX.Element {
   return (
     <Container onClick={onClick} cursor="pointer" {...rest}>
-      <Icon m="auto auto" icon={icon} />
+      <Icon size={20} m="auto auto" icon={icon} {...iconProps} />
     </Container>
   );
 }

@@ -5,7 +5,11 @@ async function fetcher<T>(
   url: string,
   options?: AxiosRequestConfig
 ): Promise<T> {
-  const result = await API().get(url, { ...options });
+  const result = await API()
+    .get<T>(url, { ...options })
+    .catch((err) => {
+      throw err.response;
+    });
   return result.data;
 }
 

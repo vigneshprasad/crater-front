@@ -6,6 +6,7 @@ const withFonts = require("next-fonts");
  * @type {import("next/dist/next-server/server/config").NextConfig}
  **/
 const nextConfig = {
+  trailingSlash: true,
   compression: true,
   reactStrictMode: true,
   experimental: {},

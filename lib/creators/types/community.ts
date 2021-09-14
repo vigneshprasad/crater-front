@@ -39,7 +39,7 @@ export type Topic = {
 };
 
 export type Group = {
-  attendees: unknown[];
+  attendees: string[];
   closed: boolean;
   closed_at?: string;
   description?: string;
@@ -62,21 +62,38 @@ export type Group = {
   relevancy: number;
   speakers?: string[];
   speakers_detail_list?: Speaker[];
+  attendees_detail_list?: Speaker[];
   start: string;
   topic?: number;
   topic_detail?: Topic;
   type: number;
 };
 
+export enum ParticpantType {
+  speaker = 1,
+  attendee = 2,
+}
+
+export enum RequestStatus {
+  pending = 0,
+  accepted = 1,
+  declined = 2,
+}
+
 export interface GroupRequest {
   pk: number;
   requester: string;
   group: number;
-  status: number;
-  is_recommended: boolean;
+  status: RequestStatus;
+  is_recommended?: boolean;
   group_detail: Group;
-  participant_type: number;
+  participant_type: ParticpantType;
 }
+
+export type PostGroupRequest = Omit<
+  GroupRequest,
+  "pk" | "requester" | "group_detail"
+>;
 
 export type Room = Group;
 

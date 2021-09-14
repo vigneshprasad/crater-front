@@ -24,22 +24,18 @@ export default function AppNavBar(): JSX.Element {
   return (
     <Grid
       bg={colors.black[1]}
-      borderBottom={`1px solid ${borders.main}`}
+      borderBottom={`2px solid ${borders.main}`}
       px={[space.xs]}
       py={[space.xxxs]}
       gridTemplateColumns="min-content 1fr min-content"
       alignItems="center"
     >
       <Logo withText onClick={handleLogoClick} />
+
       <Box />
       {user ? (
-        <Box>
-          <Avatar
-            onClick={handleOnClickUserImage}
-            alt={user.name ?? "username"}
-            size={32}
-            image={user.photo}
-          />
+        <Box cursor="pointer" onClick={handleOnClickUserImage}>
+          <Avatar alt={user.name ?? "username"} size={32} image={user.photo} />
         </Box>
       ) : (
         <Button variant="nav-button" text="Login" />

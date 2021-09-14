@@ -9,6 +9,7 @@ export type IconProps = Omit<BoxProps, "width" | "height"> & {
   icon: IconOptions;
   color?: CSS.Property.Color;
   size?: number | number[];
+  fill?: boolean;
 };
 
 const StyledIconWrapper = styled(Box)<BoxProps & { rotate?: number }>`
@@ -20,7 +21,13 @@ const StyledIconWrapper = styled(Box)<BoxProps & { rotate?: number }>`
   align-items: center;
 `;
 
-export function Icon({ icon, color, size, ...rest }: IconProps): JSX.Element {
+export function Icon({
+  icon,
+  color,
+  size,
+  fill,
+  ...rest
+}: IconProps): JSX.Element {
   const IconComponent = icons[icon];
   return (
     <StyledIconWrapper
@@ -34,7 +41,7 @@ export function Icon({ icon, color, size, ...rest }: IconProps): JSX.Element {
         aria-hidden="true"
         focusable="false"
         style={{
-          fill: "currentcolor",
+          fill: fill ? "currentcolor" : undefined,
         }}
         width="100%"
         height="100%"

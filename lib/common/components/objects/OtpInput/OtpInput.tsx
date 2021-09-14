@@ -9,7 +9,11 @@ export type IDigitInputProps = InputProps & {
   focus?: boolean;
 };
 
-export const DigitInput = ({ focus, autoFocus, ...rest }: IDigitInputProps) => {
+export function DigitInput({
+  focus,
+  autoFocus,
+  ...rest
+}: IDigitInputProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
   const prevFocus = usePrevious(!!focus);
 
@@ -25,7 +29,7 @@ export const DigitInput = ({ focus, autoFocus, ...rest }: IDigitInputProps) => {
     }
   }, [autoFocus, focus, prevFocus]);
   return <Input textAlign="center" ref={inputRef} {...rest} />;
-};
+}
 
 export type IOtpInputProps = {
   length?: number;
@@ -36,14 +40,14 @@ export type IOtpInputProps = {
   isNumberInput?: boolean;
 };
 
-const InputComponent = ({
+function InputComponent({
   length = 4,
   error,
   autoFocus,
   onChange,
   isNumberInput = true,
   disabled = false,
-}: IOtpInputProps) => {
+}: IOtpInputProps): JSX.Element {
   // Define state activeInput = 0
   const [activeInput, setActiveInput] = useState(0);
   const [otpValues, setOTPValues] = useState(new Array(length).fill(""));
@@ -212,6 +216,6 @@ const InputComponent = ({
       {error && <Text>{error}</Text>}
     </>
   );
-};
+}
 
 export const OtpInput = memo(InputComponent);

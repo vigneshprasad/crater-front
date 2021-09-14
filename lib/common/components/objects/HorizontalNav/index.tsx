@@ -10,7 +10,7 @@ type IProps = {
   showUser?: boolean;
 };
 
-const HorizontalNav = ({ showUser = false }: IProps) => {
+function HorizontalNav({ showUser = false }: IProps): JSX.Element {
   const { user } = useUser();
   const { space } = useTheme();
   return (
@@ -50,6 +50,6 @@ const HorizontalNav = ({ showUser = false }: IProps) => {
       )}
     </Flex>
   );
-};
+}
 
 export default HorizontalNav;

@@ -29,6 +29,7 @@ export default function BaseLayout({
 
     return <Box {...rest}>{children}</Box>;
   }, [aside, children, rest]);
+
   return (
     <Grid
       as="main"

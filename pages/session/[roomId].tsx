@@ -3,15 +3,14 @@ import { getSession } from "next-auth/client";
 
 import dynamic from "next/dynamic";
 
-import API from "@/common/api";
-import { API_URL_CONSTANTS, HOST_URL } from "@/common/constants/url.constants";
-import CommunityApiClient from "@/community/api";
-import { SessionPageProvider } from "@/community/context/SessionPageContext";
+import { HOST_URL } from "@/common/constants/url.constants";
+import WebinarApiClient from "@/community/api";
+import { WebinarProvider } from "@/community/context/WebinarContext";
+import { WebinarRequestProvider } from "@/community/context/WebinarRequestContext";
 import { GroupRequest, Webinar } from "@/creators/types/community";
 
 const SessionPage = dynamic(
-  () => import("@/community/components/pages/SessionPage"),
-  { ssr: false }
+  () => import("@/community/components/pages/SessionPage")
 );
 
 export const getServerSideProps: GetServerSideProps<{
@@ -33,27 +32,18 @@ export const getServerSideProps: GetServerSideProps<{
     };
   }
 
-  try {
-    const { data: webinar } = await API(context).get<Webinar>(
-      API_URL_CONSTANTS.conversations.retrieveGroup(id)
-    );
-    const { data: groupRequest } = await CommunityApiClient(
-      context
-    ).getGroupRequest(id);
+  const [webinar, error] = await WebinarApiClient(context).getWebinar(id);
+  const [groupRequest] = await WebinarApiClient(context).getWebinarRequest(id);
 
-    return {
-      props: {
-        webinar,
-        id,
-        fullUrl,
-        groupRequest,
-      },
-    };
-  } catch {
+  if ((error && error.response?.status === 404) || !webinar) {
     return {
       notFound: true,
     };
   }
+
+  return {
+    props: { id, webinar, fullUrl, ...(groupRequest && { groupRequest }) },
+  };
 };
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
@@ -62,10 +52,13 @@ export default function AudioRoom({
   webinar,
   id,
   fullUrl,
+  groupRequest,
 }: Props): JSX.Element {
   return (
-    <SessionPageProvider id={id} initial={webinar}>
-      <SessionPage url={fullUrl} />
-    </SessionPageProvider>
+    <WebinarProvider id={id} initial={webinar}>
+      <WebinarRequestProvider groupId={id} initial={groupRequest}>
+        <SessionPage url={fullUrl} id={id} />
+      </WebinarRequestProvider>
+    </WebinarProvider>
   );
 }

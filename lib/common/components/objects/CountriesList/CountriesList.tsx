@@ -19,7 +19,7 @@ export type ICountriesListProps = {
   onItemPressed: (country: CountryCode) => void;
 };
 
-export const CountriesList = () => {
+export const CountriesList = (): JSX.Element => {
   const countries = phone_utils.countryData;
 
   const elRefs = useMemo(

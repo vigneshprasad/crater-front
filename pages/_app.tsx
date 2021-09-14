@@ -19,6 +19,10 @@ export default function App({
     <SWRConfig
       value={{
         fetcher,
+        // eslint-disable-next-line consistent-return
+        onErrorRetry: (error) => {
+          if (error?.status === 404) return undefined;
+        },
       }}
     >
       <Provider session={session}>
