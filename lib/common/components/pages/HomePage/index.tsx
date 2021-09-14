@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import BaseLayout from "../../layouts/BaseLayout";
 import AsideNav from "../../objects/AsideNav";
-import { INavItem, MenuKeys } from "../../objects/HomeNavBar";
+import { INavItem, MenuKeys } from "../../objects/NavBar";
 import Page from "../../objects/Page";
 
 const ClubTab = dynamic(() => import("@/creators/components/objects/ClubTab"));

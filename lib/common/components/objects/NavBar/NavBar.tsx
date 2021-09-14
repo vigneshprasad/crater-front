@@ -20,7 +20,7 @@ export type INavbarProps = {
   items: INavItem[];
 };
 
-export const HomeNavBar = ({ active, items }: INavbarProps): JSX.Element => {
+export const NavBar = ({ active, items }: INavbarProps): JSX.Element => {
   const { space, colors, borders } = theme;
   const { user } = useUser();
 
