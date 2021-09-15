@@ -8,8 +8,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session?.user) {
     return {
       redirect: {
-        destination: "/home",
-        permanent: true,
+        destination: "/",
+        permanent: false,
       },
     };
   }

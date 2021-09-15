@@ -3,6 +3,8 @@ export { default as CalendarDays } from "./CalendarDays";
 export { default as CallEnd } from "./CallEnd";
 export { default as Chart } from "./Chart";
 export { default as ChevronDown } from "./ChevronDown";
+export { default as ChevronLeft } from "./ChevronLeft";
+export { default as ChevronRight } from "./ChevronRight";
 export { default as Close } from "./Close";
 export { default as Community } from "./Community";
 export { default as ContentCopy } from "./ContentCopy";

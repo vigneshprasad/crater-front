@@ -60,7 +60,7 @@ export default function AuthForm(): JSX.Element {
   ): Promise<void> => {
     try {
       await Login(phoneNumber, otp);
-      router.push("/home");
+      router.push("/");
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);

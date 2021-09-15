@@ -31,8 +31,9 @@ export const API_URL_CONSTANTS = {
   groups: {
     retrieveGroupRequest: (id: string): string => `/groups/requests/${id}`,
     postGroupRequest: "/groups/requests/",
-    getAllUpcomintWebinars: "/groups/public/conversations/webinars/upcoming/",
     getGroups: "/groups/groups/",
+    getAllLiveWebinars: "/groups/public/conversations/webinars/live/",
+    getUpcominWebinars: "/groups/public/conversations/webinars/upcoming/",
   },
   community: {
     getCommunityList: "/crater/community/",

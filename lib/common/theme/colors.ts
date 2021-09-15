@@ -10,6 +10,7 @@ const colors = {
     "#0e0e10",
     "#000000",
   ],
+  red: ["#e53935"],
   white: ["#FFFFFF", "#b9b9b9"],
   lightGrey: "#8C8C8C",
   greenSuccess: "#4FBF67",

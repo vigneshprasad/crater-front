@@ -6,15 +6,15 @@ import { SWRConfig } from "swr";
 
 import type { AppProps } from "next/app";
 
+import { ProfileProvider } from "@/auth/context/ProfileContext";
 import { UserProvider } from "@/auth/context/UserContext";
+import { Profile } from "@/auth/types/auth";
 import fetcher from "@/common/utils/fetcher";
 
 import GlobalStyle from "../lib/common/styles/global.styled";
 
-export default function App({
-  Component,
-  pageProps: { session, user, ...pageProps },
-}: AppProps): JSX.Element {
+export default function App({ Component, pageProps }: AppProps): JSX.Element {
+  const { session, user, profile } = pageProps;
   return (
     <SWRConfig
       value={{
@@ -26,12 +26,14 @@ export default function App({
       }}
     >
       <Provider session={session}>
-        <UserProvider initialData={user as User | undefined}>
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </UserProvider>
+        <ProfileProvider initial={profile as Profile | undefined}>
+          <UserProvider initialData={user as User | undefined}>
+            <ThemeProvider theme={theme}>
+              <GlobalStyle />
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </UserProvider>
+        </ProfileProvider>
       </Provider>
     </SWRConfig>
   );

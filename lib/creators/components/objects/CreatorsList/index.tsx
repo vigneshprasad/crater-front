@@ -7,6 +7,8 @@ import CreatorCard from "../CreatorCard";
 export default function CreatorsList(): JSX.Element {
   const { creators } = useCreatorList({});
 
+  console.log(creators);
+
   return (
     <Grid
       px={[32]}

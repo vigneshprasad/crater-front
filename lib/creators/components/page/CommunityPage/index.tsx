@@ -7,20 +7,19 @@ import { Button } from "@/common/components/atoms/Button";
 import { TabBar } from "@/common/components/objects/TabBar";
 import { theme } from "@/common/theme";
 
-import ClubTabLayout from "../../layouts/ClubTabLayout";
-import CreatorsList from "../CreatorsList";
-import { MembersList } from "../MembersList";
+import CreatorsList from "../../objects/CreatorsList";
+import { MembersList } from "../../objects/MembersList";
 
-export type IClubTabProps = {
+export type ICommunityPageProps = {
   clubs?: string;
 };
 
-export default function ClubTab(): JSX.Element {
+export default function CommunityPage(): JSX.Element {
   const items = ["All", "Owned"];
   const { space, colors } = theme;
 
   return (
-    <ClubTabLayout heading="Clubs">
+    <>
       <Box px={[space.s]} py={[space.xs]}>
         <TabBar
           items={items}
@@ -56,6 +55,6 @@ export default function ClubTab(): JSX.Element {
       </Box>
       <MembersList />
       <Button text="Signout" onClick={() => signOut()} />
-    </ClubTabLayout>
+    </>
   );
 }

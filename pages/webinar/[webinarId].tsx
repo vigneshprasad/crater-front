@@ -28,7 +28,7 @@ interface WebinarPageProps {
 export async function getServerSideProps(
   context: GetServerSidePropsContext<{ webinarId: string }>
 ): Promise<GetServerSidePropsResult<WebinarPageProps>> {
-  const webinarId = context.query.webinarId as string;
+  const webinarId = context.params?.webinarId as string;
   const orgId = process.env.DYTE_ORG_ID as string;
   const [webinar, error] = await WebinarApiClient(context).getWebinar(
     webinarId

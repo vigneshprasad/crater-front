@@ -2,7 +2,7 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
-import { useUser } from "@/auth/hooks";
+import { useProfile } from "@/auth/hooks";
 
 import { Avatar, Box, Grid } from "../../atoms";
 import { Button } from "../../atoms/Button";
@@ -11,14 +11,14 @@ import { Logo } from "../Logo";
 export default function AppNavBar(): JSX.Element {
   const router = useRouter();
   const { space, borders, colors } = useTheme();
-  const { user } = useUser();
+  const { profile } = useProfile();
 
   const handleOnClickUserImage = (): void => {
-    router.push("/home/account/");
+    router.push("/account/");
   };
 
   const handleLogoClick = (): void => {
-    router.push("/home/clubs");
+    router.push("/");
   };
 
   return (
@@ -33,9 +33,13 @@ export default function AppNavBar(): JSX.Element {
       <Logo withText onClick={handleLogoClick} />
 
       <Box />
-      {user ? (
+      {profile ? (
         <Box cursor="pointer" onClick={handleOnClickUserImage}>
-          <Avatar alt={user.name ?? "username"} size={32} image={user.photo} />
+          <Avatar
+            alt={profile.name ?? "username"}
+            size={32}
+            image={profile.photo}
+          />
         </Box>
       ) : (
         <Button variant="nav-button" text="Login" />

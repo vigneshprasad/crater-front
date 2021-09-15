@@ -20,6 +20,7 @@ interface IApiClientResult {
     request: PostGroupRequest
   ) => Promise<ApiResult<GroupRequest, AxiosError>>;
   getAllUpcominWebinars: () => Promise<ApiResult<Group[], AxiosError>>;
+  getAllLiveWebinars: () => Promise<ApiResult<Webinar[], AxiosError>>;
 }
 
 export default function WebinarApiClient(
@@ -72,8 +73,22 @@ export default function WebinarApiClient(
   > {
     try {
       const { data } = await client.get<Group[]>(
-        API_URL_CONSTANTS.groups.getAllUpcomintWebinars
+        API_URL_CONSTANTS.groups.getUpcominWebinars
       );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function getAllLiveWebinars(): Promise<
+    ApiResult<Webinar[], AxiosError>
+  > {
+    try {
+      const { data } = await client.get<Webinar[]>(
+        API_URL_CONSTANTS.groups.getAllLiveWebinars
+      );
+
       return [data, undefined];
     } catch (err) {
       return [undefined, err as AxiosError];
@@ -85,5 +100,6 @@ export default function WebinarApiClient(
     getWebinarRequest,
     postWebinarRequest,
     getAllUpcominWebinars,
+    getAllLiveWebinars,
   };
 }

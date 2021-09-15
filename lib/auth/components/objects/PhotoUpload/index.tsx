@@ -122,7 +122,7 @@ export default function PhotoUpload({
           >
             <Image src={src} alt="Profile Picture" layout="fill" unoptimized />
             <Overlay onClick={() => inputRef.current?.click()}>
-              <Icon size={48} icon="FileUpload" />
+              <Icon color={colors.white[0]} fill size={48} icon="FileUpload" />
             </Overlay>
           </Preview>
           <Grid py={space.xxs} gridAutoFlow="row" alignItems="center">

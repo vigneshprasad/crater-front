@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { NextApiHandler } from "next";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import Providers, { AppProviders } from "next-auth/providers";
@@ -35,7 +36,7 @@ const providers: AppProviders = [
         }
         return null;
       } catch (err) {
-        const error = JSON.stringify(err.response.data);
+        const error = JSON.stringify((err as AxiosError).response?.data);
         throw new Error(error);
       }
     },
@@ -65,8 +66,12 @@ const options: NextAuthOptions = {
   providers,
   callbacks,
   pages: {
-    error: "/auth",
+    error: undefined,
   },
+  session: {
+    jwt: true,
+  },
+  debug: true,
   logger: {
     error(code, metadata) {
       // eslint-disable-next-line no-console

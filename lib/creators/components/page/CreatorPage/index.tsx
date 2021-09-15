@@ -1,5 +1,5 @@
 import { NextSeoProps } from "next-seo";
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -16,7 +16,7 @@ import CreatorTabBar from "../../objects/CreatorTabBar";
 
 const { space, colors } = theme;
 
-function CreatorPage(): JSX.Element | null {
+export default function CreatorPage(): JSX.Element | null {
   const router = useRouter();
   const [creatorId, setCreatorId] = useState<number>();
   const [activeTab, setActiveTab] = useState<string>("about");
@@ -87,5 +87,3 @@ function CreatorPage(): JSX.Element | null {
     </Page>
   );
 }
-
-export default memo(CreatorPage);
