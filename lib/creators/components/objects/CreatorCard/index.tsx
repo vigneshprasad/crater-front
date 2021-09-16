@@ -38,6 +38,8 @@ export default function CreatorCard({ id, image, name }: Props): JSX.Element {
         <Text textAlign="center" mx={[16]} my={[24]} textStyle="headline5">
           {name}
         </Text>
+        <Text>{name}</Text>
+
         <Box
           borderRadius={[12]}
           py={[4]}

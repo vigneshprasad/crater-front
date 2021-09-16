@@ -1,21 +1,19 @@
+import { useTheme } from "styled-components";
+
 import { Grid } from "@/common/components/atoms";
-import { theme } from "@/common/theme";
-import { useCreatorList } from "@/creators/hooks";
+import { Creator } from "@/creators/types/creator";
 
 import { MemberItem } from "./MemberItem";
 
 export type IMembersListProps = {
-  intialData?: unknown;
+  members: Creator[];
 };
 
-const { space } = theme;
-
-export function MembersList(): JSX.Element {
-  const { creators } = useCreatorList({ certified: false });
-
+export function MembersList({ members }: IMembersListProps): JSX.Element {
+  const { space } = useTheme();
   return (
     <Grid px={[space.s]} gridTemplateColumns="repeat(6, minmax(180px, 1fr))">
-      {creators?.results.map((creator) => (
+      {members.map((creator) => (
         <MemberItem
           key={creator.user}
           name={creator.name}

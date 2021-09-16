@@ -1,17 +1,35 @@
-import { AxiosResponse } from "axios";
+import { AxiosError } from "axios";
+import { GetSessionOptions } from "next-auth/client";
 
 import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { ApiResult, PageResponse } from "@/common/types/api";
 
-const CreatorApiClient = {
-  async getCratorsList(): Promise<AxiosResponse> {
+import { Creator } from "../types/creator";
+
+interface ICreatorApiClient {
+  getCreatorsList: (
+    certified?: boolean
+  ) => Promise<ApiResult<PageResponse<Creator>, AxiosError>>;
+}
+
+export default function CreatorApiClient(
+  context?: GetSessionOptions
+): ICreatorApiClient {
+  async function getCreatorsList(
+    certified = true
+  ): Promise<ApiResult<PageResponse<Creator>, AxiosError>> {
     try {
-      const res = await API().get(API_URL_CONSTANTS.creator.getCreatorList);
-      return res;
-    } catch (e) {
-      throw new Error(e as string);
+      const { data } = await API(context).get<PageResponse<Creator>>(
+        `${API_URL_CONSTANTS.creator.getCreatorList}?certified=${certified}`
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
     }
-  },
-};
+  }
 
-export default CreatorApiClient;
+  return {
+    getCreatorsList,
+  };
+}

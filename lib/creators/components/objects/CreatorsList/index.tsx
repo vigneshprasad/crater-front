@@ -1,14 +1,14 @@
 import { Grid } from "@/common/components/atoms";
 import { theme } from "@/common/theme";
-import { useCreatorList } from "@/creators/hooks";
+import { Creator } from "@/creators/types/creator";
 
 import CreatorCard from "../CreatorCard";
 
-export default function CreatorsList(): JSX.Element {
-  const { creators } = useCreatorList({});
+interface IProps {
+  creators: Creator[];
+}
 
-  console.log(creators);
-
+export default function CreatorsList({ creators }: IProps): JSX.Element {
   return (
     <Grid
       px={[32]}
@@ -19,7 +19,7 @@ export default function CreatorsList(): JSX.Element {
       gridAutoColumns={[280]}
       gridTemplateRows="minmax(360px, 1fr)"
     >
-      {creators?.results.map((creator) => (
+      {creators.map((creator) => (
         <CreatorCard
           id={creator.id}
           name={creator.name}

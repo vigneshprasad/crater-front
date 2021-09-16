@@ -1,10 +1,9 @@
-import { signOut } from "next-auth/client";
-
 import Image from "next/image";
 
 import { Box, Text } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
 import { theme } from "@/common/theme";
+import { useCreatorsList } from "@/creators/context/CreatorsListContext";
+import { useMembersList } from "@/creators/context/MembersListContext";
 
 import CreatorsList from "../../objects/CreatorsList";
 import { MembersList } from "../../objects/MembersList";
@@ -15,10 +14,14 @@ export type ICommunityPageProps = {
 
 export default function CommunityPage(): JSX.Element {
   const { space } = theme;
+  const { creators } = useCreatorsList();
+  const { members } = useMembersList();
+
+  if (!creators || !members) return <Box>Loading...</Box>;
 
   return (
     <>
-      <CreatorsList />
+      <CreatorsList creators={creators} />
       <Box position="relative" h="172px">
         <Image
           objectFit="cover"
@@ -30,8 +33,7 @@ export default function CommunityPage(): JSX.Element {
       <Box px={[space.s]} pt={[space.xl]} pb={[space.m]}>
         <Text textStyle="headline5">Member Only</Text>
       </Box>
-      <MembersList />
-      <Button text="Signout" onClick={() => signOut()} />
+      <MembersList members={members} />
     </>
   );
 }
