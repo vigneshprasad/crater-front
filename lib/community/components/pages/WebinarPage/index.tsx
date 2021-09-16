@@ -8,7 +8,7 @@ import { DyteParticpant } from "@/dyte/types/dyte";
 
 interface IProps {
   orgId: string;
-  dyteParticipant?: DyteParticpant;
+  dyteParticipant: DyteParticpant | null;
 }
 
 export default function WebinarPage({

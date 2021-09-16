@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import { Box, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import { TabBar } from "@/common/components/objects/TabBar";
 import { theme } from "@/common/theme";
 
 import CreatorsList from "../../objects/CreatorsList";
@@ -15,32 +14,10 @@ export type ICommunityPageProps = {
 };
 
 export default function CommunityPage(): JSX.Element {
-  const items = ["All", "Owned"];
-  const { space, colors } = theme;
+  const { space } = theme;
 
   return (
     <>
-      <Box px={[space.s]} py={[space.xs]}>
-        <TabBar
-          items={items}
-          renderItem={(item) => (
-            <Box
-              cursor="pointer"
-              borderRadius={[18]}
-              marginRight={[space.xxs]}
-              bg={colors.accent}
-              key={item}
-              minWidth={[84]}
-              py={[space.xxxs]}
-              px={[space.xxs]}
-            >
-              <Text textStyle="menu" textAlign="center">
-                {item}
-              </Text>
-            </Box>
-          )}
-        />
-      </Box>
       <CreatorsList />
       <Box position="relative" h="172px">
         <Image

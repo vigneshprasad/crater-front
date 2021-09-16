@@ -22,7 +22,7 @@ interface WebinarPageProps {
   orgId: string;
   webinarId: string;
   webinar: WebinarType;
-  dyteParticipant?: DyteParticpant;
+  dyteParticipant: DyteParticpant | null;
 }
 
 export async function getServerSideProps(
@@ -48,7 +48,7 @@ export async function getServerSideProps(
       orgId,
       webinarId: webinarId as string,
       webinar,
-      dyteParticipant,
+      dyteParticipant: dyteParticipant || null,
     },
   };
 }
