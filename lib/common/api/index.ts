@@ -4,6 +4,9 @@ import { getSession, GetSessionOptions } from "next-auth/client";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function API(context?: GetSessionOptions): AxiosInstance {
+  // @ts-expect-error: ignore for now
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+
   const client = axios.create({
     baseURL: API_BASE_URL,
     headers: {

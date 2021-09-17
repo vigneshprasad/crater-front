@@ -70,7 +70,8 @@ const options: NextAuthOptions = {
   providers,
   callbacks,
   pages: {
-    error: undefined,
+    signIn: "/auth",
+    error: "/auth",
   },
   session: {
     jwt: true,
