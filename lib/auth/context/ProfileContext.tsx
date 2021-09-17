@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/client";
 import { createContext, PropsWithChildren, useMemo } from "react";
 import useSWR, { SWRResponse } from "swr";
 
@@ -22,13 +23,17 @@ export function ProfileProvider({
   initial,
   ...rest
 }: IProfileProviderProps): JSX.Element {
+  const [session] = useSession();
   const {
     data: profile,
     error,
     mutate: mutateProfile,
-  } = useSWR<Profile>(API_URL_CONSTANTS.auth.getProfile, {
-    initialData: initial,
-  });
+  } = useSWR<Profile>(
+    session && session.user ? API_URL_CONSTANTS.auth.getProfile : null,
+    {
+      initialData: initial,
+    }
+  );
 
   const value: IProfileState = useMemo(
     () => ({

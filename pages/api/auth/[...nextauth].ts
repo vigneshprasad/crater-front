@@ -71,6 +71,9 @@ const options: NextAuthOptions = {
   session: {
     jwt: true,
   },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+  },
   debug: true,
   logger: {
     error(code, metadata) {
