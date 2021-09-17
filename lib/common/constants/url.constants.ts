@@ -34,6 +34,7 @@ export const API_URL_CONSTANTS = {
     getGroups: "/groups/groups/",
     getAllLiveWebinars: "/groups/public/conversations/webinars/live/",
     getUpcominWebinars: "/groups/public/conversations/webinars/upcoming/",
+    getWebinars: "/groups/conversations/webinars/",
   },
   community: {
     getCommunityList: "/crater/community/",

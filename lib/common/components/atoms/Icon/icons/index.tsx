@@ -2,6 +2,7 @@ export { default as Activity } from "./Activity";
 export { default as CalendarDays } from "./CalendarDays";
 export { default as CallEnd } from "./CallEnd";
 export { default as Chart } from "./Chart";
+export { default as CheckCircle } from "./CheckCircle";
 export { default as ChevronDown } from "./ChevronDown";
 export { default as ChevronLeft } from "./ChevronLeft";
 export { default as ChevronRight } from "./ChevronRight";

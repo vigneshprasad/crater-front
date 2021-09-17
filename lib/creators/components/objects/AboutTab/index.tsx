@@ -1,14 +1,12 @@
+import { useTheme } from "styled-components";
+
 import { Box, Text } from "@/common/components/atoms";
-import { theme } from "@/common/theme";
-import { Creator } from "@/creators/types/creator";
+import { useCreator } from "@/creators/context/CreatorContext";
 
-const { space } = theme;
-
-type IProps = {
-  creator: Creator;
-};
-
-export default function AboutTab({ creator }: IProps): JSX.Element {
+export default function AboutTab(): JSX.Element {
+  const { creator } = useCreator();
+  const { space } = useTheme();
+  if (!creator) return <Box>Loading...</Box>;
   return (
     <Box px={[space.m]} py={[space.s]}>
       <Text textStyle="headline6">About Me</Text>

@@ -7,7 +7,7 @@ import { Box, BoxProps } from "../System/Box";
 export type IAvatarProps = BoxProps & {
   image?: string | StaticImageData;
   size?: number;
-  alt: string;
+  alt?: string;
 };
 
 export function Avatar({

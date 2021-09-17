@@ -2,12 +2,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { AnimatedBox } from "../Animated";
-import { Box, Grid, Text } from "../System";
+import { Box, Grid, Text, GridProps } from "../System";
 
 type IProps = {
   tabs: string[];
   selected?: string;
   onChangeTab?: (tab: string) => void;
+  tabBarProps?: GridProps;
+  renderTab?: (tab: string) => JSX.Element;
 };
 
 type SliderPosProps = {
@@ -19,6 +21,8 @@ export default function TabBar({
   tabs,
   selected,
   onChangeTab,
+  tabBarProps,
+  renderTab,
 }: IProps): JSX.Element {
   const containerRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef(new Map());
@@ -72,6 +76,7 @@ export default function TabBar({
       gridAutoFlow="column"
       gridAutoColumns="min-content"
       gridGap={[space.xs]}
+      {...tabBarProps}
     >
       {tabs.map((tab) => (
         <Box
@@ -82,9 +87,10 @@ export default function TabBar({
           key={tab}
           px={[space.xs]}
           cursor="pointer"
+          pb={space.xxxs}
           ref={(el) => tabRefs.current?.set(tab, el)}
         >
-          <Text textStyle="title">{tab}</Text>
+          {renderTab ? renderTab(tab) : <Text textStyle="title">{tab}</Text>}
         </Box>
       ))}
       <AnimatedBox

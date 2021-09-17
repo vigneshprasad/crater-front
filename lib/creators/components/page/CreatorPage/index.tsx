@@ -1,89 +1,94 @@
-import { NextSeoProps } from "next-seo";
-import { useEffect, useState } from "react";
+import { PropsWithChildren } from "react";
+import { useTheme } from "styled-components";
 
 import Image from "next/image";
-import { useRouter } from "next/router";
 
-import { Box, Grid, Flex, Text } from "@/common/components/atoms";
-import Page from "@/common/components/objects/Page";
-import { theme } from "@/common/theme";
-import { useCreator } from "@/creators/hooks/useCreator";
+import {
+  Avatar,
+  Box,
+  Grid,
+  Icon,
+  Text,
+  Flex,
+  TabBar,
+  Link,
+} from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/Button";
+import { useCreator } from "@/creators/context/CreatorContext";
 
-import CreatorPageLayout from "../../layouts/CreatorPageLayout";
-import AboutTab from "../../objects/AboutTab";
-import CommunityTab from "../../objects/CommunityTab";
-import CreatorTabBar from "../../objects/CreatorTabBar";
+type IProps = PropsWithChildren<{
+  selectedTab: string;
+}>;
 
-const { space, colors } = theme;
+export default function CreatorPage({
+  children,
+  selectedTab,
+}: IProps): JSX.Element {
+  const { creator } = useCreator();
+  const { space, colors } = useTheme();
 
-export default function CreatorPage(): JSX.Element | null {
-  const router = useRouter();
-  const [creatorId, setCreatorId] = useState<number>();
-  const [activeTab, setActiveTab] = useState<string>("about");
-
-  useEffect(() => {
-    const id = router.query?.args?.[0];
-    const tab = router.query?.args?.[1];
-    if (id) {
-      setCreatorId(parseInt(id, 10));
-    }
-
-    if (tab) {
-      setActiveTab(tab);
-    }
-  }, [router]);
-
-  const { creator } = useCreator({ id: creatorId });
-
-  if (!creator) return null;
-  const { photo, name, follower_count: followerCount } = creator;
-  const seo: NextSeoProps = {
-    title: creator.name,
-    description: creator.about,
-  };
+  if (!creator) return <Box>Loading...</Box>;
 
   return (
-    <Page seo={seo}>
-      <CreatorPageLayout>
-        <Box position="relative" h={[140]}>
+    <>
+      {/* Cover Image */}
+      <Box h={240} position="relative">
+        {creator.cover_file && (
           <Image
-            src="/images/img_cover_example.jpg"
-            layout="fill"
+            objectPosition="center"
+            src={creator.cover_file}
             objectFit="cover"
-            alt="cover_image"
+            layout="fill"
+            alt={creator.name}
           />
-        </Box>
+        )}
+      </Box>
+
+      <Box position="sticky" top={0} zIndex={10}>
         <Grid
-          bg={colors.black[2]}
-          gridGap={[space.xs]}
-          gridTemplateColumns="128px 1fr "
-          px={space.l}
-          py={space.s}
+          bg={colors.black[4]}
+          alignItems="center"
+          p={space.s}
+          gridTemplateColumns="min-content 1fr min-content"
+          gridGap={space.xxs}
         >
-          <Box
-            position="relative"
-            h={[128]}
-            w={[128]}
-            overflow="hidden"
-            borderRadius="50%"
-          >
-            {photo && <Image src={photo} layout="fill" alt={name} />}
+          <Box borderRadius="50%" p={6} border={`2px solid ${colors.accent}`}>
+            <Avatar image={creator.photo} alt={creator.name} />
           </Box>
-          <Flex flexDirection="column" justifyContent="center">
-            <Text textStyle="headline3">{name}</Text>
-            <Text
-              color={colors.lightGrey}
-              textStyle="headline6"
-            >{`${followerCount} Followers`}</Text>
-          </Flex>
+          <Box>
+            <Flex alignItems="center">
+              <Text mr={space.xxs} textStyle="headline6">
+                Vivan Puri
+              </Text>
+              {creator.certified && (
+                <Icon color={colors.accent} size={18} icon="CheckCircle" />
+              )}
+            </Flex>
+
+            <Text color={colors.slate}>{`${
+              creator.follower_count
+                ? creator.follower_count.toLocaleString()
+                : 0
+            } Followers`}</Text>
+          </Box>
+          <Button text="Follow" />
         </Grid>
-        <CreatorTabBar
-          tabs={["about", "club", "rewards", "tokens"]}
-          selected={activeTab}
+
+        <TabBar
+          selected={selectedTab}
+          tabBarProps={{ bg: colors.black[4], py: space.xxs }}
+          tabs={["about", "club", "rewards", "token"]}
+          renderTab={(tab: string) => (
+            <Link href={`/creator/${creator.id}/${tab.toLowerCase()}`} shallow>
+              <Text textTransform="capitalize" textStyle="title">
+                {tab}
+              </Text>
+            </Link>
+          )}
         />
-        {activeTab === "about" && <AboutTab creator={creator} />}
-        {activeTab === "club" && <CommunityTab creator={creator} />}
-      </CreatorPageLayout>
-    </Page>
+      </Box>
+
+      {children}
+    </>
   );
 }

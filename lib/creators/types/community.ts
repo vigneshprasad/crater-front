@@ -6,16 +6,6 @@ export type Community = {
   name: string;
 };
 
-export type CommunityMember = {
-  community: number;
-  id: number;
-  user: string;
-  user_detail: {
-    name?: string;
-    photo?: string;
-  };
-};
-
 export type Speaker = {
   email: string;
   introduction: string;
@@ -99,3 +89,18 @@ export type PostGroupRequest = Omit<
 export type Room = Group;
 
 export type Webinar = Group;
+
+export interface UserProperties {
+  pk: string;
+  photo?: string;
+  name?: string;
+  introduction?: string;
+}
+
+export interface CommunityMember {
+  id: number;
+  community: number;
+  joined_at: string;
+  user: string;
+  user_properties: UserProperties;
+}
