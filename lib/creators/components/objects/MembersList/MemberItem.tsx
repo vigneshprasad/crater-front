@@ -14,7 +14,6 @@ const { space } = theme;
 
 export function MemberItem({ name, image }: IMemberItemProps): JSX.Element {
   const src = !image || image === null ? DEFAULT_IMAGE : image;
-  console.log(src);
   return (
     <Flex flexDirection="column" alignItems="center">
       <Box
