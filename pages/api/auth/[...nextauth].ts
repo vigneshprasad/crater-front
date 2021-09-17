@@ -1,4 +1,3 @@
-import { AxiosError } from "axios";
 import { NextApiHandler } from "next";
 import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
 import Providers, { AppProviders } from "next-auth/providers";
@@ -36,11 +35,6 @@ const providers: AppProviders = [
         }
         return null;
       } catch (err) {
-        const axiosError = err as AxiosError;
-        if (axiosError.response) {
-          const error = axiosError.response.data;
-          throw new Error(JSON.stringify(error));
-        }
         throw new Error(err as string);
       }
     },
