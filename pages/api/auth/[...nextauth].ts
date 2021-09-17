@@ -36,8 +36,12 @@ const providers: AppProviders = [
         }
         return null;
       } catch (err) {
-        const error = JSON.stringify((err as AxiosError).response?.data);
-        throw new Error(error);
+        const axiosError = err as AxiosError;
+        if (axiosError.response) {
+          const error = axiosError.response.data;
+          throw new Error(JSON.stringify(error));
+        }
+        throw new Error(err as string);
       }
     },
   }),
