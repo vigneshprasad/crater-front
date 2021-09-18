@@ -39,7 +39,7 @@ export default function CreatorPage({
             src={creator.cover_file}
             objectFit="cover"
             layout="fill"
-            alt={creator.name}
+            alt={creator.profile_properties?.name}
           />
         )}
       </Box>
@@ -53,7 +53,10 @@ export default function CreatorPage({
           gridGap={space.xxs}
         >
           <Box borderRadius="50%" p={6} border={`2px solid ${colors.accent}`}>
-            <Avatar image={creator.photo} alt={creator.name} />
+            <Avatar
+              image={creator.profile_properties?.photo}
+              alt={creator.profile_properties?.name}
+            />
           </Box>
           <Box>
             <Flex alignItems="center">

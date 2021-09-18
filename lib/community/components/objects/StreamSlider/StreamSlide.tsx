@@ -9,7 +9,9 @@ import {
   Box,
   Text,
   Avatar,
+  Link,
 } from "@/common/components/atoms";
+import ExpandingText from "@/common/components/objects/ExpandingText";
 import { Webinar } from "@/creators/types/community";
 
 const SLIDE_WIDTH = 840;
@@ -85,16 +87,19 @@ export function StreamSlide({
       }}
     >
       <Grid gridTemplateColumns="1fr min-content" h="100%" position="relative">
-        <Box position="relative">
-          {stream.topic_detail?.image && (
-            <Image
-              objectFit="cover"
-              src={stream.topic_detail?.image}
-              layout="fill"
-              alt={stream.topic_detail.name}
-            />
-          )}
-        </Box>
+        <Link href={`/session/${stream.id}`}>
+          <Box position="relative" w="100%" h="100%">
+            {stream.topic_detail?.image && (
+              <Image
+                objectFit="cover"
+                src={stream.topic_detail?.image}
+                layout="fill"
+                alt={stream.topic_detail.name}
+              />
+            )}
+          </Box>
+        </Link>
+
         <AnimatedBox
           display="grid"
           variants={{
@@ -132,9 +137,9 @@ export function StreamSlide({
             />
             <Text textStyle="title">{stream.host_detail?.name}</Text>
           </Grid>
-          <Text textStyle="body" color={colors.slate} maxLines={3}>
-            {stream.description}
-          </Text>
+          <ExpandingText textStyle="body" color={colors.slate} maxLines={3}>
+            {stream.topic_detail?.description}
+          </ExpandingText>
         </AnimatedBox>
         {stream.is_live && (
           <Box

@@ -1,8 +1,12 @@
 import { DyteMeeting } from "dyte-client";
+import { DateTime } from "luxon";
 import { useTheme } from "styled-components";
+
+import Image from "next/image";
 
 import { Avatar, Box, Grid, Text } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
+import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { DyteParticpant } from "@/dyte/types/dyte";
 
@@ -17,6 +21,7 @@ export default function WebinarPage({
 }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   const { webinar, loading } = useWebinar();
+  const { upcoming, loading: upcomingLoading } = useUpcomingStreams();
 
   if (loading || !webinar) return <Box>Loading...</Box>;
 
@@ -100,6 +105,7 @@ export default function WebinarPage({
           <Text px={space.xxs} textStyle="headline6">
             Similar Streams
           </Text>
+
           <Grid
             bg={colors.black[4]}
             my={space.xs}
@@ -108,7 +114,52 @@ export default function WebinarPage({
             maxHeight={420}
             h="100%"
           >
-            Items
+            {((): JSX.Element => {
+              if (upcomingLoading || !upcoming) return <Box>Loading...</Box>;
+
+              return (
+                <Grid gridAutoFlow="row" gridGap={space.xs}>
+                  {upcoming.map((stream) => {
+                    const timeDisplay = DateTime.fromISO(
+                      stream.start
+                    ).toLocaleString(DateTime.DATETIME_FULL);
+                    return (
+                      <Grid
+                        alignItems="start"
+                        key={stream.id}
+                        gridGap={space.xs}
+                        gridTemplateColumns="min-content 1fr"
+                      >
+                        <Box
+                          position="relative"
+                          h={72}
+                          w={96}
+                          borderRadius={radii.xxs}
+                          overflow="hidden"
+                        >
+                          {stream.topic_detail?.image && (
+                            <Image
+                              objectFit="cover"
+                              src={stream.topic_detail?.image}
+                              alt={stream.topic_detail?.name}
+                              layout="fill"
+                            />
+                          )}
+                        </Box>
+                        <Box py={space.xxxs}>
+                          <Text textStyle="title" py={4}>
+                            {stream.topic_detail?.name}
+                          </Text>
+                          <Text textStyle="caption" color={colors.slate}>
+                            {timeDisplay}
+                          </Text>
+                        </Box>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              );
+            })()}
           </Grid>
 
           <Text px={space.xxs} textStyle="headline6">

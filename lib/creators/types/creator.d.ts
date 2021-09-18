@@ -1,15 +1,15 @@
+import { Profile } from "@/auth/types/auth";
+
 import { Community } from "./community";
 
 export type Creator = {
-  name?: string;
-  about?: string;
   certified: boolean;
   cover_file?: string;
   default_community: Community;
   follower_count: number;
   id: number;
   number_of_subscribers: number;
-  photo?: string;
+  profile_properties?: Profile;
   type?: string;
   user: string;
 };

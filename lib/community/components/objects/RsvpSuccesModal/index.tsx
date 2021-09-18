@@ -1,5 +1,5 @@
 import { Player } from "@lottiefiles/react-lottie-player";
-import moment from "moment";
+import { DateTime } from "luxon";
 import anim from "public/anims/rsvp-success-animation.json";
 import { useTheme } from "styled-components";
 
@@ -24,7 +24,9 @@ export default function RsvpSuccesModal({
   const { space, colors } = useTheme();
   const hostName = group.host_detail?.name;
   const topic = group.topic_detail?.name;
-  const date = moment(group.start).format("LLL");
+  const date = DateTime.fromISO(group.start).toLocaleString(
+    DateTime.DATETIME_FULL
+  );
   const text = `
     You have successfully RSVP'd for conversations with ${hostName} // ${topic} on ${date}
   `;

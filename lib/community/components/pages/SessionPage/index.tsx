@@ -1,12 +1,14 @@
-import moment from "moment";
+import { DateTime } from "luxon";
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { Avatar, Box, Flex, Grid, Icon, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
+import ExpandingText from "@/common/components/objects/ExpandingText";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
 import { useWebinar } from "@/community/context/WebinarContext";
@@ -17,7 +19,6 @@ import {
   RequestStatus,
 } from "@/creators/types/community";
 
-import AttendeesPreview from "../../objects/AttendeesPreview";
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
 import UrlShare from "../../objects/UrlShare";
 
@@ -27,6 +28,7 @@ interface IProps {
 }
 
 export default function SessionPage({ url, id }: IProps): JSX.Element {
+  const router = useRouter();
   const { webinar, mutateWebinar } = useWebinar();
   const { webinarRequest, mutateRequest } = useWebinarRequest();
   const { space, radii, colors } = useTheme();
@@ -37,23 +39,35 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { start, host_detail } = webinar;
 
-  const startTime = moment.parseZone(start).local().format("LLL");
+  const startTime = DateTime.fromISO(start);
+  const now = DateTime.now();
   const image = webinar.topic_detail?.image;
+  const endtime = startTime.plus({ minutes: 120 });
 
-  const postGroupRequest = async (): Promise<void> => {
-    const data: PostGroupRequest = {
-      group: parseInt(id, 10),
-      participant_type: ParticpantType.attendee,
-      status: RequestStatus.accepted,
-    };
+  const isLiveNow = now > startTime && now <= endtime;
 
-    const [request] = await WebinarApiClient().postWebinarRequest(data);
+  const postGroupRequest = async (redirect = false): Promise<void> => {
+    if (webinarRequest?.status !== RequestStatus.accepted) {
+      const data: PostGroupRequest = {
+        group: parseInt(id, 10),
+        participant_type: ParticpantType.attendee,
+        status: RequestStatus.accepted,
+      };
 
-    if (request) {
-      await mutateWebinar();
-      mutateRequest(request);
-      setShowSuccess(true);
+      const [request] = await WebinarApiClient().postWebinarRequest(data);
+
+      if (request) {
+        await mutateWebinar();
+        mutateRequest(request);
+      }
     }
+
+    if (redirect) {
+      router.push(`/webinar/${webinar.id}`);
+      return;
+    }
+
+    setShowSuccess(true);
   };
 
   return (
@@ -78,7 +92,7 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
             <Flex alignItems="center">
               <Icon size={28} icon="CalendarDays" />
               <Text textStyle="buttonLarge" ml={12}>
-                {startTime}
+                {startTime.toFormat("ff")}
               </Text>
             </Flex>
           </Box>
@@ -101,48 +115,67 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
                 </Box>
               )}
               <Text textStyle="title">About Session</Text>
-              <Text>{webinar.description}</Text>
+              <Text>{webinar.topic_detail?.description}</Text>
             </Grid>
             <Grid
               gridGap={space.xs}
               gridAutoFlow="row"
               gridAutoRows="min-content"
             >
-              {!webinarRequest && (
-                <Button
-                  variant="full-width"
-                  text="RSVP for this session"
-                  onClick={(): void => {
-                    postGroupRequest();
-                  }}
-                />
-              )}
+              {(() => {
+                if (isLiveNow) {
+                  return (
+                    <Button
+                      bg={colors.greenSuccess}
+                      variant="full-width"
+                      text="Join Session"
+                      onClick={(): void => {
+                        postGroupRequest(true);
+                      }}
+                    />
+                  );
+                }
 
-              {webinarRequest &&
-                webinarRequest.status === RequestStatus.accepted && (
-                  <Box
-                    borderRadius={radii.xxs}
-                    py={space.xxs}
-                    border={`2px solid ${colors.greenSuccess}`}
-                  >
-                    <Text textStyle="buttonLarge" textAlign="center">
-                      Already Registered
-                    </Text>
-                  </Box>
-                )}
+                if (
+                  webinarRequest &&
+                  webinarRequest.status === RequestStatus.accepted
+                ) {
+                  return (
+                    <Box
+                      borderRadius={radii.xxs}
+                      py={space.xxs}
+                      border={`2px solid ${colors.greenSuccess}`}
+                    >
+                      <Text textStyle="buttonLarge" textAlign="center">
+                        Already Registered
+                      </Text>
+                    </Box>
+                  );
+                }
+
+                return (
+                  <Button
+                    variant="full-width"
+                    text="RSVP for this session"
+                    onClick={(): void => {
+                      postGroupRequest();
+                    }}
+                  />
+                );
+              })()}
 
               <Text textStyle="title">Spread the word</Text>
 
               <UrlShare url={url} />
 
-              {webinar.attendees_detail_list && (
+              {/* {webinar.attendees_detail_list && (
                 <AttendeesPreview attendees={webinar.attendees_detail_list} />
-              )}
+              )} */}
 
               <Text textStyle="title">Hosted by</Text>
               <Grid
                 gridTemplateColumns="min-content 1fr"
-                alignItems="center"
+                alignItems="start"
                 gridGap={space.xxs}
               >
                 <Avatar
@@ -152,15 +185,9 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
                 />
                 <Box>
                   <Text textStyle="bodyLarge">{host_detail?.name}</Text>
-                  <Text
-                    maxLines={2}
-                    overflow="hidden"
-                    color={colors.slate}
-                    fontWeight="400"
-                    textStyle="captionLarge"
-                  >
+                  <ExpandingText color={colors.slate}>
                     {host_detail?.introduction}
-                  </Text>
+                  </ExpandingText>
                 </Box>
               </Grid>
             </Grid>

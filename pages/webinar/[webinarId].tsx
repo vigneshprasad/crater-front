@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
+import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar as WebinarType } from "@/creators/types/community";
 import DyteApiClient from "@/dyte/api";
@@ -69,7 +70,9 @@ export default function Webinar({
       }}
     >
       <WebinarProvider id={webinarId} initial={webinar}>
-        <WebinarPage orgId={orgId} dyteParticipant={dyteParticipant} />
+        <UpcomingStreamsProvider>
+          <WebinarPage orgId={orgId} dyteParticipant={dyteParticipant} />
+        </UpcomingStreamsProvider>
       </WebinarProvider>
     </Page>
   );

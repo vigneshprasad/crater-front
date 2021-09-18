@@ -16,6 +16,8 @@ const nextConfig = {
       "randomuser.me",
       "1worknetwork-dev.s3.amazonaws.com",
       "1worknetwork-prod.s3.ap-south-1.amazonaws.com",
+      "1worknetwork-preprod.s3.ap-south-1.amazonaws.com",
+      "1worknetwork-stage.s3.ap-south-1.amazonaws.com",
     ],
   },
   i18n: {
