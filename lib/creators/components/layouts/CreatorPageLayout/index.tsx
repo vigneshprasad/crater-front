@@ -20,8 +20,8 @@ export default function CreatorPageLayout({
   return (
     <Page
       seo={{
-        title: `${creator.name ?? "Creator"} - Crater.Club`,
-        description: creator.about,
+        title: `${creator.profile_properties?.name ?? "Creator"} - Crater.Club`,
+        description: creator.profile_properties?.introduction,
       }}
     >
       <CreatorProvider initial={creator} id={id}>

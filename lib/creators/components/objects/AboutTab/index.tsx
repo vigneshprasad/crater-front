@@ -10,7 +10,7 @@ export default function AboutTab(): JSX.Element {
   return (
     <Box px={[space.m]} py={[space.s]}>
       <Text textStyle="headline6">About Me</Text>
-      <Text>{creator.about}</Text>
+      <Text>{creator.profile_properties?.introduction}</Text>
     </Box>
   );
 }
