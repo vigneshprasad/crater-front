@@ -19,7 +19,7 @@ export default function WebinarPage({
   orgId,
   dyteParticipant,
 }: IProps): JSX.Element {
-  const { space, colors, radii } = useTheme();
+  const { space, colors, radii, borders } = useTheme();
   const { webinar, loading } = useWebinar();
   const { upcoming, loading: upcomingLoading } = useUpcomingStreams();
 
@@ -35,6 +35,7 @@ export default function WebinarPage({
         gridTemplateColumns="2fr 1fr"
         gridGap={space.s}
       >
+        {/* Left Column */}
         <Box>
           <Box
             h="100%"
@@ -101,66 +102,68 @@ export default function WebinarPage({
           </Grid>
         </Box>
 
+        {/* Right Column */}
         <Box>
-          <Text px={space.xxs} textStyle="headline6">
+          <Text mb={space.xs} px={space.xxs} textStyle="headline6">
             Similar Streams
           </Text>
 
-          <Grid
-            bg={colors.black[4]}
-            my={space.xs}
-            p={space.xs}
-            borderRadius={radii.xxs}
-            maxHeight={420}
-            h="100%"
-          >
-            {((): JSX.Element => {
-              if (upcomingLoading || !upcoming) return <Box>Loading...</Box>;
+          {((): JSX.Element => {
+            if (upcomingLoading || !upcoming) return <Box>Loading...</Box>;
 
-              return (
-                <Grid gridAutoFlow="row" gridGap={space.xs}>
-                  {upcoming.map((stream) => {
-                    const timeDisplay = DateTime.fromISO(
-                      stream.start
-                    ).toLocaleString(DateTime.DATETIME_FULL);
-                    return (
-                      <Grid
-                        alignItems="start"
-                        key={stream.id}
-                        gridGap={space.xs}
-                        gridTemplateColumns="min-content 1fr"
+            return (
+              <Grid
+                borderRadius={radii.xxs}
+                p={space.xs}
+                bg={colors.black[2]}
+                maxHeight={360}
+                gridAutoFlow="row"
+                gridAutoRows="min-content"
+                overflowY="auto"
+              >
+                {upcoming.map((stream) => {
+                  const timeDisplay = DateTime.fromISO(
+                    stream.start
+                  ).toLocaleString(DateTime.DATE_FULL);
+                  return (
+                    <Grid
+                      pb={space.xxs}
+                      alignItems="start"
+                      key={stream.id}
+                      gridGap={space.xs}
+                      gridTemplateColumns="min-content 1fr"
+                      borderBottom={`2px solid ${borders.main}`}
+                    >
+                      <Box
+                        position="relative"
+                        h={72}
+                        w={96}
+                        borderRadius={radii.xxs}
+                        overflow="hidden"
                       >
-                        <Box
-                          position="relative"
-                          h={72}
-                          w={96}
-                          borderRadius={radii.xxs}
-                          overflow="hidden"
-                        >
-                          {stream.topic_detail?.image && (
-                            <Image
-                              objectFit="cover"
-                              src={stream.topic_detail?.image}
-                              alt={stream.topic_detail?.name}
-                              layout="fill"
-                            />
-                          )}
-                        </Box>
-                        <Box py={space.xxxs}>
-                          <Text textStyle="title" py={4}>
-                            {stream.topic_detail?.name}
-                          </Text>
-                          <Text textStyle="caption" color={colors.slate}>
-                            {timeDisplay}
-                          </Text>
-                        </Box>
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-              );
-            })()}
-          </Grid>
+                        {stream.topic_detail?.image && (
+                          <Image
+                            objectFit="cover"
+                            src={stream.topic_detail?.image}
+                            alt={stream.topic_detail?.name}
+                            layout="fill"
+                          />
+                        )}
+                      </Box>
+                      <Box py={space.xxxs}>
+                        <Text textStyle="title" py={4}>
+                          {stream.topic_detail?.name}
+                        </Text>
+                        <Text textStyle="caption" color={colors.slate}>
+                          {timeDisplay}
+                        </Text>
+                      </Box>
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            );
+          })()}
 
           <Text px={space.xxs} textStyle="headline6">
             Nishants Club
@@ -177,6 +180,7 @@ export default function WebinarPage({
           </Grid>
         </Box>
       </Grid>
+      <Box h={space.l} />
     </BaseLayout>
   );
 }

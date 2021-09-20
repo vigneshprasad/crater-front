@@ -35,22 +35,14 @@ export default function CreatorCard({ id, image, name }: Props): JSX.Element {
   return (
     <Link href={`/creator/${id}`}>
       <Container h="100%" px={[20]} image={image}>
-        <Text textAlign="center" mx={[16]} my={[24]} textStyle="headline5">
-          {name}
-        </Text>
-        <Text>{name}</Text>
-
         <Box
-          borderRadius={[12]}
           py={[4]}
           px={[8]}
-          border={["1px solid rgba(288, 288, 288, 0.4)"]}
-          background="#1B1D21"
           position="absolute"
-          transform="translate(0,50%)"
+          transform="translate(0,-50%)"
         >
-          <Text textAlign="center" fontSize={["1.rem"]} fontWeight="600">
-            1,045.00 INR
+          <Text textAlign="center" maxWidth="100%" textStyle="headline5">
+            {name}
           </Text>
         </Box>
       </Container>

@@ -90,7 +90,13 @@ export default function TabBar({
           pb={space.xxxs}
           ref={(el) => tabRefs.current?.set(tab, el)}
         >
-          {renderTab ? renderTab(tab) : <Text textStyle="title">{tab}</Text>}
+          {renderTab ? (
+            renderTab(tab)
+          ) : (
+            <Text textTransform="capitalize" textStyle="title">
+              {tab}
+            </Text>
+          )}
         </Box>
       ))}
       <AnimatedBox

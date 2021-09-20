@@ -4,14 +4,14 @@ import { useRouter } from "next/router";
 
 import { useProfile } from "@/auth/hooks";
 
-import { Avatar, Box, Grid } from "../../atoms";
+import { AnimatedBox, Avatar, Box, Grid } from "../../atoms";
 import { Button } from "../../atoms/Button";
 import { Logo } from "../Logo";
 
 export default function AppNavBar(): JSX.Element {
   const router = useRouter();
   const { space, borders, colors } = useTheme();
-  const { profile } = useProfile();
+  const { profile, loading } = useProfile();
 
   const handleOnClickUserImage = (): void => {
     router.push("/account/");
@@ -33,17 +33,33 @@ export default function AppNavBar(): JSX.Element {
       <Logo withText onClick={handleLogoClick} />
 
       <Box />
-      {profile ? (
-        <Box cursor="pointer" onClick={handleOnClickUserImage}>
-          <Avatar
-            alt={profile.name ?? "username"}
-            size={32}
-            image={profile.photo}
-          />
-        </Box>
-      ) : (
-        <Button variant="nav-button" text="Login" />
-      )}
+
+      {(() => {
+        if (loading) {
+          return (
+            <AnimatedBox
+              size={32}
+              borderRadius="50%"
+              animate={{ background: ["#353535", "#a8a8a8"] }}
+              transition={{ flip: Infinity, duration: 1 }}
+            />
+          );
+        }
+
+        if (profile) {
+          return (
+            <Box cursor="pointer" onClick={handleOnClickUserImage}>
+              <Avatar
+                alt={profile.name ?? "username"}
+                size={32}
+                image={profile.photo}
+              />
+            </Box>
+          );
+        }
+
+        return <Button variant="nav-button" text="Login" />;
+      })()}
     </Grid>
   );
 }

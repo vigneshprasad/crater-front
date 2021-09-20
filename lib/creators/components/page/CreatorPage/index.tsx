@@ -2,6 +2,7 @@ import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import {
   Avatar,
@@ -11,7 +12,6 @@ import {
   Text,
   Flex,
   TabBar,
-  Link,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { useCreator } from "@/creators/context/CreatorContext";
@@ -26,6 +26,7 @@ export default function CreatorPage({
 }: IProps): JSX.Element {
   const { creator } = useCreator();
   const { space, colors } = useTheme();
+  const router = useRouter();
 
   if (!creator) return <Box>Loading...</Box>;
 
@@ -61,7 +62,7 @@ export default function CreatorPage({
           <Box>
             <Flex alignItems="center">
               <Text mr={space.xxs} textStyle="headline6">
-                Vivan Puri
+                {creator.profile_properties?.name}
               </Text>
               {creator.certified && (
                 <Icon color={colors.accent} size={18} icon="CheckCircle" />
@@ -81,13 +82,7 @@ export default function CreatorPage({
           selected={selectedTab}
           tabBarProps={{ bg: colors.black[4], py: space.xxs }}
           tabs={["about", "club", "rewards", "token"]}
-          renderTab={(tab: string) => (
-            <Link href={`/creator/${creator.id}/${tab.toLowerCase()}`} shallow>
-              <Text textTransform="capitalize" textStyle="title">
-                {tab}
-              </Text>
-            </Link>
-          )}
+          onChangeTab={(tab) => router.push(`/creator/${creator.id}/${tab}`)}
         />
       </Box>
 
