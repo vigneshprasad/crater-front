@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const CircularDependencyPlugin = require("circular-dependency-plugin");
+const withFonts = require("next-fonts");
+
 // @ts-check
-import CircularDependencyPlugin from "circular-dependency-plugin";
-import withFonts from "next-fonts";
 
 /**
  * @type {import("next/dist/next-server/server/config").NextConfig}

@@ -16,14 +16,17 @@ export const CreatorStreamsContext = createContext({} as ICreatorStreamsState);
 type IProps = PropsWithChildren<{
   creatorId: string;
   upcoming?: Webinar[];
+  live?: Webinar[];
 }>;
 
 export function CreatorStreamProvider({
   creatorId,
+  live,
   ...rest
 }: IProps): JSX.Element {
   const { data: liveStreams, error } = useSWR<Webinar[]>(
-    `${API_URL_CONSTANTS.groups.getAllLiveWebinars}?host=${creatorId}`
+    `${API_URL_CONSTANTS.groups.getAllLiveWebinars}?host=${creatorId}`,
+    { initialData: live }
   );
 
   const value: ICreatorStreamsState = useMemo(
