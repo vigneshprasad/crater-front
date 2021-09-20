@@ -1,6 +1,6 @@
 // @ts-check
-
-const withFonts = require("next-fonts");
+import CircularDependencyPlugin from "circular-dependency-plugin";
+import withFonts from "next-fonts";
 
 /**
  * @type {import("next/dist/next-server/server/config").NextConfig}
@@ -16,6 +16,7 @@ const nextConfig = {
       "randomuser.me",
       "1worknetwork-dev.s3.amazonaws.com",
       "1worknetwork-prod.s3.ap-south-1.amazonaws.com",
+      "1worknetwork-prod.s3.amazonaws.com",
       "1worknetwork-pre.s3.amazonaws.com",
       "1worknetwork-stage.s3.amazonaws.com",
     ],
@@ -26,8 +27,6 @@ const nextConfig = {
   },
   webpack: (config, options) => {
     if (!options.isServer) {
-      const CircularDependencyPlugin = require("circular-dependency-plugin");
-
       config.plugins.push(
         new CircularDependencyPlugin({
           exclude: /a\.js|node_modules/,
