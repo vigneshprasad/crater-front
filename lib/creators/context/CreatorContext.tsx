@@ -23,8 +23,9 @@ export function CreatorProvider({
   initial,
   ...rest
 }: IProviderProps): JSX.Element {
-  const { data: creator, error } = useSWR(
-    `${API_URL_CONSTANTS.creator.getCreatorList}${id}/`
+  const { data: creator, error } = useSWR<Creator>(
+    `${API_URL_CONSTANTS.creator.getCreatorList}${id}/`,
+    { initialData: initial }
   );
 
   const value: ICreatorState = useMemo(

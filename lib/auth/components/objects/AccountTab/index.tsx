@@ -4,6 +4,7 @@ import AuthApiClient from "@/auth/api";
 import { useProfile } from "@/auth/hooks";
 import { Profile } from "@/auth/types/auth";
 import { Box, Grid } from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/Button";
 
 import BasicProfileForm, {
   IBasicProfileFormProps,
@@ -62,6 +63,8 @@ export default function AccountTab(): JSX.Element {
         successText="Cover photo uploaded successfully."
       />
       <BasicProfileForm data={profile} onSubmit={postBasicProfileData} />
+
+      <Button text="Signout" />
     </Grid>
   );
 }

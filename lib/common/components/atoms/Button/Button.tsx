@@ -58,7 +58,6 @@ export function Button({
   type = "button",
   text,
   variant: variantProp = "dense",
-  children,
   ...rest
 }: ButtonProps): JSX.Element {
   const { space } = theme;

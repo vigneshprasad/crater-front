@@ -15,13 +15,11 @@ export const CreatorStreamsContext = createContext({} as ICreatorStreamsState);
 
 type IProps = PropsWithChildren<{
   creatorId: string;
-  live?: Webinar[];
   upcoming?: Webinar[];
 }>;
 
 export function CreatorStreamProvider({
   creatorId,
-  live,
   ...rest
 }: IProps): JSX.Element {
   const { data: liveStreams, error } = useSWR<Webinar[]>(
