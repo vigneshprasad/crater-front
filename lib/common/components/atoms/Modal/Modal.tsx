@@ -4,9 +4,10 @@ import { createPortal } from "react-dom";
 import styled, { useTheme } from "styled-components";
 
 import IconButton from "../IconButton";
-import { Box, BoxProps } from "../System/Box";
+import { Box } from "../System/Box";
+import { GridProps } from "../System/Grid";
 
-export type IModalProps = BoxProps & {
+export type IModalProps = GridProps & {
   visible?: boolean;
   onClose: () => void;
 };
@@ -18,6 +19,7 @@ const Overlay = styled(Box)`
   right: 0;
   left: 0;
   bottom: 0;
+  z-index: ${({ theme }) => theme.zIndices.overlay};
 `;
 
 export function Modal({
@@ -27,7 +29,7 @@ export function Modal({
   ...rest
 }: IModalProps): JSX.Element | null {
   const [showModal, setShowModal] = useState(visible);
-  const { colors, radii, space } = useTheme();
+  const { colors, radii, space, zIndices } = useTheme();
   const [node, setNode] = useState<HTMLElement | undefined>();
 
   useEffect(() => {
@@ -48,14 +50,17 @@ export function Modal({
       {showModal && (
         <Overlay bg={colors.modalOverlay} onClick={onClose}>
           <Box
+            onClick={(e) => e.stopPropagation()}
             m="auto auto"
             p={space.xs}
             borderRadius={radii.s}
-            minHeight={340}
             w="100%"
             maxWidth={720}
-            bg={colors.black[1]}
+            minHeight={340}
+            bg={colors.black[5]}
             position="relative"
+            zIndex={zIndices.modal}
+            overflow="hidden"
             {...rest}
           >
             <IconButton

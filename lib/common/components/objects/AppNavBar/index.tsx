@@ -2,7 +2,8 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
-import { useProfile } from "@/auth/hooks";
+import useAuth from "@/auth/context/AuthContext";
+import useAuthModal from "@/auth/context/AuthModalContext";
 
 import { AnimatedBox, Avatar, Box, Grid } from "../../atoms";
 import { Button } from "../../atoms/Button";
@@ -11,7 +12,8 @@ import { Logo } from "../Logo";
 export default function AppNavBar(): JSX.Element {
   const router = useRouter();
   const { space, borders, colors } = useTheme();
-  const { profile, loading } = useProfile();
+  const { profile, loading } = useAuth();
+  const { openModal } = useAuthModal();
 
   const handleOnClickUserImage = (): void => {
     router.push("/account/");
@@ -58,7 +60,7 @@ export default function AppNavBar(): JSX.Element {
           );
         }
 
-        return <Button variant="nav-button" text="Login" />;
+        return <Button variant="nav-button" text="Login" onClick={openModal} />;
       })()}
     </Grid>
   );

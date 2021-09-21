@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AxiosResponse } from "axios";
+import { Profile } from "next-auth";
 
 import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import toBase64 from "@/common/utils/image/toBase64";
 
-import { CoverFile, Profile } from "../types/auth";
+import { CoverFile } from "../types/auth";
 
 const AuthApiClient = {
   async getPhoneOtp(

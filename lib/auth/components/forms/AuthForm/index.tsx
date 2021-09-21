@@ -1,5 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import { useState, SyntheticEvent } from "react";
+import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
@@ -43,6 +44,7 @@ export default function AuthForm(): JSX.Element {
       },
     });
   const [otpVisible, setOtpVisible] = useState(false);
+  const { space } = useTheme();
 
   const getPhoneOtp = async (phoneNumber: string): Promise<void> => {
     try {
@@ -60,7 +62,7 @@ export default function AuthForm(): JSX.Element {
   ): Promise<void> => {
     try {
       await Login(phoneNumber, otp);
-      router.push("/");
+      router.reload();
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);
@@ -96,8 +98,10 @@ export default function AuthForm(): JSX.Element {
     <Form
       as="form"
       display="grid"
-      gridRowGap={[16]}
-      w="420px"
+      gridRowGap={[space.xs]}
+      gridAutoFlow="row"
+      gridAutoRows="min-content"
+      maxWidth="420px"
       onSubmit={handleLogin}
     >
       <PhoneInput

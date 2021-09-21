@@ -18,5 +18,5 @@ export async function Login(
 }
 
 export async function Logout(): Promise<void> {
-  await signOut();
+  await signOut({ redirect: false });
 }

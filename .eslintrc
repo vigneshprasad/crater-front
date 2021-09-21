@@ -18,6 +18,10 @@
       1,
       { "props": "never", "children": "ignore" }
     ],
+    "react/self-closing-comp": ["error", {
+      "component": true,
+      "html": true
+    }],
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": ["error", { "ignoreFunctionalComponents": true }],

@@ -75,8 +75,8 @@ export function Button({
 
   return (
     <StyledButton
-      px={space.s}
       bg={colors.accent}
+      px={space.s}
       type={type}
       border={border}
       variant={variantProp}

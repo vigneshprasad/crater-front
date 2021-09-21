@@ -34,6 +34,24 @@ declare module "next-auth" {
   export interface Session {
     user?: User;
   }
+
+  export interface Profile {
+    pk: number;
+    name: string;
+    role: string;
+    photo?: string;
+    uuid: string;
+    cover?: number;
+    cover_file?: string;
+    cover_thumbnail?: string;
+    introduction?: string;
+    other_tag: number;
+    tag_list: UserTag[];
+    tags?: number[];
+    education_level?: number;
+    sector?: number;
+    years_of_experience?: number;
+  }
 }
 
 declare module "next-auth/jwt" {

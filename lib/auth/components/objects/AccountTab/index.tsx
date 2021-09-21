@@ -1,10 +1,14 @@
+import { Profile } from "next-auth";
 import { useTheme } from "styled-components";
 
+import { useRouter } from "next/router";
+
 import AuthApiClient from "@/auth/api";
-import { useProfile } from "@/auth/hooks";
-import { Profile } from "@/auth/types/auth";
-import { Box, Grid } from "@/common/components/atoms";
+import useAuth from "@/auth/context/AuthContext";
+import { Logout } from "@/auth/utils";
+import { Box, Card, Grid } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import colors from "@/common/theme/colors";
 
 import BasicProfileForm, {
   IBasicProfileFormProps,
@@ -12,7 +16,8 @@ import BasicProfileForm, {
 import PhotoUpload from "../PhotoUpload";
 
 export default function AccountTab(): JSX.Element {
-  const { profile, mutateProfile } = useProfile();
+  const router = useRouter();
+  const { profile, mutateProfile } = useAuth();
   const { space } = useTheme();
 
   const uploadProfilePicture = async (profilePic: File): Promise<void> => {
@@ -43,6 +48,11 @@ export default function AccountTab(): JSX.Element {
     }
   };
 
+  const postSignout = async (): Promise<void> => {
+    await Logout();
+    router.push("/");
+  };
+
   if (!profile) return <Box>Loading...</Box>;
 
   return (
@@ -64,7 +74,9 @@ export default function AccountTab(): JSX.Element {
       />
       <BasicProfileForm data={profile} onSubmit={postBasicProfileData} />
 
-      <Button text="Signout" />
+      <Card>
+        <Button bg={colors.red} text="Signout" onClick={postSignout} />
+      </Card>
     </Grid>
   );
 }

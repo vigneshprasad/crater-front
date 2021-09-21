@@ -1,3 +1,4 @@
+import DEFAULT_COVER from "public/images/img_default_cover.jpg";
 import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
@@ -37,7 +38,7 @@ export default function CreatorPage({
         {creator.cover_file && (
           <Image
             objectPosition="center"
-            src={creator.cover_file}
+            src={creator.profile_properties?.cover_file ?? DEFAULT_COVER}
             objectFit="cover"
             layout="fill"
             alt={creator.profile_properties?.name}

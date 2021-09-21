@@ -1,14 +1,14 @@
 import { theme } from "lib/common/theme";
-import { User } from "next-auth";
 import { Provider } from "next-auth/client";
 import { ThemeProvider } from "styled-components";
 import { SWRConfig } from "swr";
 
 import type { AppProps } from "next/app";
 
-import { ProfileProvider } from "@/auth/context/ProfileContext";
-import { UserProvider } from "@/auth/context/UserContext";
-import { Profile } from "@/auth/types/auth";
+import AuthModal from "@/auth/components/objects/AuthModal";
+import BasicSignupSheet from "@/auth/components/objects/BasicSignupSheet";
+import { AuthProvider } from "@/auth/context/AuthContext";
+import { AuthModalProvider } from "@/auth/context/AuthModalContext";
 import fetcher from "@/common/utils/fetcher";
 
 import GlobalStyle from "../lib/common/styles/global.styled";
@@ -26,14 +26,16 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       }}
     >
       <Provider session={session}>
-        <ProfileProvider initial={profile as Profile | undefined}>
-          <UserProvider initialData={user as User | undefined}>
+        <AuthProvider user={user} profile={profile}>
+          <AuthModalProvider>
             <ThemeProvider theme={theme}>
               <GlobalStyle />
               <Component {...pageProps} />
+              <AuthModal />
+              <BasicSignupSheet visible={false} />
             </ThemeProvider>
-          </UserProvider>
-        </ProfileProvider>
+          </AuthModalProvider>
+        </AuthProvider>
       </Provider>
     </SWRConfig>
   );

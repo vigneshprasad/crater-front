@@ -1,8 +1,9 @@
 import { AnimatePresence } from "framer-motion";
 import { CountryCode } from "libphonenumber-js";
 import { useCallback, useState } from "react";
+import { useTheme } from "styled-components";
 
-import { Text } from "@/common/components/atoms";
+import { Icon, Text } from "@/common/components/atoms";
 
 import { Input, InputProps } from "../../atoms/Input";
 
@@ -20,6 +21,7 @@ export function PhoneInput({
   onValueChanged,
   ...rest
 }: IPhoneInputProps): JSX.Element {
+  const { space, colors } = useTheme();
   const [state, setState] = useState(initialValue ?? "");
 
   const handleValueChange = useCallback(
@@ -40,6 +42,9 @@ export function PhoneInput({
   return (
     <>
       <Input
+        prefixElement={
+          <Icon icon="Phone" size={18} color={colors.slate} mr={space.xxxs} />
+        }
         placeholder={placeholder}
         type="tel"
         // onFocus={() => setVisibility(true)}
@@ -49,7 +54,11 @@ export function PhoneInput({
         {...rest}
       />
       <AnimatePresence>
-        {error && <Text textStyle="error">{error}</Text>}
+        {error && (
+          <Text color={colors.error} textStyle="error">
+            {error}
+          </Text>
+        )}
       </AnimatePresence>
     </>
   );

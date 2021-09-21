@@ -1,7 +1,7 @@
 import { useTheme } from "styled-components";
 
 import { IRtcUser } from "@/agora/types/rtc";
-import { useUser } from "@/auth/hooks";
+import useAuth from "@/auth/context/AuthContext";
 import { Box, Grid, Text, Flex } from "@/common/components/atoms";
 import { Room } from "@/creators/types/community";
 
@@ -23,7 +23,7 @@ export default function AudioCall({
   onMutedClick,
   onLeaveClick,
 }: IProps): JSX.Element {
-  const { user } = useUser();
+  const { user } = useAuth();
   const { colors, space, radii } = useTheme();
   return (
     <Grid gridTemplateRows="1fr 96px">

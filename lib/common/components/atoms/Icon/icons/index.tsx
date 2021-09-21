@@ -18,6 +18,7 @@ export { default as Linkedin } from "./Linkedin";
 export { default as Logo } from "./Logo";
 export { default as MicOff } from "./MicOff";
 export { default as MicOn } from "./MicOn";
+export { default as Phone } from "./Phone";
 export { default as Tv } from "./Tv";
 export { default as Twitter } from "./Twitter";
 export { default as Wallet } from "./Wallet";

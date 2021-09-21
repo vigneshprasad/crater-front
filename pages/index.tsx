@@ -1,6 +1,4 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { Session } from "next-auth";
-import { getSession } from "next-auth/client";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 
 import HomePageLayout from "@/common/components/layouts/HomePageLayout";
 import WebinarApiClient from "@/community/api";
@@ -10,37 +8,24 @@ import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsCont
 import { Webinar } from "@/creators/types/community";
 
 interface ServerProps {
-  session: Session;
   liveStreams: Webinar[];
   upcoming: Webinar[];
 }
 
-export const getServerSideProps: GetServerSideProps<ServerProps> = async ({
-  req,
-}) => {
-  const session = await getSession({ req });
-  const [liveStreams] = await WebinarApiClient({ req }).getAllLiveWebinars();
-  const [upcoming] = await WebinarApiClient({ req }).getAllUpcominWebinars();
-
-  if (!session || !session.user) {
-    return {
-      redirect: {
-        destination: "/auth/",
-        permanent: false,
-      },
-    };
-  }
+export const getStaticProps: GetStaticProps<ServerProps> = async () => {
+  const [liveStreams] = await WebinarApiClient().getAllLiveWebinars();
+  const [upcoming] = await WebinarApiClient().getAllUpcominWebinars();
 
   return {
     props: {
-      session,
       liveStreams: liveStreams || [],
       upcoming: upcoming || [],
     },
+    revalidate: 60 * 5,
   };
 };
 
-export type IProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+export type IProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Home({ liveStreams, upcoming }: IProps): JSX.Element {
   return (

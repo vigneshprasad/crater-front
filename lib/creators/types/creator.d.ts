@@ -1,5 +1,3 @@
-import { Profile } from "@/auth/types/auth";
-
 import { Community } from "./community";
 
 export type Creator = {
