@@ -186,4 +186,88 @@ export default css`
       /* Chrome 26+, Opera 23+, Firefox 39+ */
         url("/fonts/poppins/poppins-v15-latin-900italic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
   }
+  /* roobert-300 - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: normal;
+    font-weight: 300;
+    src: local(""), url("/fonts/roobert/Roobert-300.otf") format("otf");
+  }
+  /* roobert-300italic - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: italic;
+    font-weight: 300;
+    src: local(""), url("/fonts/roobert/Roobert-300Italic.otf") format("otf");
+  }
+  /* roobert-400 - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: normal;
+    font-weight: 400;
+    src: local(""), url("/fonts/roobert/Roobert-400.otf") format("otf");
+  }
+  /* roobert-400italic - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: italic;
+    font-weight: 400;
+    src: local(""), url("/fonts/roobert/Roobert-400Italic.otf") format("otf");
+  }
+  /* roobert-500 - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: normal;
+    font-weight: 500;
+    src: local(""), url("/fonts/roobert/Roobert-500.otf") format("otf");
+  }
+  /* roobert-500italic - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: italic;
+    font-weight: 500;
+    src: local(""), url("/fonts/roobert/Roobert-500Italic.otf") format("otf");
+  }
+  /* roobert-600 - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: normal;
+    font-weight: 600;
+    src: local(""), url("/fonts/roobert/Roobert-600.otf") format("otf");
+  }
+  /* roobert-600italic - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: italic;
+    font-weight: 600;
+    src: local(""), url("/fonts/roobert/Roobert-600Italic.otf") format("otf");
+  }
+  /* roobert-700 - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: normal;
+    font-weight: 700;
+    src: local(""), url("/fonts/roobert/Roobert-700.otf") format("otf");
+  }
+  /* roobert-700italic - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: italic;
+    font-weight: 700;
+    src: local(""), url("/fonts/roobert/Roobert-700Italic.otf") format("otf");
+  }
+  /* roobert-800 - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: normal;
+    font-weight: 800;
+    src: local(""), url("/fonts/roobert/Roobert-800.otf") format("otf");
+  }
+  /* roobert-800italic - latin */
+  @font-face {
+    font-family: "Roobert";
+    font-style: italic;
+    font-weight: 800;
+    src: local(""), url("/fonts/roobert/Roobert-800Italic.otf") format("otf");
+  }
 `;
