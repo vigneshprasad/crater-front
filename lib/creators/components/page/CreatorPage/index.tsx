@@ -37,7 +37,7 @@ export default function CreatorPage({
         {creator.cover_file && (
           <Image
             objectPosition="center"
-            src={creator.cover_file}
+            src={creator.profile_properties?.cover_file}
             objectFit="cover"
             layout="fill"
             alt={creator.profile_properties?.name}
