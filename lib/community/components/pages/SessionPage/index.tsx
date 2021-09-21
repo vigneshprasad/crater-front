@@ -5,7 +5,15 @@ import { useTheme } from "styled-components";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { Avatar, Box, Flex, Grid, Icon, Text } from "@/common/components/atoms";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Grid,
+  Icon,
+  Text,
+  Link,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import ExpandingText from "@/common/components/objects/ExpandingText";
@@ -85,22 +93,25 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
           onClose={() => setShowSuccess(false)}
         />
         <BaseLayout px={space.m} overflowY="auto">
-          <Box py={space.s}>
-            <Text mb={space.xs} textStyle="headline3">
-              {webinar.topic_detail?.name}
-            </Text>
-            <Flex alignItems="center">
-              <Icon size={28} icon="CalendarDays" />
-              <Text textStyle="buttonLarge" ml={12}>
-                {startTime.toFormat("ff")}
-              </Text>
-            </Flex>
-          </Box>
           <Grid gridTemplateColumns="1.5fr 1fr" gridGap={space.xxl}>
             <Grid gridGap={space.xs} gridAutoFlow="row">
+              <Box py={space.s}>
+                <Text textStyle="headline3">{webinar.topic_detail?.name}</Text>
+              </Box>
+            </Grid>
+          </Grid>
+          <Grid gridTemplateColumns="1.5fr 1fr" gridGap={space.xxl}>
+            <Grid gridGap={space.xs} gridAutoFlow="row">
+              <Flex alignItems="center">
+                <Icon size={24} icon="CalendarDays" />
+                <Text textStyle="captionLarge" ml={12}>
+                  {startTime.toFormat("ff")}
+                </Text>
+              </Flex>
               {image && (
                 <Box
                   h={320}
+                  pt="56.25%"
                   position="relative"
                   borderRadius={radii.xs}
                   overflow="hidden"
@@ -114,7 +125,7 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
                   />
                 </Box>
               )}
-              <Text textStyle="title">About Session</Text>
+              <Text textStyle="title">Talking About</Text>
               <Text>{webinar.topic_detail?.description}</Text>
             </Grid>
             <Grid
@@ -128,7 +139,7 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
                     <Button
                       bg={colors.greenSuccess}
                       variant="full-width"
-                      text="Join Session"
+                      text="Join Stream"
                       onClick={(): void => {
                         postGroupRequest(true);
                       }}
@@ -144,10 +155,10 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
                     <Box
                       borderRadius={radii.xxs}
                       py={space.xxs}
-                      border={`2px solid ${colors.greenSuccess}`}
+                      border={`2px solid ${colors.accent}`}
                     >
                       <Text textStyle="buttonLarge" textAlign="center">
-                        Already Registered
+                        {`You will be notified when ${host_detail?.name} is live`}
                       </Text>
                     </Box>
                   );
@@ -156,7 +167,7 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
                 return (
                   <Button
                     variant="full-width"
-                    text="RSVP for this session"
+                    text="Notify Me"
                     onClick={(): void => {
                       postGroupRequest();
                     }}
@@ -164,15 +175,74 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
                 );
               })()}
 
-              <Text textStyle="title">Spread the word</Text>
+              <Text
+                pt={space.xxs}
+                borderTop="1px solid rgba(255, 255, 255, 0.1)"
+                textStyle="caption"
+              >
+                Let others know
+              </Text>
 
               <UrlShare url={url} />
+
+              <Grid
+                gridTemplateColumns="1fr 1fr"
+                alignItems="start"
+                gridGap={space.xxs}
+              >
+                <Link
+                  passHref
+                  href={`//www.linkedin.com/shareArticle?mini=true&url=${url}&title=${webinar.topic_detail?.name}`}
+                  boxProps={{ target: "_blank" }}
+                >
+                  <Button
+                    variant="full-width"
+                    bg={colors.black[5]}
+                    border="1px solid rgba(255, 255, 255, 0.1)"
+                    prefixElement={
+                      <Icon
+                        size={20}
+                        icon="Linkedin"
+                        fill
+                        color={colors.white[0]}
+                      />
+                    }
+                    text="Share"
+                  />
+                </Link>
+                <Link
+                  passHref
+                  href={`//twitter.com/share?text=${webinar.topic_detail?.name}&url=${url}`}
+                  boxProps={{ target: "_blank" }}
+                >
+                  <Button
+                    variant="full-width"
+                    border="1px solid rgba(255, 255, 255, 0.1)"
+                    bg={colors.black[5]}
+                    prefixElement={
+                      <Icon
+                        size={20}
+                        icon="Twitter"
+                        fill
+                        color={colors.white[0]}
+                      />
+                    }
+                    text="Tweet"
+                  />
+                </Link>
+              </Grid>
 
               {/* {webinar.attendees_detail_list && (
                 <AttendeesPreview attendees={webinar.attendees_detail_list} />
               )} */}
 
-              <Text textStyle="title">Hosted by</Text>
+              <Text
+                pt={space.xxs}
+                borderTop="1px solid rgba(255, 255, 255, 0.1)"
+                textStyle="title"
+              >
+                About Me
+              </Text>
               <Grid
                 gridTemplateColumns="min-content 1fr"
                 alignItems="start"

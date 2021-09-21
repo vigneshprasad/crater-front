@@ -24,7 +24,9 @@ export default function UrlShare({ url }: IProps): JSX.Element {
       borderRadius={radii.xxs}
       border={`2px solid ${borders.main}`}
     >
-      <Text flex="1">{url}</Text>
+      <Text singleLine flex="1">
+        {url}
+      </Text>
       <IconButton
         iconProps={{ fill: true }}
         icon="ContentCopy"

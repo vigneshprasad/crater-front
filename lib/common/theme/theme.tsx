@@ -32,8 +32,8 @@ const borders = {
 };
 
 const fonts = {
-  heading: "Poppins, sans-serif",
-  body: "Inter",
+  heading: "Roobert, sans-serif",
+  body: "Roobert, sans-serif",
 };
 
 const radii = {

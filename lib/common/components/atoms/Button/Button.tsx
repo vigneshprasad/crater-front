@@ -1,8 +1,8 @@
 import { ButtonHTMLAttributes, useMemo } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { variant } from "styled-system";
 
-import { theme } from "@/common/theme";
+import { Grid } from "@/common/components/atoms";
 
 import { Box, BoxProps, Text, TextVariants } from "../System";
 
@@ -15,11 +15,10 @@ export type ButtonProps = Omit<BoxProps, "variant"> &
     as?: ButtonElements;
     text?: string;
     variant?: Variants;
+    prefixElement?: JSX.Element;
   };
 
 const StyledButton = styled(Box)<ButtonProps>`
-  background: ${(props) => props.theme.colors.accent};
-  border: none;
   cursor: pointer;
   transition: all 200ms ease-in-out;
   color: ${(props) => props.theme.colors.white[0]};
@@ -29,6 +28,7 @@ const StyledButton = styled(Box)<ButtonProps>`
       "full-width": {
         height: 56,
         borderRadius: 6,
+        width: "100%",
       },
       dense: {
         height: 44,
@@ -57,10 +57,12 @@ const StyledButton = styled(Box)<ButtonProps>`
 export function Button({
   type = "button",
   text,
+  border = "none",
   variant: variantProp = "dense",
+  prefixElement,
   ...rest
 }: ButtonProps): JSX.Element {
-  const { space } = theme;
+  const { space, colors } = useTheme();
 
   const fontVariant: TextVariants = useMemo(() => {
     const map: Record<Variants, TextVariants> = {
@@ -74,14 +76,19 @@ export function Button({
   return (
     <StyledButton
       px={space.s}
+      bg={colors.accent}
       type={type}
+      border={border}
       variant={variantProp}
       as="button"
       {...rest}
     >
-      <Text color="inherit" textStyle={fontVariant}>
-        {text}
-      </Text>
+      <Grid gridTemplateColumns="min-content 1fr" gridAutoFlow="column">
+        <Box>{prefixElement && prefixElement}</Box>
+        <Text color="inherit" textStyle={fontVariant}>
+          {text}
+        </Text>
+      </Grid>
     </StyledButton>
   );
 }
