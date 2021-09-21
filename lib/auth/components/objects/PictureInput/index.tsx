@@ -6,14 +6,14 @@ import {
   useRef,
   useCallback,
 } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
 import { Box, Icon } from "@/common/components/atoms";
 
 type IProps = {
-  alt: string;
+  alt?: string;
   photo?: string;
   onChange?: (file: File) => void;
   disabled?: boolean;
@@ -52,6 +52,7 @@ export default function PictureInput({
   onChange,
   disabled = false,
 }: IProps): JSX.Element {
+  const { colors } = useTheme();
   const [photoFile, setPhotoFile] = useState<File | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -93,7 +94,7 @@ export default function PictureInput({
       <Image src={src} layout="fill" alt={alt} objectFit="cover" unoptimized />
       {!disabled && (
         <Overlay onClick={handleOverlayClick}>
-          <Icon size={48} icon="FileUpload" />
+          <Icon fill color={colors.white[0]} size={48} icon="FileUpload" />
         </Overlay>
       )}
     </Container>

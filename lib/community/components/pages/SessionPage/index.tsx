@@ -5,6 +5,8 @@ import { useTheme } from "styled-components";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
+import useAuth from "@/auth/context/AuthContext";
+import useAuthModal from "@/auth/context/AuthModalContext";
 import {
   Avatar,
   Box,
@@ -41,13 +43,18 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
   const { webinarRequest, mutateRequest } = useWebinarRequest();
   const { space, radii, colors } = useTheme();
   const [showSuccess, setShowSuccess] = useState(false);
+  const { user } = useAuth();
+  const { openModal } = useAuthModal();
 
   if (!webinar) return <Box>Loading..</Box>;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { start, host_detail } = webinar;
 
-  const startTime = DateTime.fromISO(start);
+  const formatted = start.replace("T", " ").replace(".000000", "");
+
+  const startTime = DateTime.fromFormat(formatted, "yyyy-MM-dd HH:mm:ss ZZZ");
+
   const now = DateTime.now();
   const image = webinar.topic_detail?.image;
   const endtime = startTime.plus({ minutes: 120 });
@@ -92,7 +99,11 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
           visble={showSuccess}
           onClose={() => setShowSuccess(false)}
         />
-        <BaseLayout px={space.m} overflowY="auto">
+        <BaseLayout
+          px={[space.xs, space.m]}
+          overflowY="auto"
+          pb={[space.l, space.l]}
+        >
           <Grid gridTemplateColumns="1.5fr 1fr" gridGap={space.xxl}>
             <Grid gridGap={space.xs} gridAutoFlow="row">
               <Box py={space.s}>
@@ -100,8 +111,8 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
               </Box>
             </Grid>
           </Grid>
-          <Grid gridTemplateColumns="1.5fr 1fr" gridGap={space.xxl}>
-            <Grid gridGap={space.xs} gridAutoFlow="row">
+          <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
+            <Grid gridGap={[space.xs, space.xxs]} gridAutoFlow="row">
               <Flex alignItems="center">
                 <Icon size={24} icon="CalendarDays" />
                 <Text textStyle="captionLarge" ml={12}>
@@ -134,10 +145,21 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
               gridAutoRows="min-content"
             >
               {(() => {
+                if (!user) {
+                  return (
+                    <Button
+                      variant="full-width"
+                      text="Notify Me"
+                      onClick={(): void => {
+                        openModal();
+                      }}
+                    />
+                  );
+                }
+
                 if (isLiveNow) {
                   return (
                     <Button
-                      bg={colors.greenSuccess}
                       variant="full-width"
                       text="Join Stream"
                       onClick={(): void => {

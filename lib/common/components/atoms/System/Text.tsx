@@ -80,12 +80,12 @@ const variants = {
   button: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    fontVariationSettings: `'wght'600`,
+    fontWeight: "600",
   },
   buttonLarge: {
     fontFamily: fonts.body,
     fontSize: ["1.5rem"],
-    fontVariationSettings: `'wght' 500`,
+    fontWeight: "600",
   },
   error: {
     fontFamily: fonts.body,

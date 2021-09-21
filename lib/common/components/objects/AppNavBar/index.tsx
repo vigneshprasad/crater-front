@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 
-import { AnimatedBox, Avatar, Box, Grid } from "../../atoms";
+import { AnimatedBox, Box, Grid } from "../../atoms";
 import { Button } from "../../atoms/Button";
 import { Logo } from "../Logo";
 
@@ -15,19 +15,19 @@ export default function AppNavBar(): JSX.Element {
   const { profile, loading } = useAuth();
   const { openModal } = useAuthModal();
 
-  const handleOnClickUserImage = (): void => {
-    router.push("/account/");
-  };
+  // const handleOnClickUserImage = (): void => {
+  //   router.push("/account/");
+  // };
 
   const handleLogoClick = (): void => {
-    router.push("/");
+    router.push("//joincrater.club");
   };
 
   return (
     <Grid
-      bg={colors.black[1]}
+      bg={colors.black[5]}
       borderBottom={`2px solid ${borders.main}`}
-      px={[space.xs]}
+      px={[space.xxs, space.xs]}
       py={[space.xxxs]}
       gridTemplateColumns="min-content 1fr min-content"
       alignItems="center"
@@ -49,15 +49,16 @@ export default function AppNavBar(): JSX.Element {
         }
 
         if (profile) {
-          return (
-            <Box cursor="pointer" onClick={handleOnClickUserImage}>
-              <Avatar
-                alt={profile.name ?? "username"}
-                size={32}
-                image={profile.photo}
-              />
-            </Box>
-          );
+          return null;
+          // return (
+          //   <Box>
+          //     <Avatar
+          //       alt={profile.name ?? "username"}
+          //       size={32}
+          //       image={profile.photo}
+          //     />
+          //   </Box>
+          // );
         }
 
         return <Button variant="nav-button" text="Login" onClick={openModal} />;

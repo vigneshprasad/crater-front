@@ -55,14 +55,15 @@ export function Modal({
             p={space.xs}
             borderRadius={radii.s}
             w="100%"
-            maxWidth={720}
-            minHeight={340}
+            maxWidth={["calc(100% - 32px)", 720]}
+            minHeight={["calc(100% - 32px)", 340]}
             bg={colors.black[5]}
             position="relative"
             zIndex={zIndices.modal}
-            overflow="hidden"
+            overflowY="auto"
             {...rest}
           >
+            {children}
             <IconButton
               variant="roundSmall"
               right={16}
@@ -71,7 +72,6 @@ export function Modal({
               icon="Close"
               onClick={onClose}
             />
-            {children}
           </Box>
         </Overlay>
       )}

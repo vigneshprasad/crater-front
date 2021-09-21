@@ -24,33 +24,29 @@ export default function useForm<T>(
 
   const fieldValueSetter = useCallback(
     (key: U, value: T[U]): void => {
-      const updated = {
-        ...fieldsState,
+      setFieldsState((state) => ({
+        ...state,
         [key]: {
-          ...fieldsState[key],
+          ...state[key],
           value,
           errors: [],
         },
-      };
-
-      setFieldsState(updated);
+      }));
     },
-    [fieldsState]
+    [setFieldsState]
   );
 
   const fieldErrorSetter = useCallback(
     (key: U, error: string): void => {
-      const updated = {
-        ...fieldsState,
+      setFieldsState((state) => ({
+        ...state,
         [key]: {
-          ...fieldsState[key],
+          ...state[key],
           errors: [error],
         },
-      };
-
-      setFieldsState(updated);
+      }));
     },
-    [fieldsState]
+    [setFieldsState]
   );
 
   const validate = useCallback((): boolean => {

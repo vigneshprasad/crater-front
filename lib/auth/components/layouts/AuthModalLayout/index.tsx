@@ -8,40 +8,22 @@ type IProps = PropsWithChildren<unknown>;
 export default function AuthModalLayout({ children }: IProps): JSX.Element {
   const { space, colors } = useTheme();
   return (
-    <Grid gridTemplateColumns="1fr 1fr" gridGap={space.xs}>
+    <Grid
+      position="absolute"
+      top={0}
+      bottom={0}
+      right={0}
+      left={0}
+      gridTemplateColumns="1fr 1fr"
+      gridGap={space.xs}
+    >
       {children}
 
-      <Grid
-        px={space.xs}
-        py={space.s}
-        bg={colors.accent}
-        gridAutoFlow="row"
-        gridAutoRows="max-content"
-        gridRowGap={[space.xxs]}
-      >
-        <Text textStyle="headline4" maxWidth="90%">
-          Rebuilding social-professional networks
+      <Grid px={space.xs} py={space.s} bg={colors.black[4]} alignItems="center">
+        <Text textStyle="headline6" maxWidth="90%">
+          Join live streams, network with like minds & get exclusive access to
+          mentors & creators.
         </Text>
-
-        <Grid gridAutoFlow="row" gridRowGap={[space.xs]}>
-          <Text textStyle="title">For us</Text>
-          <Text>
-            1. Join a club <br />
-            2. Expore live content <br />
-            3. Network with the community <br />
-            4. Trade social tokens for exclusive access
-          </Text>
-        </Grid>
-
-        <Grid gridAutoFlow="row" gridRowGap={[space.xs]}>
-          <Text textStyle="title">Creators & mentors</Text>
-          <Text>
-            1. Join a club <br />
-            2. Expore live content <br />
-            3. Network with the community <br />
-            4. Trade social tokens for exclusive access
-          </Text>
-        </Grid>
       </Grid>
     </Grid>
   );

@@ -1,7 +1,4 @@
-import { Player } from "@lottiefiles/react-lottie-player";
-import { DateTime } from "luxon";
-import anim from "public/anims/rsvp-success-animation.json";
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import { Box, Grid, Modal, Text, Icon, Link } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
@@ -16,6 +13,12 @@ interface IProps {
   onClose: () => void;
 }
 
+const Video = styled.video`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
 export default function RsvpSuccesModal({
   url,
   visble,
@@ -24,34 +27,49 @@ export default function RsvpSuccesModal({
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
   const hostName = group.host_detail?.name;
-  const topic = group.topic_detail?.name;
-  const date = DateTime.fromISO(group.start).toLocaleString(
-    DateTime.DATETIME_FULL
-  );
+
+  const videoUrl =
+    "https://1worknetwork-prod.s3.amazonaws.com/media/mp4_rsvp.mp4";
+
   const text = `
-    You have successfully RSVP'd for conversations with ${hostName} // ${topic} on ${date}
+    While you wait you
+    can network with other like minds that are going to be tuning in
+    using the mobile app.
   `;
   return (
     <Modal
-      maxWidth={840}
+      maxWidth={["calc(100% - 32px)", 720]}
       visible={visble}
-      px={space.s}
-      py={space.m}
+      px={0}
+      py={0}
       onClose={onClose}
+      overflowY="auto"
     >
-      <Grid gridTemplateColumns="1fr 1fr" gridGap={space.s}>
-        <Player autoplay loop src={anim} />
-        <Box>
-          <Text textStyle="headline4">Congrats, you&apos;ve got a seat!</Text>
-          <Text my={space.s} color={colors.white[1]}>
+      <Grid gridTemplateColumns={["1fr", "1fr 1fr"]} gridGap={space.s}>
+        <Video autoPlay loop muted>
+          <source src={videoUrl} type="video/mp4" />
+        </Video>
+
+        <Box px={[space.xxs, space.xs]} py={[space.xxs, space.s]}>
+          <Text textStyle="headline5">
+            {hostName} is getting ready to stream live to you!
+          </Text>
+
+          <Text my={space.xs} color={colors.white[1]}>
             {text}
           </Text>
+
+          <Text textStyle="caption" mb={space.xxs}>
+            Make Some Noise?
+          </Text>
+
           <UrlShare url={url} />
+
           <Grid
-            mt={space.s}
+            mt={space.xs}
             gridTemplateColumns="1fr 1fr"
             alignItems="start"
-            gridGap={space.xxs}
+            gridGap={space.xs}
           >
             <Link
               passHref
@@ -60,7 +78,8 @@ export default function RsvpSuccesModal({
             >
               <Button
                 variant="full-width"
-                bg={colors.linkedin}
+                bg={colors.black[5]}
+                border="1px solid rgba(255, 255, 255, 0.1)"
                 prefixElement={
                   <Icon
                     size={20}
@@ -79,7 +98,8 @@ export default function RsvpSuccesModal({
             >
               <Button
                 variant="full-width"
-                bg={colors.twitter}
+                border="1px solid rgba(255, 255, 255, 0.1)"
+                bg={colors.black[5]}
                 prefixElement={
                   <Icon size={20} icon="Twitter" fill color={colors.white[0]} />
                 }

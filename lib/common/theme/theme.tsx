@@ -65,7 +65,7 @@ export interface CustomTheme {
 }
 
 export const theme: DefaultTheme = {
-  breakpoints: ["40em", "52em", "64em", "80em"],
+  breakpoints: ["600px", "768px", "889px", "1200px"],
   fontSizes,
   space,
   borders,

@@ -1,5 +1,4 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { getSession } from "next-auth/client";
 
 import dynamic from "next/dynamic";
 
@@ -21,16 +20,7 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (context) => {
   const { resolvedUrl } = context;
   const id = context.query.roomId as string;
-  const session = await getSession(context);
   const fullUrl = `${HOST_URL}${resolvedUrl}`;
-  if (!session?.user) {
-    return {
-      redirect: {
-        destination: "/auth",
-        permanent: true,
-      },
-    };
-  }
 
   const [webinar, error] = await WebinarApiClient(context).getWebinar(id);
   const [groupRequest] = await WebinarApiClient(context).getWebinarRequest(id);
@@ -62,3 +52,5 @@ export default function AudioRoom({
     </WebinarProvider>
   );
 }
+
+AudioRoom.auth = false;
