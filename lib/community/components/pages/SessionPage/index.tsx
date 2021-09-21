@@ -89,7 +89,8 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
     <Page
       seo={{
         title: webinar.topic_detail?.name,
-        description: "Lorem ipsum",
+        description:
+          webinar.topic_detail?.description ?? webinar.topic_detail?.name,
       }}
     >
       <>
