@@ -1,4 +1,3 @@
-import { AnimatePresence } from "framer-motion";
 import { useState, SyntheticEvent } from "react";
 import { useTheme } from "styled-components";
 
@@ -112,20 +111,18 @@ export default function AuthForm(): JSX.Element {
       {!otpVisible && (
         <Button onClick={handlePhoneNumberSubmit} text="Get OTP" />
       )}
-      <AnimatePresence>
-        {otpVisible && (
-          <>
-            <Text px={16} textStyle="headline6">
-              Enter OTP:
-            </Text>
-            <OtpInput
-              autoFocus
-              onChange={(val) => fieldValueSetter("otp", val)}
-            />
-            <Button type="submit" my={[16]} text="Submit" />
-          </>
-        )}
-      </AnimatePresence>
+      {otpVisible && (
+        <>
+          <Text px={16} textStyle="headline6">
+            Enter OTP:
+          </Text>
+          <OtpInput
+            autoFocus
+            onChange={(val) => fieldValueSetter("otp", val)}
+          />
+          <Button type="submit" my={[16]} text="Submit" />
+        </>
+      )}
     </Form>
   );
 }
