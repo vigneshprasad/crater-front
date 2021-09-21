@@ -43,6 +43,11 @@ const radii = {
   m: 24,
 };
 
+const zIndices = {
+  modal: 1000,
+  overlay: 900,
+};
+
 export const icons = iconComponents;
 
 export type IconOptions = keyof typeof icons;
@@ -56,6 +61,7 @@ export interface CustomTheme {
   colors: typeof colors;
   radii: typeof radii;
   outline?: string;
+  zIndices: typeof zIndices;
 }
 
 export const theme: DefaultTheme = {
@@ -67,4 +73,5 @@ export const theme: DefaultTheme = {
   colors,
   radii,
   outline: `5px auto #52bcdf`,
+  zIndices,
 };

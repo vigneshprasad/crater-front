@@ -1,5 +1,4 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { getSession } from "next-auth/client";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { NextSeoProps } from "next-seo";
 
 import HomePageLayout from "@/common/components/layouts/HomePageLayout";
@@ -14,31 +13,20 @@ interface ServerProps {
   members: Creator[];
 }
 
-export const getServerSideProps: GetServerSideProps<ServerProps> = async ({
-  req,
-}) => {
-  const session = await getSession({ req });
-  const [creatorsData] = await CreatorApiClient({ req }).getCreatorsList();
-  const [membersData] = await CreatorApiClient({ req }).getCreatorsList(false);
-
-  if (!session || !session.user) {
-    return {
-      redirect: {
-        destination: "/auth/",
-        permanent: false,
-      },
-    };
-  }
+export const getStaticProps: GetStaticProps<ServerProps> = async () => {
+  const [creatorsData] = await CreatorApiClient().getCreatorsList();
+  const [membersData] = await CreatorApiClient().getCreatorsList(false);
 
   return {
     props: {
       creators: creatorsData?.results ?? [],
       members: membersData?.results ?? [],
     },
+    revalidate: 60 * 5,
   };
 };
 
-type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function ClubsTabPage({
   creators,

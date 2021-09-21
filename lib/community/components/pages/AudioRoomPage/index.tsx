@@ -5,10 +5,9 @@ import { useRouter } from "next/router";
 import AgoraApiClient from "@/agora/api";
 import { useRtcClient } from "@/agora/hooks";
 import agoraClient from "@/agora/utils/agoraClient";
-import { useUser } from "@/auth/hooks";
+import useAuth from "@/auth/context/AuthContext";
 import { Grid, Box, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import HorizontalNav from "@/common/components/objects/HorizontalNav";
 import Page from "@/common/components/objects/Page";
 import { useRoom } from "@/community/hooks";
 
@@ -21,7 +20,7 @@ export default function AudioRoomPage(): JSX.Element | null {
   const id = parseInt(param, 10);
   const { room, loading } = useRoom({ id });
   const { space, radii } = useTheme();
-  const { user } = useUser();
+  const { user } = useAuth();
 
   const { joinChannel, leave, connectionState, remoteUsers, muted, mute } =
     useRtcClient({
@@ -51,7 +50,6 @@ export default function AudioRoomPage(): JSX.Element | null {
       seo={{ title: room.topic_detail?.name, description: room.description }}
     >
       <AudioRoomLayout>
-        <HorizontalNav />
         {connectionState === "DISCONNECTED" && (
           <Grid gridTemplateColumns="2fr 1fr" px={[space.m]} py={[space.xl]}>
             <Box

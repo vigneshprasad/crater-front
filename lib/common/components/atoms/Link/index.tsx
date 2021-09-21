@@ -1,13 +1,24 @@
-import { PropsWithChildren } from "react";
+import { AnchorHTMLAttributes, PropsWithChildren } from "react";
 
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
 
-export type LinkProps = PropsWithChildren<NextLinkProps>;
+import { Box, BoxProps } from "../System/Box";
 
-export function Link({ children, ...rest }: LinkProps): JSX.Element {
+export type LinkProps = PropsWithChildren<NextLinkProps> & {
+  boxProps?: BoxProps & AnchorHTMLAttributes<HTMLAnchorElement>;
+};
+
+export function Link({
+  children,
+  boxProps,
+  passHref = true,
+  ...rest
+}: LinkProps): JSX.Element {
   return (
-    <NextLink {...rest}>
-      <a>{children}</a>
+    <NextLink passHref={passHref} {...rest}>
+      <Box as="a" {...boxProps}>
+        {children}
+      </Box>
     </NextLink>
   );
 }

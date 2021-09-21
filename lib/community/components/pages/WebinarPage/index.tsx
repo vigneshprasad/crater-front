@@ -8,6 +8,7 @@ import { Avatar, Box, Grid, Text } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { useWebinar } from "@/community/context/WebinarContext";
+import useWebinarSocket from "@/community/hooks/useWebinarSocket";
 import { DyteParticpant } from "@/dyte/types/dyte";
 
 interface IProps {
@@ -22,6 +23,7 @@ export default function WebinarPage({
   const { space, colors, radii, borders } = useTheme();
   const { webinar, loading } = useWebinar();
   const { upcoming, loading: upcomingLoading } = useUpcomingStreams();
+  const {} = useWebinarSocket();
 
   if (loading || !webinar) return <Box>Loading...</Box>;
 

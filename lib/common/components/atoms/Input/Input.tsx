@@ -79,6 +79,7 @@ export const InputContainer = styled(Flex)<FlexProps>`
   background: ${({ theme }) => theme.colors.black[4]};
   border-radius: ${({ theme }) => theme.radii.xxs}px;
   border: 2px solid transparent;
+  align-items: center;
 
   &:focus-within {
     border: 2px solid ${({ theme }) => theme.colors.accent};

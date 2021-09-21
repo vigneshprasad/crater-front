@@ -32,7 +32,7 @@ const variants = {
     fontFamily: fonts.body,
     fontSize: ["2.4rem"],
     fontVariationSettings: `'wght' 500`,
-    lineHeight: ["2.6rem"],
+    lineHeight: ["3.2rem"],
   },
   headline6: {
     fontFamily: fonts.body,

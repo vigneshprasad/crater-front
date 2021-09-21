@@ -18,7 +18,6 @@ export type ButtonProps = Omit<BoxProps, "variant"> &
   };
 
 const StyledButton = styled(Box)<ButtonProps>`
-  background: ${(props) => props.theme.colors.accent};
   border: none;
   cursor: pointer;
   transition: all 200ms ease-in-out;
@@ -60,7 +59,7 @@ export function Button({
   variant: variantProp = "dense",
   ...rest
 }: ButtonProps): JSX.Element {
-  const { space } = theme;
+  const { space, colors } = theme;
 
   const fontVariant: TextVariants = useMemo(() => {
     const map: Record<Variants, TextVariants> = {
@@ -73,6 +72,7 @@ export function Button({
 
   return (
     <StyledButton
+      bg={colors.accent}
       px={space.s}
       type={type}
       variant={variantProp}
