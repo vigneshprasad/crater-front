@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 const withFonts = require("next-fonts");
 
@@ -52,4 +55,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withFonts(nextConfig);
+module.exports = withBundleAnalyzer(withFonts(nextConfig));

@@ -51,14 +51,16 @@ export function Modal({
         <Overlay bg={colors.modalOverlay} onClick={onClose}>
           <Box
             onClick={(e) => e.stopPropagation()}
-            m="auto auto"
+            position="absolute"
+            top="50%"
+            right="50%"
+            transform="translate(50%, -50%)"
             p={space.xs}
             borderRadius={radii.s}
             w="100%"
             maxWidth={["calc(100% - 32px)", 720]}
-            minHeight={["calc(100% - 32px)", 340]}
+            minHeight={["80vh", 340]}
             bg={colors.black[5]}
-            position="relative"
             zIndex={zIndices.modal}
             overflowY="auto"
             {...rest}

@@ -104,12 +104,10 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
           overflowY="auto"
           pb={[space.l, space.l]}
         >
-          <Grid gridTemplateColumns="1.5fr 1fr" gridGap={space.xxl}>
-            <Grid gridGap={space.xs} gridAutoFlow="row">
-              <Box py={space.s}>
-                <Text textStyle="headline3">{webinar.topic_detail?.name}</Text>
-              </Box>
-            </Grid>
+          <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
+            <Box py={space.s}>
+              <Text textStyle="headline3">{webinar.topic_detail?.name}</Text>
+            </Box>
           </Grid>
           <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
             <Grid gridGap={[space.xs, space.xxs]} gridAutoFlow="row">
