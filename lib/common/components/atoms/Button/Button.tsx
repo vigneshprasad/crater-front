@@ -84,7 +84,7 @@ export function Button({
     <StyledButton
       bg={colors.accent}
       type={type}
-      px={[space.xxs, space.s]}
+      px={[space.xxs, space.xxs]}
       border={border}
       variant={variantProp}
       as="button"

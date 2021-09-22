@@ -61,6 +61,7 @@ export function Modal({
             zIndex={zIndices.modal}
             bg={colors.black[5]}
             w="100%"
+            h="100%"
             maxHeight={["calc(100vh - 72px)", 640]}
             borderRadius={radii.s}
             overflowY="auto"
