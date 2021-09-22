@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
-const path = require("path");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
@@ -42,13 +40,6 @@ const nextConfig = {
         })
       );
     }
-
-    config.plugins.push(new DuplicatePackageCheckerPlugin());
-    config.resolve.alias["fast-deep-equal"] = path.resolve(
-      __dirname,
-      "node_modules",
-      "fast-deep-equal"
-    );
 
     config.module.rules.push({
       test: /\.svg$/,

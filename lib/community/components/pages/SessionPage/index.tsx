@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -33,10 +33,9 @@ import UrlShare from "../../objects/UrlShare";
 
 interface IProps {
   id: string;
-  url: string;
 }
 
-export default function SessionPage({ url, id }: IProps): JSX.Element {
+export default function SessionPage({ id }: IProps): JSX.Element {
   const router = useRouter();
   const { webinar, mutateWebinar } = useWebinar();
   const { webinarRequest, mutateRequest } = useWebinarRequest();
@@ -44,6 +43,13 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
   const [showSuccess, setShowSuccess] = useState(false);
   const { user } = useAuth();
   const { openModal } = useAuthModal();
+
+  const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    const location = window.location.href;
+    setUrl(location);
+  }, []);
 
   if (!webinar) return <Box>Loading..</Box>;
 
@@ -87,7 +93,6 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
   return (
     <>
       <RsvpSuccesModal
-        url={url}
         group={webinar}
         visble={showSuccess}
         onClose={() => setShowSuccess(false)}
@@ -196,7 +201,7 @@ export default function SessionPage({ url, id }: IProps): JSX.Element {
               Let others know
             </Text>
 
-            <UrlShare url={url} />
+            <UrlShare />
 
             <Grid
               gridTemplateColumns="1fr 1fr"

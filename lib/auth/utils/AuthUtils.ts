@@ -1,20 +1,37 @@
 import { signin, SignInResponse, signOut } from "next-auth/client";
+import { CredentialProviderId } from "pages/api/auth/[...nextauth]";
 
 export async function Login(
-  phoneNumber: string,
-  otp: string
+  provider: CredentialProviderId,
+  data: Record<string, unknown>
 ): Promise<SignInResponse | undefined> {
-  const res = await signin("credentials", {
-    username: phoneNumber,
-    otp,
-    redirect: false,
-  });
-
-  if (res?.error) {
-    throw new Error(res.error);
+  if (provider === "phone-auth") {
+    const { phoneNumber, otp } = data;
+    try {
+      await signin<CredentialProviderId>("phone-auth", {
+        username: phoneNumber,
+        otp,
+        redirect: false,
+      });
+    } catch (err) {
+      throw new Error(err as string);
+    }
   }
 
-  return res;
+  if (provider === "user-update") {
+    const { user, token } = data;
+    try {
+      await signin<CredentialProviderId>("user-update", {
+        user,
+        token,
+        redirect: false,
+      });
+    } catch (err) {
+      throw new Error(err as string);
+    }
+  }
+
+  return undefined;
 }
 
 export async function Logout(): Promise<void> {

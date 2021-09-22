@@ -10,13 +10,15 @@ import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, Icon } from "@/common/components/atoms";
+import { Box, Icon, Text } from "@/common/components/atoms";
 
 type IProps = {
   alt?: string;
   photo?: string;
   onChange?: (file: File) => void;
   disabled?: boolean;
+  size?: number;
+  error?: string;
 };
 
 const Overlay = styled(Box)`
@@ -35,8 +37,6 @@ const Overlay = styled(Box)`
 `;
 
 const Container = styled(Box)`
-  height: 144px;
-  width: 144px;
   position: relative;
   border-radius: 50%;
   overflow: hidden;
@@ -50,7 +50,9 @@ export default function PictureInput({
   photo,
   alt,
   onChange,
+  size = 120,
   disabled = false,
+  error,
 }: IProps): JSX.Element {
   const { colors } = useTheme();
   const [photoFile, setPhotoFile] = useState<File | undefined>(undefined);
@@ -83,20 +85,33 @@ export default function PictureInput({
   const src = photoFile ? URL.createObjectURL(photoFile) : staticImage;
 
   return (
-    <Container>
-      <input
-        style={{ display: "none" }}
-        ref={inputRef}
-        type="file"
-        onChange={handlePhotoFileChange}
-        accept="image/jpg, image/png, image/tiff, image/bmp"
-      />
-      <Image src={src} layout="fill" alt={alt} objectFit="cover" unoptimized />
-      {!disabled && (
-        <Overlay onClick={handleOverlayClick}>
-          <Icon fill color={colors.white[0]} size={48} icon="FileUpload" />
-        </Overlay>
+    <>
+      <Container size={size}>
+        <input
+          style={{ display: "none" }}
+          ref={inputRef}
+          type="file"
+          onChange={handlePhotoFileChange}
+          accept="image/jpg, image/png, image/tiff, image/bmp"
+        />
+        <Image
+          src={src}
+          layout="fill"
+          alt={alt}
+          objectFit="cover"
+          unoptimized
+        />
+        {!disabled && (
+          <Overlay onClick={handleOverlayClick}>
+            <Icon fill color={colors.white[0]} size={48} icon="FileUpload" />
+          </Overlay>
+        )}
+      </Container>
+      {error && (
+        <Text textStyle="error" color={colors.error}>
+          {error}
+        </Text>
       )}
-    </Container>
+    </>
   );
 }

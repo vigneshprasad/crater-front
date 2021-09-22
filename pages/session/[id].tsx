@@ -64,7 +64,7 @@ export default function AudioRoom({ webinar, id }: Props): JSX.Element {
     >
       <WebinarProvider id={id} initial={webinar}>
         <WebinarRequestProvider groupId={id}>
-          <SessionPage url="url" id={id} />
+          <SessionPage id={id} />
         </WebinarRequestProvider>
       </WebinarProvider>
     </Page>

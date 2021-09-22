@@ -1,12 +1,19 @@
 import { NextApiHandler } from "next";
-import NextAuth, { CallbacksOptions, NextAuthOptions } from "next-auth";
+import NextAuth, { CallbacksOptions, NextAuthOptions, User } from "next-auth";
+import { SignInProvider } from "next-auth/client";
 import Providers, { AppProviders } from "next-auth/providers";
 
 import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
+export type CredentialProviderId =
+  | "phone-auth"
+  | "user-update"
+  | SignInProvider;
+
 const providers: AppProviders = [
   Providers.Credentials({
+    id: "phone-auth",
     name: "PhoneAuth",
     credentials: {
       phoneNumber: {
@@ -39,6 +46,35 @@ const providers: AppProviders = [
       }
     },
   }),
+  Providers.Credentials({
+    id: "user-update",
+    name: "User Token Update",
+    credentials: {
+      user: {
+        label: "User",
+        type: "text",
+        placeholder: "Enter User JSON string",
+      },
+      token: {
+        label: "Api Token",
+        type: "text",
+        placeholder: "Enter Api Token",
+      },
+    },
+    async authorize(credentials) {
+      const { user: userJson, token } = credentials;
+
+      try {
+        const user = JSON.parse(userJson) as User;
+        return {
+          ...user,
+          apiToken: token,
+        };
+      } catch (err) {
+        throw new Error(err as string);
+      }
+    },
+  }),
 ];
 
 const callbacks: CallbacksOptions = {
@@ -64,7 +100,6 @@ const options: NextAuthOptions = {
   providers,
   callbacks,
   pages: {
-    signIn: "/auth",
     error: "/auth",
   },
   session: {

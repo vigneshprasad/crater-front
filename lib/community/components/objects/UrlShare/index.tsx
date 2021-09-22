@@ -1,19 +1,23 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { Flex, Text } from "@/common/components/atoms";
 import IconButton from "@/common/components/atoms/IconButton";
 
-interface IProps {
-  url: string;
-}
-
-export default function UrlShare({ url }: IProps): JSX.Element {
+export default function UrlShare(): JSX.Element {
+  const [url, setUrl] = useState("");
   const { space, radii, colors, borders } = useTheme();
 
   const performCopyClipboard = useCallback(async () => {
-    await navigator.clipboard.writeText(url);
+    if (url) {
+      await navigator.clipboard.writeText(url);
+    }
   }, [url]);
+
+  useEffect(() => {
+    const location = window.location.href;
+    setUrl(location);
+  }, []);
 
   return (
     <Flex
