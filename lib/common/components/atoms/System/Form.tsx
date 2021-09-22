@@ -1,4 +1,3 @@
-import { FormHTMLAttributes } from "react";
 import styled from "styled-components";
 import { grid, GridProps } from "styled-system";
 
@@ -6,7 +5,7 @@ import { Box, BaseBoxProps } from "./Box";
 
 export type FormProps = BaseBoxProps &
   GridProps &
-  FormHTMLAttributes<HTMLFormElement> & {
+  React.FormHTMLAttributes<HTMLFormElement> & {
     as?: "form";
   };
 

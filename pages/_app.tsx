@@ -6,6 +6,7 @@ import { SWRConfig } from "swr";
 import type { AppProps } from "next/app";
 
 import AuthModal from "@/auth/components/objects/AuthModal";
+import BasicSignupSheet from "@/auth/components/objects/BasicSignupSheet";
 import { AuthProvider } from "@/auth/context/AuthContext";
 import { AuthModalProvider } from "@/auth/context/AuthModalContext";
 import fetcher from "@/common/utils/fetcher";
@@ -31,6 +32,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
               <GlobalStyle />
               <Component {...pageProps} />
               <AuthModal />
+              <BasicSignupSheet />
             </ThemeProvider>
           </AuthModalProvider>
         </AuthProvider>

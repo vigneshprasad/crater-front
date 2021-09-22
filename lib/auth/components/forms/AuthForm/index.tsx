@@ -60,7 +60,7 @@ export default function AuthForm(): JSX.Element {
     otp: string
   ): Promise<void> => {
     try {
-      await Login(phoneNumber, otp);
+      await Login("phone-auth", { phoneNumber, otp });
       router.reload();
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -87,7 +87,6 @@ export default function AuthForm(): JSX.Element {
     const data = getValidatedData();
 
     if (data !== false) {
-      console.log(data);
       const phoneNumber = `+91${data.phoneNumber}`;
       performLogin(phoneNumber, data.otp);
     }

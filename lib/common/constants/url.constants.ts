@@ -19,6 +19,7 @@ export const API_URL_CONSTANTS = {
     },
   },
   conversations: {
+    webinars: "groups/conversations/webinars/",
     retrieveGroup: (id: string): string => `/groups/groups/${id}/`,
     retrieveWebinar: (id: string): string =>
       `/groups/conversations/webinars/${id}/`,
@@ -32,7 +33,7 @@ export const API_URL_CONSTANTS = {
     retrieveGroupRequest: (id: string): string => `/groups/requests/${id}/`,
     postGroupRequest: "/groups/requests/",
     getGroups: "/groups/groups/",
-    getAllLiveWebinars: "/groups/public/conversations/webinars/live/",
+    getAllLiveWebinars: "/groups/public/conversations/webinars/featured/",
     getUpcominWebinars: "/groups/public/conversations/webinars/upcoming/",
     getWebinars: "/groups/conversations/webinars/",
   },

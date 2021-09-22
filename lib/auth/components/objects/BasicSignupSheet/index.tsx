@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { SyntheticEvent, useCallback, useEffect } from "react";
 import { useTheme } from "styled-components";
 
@@ -5,24 +6,23 @@ import { useRouter } from "next/router";
 
 import UserApiClient from "@/auth/api/UserApiClient";
 import useAuth from "@/auth/context/AuthContext";
-import { Box, Modal, Text, Form, Input } from "@/common/components/atoms";
+import { Login } from "@/auth/utils";
+import { Box, Text, Form, Input } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import ModalWithVideo from "@/common/components/objects/ModalWithVideo";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import toBase64 from "@/common/utils/image/toBase64";
 
 import PictureInput from "../PictureInput";
 
-interface IProps {
-  visible: boolean;
-}
-
 interface IForm {
   name: string;
   photo?: string;
+  email: string;
 }
 
-export default function BasicSignupSheet({ visible }: IProps): JSX.Element {
+export default function BasicSignupSheet(): JSX.Element {
   const { user, profile } = useAuth();
   const { space } = useTheme();
   const router = useRouter();
@@ -47,6 +47,19 @@ export default function BasicSignupSheet({ visible }: IProps): JSX.Element {
           },
         ],
       },
+      email: {
+        intialValue: user?.email ?? "",
+        validators: [
+          {
+            validator: Validators.required,
+            message: "Email is required",
+          },
+          {
+            validator: Validators.email,
+            message: "Enter valid email",
+          },
+        ],
+      },
     },
   });
 
@@ -58,6 +71,10 @@ export default function BasicSignupSheet({ visible }: IProps): JSX.Element {
     if (profile && profile.photo) {
       fieldValueSetter("photo", profile.photo);
     }
+
+    if (user && user.email) {
+      fieldValueSetter("email", user.email);
+    }
   }, [user, profile, fieldValueSetter]);
 
   const handlePhotoChange = async (photo: File): Promise<void> => {
@@ -66,6 +83,18 @@ export default function BasicSignupSheet({ visible }: IProps): JSX.Element {
       fieldValueSetter("photo", base64Image as string);
     }
   };
+
+  const visible = useMemo(() => {
+    if (!profile || !user) {
+      return false;
+    }
+
+    if (!profile.name || !profile.photo || !user.email) {
+      return true;
+    }
+
+    return false;
+  }, [profile, user]);
 
   const handleFormSubmit = useCallback(
     async (event: SyntheticEvent) => {
@@ -76,26 +105,36 @@ export default function BasicSignupSheet({ visible }: IProps): JSX.Element {
           delete data.photo;
         }
 
-        const { name, photo } = data;
+        const { name, photo, email } = data;
 
-        await UserApiClient().postUserProfile({
-          photo,
-          name,
-        });
+        await UserApiClient()
+          .postUserProfile({
+            photo,
+            name,
+          })
+          .then(async () => {
+            if (!user?.email || user?.email !== email) {
+              const [userWithToken] = await UserApiClient().postUser({
+                email,
+              });
 
-        router.reload();
+              if (userWithToken) {
+                await Login("user-update", {
+                  user: JSON.stringify(userWithToken.user),
+                  token: userWithToken.token,
+                });
+
+                router.reload();
+              }
+            }
+          });
       }
     },
-    [getValidatedData, profile, router]
+    [getValidatedData, profile, router, user]
   );
 
   return (
-    <Modal
-      visible={visible}
-      onClose={() => {
-        console.log("Heloo");
-      }}
-    >
+    <ModalWithVideo maxWidth={["calc(100% - 32px)", 960]} visible={visible}>
       <Box py={space.xs}>
         <Text textStyle="headline5" maxWidth="60%">
           Hey, please provide some basic information
@@ -111,17 +150,32 @@ export default function BasicSignupSheet({ visible }: IProps): JSX.Element {
           photo={fields.photo.value}
           alt={profile?.name}
           onChange={handlePhotoChange}
+          error={fields.photo.errors?.[0]}
         />
         <Box>
           <Input
             placeholder="Your Name"
             value={fields.name.value}
-            onChange={(e) => fieldValueSetter("name", e.target.value)}
+            error={fields.name.errors?.[0]}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              fieldValueSetter("name", e.target.value)
+            }
+          />
+        </Box>
+
+        <Box>
+          <Input
+            placeholder="Your email address"
+            value={fields.email.value}
+            error={fields.email.errors?.[0]}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              fieldValueSetter("email", e.target.value)
+            }
           />
         </Box>
 
         <Button type="submit" text="Submit" />
       </Form>
-    </Modal>
+    </ModalWithVideo>
   );
 }

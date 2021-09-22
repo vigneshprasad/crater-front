@@ -12,14 +12,12 @@ interface IWebinarRequestState {
 
 type IWebinarRequestProviderProps = PropsWithChildren<{
   groupId: string;
-  initial?: GroupRequest;
 }>;
 
 export const WebinarRequestContext = createContext({} as IWebinarRequestState);
 
 export function WebinarRequestProvider({
   groupId,
-  initial,
   ...rest
 }: IWebinarRequestProviderProps): JSX.Element {
   const {
@@ -27,7 +25,6 @@ export function WebinarRequestProvider({
     error,
     mutate: mutateRequest,
   } = useSWR(API_URL_CONSTANTS.groups.retrieveGroupRequest(groupId), {
-    initialData: initial,
     shouldRetryOnError: false,
   });
 

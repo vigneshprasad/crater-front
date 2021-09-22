@@ -15,8 +15,7 @@ import DyteApiClient from "@/dyte/api";
 import { DyteParticpant } from "@/dyte/types/dyte";
 
 const WebinarPage = dynamic(
-  () => import("@/community/components/pages/WebinarPage"),
-  {}
+  () => import("@/community/components/pages/WebinarPage")
 );
 
 interface WebinarPageProps {

@@ -1,9 +1,9 @@
-import { HTMLAttributes } from "react";
 import styled from "styled-components";
 
 import { StyledInput, InputContainer, InputProps } from "../Input";
 
-export type TextAreaProps = InputProps & HTMLAttributes<HTMLTextAreaElement>;
+export type TextAreaProps = InputProps &
+  React.HTMLAttributes<HTMLTextAreaElement>;
 
 const StyledTextArea = styled(StyledInput)<TextAreaProps>`
   resize: none;

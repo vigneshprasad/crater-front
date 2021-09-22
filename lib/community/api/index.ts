@@ -3,7 +3,7 @@ import { GetSessionOptions } from "next-auth/client";
 
 import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import { ApiResult } from "@/common/types/api";
+import { ApiResult, PageResponse } from "@/common/types/api";
 import {
   Group,
   GroupRequest,
@@ -13,6 +13,7 @@ import {
 
 interface IApiClientResult {
   getWebinar: (id: string) => Promise<ApiResult<Webinar, AxiosError>>;
+  getAllWebinar: () => Promise<ApiResult<Webinar[], AxiosError>>;
   getWebinarRequest: (
     id: string
   ) => Promise<ApiResult<GroupRequest, AxiosError>>;
@@ -34,6 +35,17 @@ export default function WebinarApiClient(
     try {
       const { data } = await client.get<Webinar>(
         API_URL_CONSTANTS.conversations.retrieveWebinar(id)
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function getAllWebinar(): Promise<ApiResult<Webinar[], AxiosError>> {
+    try {
+      const { data } = await client.get<Webinar[]>(
+        API_URL_CONSTANTS.conversations.webinars
       );
       return [data, undefined];
     } catch (err) {
@@ -85,11 +97,11 @@ export default function WebinarApiClient(
     ApiResult<Webinar[], AxiosError>
   > {
     try {
-      const { data } = await client.get<Webinar[]>(
+      const { data } = await client.get<PageResponse<Webinar>>(
         API_URL_CONSTANTS.groups.getAllLiveWebinars
       );
 
-      return [data, undefined];
+      return [data.results, undefined];
     } catch (err) {
       return [undefined, err as AxiosError];
     }
@@ -97,6 +109,7 @@ export default function WebinarApiClient(
 
   return {
     getWebinar,
+    getAllWebinar,
     getWebinarRequest,
     postWebinarRequest,
     getAllUpcominWebinars,

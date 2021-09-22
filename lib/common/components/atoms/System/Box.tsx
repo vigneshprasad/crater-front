@@ -1,5 +1,4 @@
 import * as CSS from "csstype";
-import { HTMLAttributes } from "react";
 import styled from "styled-components";
 import {
   background,
@@ -63,9 +62,11 @@ export type BaseBoxProps = BackgroundProps &
     transform?: ResponsiveValue<CSS.Property.Transform, CustomTheme>;
     w?: ResponsiveValue<CSS.Property.Width | number, CustomTheme>;
     h?: ResponsiveValue<CSS.Property.Height | number, CustomTheme>;
+    placeItems?: ResponsiveValue<CSS.Property.PlaceItems, CustomTheme>;
+    placeContent?: ResponsiveValue<CSS.Property.PlaceContent, CustomTheme>;
   };
 
-export type BoxProps = BaseBoxProps & HTMLAttributes<HTMLDivElement>;
+export type BoxProps = BaseBoxProps & React.HTMLAttributes<HTMLDivElement>;
 
 const textDecoration = style({
   prop: "textDecoration",
@@ -97,6 +98,16 @@ const h = style({
   cssProperty: "height",
 });
 
+const placeItems = style({
+  prop: "placeItems",
+  cssProperty: "placeItems",
+});
+
+const placeContent = style({
+  prop: "placeContent",
+  cssProperty: "placeContent",
+});
+
 export const Box = styled.div<BoxProps>`
   display: block;
   box-sizing: border-box;
@@ -119,4 +130,6 @@ export const Box = styled.div<BoxProps>`
   ${transform}
   ${typography}
   ${boxShadow}
+  ${placeItems}
+  ${placeContent}
 `;

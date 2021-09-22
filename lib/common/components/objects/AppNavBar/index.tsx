@@ -6,6 +6,7 @@ import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 
 import { AnimatedBox, Box, Grid } from "../../atoms";
+import { Avatar } from "../../atoms/Avatar";
 import { Button } from "../../atoms/Button";
 import { Logo } from "../Logo";
 
@@ -49,16 +50,15 @@ export default function AppNavBar(): JSX.Element {
         }
 
         if (profile) {
-          return null;
-          // return (
-          //   <Box>
-          //     <Avatar
-          //       alt={profile.name ?? "username"}
-          //       size={32}
-          //       image={profile.photo}
-          //     />
-          //   </Box>
-          // );
+          return (
+            <Box>
+              <Avatar
+                alt={profile.name ?? "username"}
+                size={32}
+                image={profile.photo}
+              />
+            </Box>
+          );
         }
 
         return <Button variant="nav-button" text="Login" onClick={openModal} />;

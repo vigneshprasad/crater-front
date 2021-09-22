@@ -1,5 +1,4 @@
 import * as CSS from "csstype";
-import { HTMLAttributes } from "react";
 import styled, { css, DefaultTheme } from "styled-components";
 import {
   variant,
@@ -18,7 +17,7 @@ const { fonts, colors } = theme;
 const variants = {
   headline3: {
     fontFamily: fonts.heading,
-    fontSize: ["4rem"],
+    fontSize: ["3.2rem", "4rem"],
     fontWeight: "500",
     lineHeight: ["5.2rem"],
   },
@@ -38,6 +37,11 @@ const variants = {
     fontFamily: fonts.body,
     fontSize: ["1.8rem"],
     fontVariationSettings: `'wght' 500`,
+  },
+  headlineBold: {
+    fontFamily: fonts.body,
+    fontSize: ["1.5rem"],
+    fontWeight: "700",
   },
   logo: {
     fontFamily: fonts.heading,
@@ -104,8 +108,8 @@ export type TextVariants = keyof typeof variants;
 
 export type TextProps = BoxProps &
   TypographyProps &
-  HTMLAttributes<HTMLParagraphElement> &
-  HTMLAttributes<HTMLLabelElement> & {
+  React.HTMLAttributes<HTMLParagraphElement> &
+  React.HTMLAttributes<HTMLLabelElement> & {
     as?:
       | "p"
       | "small"
@@ -118,6 +122,7 @@ export type TextProps = BoxProps &
       | "h4"
       | "h5"
       | "h6"
+      | "span"
       | "label";
     target?: string;
     singleLine?: boolean;

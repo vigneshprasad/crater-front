@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, useMemo } from "react";
+import { useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 import { variant } from "styled-system";
 
@@ -11,7 +11,7 @@ type ButtonElements = "button" | "a";
 type Variants = "full-width" | "dense" | "nav-button";
 
 export type ButtonProps = Omit<BoxProps, "variant"> &
-  ButtonHTMLAttributes<HTMLButtonElement> & {
+  React.ButtonHTMLAttributes<HTMLButtonElement> & {
     as?: ButtonElements;
     text?: string;
     variant?: Variants;

@@ -1,5 +1,5 @@
-import { ForwardedRef, forwardRef, InputHTMLAttributes } from "react";
-import styled from "styled-components";
+import { forwardRef } from "react";
+import styled, { useTheme } from "styled-components";
 import {
   BackgroundProps,
   background,
@@ -26,6 +26,7 @@ import {
 } from "styled-system";
 
 import { Flex, FlexProps } from "../System/Flex";
+import { Text } from "../System/Text";
 
 export type InputProps = BackgroundProps &
   ColorProps &
@@ -38,8 +39,9 @@ export type InputProps = BackgroundProps &
   TextStyleProps &
   TypographyProps &
   BorderProps &
-  InputHTMLAttributes<HTMLInputElement> & {
+  React.InputHTMLAttributes<HTMLInputElement> & {
     prefixElement?: React.ReactNode;
+    error?: string;
   };
 
 export const StyledInput = styled.input<InputProps>`
@@ -89,15 +91,24 @@ export const InputContainer = styled(Flex)<FlexProps>`
 function InputWithRef({
   inputRef,
   prefixElement,
+  error,
   ...rest
 }: InputProps & {
-  inputRef: ForwardedRef<HTMLInputElement>;
+  inputRef: React.ForwardedRef<HTMLInputElement>;
 }): JSX.Element {
+  const { space, colors } = useTheme();
   return (
-    <InputContainer>
-      {prefixElement && prefixElement}
-      <StyledInput ref={inputRef} {...rest} />
-    </InputContainer>
+    <>
+      <InputContainer>
+        {prefixElement && prefixElement}
+        <StyledInput ref={inputRef} {...rest} />
+      </InputContainer>
+      {error && (
+        <Text py={space.xxs} color={colors.error} textStyle="error">
+          {error}
+        </Text>
+      )}
+    </>
   );
 }
 
