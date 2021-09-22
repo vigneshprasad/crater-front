@@ -5,7 +5,6 @@ import { useTheme } from "styled-components";
 import { INavKeys } from "@/common/constants/ui.constants";
 
 import { Box } from "../../atoms";
-import AsideNav from "../../objects/AsideNav";
 import Page from "../../objects/Page";
 import TabHeading from "../../objects/TabHeading";
 import BaseLayout from "../BaseLayout";
@@ -19,7 +18,6 @@ type IProps = PropsWithChildren<{
 export default function HomePageLayout({
   heading,
   children,
-  activeTab,
   seo,
 }: IProps): JSX.Element {
   const { space } = useTheme();
@@ -27,10 +25,10 @@ export default function HomePageLayout({
     <Page seo={seo}>
       <BaseLayout
         pb={space.xl}
-        aside={<AsideNav activeTab={activeTab} />}
+        // aside={<AsideNav activeTab={activeTab} />}
         overflowY="auto"
       >
-        <Box p={space.s}>
+        <Box p={[space.xs, space.s]}>
           <TabHeading>{heading}</TabHeading>
         </Box>
 

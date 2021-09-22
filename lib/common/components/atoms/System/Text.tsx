@@ -17,7 +17,7 @@ const { fonts, colors } = theme;
 const variants = {
   headline3: {
     fontFamily: fonts.heading,
-    fontSize: ["4rem"],
+    fontSize: ["3.2rem", "4rem"],
     fontWeight: "500",
     lineHeight: ["5.2rem"],
   },

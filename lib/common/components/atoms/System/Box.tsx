@@ -62,6 +62,8 @@ export type BaseBoxProps = BackgroundProps &
     transform?: ResponsiveValue<CSS.Property.Transform, CustomTheme>;
     w?: ResponsiveValue<CSS.Property.Width | number, CustomTheme>;
     h?: ResponsiveValue<CSS.Property.Height | number, CustomTheme>;
+    placeItems?: ResponsiveValue<CSS.Property.PlaceItems, CustomTheme>;
+    placeContent?: ResponsiveValue<CSS.Property.PlaceContent, CustomTheme>;
   };
 
 export type BoxProps = BaseBoxProps & React.HTMLAttributes<HTMLDivElement>;
@@ -96,6 +98,16 @@ const h = style({
   cssProperty: "height",
 });
 
+const placeItems = style({
+  prop: "placeItems",
+  cssProperty: "placeItems",
+});
+
+const placeContent = style({
+  prop: "placeContent",
+  cssProperty: "placeContent",
+});
+
 export const Box = styled.div<BoxProps>`
   display: block;
   box-sizing: border-box;
@@ -118,4 +130,6 @@ export const Box = styled.div<BoxProps>`
   ${transform}
   ${typography}
   ${boxShadow}
+  ${placeItems}
+  ${placeContent}
 `;

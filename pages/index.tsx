@@ -1,11 +1,16 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
+import dynamic from "next/dynamic";
+
 import HomePageLayout from "@/common/components/layouts/HomePageLayout";
 import WebinarApiClient from "@/community/api";
-import StreamsPage from "@/community/components/pages/StreamsPage";
 import { LiveStreamsProvider } from "@/community/context/LiveStreamsContext";
 import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { Webinar } from "@/creators/types/community";
+
+const StreamsPage = dynamic(
+  () => import("@/community/components/pages/StreamsPage")
+);
 
 interface ServerProps {
   liveStreams: Webinar[];
@@ -18,8 +23,8 @@ export const getStaticProps: GetStaticProps<ServerProps> = async () => {
 
   return {
     props: {
-      liveStreams: liveStreams || [],
-      upcoming: upcoming || [],
+      liveStreams: liveStreams ?? [],
+      upcoming: upcoming ?? [],
     },
     revalidate: 60 * 5,
   };

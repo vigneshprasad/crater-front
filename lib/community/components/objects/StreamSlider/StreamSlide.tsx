@@ -1,5 +1,7 @@
 import { AnimationControls, Variant } from "framer-motion";
 import { DateTime } from "luxon";
+import { useState } from "react";
+import { useEffect } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -25,41 +27,47 @@ export interface IStreamSlideProps {
   animate?: AnimationControls | string;
 }
 
-const slideVariants: Record<SlideVariants, Variant> = {
+const mobileVariant: Record<"main", Variant> = {
+  main: {
+    scale: 1.0,
+    zIndex: 1,
+    opacity: 1,
+    display: "block",
+  },
+};
+
+const desktopVariants: Record<SlideVariants, Variant> = {
   main: {
     top: "50%",
     right: "50%",
     x: "50%",
     y: "-50%",
-    width: SLIDE_WIDTH,
     scale: 1.0,
     zIndex: 1,
     opacity: 1,
     display: "block",
   },
   previous: {
-    width: SLIDE_WIDTH,
     top: "50%",
     right: "50%",
-    x: "25%",
+    x: "15%",
     y: "-50%",
-    scale: 0.8,
+    scale: 0.6,
     zIndex: 0,
     opacity: 1,
     display: "block",
   },
   next: {
-    width: SLIDE_WIDTH,
     top: "50%",
     right: "50%",
-    x: "75%",
+    x: "85%",
     y: "-50%",
-    scale: 0.8,
+    scale: 0.6,
     zIndex: 0,
-    opacity: 1,
     display: "block",
   },
   hidden: {
+    zIndex: -1,
     opacity: 0,
     transitionEnd: {
       display: "none",
@@ -71,28 +79,45 @@ export function StreamSlide({
   stream,
   initial,
   animate,
-}: IStreamSlideProps): JSX.Element {
+}: IStreamSlideProps): JSX.Element | null {
   const { space, colors, radii } = useTheme();
   const formatted = stream.start.replace("T", " ").replace(".000000", "");
   const startTime = DateTime.fromFormat(formatted, "yyyy-MM-dd HH:mm:ss ZZZ");
 
+  const { breakpoints } = useTheme();
+
+  const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    const media = window.matchMedia(`(max-width: ${breakpoints[0]})`);
+    setIsMobile(media.matches);
+  }, [breakpoints]);
+
+  if (isMobile === undefined) return null;
+
+  console.log(isMobile);
   return (
     <AnimatedBox
-      position="absolute"
-      animate={animate}
+      position={["static", "absolute"]}
+      animate={isMobile ? "main" : animate}
       overflow="hidden"
       borderRadius={radii.xxs}
       bg={colors.black[2]}
-      h="100%"
+      w={["100%", "calc(100% - 48px)"]}
+      maxWidth={SLIDE_WIDTH}
       initial={initial}
-      variants={slideVariants}
+      variants={isMobile ? mobileVariant : desktopVariants}
       transition={{
-        duration: 0.4,
+        duration: 0.2,
       }}
     >
-      <Grid gridTemplateColumns="1fr min-content" h="100%" position="relative">
+      <Grid
+        gridTemplateColumns={["1fr", "1fr min-content"]}
+        h="100%"
+        position="relative"
+      >
         <Link href={`/session/${stream.id}`}>
-          <Box position="relative" w="100%" h="100%">
+          <Box position="relative" w="100%" pt="56.25%">
             {stream.topic_detail?.image && (
               <Image
                 objectFit="cover"
@@ -108,17 +133,18 @@ export function StreamSlide({
           display="grid"
           variants={{
             main: {
-              width: 240,
+              width: 280,
             },
             next: {
-              width: 0,
+              maxWidth: 0,
               opacity: 1,
             },
             previous: {
-              width: 0,
+              maxWidth: 0,
               opacity: 1,
             },
           }}
+          alignItems="start"
           bg={colors.black[2]}
           px={space.xxs}
           py={space.xs}

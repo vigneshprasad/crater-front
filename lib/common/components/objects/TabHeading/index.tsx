@@ -23,10 +23,22 @@ const StyledText = styled(Text)<Props>`
     bottom: ${({ theme }) => `-${theme.space.xs}px`};
     position: absolute;
     content: "";
-    width: 3%;
+    width: 4%;
     height: 4px;
     background: ${({ theme }) => theme.colors.accent};
     border-radius: 12px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints[0]}) {
+    &::before {
+      font-size: 6.8rem;
+      font-weight: 600;
+    }
+
+    &::after {
+      bottom: ${({ theme }) => `-${theme.space.xxs}px`};
+      width: 10%;
+    }
   }
 `;
 

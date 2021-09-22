@@ -107,40 +107,34 @@ export default function BasicSignupSheet(): JSX.Element {
 
         const { name, photo, email } = data;
 
-        console.log(data);
-
         await UserApiClient()
           .postUserProfile({
             photo,
             name,
           })
           .then(async () => {
-            const [userWithToken] = await UserApiClient().postUser({
-              email,
-            });
-
-            if (userWithToken) {
-              await Login("user-update", {
-                user: JSON.stringify(userWithToken.user),
-                token: userWithToken.token,
+            if (!user?.email || user?.email !== email) {
+              const [userWithToken] = await UserApiClient().postUser({
+                email,
               });
 
-              router.reload();
+              if (userWithToken) {
+                await Login("user-update", {
+                  user: JSON.stringify(userWithToken.user),
+                  token: userWithToken.token,
+                });
+
+                router.reload();
+              }
             }
           });
       }
     },
-    [getValidatedData, profile, router]
+    [getValidatedData, profile, router, user]
   );
 
   return (
-    <ModalWithVideo
-      maxWidth={["calc(100% - 32px)", 960]}
-      visible={visible}
-      onClose={() => {
-        console.log("Heloo");
-      }}
-    >
+    <ModalWithVideo maxWidth={["calc(100% - 32px)", 960]} visible={visible}>
       <Box py={space.xs}>
         <Text textStyle="headline5" maxWidth="60%">
           Hey, please provide some basic information

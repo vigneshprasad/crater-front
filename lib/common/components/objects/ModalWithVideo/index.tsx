@@ -6,7 +6,7 @@ import { Modal, IModalProps, Grid, Box } from "../../atoms";
 type IProps = IModalProps &
   PropsWithChildren<{
     visible: boolean;
-    onClose: () => void;
+    onClose?: () => void;
   }>;
 
 const Video = styled.video`

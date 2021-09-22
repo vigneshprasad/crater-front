@@ -20,7 +20,7 @@ export default function StreamsPage(): JSX.Element {
 
   return (
     <>
-      <Box px={space.xs} py={space.s}>
+      <Box px={[space.xxs, space.xs]} py={[space.xxs, space.s]}>
         <StreamSlider liveStreams={liveStreams} />
       </Box>
 
