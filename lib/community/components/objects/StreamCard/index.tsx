@@ -1,4 +1,5 @@
-import { useTheme } from "styled-components";
+import { DateTime } from "luxon";
+import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
@@ -10,8 +11,14 @@ interface IProps {
   stream: Webinar;
 }
 
+const Span = styled.span`
+  color: ${({ theme }) => theme.colors.accent};
+`;
+
 export default function StreamCard({ stream }: IProps): JSX.Element {
   const { space, radii } = useTheme();
+  const formatted = stream.start.replace("T", " ").replace(".000000", "");
+  const startTime = DateTime.fromFormat(formatted, "yyyy-MM-dd HH:mm:ss ZZZ");
   return (
     <Link key={stream.id} href={`/session/${stream.id}`}>
       <Grid gridGap={space.xs}>
@@ -29,6 +36,20 @@ export default function StreamCard({ stream }: IProps): JSX.Element {
               alt={stream.topic_detail.name}
             />
           )}
+          <Box
+            borderRadius={4}
+            py={2}
+            px={space.xxxs}
+            bg={colors.black[0]}
+            position="absolute"
+            top={space.xxxs}
+            left={space.xxxs}
+          >
+            <Text textStyle="caption">
+              <Span>Live On</Span> {startTime.toFormat("d MMM")} @{" "}
+              {startTime.toFormat("H:mm")}
+            </Text>
+          </Box>
         </Box>
         <Grid
           gridTemplateColumns="min-content 1fr"
