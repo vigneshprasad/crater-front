@@ -133,7 +133,6 @@ export default function BasicSignupSheet(): JSX.Element {
     [getValidatedData, profile, router]
   );
 
-  console.log(fields);
   return (
     <ModalWithVideo
       maxWidth={["calc(100% - 32px)", 960]}
