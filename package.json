@@ -16,7 +16,7 @@
     "agora-rtc-sdk-ng": "^4.6.3",
     "axios": "^0.21.1",
     "csstype": "^3.0.8",
-    "dyte-client": "^0.8.0",
+    "dyte-client": "^0.7.0",
     "framer-motion": "^4.1.17",
     "libphonenumber-js": "^1.9.22",
     "luxon": "^2.0.2",
