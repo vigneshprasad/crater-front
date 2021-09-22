@@ -7,7 +7,7 @@ export type Creator = {
   follower_count: number;
   id: number;
   number_of_subscribers: number;
-  profile_properties?: Profile;
+  profile_detail?: Profile;
   type?: string;
   user: string;
 };

@@ -32,7 +32,7 @@ export function MembersListProvider({
     (index, previousData) => {
       const page = index + 1;
       if (previousData && !previousData.length) return null;
-      return `${API_URL_CONSTANTS.creator.getCreatorList}?page=${page}&certified=false`;
+      return `${API_URL_CONSTANTS.creator.getMembersList}?page=${page}`;
     },
     async (key: string) => (await fetcher<PageResponse<Creator>>(key)).results,
     { initialData: [[...initial]] }

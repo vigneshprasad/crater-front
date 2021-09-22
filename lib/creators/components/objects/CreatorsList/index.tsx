@@ -22,9 +22,9 @@ export default function CreatorsList({ creators }: IProps): JSX.Element {
       {creators.map((creator) => (
         <CreatorCard
           id={creator.id}
-          name={creator.profile_properties?.name}
+          name={creator.profile_detail?.name}
           key={creator.user}
-          image={creator.profile_properties?.photo}
+          image={creator.profile_detail?.photo}
         />
       ))}
     </Grid>

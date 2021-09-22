@@ -30,10 +30,10 @@ export default function CommunityPage(): JSX.Element {
           alt="Banner image"
         />
       </Box>
-      <Box px={[space.s]} pt={[space.xl]} pb={[space.m]}>
+      <Box px={[space.s]} pt={[space.m]} pb={[space.s]}>
         <Text textStyle="headline5">Member Only</Text>
       </Box>
-      <MembersList members={members} />
+      <MembersList members={creators} />
     </>
   );
 }
