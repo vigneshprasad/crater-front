@@ -25,16 +25,11 @@ export default function ModalWithVideo({
   const videoUrl =
     "https://1worknetwork-prod.s3.amazonaws.com/media/mp4_rsvp.mp4";
   return (
-    <Modal
-      maxWidth={["calc(100% - 32px)", 720]}
-      visible={visible}
-      px={0}
-      py={0}
-      onClose={onClose}
-      overflowY="auto"
-      {...rest}
-    >
-      <Grid gridTemplateColumns={["1fr", "1fr 1fr"]} gridGap={space.s}>
+    <Modal maxWidth={840} visible={visible} onClose={onClose} {...rest}>
+      <Grid
+        gridTemplateColumns={["1fr", "1fr 1fr"]}
+        gridGap={[space.xxs, space.xxs]}
+      >
         <Video autoPlay loop muted>
           <source src={videoUrl} type="video/mp4" />
         </Video>

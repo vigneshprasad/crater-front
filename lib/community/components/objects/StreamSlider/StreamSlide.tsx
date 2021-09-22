@@ -147,6 +147,8 @@ export function StreamSlide({
               opacity: 1,
             },
           }}
+          maxHeight={300}
+          overflowY={["auto"]}
           alignItems="start"
           bg={colors.black[2]}
           px={space.xxs}

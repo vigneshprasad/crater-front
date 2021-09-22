@@ -15,7 +15,7 @@ const StyledText = styled(Text)<Props>`
     font-weight: 600;
     color: ${({ theme }) => theme.colors.whiteAlpha[1]};
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-60%);
   }
 
   &::after {

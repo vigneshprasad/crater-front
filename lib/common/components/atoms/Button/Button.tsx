@@ -2,9 +2,7 @@ import { useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 import { variant } from "styled-system";
 
-import { Grid } from "@/common/components/atoms";
-
-import { Box, BoxProps, Text, TextVariants } from "../System";
+import { Grid, BoxProps, Text, TextVariants } from "@/common/components/atoms";
 
 type ButtonElements = "button" | "a";
 
@@ -16,9 +14,10 @@ export type ButtonProps = Omit<BoxProps, "variant"> &
     text?: string;
     variant?: Variants;
     prefixElement?: JSX.Element;
+    suffixElement?: JSX.Element;
   };
 
-const StyledButton = styled(Box)<ButtonProps>`
+const StyledButton = styled(Grid)<ButtonProps>`
   cursor: pointer;
   transition: all 200ms ease-in-out;
   color: ${(props) => props.theme.colors.white[0]};
@@ -60,6 +59,7 @@ export function Button({
   border = "none",
   variant: variantProp = "dense",
   prefixElement,
+  suffixElement,
   ...rest
 }: ButtonProps): JSX.Element {
   const { space, colors } = useTheme();
@@ -73,22 +73,35 @@ export function Button({
     return variantProp ? map[variantProp] : "button";
   }, [variantProp]);
 
+  const gridTemplateColumns = useMemo(() => {
+    const prefix = prefixElement ? "min-content " : "";
+    const suffix = suffixElement ? " min-content" : "";
+
+    return `${prefix}1fr${suffix}`;
+  }, [prefixElement, suffixElement]);
+
   return (
     <StyledButton
       bg={colors.accent}
-      px={[space.xs, space.s]}
       type={type}
+      px={[space.xxs, space.s]}
       border={border}
       variant={variantProp}
       as="button"
+      alignItems="center"
+      gridTemplateColumns={gridTemplateColumns}
       {...rest}
     >
-      <Grid gridTemplateColumns="min-content 1fr" gridAutoFlow="column">
-        <Box>{prefixElement && prefixElement}</Box>
-        <Text color="inherit" textStyle={fontVariant}>
-          {text}
-        </Text>
-      </Grid>
+      {prefixElement && prefixElement}
+      <Text
+        px={[space.xs, space.xs]}
+        m="auto auto"
+        color="inherit"
+        textStyle={fontVariant}
+      >
+        {text}
+      </Text>
+      {suffixElement && suffixElement}
     </StyledButton>
   );
 }
