@@ -16,9 +16,9 @@ export default function AppNavBar(): JSX.Element {
   const { profile, loading } = useAuth();
   const { openModal } = useAuthModal();
 
-  const handleOnClickUserImage = (): void => {
-    router.push("/account/");
-  };
+  // const handleOnClickUserImage = (): void => {
+  //   router.push("/account/");
+  // };
 
   const handleLogoClick = (): void => {
     router.push("//joincrater.club");
@@ -51,7 +51,7 @@ export default function AppNavBar(): JSX.Element {
 
         if (profile) {
           return (
-            <Box cursor="pointer" onClick={handleOnClickUserImage}>
+            <Box>
               <Avatar
                 alt={profile.name ?? "username"}
                 size={32}
