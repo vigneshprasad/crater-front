@@ -30,7 +30,11 @@ export default function StreamsPage(): JSX.Element {
         </Text>
       </Box>
 
-      <Grid px={space.s} gridTemplateColumns="repeat(4, 1fr)" gridGap={space.s}>
+      <Grid
+        px={space.s}
+        gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
+        gridGap={space.s}
+      >
         {upcoming.map((stream) => (
           <StreamCard stream={stream} key={stream.id} />
         ))}

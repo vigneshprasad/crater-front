@@ -2,6 +2,8 @@ import * as CSS from "csstype";
 import { motion } from "framer-motion";
 import styled, { useTheme } from "styled-components";
 
+import { Box } from "../System/Box";
+
 interface IProps {
   size?: number;
   strokeWidth?: number;
@@ -20,7 +22,7 @@ export default function Spinner({
   const radius = size / 2 - strokeWidth * 2;
   const circumference = radius * 2 * Math.PI;
   return (
-    <svg height="48" width="48">
+    <Box as="svg" size={size}>
       <Circle
         initial={{
           strokeDasharray: `${circumference} ${circumference}`,
@@ -36,17 +38,17 @@ export default function Spinner({
           ],
         }}
         stroke={strokeColor || colors.accent}
-        strokeWidth="4"
+        strokeWidth={strokeWidth}
         fill="transparent"
         r={radius}
-        cx="24"
-        cy="24"
+        cx={size / 2}
+        cy={size / 2}
         transition={{
           loop: Infinity,
           duration: 2,
           ease: "easeInOut",
         }}
       />
-    </svg>
+    </Box>
   );
 }

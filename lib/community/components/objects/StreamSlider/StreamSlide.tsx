@@ -2,7 +2,7 @@ import { AnimationControls, Variant } from "framer-motion";
 import { DateTime } from "luxon";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
@@ -75,6 +75,10 @@ const desktopVariants: Record<SlideVariants, Variant> = {
   },
 };
 
+const Span = styled.span`
+  color: ${({ theme }) => theme.colors.accent};
+`;
+
 export function StreamSlide({
   stream,
   initial,
@@ -143,6 +147,8 @@ export function StreamSlide({
               opacity: 1,
             },
           }}
+          maxHeight={300}
+          overflowY={["auto"]}
           alignItems="start"
           bg={colors.black[2]}
           px={space.xxs}
@@ -190,7 +196,10 @@ export function StreamSlide({
             top={space.xxs}
             left={space.xxs}
           >
-            <Text textStyle="caption">{startTime.toFormat("ff")}</Text>
+            <Text textStyle="caption">
+              <Span>Live On</Span> {startTime.toFormat("d MMM")} @{" "}
+              {startTime.toFormat("H:mm")}
+            </Text>
           </Box>
         )}
       </Grid>

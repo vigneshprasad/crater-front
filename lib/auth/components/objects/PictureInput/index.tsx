@@ -17,7 +17,7 @@ type IProps = {
   photo?: string;
   onChange?: (file: File) => void;
   disabled?: boolean;
-  size?: number;
+  size?: number | number[];
   error?: string;
 };
 
