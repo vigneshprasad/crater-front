@@ -1,11 +1,9 @@
-import { AnchorHTMLAttributes, PropsWithChildren } from "react";
-
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
 
 import { Box, BoxProps } from "../System/Box";
 
-export type LinkProps = PropsWithChildren<NextLinkProps> & {
-  boxProps?: BoxProps & AnchorHTMLAttributes<HTMLAnchorElement>;
+export type LinkProps = React.PropsWithChildren<NextLinkProps> & {
+  boxProps?: BoxProps & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 };
 
 export function Link({

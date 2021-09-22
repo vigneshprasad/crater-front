@@ -73,7 +73,7 @@ const options: NextAuthOptions = {
   jwt: {
     secret: process.env.JWT_SECRET,
   },
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
   logger: {
     error(code, metadata) {
       // eslint-disable-next-line no-console

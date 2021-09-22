@@ -1,16 +1,15 @@
 import { AnimateSharedLayout, motion, MotionProps } from "framer-motion";
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 import styled, { useTheme } from "styled-components";
 
 import { AnimatedBox, Text, TextProps } from "../../atoms";
 
 type IProps = TextProps &
-  MotionProps &
-  PropsWithChildren<{
+  MotionProps & {
     maxLines?: number;
-  }>;
+  };
 
-const AnimatedText = styled(motion(Text))``;
+const AnimatedText = styled(motion(Text))<IProps>``;
 
 export default function ExpandingText({
   maxLines = 2,

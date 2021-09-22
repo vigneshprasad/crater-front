@@ -109,7 +109,9 @@ export default function BasicProfileForm({
           <FormField label="Full Name" subtext="This is your name">
             <Input
               value={fields.name.value}
-              onChange={(e) => fieldValueSetter("name", e.currentTarget.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                fieldValueSetter("name", e.currentTarget.value)
+              }
             />
           </FormField>
 

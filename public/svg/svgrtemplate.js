@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 function template({ template }, opts, { componentName, props, jsx }) {
   const typeScriptTpl = template.smart({ plugins: ["typescript"] });
 

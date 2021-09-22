@@ -116,7 +116,9 @@ export default function BasicSignupSheet({ visible }: IProps): JSX.Element {
           <Input
             placeholder="Your Name"
             value={fields.name.value}
-            onChange={(e) => fieldValueSetter("name", e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              fieldValueSetter("name", e.target.value)
+            }
           />
         </Box>
 

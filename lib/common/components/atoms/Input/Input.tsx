@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, InputHTMLAttributes } from "react";
+import { forwardRef } from "react";
 import styled from "styled-components";
 import {
   BackgroundProps,
@@ -38,7 +38,7 @@ export type InputProps = BackgroundProps &
   TextStyleProps &
   TypographyProps &
   BorderProps &
-  InputHTMLAttributes<HTMLInputElement> & {
+  React.InputHTMLAttributes<HTMLInputElement> & {
     prefixElement?: React.ReactNode;
   };
 
@@ -91,7 +91,7 @@ function InputWithRef({
   prefixElement,
   ...rest
 }: InputProps & {
-  inputRef: ForwardedRef<HTMLInputElement>;
+  inputRef: React.ForwardedRef<HTMLInputElement>;
 }): JSX.Element {
   return (
     <InputContainer>

@@ -1,7 +1,10 @@
 import { ReactNode, useMemo } from "react";
 
+import dynamic from "next/dynamic";
+
 import { BoxProps, Box, Grid } from "../../atoms";
-import AppNavBar from "../../objects/AppNavBar";
+
+const AppNavBar = dynamic(() => import("../../objects/AppNavBar"));
 
 export type ScrollVariants = "base" | "grid";
 

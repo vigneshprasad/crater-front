@@ -1,5 +1,4 @@
 import * as CSS from "csstype";
-import { HTMLAttributes } from "react";
 import styled from "styled-components";
 import {
   background,
@@ -65,7 +64,7 @@ export type BaseBoxProps = BackgroundProps &
     h?: ResponsiveValue<CSS.Property.Height | number, CustomTheme>;
   };
 
-export type BoxProps = BaseBoxProps & HTMLAttributes<HTMLDivElement>;
+export type BoxProps = BaseBoxProps & React.HTMLAttributes<HTMLDivElement>;
 
 const textDecoration = style({
   prop: "textDecoration",

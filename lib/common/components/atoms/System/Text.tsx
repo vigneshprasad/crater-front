@@ -1,5 +1,4 @@
 import * as CSS from "csstype";
-import { HTMLAttributes } from "react";
 import styled, { css, DefaultTheme } from "styled-components";
 import {
   variant,
@@ -104,8 +103,8 @@ export type TextVariants = keyof typeof variants;
 
 export type TextProps = BoxProps &
   TypographyProps &
-  HTMLAttributes<HTMLParagraphElement> &
-  HTMLAttributes<HTMLLabelElement> & {
+  React.HTMLAttributes<HTMLParagraphElement> &
+  React.HTMLAttributes<HTMLLabelElement> & {
     as?:
       | "p"
       | "small"

@@ -19,6 +19,7 @@ export const API_URL_CONSTANTS = {
     },
   },
   conversations: {
+    webinars: "groups/conversations/webinars/",
     retrieveGroup: (id: string): string => `/groups/groups/${id}/`,
     retrieveWebinar: (id: string): string =>
       `/groups/conversations/webinars/${id}/`,
