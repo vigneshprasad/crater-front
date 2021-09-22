@@ -1,7 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
+import { useEffect } from "react";
 
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
@@ -49,11 +51,18 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async ({
       id,
       webinar,
     },
-    revalidate: 60 * 5,
+    revalidate: 10,
   };
 };
 
-export default function AudioRoom({ webinar, id }: Props): JSX.Element {
+export default function Session({ webinar, id }: Props): JSX.Element {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router && router.isFallback) {
+      router.reload();
+    }
+  }, [router]);
   return (
     <Page
       seo={{
@@ -70,5 +79,3 @@ export default function AudioRoom({ webinar, id }: Props): JSX.Element {
     </Page>
   );
 }
-
-AudioRoom.auth = false;

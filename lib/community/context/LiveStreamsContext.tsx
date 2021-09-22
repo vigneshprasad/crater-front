@@ -20,6 +20,7 @@ export type IStreamsProviderProps = PropsWithChildren<{
 }>;
 
 export function LiveStreamsProvider({
+  initial,
   ...rest
 }: IStreamsProviderProps): JSX.Element {
   const {
@@ -34,6 +35,9 @@ export function LiveStreamsProvider({
     },
     async (key: string) => {
       return (await fetcher<PageResponse<Webinar>>(key)).results;
+    },
+    {
+      initialData: [[...(initial ? [...initial] : [])]],
     }
   );
   const value: ILiveStreamsState = useMemo(

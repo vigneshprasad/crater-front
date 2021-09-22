@@ -26,7 +26,7 @@ export const getStaticProps: GetStaticProps<ServerProps> = async () => {
       liveStreams: liveStreams ?? [],
       upcoming: upcoming ?? [],
     },
-    revalidate: 60 * 5,
+    revalidate: 10,
   };
 };
 

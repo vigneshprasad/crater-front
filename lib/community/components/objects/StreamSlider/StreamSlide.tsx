@@ -95,7 +95,6 @@ export function StreamSlide({
 
   if (isMobile === undefined) return null;
 
-  console.log(isMobile);
   return (
     <AnimatedBox
       position={["static", "absolute"]}
@@ -136,11 +135,11 @@ export function StreamSlide({
               width: 280,
             },
             next: {
-              maxWidth: 0,
+              width: 0,
               opacity: 1,
             },
             previous: {
-              maxWidth: 0,
+              width: 0,
               opacity: 1,
             },
           }}

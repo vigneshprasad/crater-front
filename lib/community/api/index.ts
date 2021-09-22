@@ -3,7 +3,7 @@ import { GetSessionOptions } from "next-auth/client";
 
 import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import { ApiResult } from "@/common/types/api";
+import { ApiResult, PageResponse } from "@/common/types/api";
 import {
   Group,
   GroupRequest,
@@ -97,11 +97,11 @@ export default function WebinarApiClient(
     ApiResult<Webinar[], AxiosError>
   > {
     try {
-      const { data } = await client.get<Webinar[]>(
+      const { data } = await client.get<PageResponse<Webinar>>(
         API_URL_CONSTANTS.groups.getAllLiveWebinars
       );
 
-      return [data, undefined];
+      return [data.results, undefined];
     } catch (err) {
       return [undefined, err as AxiosError];
     }
