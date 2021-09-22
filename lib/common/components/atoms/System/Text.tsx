@@ -38,6 +38,11 @@ const variants = {
     fontSize: ["1.8rem"],
     fontVariationSettings: `'wght' 500`,
   },
+  headlineBold: {
+    fontFamily: fonts.body,
+    fontSize: ["1.5rem"],
+    fontWeight: "700",
+  },
   logo: {
     fontFamily: fonts.heading,
     fontSize: ["2.2rem"],
@@ -117,6 +122,7 @@ export type TextProps = BoxProps &
       | "h4"
       | "h5"
       | "h6"
+      | "span"
       | "label";
     target?: string;
     singleLine?: boolean;

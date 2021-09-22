@@ -1,4 +1,5 @@
 import { AnimationControls, Variant } from "framer-motion";
+import { DateTime } from "luxon";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -72,6 +73,9 @@ export function StreamSlide({
   animate,
 }: IStreamSlideProps): JSX.Element {
   const { space, colors, radii } = useTheme();
+  const formatted = stream.start.replace("T", " ").replace(".000000", "");
+  const startTime = DateTime.fromFormat(formatted, "yyyy-MM-dd HH:mm:ss ZZZ");
+
   return (
     <AnimatedBox
       position="absolute"
@@ -122,9 +126,6 @@ export function StreamSlide({
           gridGap={space.xxxs}
           gridAutoRows="min-content"
         >
-          <Text singleLine textStyle="headline6">
-            {stream.topic_detail?.name}
-          </Text>
           <Grid
             gridGap={space.xxs}
             gridTemplateColumns="min-content 1fr"
@@ -138,7 +139,7 @@ export function StreamSlide({
             <Text textStyle="title">{stream.host_detail?.name}</Text>
           </Grid>
           <ExpandingText textStyle="body" color={colors.slate} maxLines={3}>
-            {stream.topic_detail?.description}
+            {stream.host_detail?.introduction}
           </ExpandingText>
         </AnimatedBox>
         {stream.is_live && (
@@ -152,6 +153,19 @@ export function StreamSlide({
             left={space.xxs}
           >
             <Text textStyle="caption">LIVE</Text>
+          </Box>
+        )}
+        {!stream.is_live && (
+          <Box
+            borderRadius={4}
+            py={2}
+            px={space.xxxs}
+            bg={colors.black[0]}
+            position="absolute"
+            top={space.xxs}
+            left={space.xxs}
+          >
+            <Text textStyle="caption">{startTime.toFormat("ff")}</Text>
           </Box>
         )}
       </Grid>

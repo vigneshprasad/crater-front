@@ -1,13 +1,16 @@
 import { createContext, PropsWithChildren, useContext, useMemo } from "react";
-import useSwr from "swr";
+import { SWRInfiniteResponse, useSWRInfinite } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { PageResponse } from "@/common/types/api";
+import fetcher from "@/common/utils/fetcher";
 import { Webinar } from "@/creators/types/community";
 
 interface ILiveStreamsState {
   liveStreams?: Webinar[];
   error?: unknown;
   loading: boolean;
+  setFeaturedStreamPage: SWRInfiniteResponse<Webinar[], unknown>["setSize"];
 }
 
 export const LiveStreamsContext = createContext({} as ILiveStreamsState);
@@ -17,20 +20,30 @@ export type IStreamsProviderProps = PropsWithChildren<{
 }>;
 
 export function LiveStreamsProvider({
-  initial,
   ...rest
 }: IStreamsProviderProps): JSX.Element {
-  const { data: liveStreams, error } = useSwr(
-    API_URL_CONSTANTS.groups.getAllLiveWebinars,
-    { initialData: initial }
+  const {
+    data: liveStreams,
+    error,
+    setSize: setFeaturedStreamPage,
+  } = useSWRInfinite<Webinar[]>(
+    (index, previousData) => {
+      const page = index + 1;
+      if (previousData && !previousData.length) return null;
+      return `${API_URL_CONSTANTS.groups.getAllLiveWebinars}?page=${page}`;
+    },
+    async (key: string) => {
+      return (await fetcher<PageResponse<Webinar>>(key)).results;
+    }
   );
   const value: ILiveStreamsState = useMemo(
     () => ({
-      liveStreams,
+      liveStreams: liveStreams?.flat(),
       error,
       loading: !liveStreams && !error,
+      setFeaturedStreamPage,
     }),
-    [liveStreams, error]
+    [liveStreams, error, setFeaturedStreamPage]
   );
 
   return <LiveStreamsContext.Provider value={value} {...rest} />;

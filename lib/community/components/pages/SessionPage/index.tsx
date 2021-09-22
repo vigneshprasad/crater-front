@@ -117,7 +117,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             </Flex>
             {image && (
               <Box
-                h={320}
+                w="100%"
                 pt="56.25%"
                 position="relative"
                 borderRadius={radii.xs}
