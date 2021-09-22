@@ -24,7 +24,7 @@ interface IForm {
 
 export default function BasicSignupSheet(): JSX.Element {
   const { user, profile } = useAuth();
-  const { space } = useTheme();
+  const { colors, space } = useTheme();
   const router = useRouter();
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<IForm>({
@@ -135,11 +135,6 @@ export default function BasicSignupSheet(): JSX.Element {
 
   return (
     <ModalWithVideo maxWidth={["calc(100% - 32px)", 960]} visible={visible}>
-      <Box py={space.xs}>
-        <Text textStyle="headline5" maxWidth="60%">
-          Hey, please provide some basic information
-        </Text>
-      </Box>
       <Form
         display="grid"
         gridAutoFlow="row"
@@ -153,8 +148,9 @@ export default function BasicSignupSheet(): JSX.Element {
           error={fields.photo.errors?.[0]}
         />
         <Box>
+          <Text>Your full name</Text>
           <Input
-            placeholder="Your Name"
+            placeholder="Jane Doe"
             value={fields.name.value}
             error={fields.name.errors?.[0]}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -164,8 +160,9 @@ export default function BasicSignupSheet(): JSX.Element {
         </Box>
 
         <Box>
+          <Text>Email ID</Text>
           <Input
-            placeholder="Your email address"
+            placeholder="test@example.com"
             value={fields.email.value}
             error={fields.email.errors?.[0]}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -174,7 +171,12 @@ export default function BasicSignupSheet(): JSX.Element {
           />
         </Box>
 
-        <Button type="submit" text="Submit" />
+        <Button variant="nav-button" type="submit" text="Join Crater" />
+        <Text variant="terms-conditions" color={colors.black[0]}>
+          Crater may use your phone number for important communication on
+          Whatsapp & by clicking Sign Up, you agree to the Terms of service &
+          privacy policy.
+        </Text>
       </Form>
     </ModalWithVideo>
   );

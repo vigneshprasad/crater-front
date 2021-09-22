@@ -38,7 +38,7 @@ export default function ModalWithVideo({
         <Video autoPlay loop muted>
           <source src={videoUrl} type="video/mp4" />
         </Video>
-        <Box px={[space.xxs, space.xs]} py={[space.xxs, space.l]}>
+        <Box px={[space.xxs, space.xs]} py={[space.xxs, space.m]}>
           {children}
         </Box>
       </Grid>
