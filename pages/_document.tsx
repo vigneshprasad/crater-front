@@ -47,8 +47,8 @@ export default class AppDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <div id="modal-root" />1
-          <div id="bottom-sheet-root" />1
+          <div id="modal-root" />
+          <div id="bottom-sheet-root" />
         </body>
       </Html>
     );

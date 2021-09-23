@@ -1,7 +1,4 @@
 import { AnimationControls, Variant } from "framer-motion";
-import { DateTime } from "luxon";
-import { useState } from "react";
-import { useEffect } from "react";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -15,6 +12,8 @@ import {
   Link,
 } from "@/common/components/atoms";
 import ExpandingText from "@/common/components/objects/ExpandingText";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
+import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/creators/types/community";
 
 const SLIDE_WIDTH = 840;
@@ -85,17 +84,11 @@ export function StreamSlide({
   animate,
 }: IStreamSlideProps): JSX.Element | null {
   const { space, colors, radii } = useTheme();
-  const formatted = stream.start.replace("T", " ").replace(".000000", "");
-  const startTime = DateTime.fromFormat(formatted, "yyyy-MM-dd HH:mm:ss ZZZ");
+  const startTime = DateTime.parse(stream.start);
 
   const { breakpoints } = useTheme();
 
-  const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
-
-  useEffect(() => {
-    const media = window.matchMedia(`(max-width: ${breakpoints[0]})`);
-    setIsMobile(media.matches);
-  }, [breakpoints]);
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   if (isMobile === undefined) return null;
 
@@ -106,6 +99,7 @@ export function StreamSlide({
       overflow="hidden"
       borderRadius={radii.xxs}
       bg={colors.black[2]}
+      h="100%"
       w={["100%", "calc(100% - 48px)"]}
       maxWidth={SLIDE_WIDTH}
       initial={initial}
@@ -120,7 +114,13 @@ export function StreamSlide({
         position="relative"
       >
         <Link href={`/session/${stream.id}`}>
-          <Box position="relative" w="100%" pt="56.25%">
+          <Box
+            position="relative"
+            w={["100%", 0]}
+            h={[0, "100%"]}
+            pl={[0, "100%"]}
+            pt={["56.25%"]}
+          >
             {stream.topic_detail?.image && (
               <Image
                 objectFit="cover"
@@ -147,7 +147,6 @@ export function StreamSlide({
               opacity: 1,
             },
           }}
-          maxHeight={300}
           overflowY={["auto"]}
           alignItems="start"
           bg={colors.black[2]}
@@ -197,8 +196,7 @@ export function StreamSlide({
             left={space.xxs}
           >
             <Text textStyle="caption">
-              <Span>Live On</Span> {startTime.toFormat("d MMM")} @{" "}
-              {startTime.toFormat("H:mm")}
+              <Span>Live On</Span> {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
             </Text>
           </Box>
         )}

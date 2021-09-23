@@ -1,4 +1,3 @@
-import { DateTime } from "luxon";
 import { useState, useEffect } from "react";
 import { useTheme } from "styled-components";
 
@@ -19,6 +18,7 @@ import {
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import ExpandingText from "@/common/components/objects/ExpandingText";
+import DateTime from "@/common/utils/datetime/DateTime";
 import WebinarApiClient from "@/community/api";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { useWebinarRequest } from "@/community/context/WebinarRequestContext";
@@ -56,9 +56,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { start, host_detail } = webinar;
 
-  const formatted = start.replace("T", " ").replace(".000000", "");
-
-  const startTime = DateTime.fromFormat(formatted, "yyyy-MM-dd HH:mm:ss ZZZ");
+  const startTime = DateTime.parse(start);
 
   const now = DateTime.now();
   const image = webinar.topic_detail?.image;
