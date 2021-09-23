@@ -1,27 +1,35 @@
 import { DyteMeeting } from "dyte-client";
 import { DateTime } from "luxon";
+import { useEffect } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { Avatar, Box, Grid, Text } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { useWebinar } from "@/community/context/WebinarContext";
-import { DyteParticpant } from "@/dyte/types/dyte";
+import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 
 interface IProps {
+  id: string;
   orgId: string;
-  dyteParticipant: DyteParticpant | null;
 }
 
-export default function WebinarPage({
-  orgId,
-  dyteParticipant,
-}: IProps): JSX.Element {
+export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   const { space, colors, radii, borders } = useTheme();
   const { webinar, loading } = useWebinar();
   const { upcoming, loading: upcomingLoading } = useUpcomingStreams();
+  const { dyteParticipant, error } = useDyteWebinar();
+  const router = useRouter();
+
+  // Handle Dyte participant request error
+  useEffect(() => {
+    if (error) {
+      router.replace(`/session/${id}`);
+    }
+  }, [error, router, id]);
 
   if (loading || !webinar) return <Box>Loading...</Box>;
 

@@ -11,10 +11,13 @@ interface IDyteApiClientResult {
   getDyteParticpant: (
     groupId: string
   ) => Promise<ApiResult<DyteParticpant, AxiosError>>;
+  postDyteWebinarConnect: (
+    groupId: string
+  ) => Promise<ApiResult<DyteParticpant, AxiosError>>;
 }
 
 export default function DyteApiClient(
-  context: GetSessionOptions
+  context?: GetSessionOptions
 ): IDyteApiClientResult {
   const client = API(context);
 
@@ -31,7 +34,21 @@ export default function DyteApiClient(
     }
   }
 
+  async function postDyteWebinarConnect(
+    groupId: string
+  ): Promise<ApiResult<DyteParticpant, AxiosError>> {
+    try {
+      const { data } = await client.post<DyteParticpant>(
+        API_URL_CONSTANTS.integrations.dyte.connect(groupId)
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getDyteParticpant,
+    postDyteWebinarConnect,
   };
 }

@@ -16,6 +16,8 @@ export const API_URL_CONSTANTS = {
     dyte: {
       getParticpant: (groupId: string): string =>
         `integrations/dyte/participant/${groupId}/`,
+      connect: (groupId: string): string =>
+        `integrations/dyte/participant/${groupId}/connect/`,
     },
   },
   conversations: {

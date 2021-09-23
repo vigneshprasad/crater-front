@@ -47,7 +47,7 @@ export function useWebinar(): IWebinarState {
   const context = useContext(WebinarContext);
 
   if (!context) {
-    throw new Error("Please use SessionPageProvider in tree.");
+    throw new Error("Please use WebinarProvider in tree.");
   }
 
   return context;
