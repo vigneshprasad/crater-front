@@ -1,11 +1,17 @@
 import styled, { useTheme } from "styled-components";
 
+import dynamic from "next/dynamic";
+
 import { Box, Grid, Text } from "@/common/components/atoms";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 
 import StreamCard from "../../objects/StreamCard";
-import { StreamSlider } from "../../objects/StreamSlider";
+import { IStreamSliderProps } from "../../objects/StreamSlider";
+
+const StreamSlider = dynamic<IStreamSliderProps>(() =>
+  import("../../objects/StreamSlider").then(({ StreamSlider }) => StreamSlider)
+);
 
 const Span = styled.span`
   color: ${({ theme }) => theme.colors.accent};

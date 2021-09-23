@@ -1,10 +1,10 @@
-import { DateTime } from "luxon";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
 import { Avatar, Box, Grid, Link, Text } from "@/common/components/atoms";
 import colors from "@/common/theme/colors";
+import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/creators/types/community";
 
 interface IProps {
@@ -17,8 +17,7 @@ const Span = styled.span`
 
 export default function StreamCard({ stream }: IProps): JSX.Element {
   const { space, radii } = useTheme();
-  const formatted = stream.start.replace("T", " ").replace(".000000", "");
-  const startTime = DateTime.fromFormat(formatted, "yyyy-MM-dd HH:mm:ss ZZZ");
+  const startTime = DateTime.parse(stream.start);
   return (
     <Link key={stream.id} href={`/session/${stream.id}`}>
       <Grid gridGap={space.xs}>
@@ -46,8 +45,7 @@ export default function StreamCard({ stream }: IProps): JSX.Element {
             left={space.xxxs}
           >
             <Text textStyle="caption">
-              <Span>Live On</Span> {startTime.toFormat("d MMM")} @{" "}
-              {startTime.toFormat("H:mm")}
+              <Span>Live On</Span> {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
             </Text>
           </Box>
         </Box>
