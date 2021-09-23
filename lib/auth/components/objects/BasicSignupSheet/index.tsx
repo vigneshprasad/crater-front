@@ -158,9 +158,10 @@ export default function BasicSignupSheet(): JSX.Element {
           alt={profile?.name}
           onChange={handlePhotoChange}
           error={fields.photo.errors?.[0]}
+          m="0 auto"
         />
         <Box>
-          <Text>Your full name</Text>
+          <Text m="5px">Your full name</Text>
           <Input
             disabled={loading}
             value={fields.name.value}
@@ -172,7 +173,7 @@ export default function BasicSignupSheet(): JSX.Element {
         </Box>
 
         <Box mb={space.xs}>
-          <Text>Email ID</Text>
+          <Text m="5px">Email ID</Text>
 
           <Input
             disabled={loading}
@@ -198,8 +199,13 @@ export default function BasicSignupSheet(): JSX.Element {
           type="submit"
           text="Submit"
           disabled={loading}
+          m="0 auto"
         />
-        <Text variant="terms-conditions" color={colors.black[0]}>
+        <Text
+          variant="terms-conditions"
+          color={colors.black[0]}
+          textAlign="center"
+        >
           Crater may use your phone number for important communication on
           Whatsapp &amp; by clicking Sign Up, you agree to the Terms of service
           &amp; privacy policy.

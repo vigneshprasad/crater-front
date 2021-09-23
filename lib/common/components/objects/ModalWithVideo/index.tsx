@@ -34,11 +34,12 @@ export default function ModalWithVideo({
       <Grid
         gridTemplateColumns={["1fr", "1fr 1fr"]}
         gridGap={[space.xxs, space.xxs]}
+        h={["auto", "100%"]}
       >
         <Video autoPlay loop muted>
           <source src={videoUrl} type="video/mp4" />
         </Video>
-        <Box px={[space.xxs, space.xs]} py={[space.xxs, space.m]}>
+        <Box px={[space.xxs, space.xs]} py={[space.xxs, space.s]}>
           {children}
         </Box>
       </Grid>

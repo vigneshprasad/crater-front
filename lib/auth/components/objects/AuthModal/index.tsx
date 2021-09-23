@@ -16,10 +16,15 @@ export default function AuthModal(): JSX.Element {
 
   return (
     <ModalWithVideo visible={visible} onClose={onClose}>
-      <Text textStyle="headline5" py={[space.xxs, space.xs]}>
+      <Text textStyle="headline5" py={[space.xxs, space.xs]} textAlign="center">
         Welcome to <Span>Crater</Span>
       </Text>
-      <Text mb={space.xxs} variant="terms-conditions" color={colors.slate}>
+      <Text
+        mb={space.xxs}
+        variant="terms-conditions"
+        color={colors.slate}
+        textAlign="center"
+      >
         Crater is where 1000s of people come together every day to watch live
         streams by mentors & creators, interact with like minds and grow their
         network.
