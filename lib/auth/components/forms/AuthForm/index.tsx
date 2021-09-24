@@ -126,6 +126,7 @@ export default function AuthForm(): JSX.Element {
           disabled={loading}
           onClick={handlePhoneNumberSubmit}
           text="Get OTP"
+          m="0 auto"
         />
       )}
       {otpVisible && (
@@ -152,6 +153,7 @@ export default function AuthForm(): JSX.Element {
             type="submit"
             my={[16]}
             text="Submit"
+            m="0 auto"
           />
         </>
       )}

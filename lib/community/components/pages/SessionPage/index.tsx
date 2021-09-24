@@ -106,7 +106,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           </Box>
         </Grid>
         <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
-          <Grid gridGap={[space.xs, space.xxs]} gridAutoFlow="row">
+          <Grid
+            gridGap={[space.xs, space.xxs]}
+            gridAutoFlow="row"
+            gridAutoRows="min-content"
+          >
             <Flex alignItems="center">
               <Icon size={24} icon="CalendarDays" />
               <Text textStyle="captionLarge" ml={12}>

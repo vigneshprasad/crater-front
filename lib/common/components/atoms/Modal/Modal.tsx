@@ -66,7 +66,7 @@ export function Modal({
             borderRadius={radii.s}
             overflowY="auto"
           >
-            <Box w="100%" overflowY="auto" maxHeight="100%" {...rest}>
+            <Box w="100%" overflowY="auto" maxHeight="100%" h="100%" {...rest}>
               {children}
               {onClose && (
                 <IconButton
