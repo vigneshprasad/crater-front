@@ -4,11 +4,11 @@ import styled, { useTheme } from "styled-components";
 
 import { Box } from "../System/Box";
 
-interface IProps {
+type IProps = {
   size?: number;
   strokeWidth?: number;
   strokeColor?: CSS.Property.Color;
-}
+};
 
 const Circle = styled(motion.circle)``;
 
@@ -16,13 +16,14 @@ export default function Spinner({
   size = 44,
   strokeWidth = 4,
   strokeColor,
+  ...rest
 }: IProps): JSX.Element {
   const { colors } = useTheme();
 
   const radius = size / 2 - strokeWidth * 2;
   const circumference = radius * 2 * Math.PI;
   return (
-    <Box as="svg" size={size}>
+    <Box as="svg" size={size} {...rest}>
       <Circle
         initial={{
           strokeDasharray: `${circumference} ${circumference}`,

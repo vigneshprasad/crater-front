@@ -2,7 +2,7 @@ import { useContext } from "react";
 import useSWR from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import { Room } from "@/creators/types/community";
+import { Room } from "@/community/types/community";
 
 import { RoomContext } from "../context/RoomContext";
 

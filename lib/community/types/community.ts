@@ -104,3 +104,17 @@ export interface CommunityMember {
   user: string;
   user_properties: UserProperties;
 }
+
+export enum WSMessageTypes {
+  live_count = "live_count",
+}
+
+export interface WSMessage {
+  type: WSMessageTypes;
+  [key: string]: unknown;
+}
+
+export interface WSWebinarLiveParticipantCount extends WSMessage {
+  type: WSMessageTypes.live_count;
+  count: number;
+}

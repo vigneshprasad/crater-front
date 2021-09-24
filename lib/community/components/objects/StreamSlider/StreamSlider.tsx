@@ -4,7 +4,7 @@ import { useTheme } from "styled-components";
 
 import { Grid, AnimatedBox } from "@/common/components/atoms";
 import IconButton from "@/common/components/atoms/IconButton";
-import { Webinar } from "@/creators/types/community";
+import { Webinar } from "@/community/types/community";
 
 import { StreamSlide } from "./StreamSlide";
 

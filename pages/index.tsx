@@ -6,7 +6,7 @@ import HomePageLayout from "@/common/components/layouts/HomePageLayout";
 import WebinarApiClient from "@/community/api";
 import { LiveStreamsProvider } from "@/community/context/LiveStreamsContext";
 import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
-import { Webinar } from "@/creators/types/community";
+import { Webinar } from "@/community/types/community";
 
 const StreamsPage = dynamic(
   () => import("@/community/components/pages/StreamsPage")
@@ -38,7 +38,7 @@ export default function Home({ liveStreams, upcoming }: IProps): JSX.Element {
       seo={{
         title: "Crater Club: Streams",
         description:
-          "Crater Club is the world’s leading live streaming platform for gamers and the things we love. Watch and chat now with millions of other fans from around the world",
+          "Crater is where you join live streams with the mentors & creators you follow, get to network with like-minds, and can claim exclusive access to mentors & creator by buying their tokens at the live auction",
       }}
       heading="Featured"
       activeTab="streams"

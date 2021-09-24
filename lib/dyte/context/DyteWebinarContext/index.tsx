@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { useSession } from "next-auth/client";
+import { getSession } from "next-auth/client";
 import {
   createContext,
   PropsWithChildren,
@@ -8,6 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useCallback } from "react";
 
 import DyteApiClient from "@/dyte/api";
 import { DyteParticpant } from "@/dyte/types/dyte";
@@ -28,14 +29,13 @@ export function DyteWebinarProvider({
   id,
   ...rest
 }: IProviderProps): JSX.Element {
-  const [session] = useSession();
   const [dyteParticipant, setDyteParticipant] = useState<
     DyteParticpant | undefined
   >(undefined);
   const [error, setError] = useState<AxiosError | undefined>(undefined);
 
-  useEffect(() => {
-    const apiCall = async (): Promise<void> => {
+  const apiCall = useCallback(
+    async (id: string): Promise<void> => {
       const [data, serverError] = await DyteApiClient().postDyteWebinarConnect(
         id
       );
@@ -49,11 +49,23 @@ export function DyteWebinarProvider({
         setDyteParticipant(data);
         setError(undefined);
       }
-    };
-    if (session && session.user) {
-      apiCall();
-    }
-  }, [id, session]);
+    },
+    [setDyteParticipant]
+  );
+
+  const getInitial = useCallback(
+    async (id: string) => {
+      const session = await getSession();
+      if (session && session.user) {
+        await apiCall(id);
+      }
+    },
+    [apiCall]
+  );
+
+  useEffect(() => {
+    getInitial(id);
+  }, [id, getInitial]);
 
   const value = useMemo(
     () => ({

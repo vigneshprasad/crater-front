@@ -8,10 +8,11 @@ import { useRouter } from "next/router";
 
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
+import { NetworkListProvider } from "@/community/context/NetworkListContext";
 import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
-import { Webinar as WebinarType } from "@/creators/types/community";
-import { Webinar } from "@/creators/types/community";
+import { Webinar as WebinarType } from "@/community/types/community";
+import { Webinar } from "@/community/types/community";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
 
 const DynamicWebinarPage = dynamic(
@@ -91,7 +92,9 @@ export default function WebinarPage({
       <WebinarProvider id={id} initial={webinar}>
         <DyteWebinarProvider id={id}>
           <UpcomingStreamsProvider>
-            <DynamicWebinarPage orgId={orgId} id={id} />
+            <NetworkListProvider>
+              <DynamicWebinarPage orgId={orgId} id={id} />
+            </NetworkListProvider>
           </UpcomingStreamsProvider>
         </DyteWebinarProvider>
       </WebinarProvider>

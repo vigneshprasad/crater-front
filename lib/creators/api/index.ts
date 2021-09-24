@@ -5,7 +5,7 @@ import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ApiResult, PageResponse } from "@/common/types/api";
 
-import { CommunityMember, Webinar } from "../types/community";
+import { CommunityMember, Webinar } from "../../community/types/community";
 import { Creator } from "../types/creator";
 
 interface ICreatorApiClient {

@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren } from "react";
 
-import { Room } from "@/creators/types/community";
+import { Room } from "@/community/types/community";
 
 export const RoomContext = createContext<Room | undefined>(undefined);
 

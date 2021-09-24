@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { Box, BoxProps, Link } from "@/common/components/atoms";
 import { theme } from "@/common/theme";
-import { Speaker } from "@/creators/types/community";
+import { Speaker } from "@/community/types/community";
 
 const { colors, radii } = theme;
 

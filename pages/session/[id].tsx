@@ -9,7 +9,7 @@ import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { WebinarRequestProvider } from "@/community/context/WebinarRequestContext";
-import { Webinar } from "@/creators/types/community";
+import { Webinar } from "@/community/types/community";
 
 const SessionPage = dynamic(
   () => import("@/community/components/pages/SessionPage")
