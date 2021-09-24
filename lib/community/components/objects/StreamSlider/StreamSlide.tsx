@@ -14,7 +14,7 @@ import {
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import DateTime from "@/common/utils/datetime/DateTime";
-import { Webinar } from "@/creators/types/community";
+import { Webinar } from "@/community/types/community";
 
 const SLIDE_WIDTH = 840;
 

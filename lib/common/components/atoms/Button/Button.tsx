@@ -25,17 +25,17 @@ const StyledButton = styled(Grid)<ButtonProps>`
     prop: "variant",
     variants: {
       "full-width": {
-        height: 56,
+        minHeight: 56,
         borderRadius: 6,
         width: "100%",
       },
       dense: {
-        height: 44,
+        minHeight: 44,
         width: "fit-content",
         borderRadius: 6,
       },
       "nav-button": {
-        height: 36,
+        minHeight: 36,
         width: "fit-content",
         borderRadius: 4,
       },
@@ -94,7 +94,8 @@ export function Button({
     >
       {prefixElement && prefixElement}
       <Text
-        px={[space.xs, space.xs]}
+        minWidth={["none", 96]}
+        px={[space.xxxs, space.xxs]}
         m="auto auto"
         color="inherit"
         textStyle={fontVariant}

@@ -4,7 +4,7 @@ import { SWRInfiniteResponse, useSWRInfinite } from "swr";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
 import fetcher from "@/common/utils/fetcher";
-import { Webinar } from "@/creators/types/community";
+import { Webinar } from "@/community/types/community";
 
 interface ILiveStreamsState {
   liveStreams?: Webinar[];

@@ -27,7 +27,7 @@ import {
   ParticpantType,
   PostGroupRequest,
   RequestStatus,
-} from "@/creators/types/community";
+} from "@/community/types/community";
 
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
 import UrlShare from "../../objects/UrlShare";
@@ -64,6 +64,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const endtime = startTime.plus({ minutes: 120 });
 
   const isLiveNow = now > startTime && now <= endtime;
+  const isHost = user?.pk === webinar.host;
 
   const postGroupRequest = async (redirect = false): Promise<void> => {
     if (webinarRequest?.status !== RequestStatus.accepted) {
@@ -107,7 +108,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           </Box>
         </Grid>
         <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
-          <Grid gridGap={[space.xs, space.xxs]} gridAutoFlow="row">
+          <Grid
+            gridGap={[space.xs, space.xxs]}
+            gridAutoFlow="row"
+            gridAutoRows="min-content"
+          >
             <Flex alignItems="center">
               <Icon size={24} icon="CalendarDays" />
               <Text textStyle="captionLarge" ml={12}>
@@ -144,7 +149,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 return (
                   <Button
                     variant="full-width"
-                    text="Notify Me"
+                    text="RSVP for this session"
                     onClick={(): void => {
                       openModal();
 
@@ -162,7 +167,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 return (
                   <Button
                     variant="full-width"
-                    text="Join Stream"
+                    text={isHost ? "Go live" : "Join Stream"}
                     onClick={(): void => {
                       postGroupRequest(true);
 
@@ -196,7 +201,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               return (
                 <Button
                   variant="full-width"
-                  text="Notify Me"
+                  text="RSVP for this session"
                   onClick={(): void => {
                     postGroupRequest();
 
