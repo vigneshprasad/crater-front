@@ -41,7 +41,7 @@ export default class AppDocument extends Document {
     }
   }
 
-  renderSnippet() {
+  renderSnippet(): string {
     const opts = {
       apiKey: SEGMENT_KEY,
       page: true,
