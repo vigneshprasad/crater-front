@@ -13,6 +13,7 @@
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
+    "@segment/snippet": "^4.15.3",
     "agora-rtc-sdk-ng": "^4.6.3",
     "axios": "^0.21.1",
     "csstype": "^3.0.8",

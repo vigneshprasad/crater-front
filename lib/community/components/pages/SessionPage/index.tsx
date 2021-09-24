@@ -19,6 +19,7 @@ import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import DateTime from "@/common/utils/datetime/DateTime";
+import sendDataToSegment from "@/common/utils/segment";
 import WebinarApiClient from "@/community/api";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { useWebinarRequest } from "@/community/context/WebinarRequestContext";
@@ -151,6 +152,12 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     text="RSVP for this session"
                     onClick={(): void => {
                       openModal();
+
+                      sendDataToSegment({
+                        actionName: "Notify Me",
+                        datetime: DateTime.now().toFormat("ff"),
+                        username: "",
+                      });
                     }}
                   />
                 );
@@ -163,6 +170,12 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     text={isHost ? "Go live" : "Join Stream"}
                     onClick={(): void => {
                       postGroupRequest(true);
+
+                      sendDataToSegment({
+                        actionName: "Join Stream",
+                        datetime: DateTime.now().toFormat("ff"),
+                        username: user?.name,
+                      });
                     }}
                   />
                 );
@@ -191,6 +204,12 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   text="RSVP for this session"
                   onClick={(): void => {
                     postGroupRequest();
+
+                    sendDataToSegment({
+                      actionName: "Notify Me",
+                      datetime: DateTime.now().toFormat("ff"),
+                      username: user?.name,
+                    });
                   }}
                 />
               );
@@ -229,6 +248,13 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     />
                   }
                   text="Share"
+                  onClick={(): void => {
+                    sendDataToSegment({
+                      actionName: "Share on LinkedIn",
+                      datetime: DateTime.now().toFormat("ff"),
+                      username: user?.name,
+                    });
+                  }}
                 />
               </Link>
               <Link
@@ -249,6 +275,13 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     />
                   }
                   text="Tweet"
+                  onClick={(): void => {
+                    sendDataToSegment({
+                      actionName: "Share on Twitter",
+                      datetime: DateTime.now().toFormat("ff"),
+                      username: user?.name,
+                    });
+                  }}
                 />
               </Link>
             </Grid>
