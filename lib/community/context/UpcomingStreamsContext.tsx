@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import useSWR from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import { Webinar } from "@/creators/types/community";
+import { Webinar } from "@/community/types/community";
 
 interface IUpcomingStreamsState {
   upcoming?: Webinar[];

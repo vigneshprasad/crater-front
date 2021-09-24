@@ -26,7 +26,7 @@ import {
   ParticpantType,
   PostGroupRequest,
   RequestStatus,
-} from "@/creators/types/community";
+} from "@/community/types/community";
 
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
 import UrlShare from "../../objects/UrlShare";
@@ -63,6 +63,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const endtime = startTime.plus({ minutes: 120 });
 
   const isLiveNow = now > startTime && now <= endtime;
+  const isHost = user?.pk === webinar.host;
 
   const postGroupRequest = async (redirect = false): Promise<void> => {
     if (webinarRequest?.status !== RequestStatus.accepted) {
@@ -159,7 +160,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 return (
                   <Button
                     variant="full-width"
-                    text="Join Stream"
+                    text={isHost ? "Go Live" : "Join Stream"}
                     onClick={(): void => {
                       postGroupRequest(true);
                     }}

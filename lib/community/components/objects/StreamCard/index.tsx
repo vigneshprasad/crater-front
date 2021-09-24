@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Avatar, Box, Grid, Link, Text } from "@/common/components/atoms";
 import colors from "@/common/theme/colors";
 import DateTime from "@/common/utils/datetime/DateTime";
-import { Webinar } from "@/creators/types/community";
+import { Webinar } from "@/community/types/community";
 
 interface IProps {
   stream: Webinar;

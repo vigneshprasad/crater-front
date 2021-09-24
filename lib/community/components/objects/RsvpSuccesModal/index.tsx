@@ -4,7 +4,7 @@ import { useTheme } from "styled-components";
 import { Grid, Text, Icon, Link } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import ModalWithVideo from "@/common/components/objects/ModalWithVideo";
-import { Webinar } from "@/creators/types/community";
+import { Webinar } from "@/community/types/community";
 
 import UrlShare from "../UrlShare";
 

@@ -3,7 +3,7 @@ import { useTheme } from "styled-components";
 import { IRtcUser } from "@/agora/types/rtc";
 import useAuth from "@/auth/context/AuthContext";
 import { Box, Grid, Text, Flex } from "@/common/components/atoms";
-import { Room } from "@/creators/types/community";
+import { Room } from "@/community/types/community";
 
 import AudioCallBar from "../AudioCallBar";
 import SpeakersList from "../SpeakersList";

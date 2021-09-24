@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import { Webinar } from "@/creators/types/community";
+import { Webinar } from "@/community/types/community";
 
 export interface IWebinarState {
   webinar?: Webinar;
@@ -47,7 +47,7 @@ export function useWebinar(): IWebinarState {
   const context = useContext(WebinarContext);
 
   if (!context) {
-    throw new Error("Please use SessionPageProvider in tree.");
+    throw new Error("Please use WebinarProvider in tree.");
   }
 
   return context;
