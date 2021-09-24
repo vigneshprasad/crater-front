@@ -2,7 +2,7 @@ import { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, Grid, Text } from "@/common/components/atoms";
+import { Box, Grid, Text, Link } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
@@ -47,38 +47,43 @@ export default function UpcomingStreamsList({
               DateTime.DATE_FULL
             );
             return (
-              <Grid
-                pb={space.xxs}
-                alignItems="start"
+              <Link
                 key={stream.id}
-                gridGap={space.xs}
-                gridTemplateColumns="min-content 1fr"
+                href={`/session/${stream.id}`}
+                boxProps={{ target: "_blank" }}
               >
-                <Box
-                  position="relative"
-                  h={72}
-                  w={96}
-                  borderRadius={radii.xxs}
-                  overflow="hidden"
+                <Grid
+                  pb={space.xxs}
+                  alignItems="start"
+                  gridGap={space.xs}
+                  gridTemplateColumns="min-content 1fr"
                 >
-                  {stream.topic_detail?.image && (
-                    <Image
-                      objectFit="cover"
-                      src={stream.topic_detail?.image}
-                      alt={stream.topic_detail?.name}
-                      layout="fill"
-                    />
-                  )}
-                </Box>
-                <Box py={space.xxxs}>
-                  <Text textStyle="title" py={4}>
-                    {stream.topic_detail?.name}
-                  </Text>
-                  <Text textStyle="caption" color={colors.slate}>
-                    {timeDisplay}
-                  </Text>
-                </Box>
-              </Grid>
+                  <Box
+                    position="relative"
+                    h={72}
+                    w={96}
+                    borderRadius={radii.xxs}
+                    overflow="hidden"
+                  >
+                    {stream.topic_detail?.image && (
+                      <Image
+                        objectFit="cover"
+                        src={stream.topic_detail?.image}
+                        alt={stream.topic_detail?.name}
+                        layout="fill"
+                      />
+                    )}
+                  </Box>
+                  <Box py={space.xxxs}>
+                    <Text textStyle="title" py={4}>
+                      {stream.topic_detail?.name}
+                    </Text>
+                    <Text textStyle="caption" color={colors.slate}>
+                      {timeDisplay}
+                    </Text>
+                  </Box>
+                </Grid>
+              </Link>
             );
           });
         })()}

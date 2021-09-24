@@ -20,10 +20,10 @@ export default function NetworkList({
   return (
     <>
       <Text px={space.xxs} textStyle="headlineBold">
-        {`Following ${webinar.host_detail?.name}`}
+        {`${webinar.host_detail?.name}'s Club`}
       </Text>
       <Grid
-        borderRadius={`${radii.xxs} ${radii.xxs} 0 0`}
+        borderRadius={`${radii.xxs}px ${radii.xxs}px 0 0`}
         gridAutoFlow="row"
         gridGap={space.xs}
         gridAutoRows="min-content"

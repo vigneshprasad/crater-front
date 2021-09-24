@@ -3577,10 +3577,10 @@ duplexer@^0.1.2:
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"
   integrity sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==
 
-dyte-client@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/dyte-client/-/dyte-client-0.7.0.tgz#3c849609175cfca20346f98f45ff70f110bcd8f0"
-  integrity sha512-r6r1Rnubn28epynAKC2nQTJhZYYfS0ph375TR8V7Hkwe4O5tlXryc7GfWyvX6JDDmFWM+E7iqQC1oNrpOf5ltw==
+dyte-client@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/dyte-client/-/dyte-client-0.8.1.tgz#fdb7945c50e1d827a73586e40e0ae99eb1bf3018"
+  integrity sha512-kJ3OqHmLJfOH2PEya0Kd6WJj6sVdVHV9aXU5AirQRIU+gsvbE3+8G6fsRxHyLsYuXfwyYSyDkLudW8ZwwnjfRg==
   dependencies:
     "@chakra-ui/react" "^1.6.7"
     "@dyteinternals/callstats" "^0.8.11"

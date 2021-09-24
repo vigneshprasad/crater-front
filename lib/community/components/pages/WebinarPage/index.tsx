@@ -125,7 +125,12 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                 gridAutoFlow="column"
                 gridAutoColumns="min-content"
               >
-                <Button mr={space.xxs} variant="nav-button" text="AMA" />
+                <Link
+                  href={`https://worknetwork.typeform.com/to/TmRSVFoi#session=${webinar.id}`}
+                >
+                  <Button mr={space.xxs} variant="nav-button" text="AMA" />
+                </Link>
+
                 <Button
                   border={`2px solid ${colors.slate}`}
                   bg="transparent"

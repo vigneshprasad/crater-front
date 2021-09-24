@@ -148,7 +148,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 return (
                   <Button
                     variant="full-width"
-                    text="Notify Me"
+                    text="RSVP for this session"
                     onClick={(): void => {
                       openModal();
                     }}
@@ -160,7 +160,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 return (
                   <Button
                     variant="full-width"
-                    text={isHost ? "Go Live" : "Join Stream"}
+                    text={isHost ? "Go live" : "Join Stream"}
                     onClick={(): void => {
                       postGroupRequest(true);
                     }}
@@ -188,7 +188,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               return (
                 <Button
                   variant="full-width"
-                  text="Notify Me"
+                  text="RSVP for this session"
                   onClick={(): void => {
                     postGroupRequest();
                   }}
