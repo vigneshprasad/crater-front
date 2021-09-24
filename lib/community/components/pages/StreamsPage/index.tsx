@@ -24,8 +24,6 @@ export default function StreamsPage(): JSX.Element {
 
   if (loading || !liveStreams || !upcoming) return <Box>Loading...</Box>;
 
-  console.log(liveStreams);
-
   return (
     <>
       <Box px={[space.xxs, space.xs]} py={[space.xxs, space.s]}>

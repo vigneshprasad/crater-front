@@ -41,23 +41,17 @@ export default function useWebinarSocket(
     }
   }, [_socket]);
 
-  const onInit = useCallback(
-    (event: Event) => {
-      if (_socket.current) {
-        console.log(event);
-        console.log("ready");
-
-        if (interval.current) {
-          clearInterval(interval.current);
-          interval.current = undefined;
-        }
-
-        _socket.current.addEventListener("message", messageHandler);
-        interval.current = setInterval(sendData, 10000);
+  const onInit = useCallback(() => {
+    if (_socket.current) {
+      if (interval.current) {
+        clearInterval(interval.current);
+        interval.current = undefined;
       }
-    },
-    [_socket, sendData, messageHandler]
-  );
+
+      _socket.current.addEventListener("message", messageHandler);
+      interval.current = setInterval(sendData, 10000);
+    }
+  }, [_socket, sendData, messageHandler]);
 
   useEffect(() => {
     if (session && session.user) {

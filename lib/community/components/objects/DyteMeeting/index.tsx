@@ -38,7 +38,6 @@ export default function DyteMeeting({
           authToken: token,
         }}
         onInit={(dyteMeeting) => {
-          console.log(dyteMeeting);
           meeting.current = dyteMeeting;
         }}
       />
