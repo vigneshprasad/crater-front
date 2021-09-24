@@ -4,7 +4,7 @@ import { useTheme } from "styled-components";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
-import { Avatar, Box, Grid, Icon, Text } from "@/common/components/atoms";
+import { Avatar, Box, Grid, Icon, Link, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import ExpandingText from "@/common/components/objects/ExpandingText";
@@ -95,7 +95,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
           </Box>
           <Grid py={[space.xxs, space.s]} gridGap={space.xs}>
             <Grid
-              gridTemplateColumns={["1fr", "1fr 240px"]}
+              gridTemplateColumns={["1fr", "1fr 280px"]}
               gridTemplateRows="min-content"
               gridGap={space.xs}
               alignItems="center"
@@ -111,7 +111,6 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                     {webinar.host_detail?.name}
                   </Text>
                   <ExpandingText
-                    maxWidth="80%"
                     textStyle="caption"
                     maxLines={1}
                     color={colors.white[1]}
@@ -121,7 +120,11 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                 </Box>
               </Grid>
 
-              <Grid gridAutoFlow="column" gridAutoColumns="max-content">
+              <Grid
+                justifyContent={["start", "end"]}
+                gridAutoFlow="column"
+                gridAutoColumns="min-content"
+              >
                 <Button mr={space.xxs} variant="nav-button" text="AMA" />
                 <Button
                   border={`2px solid ${colors.slate}`}
@@ -134,9 +137,10 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             </Grid>
 
             <Grid
-              gridTemplateColumns={["1fr", "1fr 240px"]}
+              gridTemplateColumns={["1fr", "1fr 280px"]}
               gridGap={space.xs}
-              alignItems="reverse"
+              placeItems="start"
+              gridTemplateRows="min-content"
             >
               <Grid gridRow={[0, 1]}>
                 <Text mb={space.xs} textStyle="headline5">
@@ -175,10 +179,12 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             members={members}
             loading={membersLoading}
           />
+          <Link href="/community" boxProps={{ target: "_blank" }}>
+            <Button variant="full-width" text="Network with Members" />
+          </Link>
         </Box>
       </Grid>
-
-      <Box h={space.l} />
+      <Box h={[space.s, space.xxl]} />
     </BaseLayout>
   );
 }

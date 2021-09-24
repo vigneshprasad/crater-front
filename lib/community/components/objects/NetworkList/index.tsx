@@ -19,19 +19,20 @@ export default function NetworkList({
   const { space, colors, radii } = useTheme();
   return (
     <>
-      <Text px={space.xxs} textStyle="headline6">
+      <Text px={space.xxs} textStyle="headlineBold">
         {`Following ${webinar.host_detail?.name}`}
       </Text>
       <Grid
+        borderRadius={`${radii.xxs} ${radii.xxs} 0 0`}
         gridAutoFlow="row"
         gridGap={space.xs}
         gridAutoRows="min-content"
         bg={colors.black[4]}
-        my={space.xs}
+        mt={space.xxs}
         p={space.xs}
-        borderRadius={radii.xxs}
-        maxHeight={420}
+        maxHeight="40vh"
         h="100%"
+        overflowY="auto"
       >
         {(() => {
           if (loading) {

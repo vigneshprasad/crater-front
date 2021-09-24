@@ -19,16 +19,16 @@ export default function UpcomingStreamsList({
   const { space, colors, radii } = useTheme();
   return (
     <>
-      <Text mb={space.xs} px={[0, space.xxs]} textStyle="headline6">
+      <Text mb={space.xxs} px={[0, space.xxs]} textStyle="headlineBold">
         Similar Streams
       </Text>
 
       <Grid
         borderRadius={radii.xxs}
         p={space.xs}
-        mb={space.xs}
+        mb={space.xxs}
         bg={colors.black[2]}
-        maxHeight={360}
+        maxHeight="40vh"
         h="100%"
         gridAutoFlow="row"
         gridAutoRows="min-content"
