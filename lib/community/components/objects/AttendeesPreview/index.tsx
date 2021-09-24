@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import { Avatar, Flex, Grid, Text } from "@/common/components/atoms";
-import { Speaker } from "@/creators/types/community";
+import { Speaker } from "@/community/types/community";
 
 interface IProps {
   attendees: Speaker[];

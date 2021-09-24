@@ -3,7 +3,7 @@ import { useTheme } from "styled-components";
 
 import { IRtcUser } from "@/agora/types/rtc";
 import { Grid } from "@/common/components/atoms";
-import { Speaker } from "@/creators/types/community";
+import { Speaker } from "@/community/types/community";
 
 import SpeakerItem from "../SpeakerItem";
 

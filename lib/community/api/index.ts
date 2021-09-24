@@ -9,7 +9,7 @@ import {
   GroupRequest,
   PostGroupRequest,
   Webinar,
-} from "@/creators/types/community";
+} from "@/community/types/community";
 
 interface IApiClientResult {
   getWebinar: (id: string) => Promise<ApiResult<Webinar, AxiosError>>;

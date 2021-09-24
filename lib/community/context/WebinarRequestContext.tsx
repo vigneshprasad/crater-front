@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import { GroupRequest } from "@/creators/types/community";
+import { GroupRequest } from "@/community/types/community";
 
 interface IWebinarRequestState {
   webinarRequest?: GroupRequest;

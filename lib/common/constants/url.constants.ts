@@ -10,12 +10,15 @@ export const API_URL_CONSTANTS = {
   },
   user: {
     user: "/user/auth/user/",
-    profile: "user/auth/profile/",
+    profile: "/user/auth/profile/",
+    network: "/user/auth/network/",
   },
   integrations: {
     dyte: {
       getParticpant: (groupId: string): string =>
         `integrations/dyte/participant/${groupId}/`,
+      connect: (groupId: string): string =>
+        `integrations/dyte/participant/${groupId}/connect/`,
     },
   },
   conversations: {
