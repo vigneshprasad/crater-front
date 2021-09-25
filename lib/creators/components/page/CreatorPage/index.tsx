@@ -35,13 +35,13 @@ export default function CreatorPage({
     <>
       {/* Cover Image */}
       <Box h={240} position="relative">
-        {creator.cover_file && (
+        {creator.profile_detail.cover_file && (
           <Image
             objectPosition="center"
-            src={creator.profile_properties?.cover_file ?? DEFAULT_COVER}
+            src={creator.profile_detail?.cover_file ?? DEFAULT_COVER}
             objectFit="cover"
             layout="fill"
-            alt={creator.profile_properties?.name}
+            alt={creator.profile_detail?.name}
           />
         )}
       </Box>
@@ -50,20 +50,21 @@ export default function CreatorPage({
         <Grid
           bg={colors.black[4]}
           alignItems="center"
-          p={space.s}
+          px={space.s}
+          py={space.xxs}
           gridTemplateColumns="min-content 1fr min-content"
           gridGap={space.xxs}
         >
           <Box borderRadius="50%" p={6} border={`2px solid ${colors.accent}`}>
             <Avatar
-              image={creator.profile_properties?.photo}
-              alt={creator.profile_properties?.name}
+              image={creator.profile_detail?.photo}
+              alt={creator.profile_detail?.name}
             />
           </Box>
           <Box>
             <Flex alignItems="center">
               <Text mr={space.xxs} textStyle="headline6">
-                {creator.profile_properties?.name}
+                {creator.profile_detail?.name}
               </Text>
               {creator.certified && (
                 <Icon color={colors.accent} size={18} icon="CheckCircle" />
