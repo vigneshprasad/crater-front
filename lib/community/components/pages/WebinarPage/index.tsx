@@ -4,6 +4,7 @@ import { useTheme } from "styled-components";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
+import useAuth from "@/auth/context/AuthContext";
 import { Avatar, Box, Grid, Icon, Link, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
@@ -49,6 +50,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   const { webinar, loading } = useWebinar();
   const { upcoming, loading: upcomingLoading } = useUpcomingStreams();
   const { dyteParticipant, error } = useDyteWebinar();
+  const { user } = useAuth();
   const { followerCount } = useWebinarSocket(id);
   const router = useRouter();
   const { members, loading: membersLoading } = useNetworkList();
@@ -126,7 +128,8 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                 gridAutoColumns="min-content"
               >
                 <Link
-                  href={`https://worknetwork.typeform.com/to/TmRSVFoi#session=${webinar.id}`}
+                  href={`https://worknetwork.typeform.com/to/TmRSVFoi#session=${webinar.id}&phonenumber=${user?.phone_number}`}
+                  boxProps={{ target: "_blank" }}
                 >
                   <Button mr={space.xxs} variant="nav-button" text="AMA" />
                 </Link>
