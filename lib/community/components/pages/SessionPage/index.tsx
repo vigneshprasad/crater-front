@@ -40,7 +40,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const router = useRouter();
   const { webinar, mutateWebinar } = useWebinar();
   const { webinarRequest, mutateRequest } = useWebinarRequest();
-  const { space, radii, colors } = useTheme();
+  const { space, radii, colors, zIndices } = useTheme();
   const [showSuccess, setShowSuccess] = useState(false);
   const { user } = useAuth();
   const { openModal } = useAuthModal();
@@ -144,76 +144,84 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             gridAutoFlow="row"
             gridAutoRows="min-content"
           >
-            {(() => {
-              if (!user) {
+            <Box
+              position={["fixed", "static"]}
+              bottom={[20, "auto"]}
+              left={[16, "auto"]}
+              right={[16, "auto"]}
+              zIndex={[zIndices.overlay - 10, "auto"]}
+            >
+              {(() => {
+                if (!user) {
+                  return (
+                    <Button
+                      variant="full-width"
+                      text="RSVP for this session"
+                      onClick={(): void => {
+                        openModal();
+
+                        sendDataToSegment({
+                          actionName: "Notify Me",
+                          datetime: DateTime.now().toFormat("ff"),
+                          username: "",
+                        });
+                      }}
+                    />
+                  );
+                }
+
+                if (isLiveNow) {
+                  return (
+                    <Button
+                      variant="full-width"
+                      text={isHost ? "Go live" : "Join Stream"}
+                      onClick={(): void => {
+                        postGroupRequest(true);
+
+                        sendDataToSegment({
+                          actionName: "Join Stream",
+                          datetime: DateTime.now().toFormat("ff"),
+                          username: user?.name,
+                        });
+                      }}
+                    />
+                  );
+                }
+
+                if (
+                  webinarRequest &&
+                  webinarRequest.status === RequestStatus.accepted
+                ) {
+                  return (
+                    <Box
+                      borderRadius={radii.xxs}
+                      py={space.xxs}
+                      border={`2px solid ${colors.accent}`}
+                    >
+                      <Text textStyle="buttonLarge" textAlign="center">
+                        {`You will be notified when ${host_detail?.name} is live`}
+                      </Text>
+                    </Box>
+                  );
+                }
+
                 return (
                   <Button
                     variant="full-width"
                     text="RSVP for this session"
                     onClick={(): void => {
-                      openModal();
+                      postGroupRequest();
 
                       sendDataToSegment({
                         actionName: "Notify Me",
-                        datetime: DateTime.now().toFormat("ff"),
-                        username: "",
-                      });
-                    }}
-                  />
-                );
-              }
-
-              if (isLiveNow) {
-                return (
-                  <Button
-                    variant="full-width"
-                    text={isHost ? "Go live" : "Join Stream"}
-                    onClick={(): void => {
-                      postGroupRequest(true);
-
-                      sendDataToSegment({
-                        actionName: "Join Stream",
                         datetime: DateTime.now().toFormat("ff"),
                         username: user?.name,
                       });
                     }}
                   />
                 );
-              }
-
-              if (
-                webinarRequest &&
-                webinarRequest.status === RequestStatus.accepted
-              ) {
-                return (
-                  <Box
-                    borderRadius={radii.xxs}
-                    py={space.xxs}
-                    border={`2px solid ${colors.accent}`}
-                  >
-                    <Text textStyle="buttonLarge" textAlign="center">
-                      {`You will be notified when ${host_detail?.name} is live`}
-                    </Text>
-                  </Box>
-                );
-              }
-
-              return (
-                <Button
-                  variant="full-width"
-                  text="RSVP for this session"
-                  onClick={(): void => {
-                    postGroupRequest();
-
-                    sendDataToSegment({
-                      actionName: "Notify Me",
-                      datetime: DateTime.now().toFormat("ff"),
-                      username: user?.name,
-                    });
-                  }}
-                />
-              );
-            })()}
+              })()}
+            </Box>
 
             <Text
               pt={space.xxs}
@@ -316,6 +324,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             </Grid>
           </Grid>
         </Grid>
+        <Box h={space.l} />
       </BaseLayout>
     </>
   );

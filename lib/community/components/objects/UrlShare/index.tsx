@@ -16,7 +16,9 @@ export default function UrlShare(): JSX.Element {
 
   useEffect(() => {
     const location = window.location.href;
-    setUrl(location);
+    const urlObj = new URL(location);
+
+    setUrl(`${urlObj.origin}${urlObj.pathname}`);
   }, []);
 
   return (
@@ -28,7 +30,7 @@ export default function UrlShare(): JSX.Element {
       borderRadius={radii.xxs}
       border={`2px solid ${borders.main}`}
     >
-      <Text maxLines={1} flex="1">
+      <Text maxLines={1} flex="1" wordBreak="break-word">
         {url}
       </Text>
       <IconButton

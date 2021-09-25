@@ -34,7 +34,11 @@ export function Logo({
         >
           <Text textStyle="logo">Crater</Text>
           <Box w={1} h="40%" bg={colors.slate} />
-          <Text color={colors.slate} textStyle="caption">
+          <Text
+            display={["none", "block"]}
+            color={colors.slate}
+            textStyle="caption"
+          >
             Formerly WorkNetwork
           </Text>
         </Grid>

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "hoist-non-react-statics/node_modules/@types/react";
+import { PropsWithChildren } from "react";
 import styled, { useTheme } from "styled-components";
 
 import { Modal, IModalProps, Grid, Box } from "../../atoms";
