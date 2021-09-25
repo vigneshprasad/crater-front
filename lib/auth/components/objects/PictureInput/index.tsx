@@ -10,14 +10,13 @@ import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, Icon, Text } from "@/common/components/atoms";
+import { Box, BoxProps, Icon, Text } from "@/common/components/atoms";
 
-type IProps = {
+type IProps = Omit<BoxProps, "onChange"> & {
   alt?: string;
   photo?: string;
   onChange?: (file: File) => void;
   disabled?: boolean;
-  size?: number;
   error?: string;
 };
 
@@ -53,6 +52,7 @@ export default function PictureInput({
   size = 120,
   disabled = false,
   error,
+  ...rest
 }: IProps): JSX.Element {
   const { colors } = useTheme();
   const [photoFile, setPhotoFile] = useState<File | undefined>(undefined);
@@ -86,7 +86,7 @@ export default function PictureInput({
 
   return (
     <>
-      <Container size={size}>
+      <Container size={size} {...rest}>
         <input
           style={{ display: "none" }}
           ref={inputRef}

@@ -13,10 +13,11 @@
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
+    "@segment/snippet": "^4.15.3",
     "agora-rtc-sdk-ng": "^4.6.3",
     "axios": "^0.21.1",
     "csstype": "^3.0.8",
-    "dyte-client": "^0.7.0",
+    "dyte-client": "^0.8.1",
     "framer-motion": "^4.1.17",
     "libphonenumber-js": "^1.9.22",
     "luxon": "^2.0.2",
@@ -48,7 +49,6 @@
     "@typescript-eslint/parser": "^4.28.3",
     "circular-dependency-plugin": "^5.2.2",
     "cross-env": "^7.0.3",
-    "duplicate-package-checker-webpack-plugin": "^3.0.0",
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1",
     "eslint-config-prettier": "^8.3.0",
@@ -58,7 +58,6 @@
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.8",
     "file-loader": "^6.2.0",
-    "madge": "^5.0.1",
     "prettier": "^2.3.2",
     "typescript": "4.3.5",
     "url-loader": "^4.1.1"

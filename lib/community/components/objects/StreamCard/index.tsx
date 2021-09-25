@@ -1,17 +1,23 @@
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
 import { Avatar, Box, Grid, Link, Text } from "@/common/components/atoms";
 import colors from "@/common/theme/colors";
-import { Webinar } from "@/creators/types/community";
+import DateTime from "@/common/utils/datetime/DateTime";
+import { Webinar } from "@/community/types/community";
 
 interface IProps {
   stream: Webinar;
 }
 
+const Span = styled.span`
+  color: ${({ theme }) => theme.colors.accent};
+`;
+
 export default function StreamCard({ stream }: IProps): JSX.Element {
   const { space, radii } = useTheme();
+  const startTime = DateTime.parse(stream.start);
   return (
     <Link key={stream.id} href={`/session/${stream.id}`}>
       <Grid gridGap={space.xs}>
@@ -29,6 +35,19 @@ export default function StreamCard({ stream }: IProps): JSX.Element {
               alt={stream.topic_detail.name}
             />
           )}
+          <Box
+            borderRadius={4}
+            py={2}
+            px={space.xxxs}
+            bg={colors.black[0]}
+            position="absolute"
+            top={space.xxxs}
+            left={space.xxxs}
+          >
+            <Text textStyle="caption">
+              <Span>Live On</Span> {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
+            </Text>
+          </Box>
         </Box>
         <Grid
           gridTemplateColumns="min-content 1fr"

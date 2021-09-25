@@ -4,7 +4,7 @@ import { SWRInfiniteResponse, useSWRInfinite } from "swr";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
 import fetcher from "@/common/utils/fetcher";
-import { Webinar } from "@/creators/types/community";
+import { Webinar } from "@/community/types/community";
 
 interface ILiveStreamsState {
   liveStreams?: Webinar[];
@@ -20,6 +20,7 @@ export type IStreamsProviderProps = PropsWithChildren<{
 }>;
 
 export function LiveStreamsProvider({
+  initial,
   ...rest
 }: IStreamsProviderProps): JSX.Element {
   const {
@@ -34,6 +35,9 @@ export function LiveStreamsProvider({
     },
     async (key: string) => {
       return (await fetcher<PageResponse<Webinar>>(key)).results;
+    },
+    {
+      initialData: [[...(initial ? [...initial] : [])]],
     }
   );
   const value: ILiveStreamsState = useMemo(

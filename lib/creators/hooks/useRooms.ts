@@ -2,7 +2,7 @@ import useSWR from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
-import { Room } from "../types/community";
+import { Room } from "../../community/types/community";
 
 export type IUseRoomsProps = {
   host?: string;

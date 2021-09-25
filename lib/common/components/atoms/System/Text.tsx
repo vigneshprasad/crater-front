@@ -17,7 +17,7 @@ const { fonts, colors } = theme;
 const variants = {
   headline3: {
     fontFamily: fonts.heading,
-    fontSize: ["4rem"],
+    fontSize: ["3.2rem", "4rem"],
     fontWeight: "500",
     lineHeight: ["5.2rem"],
   },
@@ -40,7 +40,7 @@ const variants = {
   },
   headlineBold: {
     fontFamily: fonts.body,
-    fontSize: ["1.5rem"],
+    fontSize: ["1.8rem"],
     fontWeight: "700",
   },
   logo: {
@@ -101,6 +101,11 @@ const variants = {
     fontSize: ["1.1rem"],
     fontVariationSettings: `'wght' 700`,
     textTransform: "uppercase",
+  },
+  termsConditions: {
+    fontFamily: fonts.body,
+    lineHeight: ["1.2rem"],
+    fontSize: ["1rem"],
   },
 };
 

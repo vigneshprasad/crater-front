@@ -4,7 +4,7 @@ import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
 import fetcher from "@/common/utils/fetcher";
 
-import { Community } from "../types/community";
+import { Community } from "../../community/types/community";
 
 export type IUseCommunityProps = {
   creatorId: number;

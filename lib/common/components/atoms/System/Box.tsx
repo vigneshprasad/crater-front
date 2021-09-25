@@ -62,6 +62,10 @@ export type BaseBoxProps = BackgroundProps &
     transform?: ResponsiveValue<CSS.Property.Transform, CustomTheme>;
     w?: ResponsiveValue<CSS.Property.Width | number, CustomTheme>;
     h?: ResponsiveValue<CSS.Property.Height | number, CustomTheme>;
+    placeItems?: ResponsiveValue<CSS.Property.PlaceItems, CustomTheme>;
+    placeContent?: ResponsiveValue<CSS.Property.PlaceContent, CustomTheme>;
+    visibility?: ResponsiveValue<CSS.Property.Visibility, CustomTheme>;
+    wordBreak?: ResponsiveValue<CSS.Property.WordBreak, CustomTheme>;
   };
 
 export type BoxProps = BaseBoxProps & React.HTMLAttributes<HTMLDivElement>;
@@ -96,6 +100,26 @@ const h = style({
   cssProperty: "height",
 });
 
+const placeItems = style({
+  prop: "placeItems",
+  cssProperty: "placeItems",
+});
+
+const placeContent = style({
+  prop: "placeContent",
+  cssProperty: "placeContent",
+});
+
+const visibility = style({
+  prop: "visibility",
+  cssProperty: "visibility",
+});
+
+const wordBreak = style({
+  prop: "wordBreak",
+  cssProperty: "wordBreak",
+});
+
 export const Box = styled.div<BoxProps>`
   display: block;
   box-sizing: border-box;
@@ -118,4 +142,8 @@ export const Box = styled.div<BoxProps>`
   ${transform}
   ${typography}
   ${boxShadow}
+  ${placeItems}
+  ${placeContent}
+  ${visibility}
+  ${wordBreak}
 `;

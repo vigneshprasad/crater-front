@@ -19,6 +19,6 @@
       "@/*": ["./lib/*"]
     }
   },
-  "include": ["next-env.d.ts","lib/common/types/**/*.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts","lib/common/types/**/*.d.ts", "**/*.ts", "**/*.tsx", "lib/community/context/`"],
   "exclude": ["node_modules", "scripts"]
 }

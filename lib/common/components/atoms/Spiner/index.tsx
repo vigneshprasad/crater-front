@@ -2,11 +2,13 @@ import * as CSS from "csstype";
 import { motion } from "framer-motion";
 import styled, { useTheme } from "styled-components";
 
-interface IProps {
+import { Box } from "../System/Box";
+
+type IProps = {
   size?: number;
   strokeWidth?: number;
   strokeColor?: CSS.Property.Color;
-}
+};
 
 const Circle = styled(motion.circle)``;
 
@@ -14,13 +16,14 @@ export default function Spinner({
   size = 44,
   strokeWidth = 4,
   strokeColor,
+  ...rest
 }: IProps): JSX.Element {
   const { colors } = useTheme();
 
   const radius = size / 2 - strokeWidth * 2;
   const circumference = radius * 2 * Math.PI;
   return (
-    <svg height="48" width="48">
+    <Box as="svg" size={size} {...rest}>
       <Circle
         initial={{
           strokeDasharray: `${circumference} ${circumference}`,
@@ -36,17 +39,17 @@ export default function Spinner({
           ],
         }}
         stroke={strokeColor || colors.accent}
-        strokeWidth="4"
+        strokeWidth={strokeWidth}
         fill="transparent"
         r={radius}
-        cx="24"
-        cy="24"
+        cx={size / 2}
+        cy={size / 2}
         transition={{
           loop: Infinity,
           duration: 2,
           ease: "easeInOut",
         }}
       />
-    </svg>
+    </Box>
   );
 }

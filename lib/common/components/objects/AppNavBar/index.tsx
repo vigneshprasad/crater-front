@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 
-import { AnimatedBox, Box, Grid } from "../../atoms";
+import { AnimatedBox, Box, Grid, Link, Text } from "../../atoms";
 import { Avatar } from "../../atoms/Avatar";
 import { Button } from "../../atoms/Button";
 import { Logo } from "../Logo";
@@ -16,12 +16,12 @@ export default function AppNavBar(): JSX.Element {
   const { profile, loading } = useAuth();
   const { openModal } = useAuthModal();
 
-  const handleOnClickUserImage = (): void => {
-    router.push("/account/");
-  };
+  // const handleOnClickUserImage = (): void => {
+  //   router.push("/account/");
+  // };
 
   const handleLogoClick = (): void => {
-    router.push("//joincrater.club");
+    router.push("/");
   };
 
   return (
@@ -37,32 +37,49 @@ export default function AppNavBar(): JSX.Element {
 
       <Box />
 
-      {(() => {
-        if (loading) {
-          return (
-            <AnimatedBox
-              size={32}
-              borderRadius="50%"
-              animate={{ background: ["#353535", "#a8a8a8"] }}
-              transition={{ flip: Infinity, duration: 1 }}
-            />
-          );
-        }
+      <Grid
+        gridAutoFlow="column"
+        gridAutoColumns="max-content"
+        alignItems="center"
+        gridGap={space.xxs}
+      >
+        <Box display={["none", "block"]}>
+          <Link href="//joincrater.club/">
+            <Text color={colors.accent} textStyle="button">
+              About
+            </Text>
+          </Link>
+        </Box>
 
-        if (profile) {
-          return (
-            <Box cursor="pointer" onClick={handleOnClickUserImage}>
-              <Avatar
-                alt={profile.name ?? "username"}
+        {(() => {
+          if (loading) {
+            return (
+              <AnimatedBox
                 size={32}
-                image={profile.photo}
+                borderRadius="50%"
+                animate={{ background: ["#353535", "#a8a8a8"] }}
+                transition={{ flip: Infinity, duration: 1 }}
               />
-            </Box>
-          );
-        }
+            );
+          }
 
-        return <Button variant="nav-button" text="Login" onClick={openModal} />;
-      })()}
+          if (profile) {
+            return (
+              <Box>
+                <Avatar
+                  alt={profile.name ?? "username"}
+                  size={32}
+                  image={profile.photo}
+                />
+              </Box>
+            );
+          }
+
+          return (
+            <Button variant="nav-button" text="Login" onClick={openModal} />
+          );
+        })()}
+      </Grid>
     </Grid>
   );
 }

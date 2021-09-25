@@ -1,4 +1,3 @@
-import { DateTime } from "luxon";
 import { useState, useEffect } from "react";
 import { useTheme } from "styled-components";
 
@@ -19,6 +18,8 @@ import {
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import ExpandingText from "@/common/components/objects/ExpandingText";
+import DateTime from "@/common/utils/datetime/DateTime";
+import sendDataToSegment from "@/common/utils/segment";
 import WebinarApiClient from "@/community/api";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { useWebinarRequest } from "@/community/context/WebinarRequestContext";
@@ -26,7 +27,7 @@ import {
   ParticpantType,
   PostGroupRequest,
   RequestStatus,
-} from "@/creators/types/community";
+} from "@/community/types/community";
 
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
 import UrlShare from "../../objects/UrlShare";
@@ -39,7 +40,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const router = useRouter();
   const { webinar, mutateWebinar } = useWebinar();
   const { webinarRequest, mutateRequest } = useWebinarRequest();
-  const { space, radii, colors } = useTheme();
+  const { space, radii, colors, zIndices } = useTheme();
   const [showSuccess, setShowSuccess] = useState(false);
   const { user } = useAuth();
   const { openModal } = useAuthModal();
@@ -56,15 +57,14 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { start, host_detail } = webinar;
 
-  const formatted = start.replace("T", " ").replace(".000000", "");
-
-  const startTime = DateTime.fromFormat(formatted, "yyyy-MM-dd HH:mm:ss ZZZ");
+  const startTime = DateTime.parse(start);
 
   const now = DateTime.now();
   const image = webinar.topic_detail?.image;
   const endtime = startTime.plus({ minutes: 120 });
 
   const isLiveNow = now > startTime && now <= endtime;
+  const isHost = user?.pk === webinar.host;
 
   const postGroupRequest = async (redirect = false): Promise<void> => {
     if (webinarRequest?.status !== RequestStatus.accepted) {
@@ -108,7 +108,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           </Box>
         </Grid>
         <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
-          <Grid gridGap={[space.xs, space.xxs]} gridAutoFlow="row">
+          <Grid
+            gridGap={[space.xs, space.xxs]}
+            gridAutoFlow="row"
+            gridAutoRows="min-content"
+          >
             <Flex alignItems="center">
               <Icon size={24} icon="CalendarDays" />
               <Text textStyle="captionLarge" ml={12}>
@@ -140,58 +144,84 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             gridAutoFlow="row"
             gridAutoRows="min-content"
           >
-            {(() => {
-              if (!user) {
+            <Box
+              position={["fixed", "static"]}
+              bottom={[20, "auto"]}
+              left={[16, "auto"]}
+              right={[16, "auto"]}
+              zIndex={[zIndices.overlay - 10, "auto"]}
+            >
+              {(() => {
+                if (!user) {
+                  return (
+                    <Button
+                      variant="full-width"
+                      text="RSVP for this session"
+                      onClick={(): void => {
+                        openModal();
+
+                        sendDataToSegment({
+                          actionName: "Notify Me",
+                          datetime: DateTime.now().toFormat("ff"),
+                          username: "",
+                        });
+                      }}
+                    />
+                  );
+                }
+
+                if (isLiveNow) {
+                  return (
+                    <Button
+                      variant="full-width"
+                      text={isHost ? "Go live" : "Join Stream"}
+                      onClick={(): void => {
+                        postGroupRequest(true);
+
+                        sendDataToSegment({
+                          actionName: "Join Stream",
+                          datetime: DateTime.now().toFormat("ff"),
+                          username: user?.name,
+                        });
+                      }}
+                    />
+                  );
+                }
+
+                if (
+                  webinarRequest &&
+                  webinarRequest.status === RequestStatus.accepted
+                ) {
+                  return (
+                    <Box
+                      borderRadius={radii.xxs}
+                      py={space.xxs}
+                      border={`2px solid ${colors.accent}`}
+                    >
+                      <Text textStyle="buttonLarge" textAlign="center">
+                        {`You will be notified when ${host_detail?.name} is live`}
+                      </Text>
+                    </Box>
+                  );
+                }
+
                 return (
                   <Button
                     variant="full-width"
-                    text="Notify Me"
+                    text="RSVP for this session"
                     onClick={(): void => {
-                      openModal();
+                      postGroupRequest();
+
+                      sendDataToSegment({
+                        actionName: "Notify Me",
+                        datetime: DateTime.now().toFormat("ff"),
+                        username: user?.name,
+                      });
                     }}
                   />
                 );
-              }
-
-              if (isLiveNow) {
-                return (
-                  <Button
-                    variant="full-width"
-                    text="Join Stream"
-                    onClick={(): void => {
-                      postGroupRequest(true);
-                    }}
-                  />
-                );
-              }
-
-              if (
-                webinarRequest &&
-                webinarRequest.status === RequestStatus.accepted
-              ) {
-                return (
-                  <Box
-                    borderRadius={radii.xxs}
-                    py={space.xxs}
-                    border={`2px solid ${colors.accent}`}
-                  >
-                    <Text textStyle="buttonLarge" textAlign="center">
-                      {`You will be notified when ${host_detail?.name} is live`}
-                    </Text>
-                  </Box>
-                );
-              }
-
-              return (
-                <Button
-                  variant="full-width"
-                  text="Notify Me"
-                  onClick={(): void => {
-                    postGroupRequest();
-                  }}
-                />
-              );
-            })()}
+              })()}
+            </Box>
 
             <Text
               pt={space.xxs}
@@ -226,6 +256,13 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     />
                   }
                   text="Share"
+                  onClick={(): void => {
+                    sendDataToSegment({
+                      actionName: "Share on LinkedIn",
+                      datetime: DateTime.now().toFormat("ff"),
+                      username: user?.name,
+                    });
+                  }}
                 />
               </Link>
               <Link
@@ -246,6 +283,13 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     />
                   }
                   text="Tweet"
+                  onClick={(): void => {
+                    sendDataToSegment({
+                      actionName: "Share on Twitter",
+                      datetime: DateTime.now().toFormat("ff"),
+                      username: user?.name,
+                    });
+                  }}
                 />
               </Link>
             </Grid>
@@ -280,6 +324,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             </Grid>
           </Grid>
         </Grid>
+        <Box h={space.l} />
       </BaseLayout>
     </>
   );

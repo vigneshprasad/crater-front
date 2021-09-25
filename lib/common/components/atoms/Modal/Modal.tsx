@@ -9,7 +9,8 @@ import { GridProps } from "../System/Grid";
 
 export type IModalProps = GridProps & {
   visible?: boolean;
-  onClose: () => void;
+  onClose?: () => void;
+  maxWidth?: number;
 };
 
 const Overlay = styled(Box)`
@@ -26,10 +27,11 @@ export function Modal({
   children,
   onClose,
   visible = false,
+  maxWidth = 720,
   ...rest
 }: IModalProps): JSX.Element | null {
   const [showModal, setShowModal] = useState(visible);
-  const { colors, radii, space, zIndices } = useTheme();
+  const { colors, radii, zIndices } = useTheme();
   const [node, setNode] = useState<HTMLElement | undefined>();
 
   useEffect(() => {
@@ -50,30 +52,34 @@ export function Modal({
       {showModal && (
         <Overlay bg={colors.modalOverlay} onClick={onClose}>
           <Box
+            maxWidth={["calc(100% - 32px)", maxWidth]}
             onClick={(e) => e.stopPropagation()}
             position="absolute"
             top="50%"
             right="50%"
             transform="translate(50%, -50%)"
-            p={space.xs}
-            borderRadius={radii.s}
-            w="100%"
-            maxWidth={["calc(100% - 32px)", 720]}
-            minHeight={["80vh", 340]}
-            bg={colors.black[5]}
             zIndex={zIndices.modal}
+            bg={colors.black[5]}
+            w="100%"
+            h="100%"
+            maxHeight={["calc(100vh - 72px)", 640]}
+            borderRadius={radii.s}
             overflowY="auto"
-            {...rest}
           >
-            {children}
-            <IconButton
-              variant="roundSmall"
-              right={16}
-              top={16}
-              position="absolute"
-              icon="Close"
-              onClick={onClose}
-            />
+            <Box w="100%" overflowY="auto" maxHeight="100%" h="100%" {...rest}>
+              {children}
+              {onClose && (
+                <IconButton
+                  zIndex={20}
+                  variant="roundSmall"
+                  right={16}
+                  top={16}
+                  position="absolute"
+                  icon="Close"
+                  onClick={onClose}
+                />
+              )}
+            </Box>
           </Box>
         </Overlay>
       )}

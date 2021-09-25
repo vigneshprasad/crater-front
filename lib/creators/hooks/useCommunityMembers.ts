@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
 
-import { CommunityMember } from "../types/community";
+import { CommunityMember } from "../../community/types/community";
 
 export type IUseCommunityMembersProps = {
   communityId?: number;

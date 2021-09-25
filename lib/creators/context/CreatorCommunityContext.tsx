@@ -5,7 +5,7 @@ import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
 import fetcher from "@/common/utils/fetcher";
 
-import { CommunityMember } from "../types/community";
+import { CommunityMember } from "../../community/types/community";
 
 interface ICreatorCommuntyState {
   members?: CommunityMember[];

@@ -7,6 +7,7 @@ import AuthApiClient from "@/auth/api";
 import { Login } from "@/auth/utils";
 import { Form, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import Spinner from "@/common/components/atoms/Spiner";
 import { OtpInput } from "@/common/components/objects/OtpInput";
 import { PhoneInput } from "@/common/components/objects/PhoneInput";
 import useForm from "@/common/hooks/form/useForm";
@@ -43,9 +44,11 @@ export default function AuthForm(): JSX.Element {
       },
     });
   const [otpVisible, setOtpVisible] = useState(false);
-  const { space } = useTheme();
+  const { space, colors } = useTheme();
+  const [loading, setLoading] = useState(false);
 
   const getPhoneOtp = async (phoneNumber: string): Promise<void> => {
+    setLoading(true);
     try {
       await AuthApiClient.getPhoneOtp(phoneNumber);
       setOtpVisible(true);
@@ -53,6 +56,7 @@ export default function AuthForm(): JSX.Element {
       // eslint-disable-next-line no-console
       console.log(err);
     }
+    setLoading(false);
   };
 
   const performLogin = async (
@@ -87,7 +91,6 @@ export default function AuthForm(): JSX.Element {
     const data = getValidatedData();
 
     if (data !== false) {
-      console.log(data);
       const phoneNumber = `+91${data.phoneNumber}`;
       performLogin(phoneNumber, data.otp);
     }
@@ -104,12 +107,27 @@ export default function AuthForm(): JSX.Element {
       onSubmit={handleLogin}
     >
       <PhoneInput
+        disabled={loading}
         maxLength={12}
         onValueChanged={handlePhoneInputChange}
         error={fields.phoneNumber.errors[0]}
       />
       {!otpVisible && (
-        <Button onClick={handlePhoneNumberSubmit} text="Get OTP" />
+        <Button
+          suffixElement={
+            loading ? (
+              <Spinner
+                size={24}
+                strokeWidth={2}
+                strokeColor={colors.white[0]}
+              />
+            ) : undefined
+          }
+          disabled={loading}
+          onClick={handlePhoneNumberSubmit}
+          text="Get OTP"
+          m="0 auto"
+        />
       )}
       {otpVisible && (
         <>
@@ -117,10 +135,26 @@ export default function AuthForm(): JSX.Element {
             Enter OTP:
           </Text>
           <OtpInput
+            disabled={loading}
             autoFocus
             onChange={(val) => fieldValueSetter("otp", val)}
           />
-          <Button type="submit" my={[16]} text="Submit" />
+          <Button
+            suffixElement={
+              loading ? (
+                <Spinner
+                  size={24}
+                  strokeWidth={2}
+                  strokeColor={colors.white[0]}
+                />
+              ) : undefined
+            }
+            disabled={loading}
+            type="submit"
+            my={[16]}
+            text="Submit"
+            m="0 auto"
+          />
         </>
       )}
     </Form>

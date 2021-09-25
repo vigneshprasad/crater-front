@@ -1,4 +1,4 @@
-import { Community } from "./community";
+import { Community } from "../../community/types/community";
 
 export type Creator = {
   certified: boolean;

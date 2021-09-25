@@ -1,5 +1,10 @@
-import { useMemo } from "react";
-import { SyntheticEvent, useCallback, useEffect } from "react";
+import {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
@@ -7,8 +12,9 @@ import { useRouter } from "next/router";
 import UserApiClient from "@/auth/api/UserApiClient";
 import useAuth from "@/auth/context/AuthContext";
 import { Login } from "@/auth/utils";
-import { Box, Text, Form, Input } from "@/common/components/atoms";
+import { Box, Form, Input, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import Spinner from "@/common/components/atoms/Spiner";
 import ModalWithVideo from "@/common/components/objects/ModalWithVideo";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
@@ -24,8 +30,10 @@ interface IForm {
 
 export default function BasicSignupSheet(): JSX.Element {
   const { user, profile } = useAuth();
-  const { space } = useTheme();
+  const { colors, space } = useTheme();
   const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<IForm>({
     fields: {
@@ -65,7 +73,7 @@ export default function BasicSignupSheet(): JSX.Element {
 
   useEffect(() => {
     if (profile && profile.name) {
-      fieldValueSetter("name", profile.name);
+      fieldValueSetter("name", profile.name.trim());
     }
 
     if (profile && profile.photo) {
@@ -101,51 +109,42 @@ export default function BasicSignupSheet(): JSX.Element {
       event.preventDefault();
       const data = getValidatedData();
       if (data) {
+        setLoading(true);
         if (profile && profile.photo && profile.photo === data.photo) {
           delete data.photo;
         }
 
         const { name, photo, email } = data;
 
-        console.log(data);
-
         await UserApiClient()
           .postUserProfile({
             photo,
-            name,
+            name: name.trim(),
           })
           .then(async () => {
-            const [userWithToken] = await UserApiClient().postUser({
-              email,
-            });
-
-            if (userWithToken) {
-              await Login("user-update", {
-                user: JSON.stringify(userWithToken.user),
-                token: userWithToken.token,
+            if (!user?.email || user?.email !== email) {
+              const [userWithToken] = await UserApiClient().postUser({
+                email,
               });
 
-              router.reload();
+              if (userWithToken) {
+                await Login("user-update", {
+                  user: JSON.stringify(userWithToken.user),
+                  token: userWithToken.token,
+                });
+
+                router.reload();
+              }
             }
           });
+        setLoading(false);
       }
     },
-    [getValidatedData, profile, router]
+    [getValidatedData, profile, router, user]
   );
 
   return (
-    <ModalWithVideo
-      maxWidth={["calc(100% - 32px)", 960]}
-      visible={visible}
-      onClose={() => {
-        console.log("Heloo");
-      }}
-    >
-      <Box py={space.xs}>
-        <Text textStyle="headline5" maxWidth="60%">
-          Hey, please provide some basic information
-        </Text>
-      </Box>
+    <ModalWithVideo visible={visible}>
       <Form
         display="grid"
         gridAutoFlow="row"
@@ -153,14 +152,18 @@ export default function BasicSignupSheet(): JSX.Element {
         onSubmit={handleFormSubmit}
       >
         <PictureInput
+          size={[72, 96]}
+          disabled={loading}
           photo={fields.photo.value}
           alt={profile?.name}
           onChange={handlePhotoChange}
           error={fields.photo.errors?.[0]}
+          m="0 auto"
         />
         <Box>
+          <Text m="5px">Your full name</Text>
           <Input
-            placeholder="Your Name"
+            disabled={loading}
             value={fields.name.value}
             error={fields.name.errors?.[0]}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -169,9 +172,11 @@ export default function BasicSignupSheet(): JSX.Element {
           />
         </Box>
 
-        <Box>
+        <Box mb={space.xs}>
+          <Text m="5px">Email ID</Text>
+
           <Input
-            placeholder="Your email address"
+            disabled={loading}
             value={fields.email.value}
             error={fields.email.errors?.[0]}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -180,7 +185,31 @@ export default function BasicSignupSheet(): JSX.Element {
           />
         </Box>
 
-        <Button type="submit" text="Submit" />
+        <Button
+          variant="nav-button"
+          suffixElement={
+            loading ? (
+              <Spinner
+                size={24}
+                strokeWidth={2}
+                strokeColor={colors.white[0]}
+              />
+            ) : undefined
+          }
+          type="submit"
+          text="Submit"
+          disabled={loading}
+          m="0 auto"
+        />
+        <Text
+          variant="terms-conditions"
+          color={colors.black[0]}
+          textAlign="center"
+        >
+          Crater may use your phone number for important communication on
+          Whatsapp &amp; by clicking Sign Up, you agree to the Terms of service
+          &amp; privacy policy.
+        </Text>
       </Form>
     </ModalWithVideo>
   );
