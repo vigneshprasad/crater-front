@@ -25,7 +25,7 @@ export default function CommunityPage(): JSX.Element {
   const { creators, loading: creatorsLoading } = useCreatorsList();
   const { userTags, loading: tagsLoading } = useMeta();
   const videoUrl =
-    "https://1worknetwork-prod.s3.amazonaws.com/media/mp4_rsvp.mp4";
+    "https://1worknetwork-prod.s3.amazonaws.com/media/mp4_community_banner.mp4";
 
   return (
     <>
@@ -34,8 +34,8 @@ export default function CommunityPage(): JSX.Element {
       </Box>
       <CreatorsList loading={creatorsLoading} creators={creators} />
 
-      <BackgroundVideo my={space.xs} h={180} autoPlay loop w="100%">
-        <source src={videoUrl} />
+      <BackgroundVideo my={space.xs} h={180} muted autoPlay loop w="100%">
+        <source src={videoUrl} type="video/mp4" />
       </BackgroundVideo>
 
       <Box px={[space.xs, space.s]} py={space.xxs}>
