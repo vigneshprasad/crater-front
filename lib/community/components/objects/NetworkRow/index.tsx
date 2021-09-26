@@ -72,7 +72,7 @@ export default function NetworkRow({
           {`${tag.name}s`}
         </Text>
         <Text color={colors.slate} mb={space.s}>
-          Discover the best live streams anywhere.
+          Let our AI engine curate 1:1 meetings for you.
         </Text>
         <Button
           onClick={handleOnClickCard}
