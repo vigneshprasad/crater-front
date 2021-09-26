@@ -18,7 +18,6 @@ export function MembersList({ members }: IMembersListProps): JSX.Element {
           key={creator.user}
           name={creator.profile_detail?.name}
           image={creator.profile_detail?.photo}
-          tagLine={creator.tag_list?.[0].name}
         />
       ))}
     </Grid>

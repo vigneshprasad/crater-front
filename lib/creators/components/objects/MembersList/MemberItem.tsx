@@ -10,7 +10,7 @@ export type IMemberItemProps = {
   image?: string;
   name?: string;
   onClick?: () => void;
-  tagLine: string;
+  tagLine?: string;
 };
 
 const { space } = theme;
