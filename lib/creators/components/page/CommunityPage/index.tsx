@@ -34,7 +34,7 @@ export default function CommunityPage(): JSX.Element {
       </Box>
       <CreatorsList loading={creatorsLoading} creators={creators} />
 
-      <BackgroundVideo my={space.xs} h={180} muted autoPlay loop w="100%">
+      <BackgroundVideo my={space.xs} h={[72, 180]} muted autoPlay loop w="100%">
         <source src={videoUrl} type="video/mp4" />
       </BackgroundVideo>
 
