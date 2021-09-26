@@ -1,32 +1,49 @@
+import { AnimatePresence } from "framer-motion";
+import { useTheme } from "styled-components";
+
 import { Grid } from "@/common/components/atoms";
-import { theme } from "@/common/theme";
 import { Creator } from "@/creators/types/creator";
 
 import CreatorCard from "../CreatorCard";
 
 interface IProps {
-  creators: Creator[];
+  creators?: Creator[];
+  loading: boolean;
 }
 
-export default function CreatorsList({ creators }: IProps): JSX.Element {
+export default function CreatorsList({
+  creators,
+  loading,
+}: IProps): JSX.Element {
+  const { space } = useTheme();
   return (
     <Grid
-      px={[32]}
-      py={[72]}
+      px={[space.xs, space.s]}
+      py={[space.xxs]}
       overflowX="scroll"
       gridAutoFlow="column"
-      gridGap={[theme.space.s]}
-      gridAutoColumns={[280]}
-      gridTemplateRows="minmax(360px, 1fr)"
+      gridGap={[space.xxs]}
+      gridAutoColumns={[160, 180]}
     >
-      {creators.map((creator) => (
-        <CreatorCard
-          id={creator.id}
-          name={creator.profile_properties?.name}
-          key={creator.user}
-          image={creator.profile_properties?.photo}
-        />
-      ))}
+      <AnimatePresence>
+        {(() => {
+          if (loading) {
+            return Array(4)
+              .fill("")
+              .map((_, index) => <CreatorCard.Loader key={index} />);
+          }
+
+          return creators?.map((creator) => (
+            <CreatorCard
+              id={creator.id}
+              name={creator.profile_detail?.name}
+              key={creator.user}
+              image={creator.profile_detail?.photo}
+              followers={creator.follower_count}
+            />
+          ));
+        })()}
+      </AnimatePresence>
     </Grid>
   );
 }

@@ -34,6 +34,7 @@ export default function ModalWithVideo({
       <Grid
         gridTemplateColumns={["1fr", "1fr 1fr"]}
         gridGap={[space.xxs, space.xxs]}
+        alignItems={["auto", "center"]}
         h={["auto", "100%"]}
       >
         <Video autoPlay loop muted>

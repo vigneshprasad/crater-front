@@ -16,8 +16,8 @@ export function MembersList({ members }: IMembersListProps): JSX.Element {
       {members.map((creator) => (
         <MemberItem
           key={creator.user}
-          name={creator.profile_properties?.name}
-          image={creator.profile_properties?.photo}
+          name={creator.profile_detail?.name}
+          image={creator.profile_detail?.photo}
         />
       ))}
     </Grid>

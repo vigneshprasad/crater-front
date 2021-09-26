@@ -26,6 +26,8 @@ export default function AsideNav({ activeTab }: IProps): JSX.Element {
 
   return (
     <AnimatedBox
+      as="aside"
+      role="nav"
       display="grid"
       gridGap={space.xxs}
       gridAutoFlow="row"

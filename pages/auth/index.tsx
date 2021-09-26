@@ -2,13 +2,14 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 
 import AuthPage from "@/auth/components/pages/AuthPage";
+import { PageRoutes } from "@/common/constants/route.constants";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
   if (session?.user) {
     return {
       redirect: {
-        destination: "/",
+        destination: PageRoutes.home,
         permanent: false,
       },
     };

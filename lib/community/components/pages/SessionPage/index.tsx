@@ -18,6 +18,7 @@ import {
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import ExpandingText from "@/common/components/objects/ExpandingText";
+import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import sendDataToSegment from "@/common/utils/segment";
 import WebinarApiClient from "@/community/api";
@@ -83,7 +84,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     }
 
     if (redirect) {
-      router.push(`/webinar/${webinar.id}`);
+      router.push(PageRoutes.stream(webinar.id.toString()));
       return;
     }
 

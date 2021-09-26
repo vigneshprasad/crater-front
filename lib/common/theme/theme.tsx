@@ -37,6 +37,7 @@ const fonts = {
 };
 
 const radii = {
+  xxxs: 4,
   xxs: 8,
   xs: 12,
   s: 16,

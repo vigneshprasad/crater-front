@@ -2,7 +2,7 @@ import { useTheme } from "styled-components";
 
 import { Box, Grid, Text } from "@/common/components/atoms";
 import { StreamSlider } from "@/community/components/objects/StreamSlider";
-import { useCreatorCommunityMembers } from "@/creators/context/CreatorCommunityContext";
+import useNetworkList from "@/community/context/NetworkListContext";
 import useCreatorStreams from "@/creators/context/CreatorStreamsContext";
 
 import { MemberItem } from "../MembersList";
@@ -10,9 +10,11 @@ import { MemberItem } from "../MembersList";
 export default function CreatorStreamsTab(): JSX.Element {
   const { liveStreams } = useCreatorStreams();
   const { space } = useTheme();
-  const { members } = useCreatorCommunityMembers();
+  const { members } = useNetworkList();
 
-  if (!liveStreams || !members) return <Box>Loading...</Box>;
+  if (!liveStreams) {
+    return <Box>Loading</Box>;
+  }
 
   return (
     <>
@@ -24,15 +26,17 @@ export default function CreatorStreamsTab(): JSX.Element {
         <Text textStyle="title">Community Members</Text>
       </Box>
 
-      <Grid px={space.s} gridTemplateColumns="repeat(6, 1fr)">
-        {members.map((member) => (
-          <MemberItem
-            key={member.id}
-            name={member.user_properties.name}
-            image={member.user_properties.photo}
-          />
-        ))}
-      </Grid>
+      {members && (
+        <Grid px={space.s} gridTemplateColumns="repeat(6, 1fr)">
+          {members.map((member) => (
+            <MemberItem
+              key={member.pk}
+              name={member.name}
+              image={member.photo}
+            />
+          ))}
+        </Grid>
+      )}
     </>
   );
 }
