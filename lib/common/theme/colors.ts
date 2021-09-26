@@ -20,6 +20,11 @@ const colors = {
   linkedin: "#2867B2",
   modalOverlay: "rgba(0,0,0,0.3)",
   slate: "#808191",
+  muted: {
+    widow: "#BFABFF",
+    felicia: "#57BEE6",
+    sonic: "#0014A5",
+  },
 };
 
 export default colors;

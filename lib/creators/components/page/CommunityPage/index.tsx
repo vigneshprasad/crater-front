@@ -1,39 +1,89 @@
-import Image from "next/image";
+import { useState } from "react";
 
-import { Box, Text } from "@/common/components/atoms";
+import {
+  AnimatedBox,
+  Box,
+  Text,
+  BackgroundVideo,
+  Grid,
+} from "@/common/components/atoms";
+import useMeta from "@/common/context/MetaContext";
 import { theme } from "@/common/theme";
+import NetworkRow from "@/community/components/objects/NetworkRow";
 import { useCreatorsList } from "@/creators/context/CreatorsListContext";
-import { useMembersList } from "@/creators/context/MembersListContext";
 
+import ConnectModal from "../../objects/ConnectModal";
 import CreatorsList from "../../objects/CreatorsList";
-import { MembersList } from "../../objects/MembersList";
 
 export type ICommunityPageProps = {
   clubs?: string;
 };
 
 export default function CommunityPage(): JSX.Element {
-  const { space } = theme;
-  const { creators } = useCreatorsList();
-  const { members } = useMembersList();
-
-  if (!creators || !members) return <Box>Loading...</Box>;
+  const [visible, setVisible] = useState(false);
+  const { space, colors } = theme;
+  const { creators, loading: creatorsLoading } = useCreatorsList();
+  const { userTags, loading: tagsLoading } = useMeta();
+  const videoUrl =
+    "https://1worknetwork-prod.s3.amazonaws.com/media/mp4_rsvp.mp4";
 
   return (
     <>
-      <CreatorsList creators={creators} />
-      <Box position="relative" h="172px">
-        <Image
-          objectFit="cover"
-          layout="fill"
-          src="/images/img_banner.png"
-          alt="Banner image"
-        />
+      <Box px={[space.xs, space.s]} py={space.xxs}>
+        <Text textStyle="headlineBold">Crater Featured</Text>
       </Box>
-      <Box px={[space.s]} pt={[space.m]} pb={[space.s]}>
-        <Text textStyle="headline5">Member Only</Text>
+      <CreatorsList loading={creatorsLoading} creators={creators} />
+
+      <BackgroundVideo my={space.xs} h={180} autoPlay loop w="100%">
+        <source src={videoUrl} />
+      </BackgroundVideo>
+
+      <Box px={[space.xs, space.s]} py={space.xxs}>
+        <Text textStyle="headlineBold">Member Only</Text>
+        <Text color={colors.slate}>
+          Let the AI match you or request a meeting with your preferences
+        </Text>
       </Box>
-      <MembersList members={creators} />
+      <>
+        {(() => {
+          if (tagsLoading) {
+            return (
+              <Grid
+                gridAutoFlow="column"
+                px={[space.xs, space.s]}
+                py={space.xs}
+                gridGap={space.xs}
+                gridAutoColumns="min-content"
+              >
+                {Array(4)
+                  .fill("")
+                  .map((_, index) => (
+                    <AnimatedBox
+                      w={180}
+                      key={index}
+                      h={[200, 220]}
+                      animate={{ background: ["#353535", "#a8a8a8"] }}
+                      transition={{ flip: Infinity, duration: 1 }}
+                    />
+                  ))}
+              </Grid>
+            );
+          }
+
+          return userTags?.map((tag) => (
+            <NetworkRow
+              px={[space.xs, space.s]}
+              py={space.xs}
+              tag={tag}
+              key={tag.pk}
+              onClickItem={() => setVisible(true)}
+              onClickCardButton={() => setVisible(true)}
+            />
+          ));
+        })()}
+      </>
+
+      <ConnectModal visible={visible} onClose={() => setVisible(false)} />
     </>
   );
 }

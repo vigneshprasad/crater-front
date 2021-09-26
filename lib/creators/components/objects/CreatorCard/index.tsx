@@ -1,51 +1,65 @@
+import { AnimateSharedLayout } from "framer-motion";
 import { PropsWithChildren } from "react";
-import styled from "styled-components";
+import { useTheme } from "styled-components";
 
-import { Flex, Box, FlexProps, Text, Link } from "@/common/components/atoms";
+import Image from "next/image";
+
+import { AnimatedBox, Box, Text, Link, Grid } from "@/common/components/atoms";
 
 type Props = PropsWithChildren<{
   id: number;
   image?: string;
   name?: string;
+  followers: number;
 }>;
 
-const Container = styled(Flex)<FlexProps & { image?: string }>`
-  position: relative;
-  border-radius: 100px;
-  align-items: flex-end;
-  justify-content: center;
-  cursor: pointer;
-  background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.7),
-      rgba(0, 0, 0, 0.1),
-      rgba(0, 0, 0, 0)
-    ),
-    url(${({ image }) => image});
-  background-size: cover;
-  background-position: top center;
-  transition: all 400ms ease-in-out;
-
-  &:hover {
-    transform: scale(1.1, 1.1);
-  }
-`;
-
-export default function CreatorCard({ id, image, name }: Props): JSX.Element {
+export default function CreatorCard({
+  id,
+  image,
+  name,
+  followers,
+}: Props): JSX.Element {
+  const { space, colors } = useTheme();
+  const thousandMultiple = Math.round(followers / 100) / 10;
+  const formatted = `${thousandMultiple}K`;
   return (
     <Link href={`/creator/${id}`}>
-      <Container h="100%" px={[20]} image={image}>
-        <Box
-          py={[4]}
-          px={[8]}
-          position="absolute"
-          transform="translate(0,-50%)"
-        >
-          <Text textAlign="center" maxWidth="100%" textStyle="headline5">
-            {name}
+      <Grid>
+        <AnimateSharedLayout>
+          <AnimatedBox position="relative" layout h={[200, 220]}>
+            <AnimatedBox
+              top={0}
+              right={0}
+              left={0}
+              bottom={0}
+              position="absolute"
+              bg={colors.accent}
+            />
+            <AnimatedBox overflow="hidden" whileHover={{ x: 8, y: -8 }} h={220}>
+              {image && (
+                <Image objectFit="cover" layout="fill" src={image} alt={name} />
+              )}
+            </AnimatedBox>
+          </AnimatedBox>
+        </AnimateSharedLayout>
+
+        <Box py={space.xxs}>
+          <Text textStyle="title">{name}</Text>
+          <Text color={colors.slate} textStyle="body">
+            {formatted} Followers
           </Text>
         </Box>
-      </Container>
+      </Grid>
     </Link>
   );
 }
+
+CreatorCard.Loader = function Loader(): JSX.Element {
+  return (
+    <AnimatedBox
+      h={[200, 220]}
+      animate={{ background: ["#353535", "#a8a8a8"] }}
+      transition={{ flip: Infinity, duration: 1 }}
+    />
+  );
+};

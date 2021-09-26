@@ -18,25 +18,25 @@ const variants = {
   headline3: {
     fontFamily: fonts.heading,
     fontSize: ["3.2rem", "4rem"],
-    fontWeight: "500",
+    fontWeight: "600",
     lineHeight: ["5.2rem"],
   },
   headline4: {
     fontFamily: fonts.heading,
     fontSize: ["3.2rem"],
-    fontWeight: "500",
+    fontWeight: "600",
     lineHeight: ["4rem"],
   },
   headline5: {
     fontFamily: fonts.body,
-    fontSize: ["2.4rem"],
-    fontVariationSettings: `'wght' 500`,
+    fontSize: ["2.2rem"],
+    fontWeight: "600",
     lineHeight: ["3.2rem"],
   },
   headline6: {
     fontFamily: fonts.body,
     fontSize: ["1.8rem"],
-    fontVariationSettings: `'wght' 500`,
+    fontWeight: "500",
   },
   headlineBold: {
     fontFamily: fonts.body,
@@ -51,34 +51,35 @@ const variants = {
   menu: {
     fontFamily: fonts.body,
     fontSize: ["1.4rem"],
+    fontWeight: "500",
   },
   title: {
     fontFamily: fonts.body,
     fontSize: ["1.6rem"],
-    fontVariationSettings: `'wght' 600`,
+    fontWeight: "600",
     lineHeight: ["1.8rem"],
   },
   caption: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    fontVariationSettings: `'wght' 500`,
+    fontWeight: "500",
     lineHeight: ["2.2rem"],
   },
   captionLarge: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    fontVariationSettings: `'wght' 500`,
+    fontWeight: "500",
     lineHeight: ["1.8rem"],
   },
   body: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    fontVariationSettings: `'wght' 400`,
+    fontWeight: "400",
   },
   bodyLarge: {
     fontFamily: fonts.body,
     fontSize: ["1.4rem"],
-    fontVariationSettings: `'wght' 400`,
+    fontWeight: "400",
     lineHeight: ["2.4rem"],
   },
   button: {
@@ -94,12 +95,12 @@ const variants = {
   error: {
     fontFamily: fonts.body,
     fontSize: ["1.3rem"],
-    fontVariationSettings: `'wght' 500`,
+    fontWeight: "500",
   },
   placeholder: {
     fontFamily: fonts.body,
     fontSize: ["1.1rem"],
-    fontVariationSettings: `'wght' 700`,
+    fontWeight: "700",
     textTransform: "uppercase",
   },
   termsConditions: {

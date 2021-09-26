@@ -56,7 +56,9 @@ export default function useWebinarSocket(
   useEffect(() => {
     if (session && session.user) {
       const token = session.user.apiToken;
-      _socket.current = new WebSocket(`${SOCKET_URL}/${groupId}/${token}/`);
+      _socket.current = new WebSocket(
+        `${SOCKET_URL}/webinar/${groupId}/${token}/`
+      );
       _socket.current.onopen = onInit;
     }
 
