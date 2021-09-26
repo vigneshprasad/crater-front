@@ -10,6 +10,7 @@ export type IMemberItemProps = {
   image?: string;
   name?: string;
   onClick?: () => void;
+  tagLine: string;
 };
 
 const { space } = theme;
@@ -17,6 +18,7 @@ const { space } = theme;
 export function MemberItem({
   name,
   image,
+  tagLine,
   onClick,
 }: IMemberItemProps): JSX.Element {
   const src = !image || image === null ? DEFAULT_IMAGE : image;
@@ -43,7 +45,7 @@ export function MemberItem({
           </Text>
         )}
         <Text mb={space.xxs} textAlign="center">
-          Founder
+          {tagLine}
         </Text>
         <Button
           px={0}

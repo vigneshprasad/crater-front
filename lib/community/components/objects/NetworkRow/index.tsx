@@ -29,7 +29,7 @@ export default function NetworkRow({
     (index, previousData) => {
       const page = index + 1;
       if (previousData && !previousData.length) return null;
-      return `${API_URL_CONSTANTS.network.getUserProfile}?tags=${tag.pk}&page=${page}`;
+      return `${API_URL_CONSTANTS.network.getUserProfile}?new_tag=${tag.pk}&page=${page}`;
     },
     async (key: string) => {
       return (await fetcher<PageResponse<Profile>>(key)).results;
@@ -69,7 +69,7 @@ export default function NetworkRow({
       >
         <Text textStyle="headline5">Connect with</Text>
         <Text maxLines={2} textStyle="headline5" mb={space.xxs}>
-          {tag.name}
+          {`${tag.name}s`}
         </Text>
         <Text color={colors.slate} mb={space.s}>
           Discover the best live streams anywhere.
@@ -84,6 +84,7 @@ export default function NetworkRow({
       {members?.flat().map((member) => {
         return (
           <MemberItem
+            tagLine={member.tag_list?.[0].name}
             onClick={() => {
               handleOnClickItem(member);
             }}
