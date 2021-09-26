@@ -27,8 +27,9 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function ClubsTabPage({ creators }: PageProps): JSX.Element {
   const seo: NextSeoProps = {
-    title: "Community",
-    description: "",
+    title: "Crater Club: Network",
+    description:
+      "Crater is where you join live streams with the mentors & creators you follow, get to network with like-minds, and can claim exclusive access to mentors & creator by buying their tokens at the live auction",
   };
 
   return (

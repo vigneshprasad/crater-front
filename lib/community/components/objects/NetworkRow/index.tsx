@@ -22,7 +22,7 @@ export default function NetworkRow({
   onClickItem,
   onClickCardButton,
   ...rest
-}: IProps): JSX.Element {
+}: IProps): JSX.Element | null {
   const { space, colors, radii } = useTheme();
 
   const { data: members } = useSWRInfinite(
@@ -50,6 +50,10 @@ export default function NetworkRow({
       onClickCardButton();
     }
   }, [onClickCardButton]);
+
+  if (members && members.flat().length < 10) {
+    return null;
+  }
 
   return (
     <Grid

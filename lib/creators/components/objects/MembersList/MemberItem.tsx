@@ -44,7 +44,7 @@ export function MemberItem({
             {name}
           </Text>
         )}
-        <Text mb={space.xxs} textAlign="center">
+        <Text mb={space.xxs} textAlign="center" maxWidth={160}>
           {tagLine}
         </Text>
         <Button
