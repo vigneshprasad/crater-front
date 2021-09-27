@@ -1,5 +1,7 @@
 import "next-auth";
 
+import { Sector } from "@/auth/types/auth";
+
 declare module "next-auth" {
   export interface User {
     pk: string;
@@ -51,6 +53,7 @@ declare module "next-auth" {
     education_level?: number;
     sector?: number;
     years_of_experience?: number;
+    sector_detail: Sector;
   }
 }
 

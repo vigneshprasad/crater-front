@@ -39,4 +39,5 @@ export interface Profile {
   education_level?: number;
   sector?: number;
   years_of_experience?: number;
+  sector_detail: Sector;
 }
