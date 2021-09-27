@@ -1,54 +1,28 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { getSession } from "next-auth/client";
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import styled, { useTheme } from "styled-components";
 
 import { Box, Text } from "@/common/components/atoms";
-import CreatorApiClient from "@/creators/api";
 import CreatorPageLayout from "@/creators/components/layouts/CreatorPageLayout";
-import CreatorPage from "@/creators/components/page/CreatorPage";
-import { Creator } from "@/creators/types/creator";
-
-interface ServerProps {
-  id: string;
-  creator: Creator;
-}
+import CreatorPage, {
+  CreatorPageParams,
+  CreatorPageProps,
+  getCreatorStaticPaths,
+  getCreatorStaticProps,
+} from "@/creators/components/page/CreatorPage";
 
 const Span = styled.span`
   color: ${({ theme }) => theme.colors.accent};
 `;
 
-export const getServerSideProps: GetServerSideProps<ServerProps> = async ({
-  req,
-  query,
-}) => {
-  const id = query.id as string;
-  const session = await getSession({ req });
-  const [creator] = await CreatorApiClient({ req }).getCreator(id);
+export const getStaticPaths: GetStaticPaths<CreatorPageParams> =
+  getCreatorStaticPaths;
 
-  if (!session || !session.user) {
-    return {
-      redirect: {
-        destination: "/auth/",
-        permanent: false,
-      },
-    };
-  }
+export const getStaticProps: GetStaticProps<
+  CreatorPageProps,
+  CreatorPageParams
+> = getCreatorStaticProps;
 
-  if (!creator) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: {
-      id,
-      creator,
-    },
-  };
-};
-
-type IProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+type IProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function CreatorAbout({ id, creator }: IProps): JSX.Element {
   const { colors, space } = useTheme();

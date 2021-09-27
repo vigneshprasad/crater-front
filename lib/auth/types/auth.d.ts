@@ -9,23 +9,23 @@ export interface CoverFile {
 }
 
 export interface EducationLevel {
-  key: number;
-  value: string;
+  value: number;
+  name: string;
 }
 
 export interface YearsOfExperience {
-  key: number;
-  value: string;
+  value: number;
+  name: string;
 }
 
 export interface Sector {
-  key: number;
-  value: string;
+  value: number;
+  name: string;
 }
 
 export interface CompanyType {
-  key: number;
-  value: string;
+  value: number;
+  name: string;
 }
 
 export interface Profile {

@@ -10,7 +10,9 @@ import { Creator } from "../types/creator";
 
 interface ICreatorApiClient {
   getCreatorsList: (
-    certified?: boolean
+    certified?: boolean,
+    page?: number,
+    pageSize?: number
   ) => Promise<ApiResult<PageResponse<Creator>, AxiosError>>;
   getCreator: (id: string) => Promise<ApiResult<Creator, AxiosError>>;
   getCreatorStreams: (

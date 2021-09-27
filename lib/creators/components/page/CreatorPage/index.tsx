@@ -1,4 +1,6 @@
+import { GetStaticPaths, GetStaticProps } from "next";
 import DEFAULT_COVER from "public/images/img_default_cover.jpg";
+import { ParsedUrlQuery } from "querystring";
 import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
@@ -14,8 +16,53 @@ import {
   Flex,
   TabBar,
 } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
+import CreatorApiClient from "@/creators/api";
 import { useCreator } from "@/creators/context/CreatorContext";
+import { Creator } from "@/creators/types/creator";
+
+export interface CreatorPageProps {
+  id: string;
+  creator: Creator;
+}
+
+export interface CreatorPageParams extends ParsedUrlQuery {
+  id: string;
+}
+
+export const getCreatorStaticPaths: GetStaticPaths<CreatorPageParams> =
+  async () => {
+    const [pageData] = await CreatorApiClient().getCreatorsList(true, 1, 20);
+
+    if (!pageData) return { paths: [], fallback: "blocking" };
+
+    const paths = pageData.results.map(({ id }) => ({
+      params: { id: id.toString() },
+    }));
+
+    return { paths, fallback: "blocking" };
+  };
+
+export const getCreatorStaticProps: GetStaticProps<
+  CreatorPageProps,
+  CreatorPageParams
+> = async ({ params }) => {
+  const { id } = params as CreatorPageParams;
+  const [creator] = await CreatorApiClient().getCreator(id);
+
+  if (!creator) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      id,
+      creator,
+    },
+    revalidate: 10,
+  };
+};
 
 type IProps = PropsWithChildren<{
   selectedTab: string;
@@ -77,7 +124,7 @@ export default function CreatorPage({
                 : 0
             } Followers`}</Text>
           </Box>
-          <Button text="Join Club" />
+          {/* <Button text="Join Club" /> */}
         </Grid>
 
         <TabBar

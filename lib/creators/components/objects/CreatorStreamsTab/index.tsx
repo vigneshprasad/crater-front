@@ -48,7 +48,7 @@ export default function CreatorStreamsTab(): JSX.Element {
                 key={member.pk}
                 name={member.name}
                 image={member.photo}
-                tagLine={member.tag_list?.[0].name}
+                tagLine={member.tag_list?.[0]?.name}
               />
             ))}
           </Grid>
