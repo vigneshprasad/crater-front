@@ -17,7 +17,9 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
+import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
+import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import sendDataToSegment from "@/common/utils/segment";
 import WebinarApiClient from "@/community/api";
@@ -83,7 +85,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     }
 
     if (redirect) {
-      router.push(`/webinar/${webinar.id}`);
+      router.push(PageRoutes.stream(webinar.id.toString()));
       return;
     }
 
@@ -101,6 +103,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
         px={[space.xs, space.m]}
         overflowY="auto"
         pb={[space.l, space.l]}
+        aside={<AsideNav />}
       >
         <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
           <Box py={space.s}>
@@ -194,6 +197,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 ) {
                   return (
                     <Box
+                      bg={colors.black[5]}
                       borderRadius={radii.xxs}
                       py={space.xxs}
                       border={`2px solid ${colors.accent}`}

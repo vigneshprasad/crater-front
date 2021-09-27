@@ -23,7 +23,7 @@ const StyledText = styled(Text)<Props>`
     bottom: ${({ theme }) => `-${theme.space.xs}px`};
     position: absolute;
     content: "";
-    width: 4%;
+    width: 24px;
     height: 4px;
     background: ${({ theme }) => theme.colors.accent};
     border-radius: 12px;
@@ -37,7 +37,7 @@ const StyledText = styled(Text)<Props>`
 
     &::after {
       bottom: ${({ theme }) => `-${theme.space.xxs}px`};
-      width: 10%;
+      width: 24px;
     }
   }
 `;

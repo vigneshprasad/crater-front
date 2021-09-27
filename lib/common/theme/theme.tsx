@@ -37,6 +37,7 @@ const fonts = {
 };
 
 const radii = {
+  xxxs: 4,
   xxs: 8,
   xs: 12,
   s: 16,
@@ -46,6 +47,9 @@ const radii = {
 const zIndices = {
   modal: 1000,
   overlay: 900,
+  navHeader: 100,
+  sliderControls: 5,
+  asideNav: 950,
 };
 
 export const icons = iconComponents;

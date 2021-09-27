@@ -8,6 +8,7 @@ import useAuth from "@/auth/context/AuthContext";
 import { Logout } from "@/auth/utils";
 import { Box, Card, Grid } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import { PageRoutes } from "@/common/constants/route.constants";
 import colors from "@/common/theme/colors";
 
 import BasicProfileForm, {
@@ -50,7 +51,7 @@ export default function AccountTab(): JSX.Element {
 
   const postSignout = async (): Promise<void> => {
     await Logout();
-    router.push("/");
+    router.push(PageRoutes.home);
   };
 
   if (!profile) return <Box>Loading...</Box>;
@@ -75,7 +76,12 @@ export default function AccountTab(): JSX.Element {
       <BasicProfileForm data={profile} onSubmit={postBasicProfileData} />
 
       <Card>
-        <Button bg={colors.red} text="Signout" onClick={postSignout} />
+        <Button
+          borderColor={colors.red}
+          bg={colors.red}
+          text="Signout"
+          onClick={postSignout}
+        />
       </Card>
     </Grid>
   );

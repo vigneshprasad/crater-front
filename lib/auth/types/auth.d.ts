@@ -23,6 +23,11 @@ export interface Sector {
   name: string;
 }
 
+export interface CompanyType {
+  value: number;
+  name: string;
+}
+
 export interface Profile {
   pk: number;
   name: string;
@@ -37,6 +42,13 @@ export interface Profile {
   tag_list: UserTag[];
   tags?: number[];
   education_level?: number;
+  education_level_detail?: EducationLevel;
   sector?: number;
+  sector_detail?: Sector;
   years_of_experience?: number;
+  years_of_experience_detail?: YearsOfExperience;
+  years_of_experience?: number;
+  years_of_experience_detail?: YearsOfExperience;
+  company_type?: number;
+  company_type_detail?: CompanyType;
 }

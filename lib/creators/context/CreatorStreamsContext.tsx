@@ -25,7 +25,7 @@ export function CreatorStreamProvider({
   ...rest
 }: IProps): JSX.Element {
   const { data: liveStreams, error } = useSWR<Webinar[]>(
-    `${API_URL_CONSTANTS.groups.getAllLiveWebinars}?host=${creatorId}`,
+    `${API_URL_CONSTANTS.groups.getWebinars}?host=${creatorId}`,
     { initialData: live }
   );
 

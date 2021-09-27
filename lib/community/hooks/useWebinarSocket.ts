@@ -18,7 +18,6 @@ export default function useWebinarSocket(
   const [session] = useSession();
   const _socket = useRef<WebSocket>();
   const [followerCount, setFollowerCount] = useState<number | null>(null);
-  const interval = useRef<NodeJS.Timer>();
 
   const messageHandler = useCallback(
     (event: MessageEvent<string>) => {
@@ -32,31 +31,18 @@ export default function useWebinarSocket(
     [setFollowerCount]
   );
 
-  const sendData = useCallback(() => {
-    if (_socket.current) {
-      const data = {
-        event: "live_count",
-      };
-      _socket.current?.send(JSON.stringify(data));
-    }
-  }, [_socket]);
-
   const onInit = useCallback(() => {
     if (_socket.current) {
-      if (interval.current) {
-        clearInterval(interval.current);
-        interval.current = undefined;
-      }
-
       _socket.current.addEventListener("message", messageHandler);
-      interval.current = setInterval(sendData, 10000);
     }
-  }, [_socket, sendData, messageHandler]);
+  }, [_socket, messageHandler]);
 
   useEffect(() => {
     if (session && session.user) {
       const token = session.user.apiToken;
-      _socket.current = new WebSocket(`${SOCKET_URL}/${groupId}/${token}/`);
+      _socket.current = new WebSocket(
+        `${SOCKET_URL}/webinar/${groupId}/${token}/`
+      );
       _socket.current.onopen = onInit;
     }
 

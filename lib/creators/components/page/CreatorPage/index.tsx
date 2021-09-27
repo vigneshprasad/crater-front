@@ -1,9 +1,7 @@
-import DEFAULT_COVER from "public/images/img_default_cover.jpg";
+import { GetStaticPaths, GetStaticProps } from "next";
+import { ParsedUrlQuery } from "querystring";
 import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
-
-import Image from "next/image";
-import { useRouter } from "next/router";
 
 import {
   Avatar,
@@ -14,8 +12,53 @@ import {
   Flex,
   TabBar,
 } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
+import CreatorApiClient from "@/creators/api";
 import { useCreator } from "@/creators/context/CreatorContext";
+import { Creator } from "@/creators/types/creator";
+
+export interface CreatorPageProps {
+  id: string;
+  creator: Creator;
+}
+
+export interface CreatorPageParams extends ParsedUrlQuery {
+  id: string;
+}
+
+export const getCreatorStaticPaths: GetStaticPaths<CreatorPageParams> =
+  async () => {
+    const [pageData] = await CreatorApiClient().getCreatorsList(true, 1, 20);
+
+    if (!pageData) return { paths: [], fallback: "blocking" };
+
+    const paths = pageData.results.map(({ id }) => ({
+      params: { id: id.toString() },
+    }));
+
+    return { paths, fallback: "blocking" };
+  };
+
+export const getCreatorStaticProps: GetStaticProps<
+  CreatorPageProps,
+  CreatorPageParams
+> = async ({ params }) => {
+  const { id } = params as CreatorPageParams;
+  const [creator] = await CreatorApiClient().getCreator(id);
+
+  if (!creator) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      id,
+      creator,
+    },
+    revalidate: 10,
+  };
+};
 
 type IProps = PropsWithChildren<{
   selectedTab: string;
@@ -26,66 +69,65 @@ export default function CreatorPage({
   selectedTab,
 }: IProps): JSX.Element {
   const { creator } = useCreator();
-  const { space, colors } = useTheme();
-  const router = useRouter();
+  const { space, colors, zIndices } = useTheme();
 
   if (!creator) return <Box>Loading...</Box>;
 
   return (
     <>
       {/* Cover Image */}
-      <Box h={240} position="relative">
-        {creator.cover_file && (
-          <Image
-            objectPosition="center"
-            src={creator.profile_properties?.cover_file ?? DEFAULT_COVER}
-            objectFit="cover"
-            layout="fill"
-            alt={creator.profile_properties?.name}
+      <Box
+        h={240}
+        backgroundPosition="bottom fixed"
+        backgroundSize="cover"
+        position="relative"
+        backgroundImage={`url(${creator.profile_detail.cover_file})`}
+      />
+
+      <Grid
+        bg={colors.black[4]}
+        alignItems="center"
+        px={space.s}
+        py={space.xxs}
+        gridTemplateColumns="min-content 1fr max-content"
+        gridGap={space.xxs}
+        zIndex={zIndices.navHeader}
+      >
+        <Box borderRadius="50%" p={6} border={`2px solid ${colors.accent}`}>
+          <Avatar
+            image={creator.profile_detail?.photo}
+            alt={creator.profile_detail?.name}
           />
-        )}
-      </Box>
+        </Box>
+        <Box>
+          <Flex alignItems="center">
+            <Text mr={space.xxs} textStyle="headline6">
+              {creator.profile_detail?.name}
+            </Text>
+            {creator.certified && (
+              <Icon color={colors.accent} size={18} icon="CheckCircle" />
+            )}
+          </Flex>
 
-      <Box position="sticky" top={0} zIndex={10}>
-        <Grid
-          bg={colors.black[4]}
-          alignItems="center"
-          p={space.s}
-          gridTemplateColumns="min-content 1fr min-content"
-          gridGap={space.xxs}
-        >
-          <Box borderRadius="50%" p={6} border={`2px solid ${colors.accent}`}>
-            <Avatar
-              image={creator.profile_properties?.photo}
-              alt={creator.profile_properties?.name}
-            />
-          </Box>
-          <Box>
-            <Flex alignItems="center">
-              <Text mr={space.xxs} textStyle="headline6">
-                {creator.profile_properties?.name}
-              </Text>
-              {creator.certified && (
-                <Icon color={colors.accent} size={18} icon="CheckCircle" />
-              )}
-            </Flex>
+          <Text color={colors.slate}>{`${
+            creator.follower_count ? creator.follower_count.toLocaleString() : 0
+          } Followers`}</Text>
+        </Box>
+        {/* <Button text="Join Club" /> */}
+      </Grid>
 
-            <Text color={colors.slate}>{`${
-              creator.follower_count
-                ? creator.follower_count.toLocaleString()
-                : 0
-            } Followers`}</Text>
-          </Box>
-          <Button text="Follow" />
-        </Grid>
-
-        <TabBar
-          selected={selectedTab}
-          tabBarProps={{ bg: colors.black[4], py: space.xxs }}
-          tabs={["about", "club", "rewards", "token"]}
-          onChangeTab={(tab) => router.push(`/creator/${creator.id}/${tab}`)}
-        />
-      </Box>
+      <TabBar
+        selected={selectedTab}
+        tabBarProps={{
+          bg: colors.black[4],
+          py: space.xxs,
+          position: "sticky",
+          top: 0,
+          zIndex: zIndices.navHeader,
+        }}
+        tabs={["about", "club", "rewards", "token"]}
+        baseUrl={`/creator/${creator.id}`}
+      />
 
       {children}
     </>

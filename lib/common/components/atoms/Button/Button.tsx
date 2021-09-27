@@ -6,7 +6,7 @@ import { Grid, BoxProps, Text, TextVariants } from "@/common/components/atoms";
 
 type ButtonElements = "button" | "a";
 
-type Variants = "full-width" | "dense" | "nav-button";
+type Variants = "full-width" | "dense" | "nav-button" | "outline-small";
 
 export type ButtonProps = Omit<BoxProps, "variant"> &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -21,6 +21,9 @@ const StyledButton = styled(Grid)<ButtonProps>`
   cursor: pointer;
   transition: all 200ms ease-in-out;
   color: ${(props) => props.theme.colors.white[0]};
+  border-width: 2px;
+  border-style: solid;
+
   ${variant({
     prop: "variant",
     variants: {
@@ -39,39 +42,56 @@ const StyledButton = styled(Grid)<ButtonProps>`
         width: "fit-content",
         borderRadius: 4,
       },
+      "outline-small": {
+        minHeight: 34,
+        width: "fit-content",
+        borderColor: "#808191",
+      },
     },
   })}
 
   &:hover {
     background: ${(props) => props.theme.colors.accentHover};
+    border-color: ${(props) => props.theme.colors.accentHover};
   }
 
   &:disabled {
     cursor: not-allowed;
     background: ${(props) => props.theme.colors.black[1]};
     color: ${(props) => props.theme.colors.slate};
+    border-color: ${(props) => props.theme.colors.black[1]};
   }
 `;
 
 export function Button({
   type = "button",
   text,
-  border = "none",
   variant: variantProp = "dense",
   prefixElement,
   suffixElement,
   ...rest
 }: ButtonProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, radii } = useTheme();
 
   const fontVariant: TextVariants = useMemo(() => {
     const map: Record<Variants, TextVariants> = {
       "full-width": "buttonLarge",
       dense: "buttonLarge",
       "nav-button": "button",
+      "outline-small": "button",
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp]);
+
+  const bg: string = useMemo(() => {
+    const map: Record<Variants, string> = {
+      dense: colors.accent,
+      "full-width": colors.accent,
+      "nav-button": colors.accent,
+      "outline-small": "transparent",
+    };
+    return variantProp ? map[variantProp] : "button";
+  }, [variantProp, colors]);
 
   const gridTemplateColumns = useMemo(() => {
     const prefix = prefixElement ? "min-content " : "";
@@ -82,10 +102,11 @@ export function Button({
 
   return (
     <StyledButton
-      bg={colors.accent}
+      bg={bg}
+      borderRadius={radii.xxxs}
       type={type}
       px={[space.xxs, space.xxs]}
-      border={border}
+      borderColor={colors.accent}
       variant={variantProp}
       as="button"
       alignItems="center"
