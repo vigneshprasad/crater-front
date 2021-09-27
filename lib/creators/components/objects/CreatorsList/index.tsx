@@ -1,7 +1,8 @@
 import { AnimatePresence } from "framer-motion";
+import { useCallback, useRef } from "react";
 import { useTheme } from "styled-components";
 
-import { Grid } from "@/common/components/atoms";
+import { Grid, Shimmer } from "@/common/components/atoms";
 import { Creator } from "@/creators/types/creator";
 
 import CreatorCard from "../CreatorCard";
@@ -9,13 +10,32 @@ import CreatorCard from "../CreatorCard";
 interface IProps {
   creators?: Creator[];
   loading: boolean;
+  onScrollEnd?: () => void;
 }
 
 export default function CreatorsList({
   creators,
   loading,
+  onScrollEnd,
 }: IProps): JSX.Element {
   const { space } = useTheme();
+  const _observer = useRef<IntersectionObserver>();
+
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (loading) return;
+      if (_observer.current) _observer.current.disconnect();
+      _observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          if (onScrollEnd) onScrollEnd();
+        }
+      });
+
+      if (node != null) _observer.current.observe(node);
+    },
+    [_observer, loading, onScrollEnd]
+  );
+
   return (
     <Grid
       px={[space.xs, space.s]}
@@ -30,11 +50,12 @@ export default function CreatorsList({
           if (loading) {
             return Array(4)
               .fill("")
-              .map((_, index) => <CreatorCard.Loader key={index} />);
+              .map((_, index) => <Shimmer h={[200, 220]} key={index} />);
           }
 
-          return creators?.map((creator) => (
+          return creators?.map((creator, index) => (
             <CreatorCard
+              ref={index + 1 === creators.length ? ref : undefined}
               id={creator.id}
               name={creator.profile_detail?.name}
               key={creator.user}
