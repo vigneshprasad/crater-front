@@ -47,6 +47,7 @@ const radii = {
 const zIndices = {
   modal: 1000,
   overlay: 900,
+  asideNav: 950,
 };
 
 export const icons = iconComponents;

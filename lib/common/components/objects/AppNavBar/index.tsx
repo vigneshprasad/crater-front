@@ -5,10 +5,12 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 import { PageRoutes } from "@/common/constants/route.constants";
+import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 
-import { AnimatedBox, Box, Grid, Link, Text } from "../../atoms";
+import { AnimatedBox, Flex, Box, Grid, Link, Text } from "../../atoms";
 import { Avatar } from "../../atoms/Avatar";
 import { Button } from "../../atoms/Button";
+import IconButton from "../../atoms/IconButton";
 import { Logo } from "../Logo";
 
 export default function AppNavBar(): JSX.Element {
@@ -16,6 +18,7 @@ export default function AppNavBar(): JSX.Element {
   const { space, borders, colors } = useTheme();
   const { profile, loading } = useAuth();
   const { openModal } = useAuthModal();
+  const { isMobile, toggleNavBar } = useAsideNavState();
 
   // const handleOnClickUserImage = (): void => {
   //   router.push("/account/");
@@ -34,7 +37,17 @@ export default function AppNavBar(): JSX.Element {
       gridTemplateColumns="min-content 1fr min-content"
       alignItems="center"
     >
-      <Logo withText onClick={handleLogoClick} />
+      <Flex>
+        {isMobile && (
+          <IconButton
+            variant="flatNoBg"
+            icon="Menu"
+            iconProps={{ color: colors.white[0], fill: true }}
+            onClick={toggleNavBar}
+          />
+        )}
+        <Logo withText onClick={handleLogoClick} />
+      </Flex>
 
       <Box />
 
