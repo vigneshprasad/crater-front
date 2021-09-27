@@ -31,20 +31,11 @@ export default function useWebinarSocket(
     [setFollowerCount]
   );
 
-  const sendData = useCallback(() => {
-    if (_socket.current) {
-      const data = {
-        event: "live_count",
-      };
-      _socket.current?.send(JSON.stringify(data));
-    }
-  }, [_socket]);
-
   const onInit = useCallback(() => {
     if (_socket.current) {
       _socket.current.addEventListener("message", messageHandler);
     }
-  }, [_socket, sendData, messageHandler]);
+  }, [_socket, messageHandler]);
 
   useEffect(() => {
     if (session && session.user) {

@@ -47,6 +47,8 @@ const radii = {
 const zIndices = {
   modal: 1000,
   overlay: 900,
+  navHeader: 100,
+  sliderControls: 5,
   asideNav: 950,
 };
 

@@ -10,7 +10,9 @@ import { Creator } from "../types/creator";
 
 interface ICreatorApiClient {
   getCreatorsList: (
-    certified?: boolean
+    certified?: boolean,
+    page?: number,
+    pageSize?: number
   ) => Promise<ApiResult<PageResponse<Creator>, AxiosError>>;
   getCreator: (id: string) => Promise<ApiResult<Creator, AxiosError>>;
   getCreatorStreams: (
@@ -57,7 +59,7 @@ export default function CreatorApiClient(
   ): Promise<ApiResult<Webinar[], AxiosError>> {
     try {
       const { data } = await API(context).get<Webinar[]>(
-        `${API_URL_CONSTANTS.groups.getWebinars}?host=${creatorId}/`
+        `${API_URL_CONSTANTS.groups.getWebinars}?host=${creatorId}`
       );
       return [data, undefined];
     } catch (err) {
