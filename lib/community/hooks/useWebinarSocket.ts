@@ -18,7 +18,6 @@ export default function useWebinarSocket(
   const [session] = useSession();
   const _socket = useRef<WebSocket>();
   const [followerCount, setFollowerCount] = useState<number | null>(null);
-  const interval = useRef<NodeJS.Timer>();
 
   const messageHandler = useCallback(
     (event: MessageEvent<string>) => {
@@ -43,13 +42,7 @@ export default function useWebinarSocket(
 
   const onInit = useCallback(() => {
     if (_socket.current) {
-      if (interval.current) {
-        clearInterval(interval.current);
-        interval.current = undefined;
-      }
-
       _socket.current.addEventListener("message", messageHandler);
-      interval.current = setInterval(sendData, 10000);
     }
   }, [_socket, sendData, messageHandler]);
 
