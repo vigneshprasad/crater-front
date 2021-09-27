@@ -12,3 +12,4 @@ export * from "./Card";
 export { default as Spiner } from "./Spiner";
 export { default as TabBar } from "./TabBar";
 export { default as BackgroundVideo } from "./BackgroundVideo";
+export { default as Shimmer } from "./Shimmer";
