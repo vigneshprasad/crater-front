@@ -1,17 +1,20 @@
-import { useAnimation } from "framer-motion";
+import { motion, AnimateSharedLayout } from "framer-motion";
 import styled, { useTheme } from "styled-components";
 
-import { INavKeys, SIDE_NAV_ITEMS } from "@/common/constants/ui.constants";
+import {
+  INavKeys,
+  SIDE_NAV_ITEMS,
+  SIDE_NAV_MOBILE_ITEMS,
+} from "@/common/constants/ui.constants";
+import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 
-import { AnimatedBox, Box, Icon, Link } from "../../atoms";
+import { AnimatedBox, Grid, Icon, Link, Text } from "../../atoms";
 
 interface IProps {
   activeTab?: INavKeys;
 }
 
-const NavItemContainer = styled(Box)`
-  display: grid;
-  transition: all 100ms ease-in-out;
+const NavItemContainer = styled(Grid)`
   background: ${({ theme }) => theme.colors.black[1]};
   border-radius: 4px;
 
@@ -20,44 +23,124 @@ const NavItemContainer = styled(Box)`
   }
 `;
 
+const AnimatedText = motion(Text);
+
+AnimatedText.defaultProps = {
+  transition: {
+    duration: 0.2,
+  },
+  variants: {
+    hidden: {
+      opacity: 0,
+      transitionEnd: {
+        display: "none",
+      },
+    },
+    collapsed: {
+      opacity: 0,
+      transitionEnd: {
+        display: "none",
+      },
+    },
+    expanded: {
+      display: "block",
+      opacity: 1,
+    },
+  },
+};
+
 export default function AsideNav({ activeTab }: IProps): JSX.Element {
-  const { space, colors, borders } = useTheme();
-  const animate = useAnimation();
+  const { space, colors, borders, zIndices } = useTheme();
+  const { animate, isMobile } = useAsideNavState();
 
   return (
-    <AnimatedBox
-      as="aside"
-      role="nav"
-      display="grid"
-      gridGap={space.xxs}
-      gridAutoFlow="row"
-      gridAutoRows="min-content"
-      initial="collapsed"
-      animate={animate}
-      variants={{
-        expanded: {
-          width: 240,
-        },
-        collapsed: {
-          width: 56,
-        },
-      }}
-      bg={colors.black[4]}
-      py={space.xxs}
-      px={12}
-      borderRight={`1px solid ${borders.main}`}
-      layout
-    >
-      {SIDE_NAV_ITEMS.map(({ icon, key, url }) => {
-        const color = key === activeTab ? colors.accent : colors.white[1];
-        return (
-          <Link href={url} key={key}>
-            <NavItemContainer size={36}>
-              <Icon color={color} size={20} m="auto auto" icon={icon} />
-            </NavItemContainer>
-          </Link>
-        );
-      })}
-    </AnimatedBox>
+    <AnimateSharedLayout>
+      <AnimatedBox
+        layout
+        role="nav"
+        display="grid"
+        initial={isMobile === false ? "collapsed" : "hidden"}
+        gridGap={space.xxs}
+        gridAutoFlow="row"
+        gridAutoRows="max-content"
+        gridAutoColumns="1fr"
+        animate={animate}
+        variants={{
+          collapsed: {
+            width: 56,
+            opacity: 1,
+            transition: {
+              when: "beforeChildren",
+              staggerChildren: 0.1,
+            },
+          },
+          hidden: {
+            width: 0,
+            opacity: 0,
+            transition: {
+              when: "afterChildren",
+            },
+          },
+          expanded: {
+            width: 200,
+            opacity: 1,
+            transition: {
+              duration: 0.2,
+              when: "beforeChildren",
+              staggerChildren: 0.1,
+            },
+          },
+        }}
+        bg={colors.black[4]}
+        py={[space.xxs]}
+        px={[0, 16]}
+        borderRight={`1px solid ${borders.main}`}
+        justifyContent={["start", "center"]}
+        zIndex={zIndices.asideNav}
+      >
+        {SIDE_NAV_ITEMS.map(({ icon, key, url, label }) => {
+          const color = key === activeTab ? colors.accent : colors.white[1];
+          return (
+            <Link href={url} key={key}>
+              <NavItemContainer
+                px={[space.xxxs, 0]}
+                w={["auto", 40]}
+                h={40}
+                alignItems={["center"]}
+                gridTemplateColumns={["40px 1fr", "1fr"]}
+                gridGap={[space.xxxs, space.xxs]}
+              >
+                <Icon color={color} size={20} m="auto auto" icon={icon} />
+                <AnimatedText textStyle="menu" color={color}>
+                  {label}
+                </AnimatedText>
+              </NavItemContainer>
+            </Link>
+          );
+        })}
+
+        {isMobile &&
+          SIDE_NAV_MOBILE_ITEMS.map(({ icon, key, url, label }) => {
+            const color = key === activeTab ? colors.accent : colors.white[1];
+            return (
+              <Link href={url} key={key}>
+                <NavItemContainer
+                  px={[space.xxxs, 0]}
+                  w={["none", 40]}
+                  h={40}
+                  alignItems={["center"]}
+                  gridTemplateColumns={["40px 1fr", "1fr"]}
+                  gridGap={[space.xxxs, space.xxs]}
+                >
+                  <Icon color={color} size={20} m="auto auto" icon={icon} />
+                  <AnimatedText textStyle="menu" color={color}>
+                    {label}
+                  </AnimatedText>
+                </NavItemContainer>
+              </Link>
+            );
+          })}
+      </AnimatedBox>
+    </AnimateSharedLayout>
   );
 }

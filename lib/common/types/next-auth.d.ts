@@ -1,5 +1,7 @@
 import "next-auth";
 
+import { Sector } from "@/auth/types/auth";
+
 declare module "next-auth" {
   export interface User {
     pk: string;

@@ -49,6 +49,7 @@ const zIndices = {
   overlay: 900,
   navHeader: 100,
   sliderControls: 5,
+  asideNav: 950,
 };
 
 export const icons = iconComponents;

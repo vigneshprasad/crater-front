@@ -5,9 +5,18 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
-import { Avatar, Box, Grid, Icon, Link, Text } from "@/common/components/atoms";
+import {
+  Avatar,
+  Box,
+  Grid,
+  Icon,
+  Link,
+  Shimmer,
+  Text,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
+import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import useNetworkList from "@/community/context/NetworkListContext";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
@@ -25,8 +34,7 @@ const DyteMeeting = dynamic<DyteMeetingProps>(
     ssr: false,
     loading: () => {
       return (
-        <Box
-          bg="#1a1a1a"
+        <Shimmer
           position="absolute"
           top={0}
           left={0}
@@ -65,7 +73,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   if (loading || !webinar) return <Box>Loading...</Box>;
 
   return (
-    <BaseLayout overflowY="auto">
+    <BaseLayout overflowY="auto" aside={<AsideNav />}>
       <Box px={[0, space.s]} py={[0, space.xxs]} />
 
       <Grid

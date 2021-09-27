@@ -57,7 +57,7 @@ const variants = {
   menu: {
     fontFamily: fonts.body,
     fontSize: ["1.4rem"],
-    fontWeight: "500",
+    fontWeight: "600",
   },
   title: {
     fontFamily: fonts.body,

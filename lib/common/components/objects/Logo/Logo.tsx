@@ -33,7 +33,7 @@ export function Logo({
           gridGap={[space.xxxs, space.xxs]}
         >
           <Text textStyle="logo">Crater</Text>
-          <Box w={1} h="40%" bg={colors.slate} />
+          <Box w={1} h="40%" bg={colors.slate} display={["none", "block"]} />
           <Text
             display={["none", "block"]}
             color={colors.slate}
