@@ -22,8 +22,17 @@ export type ICommunityPageProps = {
 export default function CommunityPage(): JSX.Element {
   const [visible, setVisible] = useState(false);
   const { space, colors } = theme;
-  const { creators, loading: creatorsLoading } = useCreatorsList();
+  const {
+    creators,
+    loading: creatorsLoading,
+    setCreatorsPage,
+  } = useCreatorsList();
   const { userTags, loading: tagsLoading } = useMeta();
+
+  function onCreatorScrollEnd(): void {
+    setCreatorsPage((page) => page + 1);
+  }
+
   const videoUrl =
     "https://1worknetwork-prod.s3.amazonaws.com/media/mp4_community_banner.mp4";
 
@@ -32,7 +41,11 @@ export default function CommunityPage(): JSX.Element {
       <Box px={[space.xs, space.s]} py={space.xxs}>
         <Text textStyle="headlineBold">Crater Featured</Text>
       </Box>
-      <CreatorsList loading={creatorsLoading} creators={creators} />
+      <CreatorsList
+        loading={creatorsLoading}
+        creators={creators}
+        onScrollEnd={onCreatorScrollEnd}
+      />
 
       <BackgroundVideo my={space.xs} h={[72, 180]} muted autoPlay loop w="100%">
         <source src={videoUrl} type="video/mp4" />

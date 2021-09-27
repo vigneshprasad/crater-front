@@ -3,7 +3,6 @@ import { SWRInfiniteResponse, useSWRInfinite } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
-import fetcher from "@/common/utils/fetcher";
 
 import { Creator } from "../types/creator";
 
@@ -11,40 +10,43 @@ interface ICreatorListState {
   creators?: Creator[];
   error?: unknown;
   loading: boolean;
-  setCreatorsPage: SWRInfiniteResponse<Creator[], unknown>["setSize"];
+  setCreatorsPage: SWRInfiniteResponse<
+    PageResponse<Creator>,
+    unknown
+  >["setSize"];
 }
 
 export const CreatorsListContext = createContext({} as ICreatorListState);
 
 type IProviderProps = PropsWithChildren<{
-  initial: Creator[];
+  initial: PageResponse<Creator>;
+  pageSize?: number;
 }>;
 
 export function CreatorListProvider({
   initial,
+  pageSize = 10,
   ...rest
 }: IProviderProps): JSX.Element {
   const {
     data: creators,
     error,
     setSize: setCreatorsPage,
-  } = useSWRInfinite<Creator[]>(
+  } = useSWRInfinite<PageResponse<Creator>>(
     (index, previousData) => {
       const page = index + 1;
-      if (previousData && !previousData.length) return null;
-      return `${API_URL_CONSTANTS.creator.getCreatorList}?page=${page}&certified=true`;
-    },
-    async (key: string) => {
-      return (await fetcher<PageResponse<Creator>>(key)).results;
+      console.log(previousData);
+      if (previousData && !previousData.next) return null;
+      return `${API_URL_CONSTANTS.creator.getCreatorList}?page=${page}&page_size=${pageSize}&certified=true`;
     },
     {
-      initialData: [[...initial]],
+      initialData: [initial],
     }
   );
 
   const value: ICreatorListState = useMemo(
     () => ({
-      creators: creators?.flat(),
+      creators: creators?.flatMap((page) => page.results),
       error,
       loading: !creators && !error,
       setCreatorsPage,

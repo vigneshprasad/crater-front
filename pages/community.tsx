@@ -3,13 +3,14 @@ import { NextSeoProps } from "next-seo";
 
 import HomePageLayout from "@/common/components/layouts/HomePageLayout";
 import { MetaProvider } from "@/common/context/MetaContext";
+import { PageResponse } from "@/common/types/api";
 import CreatorApiClient from "@/creators/api";
 import CommunityPage from "@/creators/components/page/CommunityPage";
 import { CreatorListProvider } from "@/creators/context/CreatorsListContext";
 import { Creator } from "@/creators/types/creator";
 
 interface ServerProps {
-  creators: Creator[];
+  creators: PageResponse<Creator>;
 }
 
 export const getStaticProps: GetStaticProps<ServerProps> = async () => {
@@ -17,7 +18,7 @@ export const getStaticProps: GetStaticProps<ServerProps> = async () => {
 
   return {
     props: {
-      creators: creatorsData?.results ?? [],
+      creators: creatorsData ?? ({} as PageResponse<Creator>),
     },
     revalidate: 60 * 5,
   };

@@ -1,5 +1,5 @@
 import { Profile } from "next-auth";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useTheme } from "styled-components";
 import { useSWRInfinite } from "swr";
 
@@ -8,7 +8,6 @@ import { Box, Grid, GridProps, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
-import fetcher from "@/common/utils/fetcher";
 import { MemberItem } from "@/creators/components/objects/MembersList";
 
 type IProps = GridProps & {
@@ -24,16 +23,29 @@ export default function NetworkRow({
   ...rest
 }: IProps): JSX.Element | null {
   const { space, colors, radii } = useTheme();
+  const _observer = useRef<IntersectionObserver>();
 
-  const { data: members } = useSWRInfinite(
+  const { data: pageData, setSize } = useSWRInfinite<PageResponse<Profile>>(
     (index, previousData) => {
       const page = index + 1;
-      if (previousData && !previousData.length) return null;
+      if (previousData && !previousData.next) return null;
       return `${API_URL_CONSTANTS.network.getUserProfile}?new_tag=${tag.pk}&page=${page}`;
-    },
-    async (key: string) => {
-      return (await fetcher<PageResponse<Profile>>(key)).results;
     }
+  );
+
+  const ref = useCallback(
+    (node: HTMLElement | null) => {
+      if (_observer.current) _observer.current.disconnect();
+
+      _observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          setSize((size) => size + 1);
+        }
+      });
+
+      if (node !== null) _observer.current.observe(node);
+    },
+    [_observer, setSize]
   );
 
   const handleOnClickItem = useCallback(
@@ -50,6 +62,8 @@ export default function NetworkRow({
       onClickCardButton();
     }
   }, [onClickCardButton]);
+
+  const members = pageData?.flatMap((item) => item.results);
 
   if (members && members.flat().length < 10) {
     return null;
@@ -85,9 +99,10 @@ export default function NetworkRow({
           text="Match me"
         />
       </Box>
-      {members?.flat().map((member) => {
+      {members?.map((member, index) => {
         return (
           <MemberItem
+            ref={index + 1 === members.length ? ref : undefined}
             tagLine={member.tag_list?.[0].name}
             onClick={() => {
               handleOnClickItem(member);
