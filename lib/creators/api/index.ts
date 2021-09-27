@@ -55,7 +55,7 @@ export default function CreatorApiClient(
   ): Promise<ApiResult<Webinar[], AxiosError>> {
     try {
       const { data } = await API(context).get<Webinar[]>(
-        `${API_URL_CONSTANTS.groups.getWebinars}?host=${creatorId}/`
+        `${API_URL_CONSTANTS.groups.getWebinars}?host=${creatorId}`
       );
       return [data, undefined];
     } catch (err) {

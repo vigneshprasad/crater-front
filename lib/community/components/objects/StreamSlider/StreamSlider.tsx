@@ -13,7 +13,7 @@ export interface IStreamSliderProps {
 }
 
 export function StreamSlider({ liveStreams }: IStreamSliderProps): JSX.Element {
-  const { space } = useTheme();
+  const { space, zIndices } = useTheme();
   const [activeSlide, setActiveSlide] = useState(
     liveStreams.length > 2 ? 1 : 0
   );
@@ -49,7 +49,7 @@ export function StreamSlider({ liveStreams }: IStreamSliderProps): JSX.Element {
     <Grid gridTemplateColumns={["1fr", "72px 1fr 72px"]} alignItems="center">
       <IconButton
         display={["none", "block"]}
-        zIndex={10}
+        zIndex={zIndices.sliderControls}
         variant="roundSmall"
         icon="ChevronLeft"
         onClick={onPrevClick}
@@ -80,7 +80,7 @@ export function StreamSlider({ liveStreams }: IStreamSliderProps): JSX.Element {
 
       <IconButton
         display={["none", "block"]}
-        zIndex={10}
+        zIndex={zIndices.sliderControls}
         variant="roundSmall"
         icon="ChevronRight"
         onClick={onNextClick}

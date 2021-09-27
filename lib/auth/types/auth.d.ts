@@ -9,18 +9,23 @@ export interface CoverFile {
 }
 
 export interface EducationLevel {
-  value: number;
-  name: string;
+  key: number;
+  value: string;
 }
 
 export interface YearsOfExperience {
-  value: number;
-  name: string;
+  key: number;
+  value: string;
 }
 
 export interface Sector {
-  value: number;
-  name: string;
+  key: number;
+  value: string;
+}
+
+export interface CompanyType {
+  key: number;
+  value: string;
 }
 
 export interface Profile {
@@ -37,6 +42,13 @@ export interface Profile {
   tag_list: UserTag[];
   tags?: number[];
   education_level?: number;
+  education_level_detail?: EducationLevel;
   sector?: number;
+  sector_detail?: Sector;
   years_of_experience?: number;
+  years_of_experience_detail?: YearsOfExperience;
+  years_of_experience?: number;
+  years_of_experience_detail?: YearsOfExperience;
+  company_type?: number;
+  company_type_detail?: CompanyType;
 }

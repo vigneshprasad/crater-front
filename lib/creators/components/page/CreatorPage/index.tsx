@@ -26,7 +26,7 @@ export default function CreatorPage({
   selectedTab,
 }: IProps): JSX.Element {
   const { creator } = useCreator();
-  const { space, colors } = useTheme();
+  const { space, colors, zIndices } = useTheme();
   const router = useRouter();
 
   if (!creator) return <Box>Loading...</Box>;
@@ -46,13 +46,13 @@ export default function CreatorPage({
         )}
       </Box>
 
-      <Box position="sticky" top={0} zIndex={10}>
+      <Box position="sticky" top={0} zIndex={zIndices.navHeader}>
         <Grid
           bg={colors.black[4]}
           alignItems="center"
           px={space.s}
           py={space.xxs}
-          gridTemplateColumns="min-content 1fr min-content"
+          gridTemplateColumns="min-content 1fr max-content"
           gridGap={space.xxs}
         >
           <Box borderRadius="50%" p={6} border={`2px solid ${colors.accent}`}>
@@ -77,7 +77,7 @@ export default function CreatorPage({
                 : 0
             } Followers`}</Text>
           </Box>
-          <Button text="Follow" />
+          <Button text="Join Club" />
         </Grid>
 
         <TabBar

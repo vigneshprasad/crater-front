@@ -49,8 +49,13 @@ declare module "next-auth" {
     tag_list: UserTag[];
     tags?: number[];
     education_level?: number;
+    education_level_detail?: EducationLevel;
     sector?: number;
+    sector_detail?: Sector;
     years_of_experience?: number;
+    years_of_experience_detail?: YearsOfExperience;
+    company_type?: number;
+    company_type_detail?: CompanyType;
   }
 }
 

@@ -15,6 +15,12 @@ import { Box, BoxProps } from "./Box";
 const { fonts, colors } = theme;
 
 const variants = {
+  headline3Bold: {
+    fontFamily: fonts.heading,
+    fontSize: ["3.2rem", "4rem"],
+    fontWeight: "700",
+    lineHeight: ["5.2rem"],
+  },
   headline3: {
     fontFamily: fonts.heading,
     fontSize: ["3.2rem", "4rem"],
