@@ -19,6 +19,7 @@ const colors = {
   twitter: "#1DA1F2",
   linkedin: "#2867B2",
   modalOverlay: "rgba(0,0,0,0.3)",
+  drawerOverlay: "rgba(0,0,0,0.8)",
   slate: "#808191",
   muted: {
     widow: "#BFABFF",

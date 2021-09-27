@@ -9,7 +9,7 @@ import { Box, GridProps } from "../System";
 
 const { colors } = theme;
 
-type Variants = "flat" | "round" | "roundSmall";
+type Variants = "flat" | "flatNoBg" | "round" | "roundSmall";
 
 type IProps = GridProps & {
   icon: IconOptions;
@@ -47,6 +47,12 @@ const Container = styled(Box)`
         ":hover": {
           background: colors.black[0],
         },
+      },
+      flatNoBg: {
+        height: 40,
+        width: 40,
+        transition: "all 50ms ease-in-out",
+        borderRadius: 4,
       },
     },
   })}

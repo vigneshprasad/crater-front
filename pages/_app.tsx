@@ -9,6 +9,7 @@ import AuthModal from "@/auth/components/objects/AuthModal";
 import BasicSignupSheet from "@/auth/components/objects/BasicSignupSheet";
 import { AuthProvider } from "@/auth/context/AuthContext";
 import { AuthModalProvider } from "@/auth/context/AuthModalContext";
+import { AsideNavProvider } from "@/common/hooks/ui/useAsideNavState";
 import fetcher from "@/common/utils/fetcher";
 
 import GlobalStyle from "../lib/common/styles/global.styled";
@@ -30,7 +31,9 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
           <AuthModalProvider>
             <ThemeProvider theme={theme}>
               <GlobalStyle />
-              <Component {...pageProps} />
+              <AsideNavProvider>
+                <Component {...pageProps} />
+              </AsideNavProvider>
               <AuthModal />
               <BasicSignupSheet />
             </ThemeProvider>
