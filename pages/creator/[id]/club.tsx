@@ -1,8 +1,9 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
+import dynamic from "next/dynamic";
+
 import { NetworkListProvider } from "@/community/context/NetworkListContext";
 import CreatorPageLayout from "@/creators/components/layouts/CreatorPageLayout";
-import CreatorStreamsTab from "@/creators/components/objects/CreatorStreamsTab";
 import CreatorPage, {
   CreatorPageParams,
   CreatorPageProps,
@@ -10,6 +11,10 @@ import CreatorPage, {
   getCreatorStaticProps,
 } from "@/creators/components/page/CreatorPage";
 import { CreatorStreamProvider } from "@/creators/context/CreatorStreamsContext";
+
+const CreatorStreamsTab = dynamic(
+  () => import("@/creators/components/objects/CreatorStreamsTab")
+);
 
 export const getStaticPaths: GetStaticPaths<CreatorPageParams> =
   getCreatorStaticPaths;

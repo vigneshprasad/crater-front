@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { AnimatedBox } from "../Animated";
+import { Link } from "../Link";
 import { Box, Grid, Text, GridProps } from "../System";
 
 type IProps = {
@@ -9,7 +10,7 @@ type IProps = {
   selected?: string;
   onChangeTab?: (tab: string) => void;
   tabBarProps?: GridProps;
-  renderTab?: (tab: string) => JSX.Element;
+  baseUrl: string;
 };
 
 type SliderPosProps = {
@@ -22,7 +23,7 @@ export default function TabBar({
   selected,
   onChangeTab,
   tabBarProps,
-  renderTab,
+  baseUrl,
 }: IProps): JSX.Element {
   const containerRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef(new Map());
@@ -79,27 +80,24 @@ export default function TabBar({
       {...tabBarProps}
     >
       {tabs.map((tab) => (
-        <Box
-          onClick={() => {
-            setSelectedTab(tab);
-            tabChangeCallback(tab);
-          }}
-          key={tab}
-          px={[space.xs]}
-          cursor="pointer"
-          pb={space.xxxs}
-          ref={(el) => tabRefs.current?.set(tab, el)}
-        >
-          {renderTab ? (
-            renderTab(tab)
-          ) : (
+        <Link href={`${baseUrl}/${tab}`} key={tab} shallow>
+          <Box
+            onClick={() => {
+              setSelectedTab(tab);
+              tabChangeCallback(tab);
+            }}
+            px={[space.xs]}
+            pb={space.xxxs}
+            ref={(el) => tabRefs.current?.set(tab, el)}
+          >
             <Text textTransform="capitalize" textStyle="title">
               {tab}
             </Text>
-          )}
-        </Box>
+          </Box>
+        </Link>
       ))}
       <AnimatedBox
+        initial={false}
         bottom={0}
         position="absolute"
         bg={colors.accent}

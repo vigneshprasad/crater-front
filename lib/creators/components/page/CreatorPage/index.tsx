@@ -1,11 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import DEFAULT_COVER from "public/images/img_default_cover.jpg";
 import { ParsedUrlQuery } from "querystring";
 import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
-
-import Image from "next/image";
-import { useRouter } from "next/router";
 
 import {
   Avatar,
@@ -74,66 +70,64 @@ export default function CreatorPage({
 }: IProps): JSX.Element {
   const { creator } = useCreator();
   const { space, colors, zIndices } = useTheme();
-  const router = useRouter();
 
   if (!creator) return <Box>Loading...</Box>;
 
   return (
     <>
       {/* Cover Image */}
-      <Box h={240} position="relative">
-        {creator.profile_detail.cover_file && (
-          <Image
-            objectPosition="center"
-            src={creator.profile_detail?.cover_file ?? DEFAULT_COVER}
-            objectFit="cover"
-            layout="fill"
+      <Box
+        h={240}
+        backgroundPosition="bottom fixed"
+        backgroundSize="cover"
+        position="relative"
+        backgroundImage={`url(${creator.profile_detail.cover_file})`}
+      />
+
+      <Grid
+        bg={colors.black[4]}
+        alignItems="center"
+        px={space.s}
+        py={space.xxs}
+        gridTemplateColumns="min-content 1fr max-content"
+        gridGap={space.xxs}
+        zIndex={zIndices.navHeader}
+      >
+        <Box borderRadius="50%" p={6} border={`2px solid ${colors.accent}`}>
+          <Avatar
+            image={creator.profile_detail?.photo}
             alt={creator.profile_detail?.name}
           />
-        )}
-      </Box>
+        </Box>
+        <Box>
+          <Flex alignItems="center">
+            <Text mr={space.xxs} textStyle="headline6">
+              {creator.profile_detail?.name}
+            </Text>
+            {creator.certified && (
+              <Icon color={colors.accent} size={18} icon="CheckCircle" />
+            )}
+          </Flex>
 
-      <Box position="sticky" top={0} zIndex={zIndices.navHeader}>
-        <Grid
-          bg={colors.black[4]}
-          alignItems="center"
-          px={space.s}
-          py={space.xxs}
-          gridTemplateColumns="min-content 1fr max-content"
-          gridGap={space.xxs}
-        >
-          <Box borderRadius="50%" p={6} border={`2px solid ${colors.accent}`}>
-            <Avatar
-              image={creator.profile_detail?.photo}
-              alt={creator.profile_detail?.name}
-            />
-          </Box>
-          <Box>
-            <Flex alignItems="center">
-              <Text mr={space.xxs} textStyle="headline6">
-                {creator.profile_detail?.name}
-              </Text>
-              {creator.certified && (
-                <Icon color={colors.accent} size={18} icon="CheckCircle" />
-              )}
-            </Flex>
+          <Text color={colors.slate}>{`${
+            creator.follower_count ? creator.follower_count.toLocaleString() : 0
+          } Followers`}</Text>
+        </Box>
+        {/* <Button text="Join Club" /> */}
+      </Grid>
 
-            <Text color={colors.slate}>{`${
-              creator.follower_count
-                ? creator.follower_count.toLocaleString()
-                : 0
-            } Followers`}</Text>
-          </Box>
-          {/* <Button text="Join Club" /> */}
-        </Grid>
-
-        <TabBar
-          selected={selectedTab}
-          tabBarProps={{ bg: colors.black[4], py: space.xxs }}
-          tabs={["about", "club", "rewards", "token"]}
-          onChangeTab={(tab) => router.push(`/creator/${creator.id}/${tab}`)}
-        />
-      </Box>
+      <TabBar
+        selected={selectedTab}
+        tabBarProps={{
+          bg: colors.black[4],
+          py: space.xxs,
+          position: "sticky",
+          top: 0,
+          zIndex: zIndices.navHeader,
+        }}
+        tabs={["about", "club", "rewards", "token"]}
+        baseUrl={`/creator/${creator.id}`}
+      />
 
       {children}
     </>

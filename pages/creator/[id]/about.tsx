@@ -1,13 +1,18 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
+import dynamic from "next/dynamic";
+
 import CreatorPageLayout from "@/creators/components/layouts/CreatorPageLayout";
-import AboutTab from "@/creators/components/objects/AboutTab";
 import CreatorPage, {
   CreatorPageParams,
   CreatorPageProps,
   getCreatorStaticPaths,
   getCreatorStaticProps,
 } from "@/creators/components/page/CreatorPage";
+
+const AboutTab = dynamic(
+  () => import("@/creators/components/objects/AboutTab")
+);
 
 export const getStaticPaths: GetStaticPaths<CreatorPageParams> =
   getCreatorStaticPaths;
