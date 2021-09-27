@@ -35,7 +35,6 @@ export function CreatorListProvider({
   } = useSWRInfinite<PageResponse<Creator>>(
     (index, previousData) => {
       const page = index + 1;
-      console.log(previousData);
       if (previousData && !previousData.next) return null;
       return `${API_URL_CONSTANTS.creator.getCreatorList}?page=${page}&page_size=${pageSize}&certified=true`;
     },
