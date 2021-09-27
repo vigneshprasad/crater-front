@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
+import { PageRoutes } from "@/common/constants/route.constants";
 
 import { AnimatedBox, Box, Grid, Link, Text } from "../../atoms";
 import { Avatar } from "../../atoms/Avatar";
@@ -21,7 +22,7 @@ export default function AppNavBar(): JSX.Element {
   // };
 
   const handleLogoClick = (): void => {
-    router.push("/");
+    router.push(PageRoutes.home);
   };
 
   return (

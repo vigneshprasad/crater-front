@@ -25,11 +25,13 @@ export default function CreatorApiClient(
   context?: GetSessionOptions
 ): ICreatorApiClient {
   async function getCreatorsList(
-    certified = true
+    certified = true,
+    page = 1,
+    pageSize = 10
   ): Promise<ApiResult<PageResponse<Creator>, AxiosError>> {
     try {
       const { data } = await API(context).get<PageResponse<Creator>>(
-        `${API_URL_CONSTANTS.creator.getCreatorList}?certified=${certified}`
+        `${API_URL_CONSTANTS.creator.getCreatorList}?certified=${certified}&page=${page}&page_size=${pageSize}`
       );
       return [data, undefined];
     } catch (err) {

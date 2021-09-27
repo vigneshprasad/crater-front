@@ -5,24 +5,24 @@ export const API_URL_CONSTANTS = {
     getUser: "/user/auth/user/",
     getOtp: "/crater/auth/otp/",
     phoneLogin: "/crater/auth/verify/",
-    getProfile: "user/auth/profile/",
-    postProfileCoverFile: "user/auth/profile/cover_file/",
+    getProfile: "/user/auth/profile/",
+    postProfileCoverFile: "/user/auth/profile/cover_file/",
   },
   user: {
     user: "/user/auth/user/",
-    profile: "user/auth/profile/",
+    profile: "/user/auth/profile/",
     network: "/user/auth/network/",
   },
   integrations: {
     dyte: {
       getParticpant: (groupId: string): string =>
-        `integrations/dyte/participant/${groupId}/`,
+        `/integrations/dyte/participant/${groupId}/`,
       connect: (groupId: string): string =>
-        `integrations/dyte/participant/${groupId}/connect/`,
+        `/integrations/dyte/participant/${groupId}/connect/`,
     },
   },
   conversations: {
-    webinars: "groups/conversations/webinars/",
+    webinars: "/groups/conversations/webinars/",
     retrieveGroup: (id: string): string => `/groups/groups/${id}/`,
     retrieveWebinar: (id: string): string =>
       `/groups/conversations/webinars/${id}/`,
