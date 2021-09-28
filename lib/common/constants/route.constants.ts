@@ -1,8 +1,8 @@
 export const PageRoutes = {
   home: "/",
-  community: "/community",
+  community: "/network",
   account: "/account",
   session: (id: string): string => `/session/${id}`,
-  stream: (id: string): string => `/webinar/${id}`,
+  stream: (id: string): string => `/livestream/${id}`,
   creatorProfile: (id: string, tab?: string): string => `/creator/${id}/${tab}`,
 };
