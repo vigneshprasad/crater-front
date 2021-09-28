@@ -112,15 +112,24 @@ export default function PhotoUpload({
         {heading}
       </Text>
       <Card>
-        <Grid gridTemplateColumns="min-content 1fr" gridGap={space.xs}>
+        <Grid
+          gridTemplateColumns={["1fr", "min-content 1fr"]}
+          gridGap={space.xs}
+        >
           <Preview
-            h={144}
-            w={144}
+            h={120}
+            w={120}
             borderRadius="50%"
             overflow="hidden"
             {...previewStyle}
           >
-            <Image src={src} alt="Profile Picture" layout="fill" unoptimized />
+            <Image
+              objectFit="cover"
+              src={src}
+              alt="Profile Picture"
+              layout="fill"
+              unoptimized
+            />
             <Overlay onClick={() => inputRef.current?.click()}>
               <Icon color={colors.white[0]} fill size={48} icon="FileUpload" />
             </Overlay>

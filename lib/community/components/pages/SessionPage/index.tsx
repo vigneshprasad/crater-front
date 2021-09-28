@@ -60,12 +60,10 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const { start, host_detail } = webinar;
 
   const startTime = DateTime.parse(start);
-
   const now = DateTime.now();
-  const image = webinar.topic_detail?.image;
-  const endtime = startTime.plus({ minutes: 120 });
 
-  const isLiveNow = now > startTime && now <= endtime;
+  const image = webinar.topic_detail?.image;
+
   const isHost = user?.pk === webinar.host;
 
   const postGroupRequest = async (redirect = false): Promise<void> => {
@@ -139,8 +137,13 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 />
               </Box>
             )}
-            <Text textStyle="title">Talking About</Text>
-            <Text>{webinar.topic_detail?.description}</Text>
+
+            {webinar.topic_detail?.description && (
+              <>
+                <Text textStyle="title">Talking About</Text>
+                <Text>{webinar.topic_detail.description}</Text>
+              </>
+            )}
           </Grid>
           <Grid
             gridGap={space.xs}
@@ -173,19 +176,51 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   );
                 }
 
-                if (isLiveNow) {
+                if (webinar.is_live) {
                   return (
                     <Button
                       variant="full-width"
-                      text={isHost ? "Go live" : "Join Stream"}
+                      text={isHost ? "Return to stream" : "Join Stream"}
                       onClick={(): void => {
-                        postGroupRequest(true);
+                        if (!isHost) {
+                          postGroupRequest(true);
+                        } else {
+                          router.push(PageRoutes.stream(webinar.id.toString()));
+                        }
 
                         sendDataToSegment({
                           actionName: "Join Stream",
                           datetime: DateTime.now().toFormat("ff"),
                           username: user?.name,
                         });
+                      }}
+                    />
+                  );
+                }
+
+                if (isHost) {
+                  if (startTime > now) {
+                    return (
+                      <Box
+                        bg={colors.black[5]}
+                        borderRadius={radii.xxs}
+                        py={space.xxs}
+                        border={`2px solid ${colors.accent}`}
+                      >
+                        <Text textStyle="buttonLarge" textAlign="center">
+                          {`Meeting scheduled for ${startTime.toFormat(
+                            DateTime.DEFAULT_FORMAT
+                          )}`}
+                        </Text>
+                      </Box>
+                    );
+                  }
+                  return (
+                    <Button
+                      variant="full-width"
+                      text="Go Live"
+                      onClick={(): void => {
+                        router.push(PageRoutes.stream(webinar.id.toString()));
                       }}
                     />
                   );

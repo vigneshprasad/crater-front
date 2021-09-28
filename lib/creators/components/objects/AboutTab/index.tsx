@@ -8,7 +8,7 @@ export default function AboutTab(): JSX.Element {
   const { space } = useTheme();
   if (!creator) return <Box>Loading...</Box>;
   return (
-    <Box px={[space.m]} py={[space.s]}>
+    <Box px={[space.xs, space.m]} py={[space.xs, space.s]}>
       <Text mb={space.xs} textStyle="headline6">
         About Me
       </Text>

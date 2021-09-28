@@ -18,7 +18,7 @@ export default function CreatorStreamsTab(): JSX.Element {
 
   return (
     <>
-      <Box px={space.s} py={space.l}>
+      <Box px={[space.xs, space.s]} py={[space.xs, space.l]}>
         {(() => {
           if (loadingLiveStream) {
             return <Box>Loading</Box>;
@@ -30,7 +30,7 @@ export default function CreatorStreamsTab(): JSX.Element {
         })()}
       </Box>
 
-      <Box px={space.m} py={space.s}>
+      <Box px={[space.xs, space.s]} py={[space.xs, space.s]}>
         <Text textStyle="title">Community Members</Text>
       </Box>
 
@@ -42,8 +42,15 @@ export default function CreatorStreamsTab(): JSX.Element {
           return null;
         }
         return (
-          <Grid px={space.s} gridTemplateColumns="repeat(6, 1fr)">
-            {members.map((member) => (
+          <Grid
+            overflowX={["auto", "hidden"]}
+            px={[space.xxs, space.s]}
+            gridTemplateColumns={["none", "repeat(auto-fit, 140px)"]}
+            gridAutoFlow={["column", "dense"]}
+            gridTemplateRows={["none", "auto"]}
+            gridGap={space.xs}
+          >
+            {[...members, ...members].map((member) => (
               <MemberItem
                 key={member.pk}
                 name={member.name}
