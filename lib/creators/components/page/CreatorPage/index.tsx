@@ -77,17 +77,19 @@ export default function CreatorPage({
     <>
       {/* Cover Image */}
       <Box
-        h={240}
+        w="100%"
+        pt={["40%", 0]}
+        h={["auto", "100%"]}
+        maxHeight={240}
         backgroundPosition="bottom fixed"
         backgroundSize="cover"
-        position="relative"
         backgroundImage={`url(${creator.profile_detail.cover_file})`}
       />
 
       <Grid
         bg={colors.black[4]}
         alignItems="center"
-        px={space.s}
+        px={[space.xxs, space.s]}
         py={space.xxs}
         gridTemplateColumns="min-content 1fr max-content"
         gridGap={space.xxs}
@@ -95,6 +97,7 @@ export default function CreatorPage({
       >
         <Box borderRadius="50%" p={6} border={`2px solid ${colors.accent}`}>
           <Avatar
+            size={[48, 72]}
             image={creator.profile_detail?.photo}
             alt={creator.profile_detail?.name}
           />

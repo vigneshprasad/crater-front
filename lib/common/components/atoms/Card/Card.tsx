@@ -10,7 +10,7 @@ export function Card({ children, footer, ...rest }: CardProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   return (
     <Box borderRadius={radii.xxs} bg={colors.black[3]} {...rest}>
-      <Box px={space.s} py={space.xs}>
+      <Box px={[space.xs, space.xs]} py={space.xs}>
         {children}
       </Box>
       {footer}

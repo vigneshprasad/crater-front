@@ -72,11 +72,12 @@ export default function TabBar({
       bg={colors.black[3]}
       ref={containerRef}
       position="relative"
-      py={[24]}
-      px={[space.s]}
+      py={[space.xxs, space.xs]}
+      px={[space.xxs, space.s]}
       gridAutoFlow="column"
       gridAutoColumns="min-content"
-      gridGap={[space.xs]}
+      gridGap={[4, space.xs]}
+      overflowX="auto"
       {...tabBarProps}
     >
       {tabs.map((tab) => (
@@ -86,8 +87,8 @@ export default function TabBar({
               setSelectedTab(tab);
               tabChangeCallback(tab);
             }}
-            px={[space.xs]}
-            pb={space.xxxs}
+            px={[space.xxs, space.xs]}
+            pb={[4, space.xxxs]}
             ref={(el) => tabRefs.current?.set(tab, el)}
           >
             <Text textTransform="capitalize" textStyle="title">
