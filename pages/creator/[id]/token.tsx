@@ -37,8 +37,8 @@ export default function CreatorAbout({ id, creator }: IProps): JSX.Element {
             position="sticky"
             top={300}
             zIndex={10}
-            pt={space.m}
-            mx={space.xxl}
+            pt={[space.xs, space.m]}
+            mx={[space.xxxs, space.xxl]}
           >
             <Text
               textStyle="headline3Bold"
@@ -48,7 +48,11 @@ export default function CreatorAbout({ id, creator }: IProps): JSX.Element {
             >
               COMING SOON
             </Text>
-            <Text textStyle="headline5" textAlign="center">
+            <Text
+              textStyle="headline5"
+              textAlign="center"
+              maxWidth={["100%", "50%"]}
+            >
               Mentors &amp; creators will have a option to <Span>auction</Span>{" "}
               tokens, think of them as tickets, for you to buy to access their
               rewards. Helping you get exclusive access &amp; them with price

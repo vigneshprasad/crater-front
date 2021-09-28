@@ -10,7 +10,7 @@ const StyledTextArea = styled(StyledInput)<TextAreaProps>`
 
   &::placeholder {
     font-size: 1.1rem;
-    font-variation-settings: "wght" 700;
+    font-variation-settings: 700;
     text-transform: uppercase;
   }
 `;

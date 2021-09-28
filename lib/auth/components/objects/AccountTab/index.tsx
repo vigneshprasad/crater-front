@@ -57,7 +57,13 @@ export default function AccountTab(): JSX.Element {
   if (!profile) return <Box>Loading...</Box>;
 
   return (
-    <Grid p={space.s} gridGap={space.s} maxWidth={1024}>
+    <Grid
+      px={[space.xxs, space.s]}
+      py={space.s}
+      gridGap={space.s}
+      maxWidth={1024}
+      w="100%"
+    >
       <PhotoUpload
         onPostData={uploadProfilePicture}
         description="Must be JPEG, PNG, or GIF and cannot exceed 10MB."
@@ -67,7 +73,7 @@ export default function AccountTab(): JSX.Element {
       />
       <PhotoUpload
         onPostData={uploadCoverPicture}
-        previewStyle={{ w: 360, h: 180, borderRadius: "none" }}
+        previewStyle={{ w: [240], pt: "40%", borderRadius: "none" }}
         description="File format: JPEG, PNG, GIF (recommended 1200x480, max 10MB)"
         value={profile.cover_file}
         heading="Cover Photo"

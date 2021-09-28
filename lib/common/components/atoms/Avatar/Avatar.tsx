@@ -6,7 +6,7 @@ import { Box, BoxProps } from "../System/Box";
 
 export type IAvatarProps = BoxProps & {
   image?: string | StaticImageData;
-  size?: number;
+  size?: number | number[];
   alt?: string;
 };
 
@@ -21,8 +21,7 @@ export function Avatar({
     <Box
       overflow="hidden"
       position="relative"
-      h={size}
-      w={size}
+      size={size}
       borderRadius="50%"
       {...rest}
     >

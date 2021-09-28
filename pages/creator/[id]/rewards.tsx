@@ -38,8 +38,8 @@ export default function CreatorAbout({ id, creator }: IProps): JSX.Element {
             position="sticky"
             top={300}
             zIndex={10}
-            pt={space.m}
-            mx={space.xxl}
+            pt={[space.xs, space.m]}
+            mx={[space.xxxs, space.xxl]}
           >
             <Text
               textStyle="headline3Bold"
@@ -49,7 +49,12 @@ export default function CreatorAbout({ id, creator }: IProps): JSX.Element {
             >
               COMING SOON
             </Text>
-            <Text textStyle="headline5" textAlign="center">
+            <Text
+              m="0 auto"
+              textStyle="headline6"
+              textAlign="center"
+              maxWidth={["100%", "50%"]}
+            >
               The mentor/creator can <Span>choose</Span> to provide{" "}
               <Span>exclusive</Span> access to their time &amp; content by
               launching their own rewards.

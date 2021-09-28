@@ -18,6 +18,7 @@ import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
+import { PageRoutes } from "@/common/constants/route.constants";
 import useNetworkList from "@/community/context/NetworkListContext";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { useWebinar } from "@/community/context/WebinarContext";
@@ -90,6 +91,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
           >
             {dyteParticipant && (
               <DyteMeeting
+                groupId={webinar.id}
                 orgId={orgId}
                 token={dyteParticipant.auth_token}
                 roomName={dyteParticipant.dyte_meeting_detail.room_name}
@@ -162,7 +164,9 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                 <Text mb={space.xs} textStyle="headline5">
                   {webinar.topic_detail?.name}
                 </Text>
-                <Text>{webinar.topic_detail?.description}</Text>
+                {webinar.topic_detail?.description && (
+                  <Text>{webinar.topic_detail.description}</Text>
+                )}
               </Grid>
 
               <Grid gridRow={[1, 0]}>
@@ -195,7 +199,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             members={members}
             loading={membersLoading}
           />
-          <Link href="/community" boxProps={{ target: "_blank" }}>
+          <Link href={PageRoutes.community} boxProps={{ target: "_blank" }}>
             <Button variant="full-width" text="Network with Members" />
           </Link>
         </Box>
