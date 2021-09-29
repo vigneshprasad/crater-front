@@ -144,13 +144,20 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                   <Button mr={space.xxs} variant="nav-button" text="AMA" />
                 </Link>
 
-                <Button
-                  border={`2px solid ${colors.slate}`}
-                  bg="transparent"
-                  prefixElement={<Icon size={16} icon="Linktree" />}
-                  variant="nav-button"
-                  text="LinkTree"
-                />
+                {webinar.host_profile_details?.primary_url && (
+                  <Link
+                    href={webinar.host_profile_details?.primary_url}
+                    boxProps={{ target: "_blank" }}
+                  >
+                    <Button
+                      border={`2px solid ${colors.slate}`}
+                      bg="transparent"
+                      prefixElement={<Icon size={16} icon="Linktree" />}
+                      variant="nav-button"
+                      text="LinkTree"
+                    />
+                  </Link>
+                )}
               </Grid>
             </Grid>
 

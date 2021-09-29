@@ -1,3 +1,5 @@
+import { Profile } from "next-auth";
+
 export type Community = {
   creator: number;
   id: number;
@@ -88,7 +90,9 @@ export type PostGroupRequest = Omit<
 
 export type Room = Group;
 
-export type Webinar = Group;
+export type Webinar = Group & {
+  host_profile_details?: Profile;
+};
 
 export interface UserProperties {
   pk: string;
