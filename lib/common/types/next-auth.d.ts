@@ -58,6 +58,7 @@ declare module "next-auth" {
     years_of_experience_detail?: YearsOfExperience;
     company_type?: number;
     company_type_detail?: CompanyType;
+    primary_url?: string;
   }
 }
 
