@@ -79,6 +79,7 @@ export default function DyteMeeting({
         meetingConfig={{
           roomName,
           authToken: token,
+          showSetupScreen: true,
         }}
         onInit={(dyteMeeting) => {
           meeting.current = dyteMeeting;
