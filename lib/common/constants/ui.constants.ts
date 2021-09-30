@@ -18,7 +18,7 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
     key: "streams",
   },
   {
-    label: "Community",
+    label: "Network",
     icon: "Community",
     url: PageRoutes.community,
     key: "community",
