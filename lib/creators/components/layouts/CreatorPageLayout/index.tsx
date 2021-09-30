@@ -3,6 +3,7 @@ import { useTheme } from "styled-components";
 
 import { BoxProps } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
+import AsideNav from "@/common/components/objects/AsideNav";
 import Page from "@/common/components/objects/Page";
 import { CreatorProvider } from "@/creators/context/CreatorContext";
 import { Creator } from "@/creators/types/creator";
@@ -28,7 +29,12 @@ export default function CreatorPageLayout({
       }}
     >
       <CreatorProvider initial={creator} id={id}>
-        <BaseLayout overflowY="auto" pb={space.l} {...baseContainerProps}>
+        <BaseLayout
+          aside={<AsideNav />}
+          overflowY="auto"
+          pb={space.l}
+          {...baseContainerProps}
+        >
           {children}
         </BaseLayout>
       </CreatorProvider>

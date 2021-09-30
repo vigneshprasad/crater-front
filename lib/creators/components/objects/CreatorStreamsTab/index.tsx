@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTheme } from "styled-components";
 
 import { Box, Grid, Text } from "@/common/components/atoms";
@@ -5,9 +6,11 @@ import { StreamSlider } from "@/community/components/objects/StreamSlider";
 import useNetworkList from "@/community/context/NetworkListContext";
 import useCreatorStreams from "@/creators/context/CreatorStreamsContext";
 
+import ConnectModal from "../ConnectModal";
 import { MemberItem } from "../MembersList";
 
 export default function CreatorStreamsTab(): JSX.Element {
+  const [showConnect, setShowConnect] = useState(false);
   const { loading: loadingLiveStream, liveStreams } = useCreatorStreams();
   const { space } = useTheme();
   const { loading: loadingNetwork, members } = useNetworkList();
@@ -18,6 +21,10 @@ export default function CreatorStreamsTab(): JSX.Element {
 
   return (
     <>
+      <ConnectModal
+        visible={showConnect}
+        onClose={() => setShowConnect(false)}
+      />
       <Box px={[space.xs, space.s]} py={[space.xs, space.l]}>
         {(() => {
           if (loadingLiveStream) {
@@ -56,6 +63,7 @@ export default function CreatorStreamsTab(): JSX.Element {
                 name={member.name}
                 image={member.photo}
                 tagLine={member.tag_list?.[0]?.name}
+                onClick={() => setShowConnect(true)}
               />
             ))}
           </Grid>
