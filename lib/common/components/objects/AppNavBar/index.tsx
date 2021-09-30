@@ -58,7 +58,7 @@ export default function AppNavBar(): JSX.Element {
         gridGap={space.xxs}
       >
         <Box display={["none", "block"]}>
-          <Link href="//joincrater.club/">
+          <Link href="//joincrater.club/" boxProps={{ target: "_blank" }}>
             <Text color={colors.accent} textStyle="button">
               About
             </Text>
