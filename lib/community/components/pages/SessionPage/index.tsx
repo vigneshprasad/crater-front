@@ -199,7 +199,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 }
 
                 if (isHost) {
-                  if (startTime > now) {
+                  if (startTime.minus({ minutes: 5 }) > now) {
                     return (
                       <Box
                         bg={colors.black[5]}
