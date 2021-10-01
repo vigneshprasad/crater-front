@@ -152,6 +152,10 @@ const GlobalStyle = createGlobalStyle`
         line-height: 1.8;
         overflow: hidden;
     }
+
+    * {
+      -webkit-overflow-scrolling: touch;
+    }
 `;
 
 export default GlobalStyle;

@@ -30,7 +30,7 @@ export default function StreamsPage(): JSX.Element {
         <StreamSlider liveStreams={liveStreams} />
       </Box>
 
-      <Box px={space.s} py={space.xs}>
+      <Box px={[space.xxs, space.s]} py={space.xs}>
         <Text textStyle="headlineBold">
           Going <Span>live</Span> soon
         </Text>

@@ -32,7 +32,7 @@ export default function ConnectModal({
       </Text>
 
       <Grid
-        gridAutoFlow="column"
+        gridAutoFlow={["row", "column"]}
         mt={space.xs}
         alignItems="start"
         gridGap={space.xs}

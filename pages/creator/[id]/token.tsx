@@ -49,7 +49,8 @@ export default function CreatorAbout({ id, creator }: IProps): JSX.Element {
               COMING SOON
             </Text>
             <Text
-              textStyle="headline5"
+              m="0 auto"
+              textStyle="headline6"
               textAlign="center"
               maxWidth={["100%", "50%"]}
             >
