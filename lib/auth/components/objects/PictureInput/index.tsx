@@ -5,12 +5,13 @@ import {
   MouseEventHandler,
   useRef,
   useCallback,
+  useMemo,
 } from "react";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, BoxProps, Icon, Text } from "@/common/components/atoms";
+import { Box, BoxProps, Icon, Text, Grid } from "@/common/components/atoms";
 
 type IProps = Omit<BoxProps, "onChange"> & {
   alt?: string;
@@ -54,7 +55,7 @@ export default function PictureInput({
   error,
   ...rest
 }: IProps): JSX.Element {
-  const { colors } = useTheme();
+  const { colors, radii, space } = useTheme();
   const [photoFile, setPhotoFile] = useState<File | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -83,9 +84,23 @@ export default function PictureInput({
 
   const staticImage = photo ?? (DEFAULT_IMAGE as never);
   const src = photoFile ? URL.createObjectURL(photoFile) : staticImage;
+  const border = useMemo(() => {
+    return `2px solid ${error ? colors.error : "transparent"}`;
+  }, [error, colors]);
 
   return (
-    <>
+    <Grid
+      gridTemplateColumns="max-content 1fr"
+      bg={colors.black[1]}
+      borderRadius={radii.xxs}
+      px={[space.xxs]}
+      py={[space.xxs]}
+      alignItems="center"
+      gridGap={[space.xxs]}
+      onClick={handleOverlayClick}
+      border={border}
+      cursor="pointer"
+    >
       <Container size={size} {...rest}>
         <input
           style={{ display: "none" }}
@@ -102,16 +117,20 @@ export default function PictureInput({
           unoptimized
         />
         {!disabled && (
-          <Overlay onClick={handleOverlayClick}>
+          <Overlay>
             <Icon fill color={colors.white[0]} size={48} icon="FileUpload" />
           </Overlay>
         )}
       </Container>
-      {error && (
-        <Text textStyle="error" color={colors.error}>
-          {error}
-        </Text>
-      )}
-    </>
+      <Box>
+        <Text textStyle="label">Profile Picture*</Text>
+
+        {error && (
+          <Text textStyle="error" color={colors.error}>
+            {error}
+          </Text>
+        )}
+      </Box>
+    </Grid>
   );
 }

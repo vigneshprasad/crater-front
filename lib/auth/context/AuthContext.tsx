@@ -6,7 +6,7 @@ import useSWR, { SWRResponse } from "swr";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
 interface IAuthState {
-  session?: Session;
+  session: Session | null;
   user?: User;
   profile?: Profile;
   loading: boolean;
@@ -52,6 +52,7 @@ export function AuthProvider({
         : sessionLoading,
       error: userError || profileError,
       mutateProfile,
+      session,
     }),
     [
       user,
