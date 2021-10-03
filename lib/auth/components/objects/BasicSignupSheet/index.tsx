@@ -18,6 +18,8 @@ import Spinner from "@/common/components/atoms/Spiner";
 import ModalWithVideo from "@/common/components/objects/ModalWithVideo";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import toBase64 from "@/common/utils/image/toBase64";
 
 import PictureInput from "../PictureInput";
@@ -32,6 +34,7 @@ export default function BasicSignupSheet(): JSX.Element {
   const { user, profile } = useAuth();
   const { colors, space } = useTheme();
   const router = useRouter();
+  const { track } = useAnalytics();
 
   const [loading, setLoading] = useState(false);
 
@@ -85,12 +88,16 @@ export default function BasicSignupSheet(): JSX.Element {
     }
   }, [user, profile, fieldValueSetter]);
 
-  const handlePhotoChange = async (photo: File): Promise<void> => {
-    const base64Image = await toBase64(photo);
-    if (base64Image) {
-      fieldValueSetter("photo", base64Image as string);
-    }
-  };
+  const handlePhotoChange = useCallback(
+    async (photo: File) => {
+      const base64Image = await toBase64(photo);
+      if (base64Image) {
+        fieldValueSetter("photo", base64Image as string);
+        track(AnalyticsEvents.profile_picure_added);
+      }
+    },
+    [fieldValueSetter, track]
+  );
 
   const visible = useMemo(() => {
     if (!profile || !user) {
@@ -133,14 +140,21 @@ export default function BasicSignupSheet(): JSX.Element {
                   token: userWithToken.token,
                 });
 
+                track(AnalyticsEvents.sign_up_completed, {
+                  name: userWithToken.user.name,
+                  email: userWithToken.user.email,
+                  photo: userWithToken.user.photo,
+                });
+
                 router.reload();
               }
             }
           });
+
         setLoading(false);
       }
     },
-    [getValidatedData, profile, router, user]
+    [getValidatedData, track, profile, router, user]
   );
 
   return (
@@ -152,7 +166,7 @@ export default function BasicSignupSheet(): JSX.Element {
         onSubmit={handleFormSubmit}
       >
         <PictureInput
-          size={[72, 96]}
+          size={[72, 72]}
           disabled={loading}
           photo={fields.photo.value}
           alt={profile?.name}
@@ -161,7 +175,7 @@ export default function BasicSignupSheet(): JSX.Element {
           m="0 auto"
         />
         <Box>
-          <Text m="5px">Your full name</Text>
+          <Text m="5px">Full name*</Text>
           <Input
             disabled={loading}
             value={fields.name.value}
@@ -173,7 +187,7 @@ export default function BasicSignupSheet(): JSX.Element {
         </Box>
 
         <Box mb={space.xs}>
-          <Text m="5px">Email ID</Text>
+          <Text m="5px">Email address*</Text>
 
           <Input
             disabled={loading}

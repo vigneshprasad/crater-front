@@ -20,8 +20,9 @@ import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { PageRoutes } from "@/common/constants/route.constants";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
-import sendDataToSegment from "@/common/utils/segment";
 import WebinarApiClient from "@/community/api";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { useWebinarRequest } from "@/community/context/WebinarRequestContext";
@@ -46,6 +47,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const [showSuccess, setShowSuccess] = useState(false);
   const { user } = useAuth();
   const { openModal } = useAuthModal();
+  const { track } = useAnalytics();
 
   const [url, setUrl] = useState("");
 
@@ -78,12 +80,27 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
       if (request) {
         await mutateWebinar();
+        track(AnalyticsEvents.rsvp_stream, {
+          stream: webinar.id,
+          stream_name: webinar.topic_detail?.name,
+          host: {
+            ...webinar.host_detail,
+          },
+        });
         mutateRequest(request);
       }
     }
 
     if (redirect) {
+      track(AnalyticsEvents.join_stream, {
+        stream: webinar.id,
+        stream_name: webinar.topic_detail?.name,
+        host: {
+          ...webinar.host_detail,
+        },
+      });
       router.push(PageRoutes.stream(webinar.id.toString()));
+
       return;
     }
 
@@ -165,12 +182,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                       text="RSVP for this session"
                       onClick={(): void => {
                         openModal();
-
-                        sendDataToSegment({
-                          actionName: "Notify Me",
-                          datetime: DateTime.now().toFormat("ff"),
-                          username: "",
-                        });
                       }}
                     />
                   );
@@ -187,19 +198,13 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                         } else {
                           router.push(PageRoutes.stream(webinar.id.toString()));
                         }
-
-                        sendDataToSegment({
-                          actionName: "Join Stream",
-                          datetime: DateTime.now().toFormat("ff"),
-                          username: user?.name,
-                        });
                       }}
                     />
                   );
                 }
 
                 if (isHost) {
-                  if (startTime > now) {
+                  if (startTime.minus({ minutes: 5 }) > now) {
                     return (
                       <Box
                         bg={colors.black[5]}
@@ -250,12 +255,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     text="RSVP for this session"
                     onClick={(): void => {
                       postGroupRequest();
-
-                      sendDataToSegment({
-                        actionName: "Notify Me",
-                        datetime: DateTime.now().toFormat("ff"),
-                        username: user?.name,
-                      });
                     }}
                   />
                 );
@@ -296,10 +295,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   }
                   text="Share"
                   onClick={(): void => {
-                    sendDataToSegment({
-                      actionName: "Share on LinkedIn",
-                      datetime: DateTime.now().toFormat("ff"),
-                      username: user?.name,
+                    track(AnalyticsEvents.share_stream_url, {
+                      social_provider: "linkedin",
                     });
                   }}
                 />
@@ -323,10 +320,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   }
                   text="Tweet"
                   onClick={(): void => {
-                    sendDataToSegment({
-                      actionName: "Share on Twitter",
-                      datetime: DateTime.now().toFormat("ff"),
-                      username: user?.name,
+                    track(AnalyticsEvents.share_stream_url, {
+                      social_provider: "twitter",
                     });
                   }}
                 />

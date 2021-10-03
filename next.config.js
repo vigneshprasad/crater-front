@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const withPlugins = require("next-compose-plugins");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 const withFonts = require("next-fonts");
+const withTM = require("next-transpile-modules")(["@segment/analytics-next"]);
 
 // @ts-check
 
@@ -55,4 +57,7 @@ const nextConfig = {
   },
 };
 
-module.exports = withBundleAnalyzer(withFonts(nextConfig));
+module.exports = withPlugins(
+  [withBundleAnalyzer, withFonts, withTM],
+  nextConfig
+);

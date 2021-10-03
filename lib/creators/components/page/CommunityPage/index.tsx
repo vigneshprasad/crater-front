@@ -9,6 +9,8 @@ import {
 } from "@/common/components/atoms";
 import useMeta from "@/common/context/MetaContext";
 import { theme } from "@/common/theme";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import NetworkRow from "@/community/components/objects/NetworkRow";
 import { useCreatorsList } from "@/creators/context/CreatorsListContext";
 
@@ -22,6 +24,7 @@ export type ICommunityPageProps = {
 export default function CommunityPage(): JSX.Element {
   const [visible, setVisible] = useState(false);
   const { space, colors } = theme;
+  const { track } = useAnalytics();
   const {
     creators,
     loading: creatorsLoading,
@@ -89,8 +92,14 @@ export default function CommunityPage(): JSX.Element {
               py={space.xs}
               tag={tag}
               key={tag.pk}
-              onClickItem={() => setVisible(true)}
-              onClickCardButton={() => setVisible(true)}
+              onClickItem={() => {
+                track(AnalyticsEvents.connect_with_clicked);
+                setVisible(true);
+              }}
+              onClickCardButton={() => {
+                track(AnalyticsEvents.match_me_clicked);
+                setVisible(true);
+              }}
             />
           ));
         })()}

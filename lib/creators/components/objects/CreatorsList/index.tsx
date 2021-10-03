@@ -60,7 +60,7 @@ export default function CreatorsList({
               name={creator.profile_detail?.name}
               key={creator.user}
               image={creator.profile_detail?.photo}
-              followers={creator.follower_count}
+              followers={creator.number_of_subscribers}
             />
           ));
         })()}

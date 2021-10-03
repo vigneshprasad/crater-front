@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 import {
   BackgroundProps,
@@ -80,7 +80,6 @@ export const InputContainer = styled(Flex)<FlexProps>`
   padding: 8px 8px;
   background: ${({ theme }) => theme.colors.black[4]};
   border-radius: ${({ theme }) => theme.radii.xxs}px;
-  border: 2px solid transparent;
   align-items: center;
 
   &:focus-within {
@@ -97,9 +96,13 @@ function InputWithRef({
   inputRef: React.ForwardedRef<HTMLInputElement>;
 }): JSX.Element {
   const { space, colors } = useTheme();
+
+  const border = useMemo(() => {
+    return `2px solid ${error ? colors.error : "transparent"}`;
+  }, [error, colors]);
   return (
     <>
-      <InputContainer>
+      <InputContainer border={border}>
         {prefixElement && prefixElement}
         <StyledInput ref={inputRef} {...rest} />
       </InputContainer>

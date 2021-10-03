@@ -123,7 +123,7 @@ export default function AsideNav({ activeTab }: IProps): JSX.Element {
           SIDE_NAV_MOBILE_ITEMS.map(({ icon, key, url, label }) => {
             const color = key === activeTab ? colors.accent : colors.white[1];
             return (
-              <Link href={url} key={key}>
+              <Link href={url} key={key} boxProps={{ target: "_blank" }}>
                 <NavItemContainer
                   px={[space.xxxs, 0]}
                   w={["none", 40]}

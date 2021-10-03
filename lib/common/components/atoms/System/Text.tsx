@@ -114,6 +114,17 @@ const variants = {
     lineHeight: ["1.2rem"],
     fontSize: ["1rem"],
   },
+  label: {
+    fontFamily: fonts.body,
+    lineHeight: ["2.4rem"],
+    fontSize: ["1.4rem"],
+    fontWeight: "600",
+  },
+  small: {
+    fontFamily: fonts.body,
+    lineHeight: ["1.4rem"],
+    fontSize: ["1.2rem"],
+  },
 };
 
 export type TextVariants = keyof typeof variants;

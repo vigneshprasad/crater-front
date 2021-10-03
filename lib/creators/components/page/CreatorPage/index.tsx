@@ -113,7 +113,9 @@ export default function CreatorPage({
           </Flex>
 
           <Text color={colors.slate}>{`${
-            creator.follower_count ? creator.follower_count.toLocaleString() : 0
+            creator.number_of_subscribers
+              ? creator.number_of_subscribers.toLocaleString()
+              : 0
           } Followers`}</Text>
         </Box>
         {/* <Button text="Join Club" /> */}

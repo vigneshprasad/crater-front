@@ -1,4 +1,3 @@
-import * as snippet from "@segment/snippet";
 import { ServerStyleSheet } from "styled-components";
 
 import Document, {
@@ -9,8 +8,6 @@ import Document, {
   Main,
   NextScript,
 } from "next/document";
-
-const SEGMENT_KEY = process.env.SEGMENT_KEY as string;
 
 export default class AppDocument extends Document {
   static async getInitialProps(
@@ -41,25 +38,11 @@ export default class AppDocument extends Document {
     }
   }
 
-  renderSnippet(): string {
-    const opts = {
-      apiKey: SEGMENT_KEY,
-      page: true,
-    };
-
-    if (process.env.NODE_ENV === "development") {
-      return snippet.max(opts);
-    }
-
-    return snippet.min(opts);
-  }
-
   render(): JSX.Element {
     return (
       <Html>
         <Head>
           <meta charSet="utf-8" />
-          <script dangerouslySetInnerHTML={{ __html: this.renderSnippet() }} />
         </Head>
         <body>
           <Main />
