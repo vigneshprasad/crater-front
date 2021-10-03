@@ -201,6 +201,7 @@ function InputComponent({
             <DigitInput
               // eslint-disable-next-line react/no-array-index-key
               key={index}
+              type="tel"
               focus={activeInput === index}
               value={otpValues && otpValues[index]}
               autoFocus={autoFocus}

@@ -24,14 +24,16 @@ export default function useForm<T>(
 
   const fieldValueSetter = useCallback(
     (key: U, value: T[U]): void => {
-      setFieldsState((state) => ({
-        ...state,
-        [key]: {
-          ...state[key],
-          value,
-          errors: [],
-        },
-      }));
+      setFieldsState((state) => {
+        return {
+          ...state,
+          [key]: {
+            ...state[key],
+            value,
+            errors: [],
+          },
+        };
+      });
     },
     [setFieldsState]
   );

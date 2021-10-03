@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useTheme } from "styled-components";
 
 import { Box, Grid, Text } from "@/common/components/atoms";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import { StreamSlider } from "@/community/components/objects/StreamSlider";
 import useNetworkList from "@/community/context/NetworkListContext";
 import useCreatorStreams from "@/creators/context/CreatorStreamsContext";
@@ -14,6 +16,7 @@ export default function CreatorStreamsTab(): JSX.Element {
   const { loading: loadingLiveStream, liveStreams } = useCreatorStreams();
   const { space } = useTheme();
   const { loading: loadingNetwork, members } = useNetworkList();
+  const { track } = useAnalytics();
 
   if (!liveStreams || !members) {
     return <Box>Loading</Box>;
@@ -63,7 +66,10 @@ export default function CreatorStreamsTab(): JSX.Element {
                 name={member.name}
                 image={member.photo}
                 tagLine={member.tag_list?.[0]?.name}
-                onClick={() => setShowConnect(true)}
+                onClick={() => {
+                  track(AnalyticsEvents.match_me_clicked);
+                  setShowConnect(true);
+                }}
               />
             ))}
           </Grid>

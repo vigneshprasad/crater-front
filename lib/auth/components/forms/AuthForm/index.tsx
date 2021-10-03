@@ -12,6 +12,8 @@ import { OtpInput } from "@/common/components/objects/OtpInput";
 import { PhoneInput } from "@/common/components/objects/PhoneInput";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 
 type AuthFormArgs = {
   phoneNumber: string;
@@ -20,6 +22,8 @@ type AuthFormArgs = {
 
 export default function AuthForm(): JSX.Element {
   const router = useRouter();
+
+  const { track } = useAnalytics();
   const { fields, fieldValueSetter, validateField, getValidatedData } =
     useForm<AuthFormArgs>({
       fields: {
@@ -51,6 +55,11 @@ export default function AuthForm(): JSX.Element {
     setLoading(true);
     try {
       await AuthApiClient.getPhoneOtp(phoneNumber);
+      console.log("this should happen");
+      console.log(AnalyticsEvents.get_otp_clicked);
+      track(AnalyticsEvents.get_otp_clicked, {
+        phoneNumber,
+      });
       setOtpVisible(true);
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -65,6 +74,9 @@ export default function AuthForm(): JSX.Element {
   ): Promise<void> => {
     try {
       await Login("phone-auth", { phoneNumber, otp });
+      track(AnalyticsEvents.phone_verified, {
+        phoneNumber,
+      });
       router.reload();
     } catch (err) {
       // eslint-disable-next-line no-console

@@ -10,6 +10,7 @@ import BasicSignupSheet from "@/auth/components/objects/BasicSignupSheet";
 import { AuthProvider } from "@/auth/context/AuthContext";
 import { AuthModalProvider } from "@/auth/context/AuthModalContext";
 import { AsideNavProvider } from "@/common/hooks/ui/useAsideNavState";
+import { AnalyticsProvider } from "@/common/utils/analytics";
 import fetcher from "@/common/utils/fetcher";
 
 import GlobalStyle from "../lib/common/styles/global.styled";
@@ -29,14 +30,16 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       <Provider session={session}>
         <AuthProvider user={user} profile={profile}>
           <AuthModalProvider>
-            <ThemeProvider theme={theme}>
-              <GlobalStyle />
-              <AsideNavProvider>
-                <Component {...pageProps} />
-              </AsideNavProvider>
-              <AuthModal />
-              <BasicSignupSheet />
-            </ThemeProvider>
+            <AnalyticsProvider>
+              <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <AsideNavProvider>
+                  <Component {...pageProps} />
+                </AsideNavProvider>
+                <AuthModal />
+                <BasicSignupSheet />
+              </ThemeProvider>
+            </AnalyticsProvider>
           </AuthModalProvider>
         </AuthProvider>
       </Provider>
