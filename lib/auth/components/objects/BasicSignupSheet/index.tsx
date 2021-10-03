@@ -93,9 +93,10 @@ export default function BasicSignupSheet(): JSX.Element {
       const base64Image = await toBase64(photo);
       if (base64Image) {
         fieldValueSetter("photo", base64Image as string);
+        track(AnalyticsEvents.profile_picure_added);
       }
     },
-    [fieldValueSetter]
+    [fieldValueSetter, track]
   );
 
   const visible = useMemo(() => {
@@ -174,7 +175,7 @@ export default function BasicSignupSheet(): JSX.Element {
           m="0 auto"
         />
         <Box>
-          <Text m="5px">Your full name</Text>
+          <Text m="5px">Full name*</Text>
           <Input
             disabled={loading}
             value={fields.name.value}
@@ -186,7 +187,7 @@ export default function BasicSignupSheet(): JSX.Element {
         </Box>
 
         <Box mb={space.xs}>
-          <Text m="5px">Email ID</Text>
+          <Text m="5px">Email address*</Text>
 
           <Input
             disabled={loading}

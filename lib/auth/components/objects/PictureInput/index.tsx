@@ -123,7 +123,7 @@ export default function PictureInput({
         )}
       </Container>
       <Box>
-        <Text textStyle="label">Add Profile picture</Text>
+        <Text textStyle="label">Profile Picture*</Text>
 
         {error && (
           <Text textStyle="error" color={colors.error}>

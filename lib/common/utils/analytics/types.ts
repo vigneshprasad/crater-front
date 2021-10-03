@@ -8,4 +8,5 @@ export enum AnalyticsEvents {
   share_stream_url = "web_share_stream_url",
   connect_with_clicked = "web_connect_with_clicked",
   match_me_clicked = "web_match_me_clicked",
+  profile_picure_added = "web_profile_picure_added",
 }
