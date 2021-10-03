@@ -5,6 +5,8 @@ import { Grid, Text, Icon, Link } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import ModalWithVideo from "@/common/components/objects/ModalWithVideo";
 import { PageRoutes } from "@/common/constants/route.constants";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import { Webinar } from "@/community/types/community";
 
 import UrlShare from "../UrlShare";
@@ -23,6 +25,7 @@ export default function RsvpSuccesModal({
   const { space, colors } = useTheme();
   const hostName = group.host_detail?.name;
   const [url, setUrl] = useState("");
+  const { track } = useAnalytics();
 
   useEffect(() => {
     const location = window.location.href;
@@ -89,6 +92,7 @@ export default function RsvpSuccesModal({
       </Grid>
       <Link href={PageRoutes.home}>
         <Button
+          onClick={() => track(AnalyticsEvents.explore_more_clicked)}
           mt={space.xs}
           variant="full-width"
           text="Explore other streams"
