@@ -96,7 +96,10 @@ export default function CommunityPage(): JSX.Element {
                 track(AnalyticsEvents.connect_with_clicked);
                 setVisible(true);
               }}
-              onClickCardButton={() => setVisible(true)}
+              onClickCardButton={() => {
+                track(AnalyticsEvents.match_me_clicked);
+                setVisible(true);
+              }}
             />
           ));
         })()}

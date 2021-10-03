@@ -9,6 +9,8 @@ import {
   useState,
 } from "react";
 
+import { useRouter } from "next/router";
+
 import useAuth from "@/auth/context/AuthContext";
 import { SEGMENT_KEY } from "@/common/constants/global.constants";
 
@@ -25,6 +27,9 @@ export interface IAnalyticsState {
     options?: Options,
     callback?: () => void
   ) => void;
+  page: (
+    ...args: Parameters<Analytics["page"]>
+  ) => ReturnType<Analytics["page"]> | undefined;
 }
 
 export const AnalyticsContext = createContext({} as IAnalyticsState);
@@ -34,6 +39,18 @@ type IProviderProps = PropsWithChildren<unknown>;
 export function AnalyticsProvider({ ...rest }: IProviderProps): JSX.Element {
   const [segment, setSegment] = useState<Analytics | undefined>();
   const { session, profile, user } = useAuth();
+  const router = useRouter();
+
+  const page = useCallback(
+    (
+      ...args: Parameters<Analytics["page"]>
+    ): ReturnType<Analytics["page"]> | undefined => {
+      if (segment) {
+        return segment?.page(...args);
+      }
+    },
+    [segment]
+  );
 
   const track = useCallback(
     (
@@ -63,14 +80,6 @@ export function AnalyticsProvider({ ...rest }: IProviderProps): JSX.Element {
     [segment]
   );
 
-  const value = useMemo(
-    () => ({
-      track,
-      identify,
-    }),
-    [track, identify]
-  );
-
   useEffect(() => {
     if (segment) {
       if (session && session.user && user) {
@@ -96,6 +105,28 @@ export function AnalyticsProvider({ ...rest }: IProviderProps): JSX.Element {
 
     intialize(SEGMENT_KEY);
   }, []);
+
+  // Router events
+  useEffect(() => {
+    const handlePageChnaged = (): void => {
+      page();
+    };
+
+    router.events.on("routeChangeComplete", handlePageChnaged);
+
+    return () => {
+      router.events.off("routeChangeComplete", handlePageChnaged);
+    };
+  }, [router, page]);
+
+  const value = useMemo(
+    () => ({
+      track,
+      identify,
+      page,
+    }),
+    [track, identify, page]
+  );
 
   return <AnalyticsContext.Provider value={value} {...rest} />;
 }

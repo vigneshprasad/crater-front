@@ -67,7 +67,7 @@ export default function CreatorStreamsTab(): JSX.Element {
                 image={member.photo}
                 tagLine={member.tag_list?.[0]?.name}
                 onClick={() => {
-                  track(AnalyticsEvents.match_me_clicked);
+                  track(AnalyticsEvents.connect_with_clicked);
                   setShowConnect(true);
                 }}
               />
