@@ -165,7 +165,7 @@ export default function BasicSignupSheet(): JSX.Element {
         onSubmit={handleFormSubmit}
       >
         <PictureInput
-          size={[72, 96]}
+          size={[72, 72]}
           disabled={loading}
           photo={fields.photo.value}
           alt={profile?.name}

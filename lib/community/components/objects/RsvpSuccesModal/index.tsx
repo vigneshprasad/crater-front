@@ -4,6 +4,7 @@ import { useTheme } from "styled-components";
 import { Grid, Text, Icon, Link } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import ModalWithVideo from "@/common/components/objects/ModalWithVideo";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { Webinar } from "@/community/types/community";
 
 import UrlShare from "../UrlShare";
@@ -86,6 +87,13 @@ export default function RsvpSuccesModal({
           />
         </Link>
       </Grid>
+      <Link href={PageRoutes.home}>
+        <Button
+          mt={space.xs}
+          variant="full-width"
+          text="Explore other streams"
+        />
+      </Link>
     </ModalWithVideo>
   );
 }
