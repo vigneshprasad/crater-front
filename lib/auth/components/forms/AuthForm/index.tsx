@@ -55,7 +55,6 @@ export default function AuthForm(): JSX.Element {
     setLoading(true);
     try {
       await AuthApiClient.getPhoneOtp(phoneNumber);
-      console.log("this should happen");
       console.log(AnalyticsEvents.get_otp_clicked);
       track(AnalyticsEvents.get_otp_clicked, {
         phoneNumber,
