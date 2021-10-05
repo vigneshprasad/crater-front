@@ -45,6 +45,8 @@ const radii = {
 };
 
 const zIndices = {
+  dropdownContainer: 10,
+  dropdownSheet: 4,
   modal: 1000,
   overlay: 900,
   navHeader: 100,
