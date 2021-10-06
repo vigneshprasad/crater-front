@@ -59,7 +59,7 @@ export const StyledInput = styled.input<InputProps>`
 
   &::placeholder {
     font-size: 1.1rem;
-    font-variation-settings: "wght" 700;
+    font-weight: 700;
     text-transform: uppercase;
   }
 
