@@ -34,6 +34,10 @@ export default function AuthForm(): JSX.Element {
               validator: Validators.phoneNumber,
               message: "Please enter valid number",
             },
+            {
+              validator: Validators.required,
+              message: "Please enter a phone number",
+            },
           ],
         },
         otp: {
@@ -87,7 +91,7 @@ export default function AuthForm(): JSX.Element {
     const valid = validateField("phoneNumber");
 
     if (valid) {
-      const value = `+91${fields.phoneNumber.value}`;
+      const value = fields.phoneNumber.value;
       getPhoneOtp(value);
     }
   };
@@ -102,7 +106,7 @@ export default function AuthForm(): JSX.Element {
     const data = getValidatedData();
 
     if (data !== false) {
-      const phoneNumber = `+91${data.phoneNumber}`;
+      const phoneNumber = `${data.phoneNumber}`;
       performLogin(phoneNumber, data.otp);
     }
   };
