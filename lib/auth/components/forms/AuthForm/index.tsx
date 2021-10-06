@@ -106,7 +106,7 @@ export default function AuthForm(): JSX.Element {
     const data = getValidatedData();
 
     if (data !== false) {
-      const phoneNumber = `+91${data.phoneNumber}`;
+      const phoneNumber = `${data.phoneNumber}`;
       performLogin(phoneNumber, data.otp);
     }
   };
