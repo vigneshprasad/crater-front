@@ -19,7 +19,7 @@ export default function NetworkList({
   const { space, colors, radii } = useTheme();
   return (
     <>
-      <Text px={space.xxs} textStyle="headlineBold">
+      <Text px={space.xxs} textStyle="title">
         {`${webinar.host_detail?.name}'s Club`}
       </Text>
       <Grid
