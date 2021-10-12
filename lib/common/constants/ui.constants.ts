@@ -32,4 +32,11 @@ export const SIDE_NAV_MOBILE_ITEMS: IMenuItem[] = [
     url: "//www.joincrater.club/",
     key: "about",
   },
+
+  {
+    label: "Create and Stream?",
+    icon: "Globe",
+    url: "//worknetwork.typeform.com/to/E1Y7pu0n",
+    key: "about",
+  },
 ];
