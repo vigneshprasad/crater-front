@@ -20,15 +20,15 @@ export default function VideoPlayer({ ...rest }: IProps): JSX.Element {
     }
   };
 
-  const handlePIP = (): void => {
-    if (document.pictureInPictureElement) {
-      document.exitPictureInPicture();
-    } else {
-      if (document.pictureInPictureEnabled) {
-        playerRef.current?.requestPictureInPicture();
-      }
-    }
-  };
+  // const handlePIP = (): void => {
+  //   if (document.pictureInPictureElement) {
+  //     document.exitPictureInPicture();
+  //   } else {
+  //     if (document.pictureInPictureEnabled) {
+  //       playerRef.current?.requestPictureInPicture();
+  //     }
+  //   }
+  // };
 
   const onTimeUpdate = (): void => {
     if (playerRef.current) {
@@ -56,7 +56,6 @@ export default function VideoPlayer({ ...rest }: IProps): JSX.Element {
       <Box bottom={0}>
         <Box w="100%" bg="#fff" h={4} cursor="pointer" onClick={onClick} />
         <Button text="Play" onClick={handlePlayClick} />
-        <Button text="PIP" onClick={handlePIP} />
       </Box>
     </Box>
   );
