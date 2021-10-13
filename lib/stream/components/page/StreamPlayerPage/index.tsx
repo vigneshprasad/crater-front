@@ -15,8 +15,13 @@ import useStreamRecording from "@/stream/context/StreamRecordingContext";
 import PastStreamsList from "../../objects/PastStreamsList";
 
 const Video = styled.video`
+  position: absolute;
   width: 100%;
-  border-radius: ${({ theme }) => theme.radii.xxs};
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: contain;
+  border-radius: ${({ theme }) => theme.radii.xxs}px;
 `;
 
 export default function StreamPlayerPage(): JSX.Element {
@@ -34,12 +39,15 @@ export default function StreamPlayerPage(): JSX.Element {
     <BaseLayout px={[space.xs, space.s]} aside={<AsideNav />} overflowY="auto">
       <Grid gridTemplateColumns={["1fr", "2fr 1fr"]} gridGap={space.xs}>
         <Box py={space.s}>
-          <Video
-            poster={webinar?.topic_detail?.image}
-            controls
-            controlsList="nodownload"
-            src={recording?.recording}
-          />
+          <Box position="relative" pt="56.25%">
+            <Video
+              poster={webinar?.topic_detail?.image}
+              controls
+              controlsList="nodownload"
+              src={recording?.recording}
+            />
+          </Box>
+
           <Box py={space.xxs}>
             <Text textStyle="headline5">{webinar?.topic_detail?.name}</Text>
             <Text color={colors.slate}>{startTime}</Text>
