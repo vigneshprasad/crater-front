@@ -60,6 +60,14 @@ export type Group = {
   topic?: number;
   topic_detail?: Topic;
   type: number;
+  recording_details?: {
+    dyte_recordings: number[];
+    dyte_recordings_details: unknown[];
+    id: number;
+    is_published: string;
+    recording: string;
+    published_at: string;
+  };
 };
 
 export enum ParticpantType {
