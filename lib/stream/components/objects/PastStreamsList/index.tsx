@@ -15,8 +15,6 @@ export default function PastStreamsList(): JSX.Element {
     API_URL_CONSTANTS.groups.getPastWebinars
   );
 
-  console.log(data);
-
   return (
     <>
       <Text px={space.xxs} mb={space.xxs} textStyle="title">
