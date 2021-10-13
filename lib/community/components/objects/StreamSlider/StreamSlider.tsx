@@ -15,7 +15,8 @@ export interface IStreamSliderProps {
 export function StreamSlider({ liveStreams }: IStreamSliderProps): JSX.Element {
   const { space, zIndices } = useTheme();
   const [activeSlide, setActiveSlide] = useState(
-    liveStreams.length > 2 ? 1 : 0
+    // liveStreams.length > 2 ? 1 : 0
+    0
   );
 
   const onPrevClick = (): void => {

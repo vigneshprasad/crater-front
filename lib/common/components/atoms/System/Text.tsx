@@ -73,7 +73,7 @@ const variants = {
   },
   captionLarge: {
     fontFamily: fonts.body,
-    fontSize: ["1.3rem"],
+    fontSize: ["1.4rem"],
     fontWeight: "500",
     lineHeight: ["1.8rem"],
   },

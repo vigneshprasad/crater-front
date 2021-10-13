@@ -7,6 +7,7 @@ import WebinarApiClient from "@/community/api";
 import { LiveStreamsProvider } from "@/community/context/LiveStreamsContext";
 import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { Webinar } from "@/community/types/community";
+import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 
 const StreamsPage = dynamic(
   () => import("@/community/components/pages/StreamsPage")
@@ -45,7 +46,9 @@ export default function Home({ liveStreams, upcoming }: IProps): JSX.Element {
     >
       <LiveStreamsProvider initial={liveStreams}>
         <UpcomingStreamsProvider initial={upcoming}>
-          <StreamsPage />
+          <PastStreamProvider>
+            <StreamsPage />
+          </PastStreamProvider>
         </UpcomingStreamsProvider>
       </LiveStreamsProvider>
     </HomePageLayout>

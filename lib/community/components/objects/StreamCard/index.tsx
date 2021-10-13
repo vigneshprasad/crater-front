@@ -9,17 +9,18 @@ import { Webinar } from "@/community/types/community";
 
 interface IProps {
   stream: Webinar;
+  link?: string;
 }
 
 const Span = styled.span`
   color: ${({ theme }) => theme.colors.accent};
 `;
 
-export default function StreamCard({ stream }: IProps): JSX.Element {
+export default function StreamCard({ stream, link }: IProps): JSX.Element {
   const { space, radii } = useTheme();
   const startTime = DateTime.parse(stream.start);
   return (
-    <Link key={stream.id} href={`/session/${stream.id}`}>
+    <Link key={stream.id} href={link ?? `/session/${stream.id}`}>
       <Grid gridGap={space.xs}>
         <Box
           h={180}
