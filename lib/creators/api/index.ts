@@ -7,7 +7,7 @@ import { ApiResult, PageResponse } from "@/common/types/api";
 
 import { CommunityMember, Webinar } from "../../community/types/community";
 import { Creator } from "../types/creator";
-import { Stream, StreamFormArgs } from "../types/stream";
+import { CreateWebinar, Stream, StreamFormArgs } from "../types/stream";
 
 interface ICreatorApiClient {
   getCreatorsList: (
@@ -22,9 +22,7 @@ interface ICreatorApiClient {
   getCommunityMemebers: (
     communityId?: number
   ) => Promise<ApiResult<CommunityMember[], AxiosError>>;
-  postStream: (
-    stream: Partial<StreamFormArgs>
-  ) => Promise<ApiResult<Stream, AxiosError>>;
+  postStream: (stream: CreateWebinar) => Promise<ApiResult<Stream, AxiosError>>;
 }
 
 export default function CreatorApiClient(
