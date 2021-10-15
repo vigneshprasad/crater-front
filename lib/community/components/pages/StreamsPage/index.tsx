@@ -3,8 +3,10 @@ import styled, { useTheme } from "styled-components";
 import dynamic from "next/dynamic";
 
 import { Box, Grid, Text } from "@/common/components/atoms";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
+import usePastStreams from "@/stream/context/PastStreamContext";
 
 import StreamCard from "../../objects/StreamCard";
 import { IStreamSliderProps } from "../../objects/StreamSlider";
@@ -20,6 +22,7 @@ const Span = styled.span`
 export default function StreamsPage(): JSX.Element {
   const { liveStreams, loading } = useLiveStreams();
   const { upcoming } = useUpcomingStreams();
+  const { streams: past } = usePastStreams();
   const { space } = useTheme();
 
   if (loading || !liveStreams || !upcoming) return <Box>Loading...</Box>;
@@ -43,6 +46,24 @@ export default function StreamsPage(): JSX.Element {
       >
         {upcoming.map((stream) => (
           <StreamCard stream={stream} key={stream.id} />
+        ))}
+      </Grid>
+
+      <Box px={[space.xxs, space.s]} py={space.xs}>
+        <Text textStyle="headlineBold">Past Streams</Text>
+      </Box>
+
+      <Grid
+        px={space.s}
+        gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
+        gridGap={space.s}
+      >
+        {past?.map((stream) => (
+          <StreamCard
+            link={PageRoutes.streamVideo(stream.id)}
+            stream={stream}
+            key={stream.id}
+          />
         ))}
       </Grid>
     </>

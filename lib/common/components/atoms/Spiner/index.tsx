@@ -2,13 +2,14 @@ import * as CSS from "csstype";
 import { motion } from "framer-motion";
 import styled, { useTheme } from "styled-components";
 
-import { Box } from "../System/Box";
+import { Box, BoxProps } from "../System/Box";
 
-type IProps = {
-  size?: number;
-  strokeWidth?: number;
-  strokeColor?: CSS.Property.Color;
-};
+type IProps = BoxProps &
+  React.SVGAttributes<HTMLOrSVGElement> & {
+    size?: number;
+    strokeWidth?: number;
+    strokeColor?: CSS.Property.Color;
+  };
 
 const Circle = styled(motion.circle)``;
 

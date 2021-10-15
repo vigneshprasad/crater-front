@@ -40,6 +40,9 @@ export const API_URL_CONSTANTS = {
     getAllLiveWebinars: "/groups/public/conversations/webinars/featured/",
     getUpcominWebinars: "/groups/public/conversations/webinars/upcoming/",
     getWebinars: "/groups/conversations/webinars/",
+    getPastWebinars: "/groups/public/conversations/webinars/past/",
+    retrieveStreamRecording: (id: string | number): string =>
+      `/groups/recordings/${id}/`,
   },
   community: {
     getCommunityList: "/crater/community/",

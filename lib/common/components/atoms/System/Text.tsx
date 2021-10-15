@@ -73,7 +73,7 @@ const variants = {
   },
   captionLarge: {
     fontFamily: fonts.body,
-    fontSize: ["1.3rem"],
+    fontSize: ["1.4rem"],
     fontWeight: "500",
     lineHeight: ["1.8rem"],
   },
@@ -124,6 +124,12 @@ const variants = {
     fontFamily: fonts.body,
     lineHeight: ["1.4rem"],
     fontSize: ["1.2rem"],
+  },
+  dropdownItem: {
+    fontFamily: fonts.body,
+    lineHeight: ["1.8rem"],
+    fontSize: ["1.3rem"],
+    fontWeight: "600",
   },
 };
 

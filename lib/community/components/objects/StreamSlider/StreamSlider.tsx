@@ -15,13 +15,14 @@ export interface IStreamSliderProps {
 export function StreamSlider({ liveStreams }: IStreamSliderProps): JSX.Element {
   const { space, zIndices } = useTheme();
   const [activeSlide, setActiveSlide] = useState(
-    liveStreams.length > 2 ? 1 : 0
+    // liveStreams.length > 2 ? 1 : 0
+    0
   );
 
   const onPrevClick = (): void => {
     setActiveSlide((state) => {
       if (state === 0) {
-        return state;
+        return liveStreams.length - 1;
       }
       return state - 1;
     });
@@ -30,7 +31,7 @@ export function StreamSlider({ liveStreams }: IStreamSliderProps): JSX.Element {
   const onNextClick = (): void => {
     setActiveSlide((state) => {
       if (state === liveStreams.length - 1) {
-        return state;
+        return 0;
       }
       return state + 1;
     });
@@ -38,9 +39,28 @@ export function StreamSlider({ liveStreams }: IStreamSliderProps): JSX.Element {
 
   const slideState = useMemo(() => {
     return liveStreams.map((_, index) => {
-      if (index === activeSlide - 1) return "previous";
-      if (index === activeSlide + 1) return "next";
-      if (index === activeSlide) return "main";
+      if (liveStreams.length == 1) {
+        return "main";
+      }
+      if (liveStreams.length == 2) {
+        if (index == activeSlide) {
+          return "main";
+        } else {
+          return "next";
+        }
+      }
+      if (
+        index ==
+          (activeSlide % liveStreams.length) + (liveStreams.length - 1) ||
+        index == (activeSlide % liveStreams.length) - 1
+      )
+        return "previous";
+      if (
+        index == (activeSlide % liveStreams.length) + 1 ||
+        (activeSlide == liveStreams.length - 1 && index == 0)
+      )
+        return "next";
+      if (index == activeSlide % liveStreams.length) return "main";
       return "hidden";
     });
   }, [liveStreams, activeSlide]);
