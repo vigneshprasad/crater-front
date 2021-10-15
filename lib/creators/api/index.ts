@@ -7,6 +7,7 @@ import { ApiResult, PageResponse } from "@/common/types/api";
 
 import { CommunityMember, Webinar } from "../../community/types/community";
 import { Creator } from "../types/creator";
+import { CreateWebinar, Stream, StreamFormArgs } from "../types/stream";
 
 interface ICreatorApiClient {
   getCreatorsList: (
@@ -21,11 +22,14 @@ interface ICreatorApiClient {
   getCommunityMemebers: (
     communityId?: number
   ) => Promise<ApiResult<CommunityMember[], AxiosError>>;
+  postStream: (stream: CreateWebinar) => Promise<ApiResult<Stream, AxiosError>>;
 }
 
 export default function CreatorApiClient(
   context?: GetSessionOptions
 ): ICreatorApiClient {
+  const client = API(context);
+
   async function getCreatorsList(
     certified = true,
     page = 1,
@@ -84,10 +88,25 @@ export default function CreatorApiClient(
     }
   }
 
+  async function postStream(
+    stream: Partial<StreamFormArgs>
+  ): Promise<ApiResult<Stream, AxiosError>> {
+    try {
+      const { data } = await client.post<Stream>(
+        API_URL_CONSTANTS.stream.createStream,
+        stream
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getCreatorsList,
     getCreator,
     getCreatorStreams,
     getCommunityMemebers,
+    postStream,
   };
 }

@@ -14,6 +14,7 @@ type BaseProps<T> = {
   placeholder?: string;
   value?: T[];
   maxLength?: number;
+  error?: string;
   onChange?: (value: T[]) => void;
 };
 
@@ -61,6 +62,7 @@ export function MultiSelect<T>({
   items,
   placeholder = "Select a value",
   maxLength = 1,
+  error,
   labelGetter,
   onChange,
   value: controlledValue,
@@ -113,92 +115,99 @@ export function MultiSelect<T>({
   }, [controlledValue, setValue, value]);
 
   return (
-    <Container tabIndex={0} onBlur={handleBlur}>
-      <Grid
-        alignItems="center"
-        gridTemplateColumns="1fr max-content"
-        onClick={handleOnClickDropDown}
-      >
-        {(() => {
-          if (!value.length) {
+    <>
+      <Container tabIndex={0} onBlur={handleBlur}>
+        <Grid
+          alignItems="center"
+          gridTemplateColumns="1fr max-content"
+          onClick={handleOnClickDropDown}
+        >
+          {(() => {
+            if (!value.length) {
+              return (
+                <Text color={colors.slate} textStyle="placeholder">
+                  {placeholder}
+                </Text>
+              );
+            }
+
             return (
-              <Text color={colors.slate} textStyle="placeholder">
-                {placeholder}
-              </Text>
+              <Grid
+                gridAutoFlow="column"
+                gridAutoColumns="min-content"
+                gridGap={space.xxxs}
+              >
+                {value.map((val) => (
+                  <Box
+                    px={space.xxxs}
+                    py={4}
+                    key={labelGetter(val)}
+                    bg={colors.accent}
+                    borderRadius={radii.xxs}
+                  >
+                    <Text textStyle="dropdownItem">{labelGetter(val)}</Text>
+                  </Box>
+                ))}
+              </Grid>
             );
-          }
+          })()}
 
-          return (
-            <Grid
-              gridAutoFlow="column"
-              gridAutoColumns="min-content"
-              gridGap={space.xxxs}
-            >
-              {value.map((val) => (
-                <Box
-                  px={space.xxxs}
-                  py={4}
-                  key={labelGetter(val)}
-                  bg={colors.accent}
-                  borderRadius={radii.xxs}
-                >
-                  <Text textStyle="dropdownItem">{labelGetter(val)}</Text>
-                </Box>
-              ))}
-            </Grid>
-          );
-        })()}
-
-        <Icon icon="ExpandMore" color={colors.white[0]} fill />
-      </Grid>
-      <AnimatedBox
-        borderRadius={`0 0 ${radii.xxs}px ${radii.xxs}px`}
-        initial="closed"
-        right={4}
-        left={4}
-        maxHeight={180}
-        overflowY="auto"
-        bg={colors.black[2]}
-        position="absolute"
-        animate={animate}
-        variants={{
-          closed: {
-            opacity: 0,
-            y: 0,
-            transitionEnd: {
-              display: "none",
+          <Icon icon="ExpandMore" color={colors.white[0]} fill />
+        </Grid>
+        <AnimatedBox
+          borderRadius={`0 0 ${radii.xxs}px ${radii.xxs}px`}
+          initial="closed"
+          right={4}
+          left={4}
+          maxHeight={180}
+          overflowY="auto"
+          bg={colors.black[2]}
+          position="absolute"
+          animate={animate}
+          variants={{
+            closed: {
+              opacity: 0,
+              y: 0,
+              transitionEnd: {
+                display: "none",
+              },
             },
-          },
-          opened: {
-            display: "block",
-            opacity: 1,
-            y: 16,
-          },
-        }}
-      >
-        {listItems.map((item) => {
-          const checked = value.includes(item);
-          return (
-            <DropDownItemContainer
-              py={space.xxxs}
-              px={space.xxs}
-              key={labelGetter(item)}
-              gridTemplateColumns="max-content 1fr"
-              gridGap={space.xxxs}
-              alignItems="center"
-              onClick={() => handleItemClick(item)}
-            >
-              <Icon
-                visibility={checked ? "visible" : "hidden"}
-                color={colors.accent}
-                size={18}
-                icon="Check"
-              />
-              <Text>{labelGetter(item)}</Text>
-            </DropDownItemContainer>
-          );
-        })}
-      </AnimatedBox>
-    </Container>
+            opened: {
+              display: "block",
+              opacity: 1,
+              y: 16,
+            },
+          }}
+        >
+          {listItems?.map((item) => {
+            const checked = value.includes(item);
+            return (
+              <DropDownItemContainer
+                py={space.xxxs}
+                px={space.xxs}
+                key={labelGetter(item)}
+                gridTemplateColumns="max-content 1fr"
+                gridGap={space.xxxs}
+                alignItems="center"
+                onClick={() => handleItemClick(item)}
+              >
+                <Icon
+                  visibility={checked ? "visible" : "hidden"}
+                  color={colors.accent}
+                  size={18}
+                  icon="Check"
+                />
+                <Text>{labelGetter(item)}</Text>
+              </DropDownItemContainer>
+            );
+          })}
+        </AnimatedBox>
+      </Container>
+      {error && (
+        <Text textStyle="error" color={colors.error}>
+          {error}
+        </Text>
+      )}
+    </>
   );
 }

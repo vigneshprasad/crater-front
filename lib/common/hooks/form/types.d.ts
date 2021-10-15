@@ -1,4 +1,4 @@
-const keys = ["required", "email", "phoneNumber"] as const;
+const keys = ["required", "email", "phoneNumber", "minLength"] as const;
 
 export type ValidatorTypes = typeof keys[number];
 
@@ -39,4 +39,5 @@ export type IUseFormResult<T, U> = {
   validate: () => void;
   getValidatedData: () => T | false;
   validateField: (key: U) => boolean;
+  clearForm: () => void;
 };

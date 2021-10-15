@@ -1,7 +1,7 @@
 import { IconOptions } from "../theme";
 import { PageRoutes } from "./route.constants";
 
-export type INavKeys = "streams" | "community" | "about";
+export type INavKeys = "streams" | "community" | "about" | "creatorhub";
 
 export type IMenuItem = {
   label: string;
@@ -22,6 +22,12 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
     icon: "Community",
     url: PageRoutes.community,
     key: "community",
+  },
+  {
+    label: "Creator Hub",
+    icon: "Wallet",
+    url: PageRoutes.creatorHub,
+    key: "creatorhub",
   },
 ];
 

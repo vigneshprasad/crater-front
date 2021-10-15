@@ -137,6 +137,10 @@ export default function useForm<T>(
     [fieldsState, fields]
   );
 
+  const clearForm = useCallback(() => {
+    setFieldsState(initial);
+  }, [setFieldsState, initial]);
+
   return {
     fields: fieldsState,
     fieldValueSetter,
@@ -144,5 +148,6 @@ export default function useForm<T>(
     validate,
     getValidatedData,
     validateField,
+    clearForm,
   };
 }
