@@ -10,12 +10,15 @@ import {
   Flex,
   TextArea,
   Card,
+  Grid,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import DateTimeInput from "@/common/components/objects/DateTimeInput";
 import FormField from "@/common/components/objects/FormField";
 import ImageDropBox from "@/common/components/objects/ImageDropBox";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import DateTime from "@/common/utils/datetime/DateTime";
 import toBase64 from "@/common/utils/image/toBase64";
 import CreatorApiClient from "@/creators/api";
 import { StreamFormArgs } from "@/creators/types/stream";
@@ -44,8 +47,13 @@ export default function ScheduleStreamForm(): JSX.Element {
           validators: [],
         },
         start: {
-          intialValue: "2021-10-12T20:30:00",
-          validators: [],
+          intialValue: DateTime.now(),
+          validators: [
+            {
+              validator: Validators.required,
+              message: "Date & Time is required",
+            },
+          ],
         },
       },
     });
@@ -122,9 +130,26 @@ export default function ScheduleStreamForm(): JSX.Element {
           <Input />
         </FormField>
 
-        <FormField label="Date & Time">
-          <Input />
-        </FormField>
+        <Grid gridAutoFlow="column" gridGap={space.xs}>
+          <FormField label="Date">
+            <DateTimeInput
+              placeholder="Enter Datetime"
+              type="date"
+              value={fields.start.value.toFormat(
+                DateTime.DEFAULT_DATETIME_INPUT_FORMAT
+              )}
+              onChange={(e) => {
+                fieldValueSetter(
+                  "start",
+                  DateTime.fromFormat(
+                    e.currentTarget.value,
+                    DateTime.DEFAULT_DATETIME_INPUT_FORMAT
+                  )
+                );
+              }}
+            />
+          </FormField>
+        </Grid>
 
         <FormField label="Co-host">
           <Text>Coming Soon!</Text>
