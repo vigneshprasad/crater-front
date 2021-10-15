@@ -11,7 +11,7 @@ type IProps = PropsWithChildren<{
   selectedTab: string;
 }>;
 
-export default function CreatorHubPage({ children }: IProps) {
+export default function CreatorHubPage({ children }: IProps): JSX.Element {
   const seo: NextSeoProps = {
     title: "Crater Club",
     description: "Creater Hub",

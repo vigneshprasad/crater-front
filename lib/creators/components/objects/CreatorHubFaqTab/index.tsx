@@ -1,6 +1,6 @@
 import { Card, Grid, Text } from "@/common/components/atoms";
 
-export default function CreatorHubFaqTab() {
+export default function CreatorHubFaqTab(): JSX.Element {
   return (
     <Grid>
       <Card w={300} h={300}>

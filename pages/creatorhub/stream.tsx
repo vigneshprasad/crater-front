@@ -5,7 +5,7 @@ import CreatorHubStreamTab from "@/creators/components/objects/CreatorHubStreamT
 import CreatorHubPage from "@/creators/components/page/CreatorHubPage";
 import { CreatorStreamProvider } from "@/creators/context/CreatorStreamsContext";
 
-export default function CreatorHubStream() {
+export default function CreatorHubStream(): JSX.Element {
   const { user, loading } = useAuth();
 
   if (loading || !user) {

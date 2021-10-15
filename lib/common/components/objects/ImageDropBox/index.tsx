@@ -41,7 +41,7 @@ export default function ImageDropBox({
   value,
   previewStyle,
   onChange,
-}: IProps) {
+}: IProps): JSX.Element {
   const { colors } = useTheme();
   const [photo, setPhoto] = useState<File | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);

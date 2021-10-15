@@ -1,7 +1,5 @@
-import React, { SyntheticEvent, useCallback } from "react";
+import { SyntheticEvent, useCallback } from "react";
 import { useTheme } from "styled-components";
-
-import router from "next/router";
 
 import {
   Form,
@@ -98,7 +96,7 @@ export default function ScheduleStreamForm(): JSX.Element {
         }
       }
     },
-    [getValidatedData, router]
+    [getValidatedData, clearForm]
   );
 
   const handlePhotoChange = useCallback(

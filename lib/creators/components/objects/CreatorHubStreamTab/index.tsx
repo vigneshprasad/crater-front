@@ -9,7 +9,7 @@ import useCreatorStreams from "@/creators/context/CreatorStreamsContext";
 
 import ScheduleStreamForm from "../../forms/ScheduleStreamForm";
 
-export default function CreatorHubStreamTab() {
+export default function CreatorHubStreamTab(): JSX.Element {
   const { loading: loadingLiveStream, liveStreams } = useCreatorStreams();
   const { loading: loadingUpcomingStream, upcoming } = useUpcomingStreams();
   const { space } = useTheme();
