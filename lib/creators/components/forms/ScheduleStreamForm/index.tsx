@@ -13,20 +13,26 @@ import {
   Grid,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import { MultiSelect } from "@/common/components/atoms/MultiSelect";
 import DateTimeInput from "@/common/components/objects/DateTimeInput";
 import FormField from "@/common/components/objects/FormField";
 import ImageDropBox from "@/common/components/objects/ImageDropBox";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import DateTime from "@/common/utils/datetime/DateTime";
 import toBase64 from "@/common/utils/image/toBase64";
 import CreatorApiClient from "@/creators/api";
-import { StreamFormArgs } from "@/creators/types/stream";
+import {
+  CreateWebinar,
+  StreamCategory,
+  StreamFormArgs,
+} from "@/creators/types/stream";
 
 export default function ScheduleStreamForm(): JSX.Element {
   const { space, colors } = useTheme();
 
-  const { fields, fieldValueSetter, getValidatedData } =
+  const { fields, fieldValueSetter, getValidatedData, clearForm } =
     useForm<StreamFormArgs>({
       fields: {
         topic: {
@@ -55,6 +61,15 @@ export default function ScheduleStreamForm(): JSX.Element {
             },
           ],
         },
+        categories: {
+          intialValue: [],
+          validators: [
+            {
+              validator: Validators.minLength,
+              message: "Categories are required",
+            },
+          ],
+        },
       },
     });
 
@@ -67,11 +82,20 @@ export default function ScheduleStreamForm(): JSX.Element {
           delete data.image;
         }
 
-        await CreatorApiClient()
-          .postStream(data)
-          .then(async () => {
-            router.reload();
-          });
+        const formData: CreateWebinar = {
+          topic_title: data.topic,
+          topic_image: data.image,
+          description: data.description,
+          start: data.start.toISO(),
+          categories: data.categories.map((category) => category.pk),
+        };
+
+        try {
+          await CreatorApiClient().postStream(formData);
+          clearForm();
+        } catch (e) {
+          console.log(e);
+        }
       }
     },
     [getValidatedData, router]
@@ -127,14 +151,22 @@ export default function ScheduleStreamForm(): JSX.Element {
         </FormField>
 
         <FormField label="Category">
-          <Input />
+          <MultiSelect<StreamCategory>
+            placeholder="Select one or more categories"
+            dataUrl={API_URL_CONSTANTS.stream.getCategories}
+            labelGetter={(item) => item.name}
+            onChange={(val) => fieldValueSetter("categories", val)}
+            maxLength={3}
+            value={fields.categories.value}
+            error={fields.categories.errors[0]}
+          />
         </FormField>
 
         <Grid gridAutoFlow="column" gridGap={space.xs}>
           <FormField label="Date">
             <DateTimeInput
               placeholder="Enter Datetime"
-              type="date"
+              type="datetime-local"
               value={fields.start.value.toFormat(
                 DateTime.DEFAULT_DATETIME_INPUT_FORMAT
               )}
