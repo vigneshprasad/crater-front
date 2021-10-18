@@ -23,12 +23,12 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
     url: PageRoutes.community,
     key: "community",
   },
-  {
-    label: "Creator Hub",
-    icon: "Wallet",
-    url: PageRoutes.creatorHub,
-    key: "creatorhub",
-  },
+  // {
+  //   label: "Creator Hub",
+  //   icon: "Wallet",
+  //   url: PageRoutes.creatorHub,
+  //   key: "creatorhub",
+  // },
 ];
 
 export const SIDE_NAV_MOBILE_ITEMS: IMenuItem[] = [
