@@ -61,4 +61,8 @@ export const API_URL_CONSTANTS = {
     experience: "/user/meta/profile/experience/",
     sector: "/user/meta/profile/sector/",
   },
+  stream: {
+    createStream: "/groups/conversations/webinars/",
+    getCategories: "/groups/conversations/categories/",
+  },
 };

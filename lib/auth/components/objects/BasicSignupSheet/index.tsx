@@ -51,12 +51,7 @@ export default function BasicSignupSheet(): JSX.Element {
       },
       photo: {
         intialValue: profile?.photo,
-        validators: [
-          {
-            validator: Validators.required,
-            message: "Photo is required",
-          },
-        ],
+        validators: [],
       },
       email: {
         intialValue: user?.email ?? "",
@@ -104,7 +99,7 @@ export default function BasicSignupSheet(): JSX.Element {
       return false;
     }
 
-    if (!profile.name || !profile.photo || !user.email) {
+    if (!profile.name || !user.email) {
       return true;
     }
 

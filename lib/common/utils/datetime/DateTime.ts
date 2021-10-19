@@ -1,6 +1,7 @@
 import { DateTime as LuxonDatetime } from "luxon";
 
 export default class DateTime extends LuxonDatetime {
+  static DEFAULT_DATETIME_INPUT_FORMAT = "yyyy-MM-dd'T'HH:mm";
   static DEFAULT_FORMAT = "d MMM @ H:mm";
 
   static parse(input: string): DateTime {

@@ -125,6 +125,12 @@ const variants = {
     lineHeight: ["1.4rem"],
     fontSize: ["1.2rem"],
   },
+  dropdownItem: {
+    fontFamily: fonts.body,
+    lineHeight: ["1.8rem"],
+    fontSize: ["1.3rem"],
+    fontWeight: "600",
+  },
 };
 
 export type TextVariants = keyof typeof variants;
