@@ -1,22 +1,34 @@
 import { useTheme } from "styled-components";
 
+import { useRouter } from "next/router";
+
 import { Text, Grid, Box } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
+import { PageRoutes } from "@/common/constants/route.constants";
 import StreamCard from "@/community/components/objects/StreamCard";
 import { StreamSlider } from "@/community/components/objects/StreamSlider";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
-import useCreatorStreams from "@/creators/context/CreatorStreamsContext";
+import { Webinar } from "@/community/types/community";
 import usePastStreams from "@/stream/context/PastStreamContext";
 
 import ScheduleStreamForm from "../../forms/ScheduleStreamForm";
 
 export default function CreatorHubStreamTab(): JSX.Element {
-  const { loading: loadingLiveStream, liveStreams } = useCreatorStreams();
-  const { loading: loadingUpcomingStream, upcoming } = useUpcomingStreams();
+  const {
+    loading: loadingUpcomingStream,
+    upcoming,
+    mutateUpcomingStreams,
+  } = useUpcomingStreams();
+  const router = useRouter();
   const { streams: past } = usePastStreams();
   const { space } = useTheme();
 
-  if (loadingLiveStream || !liveStreams || loadingUpcomingStream || !upcoming) {
+  const handleFormSubmit = (stream: Webinar): void => {
+    mutateUpcomingStreams();
+    router.push(PageRoutes.session(stream.id));
+  };
+
+  if (loadingUpcomingStream || !upcoming) {
     return <Spinner />;
   }
 
@@ -31,15 +43,7 @@ export default function CreatorHubStreamTab(): JSX.Element {
           <Box>
             <Text textStyle="title">Upcoming</Text>
             <Box px={[space.xs, space.s]} py={[space.xs, space.s]}>
-              {(() => {
-                if (loadingLiveStream) {
-                  return <Spinner />;
-                }
-                if (!liveStreams.length) {
-                  return null;
-                }
-                return <StreamSlider liveStreams={liveStreams} />;
-              })()}
+              <StreamSlider liveStreams={upcoming} />
             </Box>
           </Box>
         );
@@ -47,10 +51,10 @@ export default function CreatorHubStreamTab(): JSX.Element {
 
       <Box>
         <Text textStyle="title">Schedule New Stream</Text>
-        <ScheduleStreamForm />
+        <ScheduleStreamForm onSubmitComplete={handleFormSubmit} />
       </Box>
 
-      {past && past.length && (
+      {past && past.length > 0 && (
         <Box>
           <Text textStyle="title">Past Streams</Text>
           <Grid

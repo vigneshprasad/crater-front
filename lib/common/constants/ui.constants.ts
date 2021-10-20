@@ -25,7 +25,7 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
   },
   {
     label: "Creator Hub",
-    icon: "Wallet",
+    icon: "Grid",
     url: PageRoutes.creatorHub,
     key: "creatorhub",
   },

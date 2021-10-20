@@ -68,7 +68,7 @@ export function MultiSelect<T>({
   value: controlledValue,
 }: IMultiSelectProps<T>): JSX.Element {
   const [value, setValue] = useState([] as T[]);
-  const { colors, space, radii } = useTheme();
+  const { colors, space, radii, zIndices } = useTheme();
   const animate = useAnimation();
   const { data: remoteItems } = useSWR<T[]>(dataUrl ? dataUrl : null);
 
@@ -121,6 +121,7 @@ export function MultiSelect<T>({
           alignItems="center"
           gridTemplateColumns="1fr max-content"
           onClick={handleOnClickDropDown}
+          zIndex={zIndices.dropdownContainer}
         >
           {(() => {
             if (!value.length) {
@@ -164,6 +165,7 @@ export function MultiSelect<T>({
           bg={colors.black[2]}
           position="absolute"
           animate={animate}
+          zIndex={zIndices.dropdownSheet}
           variants={{
             closed: {
               opacity: 0,

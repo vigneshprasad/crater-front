@@ -12,6 +12,7 @@ export const API_URL_CONSTANTS = {
     user: "/user/auth/user/",
     profile: "/user/auth/profile/",
     network: "/user/auth/network/",
+    user_count: "/user/auth/users/count/",
   },
   integrations: {
     dyte: {

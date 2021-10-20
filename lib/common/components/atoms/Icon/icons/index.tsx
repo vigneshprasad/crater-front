@@ -15,6 +15,7 @@ export { default as Eye } from "./Eye";
 export { default as FileUpload } from "./FileUpload";
 export { default as Film } from "./Film";
 export { default as Globe } from "./Globe";
+export { default as Grid } from "./Grid";
 export { default as InstagramColor } from "./InstagramColor";
 export { default as Instagram } from "./Instagram";
 export { default as Linkedin } from "./Linkedin";

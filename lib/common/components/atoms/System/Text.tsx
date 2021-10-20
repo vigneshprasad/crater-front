@@ -42,7 +42,8 @@ const variants = {
   headline6: {
     fontFamily: fonts.body,
     fontSize: ["1.8rem"],
-    fontWeight: "500",
+    fontWeight: "600",
+    lineHeight: ["2.4rem"],
   },
   headlineBold: {
     fontFamily: fonts.body,

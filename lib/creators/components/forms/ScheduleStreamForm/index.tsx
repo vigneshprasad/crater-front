@@ -13,6 +13,7 @@ import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import DateTime from "@/common/utils/datetime/DateTime";
 import toBase64 from "@/common/utils/image/toBase64";
+import { Webinar } from "@/community/types/community";
 import CreatorApiClient from "@/creators/api";
 import {
   CreateWebinar,
@@ -20,7 +21,13 @@ import {
   StreamFormArgs,
 } from "@/creators/types/stream";
 
-export default function ScheduleStreamForm(): JSX.Element {
+interface IProps {
+  onSubmitComplete?: (stream: Webinar) => void;
+}
+
+export default function ScheduleStreamForm({
+  onSubmitComplete,
+}: IProps): JSX.Element {
   const { space, colors } = useTheme();
   const [loading, setLoading] = useState(false);
 
@@ -84,17 +91,19 @@ export default function ScheduleStreamForm(): JSX.Element {
 
         setLoading(true);
 
-        try {
-          await CreatorApiClient().postStream(formData);
+        const [res] = await CreatorApiClient().postStream(formData);
+
+        if (res) {
           clearForm();
-        } catch (e) {
-          console.log(e);
+          if (onSubmitComplete) {
+            onSubmitComplete(res);
+          }
         }
 
         setLoading(false);
       }
     },
-    [getValidatedData, clearForm]
+    [getValidatedData, clearForm, onSubmitComplete]
   );
 
   const handlePhotoChange = useCallback(
