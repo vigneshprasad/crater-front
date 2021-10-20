@@ -1,17 +1,10 @@
-import { SyntheticEvent, useCallback } from "react";
+import { SyntheticEvent, useCallback, useState } from "react";
 import { useTheme } from "styled-components";
 
-import {
-  Form,
-  Text,
-  Input,
-  Flex,
-  TextArea,
-  Card,
-  Grid,
-} from "@/common/components/atoms";
+import { Form, Input, Flex, TextArea, Card } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { MultiSelect } from "@/common/components/atoms/MultiSelect";
+import Spinner from "@/common/components/atoms/Spiner";
 import DateTimeInput from "@/common/components/objects/DateTimeInput";
 import FormField from "@/common/components/objects/FormField";
 import ImageDropBox from "@/common/components/objects/ImageDropBox";
@@ -29,6 +22,7 @@ import {
 
 export default function ScheduleStreamForm(): JSX.Element {
   const { space, colors } = useTheme();
+  const [loading, setLoading] = useState(false);
 
   const { fields, fieldValueSetter, getValidatedData, clearForm } =
     useForm<StreamFormArgs>({
@@ -88,12 +82,16 @@ export default function ScheduleStreamForm(): JSX.Element {
           categories: data.categories.map((category) => category.pk),
         };
 
+        setLoading(true);
+
         try {
           await CreatorApiClient().postStream(formData);
           clearForm();
         } catch (e) {
           console.log(e);
         }
+
+        setLoading(false);
       }
     },
     [getValidatedData, clearForm]
@@ -111,25 +109,47 @@ export default function ScheduleStreamForm(): JSX.Element {
 
   return (
     <Card
-      m="0 auto"
-      maxWidth="1000px"
+      my={space.s}
+      containerProps={{ py: space.xxs }}
+      maxWidth={960}
       footer={
         <Flex
           px={space.xs}
           py={space.xs}
           bg={colors.black[2]}
-          justifyContent="center"
+          justifyContent="end"
         >
           <Button
             text="Submit"
             type="submit"
             onClick={handleScheduleStreamCreation}
+            suffixElement={
+              loading ? (
+                <Spinner
+                  size={24}
+                  strokeWidth={2}
+                  strokeColor={colors.white[0]}
+                />
+              ) : undefined
+            }
           />
         </Flex>
       }
     >
-      <Form display="grid" gridAutoFlow="row" gridGap={space.xxs}>
-        <FormField label="Title">
+      <Form
+        display="grid"
+        gridTemplateColumns={["1fr", "1fr 1fr"]}
+        gridRowGap={space.xxxs}
+        gridColumnGap={space.xs}
+      >
+        <FormField
+          label="Title"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
           <Input
             value={fields.topic.value}
             onChange={(e) => {
@@ -139,18 +159,16 @@ export default function ScheduleStreamForm(): JSX.Element {
           />
         </FormField>
 
-        <FormField label="Description" subtext="(optional)">
-          <TextArea
-            value={fields.description.value}
-            onChange={(e) => {
-              fieldValueSetter("description", e.currentTarget.value);
-            }}
-          />
-        </FormField>
-
-        <FormField label="Category">
+        <FormField
+          label="Category"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
           <MultiSelect<StreamCategory>
-            placeholder="Select one or more categories"
+            placeholder="Pick categories"
             dataUrl={API_URL_CONSTANTS.stream.getCategories}
             labelGetter={(item) => item.name}
             onChange={(val) => fieldValueSetter("categories", val)}
@@ -160,32 +178,67 @@ export default function ScheduleStreamForm(): JSX.Element {
           />
         </FormField>
 
-        <Grid gridAutoFlow="column" gridGap={space.xs}>
-          <FormField label="Date">
-            <DateTimeInput
-              placeholder="Enter Datetime"
-              type="datetime-local"
-              value={fields.start.value.toFormat(
-                DateTime.DEFAULT_DATETIME_INPUT_FORMAT
-              )}
-              onChange={(e) => {
-                fieldValueSetter(
-                  "start",
-                  DateTime.fromFormat(
-                    e.currentTarget.value,
-                    DateTime.DEFAULT_DATETIME_INPUT_FORMAT
-                  )
-                );
-              }}
-            />
-          </FormField>
-        </Grid>
-
-        <FormField label="Co-host">
-          <Text>Coming Soon!</Text>
+        <FormField
+          label="Co-host"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
+          <Input disabled placeholder="Comming soon" />
         </FormField>
 
-        <FormField label="Cover Photo" subtext="(optional)">
+        <FormField
+          label="Date"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
+          <DateTimeInput
+            placeholder="Enter Datetime"
+            type="datetime-local"
+            value={fields.start.value.toFormat(
+              DateTime.DEFAULT_DATETIME_INPUT_FORMAT
+            )}
+            onChange={(e) => {
+              fieldValueSetter(
+                "start",
+                DateTime.fromFormat(
+                  e.currentTarget.value,
+                  DateTime.DEFAULT_DATETIME_INPUT_FORMAT
+                )
+              );
+            }}
+          />
+        </FormField>
+
+        <FormField
+          label="Description"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
+          <TextArea
+            value={fields.description.value}
+            onChange={(e) => {
+              fieldValueSetter("description", e.currentTarget.value);
+            }}
+          />
+        </FormField>
+
+        <FormField
+          label="Cover Photo"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
           <ImageDropBox
             alt="cover photo"
             value={fields.image.value}

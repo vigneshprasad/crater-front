@@ -4,6 +4,7 @@ import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsCont
 import CreatorHubStreamTab from "@/creators/components/objects/CreatorHubStreamTab";
 import CreatorHubPage from "@/creators/components/page/CreatorHubPage";
 import { CreatorStreamProvider } from "@/creators/context/CreatorStreamsContext";
+import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 
 export default function CreatorHubStream(): JSX.Element {
   const { user, loading } = useAuth();
@@ -16,7 +17,9 @@ export default function CreatorHubStream(): JSX.Element {
     <CreatorHubPage selectedTab="stream">
       <CreatorStreamProvider creatorId={user.pk}>
         <UpcomingStreamsProvider>
-          <CreatorHubStreamTab />
+          <PastStreamProvider>
+            <CreatorHubStreamTab />
+          </PastStreamProvider>
         </UpcomingStreamsProvider>
       </CreatorStreamProvider>
     </CreatorHubPage>

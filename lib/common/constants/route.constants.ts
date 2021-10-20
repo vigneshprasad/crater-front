@@ -6,5 +6,5 @@ export const PageRoutes = {
   stream: (id: string): string => `/livestream/${id}`,
   creatorProfile: (id: string, tab?: string): string => `/creator/${id}/${tab}`,
   streamVideo: (id: string | number): string => `/video/${id}`,
-  creatorHub: "/creatorhub",
+  creatorHub: "/creatorhub/stream",
 };

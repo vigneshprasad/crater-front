@@ -1,10 +1,9 @@
-import DEFAULT_IMAGE from "public/images/img_default_avatar.png";
-import { ChangeEvent, useCallback, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, BoxProps, Icon } from "../../atoms";
+import { Box, BoxProps, Grid, Icon, Text } from "../../atoms";
 
 interface IProps {
   alt?: string;
@@ -38,12 +37,12 @@ const Preview = styled(Box)`
 
 export default function ImageDropBox({
   alt,
-  value,
+  value: controlledValue,
   previewStyle,
   onChange,
 }: IProps): JSX.Element {
-  const { colors } = useTheme();
-  const [photo, setPhoto] = useState<File | undefined>(undefined);
+  const { colors, radii } = useTheme();
+  const [photo, setPhoto] = useState<File | string | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleOnChange = useCallback(
@@ -54,6 +53,12 @@ export default function ImageDropBox({
     },
     [onChange]
   );
+
+  useEffect(() => {
+    if (controlledValue) {
+      setPhoto(controlledValue);
+    }
+  }, [controlledValue]);
 
   const handleFileInputChange = (
     event: ChangeEvent<HTMLInputElement>
@@ -66,9 +71,6 @@ export default function ImageDropBox({
     }
   };
 
-  const staticImage = !value || value == null ? DEFAULT_IMAGE : value;
-  const src = photo ? URL.createObjectURL(photo) : (staticImage as string);
-
   return (
     <Box>
       <input
@@ -78,14 +80,57 @@ export default function ImageDropBox({
         onChange={handleFileInputChange}
         accept="image/jpg, image/png, image/tiff, image/bmp"
       />
-      <Preview pt="40%" borderRadius="none" overflow="hidden" {...previewStyle}>
-        <Image
-          objectFit="cover"
-          src={src}
-          alt={alt}
-          layout="fill"
-          unoptimized
-        />
+      <Preview
+        h={140}
+        borderRadius={radii.xs}
+        overflow="hidden"
+        {...previewStyle}
+      >
+        {(() => {
+          if (!photo) {
+            return (
+              <Grid
+                position="relative"
+                h={140}
+                border={`2px dashed ${colors.slate}`}
+                borderRadius={radii.xs}
+              >
+                <Text
+                  color={colors.slate}
+                  textStyle="captionLarge"
+                  m="auto auto"
+                  textAlign="center"
+                >
+                  Add a cover photo. <br />
+                  <Text textStyle="caption">
+                    (Supported formats .jpeg, .png, .jpg)
+                  </Text>
+                </Text>
+                <Overlay onClick={() => inputRef.current?.click()}>
+                  <Icon
+                    color={colors.white[0]}
+                    fill
+                    size={48}
+                    icon="FileUpload"
+                  />
+                </Overlay>
+              </Grid>
+            );
+          }
+
+          const src =
+            typeof photo === "string" ? photo : URL.createObjectURL(photo);
+
+          return (
+            <Image
+              objectFit="cover"
+              src={src}
+              alt={alt}
+              layout="fill"
+              unoptimized
+            />
+          );
+        })()}
         <Overlay onClick={() => inputRef.current?.click()}>
           <Icon color={colors.white[0]} fill size={48} icon="FileUpload" />
         </Overlay>

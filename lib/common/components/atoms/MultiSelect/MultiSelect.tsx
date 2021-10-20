@@ -33,7 +33,7 @@ export type IMultiSelectProps<T> = AsyncProps<T> | StaticProps<T>;
 const Container = styled(Box)`
   position: relative;
   background: ${({ theme: { colors } }) => colors.black[4]};
-  padding: 12px 16px;
+  padding: 10px 16px;
   border-radius: ${({ theme: { radii } }) => radii.xxs}px;
   border: 2px solid transparent;
   cursor: pointer;

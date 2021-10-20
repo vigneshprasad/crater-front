@@ -77,7 +77,7 @@ export const StyledInput = styled.input<InputProps>`
 `;
 
 export const InputContainer = styled(Flex)<FlexProps>`
-  padding: 8px 8px;
+  padding: 6px 8px;
   background: ${({ theme }) => theme.colors.black[4]};
   border-radius: ${({ theme }) => theme.radii.xxs}px;
   align-items: center;
