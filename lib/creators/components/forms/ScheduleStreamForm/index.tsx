@@ -63,7 +63,7 @@ export default function ScheduleStreamForm({
         ],
       },
       start: {
-        intialValue: DateTime.now(),
+        intialValue: DateTime.now().plus({ hours: 24 }),
         validators: [
           {
             validator: Validators.required,
