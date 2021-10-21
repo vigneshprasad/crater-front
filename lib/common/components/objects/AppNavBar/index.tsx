@@ -62,14 +62,6 @@ export default function AppNavBar(): JSX.Element {
           gridAutoFlow="column"
           gridGap={space.xxs}
         >
-          <Link
-            href="//worknetwork.typeform.com/to/E1Y7pu0n"
-            boxProps={{ target: "_blank" }}
-          >
-            <Text color={colors.accent} textStyle="button">
-              Create &amp; Stream?
-            </Text>
-          </Link>
           <Link href="//joincrater.club/" boxProps={{ target: "_blank" }}>
             <Text color={colors.accent} textStyle="button">
               About

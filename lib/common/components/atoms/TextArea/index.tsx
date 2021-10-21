@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { StyledInput, InputContainer, InputProps } from "../Input";
 
 export type TextAreaProps = InputProps &
-  React.HTMLAttributes<HTMLTextAreaElement>;
+  React.HTMLAttributes<HTMLTextAreaElement> & {
+    rows?: number;
+  };
 
 const StyledTextArea = styled(StyledInput)<TextAreaProps>`
   resize: none;

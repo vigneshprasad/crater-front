@@ -35,7 +35,6 @@ const Container = styled(Box)`
   background: ${({ theme: { colors } }) => colors.black[2]};
   padding: 10px 16px;
   border-radius: ${({ theme: { radii } }) => radii.xxs}px;
-  border: 2px solid transparent;
   cursor: pointer;
   outline: none;
 
@@ -114,9 +113,17 @@ export function MultiSelect<T>({
     }
   }, [controlledValue, setValue, value]);
 
+  const border = useMemo(() => {
+    if (error) {
+      return `2px solid ${colors.error}`;
+    }
+
+    return "2px solid transparent";
+  }, [error, colors]);
+
   return (
-    <>
-      <Container tabIndex={0} onBlur={handleBlur}>
+    <Box>
+      <Container border={border} tabIndex={0} onBlur={handleBlur}>
         <Grid
           alignItems="center"
           gridTemplateColumns="1fr max-content"
@@ -206,10 +213,15 @@ export function MultiSelect<T>({
         </AnimatedBox>
       </Container>
       {error && (
-        <Text textStyle="error" color={colors.error}>
+        <Text
+          px={space.xxxs}
+          py={space.xxxs}
+          textStyle="error"
+          color={colors.error}
+        >
           {error}
         </Text>
       )}
-    </>
+    </Box>
   );
 }

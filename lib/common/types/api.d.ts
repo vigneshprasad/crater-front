@@ -7,3 +7,8 @@ export interface PageResponse<T> {
 }
 
 export type ApiResult<T, E> = [T | undefined, E | undefined];
+
+export interface BaseApiError {
+  error_code: string;
+  error_message: string;
+}

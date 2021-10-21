@@ -23,11 +23,12 @@ export const API_URL_CONSTANTS = {
     },
   },
   conversations: {
+    allWebinars: "/groups/conversations/webinars/all/",
     webinars: "/groups/conversations/webinars/",
     retrieveGroup: (id: string): string =>
       `/groups/conversations/webinars/${id}/`,
     retrieveWebinar: (id: string): string =>
-      `/groups/conversations/webinars/${id}/`,
+      `/groups/conversations/webinars/all/${id}/`,
   },
   creator: {
     getCreatorList: "/crater/creator/",

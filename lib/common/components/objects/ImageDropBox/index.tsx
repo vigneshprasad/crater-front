@@ -3,13 +3,14 @@ import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, BoxProps, Grid, Icon, Text } from "../../atoms";
+import { Box, BoxProps, Grid, Icon, Text, Span } from "../../atoms";
 
 interface IProps {
   alt?: string;
   value?: string;
   previewStyle?: BoxProps;
   onChange?: (file: File) => void;
+  error?: string;
 }
 
 const Overlay = styled(Box)`
@@ -39,9 +40,10 @@ export default function ImageDropBox({
   alt,
   value: controlledValue,
   previewStyle,
+  error,
   onChange,
 }: IProps): JSX.Element {
-  const { colors, radii } = useTheme();
+  const { space, colors, radii } = useTheme();
   const [photo, setPhoto] = useState<File | string | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -81,7 +83,7 @@ export default function ImageDropBox({
         accept="image/jpg, image/png, image/tiff, image/bmp"
       />
       <Preview
-        h={140}
+        pt="56.25%"
         borderRadius={radii.xs}
         overflow="hidden"
         {...previewStyle}
@@ -90,9 +92,12 @@ export default function ImageDropBox({
           if (!photo) {
             return (
               <Grid
-                position="relative"
-                h={140}
-                border={`2px dashed ${colors.slate}`}
+                position="absolute"
+                top={0}
+                left={0}
+                w="100%"
+                h="100%"
+                border={`2px dashed ${error ? colors.error : colors.slate}`}
                 borderRadius={radii.xs}
               >
                 <Text
@@ -101,10 +106,11 @@ export default function ImageDropBox({
                   m="auto auto"
                   textAlign="center"
                 >
-                  Add a cover photo. <br />
-                  <Text textStyle="caption">
-                    (Supported formats .jpeg, .png, .jpg)
-                  </Text>
+                  Add a cover photo.
+                  <br />
+                  <Span textStyle="caption">
+                    (Ideal dimensions 1024 x 576px)
+                  </Span>
                 </Text>
                 <Overlay onClick={() => inputRef.current?.click()}>
                   <Icon
@@ -135,6 +141,13 @@ export default function ImageDropBox({
           <Icon color={colors.white[0]} fill size={48} icon="FileUpload" />
         </Overlay>
       </Preview>
+      {error && (
+        <Box px={space.xxxs} py={space.xxxs}>
+          <Text color={colors.error} textStyle="error">
+            {error}
+          </Text>
+        </Box>
+      )}
     </Box>
   );
 }

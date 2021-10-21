@@ -11,6 +11,7 @@ import ImageDropBox from "@/common/components/objects/ImageDropBox";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import { BaseApiError } from "@/common/types/api";
 import DateTime from "@/common/utils/datetime/DateTime";
 import toBase64 from "@/common/utils/image/toBase64";
 import { Webinar } from "@/community/types/community";
@@ -31,46 +32,56 @@ export default function ScheduleStreamForm({
   const { space, colors } = useTheme();
   const [loading, setLoading] = useState(false);
 
-  const { fields, fieldValueSetter, getValidatedData, clearForm } =
-    useForm<StreamFormArgs>({
-      fields: {
-        topic: {
-          intialValue: "",
-          validators: [
-            {
-              validator: Validators.required,
-              message: "Title is required",
-            },
-          ],
-        },
-        description: {
-          intialValue: "",
-          validators: [],
-        },
-        image: {
-          intialValue: "",
-          validators: [],
-        },
-        start: {
-          intialValue: DateTime.now(),
-          validators: [
-            {
-              validator: Validators.required,
-              message: "Date & Time is required",
-            },
-          ],
-        },
-        categories: {
-          intialValue: [],
-          validators: [
-            {
-              validator: Validators.minLength,
-              message: "Categories are required",
-            },
-          ],
-        },
+  const {
+    fields,
+    fieldValueSetter,
+    getValidatedData,
+    clearForm,
+    fieldErrorSetter,
+  } = useForm<StreamFormArgs>({
+    fields: {
+      topic: {
+        intialValue: "",
+        validators: [
+          {
+            validator: Validators.required,
+            message: "Title is required",
+          },
+        ],
       },
-    });
+      description: {
+        intialValue: "",
+        validators: [],
+      },
+      image: {
+        intialValue: "",
+        validators: [
+          {
+            validator: Validators.required,
+            message: "Cover photo is required",
+          },
+        ],
+      },
+      start: {
+        intialValue: DateTime.now(),
+        validators: [
+          {
+            validator: Validators.required,
+            message: "Date & Time is required",
+          },
+        ],
+      },
+      categories: {
+        intialValue: [],
+        validators: [
+          {
+            validator: Validators.minLength,
+            message: "Categories are required",
+          },
+        ],
+      },
+    },
+  });
 
   const handleScheduleStreamCreation = useCallback(
     async (event: SyntheticEvent) => {
@@ -91,7 +102,20 @@ export default function ScheduleStreamForm({
 
         setLoading(true);
 
-        const [res] = await CreatorApiClient().postStream(formData);
+        const [res, err] = await CreatorApiClient().postStream(formData);
+
+        if (err) {
+          if (err.response && err.response.data) {
+            const error = err.response.data as BaseApiError;
+            console.log(error);
+            if (
+              error.error_code === "groupStartDateTimeNotInFuture" ||
+              error.error_code === "groupStartLessThan24Hours"
+            ) {
+              fieldErrorSetter("start", error.error_message);
+            }
+          }
+        }
 
         if (res) {
           clearForm();
@@ -103,7 +127,7 @@ export default function ScheduleStreamForm({
         setLoading(false);
       }
     },
-    [getValidatedData, clearForm, onSubmitComplete]
+    [getValidatedData, clearForm, onSubmitComplete, fieldErrorSetter]
   );
 
   const handlePhotoChange = useCallback(
@@ -207,6 +231,7 @@ export default function ScheduleStreamForm({
           border={false}
         >
           <DateTimeInput
+            error={fields.start.errors[0]}
             placeholder="Enter Datetime"
             type="datetime-local"
             value={fields.start.value.toFormat(
@@ -233,6 +258,7 @@ export default function ScheduleStreamForm({
           border={false}
         >
           <TextArea
+            rows={6}
             value={fields.description.value}
             onChange={(e) => {
               fieldValueSetter("description", e.currentTarget.value);
@@ -249,6 +275,7 @@ export default function ScheduleStreamForm({
           border={false}
         >
           <ImageDropBox
+            error={fields.image.errors[0]}
             alt="cover photo"
             value={fields.image.value}
             onChange={handlePhotoChange}
