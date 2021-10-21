@@ -92,9 +92,9 @@ export default function CreatorApiClient(
 
   async function postStream(
     stream: Partial<StreamFormArgs>
-  ): Promise<ApiResult<Stream, AxiosError>> {
+  ): Promise<ApiResult<Webinar, AxiosError>> {
     try {
-      const { data } = await client.post<Stream>(
+      const { data } = await client.post<Webinar>(
         API_URL_CONSTANTS.stream.createStream,
         stream
       );
