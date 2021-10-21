@@ -1,8 +1,8 @@
 import { NextSeoProps } from "next-seo";
+import HeroImage from "public/images/img_creatorhub.png";
 import DistributionImage from "public/images/img_distribution.png";
 import EngagementImage from "public/images/img_engagement.png";
 import MonetizationImage from "public/images/img_monetization.png";
-import HeroImage from "public/images/signup-bg.png";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
