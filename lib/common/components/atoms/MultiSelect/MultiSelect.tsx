@@ -32,10 +32,9 @@ export type IMultiSelectProps<T> = AsyncProps<T> | StaticProps<T>;
 
 const Container = styled(Box)`
   position: relative;
-  background: ${({ theme: { colors } }) => colors.black[4]};
-  padding: 12px 16px;
+  background: ${({ theme: { colors } }) => colors.black[2]};
+  padding: 10px 16px;
   border-radius: ${({ theme: { radii } }) => radii.xxs}px;
-  border: 2px solid transparent;
   cursor: pointer;
   outline: none;
 
@@ -68,7 +67,7 @@ export function MultiSelect<T>({
   value: controlledValue,
 }: IMultiSelectProps<T>): JSX.Element {
   const [value, setValue] = useState([] as T[]);
-  const { colors, space, radii } = useTheme();
+  const { colors, space, radii, zIndices } = useTheme();
   const animate = useAnimation();
   const { data: remoteItems } = useSWR<T[]>(dataUrl ? dataUrl : null);
 
@@ -114,13 +113,22 @@ export function MultiSelect<T>({
     }
   }, [controlledValue, setValue, value]);
 
+  const border = useMemo(() => {
+    if (error) {
+      return `2px solid ${colors.error}`;
+    }
+
+    return "2px solid transparent";
+  }, [error, colors]);
+
   return (
-    <>
-      <Container tabIndex={0} onBlur={handleBlur}>
+    <Box>
+      <Container border={border} tabIndex={0} onBlur={handleBlur}>
         <Grid
           alignItems="center"
           gridTemplateColumns="1fr max-content"
           onClick={handleOnClickDropDown}
+          zIndex={zIndices.dropdownContainer}
         >
           {(() => {
             if (!value.length) {
@@ -164,6 +172,7 @@ export function MultiSelect<T>({
           bg={colors.black[2]}
           position="absolute"
           animate={animate}
+          zIndex={zIndices.dropdownSheet}
           variants={{
             closed: {
               opacity: 0,
@@ -204,10 +213,15 @@ export function MultiSelect<T>({
         </AnimatedBox>
       </Container>
       {error && (
-        <Text textStyle="error" color={colors.error}>
+        <Text
+          px={space.xxxs}
+          py={space.xxxs}
+          textStyle="error"
+          color={colors.error}
+        >
           {error}
         </Text>
       )}
-    </>
+    </Box>
   );
 }

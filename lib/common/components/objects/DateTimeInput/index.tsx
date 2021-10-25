@@ -1,7 +1,13 @@
 import { forwardRef, useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 
-import { InputContainer, StyledInput, InputProps, Text } from "../../atoms";
+import {
+  Box,
+  InputContainer,
+  StyledInput,
+  InputProps,
+  Text,
+} from "../../atoms";
 
 type IProps = InputProps;
 
@@ -26,17 +32,22 @@ function DateTimeInputWithRef({
     return `2px solid ${error ? colors.error : "transparent"}`;
   }, [error, colors]);
   return (
-    <>
+    <Box>
       <InputContainer border={border}>
         {prefixElement && prefixElement}
         <StyledPicker ref={inputRef} type={type} {...rest} />
       </InputContainer>
       {error && (
-        <Text py={space.xxs} color={colors.error} textStyle="error">
+        <Text
+          py={space.xxxs}
+          px={space.xxxs}
+          color={colors.error}
+          textStyle="error"
+        >
           {error}
         </Text>
       )}
-    </>
+    </Box>
   );
 }
 

@@ -28,6 +28,8 @@ import {
   ResponsiveValue,
   boxShadow,
   BoxShadowProps,
+  grid,
+  GridProps,
 } from "styled-system";
 
 import { CustomTheme } from "@/common/theme";
@@ -51,6 +53,7 @@ export type BaseBoxProps = BackgroundProps &
   TextStyleProps &
   BorderProps &
   BoxShadowProps &
+  GridProps &
   TypographyProps & {
     textDecoration?:
       | TextDecorationOption
@@ -66,6 +69,8 @@ export type BaseBoxProps = BackgroundProps &
     placeContent?: ResponsiveValue<CSS.Property.PlaceContent, CustomTheme>;
     visibility?: ResponsiveValue<CSS.Property.Visibility, CustomTheme>;
     wordBreak?: ResponsiveValue<CSS.Property.WordBreak, CustomTheme>;
+    float?: ResponsiveValue<CSS.Property.Float, CustomTheme>;
+    clear?: ResponsiveValue<CSS.Property.Clear, CustomTheme>;
   };
 
 export type BoxProps = BaseBoxProps & React.HTMLAttributes<HTMLDivElement>;
@@ -120,6 +125,16 @@ const wordBreak = style({
   cssProperty: "wordBreak",
 });
 
+const float = style({
+  prop: "float",
+  cssProperty: "float",
+});
+
+const clear = style({
+  prop: "clear",
+  cssProperty: "clear",
+});
+
 export const Box = styled.div<BoxProps>`
   display: block;
   box-sizing: border-box;
@@ -132,6 +147,7 @@ export const Box = styled.div<BoxProps>`
   ${colorStyle}
   ${flexbox}
   ${layout}
+  ${grid}
   ${opacity}
   ${position}
   ${space}
@@ -146,4 +162,6 @@ export const Box = styled.div<BoxProps>`
   ${placeContent}
   ${visibility}
   ${wordBreak}
+  ${float}
+  ${clear}
 `;

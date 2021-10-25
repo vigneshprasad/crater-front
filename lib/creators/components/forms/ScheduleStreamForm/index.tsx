@@ -1,25 +1,20 @@
-import { SyntheticEvent, useCallback } from "react";
+import { SyntheticEvent, useCallback, useState } from "react";
 import { useTheme } from "styled-components";
 
-import {
-  Form,
-  Text,
-  Input,
-  Flex,
-  TextArea,
-  Card,
-  Grid,
-} from "@/common/components/atoms";
+import { Form, Input, Flex, TextArea, Card } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { MultiSelect } from "@/common/components/atoms/MultiSelect";
+import Spinner from "@/common/components/atoms/Spiner";
 import DateTimeInput from "@/common/components/objects/DateTimeInput";
 import FormField from "@/common/components/objects/FormField";
 import ImageDropBox from "@/common/components/objects/ImageDropBox";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import { BaseApiError } from "@/common/types/api";
 import DateTime from "@/common/utils/datetime/DateTime";
 import toBase64 from "@/common/utils/image/toBase64";
+import { Webinar } from "@/community/types/community";
 import CreatorApiClient from "@/creators/api";
 import {
   CreateWebinar,
@@ -27,49 +22,66 @@ import {
   StreamFormArgs,
 } from "@/creators/types/stream";
 
-export default function ScheduleStreamForm(): JSX.Element {
-  const { space, colors } = useTheme();
+interface IProps {
+  onSubmitComplete?: (stream: Webinar) => void;
+}
 
-  const { fields, fieldValueSetter, getValidatedData, clearForm } =
-    useForm<StreamFormArgs>({
-      fields: {
-        topic: {
-          intialValue: "",
-          validators: [
-            {
-              validator: Validators.required,
-              message: "Title is required",
-            },
-          ],
-        },
-        description: {
-          intialValue: "",
-          validators: [],
-        },
-        image: {
-          intialValue: "",
-          validators: [],
-        },
-        start: {
-          intialValue: DateTime.now(),
-          validators: [
-            {
-              validator: Validators.required,
-              message: "Date & Time is required",
-            },
-          ],
-        },
-        categories: {
-          intialValue: [],
-          validators: [
-            {
-              validator: Validators.minLength,
-              message: "Categories are required",
-            },
-          ],
-        },
+export default function ScheduleStreamForm({
+  onSubmitComplete,
+}: IProps): JSX.Element {
+  const { space, colors } = useTheme();
+  const [loading, setLoading] = useState(false);
+
+  const {
+    fields,
+    fieldValueSetter,
+    getValidatedData,
+    clearForm,
+    fieldErrorSetter,
+  } = useForm<StreamFormArgs>({
+    fields: {
+      topic: {
+        intialValue: "",
+        validators: [
+          {
+            validator: Validators.required,
+            message: "Title is required",
+          },
+        ],
       },
-    });
+      description: {
+        intialValue: "",
+        validators: [],
+      },
+      image: {
+        intialValue: "",
+        validators: [
+          {
+            validator: Validators.required,
+            message: "Cover photo is required",
+          },
+        ],
+      },
+      start: {
+        intialValue: DateTime.now().plus({ hours: 24 }),
+        validators: [
+          {
+            validator: Validators.required,
+            message: "Date & Time is required",
+          },
+        ],
+      },
+      categories: {
+        intialValue: [],
+        validators: [
+          {
+            validator: Validators.minLength,
+            message: "Categories are required",
+          },
+        ],
+      },
+    },
+  });
 
   const handleScheduleStreamCreation = useCallback(
     async (event: SyntheticEvent) => {
@@ -88,15 +100,34 @@ export default function ScheduleStreamForm(): JSX.Element {
           categories: data.categories.map((category) => category.pk),
         };
 
-        try {
-          await CreatorApiClient().postStream(formData);
-          clearForm();
-        } catch (e) {
-          console.log(e);
+        setLoading(true);
+
+        const [res, err] = await CreatorApiClient().postStream(formData);
+
+        if (err) {
+          if (err.response && err.response.data) {
+            const error = err.response.data as BaseApiError;
+            console.log(error);
+            if (
+              error.error_code === "groupStartDateTimeNotInFuture" ||
+              error.error_code === "groupStartLessThan24Hours"
+            ) {
+              fieldErrorSetter("start", error.error_message);
+            }
+          }
         }
+
+        if (res) {
+          clearForm();
+          if (onSubmitComplete) {
+            onSubmitComplete(res);
+          }
+        }
+
+        setLoading(false);
       }
     },
-    [getValidatedData, clearForm]
+    [getValidatedData, clearForm, onSubmitComplete, fieldErrorSetter]
   );
 
   const handlePhotoChange = useCallback(
@@ -111,25 +142,47 @@ export default function ScheduleStreamForm(): JSX.Element {
 
   return (
     <Card
-      m="0 auto"
-      maxWidth="1000px"
+      my={space.s}
+      containerProps={{ py: space.xxs }}
+      maxWidth={960}
       footer={
         <Flex
           px={space.xs}
           py={space.xs}
           bg={colors.black[2]}
-          justifyContent="center"
+          justifyContent="end"
         >
           <Button
             text="Submit"
             type="submit"
             onClick={handleScheduleStreamCreation}
+            suffixElement={
+              loading ? (
+                <Spinner
+                  size={24}
+                  strokeWidth={2}
+                  strokeColor={colors.white[0]}
+                />
+              ) : undefined
+            }
           />
         </Flex>
       }
     >
-      <Form display="grid" gridAutoFlow="row" gridGap={space.xxs}>
-        <FormField label="Title">
+      <Form
+        display="grid"
+        gridTemplateColumns={["1fr", "1fr 1fr"]}
+        gridRowGap={space.xxxs}
+        gridColumnGap={space.xs}
+      >
+        <FormField
+          label="Title"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
           <Input
             value={fields.topic.value}
             onChange={(e) => {
@@ -139,18 +192,16 @@ export default function ScheduleStreamForm(): JSX.Element {
           />
         </FormField>
 
-        <FormField label="Description" subtext="(optional)">
-          <TextArea
-            value={fields.description.value}
-            onChange={(e) => {
-              fieldValueSetter("description", e.currentTarget.value);
-            }}
-          />
-        </FormField>
-
-        <FormField label="Category">
+        <FormField
+          label="Category"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
           <MultiSelect<StreamCategory>
-            placeholder="Select one or more categories"
+            placeholder="Pick categories"
             dataUrl={API_URL_CONSTANTS.stream.getCategories}
             labelGetter={(item) => item.name}
             onChange={(val) => fieldValueSetter("categories", val)}
@@ -160,33 +211,71 @@ export default function ScheduleStreamForm(): JSX.Element {
           />
         </FormField>
 
-        <Grid gridAutoFlow="column" gridGap={space.xs}>
-          <FormField label="Date">
-            <DateTimeInput
-              placeholder="Enter Datetime"
-              type="datetime-local"
-              value={fields.start.value.toFormat(
-                DateTime.DEFAULT_DATETIME_INPUT_FORMAT
-              )}
-              onChange={(e) => {
-                fieldValueSetter(
-                  "start",
-                  DateTime.fromFormat(
-                    e.currentTarget.value,
-                    DateTime.DEFAULT_DATETIME_INPUT_FORMAT
-                  )
-                );
-              }}
-            />
-          </FormField>
-        </Grid>
-
-        <FormField label="Co-host">
-          <Text>Coming Soon!</Text>
+        <FormField
+          label="Co-host"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
+          <Input disabled placeholder="Comming soon" />
         </FormField>
 
-        <FormField label="Cover Photo" subtext="(optional)">
+        <FormField
+          label="Date"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
+          <DateTimeInput
+            error={fields.start.errors[0]}
+            placeholder="Enter Datetime"
+            type="datetime-local"
+            value={fields.start.value.toFormat(
+              DateTime.DEFAULT_DATETIME_INPUT_FORMAT
+            )}
+            onChange={(e) => {
+              fieldValueSetter(
+                "start",
+                DateTime.fromFormat(
+                  e.currentTarget.value,
+                  DateTime.DEFAULT_DATETIME_INPUT_FORMAT
+                )
+              );
+            }}
+          />
+        </FormField>
+
+        <FormField
+          label="Description"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
+          <TextArea
+            rows={6}
+            value={fields.description.value}
+            onChange={(e) => {
+              fieldValueSetter("description", e.currentTarget.value);
+            }}
+          />
+        </FormField>
+
+        <FormField
+          label="Cover Photo"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
           <ImageDropBox
+            error={fields.image.errors[0]}
             alt="cover photo"
             value={fields.image.value}
             onChange={handlePhotoChange}

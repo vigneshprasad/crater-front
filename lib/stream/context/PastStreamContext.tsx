@@ -13,17 +13,21 @@ interface IPastStreamState {
 export const PastStreamContext = createContext({} as IPastStreamState);
 
 type IProviderProps = PropsWithChildren<{
+  host?: string;
   initial?: Webinar[];
 }>;
 
 export function PastStreamProvider({
+  host,
   initial,
   ...rest
 }: IProviderProps): JSX.Element {
-  const { data: streams, error } = useSWR<Webinar[]>(
-    API_URL_CONSTANTS.groups.getPastWebinars,
-    { initialData: initial }
-  );
+  const url = host
+    ? `${API_URL_CONSTANTS.groups.getPastWebinars}?host=${host}`
+    : API_URL_CONSTANTS.groups.getPastWebinars;
+  const { data: streams, error } = useSWR<Webinar[]>(url, {
+    initialData: initial,
+  });
 
   const value = useMemo(
     () => ({ streams, error, loading: !streams && !error }),

@@ -51,4 +51,5 @@ export interface Profile {
   years_of_experience_detail?: YearsOfExperience;
   company_type?: number;
   company_type_detail?: CompanyType;
+  is_creator: boolean;
 }
