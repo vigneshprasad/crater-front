@@ -1,27 +1,30 @@
 import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
-import { Box, Grid, Text } from "../../atoms";
+import { Box, Grid, GridProps, Text } from "../../atoms";
 
 type IProps = PropsWithChildren<{
   label: string;
   subtext?: string;
   border?: boolean;
-}>;
+}> &
+  Omit<GridProps, "border">;
 
 export default function FormField({
   label,
   subtext,
   children,
   border = true,
+  ...rest
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
   return (
     <Grid
       borderBottom={border ? "1px solid rgba(228,228,228,0.1)" : "none"}
-      py={space.xs}
-      gridTemplateColumns="1fr 3fr"
+      py={space.xxxs}
+      gridTemplateColumns="max-content 1fr"
       alignItems="start"
+      {...rest}
     >
       <Box>
         <Text textStyle="menu">{label}</Text>

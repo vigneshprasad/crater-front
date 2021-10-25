@@ -59,6 +59,7 @@ declare module "next-auth" {
     company_type?: number;
     company_type_detail?: CompanyType;
     primary_url?: string;
+    is_creator: boolean;
   }
 }
 

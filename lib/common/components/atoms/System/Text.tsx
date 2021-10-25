@@ -12,7 +12,7 @@ import { theme } from "@/common/theme";
 
 import { Box, BoxProps } from "./Box";
 
-const { fonts, colors } = theme;
+const { fonts } = theme;
 
 const variants = {
   headline3Bold: {
@@ -42,7 +42,8 @@ const variants = {
   headline6: {
     fontFamily: fonts.body,
     fontSize: ["1.8rem"],
-    fontWeight: "500",
+    fontWeight: "600",
+    lineHeight: ["2.4rem"],
   },
   headlineBold: {
     fontFamily: fonts.body,
@@ -202,5 +203,5 @@ Text.defaultProps = {
   as: "p",
   textStyle: "bodyLarge",
   singleLine: false,
-  color: colors.white[0],
+  color: "inherit",
 };

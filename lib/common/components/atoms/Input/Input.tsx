@@ -25,6 +25,7 @@ import {
   border,
 } from "styled-system";
 
+import { Box } from "../System/Box";
 import { Flex, FlexProps } from "../System/Flex";
 import { Text } from "../System/Text";
 
@@ -77,8 +78,8 @@ export const StyledInput = styled.input<InputProps>`
 `;
 
 export const InputContainer = styled(Flex)<FlexProps>`
-  padding: 8px 8px;
-  background: ${({ theme }) => theme.colors.black[4]};
+  padding: 6px 8px;
+  background: ${({ theme }) => theme.colors.black[2]};
   border-radius: ${({ theme }) => theme.radii.xxs}px;
   align-items: center;
 
@@ -101,17 +102,22 @@ function InputWithRef({
     return `2px solid ${error ? colors.error : "transparent"}`;
   }, [error, colors]);
   return (
-    <>
+    <Box>
       <InputContainer border={border}>
         {prefixElement && prefixElement}
         <StyledInput ref={inputRef} {...rest} />
       </InputContainer>
       {error && (
-        <Text py={space.xxs} color={colors.error} textStyle="error">
+        <Text
+          px={space.xxxs}
+          py={space.xxxs}
+          color={colors.error}
+          textStyle="error"
+        >
           {error}
         </Text>
       )}
-    </>
+    </Box>
   );
 }
 

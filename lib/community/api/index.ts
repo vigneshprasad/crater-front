@@ -45,7 +45,7 @@ export default function WebinarApiClient(
   async function getAllWebinar(): Promise<ApiResult<Webinar[], AxiosError>> {
     try {
       const { data } = await client.get<Webinar[]>(
-        API_URL_CONSTANTS.conversations.webinars
+        API_URL_CONSTANTS.conversations.allWebinars
       );
       return [data, undefined];
     } catch (err) {
