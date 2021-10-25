@@ -118,7 +118,7 @@ export default function StaticCreatorHub(): JSX.Element {
             image={MonetizationImage}
           />
 
-          <Card>Card one</Card>
+          {/* <Card>Card one</Card> */}
         </Grid>
         <Box h={space.s} />
       </BaseLayout>
