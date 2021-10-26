@@ -47,7 +47,7 @@ export default function StaticCreatorHub(): JSX.Element {
             gridColumn={["1 / span 1", "1 / span 4"]}
             containerProps={{
               display: "grid",
-              gridTemplateColumns: "2fr 1fr",
+              gridTemplateColumns: ["1fr", "2fr 1fr"],
               p: 0,
               px: 0,
               alignItems: "center",
@@ -76,7 +76,7 @@ export default function StaticCreatorHub(): JSX.Element {
               </Link>
             </Box>
 
-            <Box position="relative" h="100%">
+            <Box position="relative" h={[140, "100%"]}>
               <Image
                 src={HeroImage}
                 layout="fill"
