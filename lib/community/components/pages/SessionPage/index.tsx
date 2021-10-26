@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -56,6 +56,12 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     setUrl(location);
   }, []);
 
+  const isHost = useMemo(() => {
+    if (!user || !webinar) return false;
+
+    return user.pk == webinar.host || webinar.speakers?.includes(user.pk);
+  }, [user, webinar]);
+
   if (!webinar) return <Box>Loading..</Box>;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -66,7 +72,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
   const image = webinar.topic_detail?.image;
 
-  const isHost = user?.pk === webinar.host;
+  console.log(isHost);
 
   const postGroupRequest = async (redirect = false): Promise<void> => {
     if (webinarRequest?.status !== RequestStatus.accepted) {
