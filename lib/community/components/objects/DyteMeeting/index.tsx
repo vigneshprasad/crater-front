@@ -32,7 +32,6 @@ export default function DyteMeeting({
   const participantLeaveHandler = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (participant: any) => {
-      console.log(participant);
       if (participant.clientSpecificId === user?.pk) {
         router.push(PageRoutes.session(groupId.toString()));
       }

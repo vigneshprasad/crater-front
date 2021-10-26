@@ -72,8 +72,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
   const image = webinar.topic_detail?.image;
 
-  console.log(isHost);
-
   const postGroupRequest = async (redirect = false): Promise<void> => {
     if (webinarRequest?.status !== RequestStatus.accepted) {
       const data: PostGroupRequest = {
