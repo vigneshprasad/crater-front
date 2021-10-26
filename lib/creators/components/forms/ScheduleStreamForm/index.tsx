@@ -258,7 +258,7 @@ export default function ScheduleStreamForm({
           border={false}
         >
           <TextArea
-            rows={6}
+            rows={9}
             value={fields.description.value}
             onChange={(e) => {
               fieldValueSetter("description", e.currentTarget.value);

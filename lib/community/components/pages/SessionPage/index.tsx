@@ -187,22 +187,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   );
                 }
 
-                if (webinar.is_live) {
-                  return (
-                    <Button
-                      variant="full-width"
-                      text={isHost ? "Return to stream" : "Join Stream"}
-                      onClick={(): void => {
-                        if (!isHost) {
-                          postGroupRequest(true);
-                        } else {
-                          router.push(PageRoutes.stream(webinar.id.toString()));
-                        }
-                      }}
-                    />
-                  );
-                }
-
                 if (isHost) {
                   if (startTime.minus({ minutes: 5 }) > now) {
                     return (
@@ -226,6 +210,26 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                       text="Go Live"
                       onClick={(): void => {
                         router.push(PageRoutes.stream(webinar.id.toString()));
+                      }}
+                    />
+                  );
+                }
+
+                if (
+                  webinar.is_live ||
+                  (startTime.minus({ minutes: 10 }) < now &&
+                    startTime.plus({ minutes: 10 }) > now)
+                ) {
+                  return (
+                    <Button
+                      variant="full-width"
+                      text={isHost ? "Return to stream" : "Join Stream"}
+                      onClick={(): void => {
+                        if (!isHost) {
+                          postGroupRequest(true);
+                        } else {
+                          router.push(PageRoutes.stream(webinar.id.toString()));
+                        }
                       }}
                     />
                   );
