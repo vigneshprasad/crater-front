@@ -148,7 +148,7 @@ const GlobalStyle = createGlobalStyle`
     body {
         font-family: ${theme.fonts.body};
         background: ${theme.colors.black[5]} !important;
-        color: ${theme.colors.white[0]};
+        color: ${theme.colors.white[0]} !important;
         line-height: 1.8;
         overflow: hidden;
     }
