@@ -107,7 +107,6 @@ export default function ScheduleStreamForm({
         if (err) {
           if (err.response && err.response.data) {
             const error = err.response.data as BaseApiError;
-            console.log(error);
             if (
               error.error_code === "groupStartDateTimeNotInFuture" ||
               error.error_code === "groupStartLessThan24Hours"

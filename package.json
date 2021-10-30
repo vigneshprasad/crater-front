@@ -19,6 +19,7 @@
     "csstype": "^3.0.8",
     "dyte-client": "^0.9.1",
     "framer-motion": "^4.1.17",
+    "immer": "^9.0.6",
     "libphonenumber-js": "^1.9.22",
     "luxon": "^2.0.2",
     "next": "11.0.1",
