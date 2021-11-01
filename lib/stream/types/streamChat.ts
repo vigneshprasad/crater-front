@@ -8,5 +8,6 @@ export interface ChatMessage {
     pk: string;
     name: string;
     email: string;
+    first_name: string;
   };
 }

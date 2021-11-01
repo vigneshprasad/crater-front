@@ -1,8 +1,19 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect, SyntheticEvent } from "react";
 import { useTheme } from "styled-components";
 
-import { Box, Input, Card, Text, Flex, Grid } from "@/common/components/atoms";
+import useAuth from "@/auth/context/AuthContext";
+import {
+  Box,
+  Input,
+  Card,
+  Text,
+  Flex,
+  Span,
+  Form,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import useForm from "@/common/hooks/form/useForm";
+import Validators from "@/common/hooks/form/validators";
 import { Webinar } from "@/community/types/community";
 import useStreamChat from "@/stream/hooks/useStreamChat";
 
@@ -10,18 +21,36 @@ interface IProps {
   stream: Webinar;
 }
 
+interface ChatFormProps {
+  message: string;
+  display_name?: string;
+}
+
 export default function StreamChat({}: IProps): JSX.Element {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const [text, setText] = useState("");
+  const { profile } = useAuth();
+
   const { messages, sendGroupMessage, connected } = useStreamChat();
   const { space, colors, borders } = useTheme();
-
-  const sendMessage = (): void => {
-    if (text) {
-      sendGroupMessage(text);
-      setText("");
+  const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
+    {
+      fields: {
+        message: {
+          intialValue: "",
+          validators: [
+            {
+              validator: Validators.required,
+              message: "Enter a message to send.",
+            },
+          ],
+        },
+        display_name: {
+          intialValue: "",
+          validators: [],
+        },
+      },
     }
-  };
+  );
 
   useEffect(() => {
     if (messages.length && messagesContainerRef.current) {
@@ -29,6 +58,15 @@ export default function StreamChat({}: IProps): JSX.Element {
         messagesContainerRef.current.scrollHeight;
     }
   }, [messages, messagesContainerRef]);
+
+  const handleChatSubmit = (event: SyntheticEvent): void => {
+    event.preventDefault();
+    const data = getValidatedData();
+    if (data) {
+      sendGroupMessage(data.message, data.display_name);
+      fieldValueSetter("message", "");
+    }
+  };
 
   return (
     <Card
@@ -68,31 +106,55 @@ export default function StreamChat({}: IProps): JSX.Element {
         flexDirection="column-reverse"
         overflowY="auto"
       >
-        {[...messages].reverse().map((message) => (
-          <Flex key={message.id} px={space.xxs}>
-            <Text color={colors.accent}>{message.sender_detail.name}:</Text>
-            <Text ml={space.xxxs}>{message.message}</Text>
-          </Flex>
-        ))}
+        {[...messages].reverse().map((message) => {
+          const name = message.display_name
+            ? message.display_name
+            : message.sender_detail.first_name;
+          return (
+            <Text mx={space.xxs} key={message.id} wordBreak="break-word">
+              <Span color={colors.accent}>{name}:</Span> {message.message}
+            </Text>
+          );
+        })}
       </Box>
-      <Grid
+      <Form
+        display="grid"
         mx={space.xxxs}
         my={space.xxxs}
         gridTemplateColumns="1fr min-content"
         gridGap={space.xxxs}
+        onSubmit={handleChatSubmit}
       >
         <Input
           placeholder="Send a message"
-          value={text}
-          onChange={(e) => setText(e.currentTarget.value)}
+          value={fields.message.value}
+          onChange={(e) => fieldValueSetter("message", e.currentTarget.value)}
         />
-        <Button
-          variant="dense"
-          px={space.xxxs}
-          text="Send"
-          onClick={sendMessage}
-        />
-      </Grid>
+        <Button type="submit" variant="dense" px={space.xxxs} text="Send" />
+        {(() => {
+          if (!profile) return null;
+
+          const isAdmin = profile.groups.filter(
+            (group) => group.name === "livestream_chat_admin"
+          )[0]
+            ? true
+            : false;
+
+          if (isAdmin) {
+            return (
+              <Input
+                value={fields.display_name.value}
+                onChange={(e) =>
+                  fieldValueSetter("display_name", e.currentTarget.value)
+                }
+                placeholder="Display Name"
+              />
+            );
+          }
+
+          return null;
+        })()}
+      </Form>
     </Card>
   );
 }

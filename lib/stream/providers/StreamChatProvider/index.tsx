@@ -18,7 +18,7 @@ import { StreamChatState } from "./types";
 export interface StreamChatContextState {
   messages: ChatMessage[];
   connected: boolean;
-  sendGroupMessage: (message: string) => void;
+  sendGroupMessage: (message: string, displayName?: string) => void;
 }
 
 export const StreamChatContext = createContext({} as StreamChatContextState);
@@ -59,14 +59,19 @@ export default function StreamChatProvider({
   );
 
   const sendGroupMessage = useCallback(
-    (message: string) => {
+    (message: string, displayName?: string) => {
       if (_socket.current) {
         const data = {
           type: "send_group_message",
           payload: {
             message,
+            display_name: displayName,
           },
         };
+
+        if (!displayName) {
+          delete data.payload.display_name;
+        }
 
         _socket.current.send(JSON.stringify(data));
       }
