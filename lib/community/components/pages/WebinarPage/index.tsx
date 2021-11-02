@@ -20,14 +20,13 @@ import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useNetworkList from "@/community/context/NetworkListContext";
-import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
+// import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { useWebinar } from "@/community/context/WebinarContext";
-import useWebinarSocket from "@/community/hooks/useWebinarSocket";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
+import StreamChat from "@/stream/components/objects/StreamChat";
 
 import { Props as DyteMeetingProps } from "../../objects/DyteMeeting";
 import NetworkList from "../../objects/NetworkList";
-import UpcomingStreamsList from "../../objects/UpcomingStreamsList";
 
 const DyteMeeting = dynamic<DyteMeetingProps>(
   () => import("../../objects/DyteMeeting"),
@@ -57,10 +56,9 @@ interface IProps {
 export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   const { webinar, loading } = useWebinar();
-  const { upcoming, loading: upcomingLoading } = useUpcomingStreams();
+  // const { upcoming, loading: upcomingLoading } = useUpcomingStreams();
   const { dyteParticipant, error } = useDyteWebinar();
   const { user } = useAuth();
-  const { followerCount } = useWebinarSocket(id);
   const router = useRouter();
   const { members, loading: membersLoading } = useNetworkList();
 
@@ -75,109 +73,107 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
 
   return (
     <BaseLayout overflowY="auto" aside={<AsideNav />}>
-      <Box px={[0, space.s]} py={[0, space.xxs]} />
-
       <Grid
         gridTemplateColumns={["1fr", "2fr 1fr"]}
-        gridTemplateRows={["min-content", "auto"]}
+        gridGap={space.xs}
+        gridAutoRows="min-content"
+        p={space.xs}
       >
-        {/* Left Column */}
-        <Box px={[space.xxs, space.s]}>
-          <Box
-            position="relative"
-            w="100%"
-            h={["80vh", "auto"]}
-            pt={[0, "56.25%"]}
+        {/* Dyte Webinar View */}
+        <Box position="relative" w="100%" h={["80vh", 0]} pb={[0, "56.25%"]}>
+          {dyteParticipant && (
+            <DyteMeeting
+              groupId={webinar.id}
+              orgId={orgId}
+              token={dyteParticipant.auth_token}
+              roomName={dyteParticipant.dyte_meeting_detail.room_name}
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              borderRadius={[0, radii.s]}
+              overflow="hidden"
+            />
+          )}
+        </Box>
+
+        <StreamChat stream={webinar} />
+
+        {/* Info Section */}
+        <Grid py={[space.xxs, space.s]} gridGap={space.xs}>
+          <Grid
+            gridTemplateColumns={["1fr", "1fr 280px"]}
+            gridTemplateRows="min-content"
+            gridGap={space.xs}
+            alignItems="center"
           >
-            {dyteParticipant && (
-              <DyteMeeting
-                groupId={webinar.id}
-                orgId={orgId}
-                token={dyteParticipant.auth_token}
-                roomName={dyteParticipant.dyte_meeting_detail.room_name}
-                position="absolute"
-                top={0}
-                left={0}
-                right={0}
-                bottom={0}
-                borderRadius={[0, radii.s]}
-                overflow="hidden"
+            <Grid gridTemplateColumns="max-content 1fr" gridGap={space.xs}>
+              <Avatar
+                size={56}
+                image={webinar.host_detail?.photo}
+                alt="host photo"
               />
-            )}
-          </Box>
-          <Grid py={[space.xxs, space.s]} gridGap={space.xs}>
-            <Grid
-              gridTemplateColumns={["1fr", "1fr 280px"]}
-              gridTemplateRows="min-content"
-              gridGap={space.xs}
-              alignItems="center"
-            >
-              <Grid gridTemplateColumns="max-content 1fr" gridGap={space.xs}>
-                <Avatar
-                  size={56}
-                  image={webinar.host_detail?.photo}
-                  alt="host photo"
-                />
-                <Box>
-                  <Text mb={4} textStyle="title">
-                    {webinar.host_detail?.name}
-                  </Text>
-                  <ExpandingText
-                    textStyle="caption"
-                    maxLines={1}
-                    color={colors.white[1]}
-                  >
-                    {webinar.host_detail?.introduction}
-                  </ExpandingText>
-                </Box>
-              </Grid>
-
-              <Grid
-                justifyContent={["start", "end"]}
-                gridAutoFlow="column"
-                gridAutoColumns="min-content"
-              >
-                <Link
-                  href={`https://worknetwork.typeform.com/to/TmRSVFoi#session=${webinar.id}&phonenumber=${user?.phone_number}`}
-                  boxProps={{ target: "_blank" }}
+              <Box>
+                <Text mb={4} textStyle="title">
+                  {webinar.host_detail?.name}
+                </Text>
+                <ExpandingText
+                  textStyle="caption"
+                  maxLines={1}
+                  color={colors.white[1]}
                 >
-                  <Button mr={space.xxs} variant="nav-button" text="AMA" />
-                </Link>
-
-                {webinar.host_profile_details?.primary_url && (
-                  <Link
-                    href={webinar.host_profile_details?.primary_url}
-                    boxProps={{ target: "_blank" }}
-                  >
-                    <Button
-                      border={`2px solid ${colors.slate}`}
-                      bg="transparent"
-                      prefixElement={<Icon size={16} icon="Linktree" />}
-                      variant="nav-button"
-                      text="LinkTree"
-                    />
-                  </Link>
-                )}
-              </Grid>
+                  {webinar.host_detail?.introduction}
+                </ExpandingText>
+              </Box>
             </Grid>
 
             <Grid
-              gridTemplateColumns={["1fr", "1fr 280px"]}
-              gridGap={space.xs}
-              placeItems="start"
-              gridTemplateRows="min-content"
+              justifyContent={["start", "end"]}
+              gridAutoFlow="column"
+              gridAutoColumns="min-content"
             >
-              <Grid gridRow={[0, 1]}>
-                <Text mb={space.xs} textStyle="headline5">
-                  {webinar.topic_detail?.name}
-                </Text>
-                {webinar.topic_detail?.description && (
-                  <Text>{webinar.topic_detail.description}</Text>
-                )}
-              </Grid>
+              <Link
+                href={`https://worknetwork.typeform.com/to/TmRSVFoi#session=${webinar.id}&phonenumber=${user?.phone_number}`}
+                boxProps={{ target: "_blank" }}
+              >
+                <Button mr={space.xxs} variant="nav-button" text="AMA" />
+              </Link>
 
-              <Grid gridRow={[1, 0]}>
-                <Grid
+              {webinar.host_profile_details?.primary_url && (
+                <Link
+                  href={webinar.host_profile_details?.primary_url}
+                  boxProps={{ target: "_blank" }}
+                >
+                  <Button
+                    border={`2px solid ${colors.slate}`}
+                    bg="transparent"
+                    prefixElement={<Icon size={16} icon="Linktree" />}
+                    variant="nav-button"
+                    text="LinkTree"
+                  />
+                </Link>
+              )}
+            </Grid>
+          </Grid>
+
+          <Grid
+            gridTemplateColumns={["1fr", "1fr 280px"]}
+            gridGap={space.xs}
+            placeItems="start"
+            gridTemplateRows="min-content"
+          >
+            <Grid gridRow={[0, 1]}>
+              <Text mb={space.xs} textStyle="headline5">
+                {webinar.topic_detail?.name}
+              </Text>
+              {webinar.topic_detail?.description && (
+                <Text>{webinar.topic_detail.description}</Text>
+              )}
+            </Grid>
+
+            <Grid gridRow={[1, 0]}>
+              {/* <Grid
                   visibility={followerCount ? "visible" : "hidden"}
                   gridTemplateColumns="max-content 1fr"
                   borderRadius={radii.xxs}
@@ -193,14 +189,12 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                   {followerCount && (
                     <Text textStyle="title">{`${followerCount} Viewers`}</Text>
                   )}
-                </Grid>
-              </Grid>
+                </Grid> */}
             </Grid>
           </Grid>
-        </Box>
+        </Grid>
 
-        <Box px={[space.xxs, space.s]}>
-          <UpcomingStreamsList upcoming={upcoming} loading={upcomingLoading} />
+        <Box>
           <NetworkList
             webinar={webinar}
             members={members}
@@ -211,6 +205,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
           </Link>
         </Box>
       </Grid>
+
       <Box h={[space.s, space.xxl]} />
     </BaseLayout>
   );

@@ -14,6 +14,7 @@ import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar as WebinarType } from "@/community/types/community";
 import { Webinar } from "@/community/types/community";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
+import StreamChatProvider from "@/stream/providers/StreamChatProvider";
 
 const DynamicWebinarPage = dynamic(
   () => import("@/community/components/pages/WebinarPage")
@@ -91,11 +92,13 @@ export default function WebinarPage({
     >
       <WebinarProvider id={id} initial={webinar}>
         <DyteWebinarProvider id={id}>
-          <UpcomingStreamsProvider>
-            <NetworkListProvider>
-              <DynamicWebinarPage orgId={orgId} id={id} />
-            </NetworkListProvider>
-          </UpcomingStreamsProvider>
+          <StreamChatProvider groupId={id}>
+            <UpcomingStreamsProvider>
+              <NetworkListProvider>
+                <DynamicWebinarPage orgId={orgId} id={id} />
+              </NetworkListProvider>
+            </UpcomingStreamsProvider>
+          </StreamChatProvider>
         </DyteWebinarProvider>
       </WebinarProvider>
     </Page>

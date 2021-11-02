@@ -1,6 +1,6 @@
 import "next-auth";
 
-import { Sector } from "@/auth/types/auth";
+import { Sector, UserGroup } from "@/auth/types/auth";
 
 declare module "next-auth" {
   export interface User {
@@ -60,6 +60,7 @@ declare module "next-auth" {
     company_type_detail?: CompanyType;
     primary_url?: string;
     is_creator: boolean;
+    groups: UserGroup[];
   }
 }
 

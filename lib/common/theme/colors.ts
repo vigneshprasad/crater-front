@@ -11,6 +11,7 @@ const colors = {
     "#18181A",
     "#000000",
   ],
+  amber: "#FFA000",
   red: ["#e53935"],
   white: ["#FFFFFF", "#b9b9b9"],
   lightGrey: "#8C8C8C",
