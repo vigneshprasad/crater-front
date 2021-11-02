@@ -28,6 +28,11 @@ export interface CompanyType {
   name: string;
 }
 
+export interface UserGroup {
+  name: string;
+  pk: number;
+}
+
 export interface Profile {
   pk: number;
   name: string;
@@ -52,4 +57,5 @@ export interface Profile {
   company_type?: number;
   company_type_detail?: CompanyType;
   is_creator: boolean;
+  groups: UserGroup[];
 }

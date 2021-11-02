@@ -46,7 +46,6 @@ export function AsideNavProvider({
         animate.start("hidden");
         setExpaned(false);
       } else {
-        console.log(expanded);
         animate.start("expanded");
         setExpaned(true);
       }
