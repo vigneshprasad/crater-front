@@ -81,6 +81,7 @@ export default function StreamChat({}: IProps): JSX.Element {
         gridTemplateRows: "max-content 1fr max-content",
         px: 0,
         py: 0,
+        h: "fill-available",
       }}
     >
       <Flex p={space.xxs} justifyContent="space-between">
