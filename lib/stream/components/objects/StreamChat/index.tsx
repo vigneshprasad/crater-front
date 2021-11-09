@@ -40,7 +40,7 @@ export default function StreamChat({}: IProps): JSX.Element {
           validators: [
             {
               validator: Validators.required,
-              message: "Enter a message to send.",
+              message: "Enter a question to ask.",
             },
           ],
         },
@@ -85,7 +85,7 @@ export default function StreamChat({}: IProps): JSX.Element {
       }}
     >
       <Flex p={space.xxs} justifyContent="space-between">
-        <Text textStyle="title">Live Chat</Text>
+        <Text textStyle="title">Question Board</Text>
         <Flex alignItems="center">
           <Text textStyle="small" color={colors.slate}>
             {connected ? "Connected" : "Connecting"}
@@ -127,11 +127,11 @@ export default function StreamChat({}: IProps): JSX.Element {
         onSubmit={handleChatSubmit}
       >
         <Input
-          placeholder="Send a message"
+          placeholder="Ask a Question"
           value={fields.message.value}
           onChange={(e) => fieldValueSetter("message", e.currentTarget.value)}
         />
-        <Button type="submit" variant="dense" px={space.xxxs} text="Send" />
+        <Button type="submit" variant="dense" px={space.xxxs} text="Ask" />
         {(() => {
           if (!profile) return null;
 
