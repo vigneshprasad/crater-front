@@ -20,7 +20,6 @@ import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useNetworkList from "@/community/context/NetworkListContext";
-// import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { useWebinar } from "@/community/context/WebinarContext";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 import StreamChat from "@/stream/components/objects/StreamChat";
@@ -172,25 +171,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
               )}
             </Grid>
 
-            <Grid gridRow={[1, 0]}>
-              {/* <Grid
-                  visibility={followerCount ? "visible" : "hidden"}
-                  gridTemplateColumns="max-content 1fr"
-                  borderRadius={radii.xxs}
-                  alignItems="center"
-                  py={space.xxxs}
-                >
-                  <Icon
-                    color={colors.accent}
-                    size={20}
-                    mr={space.xxxs}
-                    icon="Eye"
-                  />
-                  {followerCount && (
-                    <Text textStyle="title">{`${followerCount} Viewers`}</Text>
-                  )}
-                </Grid> */}
-            </Grid>
+            <Grid gridRow={[1, 0]} />
           </Grid>
         </Grid>
 
