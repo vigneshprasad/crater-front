@@ -2,33 +2,50 @@ import { useState } from "react";
 import { useTheme } from "styled-components";
 
 import { Box, Grid, Text } from "@/common/components/atoms";
+import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
-import { AnalyticsEvents } from "@/common/utils/analytics/types";
-import { StreamSlider } from "@/community/components/objects/StreamSlider";
-import useNetworkList from "@/community/context/NetworkListContext";
 import useCreatorStreams from "@/creators/context/CreatorStreamsContext";
+import PastStreamCard from "@/stream/components/objects/PastStreamCard";
+import usePastStreams from "@/stream/context/PastStreamContext";
 
 import ConnectModal from "../ConnectModal";
-import { MemberItem } from "../MembersList";
 
 export default function CreatorStreamsTab(): JSX.Element {
   const [showConnect, setShowConnect] = useState(false);
   const { loading: loadingLiveStream, liveStreams } = useCreatorStreams();
   const { space } = useTheme();
-  const { loading: loadingNetwork, members } = useNetworkList();
   const { track } = useAnalytics();
+  const { streams: pastStreams } = usePastStreams();
 
-  if (!liveStreams || !members) {
+  if (!liveStreams) {
     return <Box>Loading</Box>;
   }
 
+  console.log(pastStreams);
+
   return (
-    <>
+    <Box px={space.xs} py={space.xs}>
       <ConnectModal
         visible={showConnect}
         onClose={() => setShowConnect(false)}
       />
-      <Box px={[space.xs, space.s]} py={[space.xs, space.l]}>
+      <Text>Past Streams:</Text>
+
+      <Grid
+        gridTemplateColumns={["repeat(auto-fill, minmax(280px, 1fr))"]}
+        gridGap={space.xxs}
+      >
+        {pastStreams?.map((stream) => (
+          <PastStreamCard
+            key={stream.id}
+            title={stream.topic_detail.name}
+            href={PageRoutes.streamVideo(stream.id)}
+            image={stream.topic_detail.image}
+          />
+        ))}
+      </Grid>
+
+      {/* <Box px={[space.xs, space.s]} py={[space.xs, space.l]}>
         {(() => {
           if (loadingLiveStream) {
             return <Box>Loading</Box>;
@@ -60,12 +77,12 @@ export default function CreatorStreamsTab(): JSX.Element {
             gridTemplateRows={["none", "auto"]}
             gridGap={space.xs}
           >
-            {[...members, ...members].map((member) => (
+            {members.map((member) => (
               <MemberItem
-                key={member.pk}
-                name={member.name}
-                image={member.photo}
-                tagLine={member.tag_list?.[0]?.name}
+                key={member.id}
+                name={member.profile_detail.name}
+                image={member.profile_detail.photo}
+                tagLine={member.profile_detail.tag_list[0]?.name}
                 onClick={() => {
                   track(AnalyticsEvents.connect_with_clicked);
                   setShowConnect(true);
@@ -74,7 +91,7 @@ export default function CreatorStreamsTab(): JSX.Element {
             ))}
           </Grid>
         );
-      })()}
-    </>
+      })()} */}
+    </Box>
   );
 }

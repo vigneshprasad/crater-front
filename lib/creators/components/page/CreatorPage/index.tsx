@@ -17,12 +17,12 @@ import { useCreator } from "@/creators/context/CreatorContext";
 import { Creator } from "@/creators/types/creator";
 
 export interface CreatorPageProps {
-  id: string;
+  slug: string;
   creator: Creator;
 }
 
 export interface CreatorPageParams extends ParsedUrlQuery {
-  id: string;
+  slug: string;
 }
 
 export const getCreatorStaticPaths: GetStaticPaths<CreatorPageParams> =
@@ -31,8 +31,8 @@ export const getCreatorStaticPaths: GetStaticPaths<CreatorPageParams> =
 
     if (!pageData) return { paths: [], fallback: "blocking" };
 
-    const paths = pageData.results.map(({ id }) => ({
-      params: { id: id.toString() },
+    const paths = pageData.results.map(({ slug }) => ({
+      params: { slug },
     }));
 
     return { paths, fallback: "blocking" };
@@ -42,8 +42,8 @@ export const getCreatorStaticProps: GetStaticProps<
   CreatorPageProps,
   CreatorPageParams
 > = async ({ params }) => {
-  const { id } = params as CreatorPageParams;
-  const [creator] = await CreatorApiClient().getCreator(id);
+  const { slug } = params as CreatorPageParams;
+  const [creator] = await CreatorApiClient().getCreatorBySlug(slug);
 
   if (!creator) {
     return {
@@ -53,7 +53,7 @@ export const getCreatorStaticProps: GetStaticProps<
 
   return {
     props: {
-      id,
+      slug,
       creator,
     },
     revalidate: 10,
@@ -130,8 +130,8 @@ export default function CreatorPage({
           top: 0,
           zIndex: zIndices.navHeader,
         }}
-        tabs={["about", "club", "rewards", "token"]}
-        baseUrl={`/creator/${creator.id}`}
+        tabs={["club", "streams", "about", "rewards", "token"]}
+        baseUrl={`/creator/${creator.slug}`}
       />
 
       {children}

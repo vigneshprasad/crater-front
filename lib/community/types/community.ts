@@ -22,7 +22,7 @@ export type Topic = {
   article_detail?: unknown;
   creator?: string;
   description?: string;
-  image?: string;
+  image: string;
   is_active: boolean;
   is_approved: boolean;
   name: string;
@@ -57,8 +57,8 @@ export type Group = {
   speakers_detail_list?: Speaker[];
   attendees_detail_list?: Speaker[];
   start: string;
-  topic?: number;
-  topic_detail?: Topic;
+  topic: number;
+  topic_detail: Topic;
   type: number;
   recording_details?: {
     dyte_recordings: number[];
@@ -114,7 +114,7 @@ export interface CommunityMember {
   community: number;
   joined_at: string;
   user: string;
-  user_properties: UserProperties;
+  profile_detail: Profile;
 }
 
 export enum WSMessageTypes {

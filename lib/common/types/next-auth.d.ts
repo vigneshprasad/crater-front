@@ -61,6 +61,9 @@ declare module "next-auth" {
     primary_url?: string;
     is_creator: boolean;
     groups: UserGroup[];
+    linkedin_url: string | null;
+    instagram: string | null;
+    twitter: string | null;
   }
 }
 

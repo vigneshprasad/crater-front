@@ -14,17 +14,17 @@ interface ICreatorState {
 export const CreatorContext = createContext({} as ICreatorState);
 
 type IProviderProps = PropsWithChildren<{
-  id: string;
+  slug: string;
   initial?: Creator;
 }>;
 
 export function CreatorProvider({
-  id,
+  slug,
   initial,
   ...rest
 }: IProviderProps): JSX.Element {
   const { data: creator, error } = useSWR<Creator>(
-    `${API_URL_CONSTANTS.creator.getCreatorList}${id}/`,
+    API_URL_CONSTANTS.creator.retrieveCreatorSlug(slug),
     { initialData: initial }
   );
 
