@@ -123,7 +123,7 @@ const variants = {
   },
   small: {
     fontFamily: fonts.body,
-    lineHeight: ["1.4rem"],
+    lineHeight: ["1.6rem"],
     fontSize: ["1.2rem"],
   },
   dropdownItem: {
