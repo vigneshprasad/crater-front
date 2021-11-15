@@ -218,7 +218,7 @@ export default function ScheduleStreamForm({
           gridGap={space.xxxs}
           border={false}
         >
-          <Input disabled placeholder="Comming soon" />
+          <Input disabled placeholder="Coming soon" />
         </FormField>
 
         <FormField
