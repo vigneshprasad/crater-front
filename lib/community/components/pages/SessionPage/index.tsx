@@ -353,17 +353,17 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               gridGap={space.xxs}
             >
               {webinar.speakers_detail_list &&
-                webinar.speakers_detail_list.map((speaker_detail) => (
+                webinar.speakers_detail_list.map((speaker) => (
                   <>
                     <Avatar
                       size={56}
-                      image={speaker_detail?.photo}
-                      alt={speaker_detail?.name ?? "host"}
+                      image={speaker?.photo}
+                      alt={speaker?.name ?? "host"}
                     />
                     <Box>
-                      <Text textStyle="bodyLarge">{speaker_detail?.name}</Text>
+                      <Text textStyle="bodyLarge">{speaker?.name}</Text>
                       <ExpandingText color={colors.slate}>
-                        {speaker_detail?.introduction}
+                        {speaker?.introduction}
                       </ExpandingText>
                     </Box>
                   </>
