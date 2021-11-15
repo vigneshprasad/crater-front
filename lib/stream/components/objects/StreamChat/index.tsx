@@ -17,6 +17,8 @@ import Validators from "@/common/hooks/form/validators";
 import { Webinar } from "@/community/types/community";
 import useStreamChat from "@/stream/hooks/useStreamChat";
 
+import ChatRules from "../ChatRules";
+
 interface IProps {
   stream: Webinar;
 }
@@ -78,13 +80,17 @@ export default function StreamChat({}: IProps): JSX.Element {
         left: 0,
         bottom: 0,
         display: "grid",
-        gridTemplateRows: "max-content 1fr max-content",
+        gridTemplateRows: "max-content max-content 1fr max-content",
         px: 0,
         py: 0,
         h: "fill-available",
       }}
     >
-      <Flex p={space.xxs} justifyContent="space-between">
+      <Flex
+        p={space.xxs}
+        justifyContent="space-between"
+        borderBottom={`1px solid ${borders.main}`}
+      >
         <Text textStyle="title">Question Board</Text>
         <Flex alignItems="center">
           <Text textStyle="small" color={colors.slate}>
@@ -99,9 +105,9 @@ export default function StreamChat({}: IProps): JSX.Element {
           />
         </Flex>
       </Flex>
+      <ChatRules />
       <Box
         ref={messagesContainerRef}
-        borderTop={`1px solid ${borders.main}`}
         borderBottom={`1px solid ${borders.main}`}
         py={space.xxxs}
         flexDirection="column-reverse"
