@@ -97,7 +97,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
           )}
         </Box>
 
-        <StreamChat stream={webinar} />
+        {!webinar.closed ? <StreamChat stream={webinar} /> : <Box />}
 
         {/* Info Section */}
         <Grid py={[space.xxs, space.s]} gridGap={space.xs}>
