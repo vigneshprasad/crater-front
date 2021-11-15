@@ -25,6 +25,7 @@ const space = {
   l: 80,
   xl: 100,
   xxl: 120,
+  containerWidth: 1280,
 };
 
 const borders = {

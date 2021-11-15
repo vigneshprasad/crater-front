@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
 import dynamic from "next/dynamic";
 
+import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import CreatorPageLayout from "@/creators/components/layouts/CreatorPageLayout";
 import CreatorPage, {
   CreatorPageParams,
@@ -9,7 +10,6 @@ import CreatorPage, {
   getCreatorStaticPaths,
   getCreatorStaticProps,
 } from "@/creators/components/page/CreatorPage";
-import { CreatorStreamProvider } from "@/creators/context/CreatorStreamsContext";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 
 const CreatorStreamsTab = dynamic(
@@ -30,11 +30,11 @@ export default function CreatorStreams({ creator, slug }: IProps): JSX.Element {
   return (
     <CreatorPageLayout creator={creator} slug={slug}>
       <CreatorPage selectedTab="streams">
-        <CreatorStreamProvider creatorId={creator.user}>
+        <UpcomingStreamsProvider host={creator.user}>
           <PastStreamProvider host={creator.user}>
             <CreatorStreamsTab />
           </PastStreamProvider>
-        </CreatorStreamProvider>
+        </UpcomingStreamsProvider>
       </CreatorPage>
     </CreatorPageLayout>
   );

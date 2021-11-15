@@ -1,5 +1,4 @@
 import { PropsWithChildren } from "react";
-import { useTheme } from "styled-components";
 
 import { BoxProps } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
@@ -20,7 +19,6 @@ export default function CreatorPageLayout({
   children,
   baseContainerProps,
 }: IProps): JSX.Element {
-  const { space } = useTheme();
   return (
     <Page
       seo={{
@@ -32,7 +30,6 @@ export default function CreatorPageLayout({
         <BaseLayout
           aside={<AsideNav />}
           overflowY="auto"
-          pb={space.l}
           {...baseContainerProps}
         >
           {children}

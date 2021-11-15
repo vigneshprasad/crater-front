@@ -54,8 +54,8 @@ export type Group = {
   privacy: number;
   relevancy: number;
   speakers?: string[];
-  speakers_detail_list?: Speaker[];
-  attendees_detail_list?: Speaker[];
+  speakers_detail_list: Speaker[];
+  attendees_detail_list: Speaker[];
   start: string;
   topic: number;
   topic_detail: Topic;

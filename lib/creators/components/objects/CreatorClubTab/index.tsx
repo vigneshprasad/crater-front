@@ -22,8 +22,8 @@ export default function CreatorClubTab(): JSX.Element {
         onClose={() => setShowConnect(false)}
       />
 
-      <Box py={[space.xs, space.s]}>
-        <Text textStyle="title">Community Members</Text>
+      <Box px={space.xxs} py={[space.xs, space.s]}>
+        <Text textStyle="label">Community Members</Text>
       </Box>
 
       <Grid

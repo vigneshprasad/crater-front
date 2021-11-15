@@ -13,4 +13,5 @@ export type Creator = {
   type?: string;
   user: string;
   slug: string;
+  is_follower: boolean;
 };
