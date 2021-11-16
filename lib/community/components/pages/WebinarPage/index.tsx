@@ -108,29 +108,31 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             alignItems="center"
           >
             <Grid gridTemplateColumns="max-content 1fr" gridGap={space.xs}>
-              <Avatar
-                size={56}
-                image={webinar.host_detail?.photo}
-                alt="host photo"
-              />
-              <Box>
-                <Text mb={4} textStyle="title">
-                  {webinar.host_detail?.name}
-                </Text>
-                <ExpandingText
-                  textStyle="caption"
-                  maxLines={1}
-                  color={colors.white[1]}
-                >
-                  {webinar.host_detail?.introduction}
-                </ExpandingText>
-              </Box>
+              {webinar.speakers_detail_list &&
+                webinar.speakers_detail_list.map((speaker) => (
+                  <>
+                    <Avatar size={56} image={speaker?.photo} alt="host photo" />
+                    <Box>
+                      <Text mb={4} textStyle="title">
+                        {speaker?.name}
+                      </Text>
+                      <ExpandingText
+                        textStyle="caption"
+                        maxLines={1}
+                        color={colors.white[1]}
+                      >
+                        {speaker?.introduction}
+                      </ExpandingText>
+                    </Box>
+                  </>
+                ))}
             </Grid>
 
             <Grid
               justifyContent={["start", "end"]}
               gridAutoFlow="column"
               gridAutoColumns="min-content"
+              alignSelf="start"
             >
               <Link
                 href={`https://worknetwork.typeform.com/to/TmRSVFoi#session=${webinar.id}&phonenumber=${user?.phone_number}`}
