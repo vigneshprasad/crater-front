@@ -6,9 +6,10 @@ import useSWR from "swr";
 
 import Image from "next/image";
 
-import { Box, Text, Span } from "@/common/components/atoms";
+import { Box, Text, Span, TabBar } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
+import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
 import Page from "@/common/components/objects/Page";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
@@ -16,10 +17,13 @@ type IProps = PropsWithChildren<{
   selectedTab: string;
 }>;
 
-export default function CreatorHubPage({ children }: IProps): JSX.Element {
+export default function CreatorHubPage({
+  children,
+  selectedTab,
+}: IProps): JSX.Element {
   const seo: NextSeoProps = {
     title: "Crater Club",
-    description: "Creater Hub",
+    description: "Creator Hub",
   };
   const { space } = useTheme();
 
@@ -53,11 +57,11 @@ export default function CreatorHubPage({ children }: IProps): JSX.Element {
           </Text>
         </Box>
 
-        {/* <BaseTabBar
+        <BaseTabBar
           baseUrl="/creatorhub/"
           tabs={["stream", "faq"]}
           active={selectedTab}
-        /> */}
+        />
         {children}
       </BaseLayout>
     </Page>
