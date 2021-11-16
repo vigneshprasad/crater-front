@@ -1,5 +1,7 @@
 import { Profile } from "next-auth";
 
+import { Creator } from "@/creators/types/creator";
+
 export type Community = {
   creator: number;
   id: number;
@@ -14,6 +16,7 @@ export type Speaker = {
   name: string;
   photo?: string;
   pk: string;
+  creator_detail?: Creator;
 };
 
 export type Topic = {
@@ -107,6 +110,16 @@ export interface UserProperties {
   photo?: string;
   name?: string;
   introduction?: string;
+}
+
+export interface Follower {
+  creator: number;
+  followed_at: string;
+  id: number;
+  profile_detail: Profile;
+  unfollowed: boolean;
+  unfollowed_at: null | string;
+  user: string;
 }
 
 export interface CommunityMember {

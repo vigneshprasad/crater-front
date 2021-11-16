@@ -52,7 +52,10 @@ export const API_URL_CONSTANTS = {
     getCommunityList: "/crater/community/",
     getCommunityMembers: "/crater/community/members/",
     getAllRooms: "/crater/community/rooms/",
-    postJoinCommunity: "crater/community/members/join/",
+    postJoinCommunity: "/crater/community/members/join/",
+  },
+  follower: {
+    getFollowersList: "/crater/followers/",
   },
   agora: {
     getToken: "/integrations/agora/token/",

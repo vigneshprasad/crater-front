@@ -19,13 +19,12 @@ import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { PageRoutes } from "@/common/constants/route.constants";
-import useNetworkList from "@/community/context/NetworkListContext";
 import { useWebinar } from "@/community/context/WebinarContext";
+import CreatorFollowerList from "@/creators/components/objects/CreatorFollowerList";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 import StreamChat from "@/stream/components/objects/StreamChat";
 
 import { Props as DyteMeetingProps } from "../../objects/DyteMeeting";
-import NetworkList from "../../objects/NetworkList";
 
 const DyteMeeting = dynamic<DyteMeetingProps>(
   () => import("../../objects/DyteMeeting"),
@@ -59,8 +58,6 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   const { dyteParticipant, error } = useDyteWebinar();
   const { user } = useAuth();
   const router = useRouter();
-  const { members, loading: membersLoading } = useNetworkList();
-
   // Handle Dyte participant request error
   useEffect(() => {
     if (error) {
@@ -176,11 +173,9 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
         </Grid>
 
         <Box>
-          <NetworkList
-            webinar={webinar}
-            members={members}
-            loading={membersLoading}
-          />
+          {webinar.host_detail?.creator_detail && (
+            <CreatorFollowerList creator={webinar.host_detail.creator_detail} />
+          )}
           <Link href={PageRoutes.community} boxProps={{ target: "_blank" }}>
             <Button variant="full-width" text="Network with Members" />
           </Link>
