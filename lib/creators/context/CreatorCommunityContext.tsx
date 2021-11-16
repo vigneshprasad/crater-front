@@ -10,6 +10,7 @@ import { CommunityMember } from "../../community/types/community";
 interface ICreatorCommuntyState {
   members?: CommunityMember[];
   error: unknown;
+  loading: boolean;
 }
 
 export const CreatorCommunityContext = createContext(
@@ -18,7 +19,7 @@ export const CreatorCommunityContext = createContext(
 
 type IProviderProps = PropsWithChildren<{
   communityId: number;
-  members: CommunityMember[];
+  members?: CommunityMember[];
 }>;
 
 export function CreatorCommunityProvider({
@@ -34,13 +35,14 @@ export function CreatorCommunityProvider({
     },
     async (key: string) =>
       (await fetcher<PageResponse<CommunityMember>>(key)).results,
-    { initialData: [[...intialMembers]] }
+    { initialData: intialMembers ? [[...intialMembers]] : undefined }
   );
 
   const value: ICreatorCommuntyState = useMemo(
     () => ({
       members: members?.flat(),
       error,
+      loading: !error && !members,
     }),
     [members, error]
   );

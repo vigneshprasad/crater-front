@@ -34,6 +34,8 @@ export const API_URL_CONSTANTS = {
     getCreatorList: "/crater/creator/",
     getMembersList: "/crater/community/members/",
     retrieveCreator: (id: number): string => `/crater/creator/${id}/`,
+    retrieveCreatorSlug: (slug: string): string => `/crater/creator/s/${slug}/`,
+    postFollowCreator: "/crater/followers/follow/",
   },
   groups: {
     retrieveGroupRequest: (id: string): string => `/groups/requests/${id}/`,
@@ -50,6 +52,10 @@ export const API_URL_CONSTANTS = {
     getCommunityList: "/crater/community/",
     getCommunityMembers: "/crater/community/members/",
     getAllRooms: "/crater/community/rooms/",
+    postJoinCommunity: "/crater/community/members/join/",
+  },
+  follower: {
+    getFollowersList: "/crater/followers/",
   },
   agora: {
     getToken: "/integrations/agora/token/",

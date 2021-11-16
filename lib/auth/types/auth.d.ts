@@ -58,4 +58,7 @@ export interface Profile {
   company_type_detail?: CompanyType;
   is_creator: boolean;
   groups: UserGroup[];
+  linkedin_url: string | null;
+  instagram: string | null;
+  twitter: string | null;
 }

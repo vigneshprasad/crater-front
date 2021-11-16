@@ -16,6 +16,7 @@ interface ICreatorApiClient {
     pageSize?: number
   ) => Promise<ApiResult<PageResponse<Creator>, AxiosError>>;
   getCreator: (id: string) => Promise<ApiResult<Creator, AxiosError>>;
+  getCreatorBySlug: (slug: string) => Promise<ApiResult<Creator, AxiosError>>;
   getCreatorStreams: (
     creatorId: string
   ) => Promise<ApiResult<Webinar[], AxiosError>>;
@@ -25,6 +26,9 @@ interface ICreatorApiClient {
   postStream: (
     stream: CreateWebinar
   ) => Promise<ApiResult<Webinar, AxiosError>>;
+  postFollowCreator: (
+    community: number
+  ) => Promise<ApiResult<CommunityMember, AxiosError>>;
 }
 
 export default function CreatorApiClient(
@@ -53,6 +57,19 @@ export default function CreatorApiClient(
     try {
       const { data } = await API(context).get<Creator>(
         `${API_URL_CONSTANTS.creator.getCreatorList}${id}/`
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function getCreatorBySlug(
+    slug: string
+  ): Promise<ApiResult<Creator, AxiosError>> {
+    try {
+      const { data } = await API(context).get<Creator>(
+        API_URL_CONSTANTS.creator.retrieveCreatorSlug(slug)
       );
       return [data, undefined];
     } catch (err) {
@@ -104,11 +121,29 @@ export default function CreatorApiClient(
     }
   }
 
+  async function postFollowCreator(
+    creator: number
+  ): Promise<ApiResult<CommunityMember, AxiosError>> {
+    try {
+      const { data } = await client.post<CommunityMember>(
+        API_URL_CONSTANTS.creator.postFollowCreator,
+        {
+          creator,
+        }
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getCreatorsList,
     getCreator,
+    getCreatorBySlug,
     getCreatorStreams,
     getCommunityMemebers,
     postStream,
+    postFollowCreator,
   };
 }

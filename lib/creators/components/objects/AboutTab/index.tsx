@@ -1,6 +1,6 @@
 import { useTheme } from "styled-components";
 
-import { Box, Text, Grid } from "@/common/components/atoms";
+import { Box, Text, Grid, Icon, Link } from "@/common/components/atoms";
 import { useCreator } from "@/creators/context/CreatorContext";
 
 export default function AboutTab(): JSX.Element {
@@ -8,64 +8,57 @@ export default function AboutTab(): JSX.Element {
   const { space, colors } = useTheme();
   if (!creator) return <Box>Loading...</Box>;
   return (
-    <Box px={[space.xs, space.m]} py={[space.xs, space.s]}>
-      <Text mb={space.xs} textStyle="headline6">
-        About Me
-      </Text>
-      <Text mb={space.m}>{creator.profile_detail?.introduction}</Text>
-      <Text mb={space.xs} textStyle="headline6">
-        Snapshot
-      </Text>
-      {creator.profile_detail.tag_list && (
-        <Grid gridAutoFlow="column" gridTemplateColumns="0.3fr 1fr">
-          <Text color={colors.slate} textStyle="bodyLarge" mb={space.xxxs}>
-            Profession
-          </Text>
-          <Text mb={space.xxxs}>
-            {creator.profile_detail?.tag_list?.[0]?.name}
-          </Text>
+    <Grid
+      px={[space.xs, space.m]}
+      py={[space.xs, space.s]}
+      gridTemplateColumns={["1fr", "2fr 1fr"]}
+      gridGap={space.s}
+    >
+      <Box>
+        <Text mb={space.xs} textStyle="title">
+          About Me
+        </Text>
+        <Text mb={space.xs}>{creator.profile_detail?.introduction}</Text>
+      </Box>
+
+      <Box>
+        <Text mb={space.xs} textStyle="title">
+          Social Links
+        </Text>
+
+        <Grid
+          gridGap={space.xxs}
+          gridAutoFlow="column"
+          gridAutoColumns="min-content"
+        >
+          {creator.profile_detail.linkedin_url && (
+            <Link
+              href={creator.profile_detail.linkedin_url}
+              boxProps={{ target: "_blank" }}
+            >
+              <Icon icon="Linkedin" color={colors.linkedin} fill />
+            </Link>
+          )}
+
+          {creator.profile_detail.instagram && (
+            <Link
+              href={creator.profile_detail.instagram}
+              boxProps={{ target: "_blank" }}
+            >
+              <Icon icon="InstagramColor" />
+            </Link>
+          )}
+
+          {creator.profile_detail.twitter && (
+            <Link
+              href={creator.profile_detail.twitter}
+              boxProps={{ target: "_blank" }}
+            >
+              <Icon icon="Twitter" color={colors.twitter} fill />
+            </Link>
+          )}
         </Grid>
-      )}
-      {creator.profile_detail.sector_detail && (
-        <Grid gridAutoFlow="column" gridTemplateColumns="0.3fr 1fr">
-          <Text color={colors.slate} textStyle="bodyLarge" mb={space.xxxs}>
-            Sector
-          </Text>
-          <Text mb={space.xxxs}>
-            {creator.profile_detail?.sector_detail?.name}
-          </Text>
-        </Grid>
-      )}
-      {creator.profile_detail.company_type_detail && (
-        <Grid gridAutoFlow="column" gridTemplateColumns="0.3fr 1fr">
-          <Text color={colors.slate} textStyle="bodyLarge" mb={space.xxxs}>
-            Working With
-          </Text>
-          <Text mb={space.xxxs}>
-            {creator.profile_detail?.company_type_detail?.name}
-          </Text>
-        </Grid>
-      )}
-      {creator.profile_detail.years_of_experience_detail && (
-        <Grid gridAutoFlow="column" gridTemplateColumns="0.3fr 1fr">
-          <Text color={colors.slate} textStyle="bodyLarge" mb={space.xxxs}>
-            Years of Experience
-          </Text>
-          <Text mb={space.xxxs}>
-            {creator.profile_detail?.years_of_experience_detail?.name}
-          </Text>
-        </Grid>
-      )}
-      {creator.profile_detail.education_level_detail && (
-        <Grid gridAutoFlow="column" gridTemplateColumns="0.3fr 1fr">
-          <Text color={colors.slate} textStyle="bodyLarge" mb={space.xxxs}>
-            Education Level
-          </Text>
-          <Text mb={space.xxxs}>
-            {creator.profile_detail?.education_level_detail?.name}
-          </Text>
-        </Grid>
-      )}
-    </Box>
+      </Box>
+    </Grid>
   );
 }

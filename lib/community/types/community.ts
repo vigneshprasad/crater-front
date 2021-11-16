@@ -1,5 +1,7 @@
 import { Profile } from "next-auth";
 
+import { Creator } from "@/creators/types/creator";
+
 export type Community = {
   creator: number;
   id: number;
@@ -14,6 +16,7 @@ export type Speaker = {
   name: string;
   photo?: string;
   pk: string;
+  creator_detail?: Creator;
 };
 
 export type Topic = {
@@ -22,7 +25,7 @@ export type Topic = {
   article_detail?: unknown;
   creator?: string;
   description?: string;
-  image?: string;
+  image: string;
   is_active: boolean;
   is_approved: boolean;
   name: string;
@@ -54,11 +57,11 @@ export type Group = {
   privacy: number;
   relevancy: number;
   speakers?: string[];
-  speakers_detail_list?: Speaker[];
-  attendees_detail_list?: Speaker[];
+  speakers_detail_list: Speaker[];
+  attendees_detail_list: Speaker[];
   start: string;
-  topic?: number;
-  topic_detail?: Topic;
+  topic: number;
+  topic_detail: Topic;
   type: number;
   recording_details?: {
     dyte_recordings: number[];
@@ -109,12 +112,22 @@ export interface UserProperties {
   introduction?: string;
 }
 
+export interface Follower {
+  creator: number;
+  followed_at: string;
+  id: number;
+  profile_detail: Profile;
+  unfollowed: boolean;
+  unfollowed_at: null | string;
+  user: string;
+}
+
 export interface CommunityMember {
   id: number;
   community: number;
   joined_at: string;
   user: string;
-  user_properties: UserProperties;
+  profile_detail: Profile;
 }
 
 export enum WSMessageTypes {
