@@ -5,21 +5,22 @@ import { useTheme } from "styled-components";
 import Image from "next/image";
 
 import { AnimatedBox, Box, Text, Grid, Link } from "@/common/components/atoms";
+import { PageRoutes } from "@/common/constants/route.constants";
 
 type Props = {
-  id: number;
+  slug: string;
   image?: string;
   name?: string;
   followers: number;
 };
 
 const CreatorCard = forwardRef<HTMLDivElement, Props>(
-  ({ id, image, name, followers }, ref) => {
+  ({ slug, image, name, followers }, ref) => {
     const { space, colors } = useTheme();
     const thousandMultiple = Math.round(followers / 100) / 10;
     const formatted = `${thousandMultiple}K`;
     return (
-      <Link href={`/creator/${id}`}>
+      <Link href={PageRoutes.creatorProfile(slug)}>
         <Grid ref={ref}>
           <AnimateSharedLayout>
             <AnimatedBox position="relative" layout h={[200, 220]}>
