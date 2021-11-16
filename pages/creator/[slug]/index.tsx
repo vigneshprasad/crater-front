@@ -3,7 +3,6 @@ import { GetServerSideProps } from "next";
 import { PageRoutes } from "@/common/constants/route.constants";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  console.log(query);
   const slug = query.slug as string;
 
   return {
