@@ -105,7 +105,7 @@ export default function CreatorPage({
       />
 
       <Box
-        maxWidth={space.containerWidth}
+        mr={[0, space.m]}
         bg={colors.black[5]}
         mt={-space.l}
         minHeight="70vh"
