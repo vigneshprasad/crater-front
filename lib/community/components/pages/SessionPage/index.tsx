@@ -345,24 +345,29 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               borderTop="1px solid rgba(255, 255, 255, 0.1)"
               textStyle="title"
             >
-              About Me
+              Speakers
             </Text>
             <Grid
               gridTemplateColumns="min-content 1fr"
               alignItems="start"
               gridGap={space.xxs}
             >
-              <Avatar
-                size={56}
-                image={host_detail?.photo}
-                alt={host_detail?.name ?? "host"}
-              />
-              <Box>
-                <Text textStyle="bodyLarge">{host_detail?.name}</Text>
-                <ExpandingText color={colors.slate}>
-                  {host_detail?.introduction}
-                </ExpandingText>
-              </Box>
+              {webinar.speakers_detail_list &&
+                webinar.speakers_detail_list.map((speaker) => (
+                  <>
+                    <Avatar
+                      size={56}
+                      image={speaker?.photo}
+                      alt={speaker?.name ?? "host"}
+                    />
+                    <Box>
+                      <Text textStyle="bodyLarge">{speaker?.name}</Text>
+                      <ExpandingText color={colors.slate}>
+                        {speaker?.introduction}
+                      </ExpandingText>
+                    </Box>
+                  </>
+                ))}
             </Grid>
           </Grid>
         </Grid>

@@ -2,7 +2,6 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
 import dynamic from "next/dynamic";
 
-import { NetworkListProvider } from "@/community/context/NetworkListContext";
 import CreatorPageLayout from "@/creators/components/layouts/CreatorPageLayout";
 import CreatorPage, {
   CreatorPageParams,
@@ -10,10 +9,9 @@ import CreatorPage, {
   getCreatorStaticPaths,
   getCreatorStaticProps,
 } from "@/creators/components/page/CreatorPage";
-import { CreatorStreamProvider } from "@/creators/context/CreatorStreamsContext";
 
-const CreatorStreamsTab = dynamic(
-  () => import("@/creators/components/objects/CreatorStreamsTab")
+const AboutTab = dynamic(
+  () => import("@/creators/components/objects/AboutTab")
 );
 
 export const getStaticPaths: GetStaticPaths<CreatorPageParams> =
@@ -26,15 +24,11 @@ export const getStaticProps: GetStaticProps<
 
 type IProps = InferGetStaticPropsType<typeof getStaticProps>;
 
-export default function CreatorStreams({ creator, id }: IProps): JSX.Element {
+export default function CreatorAbout({ slug, creator }: IProps): JSX.Element {
   return (
-    <CreatorPageLayout creator={creator} id={id}>
-      <CreatorPage selectedTab="club">
-        <CreatorStreamProvider creatorId={creator.user}>
-          <NetworkListProvider>
-            <CreatorStreamsTab />
-          </NetworkListProvider>
-        </CreatorStreamProvider>
+    <CreatorPageLayout creator={creator} slug={slug}>
+      <CreatorPage selectedTab="about">
+        <AboutTab />
       </CreatorPage>
     </CreatorPageLayout>
   );

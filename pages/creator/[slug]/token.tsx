@@ -24,15 +24,18 @@ export const getStaticProps: GetStaticProps<
 
 type IProps = InferGetStaticPropsType<typeof getStaticProps>;
 
-export default function CreatorAbout({ id, creator }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+export default function CreatorAbout({ slug, creator }: IProps): JSX.Element {
+  const { colors, space } = useTheme();
   return (
-    <CreatorPageLayout creator={creator} id={id} baseContainerProps={{ pb: 0 }}>
-      <CreatorPage selectedTab="rewards">
+    <CreatorPageLayout
+      creator={creator}
+      slug={slug}
+      baseContainerProps={{ pb: 0 }}
+    >
+      <CreatorPage selectedTab="token">
         <Box
-          minHeight="270vh"
-          backgroundSize="cover"
-          backgroundImage="url('/images/rewards_coming_soon.png')"
+          minHeight="200vh"
+          backgroundImage="url('/images/token_coming_soon.png')"
         >
           <Box
             position="sticky"
@@ -55,9 +58,10 @@ export default function CreatorAbout({ id, creator }: IProps): JSX.Element {
               textAlign="center"
               maxWidth={["100%", "50%"]}
             >
-              The mentor/creator can <Span>choose</Span> to provide{" "}
-              <Span>exclusive</Span> access to their time &amp; content by
-              launching their own rewards.
+              Mentors &amp; creators will have a option to <Span>auction</Span>{" "}
+              tokens, think of them as tickets, for you to buy to access their
+              rewards. Helping you get exclusive access &amp; them with price
+              discovery &amp; monetization.
             </Text>
           </Box>
         </Box>
