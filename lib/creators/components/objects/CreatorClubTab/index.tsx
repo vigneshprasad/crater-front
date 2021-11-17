@@ -28,6 +28,7 @@ export default function CreatorClubTab(): JSX.Element {
 
       <Grid
         gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(160px, 1fr))"]}
+        gridGap={space.xxs}
       >
         {(() => {
           if (loading) {
