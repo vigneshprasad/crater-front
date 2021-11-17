@@ -56,7 +56,7 @@ export default function CreatorsList({
           return creators?.map((creator, index) => (
             <CreatorCard
               ref={index + 1 === creators.length ? ref : undefined}
-              id={creator.id}
+              slug={creator.slug}
               name={creator.profile_detail?.name}
               key={creator.user}
               image={creator.profile_detail?.photo}
