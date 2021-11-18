@@ -43,7 +43,7 @@ export default function CreatorHubFaqTab(): JSX.Element {
               your community &amp; monetizing your time.
             </Text>
             <Link
-              href="//worknetwork.typeform.com/to/E1Y7pu0n"
+              href="//calendly.com/craterclub"
               boxProps={{ target: "_blank" }}
             >
               <Button text="Talk to us" />
