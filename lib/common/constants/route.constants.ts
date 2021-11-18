@@ -4,8 +4,8 @@ export const PageRoutes = {
   account: "/account",
   session: (id: string | number): string => `/session/${id}`,
   stream: (id: string | number): string => `/livestream/${id}`,
-  creatorProfile: (id: string | number, tab?: string | number): string =>
-    `/creator/${id}/${tab}`,
+  creatorProfile: (slug: string | number, tab?: string | number): string =>
+    `/creator/${slug}/${tab ?? "streams"}`,
   streamVideo: (id: string | number): string => `/video/${id}`,
   creatorHub: "/creatorhub/stream",
 };

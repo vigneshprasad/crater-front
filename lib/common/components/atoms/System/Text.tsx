@@ -87,7 +87,7 @@ const variants = {
     fontFamily: fonts.body,
     fontSize: ["1.4rem"],
     fontWeight: "400",
-    lineHeight: ["2.4rem"],
+    lineHeight: ["2.2rem"],
   },
   button: {
     fontFamily: fonts.body,
@@ -117,7 +117,7 @@ const variants = {
   },
   label: {
     fontFamily: fonts.body,
-    lineHeight: ["2.4rem"],
+    lineHeight: ["2.2rem"],
     fontSize: ["1.4rem"],
     fontWeight: "600",
   },

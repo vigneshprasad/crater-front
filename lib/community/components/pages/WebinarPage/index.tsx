@@ -19,13 +19,12 @@ import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { PageRoutes } from "@/common/constants/route.constants";
-import useNetworkList from "@/community/context/NetworkListContext";
 import { useWebinar } from "@/community/context/WebinarContext";
+import CreatorFollowerList from "@/creators/components/objects/CreatorFollowerList";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 import StreamChat from "@/stream/components/objects/StreamChat";
 
 import { Props as DyteMeetingProps } from "../../objects/DyteMeeting";
-import NetworkList from "../../objects/NetworkList";
 
 const DyteMeeting = dynamic<DyteMeetingProps>(
   () => import("../../objects/DyteMeeting"),
@@ -59,8 +58,6 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   const { dyteParticipant, error } = useDyteWebinar();
   const { user } = useAuth();
   const router = useRouter();
-  const { members, loading: membersLoading } = useNetworkList();
-
   // Handle Dyte participant request error
   useEffect(() => {
     if (error) {
@@ -108,29 +105,31 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             alignItems="center"
           >
             <Grid gridTemplateColumns="max-content 1fr" gridGap={space.xs}>
-              <Avatar
-                size={56}
-                image={webinar.host_detail?.photo}
-                alt="host photo"
-              />
-              <Box>
-                <Text mb={4} textStyle="title">
-                  {webinar.host_detail?.name}
-                </Text>
-                <ExpandingText
-                  textStyle="caption"
-                  maxLines={1}
-                  color={colors.white[1]}
-                >
-                  {webinar.host_detail?.introduction}
-                </ExpandingText>
-              </Box>
+              {webinar.speakers_detail_list &&
+                webinar.speakers_detail_list.map((speaker) => (
+                  <>
+                    <Avatar size={56} image={speaker?.photo} alt="host photo" />
+                    <Box>
+                      <Text mb={4} textStyle="title">
+                        {speaker?.name}
+                      </Text>
+                      <ExpandingText
+                        textStyle="caption"
+                        maxLines={1}
+                        color={colors.white[1]}
+                      >
+                        {speaker?.introduction}
+                      </ExpandingText>
+                    </Box>
+                  </>
+                ))}
             </Grid>
 
             <Grid
               justifyContent={["start", "end"]}
               gridAutoFlow="column"
               gridAutoColumns="min-content"
+              alignSelf="start"
             >
               <Link
                 href={`https://worknetwork.typeform.com/to/TmRSVFoi#session=${webinar.id}&phonenumber=${user?.phone_number}`}
@@ -176,11 +175,9 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
         </Grid>
 
         <Box>
-          <NetworkList
-            webinar={webinar}
-            members={members}
-            loading={membersLoading}
-          />
+          {webinar.host_detail?.creator_detail && (
+            <CreatorFollowerList creator={webinar.host_detail.creator_detail} />
+          )}
           <Link href={PageRoutes.community} boxProps={{ target: "_blank" }}>
             <Button variant="full-width" text="Network with Members" />
           </Link>

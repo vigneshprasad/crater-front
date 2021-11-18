@@ -3,11 +3,11 @@ import { GetServerSideProps } from "next";
 import { PageRoutes } from "@/common/constants/route.constants";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const id = query.id as string;
+  const slug = query.slug as string;
 
   return {
     redirect: {
-      destination: PageRoutes.creatorProfile(id, "club"),
+      destination: PageRoutes.creatorProfile(slug, "streams"),
       permanent: true,
     },
   };

@@ -1,5 +1,4 @@
 import { PropsWithChildren } from "react";
-import { useTheme } from "styled-components";
 
 import { BoxProps } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
@@ -9,18 +8,17 @@ import { CreatorProvider } from "@/creators/context/CreatorContext";
 import { Creator } from "@/creators/types/creator";
 
 type IProps = PropsWithChildren<{
-  id: string;
+  slug: string;
   creator: Creator;
   baseContainerProps?: BoxProps;
 }>;
 
 export default function CreatorPageLayout({
-  id,
+  slug,
   creator,
   children,
   baseContainerProps,
 }: IProps): JSX.Element {
-  const { space } = useTheme();
   return (
     <Page
       seo={{
@@ -28,11 +26,10 @@ export default function CreatorPageLayout({
         description: creator.profile_detail?.introduction,
       }}
     >
-      <CreatorProvider initial={creator} id={id}>
+      <CreatorProvider initial={creator} slug={slug}>
         <BaseLayout
           aside={<AsideNav />}
           overflowY="auto"
-          pb={space.l}
           {...baseContainerProps}
         >
           {children}
