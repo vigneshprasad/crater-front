@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useMemo } from "react";
-import { useSWRInfinite } from "swr";
+import { useSWRInfinite, SWRInfiniteResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
@@ -11,6 +11,7 @@ interface ICreatorCommuntyState {
   members?: CommunityMember[];
   error: unknown;
   loading: boolean;
+  setCommunityPage: SWRInfiniteResponse<CommunityMember[], unknown>["setSize"];
 }
 
 export const CreatorCommunityContext = createContext(
@@ -27,7 +28,11 @@ export function CreatorCommunityProvider({
   members: intialMembers,
   ...rest
 }: IProviderProps): JSX.Element {
-  const { data: members, error } = useSWRInfinite<CommunityMember[]>(
+  const {
+    data: members,
+    error,
+    setSize,
+  } = useSWRInfinite<CommunityMember[]>(
     (index, previousData) => {
       const page = index + 1;
       if (previousData && !previousData.length) return null;
@@ -43,8 +48,9 @@ export function CreatorCommunityProvider({
       members: members?.flat(),
       error,
       loading: !error && !members,
+      setCommunityPage: setSize,
     }),
-    [members, error]
+    [members, error, setSize]
   );
 
   return <CreatorCommunityContext.Provider value={value} {...rest} />;

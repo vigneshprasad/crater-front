@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useTheme } from "styled-components";
 
 import { Box, Grid, Text } from "@/common/components/atoms";
@@ -12,8 +12,24 @@ import ConnectModal from "../ConnectModal";
 export default function CreatorClubTab(): JSX.Element {
   const [showConnect, setShowConnect] = useState(false);
   const { space } = useTheme();
-  const { members, loading } = useCreatorCommunityMembers();
+  const { members, loading, setCommunityPage } = useCreatorCommunityMembers();
   const { track } = useAnalytics();
+  const _observer = useRef<IntersectionObserver>();
+
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (loading) return;
+      if (_observer.current) _observer.current.disconnect();
+      _observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          setCommunityPage((page) => page + 1);
+        }
+      });
+
+      if (node != null) _observer.current.observe(node);
+    },
+    [_observer, loading, setCommunityPage]
+  );
 
   return (
     <Box px={[space.xs, space.s]}>
@@ -39,8 +55,9 @@ export default function CreatorClubTab(): JSX.Element {
             return <Box>No members</Box>;
           }
 
-          return members.map((member) => (
+          return members.map((member, index) => (
             <CommunityMemberItem
+              ref={index + 1 === members.length ? ref : undefined}
               key={member.id}
               name={member.profile_detail.name}
               image={member.profile_detail.photo}

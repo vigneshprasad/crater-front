@@ -1,6 +1,8 @@
 import axios, { AxiosInstance } from "axios";
 import { getSession, GetSessionOptions } from "next-auth/client";
 
+import { Logout } from "@/auth/utils";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function API(context?: GetSessionOptions): AxiosInstance {
@@ -24,6 +26,13 @@ export default function API(context?: GetSessionOptions): AxiosInstance {
       };
     }
     return config;
+  });
+
+  client.interceptors.response.use(async (response) => {
+    if (response.status === 401) {
+      await Logout();
+    }
+    return response;
   });
 
   return client;

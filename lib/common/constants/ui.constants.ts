@@ -1,7 +1,13 @@
 import { IconOptions } from "../theme";
 import { PageRoutes } from "./route.constants";
 
-export type INavKeys = "streams" | "community" | "about" | "creatorhub";
+export type INavKeys =
+  | "streams"
+  | "community"
+  | "about"
+  | "creatorhub"
+  | "account"
+  | "logout";
 
 export type IMenuItem = {
   label: string;
@@ -33,9 +39,30 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
 
 export const SIDE_NAV_MOBILE_ITEMS: IMenuItem[] = [
   {
-    label: "About Us",
+    label: "About us",
     icon: "Globe",
     url: "//www.joincrater.club/",
     key: "about",
+  },
+];
+
+export const USER_NAV_DROPDOWN_ITEMS: IMenuItem[] = [
+  {
+    label: "Account",
+    icon: "AccountCircle",
+    url: PageRoutes.account,
+    key: "account",
+  },
+  {
+    label: "About us",
+    icon: "AtSign",
+    url: "//www.joincrater.club/",
+    key: "about",
+  },
+  {
+    label: "Logout",
+    icon: "LogOut",
+    url: PageRoutes.account,
+    key: "logout",
   },
 ];
