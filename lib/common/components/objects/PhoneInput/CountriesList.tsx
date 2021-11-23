@@ -95,6 +95,14 @@ export default function CountriesList({
     >
       {phoneLib.countries.map((country) => {
         const isActive = country.cca2 === active;
+
+        let phoneExtension;
+
+        if (country.idd.suffixes.length > 1) {
+          phoneExtension = country.idd.root;
+        }
+        phoneExtension = `${country.idd.root}${country.idd.suffixes?.[0]}`;
+
         return (
           <ItemWrapper
             ref={(ref) =>
@@ -111,7 +119,9 @@ export default function CountriesList({
             gridTemplateColumns={["48px 1fr"]}
           >
             <Text textAlign="center">{country.flag}</Text>
-            <Text>{country.name.common}</Text>
+            <Text>
+              {country.name.common} ({phoneExtension})
+            </Text>
           </ItemWrapper>
         );
       })}
