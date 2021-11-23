@@ -98,10 +98,11 @@ export default function CountriesList({
 
         let phoneExtension;
 
+        phoneExtension = `${country.idd.root}${country.idd.suffixes?.[0]}`;
+
         if (country.idd.suffixes.length > 1) {
           phoneExtension = country.idd.root;
         }
-        phoneExtension = `${country.idd.root}${country.idd.suffixes?.[0]}`;
 
         return (
           <ItemWrapper
