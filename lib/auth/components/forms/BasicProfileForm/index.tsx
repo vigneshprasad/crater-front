@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useTheme } from "styled-components";
 
 import {
@@ -18,6 +18,7 @@ import {
   Select,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import Spinner from "@/common/components/atoms/Spiner";
 import FormField from "@/common/components/objects/FormField";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";
@@ -33,7 +34,7 @@ export interface IBasicProfileFormProps {
 
 interface IProps {
   data: Profile;
-  onSubmit: (data: IBasicProfileFormProps) => void;
+  onSubmit: (data: IBasicProfileFormProps) => Promise<void>;
 }
 
 export default function BasicProfileForm({
@@ -41,6 +42,7 @@ export default function BasicProfileForm({
   data,
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
+  const [loading, setLoading] = useState(false);
 
   const { fields, fieldValueSetter, getValidatedData } =
     useForm<IBasicProfileFormProps>({
@@ -73,9 +75,11 @@ export default function BasicProfileForm({
     });
 
   const handleOnSubmit = useCallback(
-    (formData: IBasicProfileFormProps) => {
+    async (formData: IBasicProfileFormProps) => {
       if (onSubmit) {
-        onSubmit(formData);
+        setLoading(true);
+        await onSubmit(formData);
+        setLoading(false);
       }
     },
     [onSubmit]
@@ -101,22 +105,39 @@ export default function BasicProfileForm({
             bg={colors.black[2]}
             justifyContent="end"
           >
-            <Button text="Submit" onClick={onClickSubmit} />
+            <Button
+              text="Submit"
+              onClick={onClickSubmit}
+              suffixElement={loading ? <Spinner size={32} /> : undefined}
+              disabled={loading}
+            />
           </Flex>
         }
       >
-        <Form display="grid" gridAutoFlow="row" gridGap={space.xxs}>
-          <FormField label="Full Name" subtext="This is your name">
+        <Form display="grid" gridAutoFlow="row" gridGap={space.xxxs}>
+          <FormField
+            gridTemplateColumns={["1fr", "1fr 2fr"]}
+            gridGap={space.xxxs}
+            label="Full Name"
+            subtext="Enter your full name."
+          >
             <Input
               value={fields.name.value}
+              disabled={loading}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 fieldValueSetter("name", e.currentTarget.value)
               }
             />
           </FormField>
 
-          <FormField label="About Me" subtext="This is your name">
+          <FormField
+            gridTemplateColumns={["1fr", "1fr 2fr"]}
+            gridGap={space.xxxs}
+            label="About Me"
+            subtext="Give a brief description about yourself."
+          >
             <TextArea
+              disabled={loading}
               value={fields.introduction.value}
               onChange={(e) => {
                 fieldValueSetter("introduction", e.currentTarget.value);
@@ -124,7 +145,12 @@ export default function BasicProfileForm({
             />
           </FormField>
 
-          <FormField label="Tags" subtext="Pick a tag which suits you">
+          <FormField
+            gridTemplateColumns={["1fr", "1fr 2fr"]}
+            gridGap={space.xxxs}
+            label="Tags"
+            subtext="Pick a tag which suits you."
+          >
             <Select<UserTag>
               async
               value={fields.tags.value}
@@ -137,8 +163,10 @@ export default function BasicProfileForm({
           </FormField>
 
           <FormField
+            gridTemplateColumns={["1fr", "1fr 2fr"]}
+            gridGap={space.xxxs}
             label="Education Level"
-            subtext="Pick a tag which suits you"
+            subtext="Pick the highest level of your education."
           >
             <Select<EducationLevel>
               async
@@ -154,8 +182,10 @@ export default function BasicProfileForm({
           </FormField>
 
           <FormField
+            gridTemplateColumns={["1fr", "1fr 2fr"]}
+            gridGap={space.xxxs}
             label="Years of experience"
-            subtext="Pick a tag which suits you"
+            subtext="Pick the range of your years of experience."
           >
             <Select<YearsOfExperience>
               async
@@ -171,8 +201,10 @@ export default function BasicProfileForm({
           </FormField>
 
           <FormField
+            gridTemplateColumns={["1fr", "1fr 2fr"]}
+            gridGap={space.xxxs}
             label="Sector"
-            subtext="Pick a tag which suits you"
+            subtext="Pick a sector of your profession."
             border={false}
           >
             <Select<Sector>

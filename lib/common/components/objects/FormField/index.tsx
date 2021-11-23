@@ -4,7 +4,7 @@ import { useTheme } from "styled-components";
 import { Box, Grid, GridProps, Text } from "../../atoms";
 
 type IProps = PropsWithChildren<{
-  label: string;
+  label: string | React.ReactNode;
   subtext?: string;
   border?: boolean;
 }> &
@@ -21,13 +21,18 @@ export default function FormField({
   return (
     <Grid
       borderBottom={border ? "1px solid rgba(228,228,228,0.1)" : "none"}
-      py={space.xxxs}
+      py={space.xxs}
       gridTemplateColumns="max-content 1fr"
       alignItems="start"
       {...rest}
     >
       <Box>
-        <Text textStyle="menu">{label}</Text>
+        {(() => {
+          if (typeof label === "string")
+            return <Text textStyle="menu">{label}</Text>;
+          return label;
+        })()}
+
         {subtext && (
           <Text color={colors.slate} textStyle="body">
             {subtext}
