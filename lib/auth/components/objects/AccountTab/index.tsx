@@ -14,6 +14,7 @@ import colors from "@/common/theme/colors";
 import BasicProfileForm, {
   IBasicProfileFormProps,
 } from "../../forms/BasicProfileForm";
+import SocialInfoForm, { ISocialFormProps } from "../../forms/SocialInfoForm";
 import PhotoUpload from "../PhotoUpload";
 
 export default function AccountTab(): JSX.Element {
@@ -49,6 +50,17 @@ export default function AccountTab(): JSX.Element {
     }
   };
 
+  const postSocialInfo = async (data: ISocialFormProps): Promise<void> => {
+    try {
+      const { data: profileResponse } = await AuthApiClient.postProfile({
+        ...data,
+      });
+      mutateProfile(profileResponse);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const postSignout = async (): Promise<void> => {
     await Logout();
     router.push(PageRoutes.home);
@@ -73,13 +85,16 @@ export default function AccountTab(): JSX.Element {
       />
       <PhotoUpload
         onPostData={uploadCoverPicture}
-        previewStyle={{ w: [240], pt: "40%", borderRadius: "none" }}
+        previewStyle={{ w: ["100%", 240], pt: "56.25%", borderRadius: "none" }}
         description="File format: JPEG, PNG, GIF (recommended 1200x480, max 10MB)"
         value={profile.cover_file}
         heading="Cover Photo"
         successText="Cover photo uploaded successfully."
       />
+
       <BasicProfileForm data={profile} onSubmit={postBasicProfileData} />
+
+      <SocialInfoForm profile={profile} onSubmit={postSocialInfo} />
 
       <Card>
         <Button

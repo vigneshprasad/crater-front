@@ -7,22 +7,18 @@ import useAuthModal from "@/auth/context/AuthModalContext";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 
-import { AnimatedBox, Flex, Box, Grid, Link, Text } from "../../atoms";
-import { Avatar } from "../../atoms/Avatar";
+import { AnimatedBox, Flex, Box, Grid } from "../../atoms";
 import { Button } from "../../atoms/Button";
 import IconButton from "../../atoms/IconButton";
 import { Logo } from "../Logo";
+import UserDropdown from "../UserDropdown";
 
 export default function AppNavBar(): JSX.Element {
   const router = useRouter();
   const { space, borders, colors } = useTheme();
-  const { profile, loading } = useAuth();
+  const { profile, loading, user } = useAuth();
   const { openModal } = useAuthModal();
   const { isMobile, toggleNavBar } = useAsideNavState();
-
-  // const handleOnClickUserImage = (): void => {
-  //   router.push("/account/");
-  // };
 
   const handleLogoClick = (): void => {
     router.push(PageRoutes.home);
@@ -57,18 +53,6 @@ export default function AppNavBar(): JSX.Element {
         alignItems="center"
         gridGap={space.xxs}
       >
-        <Grid
-          display={["none", "block"]}
-          gridAutoFlow="column"
-          gridGap={space.xxs}
-        >
-          <Link href="//joincrater.club/" boxProps={{ target: "_blank" }}>
-            <Text color={colors.accent} textStyle="button">
-              About
-            </Text>
-          </Link>
-        </Grid>
-
         {(() => {
           if (loading) {
             return (
@@ -81,16 +65,8 @@ export default function AppNavBar(): JSX.Element {
             );
           }
 
-          if (profile) {
-            return (
-              <Box>
-                <Avatar
-                  alt={profile.name ?? "username"}
-                  size={32}
-                  image={profile.photo}
-                />
-              </Box>
-            );
+          if (profile && user) {
+            return <UserDropdown profile={profile} user={user} />;
           }
 
           return (
