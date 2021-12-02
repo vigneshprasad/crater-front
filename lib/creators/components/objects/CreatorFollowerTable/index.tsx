@@ -1,8 +1,10 @@
 import { useCallback } from "react";
 import { useTheme } from "styled-components";
+import { space } from "styled-system";
 
 import { Box } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
+import { Table } from "@/common/components/atoms/Table";
 import { Follower } from "@/community/types/community";
 
 interface IProps {
@@ -12,7 +14,7 @@ interface IProps {
 }
 
 export default function CreatorFollowerTable({ data }: IProps): JSX.Element {
-  const { colors } = useTheme();
+  const { colors, space } = useTheme();
 
   const columns = [
     {
@@ -41,14 +43,8 @@ export default function CreatorFollowerTable({ data }: IProps): JSX.Element {
   }, []);
 
   return (
-    <Box>
-      <table
-        style={{
-          width: "80%",
-          margin: "0 auto",
-          tableLayout: "fixed",
-        }}
-      >
+    <Box px={space.s}>
+      <Table>
         <thead
           style={{
             textAlign: "left",
@@ -107,7 +103,7 @@ export default function CreatorFollowerTable({ data }: IProps): JSX.Element {
             });
           })()}
         </tbody>
-      </table>
+      </Table>
     </Box>
   );
 }
