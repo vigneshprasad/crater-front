@@ -6,7 +6,7 @@ import useSWR from "swr";
 
 import Image from "next/image";
 
-import { Box, Text, Span, TabBar } from "@/common/components/atoms";
+import { Box, Text, Span } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
@@ -37,7 +37,7 @@ export default function CreatorHubPage({
     <Page seo={seo}>
       <BaseLayout
         overflowY="auto"
-        pb={space.l}
+        pb={space.xs}
         aside={<AsideNav activeTab="creatorhub" />}
       >
         <Box h={240} position="relative">
@@ -59,7 +59,7 @@ export default function CreatorHubPage({
 
         <BaseTabBar
           baseUrl="/creatorhub/"
-          tabs={["stream", "faq"]}
+          tabs={["stream", "faq", "club_members"]}
           active={selectedTab}
         />
         {children}
