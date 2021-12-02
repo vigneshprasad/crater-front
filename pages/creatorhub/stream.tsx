@@ -1,11 +1,16 @@
+import dynamic from "next/dynamic";
+
 import useAuth from "@/auth/context/AuthContext";
 import Spinner from "@/common/components/atoms/Spiner";
 import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
-import CreatorHubStreamTab from "@/creators/components/objects/CreatorHubStreamTab";
 import CreatorHubPage from "@/creators/components/page/CreatorHubPage";
 import StaticCreatorHub from "@/creators/components/page/StaticCreatorHub";
 import { CreatorStreamProvider } from "@/creators/context/CreatorStreamsContext";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
+
+const CreatorHubStreamTab = dynamic(
+  () => import("@/creators/components/objects/CreatorHubStreamTab")
+);
 
 export default function CreatorHubStream(): JSX.Element {
   const { user, profile, loading } = useAuth();
