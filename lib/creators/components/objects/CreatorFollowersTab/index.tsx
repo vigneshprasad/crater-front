@@ -52,7 +52,7 @@ export default function CreatorFollowersTab(): JSX.Element {
   }
 
   return (
-    <Box>
+    <Box p={space.xs}>
       <a
         ref={ref}
         href={href}
