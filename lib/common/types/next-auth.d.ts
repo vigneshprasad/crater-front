@@ -40,6 +40,8 @@ declare module "next-auth" {
   export interface Profile {
     pk: number;
     name: string;
+    email: string;
+    phone_number: string;
     role: string;
     photo?: string;
     uuid: string;
@@ -64,6 +66,7 @@ declare module "next-auth" {
     linkedin_url: string | null;
     instagram: string | null;
     twitter: string | null;
+    creator_slug: string | null;
   }
 }
 
