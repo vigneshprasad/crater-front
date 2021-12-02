@@ -21,21 +21,23 @@ export function BaseTabBar({
       gridAutoColumns="max-content"
       gridGap={space.xxs}
     >
-      {tabs.map((tab) => (
-        <Link href={`${baseUrl}${tab}`} key={tab}>
-          <Box
-            borderBottom="4px solid"
-            pt={space.xxs}
-            pb={space.xxxs}
-            px={4}
-            borderColor={active === tab ? colors.accent : "transparent"}
-          >
-            <Text textStyle="menu" textTransform="uppercase">
-              {tab}
-            </Text>
-          </Box>
-        </Link>
-      ))}
+      {tabs.map((tab) => {
+        return (
+          <Link href={`${baseUrl}${tab}`} key={tab}>
+            <Box
+              borderBottom="4px solid"
+              pt={space.xxs}
+              pb={space.xxxs}
+              px={4}
+              borderColor={active === tab ? colors.accent : "transparent"}
+            >
+              <Text textStyle="menu" textTransform="uppercase">
+                {tab.replace("_", " ")}
+              </Text>
+            </Box>
+          </Link>
+        );
+      })}
     </Grid>
   );
 }
