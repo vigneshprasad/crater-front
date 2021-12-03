@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import { useTheme } from "styled-components";
-import { space } from "styled-system";
 
 import { Box } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
