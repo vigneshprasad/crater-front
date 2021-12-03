@@ -16,6 +16,7 @@ interface ICreatorApiClient {
     pageSize?: number
   ) => Promise<ApiResult<PageResponse<Creator>, AxiosError>>;
   getCreator: (id: string) => Promise<ApiResult<Creator, AxiosError>>;
+  getMyCreator: () => Promise<ApiResult<Creator, AxiosError>>;
   getCreatorBySlug: (slug: string) => Promise<ApiResult<Creator, AxiosError>>;
   getCreatorStreams: (
     creatorId: string
@@ -57,6 +58,17 @@ export default function CreatorApiClient(
     try {
       const { data } = await API(context).get<Creator>(
         `${API_URL_CONSTANTS.creator.getCreatorList}${id}/`
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function getMyCreator(): Promise<ApiResult<Creator, AxiosError>> {
+    try {
+      const { data } = await API(context).get<Creator>(
+        API_URL_CONSTANTS.creator.getMyCreator
       );
       return [data, undefined];
     } catch (err) {
@@ -140,6 +152,7 @@ export default function CreatorApiClient(
   return {
     getCreatorsList,
     getCreator,
+    getMyCreator,
     getCreatorBySlug,
     getCreatorStreams,
     getCommunityMemebers,
