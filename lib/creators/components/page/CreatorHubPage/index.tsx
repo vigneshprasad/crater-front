@@ -12,14 +12,17 @@ import AsideNav from "@/common/components/objects/AsideNav";
 import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
 import Page from "@/common/components/objects/Page";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { Creator } from "@/creators/types/creator";
 
 type IProps = PropsWithChildren<{
   selectedTab: string;
+  creator: Creator;
 }>;
 
 export default function CreatorHubPage({
   children,
   selectedTab,
+  creator,
 }: IProps): JSX.Element {
   const seo: NextSeoProps = {
     title: "Crater Club",
@@ -32,6 +35,12 @@ export default function CreatorHubPage({
   );
 
   const count = userCount && userCount.count.toLocaleString();
+
+  const tabs = ["stream", "faq"];
+
+  if (creator?.show_club_members) {
+    tabs.push("club_members");
+  }
 
   return (
     <Page seo={seo}>
@@ -57,11 +66,7 @@ export default function CreatorHubPage({
           </Text>
         </Box>
 
-        <BaseTabBar
-          baseUrl="/creatorhub/"
-          tabs={["stream", "faq", "club_members"]}
-          active={selectedTab}
-        />
+        <BaseTabBar baseUrl="/creatorhub/" tabs={tabs} active={selectedTab} />
         {children}
       </BaseLayout>
     </Page>
