@@ -1,7 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { getSession, GetSessionOptions } from "next-auth/client";
-
-import { Logout } from "@/auth/utils";
+import { getSession, GetSessionOptions, signout } from "next-auth/client";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -30,7 +28,9 @@ export default function API(context?: GetSessionOptions): AxiosInstance {
 
   client.interceptors.response.use(async (response) => {
     if (response.status === 401) {
-      await Logout();
+      if (typeof window !== undefined) {
+        await signout();
+      }
     }
     return response;
   });

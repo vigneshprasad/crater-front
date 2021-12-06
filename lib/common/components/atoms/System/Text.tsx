@@ -43,7 +43,7 @@ const variants = {
     fontFamily: fonts.body,
     fontSize: ["1.8rem"],
     fontWeight: "600",
-    lineHeight: ["2.4rem"],
+    lineHeight: ["2.8rem"],
   },
   headlineBold: {
     fontFamily: fonts.body,
@@ -130,6 +130,12 @@ const variants = {
     fontFamily: fonts.body,
     lineHeight: ["1.8rem"],
     fontSize: ["1.3rem"],
+    fontWeight: "600",
+  },
+  breadCrumb: {
+    fontFamily: fonts.body,
+    lineHeight: ["2.2rem"],
+    fontSize: ["1.8rem"],
     fontWeight: "600",
   },
 };

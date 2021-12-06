@@ -1,10 +1,11 @@
+import { Variants } from "framer-motion";
 import { NextSeoProps } from "next-seo";
 import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
 import { INavKeys } from "@/common/constants/ui.constants";
 
-import { Box } from "../../atoms";
+import { Box, AnimatedBox } from "../../atoms";
 import AsideNav from "../../objects/AsideNav";
 import Page from "../../objects/Page";
 import TabHeading from "../../objects/TabHeading";
@@ -15,6 +16,12 @@ type IProps = PropsWithChildren<{
   activeTab?: INavKeys;
   heading: string;
 }>;
+
+const variants: Variants = {
+  hidden: { opacity: 0, x: 0, y: 10 },
+  enter: { opacity: 1, x: 0, y: 0 },
+  exit: { opacity: 0, x: 0, y: 10 },
+};
 
 export default function HomePageLayout({
   heading,
@@ -34,7 +41,15 @@ export default function HomePageLayout({
           <TabHeading>{heading}</TabHeading>
         </Box>
 
-        {children}
+        <AnimatedBox
+          initial="hidden"
+          variants={variants}
+          animate="enter"
+          exit="exit"
+          transition={{ type: "linear" }}
+        >
+          {children}
+        </AnimatedBox>
       </BaseLayout>
     </Page>
   );

@@ -1,3 +1,4 @@
+export { default as Wallet } from "./Wallet";
 export { default as AccountCircle } from "./AccountCircle";
 export { default as Activity } from "./Activity";
 export { default as AtSign } from "./AtSign";
@@ -33,4 +34,3 @@ export { default as Tv } from "./Tv";
 export { default as Twitter } from "./Twitter";
 export { default as User } from "./User";
 export { default as Users } from "./Users";
-export { default as Wallet } from "./Wallet";

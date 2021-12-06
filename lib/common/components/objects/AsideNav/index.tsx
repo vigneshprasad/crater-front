@@ -98,7 +98,7 @@ export default function AsideNav({ activeTab }: IProps): JSX.Element {
         justifyContent={["start", "center"]}
         zIndex={zIndices.asideNav}
       >
-        {SIDE_NAV_ITEMS.map(({ icon, key, url, label }) => {
+        {SIDE_NAV_ITEMS.map(({ icon, key, url, label, iconFill }) => {
           const color = key === activeTab ? colors.accent : colors.white[1];
           return (
             <Link href={url} key={key}>
@@ -110,7 +110,13 @@ export default function AsideNav({ activeTab }: IProps): JSX.Element {
                 gridTemplateColumns={["40px 1fr", "1fr"]}
                 gridGap={[space.xxxs, space.xxs]}
               >
-                <Icon color={color} size={20} m="auto auto" icon={icon} />
+                <Icon
+                  color={color}
+                  size={20}
+                  m="auto auto"
+                  icon={icon}
+                  fill={iconFill}
+                />
                 <AnimatedText textStyle="menu" color={color}>
                   {label}
                 </AnimatedText>
