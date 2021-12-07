@@ -1,3 +1,4 @@
+import { signOut } from "next-auth/client";
 import { useState, SyntheticEvent } from "react";
 import { useTheme } from "styled-components";
 
@@ -57,6 +58,8 @@ export default function AuthForm(): JSX.Element {
 
   const getPhoneOtp = async (phoneNumber: string): Promise<void> => {
     setLoading(true);
+    // Signout user
+    await signOut({ redirect: false });
     try {
       await AuthApiClient.getPhoneOtp(phoneNumber);
       track(AnalyticsEvents.get_otp_clicked, {
