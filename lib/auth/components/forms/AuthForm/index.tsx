@@ -94,7 +94,6 @@ export default function AuthForm(): JSX.Element {
 
     if (valid) {
       const value = fields.phoneNumber.value;
-
       getPhoneOtp(value);
     }
   };
