@@ -58,6 +58,8 @@ export default function AuthForm(): JSX.Element {
 
   const getPhoneOtp = async (phoneNumber: string): Promise<void> => {
     setLoading(true);
+    // Signout user
+    await signOut({ redirect: false });
     try {
       await AuthApiClient.getPhoneOtp(phoneNumber);
       track(AnalyticsEvents.get_otp_clicked, {
@@ -92,9 +94,6 @@ export default function AuthForm(): JSX.Element {
 
     if (valid) {
       const value = fields.phoneNumber.value;
-
-      // Signout user
-      signOut({ redirect: false });
 
       getPhoneOtp(value);
     }
