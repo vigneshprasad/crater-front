@@ -7,13 +7,20 @@ import Spinner from "@/common/components/atoms/Spiner";
 import CreatorApiClient from "@/creators/api";
 import CreatorHubPage from "@/creators/components/page/CreatorHubPage";
 import StaticCreatorHub from "@/creators/components/page/StaticCreatorHub";
+import { CreatorFollowerProvider } from "@/creators/context/CreatorFollowerContext";
 
-const CreatorHubFaqTab = dynamic(
-  () => import("@/creators/components/objects/CreatorHubFaqTab")
+const CreatorFollowersTab = dynamic(
+  () => import("@/creators/components/objects/CreatorFollowersTab")
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const [creator] = await CreatorApiClient(context).getMyCreator();
+
+  if (!creator || !creator?.show_club_members) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
@@ -36,8 +43,10 @@ export default function CreatorHubFaq({ creator }: IProps): JSX.Element {
   }
 
   return (
-    <CreatorHubPage selectedTab="faq" creator={creator}>
-      <CreatorHubFaqTab />
+    <CreatorHubPage selectedTab="club_members" creator={creator}>
+      <CreatorFollowerProvider userId={user.pk}>
+        <CreatorFollowersTab />
+      </CreatorFollowerProvider>
     </CreatorHubPage>
   );
 }
