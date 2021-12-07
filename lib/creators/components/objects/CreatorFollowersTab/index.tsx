@@ -3,9 +3,7 @@ import { useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import API from "@/common/api";
-import { Box, Grid, Text } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
-import IconButton from "@/common/components/atoms/IconButton";
+import { Box } from "@/common/components/atoms";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useCreatorFollowers from "@/creators/context/CreatorFollowerContext";
 
@@ -16,7 +14,7 @@ export default function CreatorFollowersTab(): JSX.Element {
   const ref = useRef<HTMLAnchorElement>(null);
   const { followers, setPage, loading, currentPage, pageCount } =
     useCreatorFollowers();
-  const { space, zIndices } = useTheme();
+  const { space } = useTheme();
 
   function triggerFileDownload(response: string): void {
     if (ref.current) {
@@ -25,18 +23,6 @@ export default function CreatorFollowersTab(): JSX.Element {
       setHref(url);
       ref.current.click();
       window.URL.revokeObjectURL(url);
-    }
-  }
-
-  function onClickNextPage(): void {
-    if (currentPage < pageCount) {
-      setPage((page) => page + 1);
-    }
-  }
-
-  function onClickPrevPage(): void {
-    if (currentPage > 1) {
-      setPage((page) => page - 1);
     }
   }
 
@@ -52,54 +38,21 @@ export default function CreatorFollowersTab(): JSX.Element {
   }
 
   return (
-    <Box p={space.xs}>
+    <Box px={[0, space.xs]} py={space.xxs} overflowX="auto">
       <a
         ref={ref}
         href={href}
         style={{ display: "none" }}
         download="followers.csv"
       />
-      <Grid
-        gridAutoFlow="column"
-        gridGap={space.xxs}
-        gridAutoColumns="max-content"
-        w="80%"
-        m="0 auto"
-        position="sticky"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Button
-          text="Export CSV"
-          variant="nav-button"
-          m="16px auto"
-          onClick={handleExportCsvBtnClick}
-        />
-        <Grid
-          gridAutoColumns="max-content"
-          gridAutoFlow="column"
-          gridGap={space.xxxs}
-        >
-          <IconButton
-            display={["none", "block"]}
-            zIndex={zIndices.sliderControls}
-            variant="roundSmall"
-            icon="ChevronLeft"
-            onClick={onClickPrevPage}
-          />
-          <Text alignSelf="center">
-            Page {currentPage} of {pageCount}
-          </Text>
-          <IconButton
-            display={["none", "block"]}
-            zIndex={zIndices.sliderControls}
-            variant="roundSmall"
-            icon="ChevronRight"
-            onClick={onClickNextPage}
-          />
-        </Grid>
-      </Grid>
-      <CreatorFollowerTable loading={loading} data={followers} />
+      <CreatorFollowerTable
+        pageCount={pageCount}
+        currentPage={currentPage}
+        loading={loading}
+        data={followers}
+        onPressDownloadCSV={handleExportCsvBtnClick}
+        setPage={setPage}
+      />
     </Box>
   );
 }
