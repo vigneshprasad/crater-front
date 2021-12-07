@@ -1,3 +1,4 @@
+import { signOut } from "next-auth/client";
 import { useState, SyntheticEvent } from "react";
 import { useTheme } from "styled-components";
 
@@ -91,6 +92,10 @@ export default function AuthForm(): JSX.Element {
 
     if (valid) {
       const value = fields.phoneNumber.value;
+
+      // Signout user
+      signOut({ redirect: false });
+
       getPhoneOtp(value);
     }
   };
