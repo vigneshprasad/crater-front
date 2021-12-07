@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { useTheme } from "styled-components";
 
 import { Avatar, Flex, Text } from "@/common/components/atoms";
@@ -10,15 +11,18 @@ interface IProps {
   onClick: () => void;
 }
 
-export default function CommunityMemberItem({
+export function CommunityMemberItemWithRef({
   name,
   image,
   tagLine,
   onClick,
-}: IProps): JSX.Element {
+  ref,
+}: IProps & {
+  ref: React.ForwardedRef<HTMLDivElement>;
+}): JSX.Element {
   const { space } = useTheme();
   return (
-    <Flex alignItems="center" flexDirection={["row", "column"]}>
+    <Flex ref={ref} alignItems="center" flexDirection={["row", "column"]}>
       <Avatar size={64} image={image} mr={[space.xxs, 0]} />
       <Flex py={space.xxs} flexDirection="column" flexGrow={1}>
         <Text textStyle="menu" textAlign={["left", "center"]}>
@@ -32,3 +36,11 @@ export default function CommunityMemberItem({
     </Flex>
   );
 }
+
+const CommunityMemberItem = forwardRef<HTMLDivElement, IProps>((props, ref) => (
+  <CommunityMemberItemWithRef {...props} ref={ref} />
+));
+
+CommunityMemberItem.displayName = "CommunityMemberItem";
+
+export default CommunityMemberItem;

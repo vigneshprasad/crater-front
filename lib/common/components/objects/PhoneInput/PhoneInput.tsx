@@ -66,6 +66,9 @@ export function PhoneInput({
   }, [countryCode]);
 
   const phoneExtension = useMemo(() => {
+    if (countryData.idd.suffixes.length > 1) {
+      return countryData.idd.root;
+    }
     return `${countryData.idd.root}${countryData.idd.suffixes?.[0]}`;
   }, [countryData]);
 

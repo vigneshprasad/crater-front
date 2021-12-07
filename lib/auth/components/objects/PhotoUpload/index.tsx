@@ -117,8 +117,8 @@ export default function PhotoUpload({
           gridGap={space.xs}
         >
           <Preview
-            h={120}
-            w={120}
+            h={96}
+            w={96}
             borderRadius="50%"
             overflow="hidden"
             {...previewStyle}
