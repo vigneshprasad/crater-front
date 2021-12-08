@@ -72,6 +72,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
   const image = webinar.topic_detail?.image;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const postGroupRequest = async (redirect = false): Promise<void> => {
     if (webinarRequest?.status !== RequestStatus.accepted) {
       const data: PostGroupRequest = {
@@ -110,6 +111,18 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
     setShowSuccess(true);
   };
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    const action = async (): Promise<void> => {
+      await postGroupRequest();
+      router.replace(`/session/${webinar.id}/`, undefined, { shallow: true });
+    };
+
+    if (router.query?.join === "true" && user && postGroupRequest) {
+      action();
+    }
+  }, [router, user, webinar?.id, postGroupRequest]);
 
   return (
     <>
@@ -185,6 +198,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                       variant="full-width"
                       text="RSVP for this session"
                       onClick={(): void => {
+                        router.push(
+                          `/session/${webinar.id}/?join=true`,
+                          undefined,
+                          { shallow: true }
+                        );
                         openModal();
                       }}
                     />
