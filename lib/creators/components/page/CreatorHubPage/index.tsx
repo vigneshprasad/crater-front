@@ -16,7 +16,7 @@ import { Creator } from "@/creators/types/creator";
 
 type IProps = PropsWithChildren<{
   selectedTab: string;
-  creator: Creator;
+  creator?: Creator;
 }>;
 
 export default function CreatorHubPage({
