@@ -33,6 +33,7 @@ export default function BidsGraph({ bids }: IProps): JSX.Element {
       .domain([0, maxBid as number])
       .range([height - 30, 0]);
 
+    // @ts-expect-error: d3 error
     const xAxis = d3.scaleTime().domain(xDomain).range([0, width]);
 
     svg

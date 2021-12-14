@@ -20,7 +20,7 @@ const withTM = require("next-transpile-modules")(
 const nextConfig = {
   compression: true,
   reactStrictMode: true,
-  experimental: {},
+  experimental: { esmExternals: true },
   future: {},
   images: {
     domains: [

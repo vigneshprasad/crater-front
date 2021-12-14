@@ -1,4 +1,4 @@
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { NextSeoProps } from "next-seo";
 
 import dynamic from "next/dynamic";
@@ -9,7 +9,7 @@ import TokenPageLayout from "@/tokens/components/layout/TokenPageLayout";
 
 const TokensTab = dynamic(() => import("@/tokens/components/pages/TokensTab"));
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const [creators] = await CreatorApiClient().getCreatorsWithCoins();
 
   if (!creators) {
@@ -29,7 +29,7 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-type IPageProps = InferGetStaticPropsType<typeof getStaticProps>;
+type IPageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function Tokens({ creators }: IPageProps): JSX.Element {
   const seo: NextSeoProps = {
