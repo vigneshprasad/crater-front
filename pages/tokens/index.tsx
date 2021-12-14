@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     return {
       notFound: true,
       revalidate: 10,
-      shallow: true,
+      props: {},
     };
   }
 
@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       destination: `/tokens/${creators[0].slug}`,
       permanent: false,
     },
-    revalidate: 10,
+    props: {},
   };
 };
 
