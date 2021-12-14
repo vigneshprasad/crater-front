@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -62,6 +62,61 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     return user.pk == webinar.host || webinar.speakers?.includes(user.pk);
   }, [user, webinar]);
 
+  const postGroupRequest = useCallback(
+    async (redirect = false): Promise<void> => {
+      if (webinar) {
+        if (webinarRequest?.status !== RequestStatus.accepted) {
+          const data: PostGroupRequest = {
+            group: parseInt(id, 10),
+            participant_type: ParticpantType.attendee,
+            status: RequestStatus.accepted,
+          };
+
+          const [request] = await WebinarApiClient().postWebinarRequest(data);
+
+          if (request) {
+            await mutateWebinar();
+            track(AnalyticsEvents.rsvp_stream, {
+              stream: webinar.id,
+              stream_name: webinar.topic_detail?.name,
+              host: {
+                ...webinar.host_detail,
+              },
+            });
+            mutateRequest(request);
+          }
+        }
+
+        if (redirect) {
+          track(AnalyticsEvents.join_stream, {
+            stream: webinar.id,
+            stream_name: webinar.topic_detail?.name,
+            host: {
+              ...webinar.host_detail,
+            },
+          });
+          router.push(PageRoutes.stream(webinar.id.toString()));
+
+          return;
+        }
+
+        setShowSuccess(true);
+      }
+    },
+    [webinar, id, mutateRequest, router, track, mutateWebinar, webinarRequest]
+  );
+
+  useEffect(() => {
+    const action = async (): Promise<void> => {
+      await postGroupRequest();
+      router.replace(`/session/${webinar?.id}/`, undefined, { shallow: true });
+    };
+
+    if (router.query?.join === "true" && user && postGroupRequest && webinar) {
+      action();
+    }
+  }, [router, user, webinar, postGroupRequest]);
+
   if (!webinar) return <Box>Loading..</Box>;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -71,45 +126,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const now = DateTime.now();
 
   const image = webinar.topic_detail?.image;
-
-  const postGroupRequest = async (redirect = false): Promise<void> => {
-    if (webinarRequest?.status !== RequestStatus.accepted) {
-      const data: PostGroupRequest = {
-        group: parseInt(id, 10),
-        participant_type: ParticpantType.attendee,
-        status: RequestStatus.accepted,
-      };
-
-      const [request] = await WebinarApiClient().postWebinarRequest(data);
-
-      if (request) {
-        await mutateWebinar();
-        track(AnalyticsEvents.rsvp_stream, {
-          stream: webinar.id,
-          stream_name: webinar.topic_detail?.name,
-          host: {
-            ...webinar.host_detail,
-          },
-        });
-        mutateRequest(request);
-      }
-    }
-
-    if (redirect) {
-      track(AnalyticsEvents.join_stream, {
-        stream: webinar.id,
-        stream_name: webinar.topic_detail?.name,
-        host: {
-          ...webinar.host_detail,
-        },
-      });
-      router.push(PageRoutes.stream(webinar.id.toString()));
-
-      return;
-    }
-
-    setShowSuccess(true);
-  };
 
   return (
     <>
@@ -185,6 +201,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                       variant="full-width"
                       text="RSVP for this session"
                       onClick={(): void => {
+                        router.push(
+                          `/session/${webinar.id}/?join=true`,
+                          undefined,
+                          { shallow: true }
+                        );
                         openModal();
                       }}
                     />
