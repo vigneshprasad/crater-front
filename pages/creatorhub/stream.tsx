@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      creator,
+      creator: creator || null,
     },
   };
 };
