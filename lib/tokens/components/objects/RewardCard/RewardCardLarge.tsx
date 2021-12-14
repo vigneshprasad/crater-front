@@ -29,7 +29,10 @@ const cardVariants: Variants = {
 
 const Container = styled(AnimatedBox)``;
 
-export default function RewardCard({ reward, ...rest }: IProps): JSX.Element {
+export default function RewardCardLarge({
+  reward,
+  ...rest
+}: IProps): JSX.Element {
   const { name, photo, number_of_coins, creator_coin_detail, id } = reward;
   const { borders, radii, space, colors } = useTheme();
   return (
