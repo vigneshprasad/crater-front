@@ -5,7 +5,12 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 const withFonts = require("next-fonts");
-const withTM = require("next-transpile-modules")(["@segment/analytics-next"]);
+const withTM = require("next-transpile-modules")(
+  ["@segment/analytics-next", "d3"],
+  {
+    resolveSymlinks: true,
+  }
+);
 
 // @ts-check
 

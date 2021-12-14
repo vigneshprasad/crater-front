@@ -1,11 +1,19 @@
 import { Variants } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
 import { useRouter } from "next/router";
 
-import { Box, AnimatedBox, Text, Link } from "@/common/components/atoms";
+import {
+  Box,
+  AnimatedBox,
+  Text,
+  Link,
+  Span,
+  Flex,
+} from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import AnimatedCreatorCard from "@/creators/components/objects/AnimatedCreatorCard";
@@ -13,8 +21,9 @@ import RewardCard from "@/creators/components/objects/RewardCard";
 import useCreatorWithCoin from "@/creators/context/CreatorWithCoinContext";
 import { Creator } from "@/creators/types/creator";
 import useRewardsList from "@/tokens/context/RewardsListContext";
-import { Coin } from "@/tokens/types/tokens";
+import { Auction, Coin, Bid } from "@/tokens/types/tokens";
 
+import BidsGraph from "../../objects/BidsGraph";
 import RewardsList from "../../objects/RewardsList";
 
 const AnimList: Variants = {
@@ -45,21 +54,36 @@ export default function TokensTab(): JSX.Element {
     undefined
   );
   const { creators } = useCreatorWithCoin();
-  const { space } = useTheme();
+  const { space, colors } = useTheme();
   const router = useRouter();
   const { data: coin } = useSWR<Coin>(
     activeCreator
       ? API_URL_CONSTANTS.coins.getCointForCreator(activeCreator.id)
       : null
   );
+  const { data: auctions } = useSWR<Auction[]>(
+    activeCreator
+      ? `${API_URL_CONSTANTS.coins.getAuctions}?coin__creator=${activeCreator.id}`
+      : null
+  );
 
   const { rewards, loading: loadingRewards } = useRewardsList();
+
+  const activeAuction = useMemo(() => {
+    if (!auctions || !auctions.length) return undefined;
+    return auctions[0];
+  }, [auctions]);
+
+  const { data: bids } = useSWR<Bid[]>(
+    activeAuction
+      ? `${API_URL_CONSTANTS.coins.getBids}?auction=${activeAuction.id}`
+      : null
+  );
 
   useEffect(() => {
     if (creators && router) {
       const slug = router.query.slug;
       if (slug) {
-        console.log(slug);
         const creator = creators.filter((obj) => obj.slug === slug)[0];
         if (creator) {
           setActiveCreator(creator);
@@ -74,10 +98,8 @@ export default function TokensTab(): JSX.Element {
     return <Box>Loading...</Box>;
   }
 
-  console.log(activeCreator);
-
   return (
-    <Box py={space.s} px={space.xxs}>
+    <Box py={space.s} px={space.xs}>
       <AnimatedBox
         initial="hidden"
         animate="enter"
@@ -99,6 +121,24 @@ export default function TokensTab(): JSX.Element {
           </Link>
         ))}
       </AnimatedBox>
+
+      <Flex py={space.s} justifyContent="space-between" alignItems="center">
+        <Box>
+          <Text textStyle="headline5">
+            {activeCreator?.profile_detail.name}{" "}
+            <Span color={colors.accent}>{coin?.display.symbol}</Span>
+          </Text>
+          <Text my={space.xxxs} textStyle="title">
+            {activeAuction
+              ? `Auction ends: ${activeAuction.end}`
+              : "No active auctions"}
+          </Text>
+        </Box>
+
+        <Button text="Place Bid" />
+      </Flex>
+
+      <BidsGraph bids={bids} />
 
       {coin && (
         <Text my={space.xs} textStyle="headline5">

@@ -62,7 +62,10 @@ export const getStaticProps: GetStaticProps<PageProps, IParams> = async ({
   };
 };
 
-export default function TokenPage({ activeCreator }: PageProps): JSX.Element {
+export default function TokenPage({
+  activeCreator,
+  creators,
+}: PageProps): JSX.Element {
   const seo: NextSeoProps = {
     title: "Crater Club: Account",
     description:
@@ -70,7 +73,7 @@ export default function TokenPage({ activeCreator }: PageProps): JSX.Element {
   };
   return (
     <TokenPageLayout seo={seo} activeTab="tokens">
-      <CreatorWithCoinProvider>
+      <CreatorWithCoinProvider initial={creators}>
         <RewardsListProvider filterCreator={activeCreator.id}>
           <TokensTab />
         </RewardsListProvider>
