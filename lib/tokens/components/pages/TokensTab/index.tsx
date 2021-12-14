@@ -17,7 +17,6 @@ import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import AnimatedCreatorCard from "@/creators/components/objects/AnimatedCreatorCard";
-import RewardCard from "@/creators/components/objects/RewardCard";
 import useCreatorWithCoin from "@/creators/context/CreatorWithCoinContext";
 import { Creator } from "@/creators/types/creator";
 import useRewardsList from "@/tokens/context/RewardsListContext";
@@ -146,11 +145,7 @@ export default function TokensTab(): JSX.Element {
         </Text>
       )}
 
-      <RewardsList
-        rewards={rewards}
-        loading={loadingRewards}
-        renderChild={(reward) => <RewardCard reward={reward} key={reward.id} />}
-      />
+      <RewardsList rewards={rewards} loading={loadingRewards} split={false} />
     </Box>
   );
 }

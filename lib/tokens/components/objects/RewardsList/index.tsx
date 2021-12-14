@@ -11,6 +11,7 @@ import Loader from "./Loader";
 interface IProps {
   rewards?: Reward[];
   loading: boolean;
+  split?: boolean;
 }
 
 const listVariatns: Variants = {
@@ -29,7 +30,11 @@ const listVariatns: Variants = {
   },
 };
 
-export default function RewardsList({ rewards, loading }: IProps): JSX.Element {
+export default function RewardsList({
+  rewards,
+  loading,
+  split = true,
+}: IProps): JSX.Element {
   const { space } = useTheme();
 
   const splitList = useMemo(() => {
@@ -50,43 +55,67 @@ export default function RewardsList({ rewards, loading }: IProps): JSX.Element {
 
   return (
     <AnimatePresence>
-      {!rewards || loading || !splitList ? (
-        <Loader
-          gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))"
-          gridGap={space.xxs}
-          gridAutoRows="360px"
-        />
-      ) : (
-        <>
-          <AnimatedBox
-            mb={space.xxs}
-            initial="hidden"
-            animate="enter"
-            display="grid"
-            exit="exit"
-            variants={listVariatns}
-            gridGap={space.xxs}
-            gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))"
-            gridAutoRows="240px"
-          >
-            {splitList[0].map((reward, index) => {
-              if (index === 0) {
-                return (
-                  <RewardCard
-                    gridColumn="1 / span 2"
-                    gridRow="1 / span 2"
-                    key={reward.id}
-                    reward={reward}
-                    type="small"
-                  />
-                );
-              }
-              return (
-                <RewardCard key={reward.id} reward={reward} type="small" />
-              );
-            })}
-          </AnimatedBox>
+      {(() => {
+        if (!rewards || loading || !splitList) {
+          return (
+            <Loader
+              gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))"
+              gridGap={space.xxs}
+              gridAutoRows="360px"
+            />
+          );
+        }
 
+        if (split) {
+          return (
+            <>
+              <AnimatedBox
+                mb={space.xxs}
+                initial="hidden"
+                animate="enter"
+                display="grid"
+                exit="exit"
+                variants={listVariatns}
+                gridGap={space.xxs}
+                gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))"
+                gridAutoRows="240px"
+              >
+                {splitList[0].map((reward, index) => {
+                  if (index === 0) {
+                    return (
+                      <RewardCard
+                        gridColumn="1 / span 2"
+                        gridRow="1 / span 2"
+                        key={reward.id}
+                        reward={reward}
+                        type="small"
+                      />
+                    );
+                  }
+                  return (
+                    <RewardCard key={reward.id} reward={reward} type="small" />
+                  );
+                })}
+              </AnimatedBox>
+
+              <AnimatedBox
+                initial="hidden"
+                animate="enter"
+                display="grid"
+                exit="exit"
+                variants={listVariatns}
+                gridGap={space.xxs}
+                gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))"
+              >
+                {splitList[1].map((reward) => (
+                  <RewardCard key={reward.id} reward={reward} type="large" />
+                ))}
+              </AnimatedBox>
+            </>
+          );
+        }
+
+        return (
           <AnimatedBox
             initial="hidden"
             animate="enter"
@@ -96,12 +125,12 @@ export default function RewardsList({ rewards, loading }: IProps): JSX.Element {
             gridGap={space.xxs}
             gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))"
           >
-            {splitList[1].map((reward) => (
+            {rewards.map((reward) => (
               <RewardCard key={reward.id} reward={reward} type="large" />
             ))}
           </AnimatedBox>
-        </>
-      )}
+        );
+      })()}
     </AnimatePresence>
   );
 }
