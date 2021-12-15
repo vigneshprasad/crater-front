@@ -73,4 +73,7 @@ export const API_URL_CONSTANTS = {
     createStream: "/groups/conversations/webinars/",
     getCategories: "/groups/conversations/categories/",
   },
+  chat: {
+    getChatReactions: "/groups/conversations/chatreactions/",
+  },
 };

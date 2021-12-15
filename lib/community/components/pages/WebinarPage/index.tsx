@@ -19,6 +19,7 @@ import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { PageRoutes } from "@/common/constants/route.constants";
+import ChatReactionList from "@/community/components/objects/ChatReactionList";
 import { useWebinar } from "@/community/context/WebinarContext";
 import CreatorFollowerList from "@/creators/components/objects/CreatorFollowerList";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
@@ -70,7 +71,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   return (
     <BaseLayout overflowY="auto" aside={<AsideNav />}>
       <Grid
-        gridTemplateColumns={["1fr", "2fr 1fr"]}
+        gridTemplateColumns={["1fr", "2.5fr 1fr"]}
         gridGap={space.xs}
         gridAutoRows="min-content"
         p={space.xs}
@@ -94,7 +95,10 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
           )}
         </Box>
 
-        {!webinar.closed ? <StreamChat stream={webinar} /> : <Box />}
+        <Grid gridTemplateRows="5fr 1fr" gridGap={space.xs}>
+          {!webinar.closed ? <StreamChat stream={webinar} /> : <Box />}
+          <ChatReactionList />
+        </Grid>
 
         {/* Info Section */}
         <Grid py={[space.xxs, space.s]} gridGap={space.xs}>

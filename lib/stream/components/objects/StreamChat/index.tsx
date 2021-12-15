@@ -16,6 +16,7 @@ import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import { Webinar } from "@/community/types/community";
 import useStreamChat from "@/stream/hooks/useStreamChat";
+import { ChatMessageType } from "@/stream/types/streamChat";
 
 import ChatRules from "../ChatRules";
 
@@ -113,16 +114,19 @@ export default function StreamChat({}: IProps): JSX.Element {
         flexDirection="column-reverse"
         overflowY="auto"
       >
-        {[...messages].reverse().map((message) => {
-          const name = message.display_name
-            ? message.display_name
-            : message.sender_detail.first_name;
-          return (
-            <Text mx={space.xxs} key={message.id} wordBreak="break-word">
-              <Span color={colors.accent}>{name}:</Span> {message.message}
-            </Text>
-          );
-        })}
+        {[...messages]
+          .filter((obj) => obj.type === ChatMessageType.TEXT)
+          .reverse()
+          .map((message) => {
+            const name = message.display_name
+              ? message.display_name
+              : message.sender_detail.first_name;
+            return (
+              <Text mx={space.xxs} key={message.id} wordBreak="break-word">
+                <Span color={colors.accent}>{name}:</Span> {message.message}
+              </Text>
+            );
+          })}
       </Box>
       <Form
         display="grid"
