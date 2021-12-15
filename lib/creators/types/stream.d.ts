@@ -11,9 +11,11 @@ export type StreamFormArgs = {
   image?: string;
   start: DateTime;
   categories: StreamCategory[];
+  rtmp_link?: string;
 };
 
 export type CreateWebinar = Partial<Webinar> & {
   topic_title?: string;
   topic_image?: string;
+  rtmp_link?: string;
 };
