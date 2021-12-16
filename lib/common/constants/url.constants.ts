@@ -36,9 +36,8 @@ export const API_URL_CONSTANTS = {
     retrieveCreator: (id: number): string => `/crater/creator/${id}/`,
     retrieveCreatorSlug: (slug: string): string => `/crater/creator/s/${slug}/`,
     postFollowCreator: "/crater/followers/follow/",
-    getCreatorFollowers: "/crater/followers/",
-    downloadCreatorFollowersCsv: "/crater/followers/download_csv/",
-    getMyCreator: "/crater/creator/me/",
+    withRewards: "/crater/creator/with_rewards/",
+    withCoins: "/crater/creator/with_coins/",
   },
   groups: {
     retrieveGroupRequest: (id: string): string => `/groups/requests/${id}/`,
@@ -75,5 +74,14 @@ export const API_URL_CONSTANTS = {
   stream: {
     createStream: "/groups/conversations/webinars/",
     getCategories: "/groups/conversations/categories/",
+  },
+  rewards: {
+    rewardsList: "/crater/reward/",
+  },
+  coins: {
+    getBids: "/crater/bid/",
+    getAuctions: "/crater/auction/",
+    getCointForCreator: (id: string | number): string =>
+      `/crater/coins/${id}/creator/`,
   },
 };
