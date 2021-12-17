@@ -4,7 +4,6 @@ import { useTheme } from "styled-components";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
-import useAuth from "@/auth/context/AuthContext";
 import {
   Avatar,
   Box,
@@ -20,7 +19,6 @@ import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useWebinar } from "@/community/context/WebinarContext";
-import CreatorFollowerList from "@/creators/components/objects/CreatorFollowerList";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 import StreamChat from "@/stream/components/objects/StreamChat";
 
@@ -55,7 +53,6 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   const { webinar, loading } = useWebinar();
   // const { upcoming, loading: upcomingLoading } = useUpcomingStreams();
   const { dyteParticipant, error } = useDyteWebinar();
-  const { user } = useAuth();
   const router = useRouter();
 
   // Handle Dyte participant request error
@@ -102,12 +99,12 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             >
               <Text textStyle="headline5">{webinar.topic_detail?.name}</Text>
               <Flex>
-                <Link
+                {/* <Link
                   href={`https://worknetwork.typeform.com/to/TmRSVFoi#session=${webinar.id}&phonenumber=${user?.phone_number}`}
                   boxProps={{ target: "_blank" }}
                 >
                   <Button mr={space.xxs} variant="nav-button" text="AMA" />
-                </Link>
+                </Link> */}
 
                 {webinar.host_profile_details?.primary_url && (
                   <Link
@@ -171,12 +168,6 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                 return content;
               })}
             </Flex>
-
-            {webinar.host_detail?.creator_detail && (
-              <CreatorFollowerList
-                creator={webinar.host_detail.creator_detail}
-              />
-            )}
           </Box>
         </Grid>
 
