@@ -10,6 +10,7 @@ export default function ChatRules(): JSX.Element {
   const { space, colors } = useTheme();
   return (
     <Box
+      display={["none", "block"]}
       px={space.xxs}
       py={space.xxxs}
       bg={colors.black[0]}
