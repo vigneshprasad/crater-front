@@ -1,6 +1,6 @@
 import { useTheme } from "styled-components";
 
-import { Avatar, Box, Grid, Text } from "@/common/components/atoms";
+import { Avatar, Box, Grid } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
 import useChatReactionList from "@/community/context/ChatReactionListContext";
 import useStreamChat from "@/stream/hooks/useStreamChat";
@@ -11,20 +11,18 @@ export default function ChatReactionList(): JSX.Element {
   const { sendChatReaction } = useStreamChat();
 
   return (
-    <>
-      <Text px={space.xxs} textStyle="title">
-        {`Chat Reactions`}
-      </Text>
+    <Box
+      m={space.xxxs}
+      bg={colors.black[3]}
+      borderRadius={radii.xxs}
+      overflowY="auto"
+      maxHeight={["72px", "112px"]}
+    >
       <Grid
         borderRadius={`${radii.xxs}px`}
-        gridAutoFlow="column"
-        gridAutoRows="min-content"
+        gridTemplateColumns="repeat(auto-fill, minmax(36px, 1fr))"
         gridGap={space.xxxs}
-        bg={colors.black[4]}
         p={space.xxs}
-        maxHeight="40vh"
-        h="100%"
-        overflowY="auto"
       >
         {(() => {
           if (loading) {
@@ -37,8 +35,10 @@ export default function ChatReactionList(): JSX.Element {
 
           return reactions?.map((reaction) => (
             <Avatar
+              cursor="pointer"
+              title={reaction.name}
               key={reaction.id}
-              size={32}
+              size={36}
               image={reaction.image}
               onClick={() => {
                 sendChatReaction(reaction.id);
@@ -47,6 +47,6 @@ export default function ChatReactionList(): JSX.Element {
           ));
         })()}
       </Grid>
-    </>
+    </Box>
   );
 }

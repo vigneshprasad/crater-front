@@ -5,22 +5,24 @@ import useAuth from "@/auth/context/AuthContext";
 import {
   Box,
   Input,
-  Card,
+  Grid,
   Text,
   Flex,
   Span,
   Form,
+  GridProps,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import ChatReactionList from "@/community/components/objects/ChatReactionList";
 import { Webinar } from "@/community/types/community";
 import useStreamChat from "@/stream/hooks/useStreamChat";
 import { ChatMessageType } from "@/stream/types/streamChat";
 
 import ChatRules from "../ChatRules";
 
-interface IProps {
+interface IProps extends GridProps {
   stream: Webinar;
 }
 
@@ -29,7 +31,8 @@ interface ChatFormProps {
   display_name?: string;
 }
 
-export default function StreamChat({}: IProps): JSX.Element {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const { profile } = useAuth();
 
@@ -72,41 +75,46 @@ export default function StreamChat({}: IProps): JSX.Element {
   };
 
   return (
-    <Card
-      position="relative"
-      containerProps={{
-        position: "absolute",
-        top: 0,
-        right: 0,
-        left: 0,
-        bottom: 0,
-        display: "grid",
-        gridTemplateRows: "max-content max-content 1fr max-content",
-        px: 0,
-        py: 0,
-        h: "fill-available",
-      }}
+    <Grid
+      h={["60vh", "auto"]}
+      bg={colors.black[4]}
+      gridTemplateRows={[
+        "1fr min-content min-content",
+        "min-content min-content 1fr min-content min-content",
+      ]}
+      borderLeft={`2px solid ${borders.main}`}
+      {...rest}
     >
-      <Flex
-        p={space.xxs}
-        justifyContent="space-between"
-        borderBottom={`1px solid ${borders.main}`}
+      <Grid
+        display={["none", "grid"]}
+        py={space.xxs}
+        px={space.xxs}
+        gridTemplateColumns="1fr min-content"
+        alignItems="center"
       >
         <Text textStyle="title">Question Board</Text>
-        <Flex alignItems="center">
-          <Text textStyle="small" color={colors.slate}>
-            {connected ? "Connected" : "Connecting"}
-          </Text>
-          <Box
-            mx={space.xxxs}
-            w={8}
-            h={8}
-            borderRadius="50%"
-            bg={connected ? colors.greenSuccess : colors.amber}
-          />
+
+        <Flex
+          justifyContent="space-between"
+          borderBottom={`1px solid ${borders.main}`}
+        >
+          <Flex alignItems="center">
+            <Text textStyle="small" color={colors.slate}>
+              {connected ? "Connected" : "Connecting"}
+            </Text>
+            <Box
+              mx={space.xxxs}
+              w={8}
+              h={8}
+              borderRadius="50%"
+              bg={connected ? colors.greenSuccess : colors.amber}
+            />
+          </Flex>
         </Flex>
-      </Flex>
+      </Grid>
+
       <ChatRules />
+
       <Box
         ref={messagesContainerRef}
         borderBottom={`1px solid ${borders.main}`}
@@ -128,12 +136,14 @@ export default function StreamChat({}: IProps): JSX.Element {
             );
           })}
       </Box>
+
+      <ChatReactionList />
       <Form
         display="grid"
         mx={space.xxxs}
         my={space.xxxs}
-        gridTemplateColumns="1fr min-content"
-        gridGap={space.xxxs}
+        gridAutoFlow="row"
+        gridGap={space.xxs}
         onSubmit={handleChatSubmit}
       >
         <Input
@@ -141,31 +151,38 @@ export default function StreamChat({}: IProps): JSX.Element {
           value={fields.message.value}
           onChange={(e) => fieldValueSetter("message", e.currentTarget.value)}
         />
-        <Button type="submit" variant="dense" px={space.xxxs} text="Ask" />
-        {(() => {
-          if (!profile) return null;
+        <Flex justifyContent="flex-end" flexDirection="row">
+          {(() => {
+            if (!profile) return null;
 
-          const isAdmin = profile.groups.filter(
-            (group) => group.name === "livestream_chat_admin"
-          )[0]
-            ? true
-            : false;
+            const isAdmin = profile.groups.filter(
+              (group) => group.name === "livestream_chat_admin"
+            )[0]
+              ? true
+              : false;
 
-          if (isAdmin) {
-            return (
-              <Input
-                value={fields.display_name.value}
-                onChange={(e) =>
-                  fieldValueSetter("display_name", e.currentTarget.value)
-                }
-                placeholder="Display Name"
-              />
-            );
-          }
+            if (isAdmin) {
+              return (
+                <Input
+                  value={fields.display_name.value}
+                  onChange={(e) =>
+                    fieldValueSetter("display_name", e.currentTarget.value)
+                  }
+                  placeholder="Display Name"
+                />
+              );
+            }
 
-          return null;
-        })()}
+            return null;
+          })()}
+          <Button
+            type="submit"
+            variant="nav-button"
+            px={space.xxxs}
+            text="Ask"
+          />
+        </Flex>
       </Form>
-    </Card>
+    </Grid>
   );
 }

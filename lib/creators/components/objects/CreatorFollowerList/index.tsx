@@ -45,19 +45,15 @@ export default function CreatorFollowerList({ creator }: IProps): JSX.Element {
 
   return (
     <>
-      <Text px={space.xxs} textStyle="title">
-        {`${creator.profile_detail.name}'s Club`}
-      </Text>
+      <Text
+        mt={space.xxs}
+        textStyle="title"
+      >{`${creator.profile_detail.name}'s Club:`}</Text>
 
       <Grid
-        gridAutoFlow="row"
-        gridGap={space.xs}
-        gridAutoRows="min-content"
-        bg={colors.black[4]}
         mt={space.xxs}
-        p={space.xs}
-        maxHeight="40vh"
-        h="100%"
+        gridGap={space.xxs}
+        gridTemplateColumns="repeat(auto-fill, minmax(96px, 1fr))"
         overflowY="auto"
       >
         {(() => {
@@ -68,21 +64,26 @@ export default function CreatorFollowerList({ creator }: IProps): JSX.Element {
           const followers = data.flat();
 
           return followers.map((follower, index) => (
-            <Grid
+            <Flex
               ref={index + 1 === followers.length ? ref : undefined}
               gridGap={space.xxs}
               key={follower.id}
-              gridTemplateColumns="max-content 1fr"
+              flexDirection="column"
+              justifyContent="start"
               alignItems="center"
             >
               <Avatar size={48} image={follower.profile_detail.photo} />
               <Flex flexDirection="column">
-                <Text>{follower.profile_detail.name}</Text>
-                <Text textStyle="caption" color={colors.slate}>
+                <Text textAlign="center">{follower.profile_detail.name}</Text>
+                <Text
+                  textAlign="center"
+                  textStyle="caption"
+                  color={colors.slate}
+                >
                   {follower.profile_detail.tag_list[0]?.name}
                 </Text>
               </Flex>
-            </Grid>
+            </Flex>
           ));
         })()}
       </Grid>
