@@ -19,6 +19,7 @@ export interface StreamChatContextState {
   messages: ChatMessage[];
   connected: boolean;
   sendGroupMessage: (message: string, displayName?: string) => void;
+  sendChatReaction: (reaction: number) => void;
 }
 
 export const StreamChatContext = createContext({} as StreamChatContextState);
@@ -79,6 +80,21 @@ export default function StreamChatProvider({
     [_socket]
   );
 
+  const sendChatReaction = useCallback(
+    (reaction: number) => {
+      if (_socket.current) {
+        const data = {
+          type: "send_group_reaction",
+          payload: {
+            reaction: reaction,
+          },
+        };
+        _socket.current.send(JSON.stringify(data));
+      }
+    },
+    [_socket]
+  );
+
   useEffect(() => {
     if (session && session.user) {
       const token = session.user.apiToken;
@@ -104,8 +120,9 @@ export default function StreamChatProvider({
       messages: state.messages,
       connected: state.connected,
       sendGroupMessage,
+      sendChatReaction,
     }),
-    [state, sendGroupMessage]
+    [state, sendGroupMessage, sendChatReaction]
   );
 
   return <StreamChatContext.Provider value={value} {...rest} />;

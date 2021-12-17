@@ -7,6 +7,8 @@ export type GridProps = BoxProps & SystemGridProps<DefaultTheme>;
 
 export const Grid = styled(Box)<GridProps>`
   ${grid}
-
-  display: grid;
 `;
+
+Grid.defaultProps = {
+  display: "grid",
+};
