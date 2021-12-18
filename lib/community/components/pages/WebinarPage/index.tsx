@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
@@ -62,11 +62,18 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
     }
   }, [error, router, id]);
 
+  const gridLayout = useMemo(() => {
+    if (!webinar) return ["1fr", "3fr 1fr"];
+
+    if (webinar.closed) return ["1fr", "1fr"];
+    return ["1fr", "3fr 1fr"];
+  }, [webinar]);
+
   if (loading || !webinar) return <Box>Loading...</Box>;
 
   return (
     <BaseLayout aside={<AsideNav />} overflowY={["auto", "clip"]}>
-      <Grid gridTemplateColumns={["1fr", "3fr 1fr"]} h="100%">
+      <Grid gridTemplateColumns={gridLayout} h="100%">
         <Grid
           pb={space.s}
           gridAutoFlow="row"
@@ -173,7 +180,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
         </Grid>
 
         {/* Chat Panel */}
-        <StreamChat stream={webinar} />
+        {!webinar.closed && <StreamChat stream={webinar} />}
       </Grid>
     </BaseLayout>
   );
