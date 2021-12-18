@@ -114,27 +114,35 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
       </Grid>
 
       <ChatRules />
-
       <Box
-        ref={messagesContainerRef}
-        borderBottom={`1px solid ${borders.main}`}
-        py={space.xxxs}
-        flexDirection="column-reverse"
         overflowY="auto"
+        position="relative"
+        borderBottom={`1px solid ${borders.main}`}
       >
-        {[...messages]
-          .filter((obj) => obj.type === ChatMessageType.TEXT)
-          .reverse()
-          .map((message) => {
-            const name = message.display_name
-              ? message.display_name
-              : message.sender_detail.first_name;
-            return (
-              <Text mx={space.xxs} key={message.id} wordBreak="break-word">
-                <Span color={colors.accent}>{name}:</Span> {message.message}
-              </Text>
-            );
-          })}
+        <Box
+          position="absolute"
+          top={0}
+          right={0}
+          left={0}
+          bottom={0}
+          ref={messagesContainerRef}
+          py={space.xxxs}
+          flexDirection="column-reverse"
+        >
+          {[...messages]
+            .filter((obj) => obj.type === ChatMessageType.TEXT)
+            .reverse()
+            .map((message) => {
+              const name = message.display_name
+                ? message.display_name
+                : message.sender_detail.first_name;
+              return (
+                <Text mx={space.xxs} key={message.id} wordBreak="break-word">
+                  <Span color={colors.accent}>{name}:</Span> {message.message}
+                </Text>
+              );
+            })}
+        </Box>
       </Box>
 
       <ChatReactionList />
