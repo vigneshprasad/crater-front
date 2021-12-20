@@ -84,4 +84,7 @@ export const API_URL_CONSTANTS = {
     getCointForCreator: (id: string | number): string =>
       `/crater/coins/${id}/creator/`,
   },
+  chat: {
+    getChatReactions: "/groups/conversations/chatreactions/",
+  },
 };

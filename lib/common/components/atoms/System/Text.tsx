@@ -35,7 +35,7 @@ const variants = {
   },
   headline5: {
     fontFamily: fonts.body,
-    fontSize: ["2.2rem"],
+    fontSize: ["1.8rem", "2.2rem"],
     fontWeight: "600",
     lineHeight: ["3.2rem"],
   },

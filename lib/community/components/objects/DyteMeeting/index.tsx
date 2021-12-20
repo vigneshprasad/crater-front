@@ -6,6 +6,9 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import { Box, BoxProps } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
+import DateTime from "@/common/utils/datetime/DateTime";
+import useStreamChat from "@/stream/hooks/useStreamChat";
+import { ChatMessageType } from "@/stream/types/streamChat";
 
 export type Props = BoxProps & {
   groupId: number;
@@ -24,6 +27,8 @@ export default function DyteMeeting({
   const router = useRouter();
   const meeting = useRef<Meeting>();
   const { user } = useAuth();
+
+  const { messages } = useStreamChat();
 
   const meetendEndHandler = useCallback(() => {
     // router.push(PageRoutes.session(groupId.toString()));
@@ -58,6 +63,33 @@ export default function DyteMeeting({
       meeting.current?.removeAllListeners();
     };
   }, []);
+
+  // const timerRef = useRef<NodeJS.Timeout | undefined>();
+
+  useEffect(() => {
+    if (messages.length > 0 && messages[0].type === ChatMessageType.REACTION) {
+      const lastMessage = messages[0];
+      if (meeting.current && lastMessage.data) {
+        const reactionTime = DateTime.parse_with_milliseconds(
+          lastMessage.created_at
+        );
+        const timeSinceReaction = Math.abs(reactionTime.diffNow().toMillis());
+        if (timeSinceReaction < 10000) {
+          meeting.current?.grid.setOverlay(
+            `<img src=${lastMessage.data.file} height="80px" width="80px" style="position:fixed; right: 20px; top: 10px"/>`,
+            10000
+          );
+        }
+        // if (timerRef.current) {
+        //   clearInterval(timerRef.current);
+        //   timerRef.current = undefined;
+        // }
+        // timerRef.current = setTimeout(() => {
+        //   meeting.current?.grid.setOverlay(null);
+        // }, 10000);
+      }
+    }
+  }, [messages]);
 
   return (
     <Box {...rest}>

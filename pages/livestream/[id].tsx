@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
+import { ChatReactionListProvider } from "@/community/context/ChatReactionListContext";
 import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar as WebinarType } from "@/community/types/community";
@@ -92,9 +93,11 @@ export default function WebinarPage({
       <WebinarProvider id={id} initial={webinar}>
         <DyteWebinarProvider id={id}>
           <StreamChatProvider groupId={id}>
-            <UpcomingStreamsProvider>
-              <DynamicWebinarPage orgId={orgId} id={id} />
-            </UpcomingStreamsProvider>
+            <ChatReactionListProvider>
+              <UpcomingStreamsProvider>
+                <DynamicWebinarPage orgId={orgId} id={id} />
+              </UpcomingStreamsProvider>
+            </ChatReactionListProvider>
           </StreamChatProvider>
         </DyteWebinarProvider>
       </WebinarProvider>
