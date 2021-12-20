@@ -1,4 +1,5 @@
 import { Variants } from "framer-motion";
+import COIN_ICON from "public/images/coin.png";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -8,12 +9,10 @@ import {
   Box,
   AnimatedBox,
   AnimatedBoxProps,
-  Span,
-  Flex,
   Avatar,
   Link,
+  Flex,
 } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { Reward } from "@/tokens/types/tokens";
 
@@ -33,7 +32,15 @@ export default function RewardCardLarge({
   reward,
   ...rest
 }: IProps): JSX.Element {
-  const { name, photo, number_of_coins, creator_coin_detail, id } = reward;
+  const {
+    name,
+    photo,
+    number_of_coins,
+    creator_coin_detail,
+    quantity,
+    remaining_quantity,
+    id,
+  } = reward;
   const { borders, radii, space, colors } = useTheme();
   return (
     <Link
@@ -46,35 +53,45 @@ export default function RewardCardLarge({
         display="grid"
         borderRadius={radii.xxs}
         border={`2px solid ${borders.main}`}
-        px={space.xs}
-        py={space.xs}
-        gridGap={space.xxs}
+        px={space.xxs}
+        py={space.xxs}
+        gridGap={space.xxxs}
         variants={cardVariants}
         whileHover={{
           border: `2px solid ${colors.accent}`,
         }}
         {...rest}
       >
+        <Avatar
+          size={32}
+          image={creator_coin_detail.creator_detail.profile_detail.photo}
+        />
         <Box position="relative" w="100%" pt="100%">
           <Image src={photo} layout="fill" objectFit="cover" alt={name} />
         </Box>
-        <Text textStyle="headline6">{name}</Text>
-
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text textStyle="title">
-            {number_of_coins}{" "}
-            <Span fontWeight="600" color={colors.accent}>
-              {creator_coin_detail.display.symbol}
-            </Span>
-          </Text>
-
+        <Text marginTop={space.xxs} textStyle="title">
+          {name}
+        </Text>
+        <Flex justifyContent="space-between">
+          <Box>
+            <Text textStyle="caption" color={colors.lightGrey}>
+              {remaining_quantity}
+              {" / "}
+              {quantity}
+              {" remaining"}
+            </Text>
+            <Text textStyle="captionLarge" color={colors.accent}>
+              {"Buy Now with "}
+              {number_of_coins} {creator_coin_detail.display.symbol}
+            </Text>
+          </Box>
           <Avatar
+            marginLeft="auto"
+            marginTop="auto"
             size={24}
-            image={creator_coin_detail.creator_detail.profile_detail.photo}
+            image={COIN_ICON}
           />
         </Flex>
-
-        <Button w="100% !important" variant="outline-small" text="Buy Now" />
       </Container>
     </Link>
   );

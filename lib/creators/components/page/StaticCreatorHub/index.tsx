@@ -19,7 +19,7 @@ import StaticHubCard from "../../objects/StaticHubCard";
 export default function StaticCreatorHub(): JSX.Element {
   const seo: NextSeoProps = {
     title: "Crater Club",
-    description: "Creater Hub",
+    description: "Creator Hub",
   };
   const { profile } = useAuth();
   const { space, colors } = useTheme();
