@@ -39,6 +39,8 @@ export const API_URL_CONSTANTS = {
     withRewards: "/crater/creator/with_rewards/",
     withCoins: "/crater/creator/with_coins/",
     getMyCreator: "/crater/creator/me/",
+    getCreatorFollowers: "/crater/followers/",
+    downloadCreatorFollowersCsv: "/crater/followers/download_csv/",
   },
   groups: {
     retrieveGroupRequest: (id: string): string => `/groups/requests/${id}/`,
