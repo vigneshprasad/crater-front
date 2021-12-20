@@ -16,13 +16,13 @@ import {
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import DateTime from "@/common/utils/datetime/DateTime";
 import AnimatedCreatorCard from "@/creators/components/objects/AnimatedCreatorCard";
 import useCreatorWithCoin from "@/creators/context/CreatorWithCoinContext";
 import { Creator } from "@/creators/types/creator";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 import { Auction, Coin, Bid } from "@/tokens/types/tokens";
 
-import BidsGraph from "../../objects/BidsGraph";
 import RewardsList from "../../objects/RewardsList";
 
 const AnimList: Variants = {
@@ -73,6 +73,7 @@ export default function TokensTab(): JSX.Element {
     return auctions[0];
   }, [auctions]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: bids } = useSWR<Bid[]>(
     activeAuction
       ? `${API_URL_CONSTANTS.coins.getBids}?auction=${activeAuction.id}`
@@ -98,8 +99,9 @@ export default function TokensTab(): JSX.Element {
   }
 
   return (
-    <Box py={space.s} px={space.xs}>
+    <Box py={space.s}>
       <AnimatedBox
+        px={space.s}
         initial="hidden"
         animate="enter"
         exit="exit"
@@ -121,7 +123,12 @@ export default function TokensTab(): JSX.Element {
         ))}
       </AnimatedBox>
 
-      <Flex py={space.s} justifyContent="space-between" alignItems="center">
+      <Flex
+        py={space.s}
+        px={space.s}
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Box>
           <Text textStyle="headline5">
             {activeCreator?.profile_detail.name}{" "}
@@ -129,7 +136,9 @@ export default function TokensTab(): JSX.Element {
           </Text>
           <Text my={space.xxxs} textStyle="title">
             {activeAuction
-              ? `Auction ends: ${activeAuction.end}`
+              ? `Auction ends: ${DateTime.parse(activeAuction.end).toFormat(
+                  "ff"
+                )}`
               : "No active auctions"}
           </Text>
         </Box>
@@ -137,15 +146,17 @@ export default function TokensTab(): JSX.Element {
         <Button text="Place Bid" />
       </Flex>
 
-      <BidsGraph bids={bids} />
+      <img src="/images/img_graph_placeholder.png" alt="Placeholder graph" />
 
       {coin && (
-        <Text my={space.xs} textStyle="headline5">
+        <Text my={space.xs} textStyle="headline5" px={space.s}>
           Avalilable with {coin.display.symbol}
         </Text>
       )}
 
-      <RewardsList rewards={rewards} loading={loadingRewards} split={false} />
+      <Box px={space.s}>
+        <RewardsList rewards={rewards} loading={loadingRewards} split={false} />
+      </Box>
     </Box>
   );
 }

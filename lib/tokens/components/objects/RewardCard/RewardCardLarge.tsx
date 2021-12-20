@@ -55,7 +55,7 @@ export default function RewardCardLarge({
         }}
         {...rest}
       >
-        <Box position="relative" h={240}>
+        <Box position="relative" w="100%" pt="100%">
           <Image src={photo} layout="fill" objectFit="cover" alt={name} />
         </Box>
         <Text textStyle="headline6">{name}</Text>
