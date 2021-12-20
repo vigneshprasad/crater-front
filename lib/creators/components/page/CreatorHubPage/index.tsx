@@ -24,6 +24,7 @@ type IProps = PropsWithChildren<{
 
 export default function CreatorHubPage({
   children,
+  selectedTab,
   creator,
 }: IProps): JSX.Element {
   const seo: NextSeoProps = {
@@ -101,7 +102,7 @@ export default function CreatorHubPage({
           </Text>
         </Box>
 
-        {tabs && <BaseTabBar tabs={tabs} />}
+        {tabs && <BaseTabBar tabs={tabs} activeTab={selectedTab} />}
         {children}
       </BaseLayout>
     </Page>
