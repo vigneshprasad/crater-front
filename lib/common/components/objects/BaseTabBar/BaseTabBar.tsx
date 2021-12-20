@@ -7,7 +7,7 @@ import { AnimatedBox, Grid, GridProps, Box } from "../../atoms";
 
 export interface BaseTabBarProps extends GridProps {
   tabs: {
-    [key: string]: JSX.Element;
+    [key: string]: JSX.Element | undefined;
   };
   activeTab?: string;
 }
