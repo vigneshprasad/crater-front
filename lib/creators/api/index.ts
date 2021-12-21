@@ -31,7 +31,7 @@ interface ICreatorApiClient {
   postFollowCreator: (
     community: number
   ) => Promise<ApiResult<CommunityMember, AxiosError>>;
-  getAllRewards: () => Promise<ApiResult<Reward[], AxiosError>>;
+  getAllRewards: (slug?: string) => Promise<ApiResult<Reward[], AxiosError>>;
   retrieveReward: (
     id: string | number
   ) => Promise<ApiResult<Reward, AxiosError>>;
@@ -155,11 +155,14 @@ export default function CreatorApiClient(
     }
   }
 
-  async function getAllRewards(): Promise<ApiResult<Reward[], AxiosError>> {
+  async function getAllRewards(
+    slug?: string
+  ): Promise<ApiResult<Reward[], AxiosError>> {
+    const url = slug
+      ? `${API_URL_CONSTANTS.rewards.rewardsList}?creator__slug=${slug}`
+      : API_URL_CONSTANTS.rewards.rewardsList;
     try {
-      const { data } = await client.get<Reward[]>(
-        API_URL_CONSTANTS.rewards.rewardsList
-      );
+      const { data } = await client.get<Reward[]>(url);
       return [data, undefined];
     } catch (err) {
       return [undefined, err as AxiosError];

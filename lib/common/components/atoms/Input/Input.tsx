@@ -25,7 +25,7 @@ import {
   border,
 } from "styled-system";
 
-import { Box } from "../System/Box";
+import { Box, BoxProps } from "../System/Box";
 import { Flex, FlexProps } from "../System/Flex";
 import { Text } from "../System/Text";
 
@@ -43,6 +43,7 @@ export type InputProps = BackgroundProps &
   React.InputHTMLAttributes<HTMLInputElement> & {
     prefixElement?: React.ReactNode;
     error?: string;
+    boxProps?: BoxProps;
   };
 
 export const StyledInput = styled.input<InputProps>`
@@ -91,6 +92,7 @@ export const InputContainer = styled(Flex)<FlexProps>`
 function InputWithRef({
   inputRef,
   prefixElement,
+  boxProps,
   error,
   ...rest
 }: InputProps & {
@@ -102,7 +104,7 @@ function InputWithRef({
     return `2px solid ${error ? colors.error : "transparent"}`;
   }, [error, colors]);
   return (
-    <Box>
+    <Box {...boxProps}>
       <InputContainer border={border}>
         {prefixElement && prefixElement}
         <StyledInput ref={inputRef} {...rest} />

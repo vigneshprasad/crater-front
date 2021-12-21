@@ -19,12 +19,6 @@ type IProps = PropsWithChildren<{
   activeTab?: "tokens" | "rewards";
 }>;
 
-// const variants: Variants = {
-//   hidden: { opacity: 0, x: 0, y: 10 },
-//   enter: { opacity: 1, x: 0, y: 0 },
-//   exit: { opacity: 0, x: 0, y: 10 },
-// };
-
 export default function TokenPageLayout({
   seo,
   activeTab,
@@ -50,7 +44,8 @@ export default function TokenPageLayout({
         aside={<AsideNav activeTab="tokens" />}
       >
         <BaseTabBar
-          mt={space.xxs}
+          mt={[space.xxxs, space.xxs]}
+          px={[space.xxs, space.s]}
           activeTab={activeSlide}
           tabs={{
             tokens: (

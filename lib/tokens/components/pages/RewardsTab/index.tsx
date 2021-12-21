@@ -10,7 +10,7 @@ export default function RewardsTab(): JSX.Element {
   const { space } = useTheme();
 
   return (
-    <Box py={space.xxs} px={space.xxs} h="max-content">
+    <Box py={space.xs} px={space.xs} h="max-content">
       <RewardsList rewards={rewards} loading={loading} />
     </Box>
   );

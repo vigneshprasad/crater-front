@@ -11,7 +11,12 @@ import {
   Text,
   Link,
   Span,
+  Grid,
+  Card,
+  Hr,
   Flex,
+  Input,
+  Image,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -42,10 +47,20 @@ const AnimList: Variants = {
 };
 
 const AnimCard: Variants = {
-  hidden: { opacity: 0, x: -50, y: 0, background: "transparent" },
-  enter: { opacity: 1, x: 0, y: 0, background: "transparent" },
-  exit: { opacity: 0, x: -50, y: 0, background: "transparent" },
-  selected: { opacity: 1, x: 0, y: 0, background: "#9146FF" },
+  hidden: {
+    opacity: 0,
+    x: -50,
+    y: 0,
+    border: "2px solid rgba(255, 255, 255, 0)",
+  },
+  enter: { opacity: 1, x: 0, y: 0, border: "2px solid rgba(255, 255, 255, 0)" },
+  exit: {
+    opacity: 0,
+    x: -50,
+    y: 0,
+    border: "2px solid rgba(255, 255, 255, 0)",
+  },
+  selected: { opacity: 1, x: 0, y: 0, border: "2px solid #9146FF" },
 };
 
 export default function TokensTab(): JSX.Element {
@@ -99,15 +114,19 @@ export default function TokensTab(): JSX.Element {
   }
 
   return (
-    <Box py={space.s}>
+    <>
       <AnimatedBox
-        px={space.s}
+        mt={space.xs}
+        px={[space.xxs, space.s]}
         initial="hidden"
         animate="enter"
         exit="exit"
         variants={AnimList}
         display="grid"
-        gridTemplateColumns="repeat(auto-fill, minmax(164px, 1fr))"
+        gridTemplateColumns={[
+          "repeat(auto-fill, minmax(144px, 1fr))",
+          "repeat(auto-fill, minmax(196px, 1fr))",
+        ]}
         gridGap={space.xxxs}
       >
         {creators.map((creator) => (
@@ -123,40 +142,100 @@ export default function TokensTab(): JSX.Element {
         ))}
       </AnimatedBox>
 
-      <Flex
-        py={space.s}
-        px={space.s}
-        justifyContent="space-between"
-        alignItems="center"
+      <Text px={[space.xxs, space.s]} py={space.xs} textStyle="headline5">
+        {activeCreator?.profile_detail.name}{" "}
+        <Span color={colors.accent}>{coin?.display.symbol}</Span>
+      </Text>
+
+      <Grid
+        gridTemplateColumns={["1fr", "2fr minmax(max-content, 240px)"]}
+        gridGap={space.xs}
+        px={[space.xxs, space.s]}
+        alignItems="start"
       >
-        <Box>
-          <Text textStyle="headline5">
-            {activeCreator?.profile_detail.name}{" "}
-            <Span color={colors.accent}>{coin?.display.symbol}</Span>
-          </Text>
-          <Text my={space.xxxs} textStyle="title">
-            {activeAuction
-              ? `Auction ends: ${DateTime.parse(activeAuction.end).toFormat(
-                  "ff"
-                )}`
-              : "No active auctions"}
-          </Text>
+        <Box position="relative">
+          <Image src="/images/img_graph_placeholder.png" alt="placeholder" />
+          <Box
+            position="absolute"
+            top={0}
+            right={0}
+            left={0}
+            bottom={0}
+            bg="rgba(0,0,0,0.4)"
+          >
+            <Text p={space.xs} textStyle="bodyLarge" fontSize={["1.6rem"]}>
+              Token price will reflect when the <br />
+              <Span color={colors.accent}>bidding starts</Span>
+            </Text>
+          </Box>
         </Box>
 
-        <Button text="Place Bid" />
-      </Flex>
+        <Card>
+          {(() => {
+            if (!activeAuction) {
+              return <Text>No active Auctions</Text>;
+            }
+            const now = DateTime.now();
+            const start = DateTime.parse(activeAuction.start);
+            const end = DateTime.parse(activeAuction.end);
 
-      <img src="/images/img_graph_placeholder.png" alt="Placeholder graph" />
+            let heading;
+
+            if (now > start) {
+              heading = (
+                <Text textStyle="headline5" fontWeight="400">
+                  Auction ends {end.toRelative()}
+                </Text>
+              );
+            } else {
+              heading = (
+                <Text textStyle="title">
+                  Auction starts {start.toRelative()}
+                </Text>
+              );
+            }
+
+            return (
+              <>
+                {heading}
+                <Hr my={space.xxs} />
+
+                <Grid gridTemplateColumns="2fr 1fr">
+                  <Text>Being sold:</Text>
+                  <Text>{activeAuction.number_of_coins}</Text>
+                </Grid>
+
+                <Grid gridTemplateColumns="2fr 1fr">
+                  <Text>Floor Price:</Text>
+                  <Text>{activeAuction.base_price}</Text>
+                </Grid>
+
+                <Grid gridTemplateColumns="2fr 1fr">
+                  <Text>Coins Sold:</Text>
+                  <Text>{activeAuction.coins_sold}</Text>
+                </Grid>
+
+                <Hr my={space.xxs} />
+
+                <Flex flexDirection="row" gridGap={space.xxs} mt={space.xxs}>
+                  <Input placeholder="Enter amount" boxProps={{ flex: 1 }} />
+                  <Button text="Place Bid" />
+                </Flex>
+              </>
+            );
+          })()}
+        </Card>
+      </Grid>
 
       {coin && (
-        <Text my={space.xs} textStyle="headline5" px={space.s}>
+        <Text my={space.xs} textStyle="headline5" px={[space.xxs, space.s]}>
           Avalilable with {coin.display.symbol}
         </Text>
       )}
 
-      <Box px={space.s}>
+      <Box px={[space.xxs, space.s]}>
         <RewardsList rewards={rewards} loading={loadingRewards} split={false} />
       </Box>
-    </Box>
+    </>
   );
 }

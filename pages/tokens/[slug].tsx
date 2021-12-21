@@ -74,7 +74,7 @@ export default function TokenPage({
   return (
     <TokenPageLayout seo={seo} activeTab="tokens">
       <CreatorWithCoinProvider initial={creators}>
-        <RewardsListProvider filterCreator={activeCreator.id}>
+        <RewardsListProvider filterCreatorSlug={activeCreator.slug}>
           <TokensTab />
         </RewardsListProvider>
       </CreatorWithCoinProvider>

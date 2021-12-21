@@ -1,5 +1,5 @@
 import { Variants } from "framer-motion";
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
@@ -13,10 +13,14 @@ import {
   Link,
   Shimmer,
   AnimatedBox,
+  Icon,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useRewardItem from "@/tokens/context/RewardItemContext";
+import useRewardsList from "@/tokens/context/RewardsListContext";
+
+import RewardsList from "../../objects/RewardsList";
 
 const AnimLoading: Variants = {
   hidden: { opacity: 0, x: 0, y: 20 },
@@ -32,9 +36,17 @@ const AnimLoading: Variants = {
   },
 };
 
+const BreadCrumb = styled(Text)`
+  color: ${({ theme }) => theme.colors.slate};
+  &:hover {
+    color: ${({ theme }) => theme.colors.accent};
+  }
+`;
+
 export default function RewardItemPage(): JSX.Element {
   const { reward, loading } = useRewardItem();
   const { space, colors, borders, radii } = useTheme();
+  const { rewards, loading: rewardsLoading } = useRewardsList();
 
   if (!reward || loading) {
     return (
@@ -78,6 +90,8 @@ export default function RewardItemPage(): JSX.Element {
     );
   }
 
+  const filteredRewards = rewards?.filter((obj) => obj.id !== reward.id);
+
   return (
     <AnimatedBox
       initial="hidden"
@@ -91,9 +105,34 @@ export default function RewardItemPage(): JSX.Element {
       gridGap={space.xs}
       transition={{ type: "linear" }}
     >
-      <Text gridColumn="1 / span 2" textStyle="breadCrumb" color={colors.slate}>
-        {`Rewards  |  ${reward.creator_coin_detail.creator_detail.profile_detail.name}  |  ${reward.name}`}
-      </Text>
+      <Grid
+        gridColumn="1 / span 2"
+        gridAutoFlow="column"
+        gridAutoColumns="max-content"
+        alignItems="center"
+      >
+        <Link href={PageRoutes.rewards}>
+          <BreadCrumb textStyle="breadCrumb">Rewards</BreadCrumb>
+        </Link>
+
+        <Icon icon="ChevronRight" color={colors.accent} />
+
+        <Link
+          href={PageRoutes.creatorProfile(
+            reward.creator_coin_detail.creator_detail.slug,
+            "rewards"
+          )}
+        >
+          <BreadCrumb textStyle="breadCrumb">
+            {reward.creator_coin_detail.creator_detail.profile_detail.name}
+          </BreadCrumb>
+        </Link>
+
+        <Icon icon="ChevronRight" color={colors.accent} />
+
+        <BreadCrumb textStyle="breadCrumb">{reward.name}</BreadCrumb>
+      </Grid>
+
       <Text gridColumn="1 / span 2" textStyle="headline4">
         {reward.name}
       </Text>
@@ -163,6 +202,18 @@ export default function RewardItemPage(): JSX.Element {
           You don’t have any SRBH. To claim this reward bid for Sourabh’s token.
           Auction ends in 3 days 5 hours 17 mins.
         </Text>
+      </Box>
+
+      <Box gridColumn="1 / span 2">
+        <Text my={space.xs} textStyle="headline6">
+          More Rewards
+        </Text>
+
+        <RewardsList
+          rewards={filteredRewards}
+          loading={rewardsLoading}
+          split={false}
+        />
       </Box>
     </AnimatedBox>
   );

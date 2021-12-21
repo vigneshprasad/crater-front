@@ -6,6 +6,7 @@ import CreatorApiClient from "@/creators/api";
 import RewardPageLayout from "@/tokens/components/layout/RewardPageLayout";
 import RewardItemPage from "@/tokens/components/pages/RewardItemPage";
 import { RewardItemProvider } from "@/tokens/context/RewardItemContext";
+import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
 import { Reward } from "@/tokens/types/tokens";
 
 interface IParams extends ParsedUrlQuery {
@@ -17,6 +18,7 @@ interface PageProps {
   creatorSlug: string;
   rewardId: string;
   reward: Reward;
+  rewards: Reward[];
 }
 
 export const getStaticPaths: GetStaticPaths<IParams> = async () => {
@@ -39,8 +41,9 @@ export const getStaticProps: GetStaticProps<PageProps, IParams> = async ({
 }) => {
   const { creatorSlug, rewardId } = params as IParams;
   const [reward, error] = await CreatorApiClient().retrieveReward(rewardId);
+  const [rewards] = await CreatorApiClient().getAllRewards(creatorSlug);
 
-  if (error || !reward) {
+  if (error || !reward || !rewards) {
     return {
       notFound: true,
       revalidate: 10,
@@ -52,13 +55,16 @@ export const getStaticProps: GetStaticProps<PageProps, IParams> = async ({
       creatorSlug,
       rewardId,
       reward,
+      rewards: rewards.filter((obj) => obj.id !== reward.id),
     },
     revalidate: 10,
   };
 };
 
 export default function RewardListing({
+  creatorSlug,
   reward,
+  rewards,
   rewardId,
 }: PageProps): JSX.Element {
   const seo: NextSeoProps = {
@@ -66,11 +72,13 @@ export default function RewardListing({
     description: "Description",
   };
 
-  console.log(reward);
+  console.log(rewards);
   return (
     <RewardPageLayout seo={seo}>
       <RewardItemProvider id={rewardId} initial={reward}>
-        <RewardItemPage />
+        <RewardsListProvider initial={rewards} filterCreatorSlug={creatorSlug}>
+          <RewardItemPage />
+        </RewardsListProvider>
       </RewardItemProvider>
     </RewardPageLayout>
   );

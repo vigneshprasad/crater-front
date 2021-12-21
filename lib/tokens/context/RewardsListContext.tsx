@@ -15,17 +15,17 @@ export const RewardsContext = createContext({} as IRewardsContext);
 
 type IProviderProps = PropsWithChildren<{
   initial?: Reward[];
-  filterCreator?: number | string | string;
+  filterCreatorSlug?: number | string | string;
 }>;
 
 export function RewardsListProvider({
   initial,
-  filterCreator,
+  filterCreatorSlug,
   ...rest
 }: IProviderProps): JSX.Element {
   const { data: rewards, error } = useSWR<Reward[]>(
-    filterCreator
-      ? `${API_URL_CONSTANTS.rewards.rewardsList}?creator=${filterCreator}`
+    filterCreatorSlug
+      ? `${API_URL_CONSTANTS.rewards.rewardsList}?creator__slug=${filterCreatorSlug}`
       : API_URL_CONSTANTS.rewards.rewardsList,
     { initialData: initial }
   );

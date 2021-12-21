@@ -136,7 +136,7 @@ const variants = {
     fontFamily: fonts.body,
     lineHeight: ["2.2rem"],
     fontSize: ["1.8rem"],
-    fontWeight: "600",
+    fontWeight: "400",
   },
 };
 
