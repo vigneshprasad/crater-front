@@ -146,7 +146,7 @@ export default function UserDropdown({ profile, user }: IProps): JSX.Element {
               }
 
               return (
-                <Link key={item.key} href={item.url}>
+                <Link key={item.key} href={item.url} prefetch={false}>
                   <MenuItem
                     borderRadius={radii.xxxs}
                     px={space.xxxs}

@@ -183,14 +183,20 @@ export default function TokensTab(): JSX.Element {
 
             if (now > start) {
               heading = (
-                <Text textStyle="headline5" fontWeight="400">
-                  Auction ends {end.toRelative()}
+                <Text fontSize="1.8rem" fontWeight="400">
+                  Auction ends in{" "}
+                  <Span fontWeight="600">
+                    {end.diffNow().toFormat("d'd' h'h' m'm'")}
+                  </Span>
                 </Text>
               );
             } else {
               heading = (
-                <Text textStyle="title">
-                  Auction starts {start.toRelative()}
+                <Text fontSize="1.8rem" fontWeight="400">
+                  Auction starts in{" "}
+                  <Span fontWeight="600">
+                    {start.diffNow().toFormat("d'd' h'h' m'm'")}
+                  </Span>
                 </Text>
               );
             }

@@ -77,7 +77,7 @@ export default function RewardsList({
                 exit="exit"
                 variants={listVariatns}
                 gridGap={space.xxs}
-                gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))"
+                gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
                 gridAutoRows="240px"
               >
                 {splitList[0].map((reward, index) => {
@@ -105,7 +105,7 @@ export default function RewardsList({
                 exit="exit"
                 variants={listVariatns}
                 gridGap={space.xxs}
-                gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))"
+                gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
               >
                 {splitList[1].map((reward) => (
                   <RewardCard key={reward.id} reward={reward} type="large" />
@@ -123,7 +123,7 @@ export default function RewardsList({
             exit="exit"
             variants={listVariatns}
             gridGap={space.xxs}
-            gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))"
+            gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
           >
             {rewards.map((reward) => (
               <RewardCard key={reward.id} reward={reward} type="large" />

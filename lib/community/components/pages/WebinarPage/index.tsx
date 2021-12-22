@@ -21,6 +21,10 @@ import { PageRoutes } from "@/common/constants/route.constants";
 import { useWebinar } from "@/community/context/WebinarContext";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 import StreamChat from "@/stream/components/objects/StreamChat";
+import RewardsList from "@/tokens/components/objects/RewardsList";
+import { AuctionListProvider } from "@/tokens/context/AuctionListContext";
+import { CreatorCoinProvider } from "@/tokens/context/CreatorCoinContext";
+import useRewardsList from "@/tokens/context/RewardsListContext";
 
 import { Props as DyteMeetingProps } from "../../objects/DyteMeeting";
 
@@ -51,8 +55,8 @@ interface IProps {
 export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   const { space, colors, borders } = useTheme();
   const { webinar, loading } = useWebinar();
-  // const { upcoming, loading: upcomingLoading } = useUpcomingStreams();
   const { dyteParticipant, error } = useDyteWebinar();
+  const { rewards, loading: rewardsLoading } = useRewardsList();
   const router = useRouter();
 
   // Handle Dyte participant request error
@@ -107,13 +111,6 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             >
               <Text textStyle="headline5">{webinar.topic_detail?.name}</Text>
               <Flex>
-                {/* <Link
-                  href={`https://worknetwork.typeform.com/to/TmRSVFoi#session=${webinar.id}&phonenumber=${user?.phone_number}`}
-                  boxProps={{ target: "_blank" }}
-                >
-                  <Button mr={space.xxs} variant="nav-button" text="AMA" />
-                </Link> */}
-
                 {webinar.host_profile_details?.primary_url && (
                   <Link
                     href={webinar.host_profile_details?.primary_url}
@@ -139,7 +136,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
           </Box>
 
           <Box px={space.xs} display={["none", "block"]}>
-            <Text textStyle="title">Speakers:</Text>
+            <Text textStyle="title">Speakers</Text>
             <Flex py={space.xxs} gridGap={space.xs}>
               {webinar.speakers_detail_list.map((speaker) => {
                 const content = (
@@ -176,11 +173,31 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                 return content;
               })}
             </Flex>
+
+            <Text textStyle="headline5" my={space.xs}>
+              Get Exclusive Access
+            </Text>
+
+            <RewardsList
+              loading={rewardsLoading}
+              rewards={rewards}
+              split={false}
+            />
           </Box>
         </Grid>
 
         {/* Chat Panel */}
-        {!webinar.closed && <StreamChat stream={webinar} />}
+        {!webinar.closed && webinar.host_detail.creator_detail?.id && (
+          <CreatorCoinProvider
+            creatorId={webinar.host_detail.creator_detail?.id}
+          >
+            <AuctionListProvider
+              filterCreator={webinar.host_detail.creator_detail?.id}
+            >
+              <StreamChat stream={webinar} />
+            </AuctionListProvider>
+          </CreatorCoinProvider>
+        )}
       </Grid>
     </BaseLayout>
   );

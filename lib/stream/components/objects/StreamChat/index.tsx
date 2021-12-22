@@ -11,14 +11,17 @@ import {
   Span,
   Form,
   GridProps,
+  Shimmer,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import DateTime from "@/common/utils/datetime/DateTime";
 import ChatReactionList from "@/community/components/objects/ChatReactionList";
 import { Webinar } from "@/community/types/community";
 import useStreamChat from "@/stream/hooks/useStreamChat";
 import { ChatMessageType } from "@/stream/types/streamChat";
+import useAuctionsList from "@/tokens/context/AuctionListContext";
 
 import ChatRules from "../ChatRules";
 
@@ -35,6 +38,7 @@ interface ChatFormProps {
 export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const { profile } = useAuth();
+  const { auctions, loading: auctionLoading } = useAuctionsList();
 
   const { messages, sendGroupMessage, connected } = useStreamChat();
   const { space, colors, borders } = useTheme();
@@ -74,10 +78,12 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
     }
   };
 
+  console.log(auctions);
+
   return (
     <Grid
       h={["60vh", "auto"]}
-      bg={colors.black[4]}
+      bg={colors.black[6]}
       gridTemplateRows={[
         "1fr min-content min-content",
         "min-content min-content 1fr min-content min-content",
@@ -113,7 +119,29 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
         </Flex>
       </Grid>
 
-      <ChatRules />
+      {auctionLoading || !auctions ? (
+        <Shimmer h={64} />
+      ) : auctions.length > 0 ? (
+        <Box pt={space.xxs} pb={space.xxxs} bg={colors.black[5]}>
+          <Text textAlign="center" fontSize="1.6rem">
+            Auction starts in:{" "}
+            <Span fontWeight="600">
+              {DateTime.parse(auctions[0].start)
+                .diffNow()
+                .toFormat("d'd' h'h' m'm'")}
+            </Span>
+          </Text>
+
+          <Button
+            variant="small"
+            m={`${space.xxxs}px auto`}
+            text="Place a bid"
+          />
+        </Box>
+      ) : (
+        <ChatRules />
+      )}
+
       <Box
         overflowY="auto"
         position="relative"

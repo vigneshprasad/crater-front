@@ -40,7 +40,7 @@ export type Group = {
   description?: string;
   end: string;
   host?: string;
-  host_detail?: Speaker;
+  host_detail: Speaker;
   id: number;
   is_live: boolean;
   interests: number[];
