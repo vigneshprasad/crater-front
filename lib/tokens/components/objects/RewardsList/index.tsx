@@ -59,7 +59,7 @@ export default function RewardsList({
         if (!rewards || loading || !splitList) {
           return (
             <Loader
-              gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))"
+              gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
               gridGap={space.xxs}
               gridAutoRows="360px"
             />

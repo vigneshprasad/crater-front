@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 
 import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 
-import { BoxProps, Box, Grid, AnimatedBox } from "../../atoms";
+import { BoxProps, Box, Grid, AnimatedBox, Text } from "../../atoms";
 
 const AppNavBar = dynamic(() => import("../../objects/AppNavBar"));
 
@@ -81,9 +81,12 @@ export default function BaseLayout({
     <Grid
       as="main"
       gridTemplateColumns="100vw"
-      gridTemplateRows="100vh"
+      gridTemplateRows="max-content 1fr"
       overflow="hidden"
     >
+      <Box bg={colors.accent} py={4}>
+        <Text textAlign="center">We just raised $1.2 million</Text>
+      </Box>
       <Grid gridTemplateRows="56px 1fr">
         <AppNavBar />
         {content}

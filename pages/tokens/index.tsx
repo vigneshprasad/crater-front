@@ -15,7 +15,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
   if (!creators) {
     return {
       notFound: true,
-      revalidate: 10,
       props: {},
     };
   }

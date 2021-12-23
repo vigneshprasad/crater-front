@@ -15,4 +15,5 @@ export type Creator = {
   slug: string;
   is_follower: boolean;
   show_club_members: boolean;
+  video?: string;
 };

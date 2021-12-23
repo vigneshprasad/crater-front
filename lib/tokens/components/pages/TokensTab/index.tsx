@@ -17,6 +17,7 @@ import {
   Flex,
   Input,
   Image,
+  BackgroundVideo,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -153,22 +154,7 @@ export default function TokensTab(): JSX.Element {
         px={[space.xxs, space.s]}
         alignItems="start"
       >
-        <Box position="relative">
-          <Image src="/images/img_graph_placeholder.png" alt="placeholder" />
-          <Box
-            position="absolute"
-            top={0}
-            right={0}
-            left={0}
-            bottom={0}
-            bg="rgba(0,0,0,0.4)"
-          >
-            <Text p={space.xs} textStyle="bodyLarge" fontSize={["1.6rem"]}>
-              Token price will reflect when the <br />
-              <Span color={colors.accent}>bidding starts</Span>
-            </Text>
-          </Box>
-        </Box>
+        <BackgroundVideo w="100%" src={activeCreator?.video} />
 
         <Card>
           {(() => {
@@ -241,6 +227,29 @@ export default function TokensTab(): JSX.Element {
 
       <Box px={[space.xxs, space.s]}>
         <RewardsList rewards={rewards} loading={loadingRewards} split={false} />
+      </Box>
+
+      <Text py={space.xs} px={[space.xxs, space.s]} textStyle="headline5">
+        Price History
+      </Text>
+
+      <Box px={[space.xxs, space.s]}>
+        <Box position="relative">
+          <Image src="/images/img_graph_placeholder.png" alt="placeholder" />
+          <Box
+            position="absolute"
+            top={0}
+            right={0}
+            left={0}
+            bottom={0}
+            bg="rgba(0,0,0,0.4)"
+          >
+            <Text p={space.xs} textStyle="bodyLarge" fontSize={["1.6rem"]}>
+              Token price will reflect when the <br />
+              <Span color={colors.accent}>bidding starts</Span>
+            </Text>
+          </Box>
+        </Box>
       </Box>
     </>
   );
