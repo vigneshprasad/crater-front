@@ -21,6 +21,7 @@ import { PageRoutes } from "@/common/constants/route.constants";
 import { useWebinar } from "@/community/context/WebinarContext";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 import StreamChat from "@/stream/components/objects/StreamChat";
+import MeetingsTicker from "@/tokens/components/objects/MeetingsTicker";
 import RewardsList from "@/tokens/components/objects/RewardsList";
 import { AuctionListProvider } from "@/tokens/context/AuctionListContext";
 import { CreatorCoinProvider } from "@/tokens/context/CreatorCoinContext";
@@ -77,6 +78,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
 
   return (
     <BaseLayout aside={<AsideNav />} overflowY={["auto", "clip"]}>
+      <MeetingsTicker />
       <Grid gridTemplateColumns={gridLayout} h="100%">
         <Grid
           pb={space.s}

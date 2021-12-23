@@ -17,7 +17,7 @@ export default function MeetingsTicker(): JSX.Element {
   }
 
   const content: JSX.Element[] = data.reduce((acc, curr) => {
-    const date = DateTime.parse(curr.start).toFormat("DD");
+    const date = DateTime.parse(curr.start).toFormat("dd LLL");
     const time = DateTime.parse(curr.start).toFormat("t");
 
     return [
