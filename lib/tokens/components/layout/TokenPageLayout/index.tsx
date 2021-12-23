@@ -14,6 +14,8 @@ import {
 import Page from "@/common/components/objects/Page";
 import { PageRoutes } from "@/common/constants/route.constants";
 
+import MeetingsTicker from "../../objects/MeetingsTicker";
+
 type IProps = PropsWithChildren<{
   seo: NextSeoProps;
   activeTab?: "tokens" | "rewards";
@@ -43,6 +45,7 @@ export default function TokenPageLayout({
         overflowY="auto"
         aside={<AsideNav activeTab="tokens" />}
       >
+        <MeetingsTicker />
         <BaseTabBar
           mt={[space.xxxs, space.xxs]}
           px={[space.xxs, space.s]}

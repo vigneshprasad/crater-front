@@ -14,3 +14,4 @@ export { default as TabBar } from "./TabBar";
 export { default as BackgroundVideo } from "./BackgroundVideo";
 export { default as Shimmer } from "./Shimmer";
 export * from "./Image";
+export * from "./Marquee";
