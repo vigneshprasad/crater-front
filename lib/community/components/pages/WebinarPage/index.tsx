@@ -77,17 +77,18 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   if (loading || !webinar) return <Box>Loading...</Box>;
 
   return (
-    <BaseLayout aside={<AsideNav />} overflowY={["auto", "clip"]}>
-      <MeetingsTicker />
+    <BaseLayout aside={<AsideNav />} overflowY={["auto"]} overflowX="hidden">
       <Grid gridTemplateColumns={gridLayout} h="100%">
         <Grid
           pb={space.s}
           gridAutoFlow="row"
           gridAutoRows="min-content"
           gridGap={space.xxs}
-          overflowY={["clip", "auto"]}
+          overflowY={["hidden", "auto"]}
+          overflowX="hidden"
         >
           {/* Dyte Webinar View */}
+          <MeetingsTicker />
           <Box position="relative" w="100%" pb="56.25%">
             {dyteParticipant && (
               <DyteMeeting
