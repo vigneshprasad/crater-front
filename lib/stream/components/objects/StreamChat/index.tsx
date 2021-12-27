@@ -78,8 +78,6 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
     }
   };
 
-  console.log(auctions);
-
   return (
     <Grid
       h={["60vh", "auto"]}

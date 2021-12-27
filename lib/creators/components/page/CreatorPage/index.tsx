@@ -79,6 +79,7 @@ export default function CreatorPage({
   const joinCommunity = async (): Promise<void> => {
     if (creator) {
       setPostLoading(true);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [res, err] = await CreatorApiClient().postFollowCreator(creator.id);
 
       setPostLoading(false);
@@ -87,7 +88,6 @@ export default function CreatorPage({
         return;
       }
 
-      console.log(res);
       mutateCreator();
     }
   };
