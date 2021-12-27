@@ -1,4 +1,4 @@
-import { AnimatePresence, Variants } from "framer-motion";
+import { Variants } from "framer-motion";
 import { useMemo, useRef, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 
