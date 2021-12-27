@@ -23,7 +23,7 @@ interface PageProps {
   rewardId: string;
   reward: Reward;
   rewards: Reward[];
-  coin?: Coin;
+  coin: Coin | null;
 }
 
 export const getStaticPaths: GetStaticPaths<IParams> = async () => {
@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps<PageProps, IParams> = async ({
       rewardId,
       reward,
       rewards: rewards.filter((obj) => obj.id !== reward.id),
-      coin,
+      coin: coin ?? null,
     },
     revalidate: 10,
   };
@@ -86,7 +86,10 @@ export default function RewardListing({
     <RewardPageLayout seo={seo}>
       <RewardItemProvider id={rewardId} initial={reward}>
         <RewardsListProvider initial={rewards} filterCreatorSlug={creator.slug}>
-          <CreatorCoinProvider initial={coin} creatorId={creator.id}>
+          <CreatorCoinProvider
+            initial={coin ?? undefined}
+            creatorId={creator.id}
+          >
             <CreatorProvider initial={creator} slug={creator.slug}>
               <RewardItemPage />
             </CreatorProvider>
