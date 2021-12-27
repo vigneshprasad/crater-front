@@ -1,8 +1,9 @@
 import { AnimatePresence, Variants } from "framer-motion";
-import { useMemo } from "react";
+import { useMemo, useRef, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { AnimatedBox } from "@/common/components/atoms";
+import { AnimatedBox, Box } from "@/common/components/atoms";
+import { useMeasure } from "@/common/hooks/ui/useMeasure";
 import { Reward } from "@/tokens/types/tokens";
 
 import { RewardCard } from "../RewardCard";
@@ -36,13 +37,16 @@ export default function RewardsList({
   split = true,
 }: IProps): JSX.Element {
   const { space } = useTheme();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { bounds, ref } = useMeasure();
+  const [splitIndex, setSplitIndex] = useState(0);
 
   const splitList = useMemo(() => {
-    if (loading || !rewards) return undefined;
+    if (loading || !rewards || !splitIndex) return undefined;
 
     return rewards.reduce(
       (acc, curr, index) => {
-        if (index < 7) {
+        if (index < splitIndex) {
           acc[0].push(curr);
         } else {
           acc[1].push(curr);
@@ -51,11 +55,55 @@ export default function RewardsList({
       },
       [[] as Reward[], [] as Reward[]]
     );
-  }, [rewards, loading]);
+  }, [rewards, loading, splitIndex]);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const containerBox = containerRef.current.getBoundingClientRect();
+      const { width } = containerBox;
+      const columns = Math.floor(width / 236);
+      const index = (columns - 2) * 2 + 1;
+      setSplitIndex(index);
+    }
+  }, [containerRef, bounds]);
 
   return (
-    <AnimatePresence>
+    <>
+      <Box ref={ref}>
+        <Box ref={containerRef} />
+      </Box>
       {(() => {
+        if (!split) {
+          if (!rewards || loading) {
+            return (
+              <Loader
+                gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
+                gridGap={space.xxs}
+                gridAutoRows="360px"
+              />
+            );
+          }
+
+          return (
+            <Box ref={ref}>
+              <AnimatedBox
+                ref={containerRef}
+                initial="hidden"
+                animate="enter"
+                display="grid"
+                exit="exit"
+                variants={listVariatns}
+                gridGap={space.xxs}
+                gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
+              >
+                {rewards.map((reward) => (
+                  <RewardCard key={reward.id} reward={reward} type="large" />
+                ))}
+              </AnimatedBox>
+            </Box>
+          );
+        }
+
         if (!rewards || loading || !splitList) {
           return (
             <Loader
@@ -66,71 +114,47 @@ export default function RewardsList({
           );
         }
 
-        if (split) {
-          return (
-            <>
-              <AnimatedBox
-                mb={space.xxs}
-                initial="hidden"
-                animate="enter"
-                display="grid"
-                exit="exit"
-                variants={listVariatns}
-                gridGap={space.xxs}
-                gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
-                gridAutoRows="240px"
-              >
-                {splitList[0].map((reward, index) => {
-                  if (index === 0) {
-                    return (
-                      <RewardCard
-                        gridColumn="1 / span 2"
-                        gridRow="1 / span 2"
-                        key={reward.id}
-                        reward={reward}
-                        type="small"
-                      />
-                    );
-                  }
-                  return (
-                    <RewardCard key={reward.id} reward={reward} type="small" />
-                  );
-                })}
-              </AnimatedBox>
-
-              <AnimatedBox
-                initial="hidden"
-                animate="enter"
-                display="grid"
-                exit="exit"
-                variants={listVariatns}
-                gridGap={space.xxs}
-                gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
-              >
-                {splitList[1].map((reward) => (
-                  <RewardCard key={reward.id} reward={reward} type="large" />
-                ))}
-              </AnimatedBox>
-            </>
-          );
-        }
-
         return (
           <AnimatedBox
+            ref={containerRef}
             initial="hidden"
             animate="enter"
             display="grid"
             exit="exit"
             variants={listVariatns}
             gridGap={space.xxs}
-            gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
+            gridTemplateColumns={[
+              "1fr",
+              "repeat(auto-fill, minmax(220px, 1fr))",
+            ]}
+            gridAutoRows="minmax(240px, auto)"
           >
-            {rewards.map((reward) => (
-              <RewardCard key={reward.id} reward={reward} type="large" />
-            ))}
+            {rewards.map((reward, index) => {
+              if (index === 0) {
+                return (
+                  <RewardCard
+                    gridColumn={["auto", "1 / span 2"]}
+                    gridRow={["auto", "1 / span 2"]}
+                    key={reward.id}
+                    reward={reward}
+                    type="small"
+                  />
+                );
+              }
+
+              if (index < splitIndex) {
+                return (
+                  <RewardCard key={reward.id} reward={reward} type="small" />
+                );
+              }
+
+              return (
+                <RewardCard key={reward.id} reward={reward} type="large" />
+              );
+            })}
           </AnimatedBox>
         );
       })()}
-    </AnimatePresence>
+    </>
   );
 }
