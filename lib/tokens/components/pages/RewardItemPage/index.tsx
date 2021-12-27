@@ -17,6 +17,8 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
+import { useCreator } from "@/creators/context/CreatorContext";
+import useCreatorCoin from "@/tokens/context/CreatorCoinContext";
 import useRewardItem from "@/tokens/context/RewardItemContext";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
@@ -47,8 +49,10 @@ export default function RewardItemPage(): JSX.Element {
   const { reward, loading } = useRewardItem();
   const { space, colors, borders, radii } = useTheme();
   const { rewards, loading: rewardsLoading } = useRewardsList();
+  const { coin } = useCreatorCoin();
+  const { creator } = useCreator();
 
-  if (!reward || loading) {
+  if (!reward || loading || !coin) {
     return (
       <Grid
         px={space.s}
@@ -199,8 +203,8 @@ export default function RewardItemPage(): JSX.Element {
         <Button variant="full-width" text="Buy Now" />
 
         <Text my={space.xxs} color={colors.slate}>
-          You don’t have any SRBH. To claim this reward bid for Sourabh’s token.
-          Auction ends in 3 days 5 hours 17 mins.
+          You don&#39;t have any {coin.display.symbol}. To claim this reward bid
+          for {creator?.profile_detail.name}&#39;s token.
         </Text>
       </Box>
 

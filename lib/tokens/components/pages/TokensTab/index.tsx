@@ -30,6 +30,7 @@ import useRewardsList from "@/tokens/context/RewardsListContext";
 import { Auction, Coin, Bid } from "@/tokens/types/tokens";
 
 import RewardsList from "../../objects/RewardsList";
+import TokenBidModal from "../../objects/TokenBidModal";
 
 const AnimList: Variants = {
   hidden: { opacity: 0 },
@@ -65,6 +66,7 @@ const AnimCard: Variants = {
 };
 
 export default function TokensTab(): JSX.Element {
+  const [showModal, setShowModal] = useState(false);
   const [activeCreator, setActiveCreator] = useState<Creator | undefined>(
     undefined
   );
@@ -116,6 +118,7 @@ export default function TokensTab(): JSX.Element {
 
   return (
     <>
+      <TokenBidModal visible={showModal} onClose={() => setShowModal(false)} />
       <AnimatedBox
         mt={space.xs}
         px={[space.xxs, space.s]}
@@ -211,7 +214,7 @@ export default function TokensTab(): JSX.Element {
 
                 <Flex flexDirection="row" gridGap={space.xxs} mt={space.xxs}>
                   <Input placeholder="Enter amount" boxProps={{ flex: 1 }} />
-                  <Button text="Place Bid" />
+                  <Button text="Place Bid" onClick={() => setShowModal(true)} />
                 </Flex>
               </>
             );
