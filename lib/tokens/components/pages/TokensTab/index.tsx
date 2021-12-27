@@ -4,15 +4,15 @@ import useSWR from "swr";
 
 import { useRouter } from "next/router";
 
-import { Flex, Text, Box, Grid, Span } from "@/common/components/atoms";
+import { Text, Box, Grid, Span } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import DateTime from "@/common/utils/datetime/DateTime";
 import useCreatorWithCoin from "@/creators/context/CreatorWithCoinContext";
 import { Creator } from "@/creators/types/creator";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 import { Auction, Coin } from "@/tokens/types/tokens";
 
+import AuctionDetailBox from "../../objects/AuctionDetailBox";
 import { CreatorTokenSlider } from "../../objects/CreatorTokenSlider";
 import { RewardCard } from "../../objects/RewardCard";
 
@@ -33,7 +33,7 @@ export default function TokensTab(): JSX.Element {
     undefined
   );
   const router = useRouter();
-  const { space, colors, radii, borders } = useTheme();
+  const { space, colors } = useTheme();
   const { rewards } = useRewardsList();
 
   const scrollToRewards = useCallback(() => {
@@ -101,74 +101,7 @@ export default function TokensTab(): JSX.Element {
           )}
         </Box>
 
-        <Flex mx={[space.xxs, space.xs]} flexDirection="column">
-          <Flex
-            px={[space.xxs, space.xs]}
-            py={space.xs}
-            borderRadius={radii.xxs}
-            flexDirection="column"
-            gridGap={space.xs}
-            border={`2px solid ${borders.main}`}
-          >
-            <Flex>
-              {(() => {
-                if (!activeAuction) {
-                  return <Text>No active auctions</Text>;
-                }
-
-                const now = DateTime.now();
-                const start = DateTime.parse(activeAuction.start);
-                const end = DateTime.parse(activeAuction.end);
-
-                if (now > start) {
-                  return (
-                    <Text fontSize="1.7rem" fontWeight="600">
-                      Auction ends in{" "}
-                      <Span>{end.diffNow().toFormat("d'd' h'h' m'm'")}</Span>
-                    </Text>
-                  );
-                }
-
-                return (
-                  <Text fontSize="1.7rem">
-                    Auction starts in{" "}
-                    <Span fontWeight="600">
-                      {start.diffNow().toFormat("d'd' h'h' m'm'")}
-                    </Span>
-                  </Text>
-                );
-              })()}
-            </Flex>
-            <Flex gridGap={space.s} alignItems="center">
-              <Flex w={[96, 124]} h={56} bg={colors.greenDeep} borderRadius={4}>
-                <Text textStyle="buttonLarge" m="auto auto">
-                  Place Bid
-                </Text>
-              </Flex>
-
-              <Box>
-                <Text textStyle="label" color={colors.slate}>
-                  Last bid:
-                </Text>
-                <Text textStyle="headline5">--</Text>
-              </Box>
-            </Flex>
-
-            <Flex gridGap={space.s} alignItems="center">
-              <Flex w={[96, 124]} h={56} bg={colors.red[1]} borderRadius={4}>
-                <Text textStyle="buttonLarge" m="auto auto">
-                  Buy
-                </Text>
-              </Flex>
-
-              <Box>
-                <Text textStyle="label" color={colors.slate}>
-                  Coming Soon
-                </Text>
-              </Box>
-            </Flex>
-          </Flex>
-
+        <AuctionDetailBox auction={activeAuction}>
           <Grid
             px={[space.xxxs, space.xxs]}
             py={space.s}
@@ -188,7 +121,7 @@ export default function TokensTab(): JSX.Element {
               text={`About ${coin?.display.symbol}`}
             />
           </Grid>
-        </Flex>
+        </AuctionDetailBox>
       </Grid>
 
       <Text my={space.xs} textStyle="title">
