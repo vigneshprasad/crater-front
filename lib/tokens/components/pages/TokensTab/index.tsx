@@ -87,7 +87,7 @@ export default function TokensTab(): JSX.Element {
       </Text>
 
       <Grid
-        gridTemplateColumns="1fr 1fr"
+        gridTemplateColumns={["1fr", "1fr 1fr"]}
         gridGap={space.xxs}
         alignItems="start"
       >
@@ -101,11 +101,10 @@ export default function TokensTab(): JSX.Element {
           )}
         </Box>
 
-        <Flex mx={space.xs} flexDirection="column">
+        <Flex mx={[space.xxs, space.xs]} flexDirection="column">
           <Flex
-            px={space.xs}
+            px={[space.xxs, space.xs]}
             py={space.xs}
-            flex={1}
             borderRadius={radii.xxs}
             flexDirection="column"
             gridGap={space.xs}
@@ -141,7 +140,7 @@ export default function TokensTab(): JSX.Element {
               })()}
             </Flex>
             <Flex gridGap={space.s} alignItems="center">
-              <Flex w={124} h={56} bg={colors.greenDeep} borderRadius={4}>
+              <Flex w={[96, 124]} h={56} bg={colors.greenDeep} borderRadius={4}>
                 <Text textStyle="buttonLarge" m="auto auto">
                   Place Bid
                 </Text>
@@ -156,7 +155,7 @@ export default function TokensTab(): JSX.Element {
             </Flex>
 
             <Flex gridGap={space.s} alignItems="center">
-              <Flex w={124} h={56} bg={colors.red[1]} borderRadius={4}>
+              <Flex w={[96, 124]} h={56} bg={colors.red[1]} borderRadius={4}>
                 <Text textStyle="buttonLarge" m="auto auto">
                   Buy
                 </Text>
@@ -171,7 +170,7 @@ export default function TokensTab(): JSX.Element {
           </Flex>
 
           <Grid
-            px={space.xxs}
+            px={[space.xxxs, space.xxs]}
             py={space.s}
             gridGap={space.xxs}
             gridTemplateColumns="max-content max-content"
