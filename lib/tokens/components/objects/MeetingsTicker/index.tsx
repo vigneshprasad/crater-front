@@ -23,8 +23,8 @@ export default function MeetingsTicker(): JSX.Element {
     return [
       ...acc,
       <Span mr={space.s} key={curr.id}>
-        {curr.topic_detail.name} <Span color={colors.red[0]}>{date}</Span>{" "}
-        {"  "}@{"  "}
+        {curr.host_detail.name} <Span color={colors.red[0]}>{date}</Span> {"  "}
+        @{"  "}
         <Span color={colors.greenSuccess}>
           {"  "}
           {time}
