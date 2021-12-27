@@ -1,102 +1,46 @@
-import { Variants } from "framer-motion";
-import { useState, useEffect, useMemo } from "react";
-import { useTheme } from "styled-components";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import styled, { useTheme } from "styled-components";
 import useSWR from "swr";
 
 import { useRouter } from "next/router";
 
-import {
-  Box,
-  AnimatedBox,
-  Text,
-  Link,
-  Span,
-  Grid,
-  Card,
-  Hr,
-  Flex,
-  Input,
-  Image,
-  BackgroundVideo,
-} from "@/common/components/atoms";
+import { Flex, Text, Box, Grid, Span } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
-import AnimatedCreatorCard from "@/creators/components/objects/AnimatedCreatorCard";
 import useCreatorWithCoin from "@/creators/context/CreatorWithCoinContext";
 import { Creator } from "@/creators/types/creator";
 import useRewardsList from "@/tokens/context/RewardsListContext";
-import { Auction, Coin, Bid } from "@/tokens/types/tokens";
+import { Auction, Coin } from "@/tokens/types/tokens";
 
-import RewardsList from "../../objects/RewardsList";
-import TokenBidModal from "../../objects/TokenBidModal";
+import { CreatorTokenSlider } from "../../objects/CreatorTokenSlider";
+import { RewardCard } from "../../objects/RewardCard";
 
-const AnimList: Variants = {
-  hidden: { opacity: 0 },
-  enter: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const AnimCard: Variants = {
-  hidden: {
-    opacity: 0,
-    x: -50,
-    y: 0,
-    border: "2px solid rgba(255, 255, 255, 0)",
-  },
-  enter: { opacity: 1, x: 0, y: 0, border: "2px solid rgba(255, 255, 255, 0)" },
-  exit: {
-    opacity: 0,
-    x: -50,
-    y: 0,
-    border: "2px solid rgba(255, 255, 255, 0)",
-  },
-  selected: { opacity: 1, x: 0, y: 0, border: "2px solid #9146FF" },
-};
+const Video = styled.video`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: contain;
+  border-radius: ${({ theme }) => theme.radii.xxs}px;
+`;
 
 export default function TokensTab(): JSX.Element {
-  const [showModal, setShowModal] = useState(false);
+  const rewardsListRef = useRef<HTMLDivElement>(null);
+  const { creators, loading } = useCreatorWithCoin();
   const [activeCreator, setActiveCreator] = useState<Creator | undefined>(
     undefined
   );
-  const { creators } = useCreatorWithCoin();
-  const { space, colors } = useTheme();
   const router = useRouter();
-  const { data: coin } = useSWR<Coin>(
-    activeCreator
-      ? API_URL_CONSTANTS.coins.getCointForCreator(activeCreator.id)
-      : null
-  );
-  const { data: auctions } = useSWR<Auction[]>(
-    activeCreator
-      ? `${API_URL_CONSTANTS.coins.getAuctions}?coin__creator=${activeCreator.id}`
-      : null
-  );
+  const { space, colors, radii, borders } = useTheme();
+  const { rewards } = useRewardsList();
 
-  const { rewards, loading: loadingRewards } = useRewardsList();
-
-  const activeAuction = useMemo(() => {
-    if (!auctions || !auctions.length) return undefined;
-    return auctions[0];
-  }, [auctions]);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data: bids } = useSWR<Bid[]>(
-    activeAuction
-      ? `${API_URL_CONSTANTS.coins.getBids}?auction=${activeAuction.id}`
-      : null
-  );
+  const scrollToRewards = useCallback(() => {
+    if (rewardsListRef.current) {
+      rewardsListRef.current.scrollIntoView();
+    }
+  }, [rewardsListRef]);
 
   useEffect(() => {
     if (creators && router) {
@@ -112,148 +56,160 @@ export default function TokensTab(): JSX.Element {
     }
   }, [router, creators, setActiveCreator]);
 
-  if (!creators) {
-    return <Box>Loading...</Box>;
-  }
+  const { data: coin } = useSWR<Coin>(
+    activeCreator
+      ? API_URL_CONSTANTS.coins.getCointForCreator(activeCreator.id)
+      : null
+  );
+  const { data: auctions } = useSWR<Auction[]>(
+    activeCreator
+      ? `${API_URL_CONSTANTS.coins.getAuctions}?coin__creator=${activeCreator.id}`
+      : null
+  );
+
+  const activeAuction = useMemo(() => {
+    if (!auctions || !auctions.length) return undefined;
+    return auctions[0];
+  }, [auctions]);
 
   return (
-    <>
-      <TokenBidModal visible={showModal} onClose={() => setShowModal(false)} />
-      <AnimatedBox
-        mt={space.xs}
-        px={[space.xxs, space.s]}
-        initial="hidden"
-        animate="enter"
-        exit="exit"
-        variants={AnimList}
-        display="grid"
-        gridTemplateColumns={[
-          "repeat(auto-fill, minmax(144px, 1fr))",
-          "repeat(auto-fill, minmax(196px, 1fr))",
-        ]}
-        gridGap={space.xxxs}
-      >
-        {creators.map((creator) => (
-          <Link href={PageRoutes.tokens(creator.slug)} key={creator.id}>
-            <AnimatedCreatorCard
-              whileHover="selected"
-              creator={creator}
-              animate={creator.id === activeCreator?.id ? "selected" : "enter"}
-              variants={AnimCard}
-              transition={{ type: "linear" }}
-            />
-          </Link>
-        ))}
-      </AnimatedBox>
+    <Box px={[space.xxs, space.s]}>
+      <CreatorTokenSlider
+        mt={space.s}
+        creators={creators}
+        loading={loading}
+        activeCreator={activeCreator}
+      />
 
-      <Text px={[space.xxs, space.s]} py={space.xs} textStyle="headline5">
+      <Text my={space.xs} textStyle="headline4">
         {activeCreator?.profile_detail.name}{" "}
         <Span color={colors.accent}>{coin?.display.symbol}</Span>
       </Text>
 
       <Grid
-        gridTemplateColumns={["1fr", "2fr minmax(max-content, 240px)"]}
-        gridGap={space.xs}
-        px={[space.xxs, space.s]}
+        gridTemplateColumns="1fr 1fr"
+        gridGap={space.xxs}
         alignItems="start"
       >
-        <BackgroundVideo w="100%" src={activeCreator?.video} />
+        <Box pt="56.25%" position="relative">
+          {activeCreator?.video && (
+            <Video
+              controls
+              controlsList="nodownload"
+              src={activeCreator?.video}
+            />
+          )}
+        </Box>
 
-        <Card>
-          {(() => {
-            if (!activeAuction) {
-              return <Text>No active Auctions</Text>;
-            }
-            const now = DateTime.now();
-            const start = DateTime.parse(activeAuction.start);
-            const end = DateTime.parse(activeAuction.end);
+        <Flex mx={space.xs} flexDirection="column">
+          <Flex
+            px={space.xs}
+            py={space.xs}
+            flex={1}
+            borderRadius={radii.xxs}
+            flexDirection="column"
+            gridGap={space.xs}
+            border={`2px solid ${borders.main}`}
+          >
+            <Flex>
+              {(() => {
+                if (!activeAuction) {
+                  return <Text>No active auctions</Text>;
+                }
 
-            let heading;
+                const now = DateTime.now();
+                const start = DateTime.parse(activeAuction.start);
+                const end = DateTime.parse(activeAuction.end);
 
-            if (now > start) {
-              heading = (
-                <Text fontSize="1.8rem" fontWeight="400">
-                  Auction ends in{" "}
-                  <Span fontWeight="600">
-                    {end.diffNow().toFormat("d'd' h'h' m'm'")}
-                  </Span>
+                if (now > start) {
+                  return (
+                    <Text fontSize="1.7rem" fontWeight="600">
+                      Auction ends in{" "}
+                      <Span>{end.diffNow().toFormat("d'd' h'h' m'm'")}</Span>
+                    </Text>
+                  );
+                }
+
+                return (
+                  <Text fontSize="1.7rem">
+                    Auction starts in{" "}
+                    <Span fontWeight="600">
+                      {start.diffNow().toFormat("d'd' h'h' m'm'")}
+                    </Span>
+                  </Text>
+                );
+              })()}
+            </Flex>
+            <Flex gridGap={space.s} alignItems="center">
+              <Flex w={124} h={56} bg={colors.greenDeep} borderRadius={4}>
+                <Text textStyle="buttonLarge" m="auto auto">
+                  Place Bid
                 </Text>
-              );
-            } else {
-              heading = (
-                <Text fontSize="1.8rem" fontWeight="400">
-                  Auction starts in{" "}
-                  <Span fontWeight="600">
-                    {start.diffNow().toFormat("d'd' h'h' m'm'")}
-                  </Span>
+              </Flex>
+
+              <Box>
+                <Text textStyle="label" color={colors.slate}>
+                  Last bid:
                 </Text>
-              );
-            }
+                <Text textStyle="headline5">--</Text>
+              </Box>
+            </Flex>
 
-            return (
-              <>
-                {heading}
-                <Hr my={space.xxs} />
+            <Flex gridGap={space.s} alignItems="center">
+              <Flex w={124} h={56} bg={colors.red[1]} borderRadius={4}>
+                <Text textStyle="buttonLarge" m="auto auto">
+                  Buy
+                </Text>
+              </Flex>
 
-                <Grid gridTemplateColumns="2fr 1fr">
-                  <Text>Being sold:</Text>
-                  <Text>{activeAuction.number_of_coins}</Text>
-                </Grid>
+              <Box>
+                <Text textStyle="label" color={colors.slate}>
+                  Coming Soon
+                </Text>
+              </Box>
+            </Flex>
+          </Flex>
 
-                <Grid gridTemplateColumns="2fr 1fr">
-                  <Text>Floor Price:</Text>
-                  <Text>{activeAuction.base_price}</Text>
-                </Grid>
+          <Grid
+            px={space.xxs}
+            py={space.s}
+            gridGap={space.xxs}
+            gridTemplateColumns="max-content max-content"
+            alignItems="end"
+            justifyContent="end"
+          >
+            <Button
+              variant="outline-small"
+              text="View Rewards"
+              onClick={() => scrollToRewards()}
+            />
 
-                <Grid gridTemplateColumns="2fr 1fr">
-                  <Text>Coins Sold:</Text>
-                  <Text>{activeAuction.coins_sold}</Text>
-                </Grid>
-
-                <Hr my={space.xxs} />
-
-                <Flex flexDirection="row" gridGap={space.xxs} mt={space.xxs}>
-                  <Input placeholder="Enter amount" boxProps={{ flex: 1 }} />
-                  <Button text="Place Bid" onClick={() => setShowModal(true)} />
-                </Flex>
-              </>
-            );
-          })()}
-        </Card>
+            <Button
+              variant="outline-small"
+              text={`About ${coin?.display.symbol}`}
+            />
+          </Grid>
+        </Flex>
       </Grid>
 
-      {coin && (
-        <Text my={space.xs} textStyle="headline5" px={[space.xxs, space.s]}>
-          Avalilable with {coin.display.symbol}
-        </Text>
-      )}
-
-      <Box px={[space.xxs, space.s]}>
-        <RewardsList rewards={rewards} loading={loadingRewards} split={false} />
-      </Box>
-
-      <Text py={space.xs} px={[space.xxs, space.s]} textStyle="headline5">
-        Price History
+      <Text my={space.xs} textStyle="title">
+        Recent Drops
       </Text>
 
-      <Box px={[space.xxs, space.s]}>
-        <Box position="relative">
-          <Image src="/images/img_graph_placeholder.png" alt="placeholder" />
-          <Box
-            position="absolute"
-            top={0}
-            right={0}
-            left={0}
-            bottom={0}
-            bg="rgba(0,0,0,0.4)"
-          >
-            <Text p={space.xs} textStyle="bodyLarge" fontSize={["1.6rem"]}>
-              Token price will reflect when the <br />
-              <Span color={colors.accent}>bidding starts</Span>
-            </Text>
-          </Box>
-        </Box>
-      </Box>
-    </>
+      <Grid
+        ref={rewardsListRef}
+        gridTemplateColumns="repeat(auto-fill, minmax(180px, 1fr))"
+        gridGap={space.xxs}
+      >
+        {rewards?.map((reward) => (
+          <RewardCard
+            showAvatar={false}
+            type="large"
+            reward={reward}
+            key={reward.id}
+          />
+        ))}
+      </Grid>
+    </Box>
   );
 }

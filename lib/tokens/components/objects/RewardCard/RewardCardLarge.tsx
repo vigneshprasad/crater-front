@@ -18,6 +18,7 @@ import { Reward } from "@/tokens/types/tokens";
 
 interface IProps extends AnimatedBoxProps {
   reward: Reward;
+  showAvatar?: boolean;
 }
 
 const cardVariants: Variants = {
@@ -30,6 +31,7 @@ const Container = styled(AnimatedBox)``;
 
 export default function RewardCardLarge({
   reward,
+  showAvatar = true,
   ...rest
 }: IProps): JSX.Element {
   const {
@@ -62,10 +64,13 @@ export default function RewardCardLarge({
         }}
         {...rest}
       >
-        <Avatar
-          size={32}
-          image={creator_coin_detail.creator_detail.profile_detail.photo}
-        />
+        {showAvatar && (
+          <Avatar
+            size={32}
+            image={creator_coin_detail.creator_detail.profile_detail.photo}
+          />
+        )}
+
         <Box position="relative" w="100%" pt="100%">
           <Image src={photo} layout="fill" objectFit="cover" alt={name} />
         </Box>
