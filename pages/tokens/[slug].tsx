@@ -67,7 +67,7 @@ export default function TokenPage({
   creators,
 }: PageProps): JSX.Element {
   const seo: NextSeoProps = {
-    title: "Crater Club: Account",
+    title: "Crater Club: Tokens",
     description:
       "Crater is where you join live streams with the mentors & creators you follow, get to network with like-minds, and can claim exclusive access to mentors & creator by buying their tokens at the live auction",
   };
