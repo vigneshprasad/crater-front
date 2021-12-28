@@ -78,9 +78,9 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
 
   return (
     <BaseLayout aside={<AsideNav />} overflowY={["auto"]} overflowX="hidden">
-      <Grid gridTemplateColumns={gridLayout} h="100%">
+      <Grid gridTemplateColumns={gridLayout} h={["auto", "100%"]}>
         <Grid
-          pb={space.s}
+          pb={[space.xxxs, space.s]}
           gridAutoFlow="row"
           gridAutoRows="min-content"
           gridGap={space.xxs}

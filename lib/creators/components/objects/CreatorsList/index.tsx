@@ -38,12 +38,13 @@ export default function CreatorsList({
 
   return (
     <Grid
-      px={[space.xs, space.s]}
+      px={[space.xxs, space.s]}
       py={[space.xxs]}
-      overflowX="scroll"
-      gridAutoFlow="column"
       gridGap={[space.xxs]}
-      gridAutoColumns={[160, 180]}
+      gridTemplateColumns={[
+        "repeat(auto-fill, minmax(106px, 1fr))",
+        "repeat(auto-fill, minmax(160px, 1fr))",
+      ]}
     >
       <AnimatePresence>
         {(() => {

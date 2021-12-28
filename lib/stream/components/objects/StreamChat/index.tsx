@@ -85,9 +85,10 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
       h={["60vh", "auto"]}
       bg={colors.black[6]}
       gridTemplateRows={[
-        "1fr min-content min-content",
+        "min-content 1fr min-content",
         "min-content min-content 1fr min-content min-content",
       ]}
+      borderTop={[`2px solid ${borders.main}`, "none"]}
       borderLeft={`2px solid ${borders.main}`}
       {...rest}
     >
