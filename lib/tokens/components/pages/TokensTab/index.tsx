@@ -130,16 +130,11 @@ export default function TokensTab(): JSX.Element {
 
       <Grid
         ref={rewardsListRef}
-        gridTemplateColumns="repeat(auto-fill, minmax(180px, 1fr))"
+        gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
         gridGap={space.xxs}
       >
         {rewards?.map((reward) => (
-          <RewardCard
-            showAvatar={false}
-            type="large"
-            reward={reward}
-            key={reward.id}
-          />
+          <RewardCard type="large" reward={reward} key={reward.id} />
         ))}
       </Grid>
     </Box>

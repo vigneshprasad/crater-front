@@ -1,4 +1,5 @@
 import { Variants } from "framer-motion";
+import { useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -9,6 +10,7 @@ import {
   AnimatedBox,
   Text,
   Box,
+  BackgroundVideo,
 } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { Reward } from "@/tokens/types/tokens";
@@ -27,8 +29,36 @@ export default function RewardCardSmall({
   reward,
   ...rest
 }: IProps): JSX.Element {
-  const { name, photo, creator_coin_detail, id } = reward;
-  const { radii, space } = useTheme();
+  const { name, photo, creator_coin_detail, id, photo_mime_type } = reward;
+  const { radii, space, colors } = useTheme();
+
+  const preview = useMemo(() => {
+    if (!photo || !photo_mime_type) {
+      return <Box w="100" pt="100%" bg={colors.accent} />;
+    }
+
+    const type = photo_mime_type.split("/")[0];
+
+    if (type === "image") {
+      return <Image src={photo} layout="fill" objectFit="cover" alt={name} />;
+    }
+
+    if (type === "video") {
+      return (
+        <BackgroundVideo
+          position="absolute"
+          top={0}
+          right={0}
+          left={0}
+          bottom={0}
+          w="100%"
+          src={photo}
+        />
+      );
+    }
+
+    return <Image src={photo} layout="fill" objectFit="cover" alt={name} />;
+  }, [photo, colors, name, photo_mime_type]);
 
   return (
     <AnimatedBox
@@ -44,7 +74,7 @@ export default function RewardCardSmall({
           id
         )}
       >
-        <Image src={photo} layout="fill" alt={name} objectFit="cover" />
+        {preview}
         <Box position="relative" p={space.xxs}>
           <Text textStyle="headline5">{name}</Text>
         </Box>
