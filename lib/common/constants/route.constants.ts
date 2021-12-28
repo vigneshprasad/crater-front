@@ -3,7 +3,7 @@ export const PageRoutes = {
   community: "/network",
   account: "/account",
   tokens: (slug?: string): string => (slug ? `/tokens/${slug}` : "/tokens"),
-  rewards: "/rewards",
+  tickets: "/tickets",
   session: (id: string | number): string => `/session/${id}`,
   stream: (id: string | number): string => `/livestream/${id}`,
   creatorProfile: (slug: string | number, tab?: string | number): string =>
@@ -11,5 +11,5 @@ export const PageRoutes = {
   streamVideo: (id: string | number): string => `/video/${id}`,
   creatorHub: "/creatorhub/stream",
   rewardListing: (slug: string, id: string | number): string =>
-    `/rewards/${slug}/${id}`,
+    `/tickets/${slug}/${id}`,
 };

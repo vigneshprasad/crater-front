@@ -18,7 +18,7 @@ import MeetingsTicker from "../../objects/MeetingsTicker";
 
 type IProps = PropsWithChildren<{
   seo: NextSeoProps;
-  activeTab?: "tokens" | "rewards";
+  activeTab?: "tokens" | "tickets";
 }>;
 
 export default function TokenPageLayout({
@@ -56,9 +56,9 @@ export default function TokenPageLayout({
                 <BaseTabItem textStyle="headline5" label="Tokens" />
               </Link>
             ),
-            rewards: (
-              <Link href={PageRoutes.rewards} shallow>
-                <BaseTabItem textStyle="headline5" label="Rewards" />
+            tickets: (
+              <Link href={PageRoutes.tickets} shallow>
+                <BaseTabItem textStyle="headline5" label="Tickets" />
               </Link>
             ),
           }}

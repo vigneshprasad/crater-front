@@ -1,6 +1,6 @@
 import { useTheme } from "styled-components";
 
-import { Box } from "@/common/components/atoms";
+import { Box, Text } from "@/common/components/atoms";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
 import RewardsList from "../../objects/RewardsList";
@@ -10,7 +10,11 @@ export default function RewardsTab(): JSX.Element {
   const { space } = useTheme();
 
   return (
-    <Box py={space.xs} px={space.xs} h="max-content">
+    <Box px={space.s} h="max-content">
+      <Text my={space.xs} fontSize={["1.6rem"]}>
+        Use tokens to claim tickets that provide access to exclusive
+        content/time
+      </Text>
       <RewardsList rewards={rewards} loading={loading} />
     </Box>
   );

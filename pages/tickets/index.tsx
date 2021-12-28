@@ -11,13 +11,13 @@ const RewardsTab = dynamic(
 
 export default function Tokens(): JSX.Element {
   const seo: NextSeoProps = {
-    title: "Crater Club: Rewards",
+    title: "Crater Club: Tickets",
     description:
       "Crater is where you join live streams with the mentors & creators you follow, get to network with like-minds, and can claim exclusive access to mentors & creator by buying their tokens at the live auction",
   };
 
   return (
-    <TokenPageLayout seo={seo}>
+    <TokenPageLayout seo={seo} activeTab="tickets">
       <RewardsListProvider>
         <RewardsTab />
       </RewardsListProvider>

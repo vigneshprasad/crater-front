@@ -4,8 +4,9 @@ import useSWR from "swr";
 
 import { useRouter } from "next/router";
 
-import { Text, Box, Grid, Span } from "@/common/components/atoms";
+import { Text, Box, Grid, Link } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useCreatorWithCoin from "@/creators/context/CreatorWithCoinContext";
 import { Creator } from "@/creators/types/creator";
@@ -33,7 +34,7 @@ export default function TokensTab(): JSX.Element {
     undefined
   );
   const router = useRouter();
-  const { space, colors } = useTheme();
+  const { space } = useTheme();
   const { rewards } = useRewardsList();
 
   const scrollToRewards = useCallback(() => {
@@ -56,6 +57,7 @@ export default function TokensTab(): JSX.Element {
     }
   }, [router, creators, setActiveCreator]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: coin } = useSWR<Coin>(
     activeCreator
       ? API_URL_CONSTANTS.coins.getCointForCreator(activeCreator.id)
@@ -74,6 +76,9 @@ export default function TokensTab(): JSX.Element {
 
   return (
     <Box px={[space.xxs, space.s]}>
+      <Text my={space.xxs} fontSize={["1.6rem"]}>
+        Buy tokens at the auction, which are used to claim tickets
+      </Text>
       <CreatorTokenSlider
         mt={space.s}
         creators={creators}
@@ -82,8 +87,8 @@ export default function TokensTab(): JSX.Element {
       />
 
       <Text my={space.xs} textStyle="headline4">
-        {activeCreator?.profile_detail.name}{" "}
-        <Span color={colors.accent}>{coin?.display.symbol}</Span>
+        {activeCreator?.profile_detail.name}
+        {"'s"} Tokens
       </Text>
 
       <Grid
@@ -112,20 +117,27 @@ export default function TokensTab(): JSX.Element {
           >
             <Button
               variant="outline-small"
-              text="View Rewards"
+              text="View Access Passes"
               onClick={() => scrollToRewards()}
             />
 
-            <Button
-              variant="outline-small"
-              text={`About ${coin?.display.symbol}`}
-            />
+            {activeCreator?.slug && (
+              <Link href={PageRoutes.creatorProfile(activeCreator?.slug)}>
+                <Button
+                  variant="outline-small"
+                  text={`About ${activeCreator?.profile_detail.name}`}
+                />
+              </Link>
+            )}
           </Grid>
         </AuctionDetailBox>
       </Grid>
 
-      <Text my={space.xs} textStyle="title">
-        Recent Drops
+      <Text my={space.xxxs} textStyle="headline6">
+        Ticket Drops
+      </Text>
+      <Text mb={space.s}>
+        Claim tickets via tokens to get exclusive access to the creator/educator
       </Text>
 
       <Grid

@@ -12,7 +12,6 @@ import {
   Form,
   GridProps,
   Shimmer,
-  Link,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { LEARN_MORE_URL } from "@/common/constants/ui.constants";
@@ -139,14 +138,17 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
             text="Place a bid"
           /> */}
 
-          <Link
+          <Box
+            as="a"
+            textAlign="center"
             href={LEARN_MORE_URL}
-            boxProps={{ target: "_blank", textAlign: "center" }}
+            target="_blank"
+            rel="noreferrer"
           >
             <Text textStyle="button" color={colors.accent}>
               Learn More
             </Text>
-          </Link>
+          </Box>
         </Box>
       ) : (
         <ChatRules />

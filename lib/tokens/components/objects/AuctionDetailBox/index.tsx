@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
-import { Flex, Text, Span, Box, Link } from "@/common/components/atoms";
+import { Flex, Text, Span, Box } from "@/common/components/atoms";
 import { LEARN_MORE_URL } from "@/common/constants/ui.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Auction } from "@/tokens/types/tokens";
@@ -56,20 +56,22 @@ export default function AuctionDetailBox({
             })()}
           </Flex>
           <Flex>
-            <Link
+            <Box
+              as="a"
+              textAlign="center"
+              target="_blank"
               href={LEARN_MORE_URL}
-              boxProps={{ target: "_blank", textAlign: "center" }}
             >
               <Text textStyle="button" color={colors.accent}>
                 Learn More
               </Text>
-            </Link>
+            </Box>
           </Flex>
         </Box>
         <Flex gridGap={space.s} alignItems="center">
           <Flex w={[124]} h={56} bg={colors.greenDeep} borderRadius={4}>
             <Text textStyle="buttonLarge" m="auto auto">
-              Place Bid
+              Place a Bid
             </Text>
           </Flex>
 
@@ -84,13 +86,13 @@ export default function AuctionDetailBox({
         <Flex gridGap={space.s} alignItems="center">
           <Flex w={[124]} h={56} bg={colors.red[1]} borderRadius={4}>
             <Text textStyle="buttonLarge" m="auto auto">
-              Buy
+              Sell Tokens
             </Text>
           </Flex>
 
           <Box>
             <Text textStyle="label" color={colors.slate}>
-              Coming Soon
+              Coming Soon (April 2022)
             </Text>
           </Box>
         </Flex>
