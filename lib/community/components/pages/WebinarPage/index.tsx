@@ -177,9 +177,11 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
               })}
             </Flex>
 
-            <Text textStyle="headline5" my={space.xs}>
-              Get Exclusive Access
-            </Text>
+            {rewards && rewards.length > 0 && (
+              <Text textStyle="headline5" my={space.xs}>
+                Get Exclusive Access
+              </Text>
+            )}
 
             <RewardsList
               loading={rewardsLoading}

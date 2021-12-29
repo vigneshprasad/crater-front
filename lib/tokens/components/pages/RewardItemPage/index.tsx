@@ -269,17 +269,19 @@ export default function RewardItemPage(): JSX.Element {
           </Box>
         </Grid>
 
-        <Box gridColumn="1 / span 2">
-          <Text my={space.xs} textStyle="headline6">
-            Explore more
-          </Text>
+        {filteredRewards && filteredRewards.length > 0 && (
+          <Box gridColumn="1 / span 2">
+            <Text my={space.xs} textStyle="headline6">
+              Explore more
+            </Text>
 
-          <RewardsList
-            rewards={filteredRewards}
-            loading={rewardsLoading}
-            split={false}
-          />
-        </Box>
+            <RewardsList
+              rewards={filteredRewards}
+              loading={rewardsLoading}
+              split={false}
+            />
+          </Box>
+        )}
       </AnimatedBox>
     </>
   );

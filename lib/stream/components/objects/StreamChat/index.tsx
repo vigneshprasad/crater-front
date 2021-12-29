@@ -24,8 +24,6 @@ import useStreamChat from "@/stream/hooks/useStreamChat";
 import { ChatMessageType } from "@/stream/types/streamChat";
 import useAuctionsList from "@/tokens/context/AuctionListContext";
 
-import ChatRules from "../ChatRules";
-
 interface IProps extends GridProps {
   stream: Webinar;
 }
@@ -151,7 +149,18 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
           </Box>
         </Box>
       ) : (
-        <ChatRules />
+        <Box pt={space.xxs} pb={space.xxxs} bg={colors.black[5]}>
+          <Text textAlign="center">
+            Creator has not launched an auction yet
+          </Text>
+
+          <Button
+            disabled
+            variant="small"
+            m={`${space.xxxs}px auto`}
+            text="Place a bid"
+          />
+        </Box>
       )}
 
       <Box
