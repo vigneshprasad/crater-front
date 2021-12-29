@@ -12,6 +12,7 @@ export { default as ChevronRight } from "./ChevronRight";
 export { default as Close } from "./Close";
 export { default as Community } from "./Community";
 export { default as ContentCopy } from "./ContentCopy";
+export { default as Discord } from "./Discord";
 export { default as ExpandMore } from "./ExpandMore";
 export { default as Eye } from "./Eye";
 export { default as FileUpload } from "./FileUpload";

@@ -13,3 +13,9 @@ const Video = styled(Box)<Props>`
 export default function BackgroundVideo({ ...props }: Props): JSX.Element {
   return <Video as="video" {...props} />;
 }
+
+BackgroundVideo.defaultProps = {
+  autoPlay: true,
+  loop: true,
+  muted: true,
+};
