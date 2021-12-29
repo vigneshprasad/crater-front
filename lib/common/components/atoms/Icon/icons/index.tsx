@@ -1,4 +1,3 @@
-export { default as Wallet } from "./Wallet";
 export { default as AccountCircle } from "./AccountCircle";
 export { default as Activity } from "./Activity";
 export { default as AtSign } from "./AtSign";
@@ -13,6 +12,7 @@ export { default as ChevronRight } from "./ChevronRight";
 export { default as Close } from "./Close";
 export { default as Community } from "./Community";
 export { default as ContentCopy } from "./ContentCopy";
+export { default as Discord } from "./Discord";
 export { default as ExpandMore } from "./ExpandMore";
 export { default as Eye } from "./Eye";
 export { default as FileUpload } from "./FileUpload";
@@ -34,3 +34,4 @@ export { default as Tv } from "./Tv";
 export { default as Twitter } from "./Twitter";
 export { default as User } from "./User";
 export { default as Users } from "./Users";
+export { default as Wallet } from "./Wallet";

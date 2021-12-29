@@ -84,4 +84,4 @@ export const USER_NAV_DROPDOWN_ITEMS: IMenuItem[] = [
 ];
 
 export const LEARN_MORE_URL =
-  "//voltaic-tie-088.notion.site/Welcome-to-Crater-Club-03d3849b9ae940619a111a737652f41d/";
+  "https://crater-club.notion.site/crater-club/Welcome-to-Crater-Club-03d3849b9ae940619a111a737652f41d";

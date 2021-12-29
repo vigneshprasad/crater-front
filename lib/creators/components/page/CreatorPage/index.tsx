@@ -137,8 +137,8 @@ export default function CreatorPage({
             </Flex>
 
             <Text color={colors.slate}>{`${
-              creator.number_of_subscribers
-                ? creator.number_of_subscribers.toLocaleString()
+              creator.subscriber_count
+                ? creator.subscriber_count.toLocaleString()
                 : 0
             } Followers`}</Text>
           </Box>

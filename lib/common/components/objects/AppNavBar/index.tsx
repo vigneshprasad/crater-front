@@ -1,17 +1,28 @@
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 import { PageRoutes } from "@/common/constants/route.constants";
+import { LEARN_MORE_URL } from "@/common/constants/ui.constants";
 import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 
-import { AnimatedBox, Flex, Box, Grid } from "../../atoms";
+import { AnimatedBox, Flex, Box, Grid, Text, Icon } from "../../atoms";
 import { Button } from "../../atoms/Button";
 import IconButton from "../../atoms/IconButton";
 import { Logo } from "../Logo";
 import UserDropdown from "../UserDropdown";
+
+const RoundedButton = styled(Grid)`
+  background: #5865f2;
+  padding: 4px 8px;
+  border-radius: 4px;
+
+  &:hover {
+    background: #404cc5;
+  }
+`;
 
 export default function AppNavBar(): JSX.Element {
   const router = useRouter();
@@ -53,6 +64,33 @@ export default function AppNavBar(): JSX.Element {
         alignItems="center"
         gridGap={space.xxs}
       >
+        <Flex
+          display={["none", "flex"]}
+          alignItems="center"
+          gridGap={space.xxs}
+        >
+          <a
+            href="https://discord.gg/HnfBBbTa"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <RoundedButton
+              alignItems="center"
+              gridTemplateColumns="max-content 1fr"
+              gridGap={space.xxxs}
+            >
+              <Icon icon="Discord" size={18} />
+              <Text textStyle="button">Community</Text>
+            </RoundedButton>
+          </a>
+
+          <a href={LEARN_MORE_URL} target="_blank" rel="noreferrer">
+            <Text textStyle="button" color={colors.accent}>
+              White Paper
+            </Text>
+          </a>
+        </Flex>
+
         {(() => {
           if (loading) {
             return (

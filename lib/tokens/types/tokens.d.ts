@@ -54,4 +54,6 @@ export interface Reward {
   creator_coin_detail: Coin;
   description?: string;
   photo_mime_type: string;
+  text_color: string;
+  title?: string;
 }

@@ -8,7 +8,7 @@ export type Creator = {
   default_community: Community;
   follower_count: number;
   id: number;
-  number_of_subscribers: number;
+  subscriber_count: number;
   profile_detail: Profile;
   type?: string;
   user: string;

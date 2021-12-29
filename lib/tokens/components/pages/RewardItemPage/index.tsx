@@ -168,7 +168,7 @@ export default function RewardItemPage(): JSX.Element {
             py={space.xs}
           >
             <Link href={PageRoutes.tickets}>
-              <BreadCrumb textStyle="breadCrumb">Rewards</BreadCrumb>
+              <BreadCrumb textStyle="breadCrumb">Tickets</BreadCrumb>
             </Link>
 
             <Icon icon="ChevronRight" color={colors.accent} />
@@ -176,7 +176,7 @@ export default function RewardItemPage(): JSX.Element {
             <Link
               href={PageRoutes.creatorProfile(
                 reward.creator_coin_detail.creator_detail.slug,
-                "rewards"
+                "token"
               )}
             >
               <BreadCrumb textStyle="breadCrumb">

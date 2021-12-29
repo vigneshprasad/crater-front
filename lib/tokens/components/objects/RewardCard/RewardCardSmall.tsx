@@ -29,7 +29,15 @@ export default function RewardCardSmall({
   reward,
   ...rest
 }: IProps): JSX.Element {
-  const { name, photo, creator_coin_detail, id, photo_mime_type } = reward;
+  const {
+    name,
+    photo,
+    creator_coin_detail,
+    id,
+    photo_mime_type,
+    title,
+    text_color,
+  } = reward;
   const { radii, space, colors } = useTheme();
 
   const preview = useMemo(() => {
@@ -76,7 +84,9 @@ export default function RewardCardSmall({
       >
         {preview}
         <Box position="relative" p={space.xxs}>
-          <Text textStyle="headline5">{name}</Text>
+          <Text textStyle="headline5" color={text_color}>
+            {title ?? name}
+          </Text>
         </Box>
       </Link>
     </AnimatedBox>

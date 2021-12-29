@@ -45,6 +45,7 @@ export default function RewardCardLarge({
     remaining_quantity,
     id,
     photo_mime_type,
+    title,
   } = reward;
   const { borders, radii, space, colors } = useTheme();
 
@@ -104,7 +105,7 @@ export default function RewardCardLarge({
         {preview}
 
         <Text marginTop={space.xxs} textStyle="title">
-          {name}
+          {title ?? name}
         </Text>
         <Flex justifyContent="space-between">
           <Box>
