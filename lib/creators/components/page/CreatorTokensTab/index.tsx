@@ -31,7 +31,7 @@ export default function CreatorTokensTab(): JSX.Element {
           )}
         </Box>
 
-        <AuctionDetailBox auction={auctions?.[0]} />
+        <AuctionDetailBox auction={auctions?.[0]} creator={creator} />
       </Grid>
 
       <Text my={space.xs} textStyle="title">

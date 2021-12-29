@@ -41,7 +41,7 @@ export default function AppNavBar(): JSX.Element {
       borderBottom={`2px solid ${borders.main}`}
       px={[space.xxs, space.xs]}
       py={[space.xxxs]}
-      gridTemplateColumns="min-content 1fr min-content"
+      gridTemplateColumns="max-content 1fr min-content"
       alignItems="center"
     >
       <Flex>
@@ -54,18 +54,10 @@ export default function AppNavBar(): JSX.Element {
           />
         )}
         <Logo withText onClick={handleLogoClick} />
-      </Flex>
 
-      <Box />
-
-      <Grid
-        gridAutoFlow="column"
-        gridAutoColumns="max-content"
-        alignItems="center"
-        gridGap={space.xxs}
-      >
         <Flex
           display={["none", "flex"]}
+          px={space.xxs}
           alignItems="center"
           gridGap={space.xxs}
         >
@@ -90,7 +82,16 @@ export default function AppNavBar(): JSX.Element {
             </Text>
           </a>
         </Flex>
+      </Flex>
 
+      <Box />
+
+      <Grid
+        gridAutoFlow="column"
+        gridAutoColumns="max-content"
+        alignItems="center"
+        gridGap={space.xxs}
+      >
         {(() => {
           if (loading) {
             return (

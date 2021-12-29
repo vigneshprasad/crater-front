@@ -11,7 +11,7 @@ import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useCreatorWithCoin from "@/creators/context/CreatorWithCoinContext";
 import { Creator } from "@/creators/types/creator";
 import useRewardsList from "@/tokens/context/RewardsListContext";
-import { Auction, Coin } from "@/tokens/types/tokens";
+import { Auction } from "@/tokens/types/tokens";
 
 import AuctionDetailBox from "../../objects/AuctionDetailBox";
 import { CreatorTokenSlider } from "../../objects/CreatorTokenSlider";
@@ -57,12 +57,6 @@ export default function TokensTab(): JSX.Element {
     }
   }, [router, creators, setActiveCreator]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data: coin } = useSWR<Coin>(
-    activeCreator
-      ? API_URL_CONSTANTS.coins.getCointForCreator(activeCreator.id)
-      : null
-  );
   const { data: auctions } = useSWR<Auction[]>(
     activeCreator
       ? `${API_URL_CONSTANTS.coins.getAuctions}?coin__creator=${activeCreator.id}`
@@ -106,7 +100,7 @@ export default function TokensTab(): JSX.Element {
           )}
         </Box>
 
-        <AuctionDetailBox auction={activeAuction}>
+        <AuctionDetailBox auction={activeAuction} creator={activeCreator}>
           <Grid
             px={[space.xxxs, space.xxs]}
             py={space.s}
@@ -117,7 +111,7 @@ export default function TokensTab(): JSX.Element {
           >
             <Button
               variant="outline-small"
-              text="View Access Passes"
+              text="View Tickets"
               onClick={() => scrollToRewards()}
             />
 
@@ -133,7 +127,7 @@ export default function TokensTab(): JSX.Element {
         </AuctionDetailBox>
       </Grid>
 
-      <Text my={space.xxxs} textStyle="headline6">
+      <Text mt={space.s} textStyle="headline5">
         Ticket Drops
       </Text>
       <Text mb={space.s}>
