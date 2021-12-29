@@ -6,6 +6,7 @@ import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ApiResult, PageResponse } from "@/common/types/api";
 
 import { CommunityMember, Webinar } from "../../community/types/community";
+import { Reward } from "../../tokens/types/tokens";
 import { Creator } from "../types/creator";
 import { CreateWebinar, StreamFormArgs } from "../types/stream";
 
@@ -30,6 +31,11 @@ interface ICreatorApiClient {
   postFollowCreator: (
     community: number
   ) => Promise<ApiResult<CommunityMember, AxiosError>>;
+  getAllRewards: (slug?: string) => Promise<ApiResult<Reward[], AxiosError>>;
+  retrieveReward: (
+    id: string | number
+  ) => Promise<ApiResult<Reward, AxiosError>>;
+  getCreatorsWithCoins: () => Promise<ApiResult<Creator[], AxiosError>>;
 }
 
 export default function CreatorApiClient(
@@ -149,6 +155,46 @@ export default function CreatorApiClient(
     }
   }
 
+  async function getAllRewards(
+    slug?: string
+  ): Promise<ApiResult<Reward[], AxiosError>> {
+    const url = slug
+      ? `${API_URL_CONSTANTS.rewards.rewardsList}?creator__slug=${slug}`
+      : API_URL_CONSTANTS.rewards.rewardsList;
+    try {
+      const { data } = await client.get<Reward[]>(url);
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function retrieveReward(
+    id: string | number
+  ): Promise<ApiResult<Reward, AxiosError>> {
+    try {
+      const { data } = await client.get<Reward>(
+        `${API_URL_CONSTANTS.rewards.rewardsList}${id}/`
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function getCreatorsWithCoins(): Promise<
+    ApiResult<Creator[], AxiosError>
+  > {
+    try {
+      const { data } = await client.get<Creator[]>(
+        API_URL_CONSTANTS.creator.withCoins
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getCreatorsList,
     getCreator,
@@ -158,5 +204,8 @@ export default function CreatorApiClient(
     getCommunityMemebers,
     postStream,
     postFollowCreator,
+    getAllRewards,
+    retrieveReward,
+    getCreatorsWithCoins,
   };
 }
