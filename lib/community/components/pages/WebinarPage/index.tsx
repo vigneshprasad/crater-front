@@ -4,6 +4,7 @@ import { useTheme } from "styled-components";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
+import useAuth from "@/auth/context/AuthContext";
 import {
   Avatar,
   Box,
@@ -19,6 +20,7 @@ import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useWebinar } from "@/community/context/WebinarContext";
+import { useFollower } from "@/creators/context/FollowerContext";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 import StreamChat from "@/stream/components/objects/StreamChat";
 
@@ -54,6 +56,13 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
   // const { upcoming, loading: upcomingLoading } = useUpcomingStreams();
   const { dyteParticipant, error } = useDyteWebinar();
   const router = useRouter();
+  const { user } = useAuth();
+  const {
+    followers,
+    loading: followersLoading,
+    subscribeCreator,
+    unsubscribeCreator,
+  } = useFollower();
 
   // Handle Dyte participant request error
   useEffect(() => {
@@ -69,7 +78,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
     return ["1fr", "3fr 1fr"];
   }, [webinar]);
 
-  if (loading || !webinar) return <Box>Loading...</Box>;
+  if (loading || !webinar || followersLoading) return <Box>Loading...</Box>;
 
   return (
     <BaseLayout aside={<AsideNav />} overflowY={["auto", "clip"]}>
@@ -107,12 +116,46 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             >
               <Text textStyle="headline5">{webinar.topic_detail?.name}</Text>
               <Flex>
-                {/* <Link
-                  href={`https://worknetwork.typeform.com/to/TmRSVFoi#session=${webinar.id}&phonenumber=${user?.phone_number}`}
-                  boxProps={{ target: "_blank" }}
-                >
-                  <Button mr={space.xxs} variant="nav-button" text="AMA" />
-                </Link> */}
+                {webinar.host === user?.pk ? undefined : followers &&
+                  followers.length > 0 ? (
+                  followers?.map((follower) =>
+                    follower.notify ? (
+                      <Button
+                        mr={space.xxs}
+                        variant="nav-button"
+                        bg={colors.black[5]}
+                        border="1px solid rgba(255, 255, 255, 0.1)"
+                        text="Unsubscribe"
+                        onClick={() => unsubscribeCreator(follower.id)}
+                      />
+                    ) : (
+                      <Button
+                        mr={space.xxs}
+                        variant="nav-button"
+                        text="Subscribe"
+                        onClick={() => {
+                          const creator =
+                            webinar.host_detail?.creator_detail?.id;
+                          if (creator) {
+                            subscribeCreator(creator);
+                          }
+                        }}
+                      />
+                    )
+                  )
+                ) : (
+                  <Button
+                    mr={space.xxs}
+                    variant="nav-button"
+                    text="Subscribe"
+                    onClick={() => {
+                      const creator = webinar.host_detail?.creator_detail?.id;
+                      if (creator) {
+                        subscribeCreator(creator);
+                      }
+                    }}
+                  />
+                )}
 
                 {webinar.host_profile_details?.primary_url && (
                   <Link
