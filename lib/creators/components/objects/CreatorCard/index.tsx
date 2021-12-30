@@ -15,10 +15,8 @@ type Props = {
 };
 
 const CreatorCard = forwardRef<HTMLDivElement, Props>(
-  ({ slug, image, name, followers }, ref) => {
+  ({ slug, image, name }, ref) => {
     const { space, colors } = useTheme();
-    const thousandMultiple = Math.round(followers / 100) / 10;
-    const formatted = `${thousandMultiple}K`;
     return (
       <Link href={PageRoutes.creatorProfile(slug)}>
         <Grid ref={ref}>
@@ -51,9 +49,6 @@ const CreatorCard = forwardRef<HTMLDivElement, Props>(
 
           <Box py={space.xxs}>
             <Text textStyle="title">{name}</Text>
-            <Text color={colors.slate} textStyle="body">
-              {formatted} Followers
-            </Text>
           </Box>
         </Grid>
       </Link>
