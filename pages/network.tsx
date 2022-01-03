@@ -34,8 +34,12 @@ export default function ClubsTabPage({ creators }: PageProps): JSX.Element {
   };
 
   return (
-    <HomePageLayout seo={seo} activeTab="community" heading="Network">
-      <CreatorListProvider initial={creators}>
+    <HomePageLayout
+      seo={seo}
+      activeTab="community"
+      heading="Creators & Educators"
+    >
+      <CreatorListProvider pageSize={20} initial={creators}>
         <MetaProvider fetchKeys={["user_tags"]}>
           <CommunityPage />
         </MetaProvider>
