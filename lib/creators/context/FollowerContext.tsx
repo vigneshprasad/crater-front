@@ -1,4 +1,10 @@
-import { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useMemo,
+} from "react";
 import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
@@ -38,30 +44,36 @@ export function FollowerProvider({
       : null
   );
 
-  const subscribeCreator = async (creator: number): Promise<void> => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [res, err] = await CreatorApiClient().subscribeCreator(creator);
+  const subscribeCreator = useCallback(
+    async (creator: number): Promise<void> => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [_, err] = await CreatorApiClient().subscribeCreator(creator);
 
-    if (err) {
-      return;
-    }
+      if (err) {
+        return;
+      }
 
-    mutateFollowers();
-  };
+      mutateFollowers();
+    },
+    [mutateFollowers]
+  );
 
-  const unsubscribeCreator = async (follower: number): Promise<void> => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [res, err] = await CreatorApiClient().unsubscribeCreator(
-      follower,
-      false
-    );
+  const unsubscribeCreator = useCallback(
+    async (follower: number): Promise<void> => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [_, err] = await CreatorApiClient().unsubscribeCreator(
+        follower,
+        false
+      );
 
-    if (err) {
-      return;
-    }
+      if (err) {
+        return;
+      }
 
-    mutateFollowers();
-  };
+      mutateFollowers();
+    },
+    [mutateFollowers]
+  );
 
   const value: IFollowerState = useMemo(
     () => ({
@@ -72,8 +84,7 @@ export function FollowerProvider({
       subscribeCreator,
       unsubscribeCreator,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [followers, error, mutateFollowers]
+    [followers, error, mutateFollowers, subscribeCreator, unsubscribeCreator]
   );
 
   return <FollowerContext.Provider value={value} {...rest} />;
