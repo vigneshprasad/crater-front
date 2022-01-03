@@ -1,15 +1,18 @@
 import { NextSeoProps } from "next-seo";
 import HeaderImage from "public/images/img_creatorhub_header.png";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useMemo } from "react";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
 import Image from "next/image";
 
-import { Box, Text, Span } from "@/common/components/atoms";
+import { Box, Text, Span, Link } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
-import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
+import {
+  BaseTabBar,
+  BaseTabItem,
+} from "@/common/components/objects/BaseTabBar";
 import Page from "@/common/components/objects/Page";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { Creator } from "@/creators/types/creator";
@@ -36,11 +39,44 @@ export default function CreatorHubPage({
 
   const count = userCount && userCount.count.toLocaleString();
 
-  const tabs = ["stream", "faq"];
+  const tabs = useMemo(() => {
+    if (!creator) {
+      return undefined;
+    }
 
-  if (creator?.show_club_members) {
-    tabs.push("club_members");
-  }
+    if (creator.show_club_members) {
+      return {
+        stream: (
+          <Link href="/creatorhub/stream">
+            <BaseTabItem label="Streams" />
+          </Link>
+        ),
+        faq: (
+          <Link href="/creatorhub/faq">
+            <BaseTabItem label="Faq" />
+          </Link>
+        ),
+        club_members: (
+          <Link href="/creatorhub/club_members">
+            <BaseTabItem label="Club Members" />
+          </Link>
+        ),
+      };
+    }
+
+    return {
+      stream: (
+        <Link href="/creatorhub/stream">
+          <BaseTabItem label="Streams" />
+        </Link>
+      ),
+      faq: (
+        <Link href="/creatorhub/faq">
+          <BaseTabItem label="Faq" />
+        </Link>
+      ),
+    };
+  }, [creator]);
 
   return (
     <Page seo={seo}>
@@ -66,7 +102,7 @@ export default function CreatorHubPage({
           </Text>
         </Box>
 
-        <BaseTabBar baseUrl="/creatorhub/" tabs={tabs} active={selectedTab} />
+        {tabs && <BaseTabBar tabs={tabs} activeTab={selectedTab} />}
         {children}
       </BaseLayout>
     </Page>

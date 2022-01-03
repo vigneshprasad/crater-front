@@ -86,6 +86,7 @@ export default function CreatorPage({
   const joinCommunity = async (): Promise<void> => {
     if (creator) {
       setPostLoading(true);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [res, err] = await CreatorApiClient().postFollowCreator(creator.id);
 
       setPostLoading(false);
@@ -94,7 +95,6 @@ export default function CreatorPage({
         return;
       }
 
-      console.log(res);
       mutateCreator();
     }
   };
@@ -144,8 +144,8 @@ export default function CreatorPage({
             </Flex>
 
             <Text color={colors.slate}>{`${
-              creator.number_of_subscribers
-                ? creator.number_of_subscribers.toLocaleString()
+              creator.subscriber_count
+                ? creator.subscriber_count.toLocaleString()
                 : 0
             } Followers`}</Text>
           </Box>
@@ -202,7 +202,7 @@ export default function CreatorPage({
             top: 0,
             zIndex: zIndices.navHeader,
           }}
-          tabs={["club", "streams", "about", "rewards", "token"]}
+          tabs={["club", "streams", "about", "token"]}
           baseUrl={`/creator/${creator.slug}`}
         />
         {children}

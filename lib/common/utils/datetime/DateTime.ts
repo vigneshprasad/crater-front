@@ -17,7 +17,6 @@ export default class DateTime extends LuxonDatetime {
       .replace("T", " ")
       .replace(/\d\d\d\d\d\d/, "")
       .replace(".", "");
-    console.log("FORMATTED", formatted);
     return LuxonDatetime.fromFormat(
       formatted,
       "yyyy-MM-dd HH:mm:ss ZZZ"

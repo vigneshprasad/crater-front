@@ -41,7 +41,7 @@ export default function Home({ liveStreams, upcoming }: IProps): JSX.Element {
         description:
           "Crater is where you join live streams with the mentors & creators you follow, get to network with like-minds, and can claim exclusive access to mentors & creator by buying their tokens at the live auction",
       }}
-      heading="Featured"
+      heading="Livestreams"
       activeTab="streams"
     >
       <LiveStreamsProvider initial={liveStreams}>

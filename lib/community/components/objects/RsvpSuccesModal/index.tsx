@@ -72,6 +72,7 @@ export default function RsvpSuccesModal({
         <Link
           passHref
           href={`//www.linkedin.com/shareArticle?mini=true&url=${url}&title=${group.topic_detail?.name}`}
+          prefetch={false}
           boxProps={{ target: "_blank" }}
         >
           <Button
@@ -87,6 +88,7 @@ export default function RsvpSuccesModal({
         <Link
           passHref
           href={`//twitter.com/share?text=${group.topic_detail?.name}&url=${url}`}
+          prefetch={false}
           boxProps={{ target: "_blank" }}
         >
           <Button

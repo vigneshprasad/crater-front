@@ -42,8 +42,21 @@ export function Modal({
   }, []);
 
   useEffect(() => {
+    // const escHandler = (e: React.KeyboardEvent): void => {
+    //   if (e.keyCode === 27) {
+    //     onClose && onClose();
+    //   }
+    // };
     setShowModal(visible);
-  }, [visible]);
+
+    // if (visible) {
+    //   document.addEventListener("keypress", escHandler);
+    // }
+
+    // return () => {
+    //   document.removeEventListener("keypress", escHandler);
+    // };
+  }, [visible, onClose]);
 
   if (!node) return null;
 

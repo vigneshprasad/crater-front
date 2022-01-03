@@ -1,5 +1,7 @@
 import { theme } from "lib/common/theme";
 import { Provider } from "next-auth/client";
+import { useEffect } from "react";
+import OneSignal from "react-onesignal";
 import { ThemeProvider } from "styled-components";
 import { SWRConfig } from "swr";
 
@@ -17,6 +19,12 @@ import GlobalStyle from "../lib/common/styles/global.styled";
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const { session, user, profile } = pageProps;
+
+  useEffect(() => {
+    OneSignal.init({
+      appId: "a8d5ac89-ade7-4394-8d2d-6b093a430f88",
+    });
+  }, []);
   return (
     <SWRConfig
       value={{

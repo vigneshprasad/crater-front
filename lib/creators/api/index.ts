@@ -10,6 +10,7 @@ import {
   Follower,
   Webinar,
 } from "../../community/types/community";
+import { Reward } from "../../tokens/types/tokens";
 import { Creator } from "../types/creator";
 import { CreateWebinar, StreamFormArgs } from "../types/stream";
 
@@ -41,6 +42,11 @@ interface ICreatorApiClient {
     follower: number,
     notify: boolean
   ) => Promise<ApiResult<Follower, AxiosError>>;
+  getAllRewards: (slug?: string) => Promise<ApiResult<Reward[], AxiosError>>;
+  retrieveReward: (
+    id: string | number
+  ) => Promise<ApiResult<Reward, AxiosError>>;
+  getCreatorsWithCoins: () => Promise<ApiResult<Creator[], AxiosError>>;
 }
 
 export default function CreatorApiClient(
@@ -170,6 +176,34 @@ export default function CreatorApiClient(
           creator,
         }
       );
+
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function getAllRewards(
+    slug?: string
+  ): Promise<ApiResult<Reward[], AxiosError>> {
+    const url = slug
+      ? `${API_URL_CONSTANTS.rewards.rewardsList}?creator__slug=${slug}`
+      : API_URL_CONSTANTS.rewards.rewardsList;
+    try {
+      const { data } = await client.get<Reward[]>(url);
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function retrieveReward(
+    id: string | number
+  ): Promise<ApiResult<Reward, AxiosError>> {
+    try {
+      const { data } = await client.get<Reward>(
+        `${API_URL_CONSTANTS.rewards.rewardsList}${id}/`
+      );
       return [data, undefined];
     } catch (err) {
       return [undefined, err as AxiosError];
@@ -186,6 +220,20 @@ export default function CreatorApiClient(
         {
           notify,
         }
+      );
+
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function getCreatorsWithCoins(): Promise<
+    ApiResult<Creator[], AxiosError>
+  > {
+    try {
+      const { data } = await client.get<Creator[]>(
+        API_URL_CONSTANTS.creator.withCoins
       );
       return [data, undefined];
     } catch (err) {
@@ -204,5 +252,8 @@ export default function CreatorApiClient(
     postFollowCreator,
     subscribeCreator,
     unsubscribeCreator,
+    getAllRewards,
+    retrieveReward,
+    getCreatorsWithCoins,
   };
 }

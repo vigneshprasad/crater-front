@@ -1,8 +1,6 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
-import styled, { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import { Box, Text } from "@/common/components/atoms";
 import CreatorPageLayout from "@/creators/components/layouts/CreatorPageLayout";
 import CreatorPage, {
   CreatorPageParams,
@@ -10,11 +8,10 @@ import CreatorPage, {
   getCreatorStaticPaths,
   getCreatorStaticProps,
 } from "@/creators/components/page/CreatorPage";
+import CreatorTokensTab from "@/creators/components/page/CreatorTokensTab";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
-
-const Span = styled.span`
-  color: ${({ theme }) => theme.colors.accent};
-`;
+import { AuctionListProvider } from "@/tokens/context/AuctionListContext";
+import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
 
 export const getStaticPaths: GetStaticPaths<CreatorPageParams> =
   getCreatorStaticPaths;
@@ -27,7 +24,6 @@ export const getStaticProps: GetStaticProps<
 type IProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function CreatorAbout({ slug, creator }: IProps): JSX.Element {
-  const { colors, space } = useTheme();
   const { user } = useAuth();
 
   return (
@@ -38,38 +34,11 @@ export default function CreatorAbout({ slug, creator }: IProps): JSX.Element {
     >
       <FollowerProvider creator={creator.id} user={user?.pk}>
         <CreatorPage selectedTab="token">
-          <Box
-            minHeight="200vh"
-            backgroundImage="url('/images/token_coming_soon.png')"
-          >
-            <Box
-              position="sticky"
-              top={300}
-              zIndex={10}
-              pt={[space.xs, space.m]}
-              mx={[space.xxxs, space.xxl]}
-            >
-              <Text
-                textStyle="headline3Bold"
-                color={colors.accent}
-                textAlign="center"
-                mb={space.xxs}
-              >
-                COMING SOON
-              </Text>
-              <Text
-                m="0 auto"
-                textStyle="headline6"
-                textAlign="center"
-                maxWidth={["100%", "50%"]}
-              >
-                Mentors &amp; creators will have a option to{" "}
-                <Span>auction</Span> tokens, think of them as tickets, for you
-                to buy to access their rewards. Helping you get exclusive access
-                &amp; them with price discovery &amp; monetization.
-              </Text>
-            </Box>
-          </Box>
+          <AuctionListProvider filterCreator={creator.id}>
+            <RewardsListProvider filterCreatorSlug={creator.slug}>
+              <CreatorTokensTab />
+            </RewardsListProvider>
+          </AuctionListProvider>
         </CreatorPage>
       </FollowerProvider>
     </CreatorPageLayout>

@@ -14,9 +14,12 @@ import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsCont
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar as WebinarType } from "@/community/types/community";
 import { Webinar } from "@/community/types/community";
+import CreatorApiClient from "@/creators/api";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
 import StreamChatProvider from "@/stream/providers/StreamChatProvider";
+import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
+import { Reward } from "@/tokens/types/tokens";
 
 const DynamicWebinarPage = dynamic(
   () => import("@/community/components/pages/WebinarPage")
@@ -30,6 +33,7 @@ interface WebinarPageProps {
   orgId: string;
   id: string;
   webinar: WebinarType;
+  rewards: Reward[];
 }
 
 export const getStaticPaths: GetStaticPaths<IParams> = async () => {
@@ -54,11 +58,15 @@ export const getStaticProps: GetStaticProps<WebinarPageProps, IParams> =
       };
     }
 
+    const slug = webinar.host_detail.creator_detail?.slug;
+    const [rewards] = await CreatorApiClient().getAllRewards(slug);
+
     return {
       props: {
         orgId,
         id,
         webinar,
+        rewards: rewards ?? [],
       },
     };
   };
@@ -69,6 +77,7 @@ export default function WebinarPage({
   orgId,
   webinar,
   id,
+  rewards,
 }: Props): JSX.Element {
   const router = useRouter();
   const { user } = useAuth();
@@ -102,7 +111,12 @@ export default function WebinarPage({
             <StreamChatProvider groupId={id}>
               <ChatReactionListProvider>
                 <UpcomingStreamsProvider>
-                  <DynamicWebinarPage orgId={orgId} id={id} />
+                  <RewardsListProvider
+                    initial={rewards}
+                    filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
+                  >
+                    <DynamicWebinarPage orgId={orgId} id={id} />
+                  </RewardsListProvider>
                 </UpcomingStreamsProvider>
               </ChatReactionListProvider>
             </StreamChatProvider>

@@ -6,7 +6,12 @@ import { Grid, BoxProps, Text, TextVariants } from "@/common/components/atoms";
 
 type ButtonElements = "button" | "a";
 
-type Variants = "full-width" | "dense" | "nav-button" | "outline-small";
+type Variants =
+  | "full-width"
+  | "dense"
+  | "nav-button"
+  | "outline-small"
+  | "small";
 
 export type ButtonProps = Omit<BoxProps, "variant"> &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -47,6 +52,11 @@ const StyledButton = styled(Grid)<ButtonProps>`
         width: "fit-content",
         borderColor: "#808191",
       },
+      small: {
+        minHeight: 32,
+        width: "fit-content",
+        borderRadius: 4,
+      },
     },
   })}
 
@@ -79,6 +89,7 @@ export function Button({
       dense: "buttonLarge",
       "nav-button": "button",
       "outline-small": "button",
+      small: "button",
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp]);
@@ -89,6 +100,7 @@ export function Button({
       "full-width": colors.accent,
       "nav-button": colors.accent,
       "outline-small": "transparent",
+      small: colors.accent,
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp, colors]);
