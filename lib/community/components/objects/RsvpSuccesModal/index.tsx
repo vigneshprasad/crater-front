@@ -40,7 +40,7 @@ export default function RsvpSuccesModal({
     setUrl(location);
   }, []);
 
-  if (followersLoading) return <Spinner />;
+  if (!followers || followersLoading) return <Spinner />;
 
   const text = `
     While you wait you
@@ -110,8 +110,8 @@ export default function RsvpSuccesModal({
           text="Explore other streams"
         />
       </Link>
-      {followers && followers.length > 0 ? (
-        followers?.map((follower) =>
+      {followers.length > 0 ? (
+        followers.map((follower) =>
           follower.notify ? (
             <Button
               mt={space.xs}

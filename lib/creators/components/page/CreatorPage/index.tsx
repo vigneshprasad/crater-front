@@ -99,7 +99,7 @@ export default function CreatorPage({
     }
   };
 
-  if (!creator || followersLoading) return <Box>Loading...</Box>;
+  if (!creator || !followers || followersLoading) return <Box>Loading...</Box>;
 
   return (
     <Box bg={colors.accent} minHeight="calc(100vh - 56px)">
@@ -167,8 +167,7 @@ export default function CreatorPage({
               return null;
             })()}
 
-            {creator.user === user?.pk ? undefined : followers &&
-              followers.length > 0 ? (
+            {creator.user === user?.pk ? undefined : followers.length > 0 ? (
               followers.map((follower) =>
                 follower.notify ? (
                   <Button

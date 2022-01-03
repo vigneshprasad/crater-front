@@ -83,7 +83,9 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
     return ["1fr", "3fr 1fr"];
   }, [webinar]);
 
-  if (loading || !webinar || followersLoading) return <Box>Loading...</Box>;
+  if (loading || !webinar || !followers || followersLoading) {
+    return <Box>Loading...</Box>;
+  }
 
   return (
     <BaseLayout aside={<AsideNav />} overflowY={["auto"]} overflowX="hidden">
@@ -123,9 +125,9 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             >
               <Text textStyle="headline5">{webinar.topic_detail?.name}</Text>
               <Flex>
-                {webinar.host === user?.pk ? undefined : followers &&
-                  followers.length > 0 ? (
-                  followers?.map((follower) =>
+                {webinar.host === user?.pk ? undefined : followers.length >
+                  0 ? (
+                  followers.map((follower) =>
                     follower.notify ? (
                       <Button
                         mr={space.xxs}
