@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -16,58 +17,65 @@ const Span = styled.span`
   color: ${({ theme }) => theme.colors.accent};
 `;
 
-export default function StreamCard({ stream, link }: IProps): JSX.Element {
-  const { space, radii } = useTheme();
-  const startTime = DateTime.parse(stream.start);
-  return (
-    <Link key={stream.id} href={link ?? `/session/${stream.id}`}>
-      <Grid gridGap={space.xs}>
-        <Box
-          h={180}
-          position="relative"
-          borderRadius={radii.xxs}
-          overflow="hidden"
-        >
-          {stream.topic_detail?.image && (
-            <Image
-              objectFit="cover"
-              layout="fill"
-              src={stream.topic_detail?.image}
-              alt={stream.topic_detail.name}
-            />
-          )}
+const StreamCard = forwardRef<HTMLDivElement, IProps>(
+  ({ stream, link }, ref) => {
+    const { space, radii } = useTheme();
+    const startTime = DateTime.parse(stream.start);
+    return (
+      <Link key={stream.id} href={link ?? `/session/${stream.id}`}>
+        <Grid gridGap={space.xs} ref={ref}>
           <Box
-            borderRadius={4}
-            py={2}
-            px={space.xxxs}
-            bg={colors.black[0]}
-            position="absolute"
-            top={space.xxxs}
-            left={space.xxxs}
+            h={180}
+            position="relative"
+            borderRadius={radii.xxs}
+            overflow="hidden"
           >
-            <Text textStyle="caption">
-              <Span>Live On</Span> {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
-            </Text>
+            {stream.topic_detail?.image && (
+              <Image
+                objectFit="cover"
+                layout="fill"
+                src={stream.topic_detail?.image}
+                alt={stream.topic_detail.name}
+              />
+            )}
+            <Box
+              borderRadius={4}
+              py={2}
+              px={space.xxxs}
+              bg={colors.black[0]}
+              position="absolute"
+              top={space.xxxs}
+              left={space.xxxs}
+            >
+              <Text textStyle="caption">
+                <Span>Live On</Span>{" "}
+                {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
+              </Text>
+            </Box>
           </Box>
-        </Box>
-        <Grid
-          gridTemplateColumns="min-content 1fr"
-          gridGap={space.xxs}
-          alignItems="center"
-        >
-          <Avatar
-            size={56}
-            alt={stream.host_detail?.name || ""}
-            image={stream.host_detail?.photo}
-          />
-          <Box>
-            <Text>{stream.topic_detail?.name}</Text>
-            <Text color={colors.slate} textStyle="caption">
-              {stream.host_detail?.name}
-            </Text>
-          </Box>
+          <Grid
+            gridTemplateColumns="min-content 1fr"
+            gridGap={space.xxs}
+            alignItems="center"
+          >
+            <Avatar
+              size={56}
+              alt={stream.host_detail?.name || ""}
+              image={stream.host_detail?.photo}
+            />
+            <Box>
+              <Text>{stream.topic_detail?.name}</Text>
+              <Text color={colors.slate} textStyle="caption">
+                {stream.host_detail?.name}
+              </Text>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </Link>
-  );
-}
+      </Link>
+    );
+  }
+);
+
+StreamCard.displayName = "StreamCard";
+
+export default StreamCard;
