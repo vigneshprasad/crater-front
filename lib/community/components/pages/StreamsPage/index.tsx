@@ -47,7 +47,8 @@ export default function StreamsPage(): JSX.Element {
     [_observer, pastStreamsLoading, setPastStreamsPage]
   );
 
-  if (liveStreamsLoading || !liveStreams || !upcoming) return <Spinner />;
+  if (liveStreamsLoading || !liveStreams || !upcoming || !past)
+    return <Spinner />;
 
   return (
     <>
@@ -79,13 +80,13 @@ export default function StreamsPage(): JSX.Element {
         px={space.s}
         gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
         gridGap={space.s}
-        ref={ref}
       >
-        {past?.map((stream) => (
+        {past?.map((stream, index) => (
           <StreamCard
             link={PageRoutes.streamVideo(stream.id)}
             stream={stream}
             key={stream.id}
+            ref={index == past.length - 1 ? ref : null}
           />
         ))}
       </Grid>
