@@ -3,7 +3,6 @@ import { SWRInfiniteResponse, useSWRInfinite } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
-import fetcher from "@/common/utils/fetcher";
 import { Webinar } from "@/community/types/community";
 
 interface IPastStreamState {
@@ -27,7 +26,7 @@ type IProviderProps = PropsWithChildren<{
 export function PastStreamProvider({
   host,
   initial,
-  pageSize = 10,
+  pageSize = 1,
   ...rest
 }: IProviderProps): JSX.Element {
   const {
@@ -43,11 +42,8 @@ export function PastStreamProvider({
         ? `${API_URL_CONSTANTS.groups.getPastWebinars}?host=${host}&page=${page}&page_size=${pageSize}`
         : `${API_URL_CONSTANTS.groups.getPastWebinars}?page=${page}&page_size=${pageSize}`;
     },
-    async (key: string) => {
-      return await fetcher<PageResponse<Webinar>>(key);
-    },
     {
-      initialData: initial ? [[...initial]] : undefined,
+      initialData: initial ? [initial] : undefined,
     }
   );
 
