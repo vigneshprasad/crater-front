@@ -14,7 +14,7 @@ import {
   Shimmer,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import { LEARN_MORE_URL } from "@/common/constants/ui.constants";
+import { LEARN_MORE_URL } from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import DateTime from "@/common/utils/datetime/DateTime";

@@ -1,10 +1,11 @@
+import comingSoonGraph from "public/images/img_graph_coming_soon.png";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import styled, { useTheme } from "styled-components";
 import useSWR from "swr";
 
 import { useRouter } from "next/router";
 
-import { Text, Box, Grid, Link } from "@/common/components/atoms";
+import { Text, Box, Grid, Link, Image } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
@@ -137,12 +138,15 @@ export default function TokensTab(): JSX.Element {
       <Grid
         ref={rewardsListRef}
         gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
+        mb={space.s}
         gridGap={space.xxs}
       >
         {rewards?.map((reward) => (
           <RewardCard type="large" reward={reward} key={reward.id} />
         ))}
       </Grid>
+
+      <Image src={comingSoonGraph} alt="Graph Coming Soon" />
     </Box>
   );
 }

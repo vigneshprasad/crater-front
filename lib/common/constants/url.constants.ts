@@ -91,3 +91,10 @@ export const API_URL_CONSTANTS = {
     getChatReactions: "/groups/conversations/chatreactions/",
   },
 };
+
+export const LEARN_MORE_URL =
+  "https://crater-about.notion.site/Welcome-to-Crater-Club-03d3849b9ae940619a111a737652f41d";
+
+export const DISCORD_URL = "https://discord.gg/WBBgYSD8YQ";
+
+export const ABOUT_URL = "http://www.joincrater.club/";

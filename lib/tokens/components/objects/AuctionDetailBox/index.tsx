@@ -3,7 +3,7 @@ import { useTheme } from "styled-components";
 import useSWR from "swr";
 
 import { Flex, Text, Span, Box } from "@/common/components/atoms";
-import { LEARN_MORE_URL } from "@/common/constants/ui.constants";
+import { LEARN_MORE_URL } from "@/common/constants/url.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Creator } from "@/creators/types/creator";

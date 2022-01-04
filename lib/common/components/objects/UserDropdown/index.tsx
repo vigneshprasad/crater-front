@@ -145,6 +145,28 @@ export default function UserDropdown({ profile, user }: IProps): JSX.Element {
                 );
               }
 
+              if (item.key == "about") {
+                return (
+                  <a
+                    key={item.key}
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <MenuItem
+                      borderRadius={radii.xxxs}
+                      px={space.xxxs}
+                      py={space.xxxs}
+                      gridTemplateColumns="max-content 1fr"
+                      gridGap={space.xxs}
+                    >
+                      <Icon color={colors.white[0]} icon={item.icon} />
+                      <Text textStyle="caption">{item.label}</Text>
+                    </MenuItem>
+                  </a>
+                );
+              }
+
               return (
                 <Link key={item.key} href={item.url} prefetch={false}>
                   <MenuItem
