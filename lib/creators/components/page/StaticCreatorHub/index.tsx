@@ -8,7 +8,7 @@ import { useTheme } from "styled-components";
 import Image from "next/image";
 
 import useAuth from "@/auth/context/AuthContext";
-import { Box, Text, Grid, Card, Link } from "@/common/components/atoms";
+import { Box, Text, Grid, Card } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
@@ -68,12 +68,13 @@ export default function StaticCreatorHub(): JSX.Element {
                 take care of everything. From helping you bring the crowd,
                 engaging your community &amp; monetizing your time.
               </Text>
-              <Link
-                href="//worknetwork.typeform.com/to/E1Y7pu0n"
-                boxProps={{ target: "_blank" }}
+              <a
+                href="https://calendly.com/craterclub/introduction-to-crater"
+                target="_blank"
+                rel="noreferrer"
               >
                 <Button text="Become a creator" />
-              </Link>
+              </a>
             </Box>
 
             <Box position="relative" h={[140, "100%"]}>
