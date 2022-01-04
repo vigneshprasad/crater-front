@@ -62,7 +62,7 @@ export default function AppNavBar(): JSX.Element {
           gridGap={space.xxs}
         >
           <a
-            href="https://discord.gg/HnfBBbTa"
+            href="https://discord.gg/WBBgYSD8YQ"
             target="_blank"
             rel="noreferrer"
           >
