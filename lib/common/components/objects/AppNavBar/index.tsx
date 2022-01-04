@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 import { PageRoutes } from "@/common/constants/route.constants";
-import { LEARN_MORE_URL } from "@/common/constants/ui.constants";
+import { DISCORD_URL, LEARN_MORE_URL } from "@/common/constants/url.constants";
 import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 
 import { AnimatedBox, Flex, Box, Grid, Text, Icon } from "../../atoms";
@@ -61,11 +61,7 @@ export default function AppNavBar(): JSX.Element {
           alignItems="center"
           gridGap={space.xxs}
         >
-          <a
-            href="https://discord.gg/WBBgYSD8YQ"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer">
             <RoundedButton
               alignItems="center"
               gridTemplateColumns="max-content 1fr"
