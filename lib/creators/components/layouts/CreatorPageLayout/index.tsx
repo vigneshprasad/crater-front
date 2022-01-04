@@ -1,10 +1,12 @@
 import { PropsWithChildren } from "react";
 
+import useAuth from "@/auth/context/AuthContext";
 import { BoxProps } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import Page from "@/common/components/objects/Page";
 import { CreatorProvider } from "@/creators/context/CreatorContext";
+import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { Creator } from "@/creators/types/creator";
 
 type IProps = PropsWithChildren<{
@@ -19,6 +21,7 @@ export default function CreatorPageLayout({
   children,
   baseContainerProps,
 }: IProps): JSX.Element {
+  const { user } = useAuth();
   return (
     <Page
       seo={{
@@ -27,13 +30,15 @@ export default function CreatorPageLayout({
       }}
     >
       <CreatorProvider initial={creator} slug={slug}>
-        <BaseLayout
-          aside={<AsideNav />}
-          overflowY="auto"
-          {...baseContainerProps}
-        >
-          {children}
-        </BaseLayout>
+        <FollowerProvider creator={creator.id} user={user?.pk}>
+          <BaseLayout
+            aside={<AsideNav />}
+            overflowY="auto"
+            {...baseContainerProps}
+          >
+            {children}
+          </BaseLayout>
+        </FollowerProvider>
       </CreatorProvider>
     </Page>
   );

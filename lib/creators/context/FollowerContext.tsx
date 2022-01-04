@@ -77,14 +77,21 @@ export function FollowerProvider({
 
   const value: IFollowerState = useMemo(
     () => ({
-      followers: followers?.results,
+      followers: user ? followers?.results : [],
       error,
-      loading: !followers && !error,
+      loading: !!user && !followers && !error,
       mutateFollowers,
       subscribeCreator,
       unsubscribeCreator,
     }),
-    [followers, error, mutateFollowers, subscribeCreator, unsubscribeCreator]
+    [
+      followers,
+      error,
+      mutateFollowers,
+      subscribeCreator,
+      unsubscribeCreator,
+      user,
+    ]
   );
 
   return <FollowerContext.Provider value={value} {...rest} />;

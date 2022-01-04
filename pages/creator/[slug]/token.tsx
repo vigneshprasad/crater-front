@@ -1,6 +1,5 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
-import useAuth from "@/auth/context/AuthContext";
 import CreatorPageLayout from "@/creators/components/layouts/CreatorPageLayout";
 import CreatorPage, {
   CreatorPageParams,
@@ -9,7 +8,6 @@ import CreatorPage, {
   getCreatorStaticProps,
 } from "@/creators/components/page/CreatorPage";
 import CreatorTokensTab from "@/creators/components/page/CreatorTokensTab";
-import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { AuctionListProvider } from "@/tokens/context/AuctionListContext";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
 
@@ -24,23 +22,19 @@ export const getStaticProps: GetStaticProps<
 type IProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function CreatorAbout({ slug, creator }: IProps): JSX.Element {
-  const { user } = useAuth();
-
   return (
     <CreatorPageLayout
       creator={creator}
       slug={slug}
       baseContainerProps={{ pb: 0 }}
     >
-      <FollowerProvider creator={creator.id} user={user?.pk}>
-        <CreatorPage selectedTab="token">
-          <AuctionListProvider filterCreator={creator.id}>
-            <RewardsListProvider filterCreatorSlug={creator.slug}>
-              <CreatorTokensTab />
-            </RewardsListProvider>
-          </AuctionListProvider>
-        </CreatorPage>
-      </FollowerProvider>
+      <CreatorPage selectedTab="token">
+        <AuctionListProvider filterCreator={creator.id}>
+          <RewardsListProvider filterCreatorSlug={creator.slug}>
+            <CreatorTokensTab />
+          </RewardsListProvider>
+        </AuctionListProvider>
+      </CreatorPage>
     </CreatorPageLayout>
   );
 }
