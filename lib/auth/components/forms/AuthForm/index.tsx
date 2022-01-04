@@ -23,6 +23,7 @@ type AuthFormArgs = {
 
 export default function AuthForm(): JSX.Element {
   const router = useRouter();
+  const { utm_source: utmSource, utm_campaign: utmCampaign } = router.query;
 
   const { track } = useAnalytics();
   const { fields, fieldValueSetter, validateField, getValidatedData } =
@@ -78,7 +79,7 @@ export default function AuthForm(): JSX.Element {
     otp: string
   ): Promise<void> => {
     try {
-      await Login("phone-auth", { phoneNumber, otp });
+      await Login("phone-auth", { phoneNumber, otp, utmSource, utmCampaign });
       track(AnalyticsEvents.phone_verified, {
         phoneNumber,
       });
