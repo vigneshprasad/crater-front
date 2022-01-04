@@ -3,11 +3,13 @@ import { useTheme } from "styled-components";
 
 import { Grid, Text, Icon, Link } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import Spinner from "@/common/components/atoms/Spiner";
 import ModalWithVideo from "@/common/components/objects/ModalWithVideo";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import { Webinar } from "@/community/types/community";
+import { useFollower } from "@/creators/context/FollowerContext";
 
 import UrlShare from "../UrlShare";
 
@@ -26,11 +28,19 @@ export default function RsvpSuccesModal({
   const hostName = group.host_detail?.name;
   const [url, setUrl] = useState("");
   const { track } = useAnalytics();
+  const {
+    followers,
+    loading: followersLoading,
+    subscribeCreator,
+    unsubscribeCreator,
+  } = useFollower();
 
   useEffect(() => {
     const location = window.location.href;
     setUrl(location);
   }, []);
+
+  if (!followers || followersLoading) return <Spinner />;
 
   const text = `
     While you wait you
@@ -100,6 +110,44 @@ export default function RsvpSuccesModal({
           text="Explore other streams"
         />
       </Link>
+      {followers.length > 0 ? (
+        followers.map((follower) =>
+          follower.notify ? (
+            <Button
+              mt={space.xs}
+              variant="full-width"
+              bg={colors.black[5]}
+              border="1px solid rgba(255, 255, 255, 0.1)"
+              text="Unsubscribe"
+              onClick={() => unsubscribeCreator(follower.id)}
+            />
+          ) : (
+            <Button
+              mt={space.xs}
+              variant="full-width"
+              text="Subscribe"
+              onClick={() => {
+                const creator = group.host_detail?.creator_detail?.id;
+                if (creator) {
+                  subscribeCreator(creator);
+                }
+              }}
+            />
+          )
+        )
+      ) : (
+        <Button
+          mt={space.xs}
+          variant="full-width"
+          text="Subscribe"
+          onClick={() => {
+            const creator = group.host_detail?.creator_detail?.id;
+            if (creator) {
+              subscribeCreator(creator);
+            }
+          }}
+        />
+      )}
     </ModalWithVideo>
   );
 }

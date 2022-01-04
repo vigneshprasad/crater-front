@@ -5,7 +5,11 @@ import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ApiResult, PageResponse } from "@/common/types/api";
 
-import { CommunityMember, Webinar } from "../../community/types/community";
+import {
+  CommunityMember,
+  Follower,
+  Webinar,
+} from "../../community/types/community";
 import { Reward } from "../../tokens/types/tokens";
 import { Creator } from "../types/creator";
 import { CreateWebinar, StreamFormArgs } from "../types/stream";
@@ -31,6 +35,13 @@ interface ICreatorApiClient {
   postFollowCreator: (
     community: number
   ) => Promise<ApiResult<CommunityMember, AxiosError>>;
+  subscribeCreator: (
+    creator: number
+  ) => Promise<ApiResult<Follower, AxiosError>>;
+  unsubscribeCreator: (
+    follower: number,
+    notify: boolean
+  ) => Promise<ApiResult<Follower, AxiosError>>;
   getAllRewards: (slug?: string) => Promise<ApiResult<Reward[], AxiosError>>;
   retrieveReward: (
     id: string | number
@@ -155,6 +166,23 @@ export default function CreatorApiClient(
     }
   }
 
+  async function subscribeCreator(
+    creator: number
+  ): Promise<ApiResult<Follower, AxiosError>> {
+    try {
+      const { data } = await client.post<Follower>(
+        API_URL_CONSTANTS.creator.subscribeCreator,
+        {
+          creator,
+        }
+      );
+
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   async function getAllRewards(
     slug?: string
   ): Promise<ApiResult<Reward[], AxiosError>> {
@@ -176,6 +204,24 @@ export default function CreatorApiClient(
       const { data } = await client.get<Reward>(
         `${API_URL_CONSTANTS.rewards.rewardsList}${id}/`
       );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function unsubscribeCreator(
+    follower: number,
+    notify: boolean
+  ): Promise<ApiResult<Follower, AxiosError>> {
+    try {
+      const { data } = await client.patch<Follower>(
+        API_URL_CONSTANTS.creator.unsubscribeCreator(follower),
+        {
+          notify,
+        }
+      );
+
       return [data, undefined];
     } catch (err) {
       return [undefined, err as AxiosError];
@@ -204,6 +250,8 @@ export default function CreatorApiClient(
     getCommunityMemebers,
     postStream,
     postFollowCreator,
+    subscribeCreator,
+    unsubscribeCreator,
     getAllRewards,
     retrieveReward,
     getCreatorsWithCoins,

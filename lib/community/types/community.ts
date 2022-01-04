@@ -120,6 +120,7 @@ export interface Follower {
   unfollowed: boolean;
   unfollowed_at: null | string;
   user: string;
+  notify: boolean;
 }
 
 export interface CommunityMember {

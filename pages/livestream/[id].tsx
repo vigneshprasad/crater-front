@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
+import useAuth from "@/auth/context/AuthContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
 import { ChatReactionListProvider } from "@/community/context/ChatReactionListContext";
@@ -14,6 +15,7 @@ import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar as WebinarType } from "@/community/types/community";
 import { Webinar } from "@/community/types/community";
 import CreatorApiClient from "@/creators/api";
+import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
 import StreamChatProvider from "@/stream/providers/StreamChatProvider";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
@@ -78,6 +80,7 @@ export default function WebinarPage({
   rewards,
 }: Props): JSX.Element {
   const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     async function checkAuth(): Promise<void> {
@@ -99,22 +102,27 @@ export default function WebinarPage({
         description: webinar.topic_detail?.description,
       }}
     >
-      <WebinarProvider id={id} initial={webinar}>
-        <DyteWebinarProvider id={id}>
-          <StreamChatProvider groupId={id}>
-            <ChatReactionListProvider>
-              <UpcomingStreamsProvider>
-                <RewardsListProvider
-                  initial={rewards}
-                  filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
-                >
-                  <DynamicWebinarPage orgId={orgId} id={id} />
-                </RewardsListProvider>
-              </UpcomingStreamsProvider>
-            </ChatReactionListProvider>
-          </StreamChatProvider>
-        </DyteWebinarProvider>
-      </WebinarProvider>
+      <FollowerProvider
+        creator={webinar.host_detail?.creator_detail?.id}
+        user={user?.pk}
+      >
+        <WebinarProvider id={id} initial={webinar}>
+          <DyteWebinarProvider id={id}>
+            <StreamChatProvider groupId={id}>
+              <ChatReactionListProvider>
+                <UpcomingStreamsProvider>
+                  <RewardsListProvider
+                    initial={rewards}
+                    filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
+                  >
+                    <DynamicWebinarPage orgId={orgId} id={id} />
+                  </RewardsListProvider>
+                </UpcomingStreamsProvider>
+              </ChatReactionListProvider>
+            </StreamChatProvider>
+          </DyteWebinarProvider>
+        </WebinarProvider>
+      </FollowerProvider>
     </Page>
   );
 }
