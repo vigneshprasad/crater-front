@@ -27,11 +27,11 @@ interface StreamPageProps {
 }
 
 export const getStaticPaths: GetStaticPaths<IParams> = async () => {
-  const [streams] = await StreamApiClient().getPastStreams();
+  const [data] = await StreamApiClient().getPastStreams(50);
 
-  if (!streams) return { paths: [], fallback: "blocking" };
+  if (!data?.results) return { paths: [], fallback: "blocking" };
 
-  const paths = streams.map(({ id }) => ({
+  const paths = data.results.map(({ id }) => ({
     params: { id: id.toString() },
   }));
 
