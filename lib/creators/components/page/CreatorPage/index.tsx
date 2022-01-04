@@ -17,6 +17,7 @@ import { Button } from "@/common/components/atoms/Button";
 import Spinner from "@/common/components/atoms/Spiner";
 import CreatorApiClient from "@/creators/api";
 import { useCreator } from "@/creators/context/CreatorContext";
+import { useFollower } from "@/creators/context/FollowerContext";
 import { Creator } from "@/creators/types/creator";
 
 export interface CreatorPageProps {
@@ -75,6 +76,12 @@ export default function CreatorPage({
   const { creator, mutateCreator } = useCreator();
   const { space, colors, zIndices } = useTheme();
   const [postLoading, setPostLoading] = useState(false);
+  const {
+    followers,
+    loading: followersLoading,
+    subscribeCreator,
+    unsubscribeCreator,
+  } = useFollower();
 
   const joinCommunity = async (): Promise<void> => {
     if (creator) {
@@ -92,7 +99,7 @@ export default function CreatorPage({
     }
   };
 
-  if (!creator) return <Box>Loading...</Box>;
+  if (!creator || !followers || followersLoading) return <Box>Loading...</Box>;
 
   return (
     <Box bg={colors.accent} minHeight="calc(100vh - 56px)">
@@ -142,22 +149,47 @@ export default function CreatorPage({
                 : 0
             } Followers`}</Text>
           </Box>
-          {(() => {
-            if (!user) return null;
+          <Grid gridAutoFlow="column" gridGap={space.xxs}>
+            {(() => {
+              if (!user) return null;
 
-            if (!creator.is_follower) {
-              return (
-                <Button
-                  disabled={postLoading}
-                  text="Join Club"
-                  onClick={joinCommunity}
-                  suffixElement={postLoading ? <Spinner /> : undefined}
-                />
-              );
-            }
+              if (!creator.is_follower) {
+                return (
+                  <Button
+                    disabled={postLoading}
+                    text="Join Club"
+                    onClick={joinCommunity}
+                    suffixElement={postLoading ? <Spinner /> : undefined}
+                  />
+                );
+              }
 
-            return null;
-          })()}
+              return null;
+            })()}
+
+            {creator.user === user?.pk ? undefined : followers.length > 0 ? (
+              followers.map((follower) =>
+                follower.notify ? (
+                  <Button
+                    bg={colors.black[5]}
+                    border="1px solid rgba(255, 255, 255, 0.1)"
+                    text="Unsubscribe"
+                    onClick={() => unsubscribeCreator(follower.id)}
+                  />
+                ) : (
+                  <Button
+                    text="Subscribe"
+                    onClick={() => subscribeCreator(creator.id)}
+                  />
+                )
+              )
+            ) : (
+              <Button
+                text="Subscribe"
+                onClick={() => subscribeCreator(creator.id)}
+              />
+            )}
+          </Grid>
         </Grid>
 
         <TabBar

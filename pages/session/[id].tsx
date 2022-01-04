@@ -5,11 +5,13 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
+import useAuth from "@/auth/context/AuthContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { WebinarRequestProvider } from "@/community/context/WebinarRequestContext";
 import { Webinar } from "@/community/types/community";
+import { FollowerProvider } from "@/creators/context/FollowerContext";
 
 const SessionPage = dynamic(
   () => import("@/community/components/pages/SessionPage")
@@ -57,6 +59,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async ({
 
 export default function Session({ webinar, id }: Props): JSX.Element {
   const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (router && router.isFallback) {
@@ -71,11 +74,16 @@ export default function Session({ webinar, id }: Props): JSX.Element {
           webinar.topic_detail?.description ?? webinar.topic_detail?.name,
       }}
     >
-      <WebinarProvider id={id} initial={webinar}>
-        <WebinarRequestProvider groupId={id}>
-          <SessionPage id={id} />
-        </WebinarRequestProvider>
-      </WebinarProvider>
+      <FollowerProvider
+        creator={webinar.host_detail?.creator_detail?.id}
+        user={user?.pk}
+      >
+        <WebinarProvider id={id} initial={webinar}>
+          <WebinarRequestProvider groupId={id}>
+            <SessionPage id={id} />
+          </WebinarRequestProvider>
+        </WebinarProvider>
+      </FollowerProvider>
     </Page>
   );
 }
