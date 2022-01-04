@@ -1,8 +1,10 @@
+import { useCallback, useRef } from "react";
 import styled, { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
 
 import { Box, Grid, Text } from "@/common/components/atoms";
+import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
@@ -20,12 +22,33 @@ const Span = styled.span`
 `;
 
 export default function StreamsPage(): JSX.Element {
-  const { liveStreams, loading } = useLiveStreams();
+  const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
   const { upcoming } = useUpcomingStreams();
-  const { streams: past } = usePastStreams();
+  const {
+    streams: past,
+    loading: pastStreamsLoading,
+    setPastStreamsPage,
+  } = usePastStreams();
   const { space } = useTheme();
+  const _observer = useRef<IntersectionObserver>();
 
-  if (loading || !liveStreams || !upcoming) return <Box>Loading...</Box>;
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (pastStreamsLoading) return;
+      if (_observer.current) _observer.current.disconnect();
+      _observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          setPastStreamsPage((page) => page + 1);
+        }
+      });
+
+      if (node != null) _observer.current.observe(node);
+    },
+    [_observer, pastStreamsLoading, setPastStreamsPage]
+  );
+
+  if (liveStreamsLoading || !liveStreams || !upcoming || !past)
+    return <Spinner />;
 
   return (
     <>
@@ -58,11 +81,12 @@ export default function StreamsPage(): JSX.Element {
         gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
         gridGap={space.s}
       >
-        {past?.map((stream) => (
+        {past?.map((stream, index) => (
           <StreamCard
             link={PageRoutes.streamVideo(stream.id)}
             stream={stream}
             key={stream.id}
+            ref={index == past.length - 1 ? ref : null}
           />
         ))}
       </Grid>
