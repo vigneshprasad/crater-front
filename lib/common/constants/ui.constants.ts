@@ -1,5 +1,6 @@
 import { IconOptions } from "../theme";
 import { PageRoutes } from "./route.constants";
+import { ABOUT_URL } from "./url.constants";
 
 export type INavKeys =
   | "streams"
@@ -8,7 +9,8 @@ export type INavKeys =
   | "creatorhub"
   | "account"
   | "logout"
-  | "tokens";
+  | "tokens"
+  | "discord";
 
 export type IMenuItem = {
   label: string;
@@ -53,7 +55,7 @@ export const SIDE_NAV_MOBILE_ITEMS: IMenuItem[] = [
   {
     label: "About us",
     icon: "Globe",
-    url: "//www.joincrater.club/",
+    url: ABOUT_URL,
     key: "about",
     iconFill: false,
   },
@@ -68,9 +70,9 @@ export const USER_NAV_DROPDOWN_ITEMS: IMenuItem[] = [
     iconFill: false,
   },
   {
-    label: "About us",
+    label: "About",
     icon: "AtSign",
-    url: "//www.joincrater.club/",
+    url: ABOUT_URL,
     key: "about",
     iconFill: false,
   },
@@ -82,6 +84,3 @@ export const USER_NAV_DROPDOWN_ITEMS: IMenuItem[] = [
     iconFill: false,
   },
 ];
-
-export const LEARN_MORE_URL =
-  "https://crater-about.notion.site/Welcome-to-Crater-Club-03d3849b9ae940619a111a737652f41d";
