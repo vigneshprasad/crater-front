@@ -26,7 +26,7 @@ type IProviderProps = PropsWithChildren<{
 export function PastStreamProvider({
   host,
   initial,
-  pageSize = 1,
+  pageSize = 10,
   ...rest
 }: IProviderProps): JSX.Element {
   const {
