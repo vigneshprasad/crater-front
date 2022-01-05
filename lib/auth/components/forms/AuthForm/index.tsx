@@ -1,5 +1,5 @@
 import { signOut } from "next-auth/client";
-import { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent, useEffect } from "react";
 import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
@@ -21,9 +21,34 @@ type AuthFormArgs = {
   otp: string;
 };
 
+type UserSource = {
+  utmSource: string | string[];
+  utmCampaign: string | string[];
+};
+
 export default function AuthForm(): JSX.Element {
   const router = useRouter();
-  const { utm_source: utmSource, utm_campaign: utmCampaign } = router.query;
+  const [userSource, setUserSource] = useState<UserSource | undefined>({
+    utmSource: "",
+    utmCampaign: "",
+  });
+
+  useEffect(() => {
+    const { utm_source: utmSource, utm_campaign: utmCampaign } = router.query;
+    if (utmSource && utmCampaign) {
+      setUserSource((prevUserSource) => {
+        if (
+          prevUserSource?.utmSource !== utmSource &&
+          prevUserSource?.utmCampaign !== utmCampaign
+        ) {
+          return {
+            utmSource,
+            utmCampaign,
+          };
+        }
+      });
+    }
+  }, [router]);
 
   const { track } = useAnalytics();
   const { fields, fieldValueSetter, validateField, getValidatedData } =
@@ -79,6 +104,9 @@ export default function AuthForm(): JSX.Element {
     otp: string
   ): Promise<void> => {
     try {
+      const utmSource = userSource?.utmSource;
+      const utmCampaign = userSource?.utmCampaign;
+
       await Login("phone-auth", { phoneNumber, otp, utmSource, utmCampaign });
       track(AnalyticsEvents.phone_verified, {
         phoneNumber,
