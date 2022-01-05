@@ -70,7 +70,7 @@ export default function StreamPlayerPage(): JSX.Element {
         </Box>
 
         <Box py={space.s}>
-          <PastStreamsList />
+          <PastStreamsList displayedPastStreamId={webinar.id} />
 
           <Box h={space.xs} />
 

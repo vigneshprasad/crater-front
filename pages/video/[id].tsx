@@ -10,6 +10,7 @@ import { NetworkListProvider } from "@/community/context/NetworkListContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import StreamApiClient from "@/stream/api";
+import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamRecordingProvider } from "@/stream/context/StreamRecordingContext";
 
 const StreamPlayerPage = dynamic(
@@ -76,7 +77,9 @@ export default function StreamPage({
       <WebinarProvider id={id} initial={webinar}>
         <StreamRecordingProvider id={recordingId}>
           <NetworkListProvider>
-            <StreamPlayerPage />
+            <PastStreamProvider>
+              <StreamPlayerPage />
+            </PastStreamProvider>
           </NetworkListProvider>
         </StreamRecordingProvider>
       </WebinarProvider>
