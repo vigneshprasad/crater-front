@@ -10,6 +10,7 @@ import { NetworkListProvider } from "@/community/context/NetworkListContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import StreamApiClient from "@/stream/api";
+import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamRecordingProvider } from "@/stream/context/StreamRecordingContext";
 
 const StreamPlayerPage = dynamic(
@@ -27,11 +28,11 @@ interface StreamPageProps {
 }
 
 export const getStaticPaths: GetStaticPaths<IParams> = async () => {
-  const [streams] = await StreamApiClient().getPastStreams();
+  const [data] = await StreamApiClient().getPastStreams(50);
 
-  if (!streams) return { paths: [], fallback: "blocking" };
+  if (!data?.results) return { paths: [], fallback: "blocking" };
 
-  const paths = streams.map(({ id }) => ({
+  const paths = data.results.map(({ id }) => ({
     params: { id: id.toString() },
   }));
 
@@ -76,7 +77,9 @@ export default function StreamPage({
       <WebinarProvider id={id} initial={webinar}>
         <StreamRecordingProvider id={recordingId}>
           <NetworkListProvider>
-            <StreamPlayerPage />
+            <PastStreamProvider>
+              <StreamPlayerPage />
+            </PastStreamProvider>
           </NetworkListProvider>
         </StreamRecordingProvider>
       </WebinarProvider>
