@@ -257,30 +257,12 @@ export default function ScheduleStreamForm({
         </FormField>
 
         <FormField
-          label="RTMP Link"
-          subtext="Stream to Youtube, Twitter, LinkedIn or Facebook"
-          gridTemplateColumns="1fr"
-          gridAutoFlow="row"
-          gridAutoRows="min-content"
-          gridGap={space.xxxs}
-          border={false}
-        >
-          <Input
-            value={fields.rtmp_link.value}
-            onChange={(e) => {
-              fieldValueSetter("rtmp_link", e.currentTarget.value);
-            }}
-          />
-        </FormField>
-
-        <FormField
           label="Description"
           gridTemplateColumns="1fr"
           gridAutoFlow="row"
           gridAutoRows="min-content"
           gridGap={space.xxxs}
           border={false}
-          gridColumn={1}
         >
           <TextArea
             rows={9}
@@ -305,6 +287,23 @@ export default function ScheduleStreamForm({
             alt="cover photo"
             value={fields.image.value}
             onChange={handlePhotoChange}
+          />
+        </FormField>
+
+        <FormField
+          label="RTMP Link"
+          subtext="Stream to Youtube, Twitter, LinkedIn or Facebook"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
+          <Input
+            value={fields.rtmp_link.value}
+            onChange={(e) => {
+              fieldValueSetter("rtmp_link", e.currentTarget.value);
+            }}
           />
         </FormField>
       </Form>
