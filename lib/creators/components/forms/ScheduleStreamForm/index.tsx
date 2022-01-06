@@ -186,6 +186,7 @@ export default function ScheduleStreamForm({
           gridAutoRows="min-content"
           gridGap={space.xxxs}
           border={false}
+          required={true}
         >
           <Input
             value={fields.topic.value}
@@ -203,6 +204,7 @@ export default function ScheduleStreamForm({
           gridAutoRows="min-content"
           gridGap={space.xxxs}
           border={false}
+          required={true}
         >
           <MultiSelect<StreamCategory>
             placeholder="Pick categories"
@@ -233,6 +235,7 @@ export default function ScheduleStreamForm({
           gridAutoRows="min-content"
           gridGap={space.xxxs}
           border={false}
+          required={true}
         >
           <DateTimeInput
             error={fields.start.errors[0]}
@@ -255,6 +258,7 @@ export default function ScheduleStreamForm({
 
         <FormField
           label="RTMP Link"
+          subtext="Stream to Youtube, Twitter, LinkedIn or Facebook"
           gridTemplateColumns="1fr"
           gridAutoFlow="row"
           gridAutoRows="min-content"
@@ -294,6 +298,7 @@ export default function ScheduleStreamForm({
           gridAutoRows="min-content"
           gridGap={space.xxxs}
           border={false}
+          required={true}
         >
           <ImageDropBox
             error={fields.image.errors[0]}
