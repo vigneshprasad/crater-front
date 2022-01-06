@@ -1,12 +1,13 @@
 import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
-import { Box, Grid, GridProps, Text } from "../../atoms";
+import { Box, Grid, GridProps, Span, Text } from "../../atoms";
 
 type IProps = PropsWithChildren<{
   label: string | React.ReactNode;
   subtext?: string;
   border?: boolean;
+  required?: boolean;
 }> &
   Omit<GridProps, "border">;
 
@@ -15,6 +16,7 @@ export default function FormField({
   subtext,
   children,
   border = true,
+  required = false,
   ...rest
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
@@ -29,7 +31,18 @@ export default function FormField({
       <Box>
         {(() => {
           if (typeof label === "string")
-            return <Text textStyle="menu">{label}</Text>;
+            return (
+              <>
+                <Text textStyle="menu">
+                  {label}
+                  {required ? (
+                    <Span color={colors.accent} mx={3} fontSize={15}>
+                      *
+                    </Span>
+                  ) : undefined}
+                </Text>
+              </>
+            );
           return label;
         })()}
 
