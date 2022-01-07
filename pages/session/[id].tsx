@@ -45,6 +45,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async ({
   if (!webinar) {
     return {
       notFound: true,
+      revalidate: 10,
     };
   }
 
