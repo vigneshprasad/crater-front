@@ -55,6 +55,7 @@ export const getStaticProps: GetStaticProps<WebinarPageProps, IParams> =
     if (error || !webinar) {
       return {
         notFound: true,
+        revalidate: 10,
       };
     }
 
@@ -68,6 +69,7 @@ export const getStaticProps: GetStaticProps<WebinarPageProps, IParams> =
         webinar,
         rewards: rewards ?? [],
       },
+      revalidate: 10,
     };
   };
 
