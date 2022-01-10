@@ -19,37 +19,12 @@ import { AnalyticsEvents } from "@/common/utils/analytics/types";
 type AuthFormArgs = {
   phoneNumber: string;
   otp: string;
-};
-
-type UserSource = {
-  utmSource: string | string[];
-  utmCampaign: string | string[];
+  utmSource?: string;
+  utmCampaign?: string;
 };
 
 export default function AuthForm(): JSX.Element {
   const router = useRouter();
-  const [userSource, setUserSource] = useState<UserSource | undefined>({
-    utmSource: "",
-    utmCampaign: "",
-  });
-
-  useEffect(() => {
-    const { utm_source: utmSource, utm_campaign: utmCampaign } = router.query;
-    if (utmSource && utmCampaign) {
-      setUserSource((prevUserSource) => {
-        if (
-          prevUserSource?.utmSource !== utmSource &&
-          prevUserSource?.utmCampaign !== utmCampaign
-        ) {
-          return {
-            utmSource,
-            utmCampaign,
-          };
-        }
-      });
-    }
-  }, [router]);
-
   const { track } = useAnalytics();
   const { fields, fieldValueSetter, validateField, getValidatedData } =
     useForm<AuthFormArgs>({
@@ -76,11 +51,30 @@ export default function AuthForm(): JSX.Element {
             },
           ],
         },
+        utmSource: {
+          intialValue: "",
+          validators: [],
+        },
+        utmCampaign: {
+          intialValue: "",
+          validators: [],
+        },
       },
     });
+
   const [otpVisible, setOtpVisible] = useState(false);
   const { space, colors } = useTheme();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (router) {
+      const { utm_source: utmSource, utm_campaign: utmCampaign } = router.query;
+      if (utmSource && utmCampaign) {
+        fieldValueSetter("utmSource", utmSource as string);
+        fieldValueSetter("utmCampaign", utmCampaign as string);
+      }
+    }
+  }, [router, fieldValueSetter]);
 
   const getPhoneOtp = async (phoneNumber: string): Promise<void> => {
     setLoading(true);
@@ -101,12 +95,11 @@ export default function AuthForm(): JSX.Element {
 
   const performLogin = async (
     phoneNumber: string,
-    otp: string
+    otp: string,
+    utmSource?: string,
+    utmCampaign?: string
   ): Promise<void> => {
     try {
-      const utmSource = userSource?.utmSource;
-      const utmCampaign = userSource?.utmCampaign;
-
       await Login("phone-auth", { phoneNumber, otp, utmSource, utmCampaign });
       track(AnalyticsEvents.phone_verified, {
         phoneNumber,
@@ -138,7 +131,7 @@ export default function AuthForm(): JSX.Element {
 
     if (data !== false) {
       const phoneNumber = data.phoneNumber;
-      performLogin(phoneNumber, data.otp);
+      performLogin(phoneNumber, data.otp, data.utmSource, data.utmCampaign);
     }
   };
 
