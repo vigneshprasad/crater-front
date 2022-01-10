@@ -3,6 +3,7 @@ import { useTheme } from "styled-components";
 
 import { Grid, Text, Icon, Link } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import IconButton from "@/common/components/atoms/IconButton";
 import Spinner from "@/common/components/atoms/Spiner";
 import ModalWithVideo from "@/common/components/objects/ModalWithVideo";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -118,20 +119,37 @@ export default function RsvpSuccesModal({
               variant="full-width"
               bg={colors.black[5]}
               border="1px solid rgba(255, 255, 255, 0.1)"
-              text="Unsubscribe"
-              onClick={() => unsubscribeCreator(follower.id)}
+              text="Joined"
+              suffixElement={
+                <IconButton
+                  variant="roundSmall"
+                  icon="NotificationBellFill"
+                  size={15}
+                  onClick={() => unsubscribeCreator(follower.id)}
+                />
+              }
+              disabled={true}
             />
           ) : (
             <Button
               mt={space.xs}
               variant="full-width"
-              text="Subscribe"
-              onClick={() => {
-                const creator = group.host_detail?.creator_detail?.id;
-                if (creator) {
-                  subscribeCreator(creator);
-                }
-              }}
+              text="Joined"
+              suffixElement={
+                <IconButton
+                  variant="roundSmall"
+                  icon="NotificationBell"
+                  size={15}
+                  iconProps={{ color: "white" }}
+                  onClick={() => {
+                    const creator = group.host_detail?.creator_detail?.id;
+                    if (creator) {
+                      subscribeCreator(creator);
+                    }
+                  }}
+                />
+              }
+              disabled={true}
             />
           )
         )
@@ -139,7 +157,7 @@ export default function RsvpSuccesModal({
         <Button
           mt={space.xs}
           variant="full-width"
-          text="Subscribe"
+          text={`Join ${group.host_detail.name.split(" ")[0]}'s Club`}
           onClick={() => {
             const creator = group.host_detail?.creator_detail?.id;
             if (creator) {

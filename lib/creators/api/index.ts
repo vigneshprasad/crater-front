@@ -33,7 +33,8 @@ interface ICreatorApiClient {
     stream: CreateWebinar
   ) => Promise<ApiResult<Webinar, AxiosError>>;
   postFollowCreator: (
-    community: number
+    community: number,
+    notify: boolean
   ) => Promise<ApiResult<CommunityMember, AxiosError>>;
   subscribeCreator: (
     creator: number
@@ -151,13 +152,15 @@ export default function CreatorApiClient(
   }
 
   async function postFollowCreator(
-    creator: number
+    creator: number,
+    notify: boolean
   ): Promise<ApiResult<CommunityMember, AxiosError>> {
     try {
       const { data } = await client.post<CommunityMember>(
         API_URL_CONSTANTS.creator.postFollowCreator,
         {
           creator,
+          notify,
         }
       );
       return [data, undefined];
