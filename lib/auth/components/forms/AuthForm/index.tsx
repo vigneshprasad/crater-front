@@ -69,7 +69,7 @@ export default function AuthForm(): JSX.Element {
   useEffect(() => {
     if (router) {
       const { utm_source: utmSource, utm_campaign: utmCampaign } = router.query;
-      if (utmSource && utmCampaign) {
+      if (utmSource || utmCampaign) {
         fieldValueSetter("utmSource", utmSource as string);
         fieldValueSetter("utmCampaign", utmCampaign as string);
       }
