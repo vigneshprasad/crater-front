@@ -6,11 +6,13 @@ export async function Login(
   data: Record<string, unknown>
 ): Promise<SignInResponse | undefined> {
   if (provider === "phone-auth") {
-    const { phoneNumber, otp } = data;
+    const { phoneNumber, otp, utmSource, utmCampaign } = data;
     try {
       await signin<CredentialProviderId>("phone-auth", {
         username: phoneNumber,
         otp,
+        utm_source: utmSource,
+        utm_campaign: utmCampaign,
         redirect: false,
       });
     } catch (err) {
