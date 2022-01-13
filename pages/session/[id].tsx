@@ -12,6 +12,7 @@ import { WebinarProvider } from "@/community/context/WebinarContext";
 import { WebinarRequestProvider } from "@/community/context/WebinarRequestContext";
 import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
+import { StreamCreatorProvider } from "@/stream/context/StreamCreatorContext";
 
 const SessionPage = dynamic(
   () => import("@/community/components/pages/SessionPage")
@@ -79,11 +80,13 @@ export default function Session({ webinar, id }: Props): JSX.Element {
         creator={webinar.host_detail?.creator_detail?.id}
         user={user?.pk}
       >
-        <WebinarProvider id={id} initial={webinar}>
-          <WebinarRequestProvider groupId={id}>
-            <SessionPage id={id} />
-          </WebinarRequestProvider>
-        </WebinarProvider>
+        <StreamCreatorProvider>
+          <WebinarProvider id={id} initial={webinar}>
+            <WebinarRequestProvider groupId={id}>
+              <SessionPage id={id} />
+            </WebinarRequestProvider>
+          </WebinarProvider>
+        </StreamCreatorProvider>
       </FollowerProvider>
     </Page>
   );
