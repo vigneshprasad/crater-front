@@ -26,6 +26,12 @@ const providers: AppProviders = [
         type: "text",
         placeholder: "Enter OTP",
       },
+      utm_source: {
+        type: "text",
+      },
+      utm_campaign: {
+        type: "text",
+      },
     },
     async authorize(credentials) {
       try {
