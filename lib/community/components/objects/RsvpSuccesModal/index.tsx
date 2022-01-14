@@ -1,5 +1,5 @@
 import CRATER_LOGO from "public/images/crater_logo.png";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import {
@@ -35,9 +35,29 @@ export default function RsvpSuccesModal({
     loading: followersLoading,
     subscribeCreator,
   } = useFollower();
-  const { streams, loading: streamCreatorLoading } = useStreamCreator();
+  const {
+    streams,
+    loading: streamCreatorsLoading,
+    setStreamCreatorsPage,
+  } = useStreamCreator();
+  const _observer = useRef<IntersectionObserver>();
 
-  if (!followers || followersLoading || streamCreatorLoading)
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (streamCreatorsLoading) return;
+      if (_observer.current) _observer.current.disconnect();
+      _observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          setStreamCreatorsPage((page) => page + 1);
+        }
+      });
+
+      if (node != null) _observer.current.observe(node);
+    },
+    [_observer, streamCreatorsLoading, setStreamCreatorsPage]
+  );
+
+  if (!followers || followersLoading || streamCreatorsLoading)
     return <Spinner />;
 
   const text = `
@@ -73,7 +93,7 @@ export default function RsvpSuccesModal({
 
       <Box px={space.xxs} overflowY="scroll">
         {streams &&
-          streams?.map((stream) => (
+          streams?.map((stream, index) => (
             <Grid
               mb={space.xxs}
               gridAutoFlow="column"
@@ -82,6 +102,7 @@ export default function RsvpSuccesModal({
               alignItems="center"
               justifyItems="center"
               key={stream.id}
+              ref={index == streams.length - 1 ? ref : null}
             >
               <Avatar size={56} alt="host" />
               <Box justifySelf="start">
