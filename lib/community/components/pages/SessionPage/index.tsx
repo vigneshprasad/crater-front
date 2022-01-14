@@ -109,7 +109,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   useEffect(() => {
     const action = async (): Promise<void> => {
       await postGroupRequest();
-      router.replace(`/session/${webinar?.id}/`, undefined, { shallow: true });
     };
 
     if (router.query?.join === "true" && user && postGroupRequest && webinar) {
@@ -201,11 +200,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                       variant="full-width"
                       text="RSVP for this session"
                       onClick={(): void => {
-                        router.push(
-                          `/session/${webinar.id}/?join=true`,
-                          undefined,
-                          { shallow: true }
-                        );
+                        router.replace({
+                          query: { ...router.query, join: true, newUser: true },
+                        });
                         openModal();
                       }}
                     />
