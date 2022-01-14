@@ -69,6 +69,11 @@ export default function Session({ webinar, id }: Props): JSX.Element {
       router.reload();
     }
   }, [router]);
+
+  useEffect(() => {
+    if (router && webinar.is_live) router.push(`/livestream/${webinar.id}/`);
+  }, [router, user, webinar]);
+
   return (
     <Page
       seo={{
