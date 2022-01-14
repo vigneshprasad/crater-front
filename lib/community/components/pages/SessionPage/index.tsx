@@ -112,6 +112,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   useEffect(() => {
     const action = async (): Promise<void> => {
       await postGroupRequest();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { join, ...query } = router.query;
+      router.replace({ query: { ...query } });
     };
 
     if (router.query?.join === "true" && user && postGroupRequest && webinar) {
@@ -204,7 +207,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     return (
                       <Button
                         variant="full-width"
-                        text="RSVP for this session"
+                        text={
+                          webinar.is_live
+                            ? "Join Stream"
+                            : "RSVP for this session"
+                        }
                         onClick={(): void => {
                           router.replace({
                             query: {
