@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
+import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { WebinarRequestProvider } from "@/community/context/WebinarRequestContext";
 import { Webinar } from "@/community/types/community";
@@ -83,7 +84,9 @@ export default function Session({ webinar, id }: Props): JSX.Element {
         <StreamCreatorProvider>
           <WebinarProvider id={id} initial={webinar}>
             <WebinarRequestProvider groupId={id}>
-              <SessionPage id={id} />
+              <UpcomingStreamsProvider>
+                <SessionPage id={id} />
+              </UpcomingStreamsProvider>
             </WebinarRequestProvider>
           </WebinarProvider>
         </StreamCreatorProvider>
