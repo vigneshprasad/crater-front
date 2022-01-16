@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import { SWRInfiniteResponse, useSWRInfinite } from "swr";
 
+import useAuth from "@/auth/context/AuthContext";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
 import { Webinar } from "@/community/types/community";
@@ -27,12 +28,16 @@ export function StreamCreatorProvider({
   pageSize = 10,
   ...rest
 }: IProviderProps): JSX.Element {
+  const { user } = useAuth();
   const {
     data: streams,
     error,
     setSize: setStreamCreatorsPage,
   } = useSWRInfinite<PageResponse<Webinar>>(
     (index, previousData) => {
+      if (!user) {
+        return null;
+      }
       const page = index + 1;
       if (previousData && !previousData.next) return null;
       return `${API_URL_CONSTANTS.conversations.getWebinarCreatorList}?page=${page}&page_size=${pageSize}`;
