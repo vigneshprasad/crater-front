@@ -104,7 +104,11 @@ export default function RsvpSuccesModal({
               key={stream.id}
               ref={index == streams.length - 1 ? ref : null}
             >
-              <Avatar size={56} alt="host" />
+              <Avatar
+                image={stream.host_detail?.photo}
+                size={56}
+                alt={stream.host_detail?.name || ""}
+              />
               <Box justifySelf="start">
                 <Text textStyle="bodyLarge">{stream.host_detail.name}</Text>
                 <Text maxLines={2} color={colors.slate}>
