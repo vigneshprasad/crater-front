@@ -95,7 +95,7 @@ export default function BasicSignupSheet(): JSX.Element {
   );
 
   const visible = useMemo(() => {
-    if (!profile || !user) {
+    if (!profile || !user || router.query?.newUser) {
       return false;
     }
 
@@ -104,7 +104,7 @@ export default function BasicSignupSheet(): JSX.Element {
     }
 
     return false;
-  }, [profile, user]);
+  }, [profile, user, router]);
 
   const handleFormSubmit = useCallback(
     async (event: SyntheticEvent) => {

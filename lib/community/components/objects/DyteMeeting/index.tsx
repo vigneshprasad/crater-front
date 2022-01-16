@@ -6,19 +6,22 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import { Box, BoxProps } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
+import { Webinar } from "@/community/types/community";
 import useStreamChat from "@/stream/hooks/useStreamChat";
 import { ChatMessageType } from "@/stream/types/streamChat";
 
 export type Props = BoxProps & {
-  groupId: number;
+  webinar: Webinar;
   token: string;
   orgId: string;
   roomName: string;
 };
 
 export default function DyteMeeting({
-  groupId,
+  webinar,
   orgId,
   token,
   roomName,
@@ -27,6 +30,7 @@ export default function DyteMeeting({
   const router = useRouter();
   const meeting = useRef<Meeting>();
   const { user } = useAuth();
+  const { track } = useAnalytics();
 
   const { messages } = useStreamChat();
 
@@ -38,11 +42,21 @@ export default function DyteMeeting({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (participant: any) => {
       if (participant.clientSpecificId === user?.pk) {
-        router.push(PageRoutes.session(groupId.toString()));
+        router.push(PageRoutes.session(webinar.id.toString()));
       }
     },
-    [router, groupId, user]
+    [router, webinar, user]
   );
+
+  const participantJoinHandler = useCallback(() => {
+    track(AnalyticsEvents.participant_joined_stream, {
+      stream: webinar.id,
+      stream_name: webinar.topic_detail?.name,
+      host: {
+        ...webinar.host_detail,
+      },
+    });
+  }, [track, webinar]);
 
   const addEventListeners = useCallback(() => {
     if (meeting.current) {
@@ -55,8 +69,18 @@ export default function DyteMeeting({
         meeting.current.Events.participantLeave,
         participantLeaveHandler
       );
+
+      meeting.current.on(
+        meeting.current.Events.participantJoin,
+        participantJoinHandler
+      );
     }
-  }, [meeting, participantLeaveHandler, meetendEndHandler]);
+  }, [
+    meeting,
+    participantLeaveHandler,
+    meetendEndHandler,
+    participantJoinHandler,
+  ]);
 
   useEffect(() => {
     return () => {

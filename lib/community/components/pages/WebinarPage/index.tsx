@@ -103,7 +103,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
           <Box position="relative" w="100%" pb="56.25%">
             {dyteParticipant && (
               <DyteMeeting
-                groupId={webinar.id}
+                webinar={webinar}
                 orgId={orgId}
                 token={dyteParticipant.auth_token}
                 roomName={dyteParticipant.dyte_meeting_detail.room_name}

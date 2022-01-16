@@ -29,6 +29,7 @@ export const API_URL_CONSTANTS = {
       `/groups/conversations/webinars/${id}/`,
     retrieveWebinar: (id: string): string =>
       `/groups/conversations/webinars/all/${id}/`,
+    getWebinarCreatorList: "/groups/conversations/webinars/creators/",
   },
   creator: {
     getCreatorList: "/crater/creator/",

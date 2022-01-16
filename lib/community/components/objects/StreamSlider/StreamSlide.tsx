@@ -113,7 +113,13 @@ export function StreamSlide({
         h="100%"
         position="relative"
       >
-        <Link href={`/session/${stream.id}`}>
+        <Link
+          href={
+            stream.is_live
+              ? `/livestream/${stream.id}`
+              : `/session/${stream.id}`
+          }
+        >
           <Box
             position="relative"
             w={["100%", 0]}
