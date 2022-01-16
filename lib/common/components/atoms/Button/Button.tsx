@@ -4,6 +4,8 @@ import { variant } from "styled-system";
 
 import { Grid, BoxProps, Text, TextVariants } from "@/common/components/atoms";
 
+import { TextProps } from "../System";
+
 type ButtonElements = "button" | "a";
 
 type Variants =
@@ -11,7 +13,9 @@ type Variants =
   | "dense"
   | "nav-button"
   | "outline-small"
-  | "small";
+  | "small"
+  | "round"
+  | "round-secondary";
 
 export type ButtonProps = Omit<BoxProps, "variant"> &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -20,6 +24,7 @@ export type ButtonProps = Omit<BoxProps, "variant"> &
     variant?: Variants;
     prefixElement?: JSX.Element;
     suffixElement?: JSX.Element;
+    textProps?: TextProps;
   };
 
 const StyledButton = styled(Grid)<ButtonProps>`
@@ -28,6 +33,18 @@ const StyledButton = styled(Grid)<ButtonProps>`
   color: ${(props) => props.theme.colors.white[0]};
   border-width: 2px;
   border-style: solid;
+
+  &:hover {
+    background: ${(props) => props.theme.colors.accentHover};
+    border-color: ${(props) => props.theme.colors.accentHover};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: ${(props) => props.theme.colors.black[1]};
+    color: ${(props) => props.theme.colors.slate};
+    border-color: ${(props) => props.theme.colors.black[1]};
+  }
 
   ${variant({
     prop: "variant",
@@ -57,20 +74,28 @@ const StyledButton = styled(Grid)<ButtonProps>`
         width: "fit-content",
         borderRadius: 4,
       },
+      round: {
+        minHeight: 32,
+        width: "fit-content",
+        borderRadius: 50,
+      },
+      "round-secondary": {
+        minHeight: 32,
+        width: "max-content",
+        borderRadius: 50,
+        ":hover": {
+          bg: "white.1",
+          borderColor: "white.1",
+          color: "black.2",
+        },
+        ":disabled": {
+          bg: "white.1",
+          borderColor: "white.1",
+          color: "black.2",
+        },
+      },
     },
   })}
-
-  &:hover {
-    background: ${(props) => props.theme.colors.accentHover};
-    border-color: ${(props) => props.theme.colors.accentHover};
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    background: ${(props) => props.theme.colors.black[1]};
-    color: ${(props) => props.theme.colors.slate};
-    border-color: ${(props) => props.theme.colors.black[1]};
-  }
 `;
 
 export function Button({
@@ -79,6 +104,7 @@ export function Button({
   variant: variantProp = "dense",
   prefixElement,
   suffixElement,
+  textProps,
   ...rest
 }: ButtonProps): JSX.Element {
   const { space, colors, radii } = useTheme();
@@ -90,6 +116,8 @@ export function Button({
       "nav-button": "button",
       "outline-small": "button",
       small: "button",
+      round: "button",
+      "round-secondary": "button",
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp]);
@@ -101,6 +129,8 @@ export function Button({
       "nav-button": colors.accent,
       "outline-small": "transparent",
       small: colors.accent,
+      round: colors.accent,
+      "round-secondary": colors.accent,
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp, colors]);
@@ -132,6 +162,7 @@ export function Button({
         m="auto auto"
         color="inherit"
         textStyle={fontVariant}
+        {...textProps}
       >
         {text}
       </Text>

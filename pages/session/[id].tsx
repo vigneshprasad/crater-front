@@ -8,10 +8,12 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
+import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { WebinarRequestProvider } from "@/community/context/WebinarRequestContext";
 import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
+import { StreamCreatorProvider } from "@/stream/context/StreamCreatorContext";
 
 const SessionPage = dynamic(
   () => import("@/community/components/pages/SessionPage")
@@ -67,6 +69,11 @@ export default function Session({ webinar, id }: Props): JSX.Element {
       router.reload();
     }
   }, [router]);
+
+  useEffect(() => {
+    if (router && webinar.is_live) router.push(`/livestream/${webinar.id}/`);
+  }, [router, user, webinar]);
+
   return (
     <Page
       seo={{
@@ -79,11 +86,15 @@ export default function Session({ webinar, id }: Props): JSX.Element {
         creator={webinar.host_detail?.creator_detail?.id}
         user={user?.pk}
       >
-        <WebinarProvider id={id} initial={webinar}>
-          <WebinarRequestProvider groupId={id}>
-            <SessionPage id={id} />
-          </WebinarRequestProvider>
-        </WebinarProvider>
+        <StreamCreatorProvider>
+          <WebinarProvider id={id} initial={webinar}>
+            <WebinarRequestProvider groupId={id}>
+              <UpcomingStreamsProvider>
+                <SessionPage id={id} />
+              </UpcomingStreamsProvider>
+            </WebinarRequestProvider>
+          </WebinarProvider>
+        </StreamCreatorProvider>
       </FollowerProvider>
     </Page>
   );

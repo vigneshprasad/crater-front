@@ -31,7 +31,7 @@ export default function CreatorStreamsTab(): JSX.Element {
           >
             {upcoming.map((stream) => (
               <StreamCard
-                link={PageRoutes.streamVideo(stream.id)}
+                link={PageRoutes.session(stream.id)}
                 stream={stream}
                 key={stream.id}
               />
