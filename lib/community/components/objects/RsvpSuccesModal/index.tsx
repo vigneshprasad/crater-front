@@ -58,7 +58,7 @@ export default function RsvpSuccesModal({
   );
 
   if (!followers || followersLoading || streamCreatorsLoading)
-    return <Spinner />;
+    return <Spinner visibility="hidden" />;
 
   const text = `
     We will notify you prior to the stream with ${hostName}.
