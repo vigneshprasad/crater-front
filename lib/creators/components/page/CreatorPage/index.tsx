@@ -142,28 +142,20 @@ export default function CreatorPage({
           </Box>
           <Grid gridAutoFlow="column" gridGap={space.xxs}>
             {creator.user === user?.pk ? undefined : followers.length > 0 ? (
-              followers.map((follower) =>
-                follower.notify ? (
-                  <Button
-                    bg={colors.black[5]}
-                    border="1px solid rgba(255, 255, 255, 0.1)"
-                    text="Joined"
-                    suffixElement={
+              followers.map((follower) => (
+                <Button
+                  bg={colors.black[5]}
+                  border="1px solid rgba(255, 255, 255, 0.1)"
+                  text="Joined"
+                  suffixElement={
+                    follower.notify ? (
                       <IconButton
                         variant="roundSmall"
                         icon="NotificationBellFill"
                         size={15}
                         onClick={() => unsubscribeCreator(follower.id)}
                       />
-                    }
-                    disabled={true}
-                  />
-                ) : (
-                  <Button
-                    bg={colors.black[5]}
-                    border="1px solid rgba(255, 255, 255, 0.1)"
-                    text="Joined"
-                    suffixElement={
+                    ) : (
                       <IconButton
                         variant="roundSmall"
                         icon="NotificationBell"
@@ -171,11 +163,12 @@ export default function CreatorPage({
                         color="white"
                         onClick={() => subscribeCreator(creator.id)}
                       />
-                    }
-                    disabled={true}
-                  />
-                )
-              )
+                    )
+                  }
+                  disabled={true}
+                  key={follower.id}
+                />
+              ))
             ) : (
               <Button text="Join Club" onClick={joinCreatorClub} />
             )}

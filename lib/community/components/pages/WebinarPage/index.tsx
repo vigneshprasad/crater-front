@@ -128,30 +128,22 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
               <Flex>
                 {webinar.host === user?.pk ? undefined : followers.length >
                   0 ? (
-                  followers.map((follower) =>
-                    follower.notify ? (
-                      <Button
-                        mr={space.xxs}
-                        variant="nav-button"
-                        bg={colors.black[5]}
-                        border="1px solid rgba(255, 255, 255, 0.1)"
-                        text="Joined"
-                        suffixElement={
+                  followers.map((follower) => (
+                    <Button
+                      mr={space.xxs}
+                      variant="nav-button"
+                      bg={colors.black[5]}
+                      border="1px solid rgba(255, 255, 255, 0.1)"
+                      text="Joined"
+                      suffixElement={
+                        follower.notify ? (
                           <IconButton
                             variant="roundSmall"
                             icon="NotificationBellFill"
                             size={15}
                             onClick={() => unsubscribeCreator(follower.id)}
                           />
-                        }
-                        disabled={true}
-                      />
-                    ) : (
-                      <Button
-                        mr={space.xxs}
-                        variant="nav-button"
-                        text="Joined"
-                        suffixElement={
+                        ) : (
                           <IconButton
                             variant="roundSmall"
                             icon="NotificationBell"
@@ -165,11 +157,12 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                               }
                             }}
                           />
-                        }
-                        disabled={true}
-                      />
-                    )
-                  )
+                        )
+                      }
+                      disabled={true}
+                      key={follower.id}
+                    />
+                  ))
                 ) : (
                   <Button
                     mr={space.xxs}
