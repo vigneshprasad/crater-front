@@ -1,5 +1,5 @@
 import { AnimatedBoxProps } from "@/common/components/atoms";
-import { Reward } from "@/tokens/types/tokens";
+import { Reward } from "@/tokens/types/token";
 
 import RewardCardLarge from "./RewardCardLarge";
 import RewardCardSmall from "./RewardCardSmall";

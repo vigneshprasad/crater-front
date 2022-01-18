@@ -83,14 +83,26 @@ export const API_URL_CONSTANTS = {
   rewards: {
     rewardsList: "/crater/reward/",
   },
-  coins: {
+  auctions: {
     getBids: "/crater/bid/",
+    postBid: "/crater/bid/",
+    retrieveBid: (id: number | string): string => `/crater/bid/${id}/`,
+    getActiveAuction: (creator: string | number): string =>
+      `/crater/auction/${creator}/active_auction/`,
+  },
+  coins: {
     getAuctions: "/crater/auction/",
     getCointForCreator: (id: string | number): string =>
       `/crater/coins/${id}/creator/`,
   },
   chat: {
     getChatReactions: "/groups/conversations/chatreactions/",
+  },
+  payments: {
+    postPayment: "/crater/payment/",
+    createStripeIntent: "/crater/gateways/stripe/",
+    retrieveStripeIntent: (client_secret: string): string =>
+      `/crater/gateways/stripe/${client_secret}/`,
   },
 };
 

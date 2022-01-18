@@ -3,7 +3,7 @@ import { useRef, useEffect } from "react";
 
 import { Box } from "@/common/components/atoms";
 import DateTime from "@/common/utils/datetime/DateTime";
-import { Bid } from "@/tokens/types/tokens";
+import { Bid } from "@/tokens/types/token";
 
 interface IProps {
   bids?: Bid[];

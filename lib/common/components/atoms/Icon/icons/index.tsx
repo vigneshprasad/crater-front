@@ -1,5 +1,6 @@
 export { default as AccountCircle } from "./AccountCircle";
 export { default as Activity } from "./Activity";
+export { default as Add } from "./Add";
 export { default as AtSign } from "./AtSign";
 export { default as CalendarDays } from "./CalendarDays";
 export { default as CallEnd } from "./CallEnd";
@@ -30,6 +31,7 @@ export { default as MicOff } from "./MicOff";
 export { default as MicOn } from "./MicOn";
 export { default as MoreVertical } from "./MoreVertical";
 export { default as Phone } from "./Phone";
+export { default as Remove } from "./Remove";
 export { default as Tv } from "./Tv";
 export { default as Twitter } from "./Twitter";
 export { default as User } from "./User";

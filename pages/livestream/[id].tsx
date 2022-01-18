@@ -19,7 +19,7 @@ import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
 import StreamChatProvider from "@/stream/providers/StreamChatProvider";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
-import { Reward } from "@/tokens/types/tokens";
+import { Reward } from "@/tokens/types/token";
 
 const DynamicWebinarPage = dynamic(
   () => import("@/community/components/pages/WebinarPage")
@@ -83,6 +83,8 @@ export default function WebinarPage({
 }: Props): JSX.Element {
   const router = useRouter();
   const { user } = useAuth();
+
+  console.log(router);
 
   useEffect(() => {
     async function checkAuth(): Promise<void> {

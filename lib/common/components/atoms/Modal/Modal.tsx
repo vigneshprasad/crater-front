@@ -11,6 +11,7 @@ export type IModalProps = GridProps & {
   visible?: boolean;
   onClose?: () => void;
   maxWidth?: number;
+  iconButtonProps?: GridProps;
 };
 
 const Overlay = styled(Box)`
@@ -28,6 +29,7 @@ export function Modal({
   onClose,
   visible = false,
   maxWidth = 720,
+  iconButtonProps,
   ...rest
 }: IModalProps): JSX.Element | null {
   const [showModal, setShowModal] = useState(visible);
@@ -72,7 +74,7 @@ export function Modal({
             right="50%"
             transform="translate(50%, -50%)"
             zIndex={zIndices.modal}
-            bg={colors.black[5]}
+            bg={colors.black[4]}
             w="100%"
             h="100%"
             maxHeight={["calc(100vh - 72px)", 640]}
@@ -90,6 +92,7 @@ export function Modal({
                   position="absolute"
                   icon="Close"
                   onClick={onClose}
+                  {...iconButtonProps}
                 />
               )}
             </Box>

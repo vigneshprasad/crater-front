@@ -4,7 +4,7 @@ import { useTheme } from "styled-components";
 
 import { AnimatedBox, Box } from "@/common/components/atoms";
 import { useMeasure } from "@/common/hooks/ui/useMeasure";
-import { Reward } from "@/tokens/types/tokens";
+import { Reward } from "@/tokens/types/token";
 
 import { RewardCard } from "../RewardCard";
 import Loader from "./Loader";

@@ -12,4 +12,8 @@ export const PageRoutes = {
   creatorHub: "/creatorhub/stream",
   rewardListing: (slug: string, id: string | number): string =>
     `/tickets/${slug}/${id}`,
+  checkoutBid: (bid: number | string, intent: string | number): string =>
+    `/checkout/bid/${bid}/${intent}`,
+  bidPaymentSuccess: (bid: number | string): string =>
+    `/checkout/bid/success/${bid}`,
 };

@@ -12,7 +12,7 @@ import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useCreatorWithCoin from "@/creators/context/CreatorWithCoinContext";
 import { Creator } from "@/creators/types/creator";
 import useRewardsList from "@/tokens/context/RewardsListContext";
-import { Auction } from "@/tokens/types/tokens";
+import { Auction } from "@/tokens/types/auctions";
 
 import AuctionDetailBox from "../../objects/AuctionDetailBox";
 import { CreatorTokenSlider } from "../../objects/CreatorTokenSlider";
@@ -70,83 +70,86 @@ export default function TokensTab(): JSX.Element {
   }, [auctions]);
 
   return (
-    <Box px={[space.xxs, space.s]}>
-      <Text my={space.xxs} fontSize={["1.6rem"]}>
-        Buy tokens at the auction, which are used to claim tickets
-      </Text>
-      <CreatorTokenSlider
-        mt={space.s}
-        creators={creators}
-        loading={loading}
-        activeCreator={activeCreator}
-      />
+    <>
+      <Box px={[space.xxs, space.s]}>
+        <Text my={space.xxs} fontSize={["1.6rem"]}>
+          Buy tokens at the auction, which are used to claim tickets
+        </Text>
+        <CreatorTokenSlider
+          mt={space.s}
+          creators={creators}
+          loading={loading}
+          activeCreator={activeCreator}
+        />
 
-      <Text my={space.xs} textStyle="headline4">
-        {activeCreator?.profile_detail.name}
-        {"'s"} Tokens
-      </Text>
+        <Text my={space.xs} textStyle="headline4">
+          {activeCreator?.profile_detail.name}
+          {"'s"} Tokens
+        </Text>
 
-      <Grid
-        gridTemplateColumns={["1fr", "1fr 1fr"]}
-        gridGap={space.xxs}
-        alignItems="start"
-      >
-        <Box pt="56.25%" position="relative">
-          {activeCreator?.video && (
-            <Video
-              controls
-              controlsList="nodownload"
-              src={activeCreator?.video}
-            />
-          )}
-        </Box>
-
-        <AuctionDetailBox auction={activeAuction} creator={activeCreator}>
-          <Grid
-            px={[space.xxxs, space.xxs]}
-            py={space.s}
-            gridGap={space.xxs}
-            gridTemplateColumns="max-content max-content"
-            alignItems="end"
-            justifyContent="end"
-          >
-            <Button
-              variant="outline-small"
-              text="View Tickets"
-              onClick={() => scrollToRewards()}
-            />
-
-            {activeCreator?.slug && (
-              <Link href={PageRoutes.creatorProfile(activeCreator?.slug)}>
-                <Button
-                  variant="outline-small"
-                  text={`About ${activeCreator?.profile_detail.name}`}
-                />
-              </Link>
+        <Grid
+          gridTemplateColumns={["1fr", "1fr 1fr"]}
+          gridGap={space.xxs}
+          alignItems="start"
+        >
+          <Box pt="56.25%" position="relative">
+            {activeCreator?.video && (
+              <Video
+                controls
+                controlsList="nodownload"
+                src={activeCreator?.video}
+              />
             )}
-          </Grid>
-        </AuctionDetailBox>
-      </Grid>
+          </Box>
 
-      <Text mt={space.s} textStyle="headline5">
-        Ticket Drops
-      </Text>
-      <Text mb={space.s}>
-        Claim tickets via tokens to get exclusive access to the creator/educator
-      </Text>
+          <AuctionDetailBox auction={activeAuction} creator={activeCreator}>
+            <Grid
+              px={[space.xxxs, space.xxs]}
+              py={space.s}
+              gridGap={space.xxs}
+              gridTemplateColumns="max-content max-content"
+              alignItems="end"
+              justifyContent="end"
+            >
+              <Button
+                variant="outline-small"
+                text="View Tickets"
+                onClick={() => scrollToRewards()}
+              />
 
-      <Grid
-        ref={rewardsListRef}
-        gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
-        mb={space.s}
-        gridGap={space.xxs}
-      >
-        {rewards?.map((reward) => (
-          <RewardCard type="large" reward={reward} key={reward.id} />
-        ))}
-      </Grid>
+              {activeCreator?.slug && (
+                <Link href={PageRoutes.creatorProfile(activeCreator?.slug)}>
+                  <Button
+                    variant="outline-small"
+                    text={`About ${activeCreator?.profile_detail.name}`}
+                  />
+                </Link>
+              )}
+            </Grid>
+          </AuctionDetailBox>
+        </Grid>
 
-      <Image src={comingSoonGraph} alt="Graph Coming Soon" />
-    </Box>
+        <Text mt={space.s} textStyle="headline5">
+          Ticket Drops
+        </Text>
+        <Text mb={space.s}>
+          Claim tickets via tokens to get exclusive access to the
+          creator/educator
+        </Text>
+
+        <Grid
+          ref={rewardsListRef}
+          gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
+          mb={space.s}
+          gridGap={space.xxs}
+        >
+          {rewards?.map((reward) => (
+            <RewardCard type="large" reward={reward} key={reward.id} />
+          ))}
+        </Grid>
+
+        <Image src={comingSoonGraph} alt="Graph Coming Soon" />
+      </Box>
+    </>
   );
 }

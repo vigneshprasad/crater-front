@@ -16,7 +16,7 @@ import {
   BackgroundVideo,
 } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
-import { Reward } from "@/tokens/types/tokens";
+import { Reward } from "@/tokens/types/token";
 
 interface IProps extends AnimatedBoxProps {
   reward: Reward;

@@ -5,7 +5,7 @@ import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ApiResult } from "@/common/types/api";
 
-import { Coin } from "../types/tokens";
+import { Coin } from "../types/token";
 
 interface ICoinApiClient {
   getCointforCreator: (

@@ -179,6 +179,7 @@ const whiteSpace = style({
 });
 
 export const Text = styled(Box)<TextProps>`
+  font-smooth: antialiased;
   ${variant({
     prop: "textStyle",
     variants,
@@ -191,7 +192,7 @@ export const Text = styled(Box)<TextProps>`
       overflow: hidden;
       text-overflow: ellipsis;
     `}
-  ${({ maxLines }) =>
+    ${({ maxLines }) =>
     maxLines &&
     css`
       overflow: hidden;
@@ -199,10 +200,7 @@ export const Text = styled(Box)<TextProps>`
       -webkit-line-clamp: ${maxLines};
       -webkit-box-orient: vertical;
     `}
-
-  ${whiteSpace}
-  ${textOverflow}
-  ${typography}
+    ${whiteSpace} ${textOverflow} ${typography};
 `;
 
 Text.defaultProps = {

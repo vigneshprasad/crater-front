@@ -11,7 +11,7 @@ import RewardItemPage from "@/tokens/components/pages/RewardItemPage";
 import { CreatorCoinProvider } from "@/tokens/context/CreatorCoinContext";
 import { RewardItemProvider } from "@/tokens/context/RewardItemContext";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
-import { Coin, Reward } from "@/tokens/types/tokens";
+import { Coin, Reward } from "@/tokens/types/token";
 
 interface IParams extends ParsedUrlQuery {
   creatorSlug: string;

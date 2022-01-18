@@ -49,7 +49,7 @@ const zIndices = {
   dropdownContainer: 10,
   dropdownSheet: 4,
   modal: 1000,
-  overlay: 900,
+  overlay: 990,
   navHeader: 100,
   sliderControls: 5,
   asideNav: 950,
