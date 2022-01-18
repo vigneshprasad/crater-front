@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
+import useAuthModal from "@/auth/context/AuthModalContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
 import { ChatReactionListProvider } from "@/community/context/ChatReactionListContext";
@@ -83,6 +84,7 @@ export default function WebinarPage({
 }: Props): JSX.Element {
   const router = useRouter();
   const { user } = useAuth();
+  const { openModal } = useAuthModal();
 
   console.log(router);
 
@@ -90,14 +92,14 @@ export default function WebinarPage({
     async function checkAuth(): Promise<void> {
       const session = await getSession();
       if (session === null) {
-        router.replace(`/session/${id}`);
+        openModal();
       }
     }
 
     if (router) {
       checkAuth();
     }
-  }, [router, id]);
+  }, [router, id, openModal]);
 
   return (
     <Page

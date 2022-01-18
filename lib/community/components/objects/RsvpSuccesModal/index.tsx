@@ -1,17 +1,20 @@
-import { useState, useEffect } from "react";
+import CRATER_LOGO from "public/images/crater_logo.png";
+import { useCallback, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { Grid, Text, Icon, Link } from "@/common/components/atoms";
+import {
+  Grid,
+  Text,
+  Modal,
+  Avatar,
+  Box,
+  Image,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import Spinner from "@/common/components/atoms/Spiner";
-import ModalWithVideo from "@/common/components/objects/ModalWithVideo";
-import { PageRoutes } from "@/common/constants/route.constants";
-import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
-import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import { Webinar } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
-
-import UrlShare from "../UrlShare";
+import useStreamCreator from "@/stream/context/StreamCreatorContext";
 
 interface IProps {
   group: Webinar;
@@ -26,128 +29,136 @@ export default function RsvpSuccesModal({
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
   const hostName = group.host_detail?.name;
-  const [url, setUrl] = useState("");
-  const { track } = useAnalytics();
+  const [subscribe, setSubscribe] = useState({});
   const {
     followers,
     loading: followersLoading,
     subscribeCreator,
-    unsubscribeCreator,
   } = useFollower();
+  const {
+    streams,
+    loading: streamCreatorsLoading,
+    setStreamCreatorsPage,
+  } = useStreamCreator();
+  const _observer = useRef<IntersectionObserver>();
 
-  useEffect(() => {
-    const location = window.location.href;
-    setUrl(location);
-  }, []);
+  const ref = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (streamCreatorsLoading) return;
+      if (_observer.current) _observer.current.disconnect();
+      _observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          setStreamCreatorsPage((page) => page + 1);
+        }
+      });
 
-  if (!followers || followersLoading) return <Spinner />;
+      if (node != null) _observer.current.observe(node);
+    },
+    [_observer, streamCreatorsLoading, setStreamCreatorsPage]
+  );
+
+  if (!followers || followersLoading || streamCreatorsLoading)
+    return <Spinner />;
 
   const text = `
-    While you wait you
-    can network with other like minds that are going to be tuning in
-    using the mobile app.
+    We will notify you prior to the stream with ${hostName}.
+    You can also follow other creators to get notified when they are live on Crater.
   `;
+
   return (
-    <ModalWithVideo visible={visble} onClose={onClose}>
-      <Text textStyle="headline5">
-        {hostName} is getting ready to stream live to you!
-      </Text>
+    <Modal
+      display="grid"
+      gridTemplateRows="max-content max-content 1fr max-content"
+      maxWidth={600}
+      visible={visble}
+      onClose={onClose}
+      overflowY="hidden"
+      px={space.xs}
+      py={space.xxs}
+    >
+      <Box w={100} justifySelf="center" alignSelf="center">
+        <Image src={CRATER_LOGO} alt="Crater Logo" objectFit="cover" />
+      </Box>
 
-      <Text my={space.xs} color={colors.white[1]}>
-        {text}
-      </Text>
+      <Box py={space.xxs}>
+        <Text textStyle="headline5">Don&apos;t miss out!</Text>
+        <Text my={space.xxs} color={colors.white[1]}>
+          {text}
+        </Text>
 
-      <Text textStyle="caption" mb={space.xxs}>
-        Make Some Noise?
-      </Text>
+        <Text px={space.xxs} textStyle="headline6">
+          Discover creators
+        </Text>
+      </Box>
 
-      <UrlShare />
+      <Box px={space.xxs} overflowY="scroll">
+        {streams &&
+          streams?.map((stream, index) => (
+            <Grid
+              mb={space.xxs}
+              gridAutoFlow="column"
+              gridGap={space.xxs}
+              gridTemplateColumns="min-content 1fr min-content"
+              alignItems="center"
+              justifyItems="center"
+              key={stream.id}
+              ref={index == streams.length - 1 ? ref : null}
+            >
+              <Avatar
+                image={stream.host_detail?.photo}
+                size={56}
+                alt={stream.host_detail?.name || ""}
+              />
+              <Box justifySelf="start">
+                <Text textStyle="bodyLarge">{stream.host_detail.name}</Text>
+                <Text maxLines={2} color={colors.slate}>
+                  {stream.is_live ? "Live Now: " : "Upcoming: "}
+                  {stream.topic_detail.name}
+                </Text>
+              </Box>
+              {!subscribe.hasOwnProperty(stream.id) ? (
+                <Button
+                  text="Follow"
+                  variant="round-secondary"
+                  border="1px solid white"
+                  bg={colors.black[5]}
+                  borderRadius={50}
+                  justifySelf="end"
+                  textProps={{ minWidth: 38, px: 0 }}
+                  onClick={() => {
+                    const creator = stream.host_detail?.creator_detail?.id;
+                    if (creator) {
+                      subscribeCreator(creator);
+                      setSubscribe((prevSubscriber) => ({
+                        ...prevSubscriber,
+                        [stream.id]: true,
+                      }));
+                    }
+                  }}
+                />
+              ) : (
+                <Button
+                  text="Followed"
+                  variant="round-secondary"
+                  color="black.2"
+                  bg={colors.white[1]}
+                  borderRadius={50}
+                  justifySelf="end"
+                  textProps={{ minWidth: 38, px: 0 }}
+                  disabled={true}
+                />
+              )}
+            </Grid>
+          ))}
+      </Box>
 
-      <Grid
-        mt={space.xs}
-        gridTemplateColumns="1fr 1fr"
-        alignItems="start"
-        gridGap={space.xs}
-      >
-        <Link
-          passHref
-          href={`//www.linkedin.com/shareArticle?mini=true&url=${url}&title=${group.topic_detail?.name}`}
-          prefetch={false}
-          boxProps={{ target: "_blank" }}
-        >
-          <Button
-            variant="full-width"
-            bg={colors.black[5]}
-            border="1px solid rgba(255, 255, 255, 0.1)"
-            prefixElement={
-              <Icon size={20} icon="Linkedin" fill color={colors.white[0]} />
-            }
-            text="Share"
-          />
-        </Link>
-        <Link
-          passHref
-          href={`//twitter.com/share?text=${group.topic_detail?.name}&url=${url}`}
-          prefetch={false}
-          boxProps={{ target: "_blank" }}
-        >
-          <Button
-            variant="full-width"
-            border="1px solid rgba(255, 255, 255, 0.1)"
-            bg={colors.black[5]}
-            prefixElement={
-              <Icon size={20} icon="Twitter" fill color={colors.white[0]} />
-            }
-            text="Tweet"
-          />
-        </Link>
-      </Grid>
-      <Link href={PageRoutes.home}>
-        <Button
-          onClick={() => track(AnalyticsEvents.explore_more_clicked)}
-          mt={space.xs}
-          variant="full-width"
-          text="Explore other streams"
-        />
-      </Link>
-      {followers.length > 0 ? (
-        followers.map((follower) =>
-          follower.notify ? (
-            <Button
-              mt={space.xs}
-              variant="full-width"
-              bg={colors.black[5]}
-              border="1px solid rgba(255, 255, 255, 0.1)"
-              text="Unsubscribe"
-              onClick={() => unsubscribeCreator(follower.id)}
-            />
-          ) : (
-            <Button
-              mt={space.xs}
-              variant="full-width"
-              text="Subscribe"
-              onClick={() => {
-                const creator = group.host_detail?.creator_detail?.id;
-                if (creator) {
-                  subscribeCreator(creator);
-                }
-              }}
-            />
-          )
-        )
-      ) : (
-        <Button
-          mt={space.xs}
-          variant="full-width"
-          text="Subscribe"
-          onClick={() => {
-            const creator = group.host_detail?.creator_detail?.id;
-            if (creator) {
-              subscribeCreator(creator);
-            }
-          }}
-        />
-      )}
-    </ModalWithVideo>
+      <Button
+        text="Done"
+        variant="round"
+        my={space.xxs}
+        justifySelf="center"
+        onClick={onClose}
+      />
+    </Modal>
   );
 }

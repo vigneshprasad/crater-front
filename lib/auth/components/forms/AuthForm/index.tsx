@@ -1,5 +1,5 @@
 import { signOut } from "next-auth/client";
-import { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent, useEffect } from "react";
 import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
@@ -19,11 +19,12 @@ import { AnalyticsEvents } from "@/common/utils/analytics/types";
 type AuthFormArgs = {
   phoneNumber: string;
   otp: string;
+  utmSource?: string;
+  utmCampaign?: string;
 };
 
 export default function AuthForm(): JSX.Element {
   const router = useRouter();
-
   const { track } = useAnalytics();
   const { fields, fieldValueSetter, validateField, getValidatedData } =
     useForm<AuthFormArgs>({
@@ -50,11 +51,30 @@ export default function AuthForm(): JSX.Element {
             },
           ],
         },
+        utmSource: {
+          intialValue: "",
+          validators: [],
+        },
+        utmCampaign: {
+          intialValue: "",
+          validators: [],
+        },
       },
     });
+
   const [otpVisible, setOtpVisible] = useState(false);
   const { space, colors } = useTheme();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (router) {
+      const { utm_source: utmSource, utm_campaign: utmCampaign } = router.query;
+      if (utmSource || utmCampaign) {
+        fieldValueSetter("utmSource", utmSource as string);
+        fieldValueSetter("utmCampaign", utmCampaign as string);
+      }
+    }
+  }, [router, fieldValueSetter]);
 
   const getPhoneOtp = async (phoneNumber: string): Promise<void> => {
     setLoading(true);
@@ -75,10 +95,12 @@ export default function AuthForm(): JSX.Element {
 
   const performLogin = async (
     phoneNumber: string,
-    otp: string
+    otp: string,
+    utmSource?: string,
+    utmCampaign?: string
   ): Promise<void> => {
     try {
-      await Login("phone-auth", { phoneNumber, otp });
+      await Login("phone-auth", { phoneNumber, otp, utmSource, utmCampaign });
       track(AnalyticsEvents.phone_verified, {
         phoneNumber,
       });
@@ -109,7 +131,7 @@ export default function AuthForm(): JSX.Element {
 
     if (data !== false) {
       const phoneNumber = data.phoneNumber;
-      performLogin(phoneNumber, data.otp);
+      performLogin(phoneNumber, data.otp, data.utmSource, data.utmCampaign);
     }
   };
 

@@ -7,9 +7,11 @@ import {
   useState,
 } from "react";
 
+import { useRouter } from "next/router";
+
 interface IAuthModalState {
   visible: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   openModal: () => void;
 }
 
@@ -26,6 +28,7 @@ export function AuthModalProvider({
   children,
 }: IProviderProps): JSX.Element {
   const [visible, setVisible] = useState(initial ?? false);
+  const router = useRouter();
 
   const onClose = useCallback((): void => {
     setVisible(false);
@@ -38,10 +41,11 @@ export function AuthModalProvider({
   const value: IAuthModalState = useMemo(
     () => ({
       visible,
-      onClose,
+      onClose:
+        router.pathname.search("/livestream/") > -1 ? undefined : onClose,
       openModal,
     }),
-    [visible, onClose, openModal]
+    [visible, onClose, openModal, router]
   );
   return (
     <AuthModalContext.Provider value={value}>
