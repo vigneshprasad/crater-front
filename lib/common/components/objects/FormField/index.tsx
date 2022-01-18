@@ -36,7 +36,7 @@ export default function FormField({
                 <Text textStyle="menu">
                   {label}
                   {required ? (
-                    <Span color={colors.accent} mx={3} fontSize={15}>
+                    <Span color={colors.accent} mx={3} fontSize="1.5rem">
                       *
                     </Span>
                   ) : undefined}
