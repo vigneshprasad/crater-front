@@ -63,6 +63,7 @@ export type Group = {
   topic: number;
   topic_detail: Topic;
   type: number;
+  rsvp: boolean | null;
   recording_details?: {
     dyte_recordings: number[];
     dyte_recordings_details: unknown[];
