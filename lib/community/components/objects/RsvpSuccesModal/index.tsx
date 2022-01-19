@@ -13,9 +13,17 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import Spinner from "@/common/components/atoms/Spiner";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
+import WebinarApiClient from "@/community/api";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
-import { Webinar } from "@/community/types/community";
+import {
+  ParticpantType,
+  PostGroupRequest,
+  RequestStatus,
+  Webinar,
+} from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import useStreamCreator from "@/stream/context/StreamCreatorContext";
 
@@ -63,12 +71,16 @@ export default function RsvpSuccesModal({
     setStreamCreatorsPage,
   } = useStreamCreator();
   const _observer = useRef<IntersectionObserver>();
-  const [rsvpModalPage, setRsvpModalPage] = useState(
+  const [rsvpModalPage, setRsvpModalPage] = useState<number>(
     RsvpModalPage.DiscoverFollowers
   );
   const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
-  const { upcoming: upcomingStreams, loading: upcomingStreamsLoading } =
-    useUpcomingStreams();
+  const {
+    upcoming: upcomingStreams,
+    loading: upcomingStreamsLoading,
+    mutateUpcomingStreams,
+  } = useUpcomingStreams();
+  const { track } = useAnalytics();
 
   const ref = useCallback(
     (node: HTMLDivElement | null) => {
@@ -85,6 +97,31 @@ export default function RsvpSuccesModal({
     [_observer, streamCreatorsLoading, setStreamCreatorsPage]
   );
 
+  const postGroupRequest = useCallback(
+    async (webinar: Webinar): Promise<void> => {
+      const data: PostGroupRequest = {
+        group: webinar.id,
+        participant_type: ParticpantType.attendee,
+        status: RequestStatus.accepted,
+      };
+
+      const [request] = await WebinarApiClient().postWebinarRequest(data);
+
+      if (request) {
+        mutateUpcomingStreams();
+
+        track(AnalyticsEvents.rsvp_stream, {
+          stream: webinar.id,
+          stream_name: webinar.topic_detail?.name,
+          host: {
+            ...webinar.host_detail,
+          },
+        });
+      }
+    },
+    [track, mutateUpcomingStreams]
+  );
+
   if (
     !followers ||
     followersLoading ||
@@ -96,19 +133,23 @@ export default function RsvpSuccesModal({
   )
     return <Spinner />;
 
+  const liveAndUpcomingStreams = [...liveStreams, ...upcomingStreams];
+
   const text = `
     We will notify you prior to the stream with ${hostName}.
     You can also follow other creators to get notified when they are live on Crater.
   `;
 
   const goToNextScreen = async (): Promise<void> => {
-    setRsvpModalPage((prevValue) => {
-      if (RsvpModalPage.__length - prevValue - 1 > 0) {
-        return prevValue + 1;
-      } else {
-        onClose();
-      }
-    });
+    if (rsvpModalPage === RsvpModalPage.ExploreMore) {
+      onClose();
+    } else {
+      setRsvpModalPage((prevValue) => {
+        if (RsvpModalPage.__length - prevValue - 1 > 0) {
+          return prevValue + 1;
+        }
+      });
+    }
   };
 
   const goToPreviousScreen = async (): Promise<void> => {
@@ -232,7 +273,7 @@ export default function RsvpSuccesModal({
                   gridColumnGap={space.xs}
                   gridRowGap={space.s}
                 >
-                  {[...liveStreams, ...upcomingStreams].map((stream) => {
+                  {liveAndUpcomingStreams.map((stream) => {
                     if (stream.id !== group.id) {
                       return (
                         <Grid
@@ -258,6 +299,17 @@ export default function RsvpSuccesModal({
                                 textProps={{ minWidth: 38, px: 0 }}
                               />
                             </Link>
+                          ) : stream.rsvp ? (
+                            <Button
+                              text="RSVP'd"
+                              variant="round-secondary"
+                              color="black.2"
+                              bg={colors.white[1]}
+                              borderRadius={50}
+                              justifySelf="center"
+                              textProps={{ minWidth: 38, px: 0 }}
+                              disabled={true}
+                            />
                           ) : (
                             <Button
                               text="RSVP"
@@ -267,6 +319,7 @@ export default function RsvpSuccesModal({
                               borderRadius={50}
                               justifySelf="center"
                               textProps={{ minWidth: 38, px: 0 }}
+                              onClick={() => postGroupRequest(stream)}
                             />
                           )}
                         </Grid>
