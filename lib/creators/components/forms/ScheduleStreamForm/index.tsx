@@ -186,6 +186,7 @@ export default function ScheduleStreamForm({
           gridAutoRows="min-content"
           gridGap={space.xxxs}
           border={false}
+          required={true}
         >
           <Input
             value={fields.topic.value}
@@ -203,6 +204,7 @@ export default function ScheduleStreamForm({
           gridAutoRows="min-content"
           gridGap={space.xxxs}
           border={false}
+          required={true}
         >
           <MultiSelect<StreamCategory>
             placeholder="Pick categories"
@@ -233,6 +235,7 @@ export default function ScheduleStreamForm({
           gridAutoRows="min-content"
           gridGap={space.xxxs}
           border={false}
+          required={true}
         >
           <DateTimeInput
             error={fields.start.errors[0]}
@@ -254,29 +257,12 @@ export default function ScheduleStreamForm({
         </FormField>
 
         <FormField
-          label="RTMP Link"
-          gridTemplateColumns="1fr"
-          gridAutoFlow="row"
-          gridAutoRows="min-content"
-          gridGap={space.xxxs}
-          border={false}
-        >
-          <Input
-            value={fields.rtmp_link.value}
-            onChange={(e) => {
-              fieldValueSetter("rtmp_link", e.currentTarget.value);
-            }}
-          />
-        </FormField>
-
-        <FormField
           label="Description"
           gridTemplateColumns="1fr"
           gridAutoFlow="row"
           gridAutoRows="min-content"
           gridGap={space.xxxs}
           border={false}
-          gridColumn={1}
         >
           <TextArea
             rows={9}
@@ -294,12 +280,30 @@ export default function ScheduleStreamForm({
           gridAutoRows="min-content"
           gridGap={space.xxxs}
           border={false}
+          required={true}
         >
           <ImageDropBox
             error={fields.image.errors[0]}
             alt="cover photo"
             value={fields.image.value}
             onChange={handlePhotoChange}
+          />
+        </FormField>
+
+        <FormField
+          label="RTMP Link"
+          subtext="Stream to Youtube, Twitter, LinkedIn or Facebook"
+          gridTemplateColumns="1fr"
+          gridAutoFlow="row"
+          gridAutoRows="min-content"
+          gridGap={space.xxxs}
+          border={false}
+        >
+          <Input
+            value={fields.rtmp_link.value}
+            onChange={(e) => {
+              fieldValueSetter("rtmp_link", e.currentTarget.value);
+            }}
           />
         </FormField>
       </Form>

@@ -12,7 +12,6 @@ import {
   Link,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import WebinarApiClient from "@/community/api";
@@ -56,7 +55,7 @@ export default function RsvpSuccesModal({
   visble,
   group,
   onClose,
-}: IProps): JSX.Element {
+}: IProps): JSX.Element | null {
   const { space, colors } = useTheme();
   const hostName = group.host_detail?.name;
   const [subscribe, setSubscribe] = useState({});
@@ -131,7 +130,7 @@ export default function RsvpSuccesModal({
     upcomingStreamsLoading ||
     !upcomingStreams
   )
-    return <Spinner />;
+    return null;
 
   const liveAndUpcomingStreams = [...liveStreams, ...upcomingStreams];
 
