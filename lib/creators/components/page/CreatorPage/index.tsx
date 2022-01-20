@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
@@ -14,7 +14,7 @@ import {
   TabBar,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
+import IconButton from "@/common/components/atoms/IconButton";
 import CreatorApiClient from "@/creators/api";
 import { useCreator } from "@/creators/context/CreatorContext";
 import { useFollower } from "@/creators/context/FollowerContext";
@@ -75,7 +75,6 @@ export default function CreatorPage({
   const { user } = useAuth();
   const { creator, mutateCreator } = useCreator();
   const { space, colors, zIndices } = useTheme();
-  const [postLoading, setPostLoading] = useState(false);
   const {
     followers,
     loading: followersLoading,
@@ -83,17 +82,9 @@ export default function CreatorPage({
     unsubscribeCreator,
   } = useFollower();
 
-  const joinCommunity = async (): Promise<void> => {
+  const joinCreatorClub = async (): Promise<void> => {
     if (creator) {
-      setPostLoading(true);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [res, err] = await CreatorApiClient().postFollowCreator(creator.id);
-
-      setPostLoading(false);
-
-      if (err) {
-        return;
-      }
+      subscribeCreator(creator.id);
 
       mutateCreator();
     }
@@ -150,44 +141,36 @@ export default function CreatorPage({
             } Followers`}</Text>
           </Box>
           <Grid gridAutoFlow="column" gridGap={space.xxs}>
-            {(() => {
-              if (!user) return null;
-
-              if (!creator.is_follower) {
-                return (
-                  <Button
-                    disabled={postLoading}
-                    text="Join Club"
-                    onClick={joinCommunity}
-                    suffixElement={postLoading ? <Spinner /> : undefined}
-                  />
-                );
-              }
-
-              return null;
-            })()}
-
             {creator.user === user?.pk ? undefined : followers.length > 0 ? (
-              followers.map((follower) =>
-                follower.notify ? (
-                  <Button
-                    bg={colors.black[5]}
-                    border="1px solid rgba(255, 255, 255, 0.1)"
-                    text="Unsubscribe"
-                    onClick={() => unsubscribeCreator(follower.id)}
-                  />
-                ) : (
-                  <Button
-                    text="Subscribe"
-                    onClick={() => subscribeCreator(creator.id)}
-                  />
-                )
-              )
+              followers.map((follower) => (
+                <Button
+                  bg={colors.black[5]}
+                  border="1px solid rgba(255, 255, 255, 0.1)"
+                  text="Joined"
+                  suffixElement={
+                    follower.notify ? (
+                      <IconButton
+                        variant="roundSmall"
+                        icon="NotificationBellFill"
+                        size={15}
+                        onClick={() => unsubscribeCreator(follower.id)}
+                      />
+                    ) : (
+                      <IconButton
+                        variant="roundSmall"
+                        icon="NotificationBell"
+                        size={15}
+                        color="white"
+                        onClick={() => subscribeCreator(creator.id)}
+                      />
+                    )
+                  }
+                  disabled={true}
+                  key={follower.id}
+                />
+              ))
             ) : (
-              <Button
-                text="Subscribe"
-                onClick={() => subscribeCreator(creator.id)}
-              />
+              <Button text="Join Club" onClick={joinCreatorClub} />
             )}
           </Grid>
         </Grid>

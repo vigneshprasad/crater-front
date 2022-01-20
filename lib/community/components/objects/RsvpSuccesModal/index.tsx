@@ -11,7 +11,6 @@ import {
   Image,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import { Webinar } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import useStreamCreator from "@/stream/context/StreamCreatorContext";
@@ -26,7 +25,7 @@ export default function RsvpSuccesModal({
   visble,
   group,
   onClose,
-}: IProps): JSX.Element {
+}: IProps): JSX.Element | null {
   const { space, colors } = useTheme();
   const hostName = group.host_detail?.name;
   const [subscribe, setSubscribe] = useState({});
@@ -57,8 +56,7 @@ export default function RsvpSuccesModal({
     [_observer, streamCreatorsLoading, setStreamCreatorsPage]
   );
 
-  if (!followers || followersLoading || streamCreatorsLoading)
-    return <Spinner />;
+  if (!followers || followersLoading || streamCreatorsLoading) return null;
 
   const text = `
     We will notify you prior to the stream with ${hostName}.
