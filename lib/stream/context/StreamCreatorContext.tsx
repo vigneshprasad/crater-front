@@ -51,10 +51,10 @@ export function StreamCreatorProvider({
     () => ({
       streams: streams?.flatMap((page) => page.results),
       error,
-      loading: !streams && !error,
+      loading: !!user && !streams && !error,
       setStreamCreatorsPage,
     }),
-    [streams, error, setStreamCreatorsPage]
+    [streams, error, setStreamCreatorsPage, user]
   );
 
   return <StreamCreatorContext.Provider value={value} {...rest} />;

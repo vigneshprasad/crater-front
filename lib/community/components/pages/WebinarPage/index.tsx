@@ -16,6 +16,7 @@ import {
   Flex,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import IconButton from "@/common/components/atoms/IconButton";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -127,36 +128,48 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
               <Flex>
                 {webinar.host === user?.pk ? undefined : followers.length >
                   0 ? (
-                  followers.map((follower) =>
-                    follower.notify ? (
-                      <Button
-                        mr={space.xxs}
-                        variant="nav-button"
-                        bg={colors.black[5]}
-                        border="1px solid rgba(255, 255, 255, 0.1)"
-                        text="Unsubscribe"
-                        onClick={() => unsubscribeCreator(follower.id)}
-                      />
-                    ) : (
-                      <Button
-                        mr={space.xxs}
-                        variant="nav-button"
-                        text="Subscribe"
-                        onClick={() => {
-                          const creator =
-                            webinar.host_detail?.creator_detail?.id;
-                          if (creator) {
-                            subscribeCreator(creator);
-                          }
-                        }}
-                      />
-                    )
-                  )
+                  followers.map((follower) => (
+                    <Button
+                      mr={space.xxs}
+                      variant="nav-button"
+                      bg={colors.black[5]}
+                      border="1px solid rgba(255, 255, 255, 0.1)"
+                      text="Joined"
+                      suffixElement={
+                        follower.notify ? (
+                          <IconButton
+                            variant="roundSmall"
+                            icon="NotificationBellFill"
+                            size={15}
+                            onClick={() => unsubscribeCreator(follower.id)}
+                          />
+                        ) : (
+                          <IconButton
+                            variant="roundSmall"
+                            icon="NotificationBell"
+                            size={15}
+                            iconProps={{ color: "white" }}
+                            onClick={() => {
+                              const creator =
+                                webinar.host_detail?.creator_detail?.id;
+                              if (creator) {
+                                subscribeCreator(creator);
+                              }
+                            }}
+                          />
+                        )
+                      }
+                      disabled={true}
+                      key={follower.id}
+                    />
+                  ))
                 ) : (
                   <Button
                     mr={space.xxs}
                     variant="nav-button"
-                    text="Subscribe"
+                    text={`Join ${
+                      webinar.host_detail.name.split(" ")[0]
+                    }'s Club`}
                     onClick={() => {
                       const creator = webinar.host_detail?.creator_detail?.id;
                       if (creator) {

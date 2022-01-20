@@ -37,3 +37,5 @@ export { default as Twitter } from "./Twitter";
 export { default as User } from "./User";
 export { default as Users } from "./Users";
 export { default as Wallet } from "./Wallet";
+export { default as NotificationBell } from "./NotificationBell";
+export { default as NotificationBellFill } from "./NotificationBellFill";
