@@ -135,6 +135,22 @@ export default function RsvpSuccesModal({
     [track, mutateUpcomingStreams, router]
   );
 
+  const goToNextScreen = useCallback(async (): Promise<void> => {
+    if (rsvpModalPage === RsvpModalPage.__length - 1) {
+      onClose();
+    } else {
+      if (RsvpModalPage.__length - rsvpModalPage - 1 > 0) {
+        setRsvpModalPage((prevValue) => prevValue + 1);
+      }
+    }
+  }, [onClose, rsvpModalPage]);
+
+  const goToPreviousScreen = useCallback(async (): Promise<void> => {
+    if (rsvpModalPage > 0) {
+      setRsvpModalPage((prevValue) => prevValue - 1);
+    }
+  }, [rsvpModalPage]);
+
   if (
     !followers ||
     followersLoading ||
@@ -153,26 +169,6 @@ export default function RsvpSuccesModal({
     We will notify you prior to the stream with ${hostName}.
     You can also follow other creators to get notified when they are live on Crater.
   `;
-
-  const goToNextScreen = async (): Promise<void> => {
-    if (rsvpModalPage === RsvpModalPage.__length - 1) {
-      onClose();
-    } else {
-      setRsvpModalPage((prevValue) => {
-        if (RsvpModalPage.__length - prevValue - 1 > 0) {
-          return prevValue + 1;
-        }
-      });
-    }
-  };
-
-  const goToPreviousScreen = async (): Promise<void> => {
-    setRsvpModalPage((prevValue) => {
-      if (prevValue > 0) {
-        return prevValue - 1;
-      }
-    });
-  };
 
   // const videoUrl =
   //   "https://1worknetwork-prod.s3.amazonaws.com/media/mp4_rsvp.mp4";
