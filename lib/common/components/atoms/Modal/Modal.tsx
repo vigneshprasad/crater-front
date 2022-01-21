@@ -10,6 +10,7 @@ import { GridProps } from "../System/Grid";
 export type IModalProps = GridProps & {
   visible?: boolean;
   onClose?: () => void;
+  goBack?: () => void;
   maxWidth?: number;
 };
 
@@ -26,6 +27,7 @@ const Overlay = styled(Box)`
 export function Modal({
   children,
   onClose,
+  goBack,
   visible = false,
   maxWidth = 720,
   ...rest
@@ -90,6 +92,18 @@ export function Modal({
                   position="absolute"
                   icon="Close"
                   onClick={onClose}
+                />
+              )}
+              {goBack && (
+                <IconButton
+                  zIndex={20}
+                  variant="roundSmall"
+                  left={16}
+                  top={16}
+                  position="absolute"
+                  icon="ChevronLeft"
+                  onClick={goBack}
+                  iconProps={{ padding: "2px" }}
                 />
               )}
             </Box>
