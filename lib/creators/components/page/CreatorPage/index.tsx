@@ -14,7 +14,6 @@ import {
   TabBar,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import IconButton from "@/common/components/atoms/IconButton";
 import CreatorApiClient from "@/creators/api";
 import { useCreator } from "@/creators/context/CreatorContext";
 import { useFollower } from "@/creators/context/FollowerContext";
