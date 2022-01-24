@@ -16,7 +16,6 @@ import {
   Flex,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import IconButton from "@/common/components/atoms/IconButton";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import { PageRoutes } from "@/common/constants/route.constants";
