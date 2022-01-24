@@ -14,6 +14,7 @@ import {
   Span,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import IconButton from "@/common/components/atoms/IconButton";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
@@ -180,16 +181,24 @@ export default function RsvpSuccesModal({
       maxWidth={600}
       visible={visble}
       onClose={onClose}
-      goBack={
-        rsvpModalPage === RsvpModalPage.DiscoverFollowers
-          ? undefined
-          : goToPreviousScreen
-      }
       overflowY="hidden"
       px={space.xs}
       py={space.xxs}
       gridGap={space.xxs}
     >
+      {rsvpModalPage !== RsvpModalPage.DiscoverFollowers && (
+        <IconButton
+          zIndex={20}
+          variant="roundSmall"
+          left={16}
+          top={16}
+          position="absolute"
+          icon="ChevronLeft"
+          onClick={goToPreviousScreen}
+          iconProps={{ padding: "2px" }}
+        />
+      )}
+
       <Box w={100} justifySelf="center" alignSelf="center">
         <Image src={CRATER_LOGO} alt="Crater Logo" objectFit="cover" />
       </Box>
@@ -207,10 +216,11 @@ export default function RsvpSuccesModal({
                 <Text textStyle="headline6">Discover creators</Text>
               </Box>
 
-              <Grid gridAutoFlow="row" gridGap={space.xxs} overflowY="scroll">
+              <Box overflowY="scroll">
                 {streams &&
                   streams?.map((stream, index) => (
                     <Grid
+                      mb={space.xxs}
                       gridGap={space.xxs}
                       gridTemplateColumns="max-content 1fr max-content"
                       alignItems="center"
@@ -279,7 +289,7 @@ export default function RsvpSuccesModal({
                       </Text>
                     </Grid>
                   ))}
-              </Grid>
+              </Box>
             </>
           );
         } else if (rsvpModalPage === RsvpModalPage.LiveAndUpcomingStreams) {
