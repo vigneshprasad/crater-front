@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from "react";
+import { forwardRef, ReactNode, useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
@@ -24,82 +24,84 @@ const Overlay = styled(AnimatedBox)`
   z-index: ${({ theme }) => theme.zIndices.overlay};
 `;
 
-export default function BaseLayout({
-  children,
-  aside,
-  ...rest
-}: Props): JSX.Element {
-  const { colors } = useTheme();
-  const { toggleNavBar, animate } = useAsideNavState();
+const BaseLayout = forwardRef<HTMLDivElement, Props>(
+  ({ children, aside, ...rest }, ref) => {
+    const { colors } = useTheme();
+    const { toggleNavBar, animate } = useAsideNavState();
 
-  const content = useMemo(() => {
-    if (aside) {
+    const content = useMemo(() => {
+      if (aside) {
+        return (
+          <Grid
+            gridTemplateColumns="min-content 1fr"
+            gridTemplateRows="calc(100vh - 86px)"
+          >
+            {aside}
+            <Box position="relative" {...rest} ref={ref}>
+              <Overlay
+                initial="hidden"
+                animate={animate}
+                onClick={() => toggleNavBar()}
+                variants={{
+                  hidden: {
+                    background: "transparent",
+                    transitionEnd: {
+                      display: "none",
+                    },
+                  },
+                  collapse: {
+                    background: colors.black[2],
+                    transitionEnd: {
+                      display: "none",
+                    },
+                  },
+                  expanded: {
+                    background: colors.drawerOverlay,
+                    display: "block",
+                  },
+                }}
+              />
+              {children}
+            </Box>
+          </Grid>
+        );
+      }
+
       return (
-        <Grid
-          gridTemplateColumns="min-content 1fr"
-          gridTemplateRows="calc(100vh - 86px)"
-        >
-          {aside}
-          <Box position="relative" {...rest}>
-            <Overlay
-              initial="hidden"
-              animate={animate}
-              onClick={() => toggleNavBar()}
-              variants={{
-                hidden: {
-                  background: "transparent",
-                  transitionEnd: {
-                    display: "none",
-                  },
-                },
-                collapse: {
-                  background: colors.black[2],
-                  transitionEnd: {
-                    display: "none",
-                  },
-                },
-                expanded: {
-                  background: colors.drawerOverlay,
-                  display: "block",
-                },
-              }}
-            />
-            {children}
-          </Box>
-        </Grid>
+        <Box position="relative" {...rest} ref={ref}>
+          {children}
+        </Box>
       );
-    }
+    }, [aside, children, rest, toggleNavBar, animate, colors, ref]);
 
     return (
-      <Box position="relative" {...rest}>
-        {children}
-      </Box>
-    );
-  }, [aside, children, rest, toggleNavBar, animate, colors]);
-
-  return (
-    <Grid
-      as="main"
-      gridTemplateColumns="100vw"
-      gridTemplateRows="max-content 1fr"
-      overflow="hidden"
-    >
-      <Box bg={colors.accent} py={4}>
-        <Text textAlign="center">
-          We just raised some &#128184;: Check out our feature in this{" "}
-          <a
-            target="_blank"
-            href="https://lumikai.medium.com/f9dc4966d7e7"
-            rel="noreferrer"
-          >
-            <Span textDecoration="underline">article</Span>
-          </a>
-        </Text>
-      </Box>
-      <Grid gridTemplateRows="56px 1fr">
-        <AppNavBar />
-        {content}
+      <Grid
+        as="main"
+        gridTemplateColumns="100vw"
+        gridTemplateRows="max-content 1fr"
+        overflow="hidden"
+      >
+        <Box bg={colors.accent} py={4}>
+          <Text textAlign="center">
+            We just raised some &#128184;: Check out our feature in this{" "}
+            <a
+              target="_blank"
+              href="https://lumikai.medium.com/f9dc4966d7e7"
+              rel="noreferrer"
+            >
+              <Span textDecoration="underline">article</Span>
+            </a>
+          </Text>
+        </Box>
+        <Grid gridTemplateRows="56px 1fr">
+          <AppNavBar />
+          {content}
+        </Grid>
       </Grid>
-    </Grid>
-  );
-}
+    );
+  }
+);
+
+BaseLayout.displayName = "BaseLayout";
+
+export default BaseLayout;

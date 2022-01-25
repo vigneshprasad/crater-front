@@ -16,7 +16,6 @@ import {
   Flex,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import IconButton from "@/common/components/atoms/IconButton";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -67,7 +66,6 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
     followers,
     loading: followersLoading,
     subscribeCreator,
-    unsubscribeCreator,
   } = useFollower();
 
   // Handle Dyte participant request error
@@ -126,58 +124,37 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             >
               <Text textStyle="headline5">{webinar.topic_detail?.name}</Text>
               <Flex>
-                {webinar.host === user?.pk ? undefined : followers.length >
-                  0 ? (
-                  followers.map((follower) => (
+                {(() => {
+                  // If the logged in user is the host, do not show `Follow` button
+                  if (webinar.host === user?.pk) return null;
+
+                  if (followers.length > 0 && followers[0].notify) {
+                    return (
+                      <Button
+                        mr={space.xxs}
+                        text="Following"
+                        variant="nav-button"
+                        bg={colors.black[5]}
+                        border="1px solid rgba(255, 255, 255, 0.1)"
+                        disabled={true}
+                      />
+                    );
+                  }
+
+                  return (
                     <Button
                       mr={space.xxs}
                       variant="nav-button"
-                      bg={colors.black[5]}
-                      border="1px solid rgba(255, 255, 255, 0.1)"
-                      text="Joined"
-                      suffixElement={
-                        follower.notify ? (
-                          <IconButton
-                            variant="roundSmall"
-                            icon="NotificationBellFill"
-                            size={15}
-                            onClick={() => unsubscribeCreator(follower.id)}
-                          />
-                        ) : (
-                          <IconButton
-                            variant="roundSmall"
-                            icon="NotificationBell"
-                            size={15}
-                            iconProps={{ color: "white" }}
-                            onClick={() => {
-                              const creator =
-                                webinar.host_detail?.creator_detail?.id;
-                              if (creator) {
-                                subscribeCreator(creator);
-                              }
-                            }}
-                          />
-                        )
-                      }
-                      disabled={true}
-                      key={follower.id}
+                      text="Follow"
+                      onClick={() => {
+                        const creator = webinar.host_detail?.creator_detail?.id;
+                        if (creator) {
+                          subscribeCreator(creator);
+                        }
+                      }}
                     />
-                  ))
-                ) : (
-                  <Button
-                    mr={space.xxs}
-                    variant="nav-button"
-                    text={`Join ${
-                      webinar.host_detail.name.split(" ")[0]
-                    }'s Club`}
-                    onClick={() => {
-                      const creator = webinar.host_detail?.creator_detail?.id;
-                      if (creator) {
-                        subscribeCreator(creator);
-                      }
-                    }}
-                  />
-                )}
+                  );
+                })()}
 
                 {webinar.host_profile_details?.primary_url && (
                   <Link
