@@ -164,7 +164,9 @@ export default function RsvpSuccesModal({
   )
     return null;
 
-  const liveAndUpcomingStreams = [...liveStreams, ...upcomingStreams];
+  const liveAndUpcomingStreams = [...liveStreams, ...upcomingStreams].filter(
+    (stream, index, self) => index === self.findIndex((x) => x.id === stream.id)
+  );
 
   const text = `
     We will notify you prior to the stream with ${hostName}.
