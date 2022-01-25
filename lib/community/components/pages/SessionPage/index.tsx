@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -51,13 +51,30 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const { openModal } = useAuthModal();
   const { track } = useAnalytics();
   const { upcoming } = useUpcomingStreams();
+  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [url, setUrl] = useState("");
+
+  const scrollToTop = useCallback(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo(0, 0);
+    }
+  }, [scrollContainerRef]);
 
   useEffect(() => {
     const location = window.location.href;
     setUrl(location);
   }, []);
+
+  useEffect(() => {
+    if (router && router.query && router.query.id) {
+      if (router.query.id !== sessionId) {
+        scrollToTop();
+        setSessionId(router.query.id as string);
+      }
+    }
+  }, [router, scrollToTop, sessionId, setSessionId]);
 
   const isHost = useMemo(() => {
     if (!user || !webinar) return false;
@@ -144,6 +161,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
         overflowY="auto"
         // pb={[space.l, space.l]}
         aside={<AsideNav />}
+        ref={scrollContainerRef}
       >
         <Box px={[space.xs, space.m]} pb={[space.l, space.xxs]}>
           <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
