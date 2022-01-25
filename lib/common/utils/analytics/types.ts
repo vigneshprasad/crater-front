@@ -11,4 +11,6 @@ export enum AnalyticsEvents {
   match_me_clicked = "web_match_me_clicked",
   profile_picure_added = "web_profile_picure_added",
   participant_joined_stream = "web_participant_joined_stream",
+  subscribe_creator = "web_subscribe_creator",
+  unsubscribe_creator = "web_unsubscribe_creator",
 }

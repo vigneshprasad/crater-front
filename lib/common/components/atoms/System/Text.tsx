@@ -195,7 +195,6 @@ export const Text = styled(Box)<TextProps>`
     maxLines &&
     css`
       overflow: hidden;
-      display: -webkit-box;
       -webkit-line-clamp: ${maxLines};
       -webkit-box-orient: vertical;
     `}

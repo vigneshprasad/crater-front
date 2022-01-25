@@ -9,6 +9,8 @@ import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import { Follower } from "@/community/types/community";
 
 import CreatorApiClient from "../api";
@@ -34,6 +36,8 @@ export function FollowerProvider({
   user,
   ...rest
 }: IProviderProps): JSX.Element {
+  const { track } = useAnalytics();
+
   const {
     data: followers,
     error,
@@ -46,23 +50,27 @@ export function FollowerProvider({
 
   const subscribeCreator = useCallback(
     async (creator: number): Promise<void> => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [_, err] = await CreatorApiClient().subscribeCreator(creator);
+      const [follower, err] = await CreatorApiClient().subscribeCreator(
+        creator
+      );
 
       if (err) {
         return;
       }
 
       mutateFollowers();
+
+      track(AnalyticsEvents.subscribe_creator, {
+        ...follower,
+      });
     },
-    [mutateFollowers]
+    [mutateFollowers, track]
   );
 
   const unsubscribeCreator = useCallback(
-    async (follower: number): Promise<void> => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [_, err] = await CreatorApiClient().unsubscribeCreator(
-        follower,
+    async (followerId: number): Promise<void> => {
+      const [follower, err] = await CreatorApiClient().unsubscribeCreator(
+        followerId,
         false
       );
 
@@ -71,8 +79,12 @@ export function FollowerProvider({
       }
 
       mutateFollowers();
+
+      track(AnalyticsEvents.unsubscribe_creator, {
+        ...follower,
+      });
     },
-    [mutateFollowers]
+    [mutateFollowers, track]
   );
 
   const value: IFollowerState = useMemo(
