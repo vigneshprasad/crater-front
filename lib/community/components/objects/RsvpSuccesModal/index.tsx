@@ -236,11 +236,7 @@ export default function RsvpSuccesModal({
                         <Text textStyle="bodyLarge">
                           {stream.host_detail.name}
                         </Text>
-                        <Text
-                          display={["none", "grid"]}
-                          color={colors.slate}
-                          maxLines={3}
-                        >
+                        <Text display={["none", "grid"]} color={colors.slate}>
                           {stream.is_live ? "Live Now: " : "Upcoming: "}
                           {stream.topic_detail.name}
                         </Text>
@@ -281,7 +277,6 @@ export default function RsvpSuccesModal({
                       <Text
                         display={["grid", "none"]}
                         gridColumn="1 / span 3"
-                        maxLines={3}
                         color={colors.slate}
                       >
                         {stream.is_live ? "Live Now: " : "Upcoming: "}
