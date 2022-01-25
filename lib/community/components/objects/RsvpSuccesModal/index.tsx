@@ -410,6 +410,8 @@ export default function RsvpSuccesModal({
             </>
           );
         }
+        // TODO: Design to be confirmed for last screen of modal
+
         // else if (rsvpModalPage === RsvpModalPage.ExploreMore) {
         //   return (
         //     <>
