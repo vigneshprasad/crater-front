@@ -68,7 +68,7 @@ const BaseLayout = forwardRef<HTMLDivElement, Props>(
       }
 
       return (
-        <Box position="relative" {...rest}>
+        <Box position="relative" {...rest} ref={ref}>
           {children}
         </Box>
       );
