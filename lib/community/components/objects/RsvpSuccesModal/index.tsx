@@ -299,7 +299,6 @@ export default function RsvpSuccesModal({
               <Box overflowY="scroll">
                 <Grid
                   gridTemplateColumns={["1fr", "repeat(2, 1fr)"]}
-                  gridAutoRows="1fr"
                   gridColumnGap={space.xs}
                   gridRowGap={space.xs}
                 >
@@ -309,7 +308,7 @@ export default function RsvpSuccesModal({
                         <Grid
                           gridAutoFlow="row"
                           gridGap={space.xxs}
-                          gridTemplateRows="max-content 1fr max-content"
+                          gridTemplateRows="max-content max-content max-content"
                           key={stream.id}
                         >
                           <Grid
@@ -325,7 +324,7 @@ export default function RsvpSuccesModal({
                             <Text>{stream.host_detail.name}</Text>
                           </Grid>
 
-                          <Box position="relative">
+                          <Box position="relative" h={["none", 150]}>
                             {stream.topic_detail?.image && (
                               <Image
                                 objectFit="cover"
