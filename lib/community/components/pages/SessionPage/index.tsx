@@ -181,7 +181,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     }
   }, [router, user, webinar, postGroupRequest, postSeriesRequest]);
 
-  if (!webinar || !upcoming) return <Box>Loading..</Box>;
+  if (!webinar || !upcoming || !seriesData) return <Box>Loading..</Box>;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { start, host_detail } = webinar;
