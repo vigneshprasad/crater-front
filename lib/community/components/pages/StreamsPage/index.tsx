@@ -60,8 +60,6 @@ export default function StreamsPage(): JSX.Element {
   )
     return <Spinner />;
 
-  console.log("series: ", seriesList);
-
   return (
     <>
       <Box px={[space.xxs, space.xs]} py={[space.xxs, space.s]}>
