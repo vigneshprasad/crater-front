@@ -7,9 +7,11 @@ import { Box, Grid, Text } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
+import useSeries from "@/community/context/SeriesListContext";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import usePastStreams from "@/stream/context/PastStreamContext";
 
+import SeriesList from "../../objects/SeriesList";
 import StreamCard from "../../objects/StreamCard";
 import { IStreamSliderProps } from "../../objects/StreamSlider";
 
@@ -31,6 +33,7 @@ export default function StreamsPage(): JSX.Element {
   } = usePastStreams();
   const { space } = useTheme();
   const _observer = useRef<IntersectionObserver>();
+  const { series: seriesList, loading: seriesLoading } = useSeries();
 
   const ref = useCallback(
     (node: HTMLDivElement | null) => {
@@ -47,14 +50,35 @@ export default function StreamsPage(): JSX.Element {
     [_observer, pastStreamsLoading, setPastStreamsPage]
   );
 
-  if (liveStreamsLoading || !liveStreams || !upcoming || !past)
+  if (
+    liveStreamsLoading ||
+    !liveStreams ||
+    !upcoming ||
+    !past ||
+    seriesLoading ||
+    !seriesList
+  )
     return <Spinner />;
+
+  console.log("series: ", seriesList);
 
   return (
     <>
       <Box px={[space.xxs, space.xs]} py={[space.xxs, space.s]}>
         <StreamSlider liveStreams={liveStreams} />
       </Box>
+
+      {seriesList.length > 0 ? (
+        <>
+          <Box px={[space.xxs, space.s]} py={space.xs}>
+            <Text textStyle="headlineBold">
+              <Span>Series</Span> to watch out for
+            </Text>
+          </Box>
+
+          <SeriesList seriesList={seriesList} />
+        </>
+      ) : null}
 
       <Box px={[space.xxs, space.s]} py={space.xs}>
         <Text textStyle="headlineBold">
