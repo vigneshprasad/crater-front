@@ -1,25 +1,19 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useTheme } from "styled-components";
+import useSWR from "swr";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
-import {
-  Avatar,
-  Box,
-  Flex,
-  Grid,
-  Icon,
-  Text,
-  Link,
-} from "@/common/components/atoms";
+import { Avatar, Box, Flex, Grid, Icon, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { PageRoutes } from "@/common/constants/route.constants";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
@@ -31,6 +25,7 @@ import {
   ParticpantType,
   PostGroupRequest,
   RequestStatus,
+  Series,
 } from "@/community/types/community";
 
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
@@ -126,18 +121,65 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     [webinar, id, mutateRequest, router, track, mutateWebinar, webinarRequest]
   );
 
+  const { data: seriesData } = useSWR<Series>(
+    webinar && webinar.series !== null
+      ? `${API_URL_CONSTANTS.series.getAllSeries}${webinar.series}/`
+      : null
+  );
+
+  const series = useMemo(() => {
+    return seriesData;
+  }, [seriesData]);
+
+  const postSeriesRequest = useCallback(async (): Promise<void> => {
+    if (webinar && webinar?.series !== null && seriesData) {
+      if (webinarRequest?.status !== RequestStatus.accepted) {
+        const [requests] = await WebinarApiClient().postSeriesRequest(
+          webinar.series
+        );
+
+        if (requests && requests.length > 0) {
+          const request = requests.find(
+            (request) => request.group === webinar.id
+          );
+
+          track(AnalyticsEvents.rsvp_series, {
+            series: webinar.series,
+            series_name: seriesData.topic_detail.name,
+            stream: webinar.id,
+            stream_name: webinar.topic_detail?.name,
+            host: {
+              ...seriesData.host_detail,
+            },
+          });
+          mutateRequest(request);
+        }
+      }
+
+      setShowSuccess(true);
+    }
+  }, [mutateRequest, seriesData, track, webinar, webinarRequest]);
+
   useEffect(() => {
     const action = async (): Promise<void> => {
-      await postGroupRequest();
+      webinar?.series === null
+        ? await postGroupRequest()
+        : await postSeriesRequest();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { join, ...query } = router.query;
       router.replace({ query: { ...query } });
     };
 
-    if (router.query?.join === "true" && user && postGroupRequest && webinar) {
+    if (
+      router.query?.join === "true" &&
+      user &&
+      postGroupRequest &&
+      webinar &&
+      postSeriesRequest
+    ) {
       action();
     }
-  }, [router, user, webinar, postGroupRequest]);
+  }, [router, user, webinar, postGroupRequest, postSeriesRequest]);
 
   if (!webinar || !upcoming) return <Box>Loading..</Box>;
 
@@ -148,6 +190,12 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const now = DateTime.now();
 
   const image = webinar.topic_detail?.image;
+
+  const rsvpBtnText = webinar.is_live
+    ? "Join Stream"
+    : webinar.series !== null
+    ? `RSVP for the series`
+    : "RSVP for this session";
 
   return (
     <>
@@ -167,6 +215,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
             <Box py={space.s}>
               <Text textStyle="headline3">{webinar.topic_detail?.name}</Text>
+              <Text textStyle="headline6">{seriesData?.topic_detail.name}</Text>
             </Box>
           </Grid>
           <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
@@ -225,11 +274,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     return (
                       <Button
                         variant="full-width"
-                        text={
-                          webinar.is_live
-                            ? "Join Stream"
-                            : "RSVP for this session"
-                        }
+                        text={rsvpBtnText}
                         onClick={(): void => {
                           router.replace({
                             query: {
@@ -315,9 +360,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   return (
                     <Button
                       variant="full-width"
-                      text="RSVP for this session"
+                      text={rsvpBtnText}
                       onClick={(): void => {
-                        postGroupRequest();
+                        webinar.series === null
+                          ? postGroupRequest()
+                          : postSeriesRequest();
                       }}
                     />
                   );
@@ -339,10 +386,10 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 alignItems="start"
                 gridGap={space.xxs}
               >
-                <Link
-                  passHref
+                <a
                   href={`//www.linkedin.com/shareArticle?mini=true&url=${url}&title=${webinar.topic_detail?.name}`}
-                  boxProps={{ target: "_blank" }}
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <Button
                     variant="full-width"
@@ -363,11 +410,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                       });
                     }}
                   />
-                </Link>
-                <Link
-                  passHref
+                </a>
+                <a
                   href={`//twitter.com/share?text=${webinar.topic_detail?.name}&url=${url}`}
-                  boxProps={{ target: "_blank" }}
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <Button
                     variant="full-width"
@@ -388,7 +435,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                       });
                     }}
                   />
-                </Link>
+                </a>
               </Grid>
 
               {/* {webinar.attendees_detail_list && (
@@ -427,6 +474,27 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             </Grid>
           </Grid>
         </Box>
+
+        {webinar.series !== null ? (
+          <Box>
+            <Box px={[space.xxs, space.s]} py={space.xs}>
+              <Text textStyle="headlineBold">More from the series</Text>
+            </Box>
+
+            <Grid
+              px={space.s}
+              gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
+              gridGap={space.s}
+            >
+              {series?.groups_detail_list.map((stream) => {
+                if (stream.id !== webinar.id) {
+                  return <StreamCard stream={stream} key={stream.id} />;
+                }
+              })}
+            </Grid>
+          </Box>
+        ) : null}
+
         <Box pb={space.s}>
           <Box px={[space.xxs, space.s]} py={space.xs}>
             <Text textStyle="headlineBold">Upcoming Streams</Text>
