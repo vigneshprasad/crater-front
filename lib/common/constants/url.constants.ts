@@ -93,6 +93,10 @@ export const API_URL_CONSTANTS = {
   chat: {
     getChatReactions: "/groups/conversations/chatreactions/",
   },
+  series: {
+    getAllSeries: "/groups/public/conversations/series/",
+    postSeriesRequest: "/groups/conversations/series/requests/",
+  },
 };
 
 export const LEARN_MORE_URL =

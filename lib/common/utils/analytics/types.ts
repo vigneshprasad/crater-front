@@ -13,4 +13,5 @@ export enum AnalyticsEvents {
   participant_joined_stream = "web_participant_joined_stream",
   subscribe_creator = "web_subscribe_creator",
   unsubscribe_creator = "web_unsubscribe_creator",
+  rsvp_series = "web_rsvp_series",
 }

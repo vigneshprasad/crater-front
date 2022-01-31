@@ -1,6 +1,7 @@
 import { Profile } from "next-auth";
 
 import { Creator } from "@/creators/types/creator";
+import { StreamCategory } from "@/creators/types/stream";
 
 export type Community = {
   creator: number;
@@ -64,6 +65,7 @@ export type Group = {
   topic_detail: Topic;
   type: number;
   rsvp: boolean | null;
+  series: number | null;
   recording_details?: {
     dyte_recordings: number[];
     dyte_recordings_details: unknown[];
@@ -144,4 +146,17 @@ export interface WSMessage {
 export interface WSWebinarLiveParticipantCount extends WSMessage {
   type: WSMessageTypes.live_count;
   count: number;
+}
+
+export interface Series {
+  id: number;
+  topic: number;
+  topic_detail: Topic;
+  groups: number[];
+  groups_detail_list: Webinar[];
+  categories: number[];
+  categories_detail_list: StreamCategory[];
+  host: string;
+  host_detail: Speaker;
+  start: string;
 }

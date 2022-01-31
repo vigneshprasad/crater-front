@@ -131,12 +131,6 @@ export default function CreatorPage({
                 <Icon color={colors.accent} size={18} icon="CheckCircle" />
               )}
             </Flex>
-
-            <Text color={colors.slate}>{`${
-              creator.subscriber_count
-                ? creator.subscriber_count.toLocaleString()
-                : 0
-            } Followers`}</Text>
           </Box>
           <Grid gridAutoFlow="column" gridGap={space.xxs}>
             {(() => {
