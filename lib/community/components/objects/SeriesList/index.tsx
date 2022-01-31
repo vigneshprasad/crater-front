@@ -22,9 +22,7 @@ export default function SeriesList({ seriesList }: IProps): JSX.Element {
       ]}
     >
       {seriesList?.map((series) => (
-        <>
-          <SeriesCard series={series} key={series.id} />
-        </>
+        <SeriesCard series={series} key={series.id} />
       ))}
     </Grid>
   );
