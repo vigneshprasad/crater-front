@@ -131,6 +131,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                   if (followers.length > 0 && followers[0].notify) {
                     return (
                       <Button
+                        height={32}
                         mr={space.xxs}
                         text="Following"
                         variant="nav-button"
@@ -143,6 +144,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
 
                   return (
                     <Button
+                      height={32}
                       mr={space.xxs}
                       variant="nav-button"
                       text="Follow"
