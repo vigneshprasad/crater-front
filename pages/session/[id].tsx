@@ -72,7 +72,11 @@ export default function Session({ webinar, id }: Props): JSX.Element {
   }, [router]);
 
   useEffect(() => {
-    if (router && webinar.is_live) router.push(`/livestream/${webinar.id}/`);
+    if (router) {
+      if (webinar.is_live) router.push(`/livestream/${webinar.id}/`);
+      else if (webinar.is_past || webinar.closed)
+        router.push(`/video/${webinar.id}/`);
+    }
   }, [router, user, webinar]);
 
   return (
