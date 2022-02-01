@@ -31,7 +31,7 @@ export default function StreamsPage(): JSX.Element {
     loading: pastStreamsLoading,
     setPastStreamsPage,
   } = usePastStreams();
-  const { space } = useTheme();
+  const { space, colors } = useTheme();
   const _observer = useRef<IntersectionObserver>();
   const { series: seriesList, loading: seriesLoading } = useSeries();
 
@@ -68,17 +68,21 @@ export default function StreamsPage(): JSX.Element {
 
       {seriesList.length > 0 ? (
         <>
-          <Box px={[space.xxs, space.s]} py={space.xs}>
+          <Box px={[space.xxs, space.s]} py={space.xxs}>
             <Text textStyle="headlineBold">
-              <Span>Series</Span> to watch out for
+              Live <Span>series</Span> by our creators
             </Text>
           </Box>
 
           <SeriesList seriesList={seriesList} />
+
+          <Box p="1rem 4rem">
+            <hr color={colors.black[4]} />
+          </Box>
         </>
       ) : null}
 
-      <Box px={[space.xxs, space.s]} py={space.xs}>
+      <Box px={[space.xxs, space.s]} py={space.xxs}>
         <Text textStyle="headlineBold">
           Going <Span>live</Span> soon
         </Text>
@@ -94,8 +98,14 @@ export default function StreamsPage(): JSX.Element {
         ))}
       </Grid>
 
-      <Box px={[space.xxs, space.s]} py={space.xs}>
-        <Text textStyle="headlineBold">Past Streams</Text>
+      <Box p="1rem 4rem">
+        <hr color={colors.black[4]} />
+      </Box>
+
+      <Box px={[space.xxs, space.s]} py={space.xxs}>
+        <Text textStyle="headlineBold">
+          <Span>Previous</Span> streams you may like
+        </Text>
       </Box>
 
       <Grid
