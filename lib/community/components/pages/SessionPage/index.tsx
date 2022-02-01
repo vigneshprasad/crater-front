@@ -127,10 +127,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       : null
   );
 
-  const series = useMemo(() => {
-    return seriesData;
-  }, [seriesData]);
-
   const postSeriesRequest = useCallback(async (): Promise<void> => {
     if (webinar && webinar?.series !== null && seriesData) {
       if (webinarRequest?.status !== RequestStatus.accepted) {
@@ -181,7 +177,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     }
   }, [router, user, webinar, postGroupRequest, postSeriesRequest]);
 
-  if (!webinar || !upcoming || !seriesData) return <Box>Loading..</Box>;
+  if (!webinar || !upcoming) return <Box>Loading..</Box>;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { start, host_detail } = webinar;
@@ -486,7 +482,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
               gridGap={space.s}
             >
-              {series?.groups_detail_list.map((stream) => {
+              {seriesData?.groups_detail_list.map((stream) => {
                 if (stream.id !== webinar.id) {
                   return <StreamCard stream={stream} key={stream.id} />;
                 }
