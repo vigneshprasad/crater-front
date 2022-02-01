@@ -121,6 +121,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             <Flex
               justifyContent="space-between"
               flexDirection={["column", "row"]}
+              alignItems="start"
             >
               <Text textStyle="headline5">{webinar.topic_detail?.name}</Text>
               <Flex>
@@ -131,7 +132,6 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
                   if (followers.length > 0 && followers[0].notify) {
                     return (
                       <Button
-                        height={32}
                         mr={space.xxs}
                         text="Following"
                         variant="nav-button"
@@ -144,7 +144,6 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
 
                   return (
                     <Button
-                      height={32}
                       mr={space.xxs}
                       variant="nav-button"
                       text="Follow"
