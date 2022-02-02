@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -14,43 +15,42 @@ interface IProps {
   hostName?: string;
 }
 
-export default function PastStreamCard({
-  image,
-  title,
-  href,
-  hostImage,
-  hostName,
-  time,
-}: IProps): JSX.Element {
-  const { radii, space, colors } = useTheme();
-  const start = DateTime.parse(time);
-  return (
-    <Link href={href}>
-      <Box>
-        <Box
-          position="relative"
-          pt="56.25%"
-          overflow="hidden"
-          borderRadius={radii.xxs}
-        >
-          <Image src={image} alt={title} layout="fill" />
-        </Box>
+const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
+  ({ image, title, href, hostImage, hostName, time }, ref) => {
+    const { radii, space, colors } = useTheme();
+    const start = DateTime.parse(time);
+    return (
+      <Link href={href}>
+        <Grid gridGap={space.xs} ref={ref}>
+          <Box
+            h={180}
+            position="relative"
+            pt="56.25%"
+            overflow="hidden"
+            borderRadius={radii.xxs}
+          >
+            {image && <Image src={image} alt={title} layout="fill" />}
+          </Box>
 
-        <Grid
-          py={space.xxs}
-          gridTemplateColumns="max-content 1fr"
-          alignItems="start"
-          gridGap={space.xxs}
-        >
-          <Avatar size={48} image={hostImage} alt={title} />
-          <Flex flexDirection="column">
-            <Text textStyle="bodyLarge">{title}</Text>
-            <Text textStyle="caption" color={colors.slate}>
-              {hostName}, {start.toRelative()}
-            </Text>
-          </Flex>
+          <Grid
+            gridTemplateColumns="max-content 1fr"
+            alignItems="center"
+            gridGap={space.xxs}
+          >
+            <Avatar size={56} image={hostImage} alt={title} />
+            <Flex flexDirection="column">
+              <Text textStyle="bodyLarge">{title}</Text>
+              <Text textStyle="caption" color={colors.slate}>
+                {hostName}, {start.toRelative()}
+              </Text>
+            </Flex>
+          </Grid>
         </Grid>
-      </Box>
-    </Link>
-  );
-}
+      </Link>
+    );
+  }
+);
+
+PastStreamCard.displayName = "PastStreamCard";
+
+export default PastStreamCard;
