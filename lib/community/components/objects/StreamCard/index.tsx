@@ -27,6 +27,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
           <Box
             h={180}
             position="relative"
+            pt="56.25%"
             borderRadius={radii.xxs}
             overflow="hidden"
           >

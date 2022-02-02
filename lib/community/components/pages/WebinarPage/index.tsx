@@ -121,6 +121,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             <Flex
               justifyContent="space-between"
               flexDirection={["column", "row"]}
+              alignItems="start"
             >
               <Text textStyle="headline5">{webinar.topic_detail?.name}</Text>
               <Flex>

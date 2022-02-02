@@ -42,7 +42,7 @@ const SeriesCard = forwardRef<HTMLDivElement, IProps>(({ series }, ref) => {
           </AnimatedBox>
         </AnimateSharedLayout>
 
-        <Box py={space.xxs}>
+        <Box py={space.xxxs}>
           <Text>{series.host_detail.name}</Text>
         </Box>
       </Grid>
