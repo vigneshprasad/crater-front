@@ -9,6 +9,7 @@ import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import useSeries from "@/community/context/SeriesListContext";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
+import PastStreamCard from "@/stream/components/objects/PastStreamCard";
 import usePastStreams from "@/stream/context/PastStreamContext";
 
 import SeriesList from "../../objects/SeriesList";
@@ -70,7 +71,7 @@ export default function StreamsPage(): JSX.Element {
         <>
           <Box px={[space.xxs, space.s]} py={space.xxs}>
             <Text textStyle="headlineBold">
-              Live <Span>series</Span> by our creators
+              <Span>Series</Span> by our creators
             </Text>
           </Box>
 
@@ -90,7 +91,7 @@ export default function StreamsPage(): JSX.Element {
 
       <Grid
         px={space.s}
-        gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
+        gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
         gridGap={space.s}
       >
         {upcoming.map((stream) => (
@@ -110,14 +111,18 @@ export default function StreamsPage(): JSX.Element {
 
       <Grid
         px={space.s}
-        gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
+        gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
         gridGap={space.s}
       >
         {past?.map((stream, index) => (
-          <StreamCard
-            link={PageRoutes.streamVideo(stream.id)}
-            stream={stream}
+          <PastStreamCard
             key={stream.id}
+            title={stream.topic_detail.name}
+            href={PageRoutes.streamVideo(stream.id)}
+            image={stream.topic_detail.image}
+            hostImage={stream.host_detail?.photo}
+            hostName={stream.host_detail?.name}
+            time={stream.start}
             ref={index == past.length - 1 ? ref : null}
           />
         ))}

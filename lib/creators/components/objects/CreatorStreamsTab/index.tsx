@@ -26,7 +26,10 @@ export default function CreatorStreamsTab(): JSX.Element {
           </Text>
           <Grid
             py={space.xxs}
-            gridTemplateColumns={["repeat(auto-fill, minmax(280px, 1fr))"]}
+            gridTemplateColumns={[
+              "1fr",
+              "repeat(auto-fill, minmax(280px, 1fr))",
+            ]}
             gridGap={space.xxs}
           >
             {upcoming.map((stream) => (
@@ -45,7 +48,7 @@ export default function CreatorStreamsTab(): JSX.Element {
       </Text>
       <Grid
         py={space.xxs}
-        gridTemplateColumns={["repeat(auto-fill, minmax(280px, 1fr))"]}
+        gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
         gridGap={space.xxs}
       >
         {pastStreams?.map((stream) => (

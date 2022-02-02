@@ -27,6 +27,7 @@ import {
   RequestStatus,
   Series,
 } from "@/community/types/community";
+import PastStreamCard from "@/stream/components/objects/PastStreamCard";
 
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
 import StreamCard from "../../objects/StreamCard";
@@ -207,14 +208,17 @@ export default function SessionPage({ id }: IProps): JSX.Element {
         aside={<AsideNav />}
         ref={scrollContainerRef}
       >
-        <Box px={[space.xs, space.m]} pb={[space.l, space.xxs]}>
+        <Box px={[space.xs, space.m]} pb={[space.xs, space.xxs]}>
           <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
             <Box py={space.s}>
               <Text textStyle="headline3">{webinar.topic_detail?.name}</Text>
               <Text textStyle="headline6">{seriesData?.topic_detail.name}</Text>
             </Box>
           </Grid>
-          <Grid gridTemplateColumns={["1fr", "1.5fr 1fr"]} gridGap={space.xxl}>
+          <Grid
+            gridTemplateColumns={["1fr", "1.5fr 1fr"]}
+            gridGap={[space.s, space.xxl]}
+          >
             <Grid
               gridGap={[space.xs, space.xxs]}
               gridAutoFlow="row"
@@ -479,11 +483,27 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
             <Grid
               px={space.s}
-              gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
+              gridTemplateColumns={[
+                "1fr",
+                "repeat(auto-fill, minmax(280px, 1fr))",
+              ]}
               gridGap={space.s}
             >
               {seriesData?.groups_detail_list.map((stream) => {
                 if (stream.id !== webinar.id) {
+                  if (stream.is_past || stream.closed) {
+                    return (
+                      <PastStreamCard
+                        key={stream.id}
+                        title={stream.topic_detail.name}
+                        href={PageRoutes.streamVideo(stream.id)}
+                        image={stream.topic_detail.image}
+                        hostImage={stream.host_detail?.photo}
+                        hostName={stream.host_detail?.name}
+                        time={stream.start}
+                      />
+                    );
+                  }
                   return <StreamCard stream={stream} key={stream.id} />;
                 }
               })}
@@ -498,7 +518,10 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
           <Grid
             px={space.s}
-            gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
+            gridTemplateColumns={[
+              "1fr",
+              "repeat(auto-fill, minmax(280px, 1fr))",
+            ]}
             gridGap={space.s}
           >
             {upcoming.map((stream) => {
