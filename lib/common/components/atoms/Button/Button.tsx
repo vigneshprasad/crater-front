@@ -15,7 +15,8 @@ type Variants =
   | "outline-small"
   | "small"
   | "round"
-  | "round-secondary";
+  | "round-secondary"
+  | "full-width-secondary";
 
 export type ButtonProps = Omit<BoxProps, "variant"> &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -94,6 +95,11 @@ const StyledButton = styled(Grid)<ButtonProps>`
           color: "black.2",
         },
       },
+      "full-width-secondary": {
+        minHeight: 44,
+        borderRadius: 6,
+        width: "100%",
+      },
     },
   })}
 `;
@@ -118,6 +124,7 @@ export function Button({
       small: "button",
       round: "button",
       "round-secondary": "button",
+      "full-width-secondary": "button",
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp]);
@@ -131,6 +138,7 @@ export function Button({
       small: colors.accent,
       round: colors.accent,
       "round-secondary": colors.accent,
+      "full-width-secondary": colors.accent,
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp, colors]);

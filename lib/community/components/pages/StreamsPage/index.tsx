@@ -7,9 +7,12 @@ import { Box, Grid, Text } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
+import useSeries from "@/community/context/SeriesListContext";
 import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
+import PastStreamCard from "@/stream/components/objects/PastStreamCard";
 import usePastStreams from "@/stream/context/PastStreamContext";
 
+import SeriesList from "../../objects/SeriesList";
 import StreamCard from "../../objects/StreamCard";
 import { IStreamSliderProps } from "../../objects/StreamSlider";
 
@@ -29,8 +32,9 @@ export default function StreamsPage(): JSX.Element {
     loading: pastStreamsLoading,
     setPastStreamsPage,
   } = usePastStreams();
-  const { space } = useTheme();
+  const { space, colors } = useTheme();
   const _observer = useRef<IntersectionObserver>();
+  const { series: seriesList, loading: seriesLoading } = useSeries();
 
   const ref = useCallback(
     (node: HTMLDivElement | null) => {
@@ -47,7 +51,14 @@ export default function StreamsPage(): JSX.Element {
     [_observer, pastStreamsLoading, setPastStreamsPage]
   );
 
-  if (liveStreamsLoading || !liveStreams || !upcoming || !past)
+  if (
+    liveStreamsLoading ||
+    !liveStreams ||
+    !upcoming ||
+    !past ||
+    seriesLoading ||
+    !seriesList
+  )
     return <Spinner />;
 
   return (
@@ -56,7 +67,23 @@ export default function StreamsPage(): JSX.Element {
         <StreamSlider liveStreams={liveStreams} />
       </Box>
 
-      <Box px={[space.xxs, space.s]} py={space.xs}>
+      {seriesList.length > 0 ? (
+        <>
+          <Box px={[space.xxs, space.s]} py={space.xxs}>
+            <Text textStyle="headlineBold">
+              <Span>Series</Span> by our creators
+            </Text>
+          </Box>
+
+          <SeriesList seriesList={seriesList} />
+
+          <Box p="1rem 4rem">
+            <hr color={colors.black[4]} />
+          </Box>
+        </>
+      ) : null}
+
+      <Box px={[space.xxs, space.s]} py={space.xxs}>
         <Text textStyle="headlineBold">
           Going <Span>live</Span> soon
         </Text>
@@ -64,7 +91,7 @@ export default function StreamsPage(): JSX.Element {
 
       <Grid
         px={space.s}
-        gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
+        gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
         gridGap={space.s}
       >
         {upcoming.map((stream) => (
@@ -72,20 +99,30 @@ export default function StreamsPage(): JSX.Element {
         ))}
       </Grid>
 
-      <Box px={[space.xxs, space.s]} py={space.xs}>
-        <Text textStyle="headlineBold">Past Streams</Text>
+      <Box p="1rem 4rem">
+        <hr color={colors.black[4]} />
+      </Box>
+
+      <Box px={[space.xxs, space.s]} py={space.xxs}>
+        <Text textStyle="headlineBold">
+          <Span>Previous</Span> streams you may like
+        </Text>
       </Box>
 
       <Grid
         px={space.s}
-        gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
+        gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
         gridGap={space.s}
       >
         {past?.map((stream, index) => (
-          <StreamCard
-            link={PageRoutes.streamVideo(stream.id)}
-            stream={stream}
+          <PastStreamCard
             key={stream.id}
+            title={stream.topic_detail.name}
+            href={PageRoutes.streamVideo(stream.id)}
+            image={stream.topic_detail.image}
+            hostImage={stream.host_detail?.photo}
+            hostName={stream.host_detail?.name}
+            time={stream.start}
             ref={index == past.length - 1 ? ref : null}
           />
         ))}

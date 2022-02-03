@@ -8,6 +8,7 @@ import {
   Group,
   GroupRequest,
   PostGroupRequest,
+  Series,
   Webinar,
 } from "@/community/types/community";
 
@@ -22,6 +23,10 @@ interface IApiClientResult {
   ) => Promise<ApiResult<GroupRequest, AxiosError>>;
   getAllUpcominWebinars: () => Promise<ApiResult<Group[], AxiosError>>;
   getAllLiveWebinars: () => Promise<ApiResult<Webinar[], AxiosError>>;
+  getAllSeries: () => Promise<ApiResult<Series[], AxiosError>>;
+  postSeriesRequest: (
+    series: number
+  ) => Promise<ApiResult<GroupRequest[], AxiosError>>;
 }
 
 export default function WebinarApiClient(
@@ -107,6 +112,35 @@ export default function WebinarApiClient(
     }
   }
 
+  async function getAllSeries(): Promise<ApiResult<Series[], AxiosError>> {
+    try {
+      const { data } = await client.get<PageResponse<Series>>(
+        API_URL_CONSTANTS.series.getAllSeries
+      );
+
+      return [data.results, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function postSeriesRequest(
+    series: number
+  ): Promise<ApiResult<GroupRequest[], AxiosError>> {
+    try {
+      const { data } = await client.post<GroupRequest[]>(
+        API_URL_CONSTANTS.series.postSeriesRequest,
+        {
+          series_id: series,
+        }
+      );
+
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getWebinar,
     getAllWebinar,
@@ -114,5 +148,7 @@ export default function WebinarApiClient(
     postWebinarRequest,
     getAllUpcominWebinars,
     getAllLiveWebinars,
+    getAllSeries,
+    postSeriesRequest,
   };
 }

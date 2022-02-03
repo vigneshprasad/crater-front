@@ -37,7 +37,7 @@ export function LiveStreamsProvider({
       return (await fetcher<PageResponse<Webinar>>(key)).results;
     },
     {
-      initialData: [[...(initial ? [...initial] : [])]],
+      initialData: initial ? [initial] : undefined,
     }
   );
   const value: ILiveStreamsState = useMemo(

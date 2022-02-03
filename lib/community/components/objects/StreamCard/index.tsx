@@ -27,6 +27,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
           <Box
             h={180}
             position="relative"
+            pt="56.25%"
             borderRadius={radii.xxs}
             overflow="hidden"
           >
@@ -42,14 +43,20 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
               borderRadius={4}
               py={2}
               px={space.xxxs}
-              bg={colors.black[0]}
+              bg={stream.is_live ? colors.red[0] : colors.black[0]}
               position="absolute"
               top={space.xxxs}
               left={space.xxxs}
             >
               <Text textStyle="caption">
-                <Span>Live On</Span>{" "}
-                {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
+                {stream.is_live ? (
+                  "LIVE"
+                ) : (
+                  <>
+                    <Span>Live On</Span>{" "}
+                    {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
+                  </>
+                )}
               </Text>
             </Box>
           </Box>
@@ -64,7 +71,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
               image={stream.host_detail?.photo}
             />
             <Box>
-              <Text>{stream.topic_detail?.name}</Text>
+              <Text maxLines={3}>{stream.topic_detail?.name}</Text>
               <Text color={colors.slate} textStyle="caption">
                 {stream.host_detail?.name}
               </Text>

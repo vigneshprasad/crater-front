@@ -14,7 +14,6 @@ import {
   TabBar,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import IconButton from "@/common/components/atoms/IconButton";
 import CreatorApiClient from "@/creators/api";
 import { useCreator } from "@/creators/context/CreatorContext";
 import { useFollower } from "@/creators/context/FollowerContext";
@@ -79,10 +78,9 @@ export default function CreatorPage({
     followers,
     loading: followersLoading,
     subscribeCreator,
-    unsubscribeCreator,
   } = useFollower();
 
-  const joinCreatorClub = async (): Promise<void> => {
+  const followCreator = async (): Promise<void> => {
     if (creator) {
       subscribeCreator(creator.id);
 
@@ -133,45 +131,25 @@ export default function CreatorPage({
                 <Icon color={colors.accent} size={18} icon="CheckCircle" />
               )}
             </Flex>
-
-            <Text color={colors.slate}>{`${
-              creator.subscriber_count
-                ? creator.subscriber_count.toLocaleString()
-                : 0
-            } Followers`}</Text>
           </Box>
           <Grid gridAutoFlow="column" gridGap={space.xxs}>
-            {creator.user === user?.pk ? undefined : followers.length > 0 ? (
-              followers.map((follower) => (
-                <Button
-                  bg={colors.black[5]}
-                  border="1px solid rgba(255, 255, 255, 0.1)"
-                  text="Joined"
-                  suffixElement={
-                    follower.notify ? (
-                      <IconButton
-                        variant="roundSmall"
-                        icon="NotificationBellFill"
-                        size={15}
-                        onClick={() => unsubscribeCreator(follower.id)}
-                      />
-                    ) : (
-                      <IconButton
-                        variant="roundSmall"
-                        icon="NotificationBell"
-                        size={15}
-                        color="white"
-                        onClick={() => subscribeCreator(creator.id)}
-                      />
-                    )
-                  }
-                  disabled={true}
-                  key={follower.id}
-                />
-              ))
-            ) : (
-              <Button text="Join Club" onClick={joinCreatorClub} />
-            )}
+            {(() => {
+              // If the logged in user is the host, do not show `Follow` button
+              if (creator.user === user?.pk) return null;
+
+              if (followers.length > 0 && followers[0].notify) {
+                return (
+                  <Button
+                    text="Following"
+                    bg={colors.black[5]}
+                    border="1px solid rgba(255, 255, 255, 0.1)"
+                    disabled={true}
+                  />
+                );
+              }
+
+              return <Button text="Follow" onClick={followCreator} />;
+            })()}
           </Grid>
         </Grid>
 

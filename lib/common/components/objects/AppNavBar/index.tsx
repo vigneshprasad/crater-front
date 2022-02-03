@@ -8,7 +8,7 @@ import { PageRoutes } from "@/common/constants/route.constants";
 import { DISCORD_URL, LEARN_MORE_URL } from "@/common/constants/url.constants";
 import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 
-import { AnimatedBox, Flex, Box, Grid, Text, Icon } from "../../atoms";
+import { AnimatedBox, Flex, Box, Grid, Text, Icon, Link } from "../../atoms";
 import { Button } from "../../atoms/Button";
 import IconButton from "../../atoms/IconButton";
 import { Logo } from "../Logo";
@@ -41,7 +41,7 @@ export default function AppNavBar(): JSX.Element {
       borderBottom={`2px solid ${borders.main}`}
       px={[space.xxs, space.xs]}
       py={[space.xxxs]}
-      gridTemplateColumns="max-content 1fr min-content"
+      gridTemplateColumns="max-content 1fr max-content min-content"
       alignItems="center"
     >
       <Flex>
@@ -81,6 +81,12 @@ export default function AppNavBar(): JSX.Element {
       </Flex>
 
       <Box />
+
+      <Link href={PageRoutes.creatorHub} boxProps={{ mx: space.xxs }}>
+        <Text textStyle="button" color={colors.accent}>
+          Go Live
+        </Text>
+      </Link>
 
       <Grid
         gridAutoFlow="column"

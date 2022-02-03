@@ -189,7 +189,7 @@ export default function BasicSignupSheet(): JSX.Element {
             value={fields.email.value}
             error={fields.email.errors?.[0]}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              fieldValueSetter("email", e.target.value)
+              fieldValueSetter("email", e.target.value.trim())
             }
           />
         </Box>
