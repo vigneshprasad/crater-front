@@ -11,10 +11,10 @@ const { colors } = theme;
 
 type Variants = "flat" | "flatNoBg" | "round" | "roundSmall";
 
-export type IconButtonProps = Omit<GridProps, "variant"> & {
+export type IconButtonProps = GridProps & {
   icon: IconOptions;
   onClick?: MouseEventHandler<HTMLDivElement>;
-  variant?: Variants;
+  variant?: Variants | GridProps["variant"];
   iconProps?: Partial<IconProps>;
 };
 

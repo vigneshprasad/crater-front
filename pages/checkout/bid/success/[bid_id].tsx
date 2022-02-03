@@ -22,24 +22,26 @@ interface PageProps {
   bid_id: number;
 }
 
-export const getServerSideProps: GetServerSideProps<PageProps, QueryProps> =
-  async ({ req, params }) => {
-    const { bid_id } = params as QueryProps;
-    const [bid] = await AuctionApiClient({ req }).retrieveBid(bid_id);
+export const getServerSideProps: GetServerSideProps<
+  PageProps,
+  QueryProps
+> = async ({ req, params }) => {
+  const { bid_id } = params as QueryProps;
+  const [bid] = await AuctionApiClient({ req }).retrieveBid(bid_id);
 
-    if (!bid) {
-      return {
-        notFound: true,
-      };
-    }
-
+  if (!bid) {
     return {
-      props: {
-        bid,
-        bid_id: parseInt(bid_id),
-      },
+      notFound: true,
     };
+  }
+
+  return {
+    props: {
+      bid,
+      bid_id: parseInt(bid_id),
+    },
   };
+};
 
 export default function BidCheckoutSuccess({
   bid,

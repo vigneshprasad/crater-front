@@ -35,25 +35,27 @@ interface PageProps {
   hostUrl: string;
 }
 
-export const getServerSideProps: GetServerSideProps<PageProps, QueryProps> =
-  async ({ params, req }) => {
-    const { bid_id, intent_id } = params as QueryProps;
-    const [bid] = await AuctionApiClient({ req }).retrieveBid(bid_id);
-    const [intent] = await PaymentApiClient({ req }).retrieveStripeIntent(
-      intent_id
-    );
+export const getServerSideProps: GetServerSideProps<
+  PageProps,
+  QueryProps
+> = async ({ params, req }) => {
+  const { bid_id, intent_id } = params as QueryProps;
+  const [bid] = await AuctionApiClient({ req }).retrieveBid(bid_id);
+  const [intent] = await PaymentApiClient({ req }).retrieveStripeIntent(
+    intent_id
+  );
 
-    return {
-      props: {
-        bid: bid as Bid,
-        intent: intent as StripePaymentIntent,
-        intentSecret: intent?.client_secret as string,
-        bid_id: bid?.id as number,
-        publishKey: STRIPE_PUBLISH_KEY,
-        hostUrl: HOST_URL,
-      },
-    };
+  return {
+    props: {
+      bid: bid as Bid,
+      intent: intent as StripePaymentIntent,
+      intentSecret: intent?.client_secret as string,
+      bid_id: bid?.id as number,
+      publishKey: STRIPE_PUBLISH_KEY,
+      hostUrl: HOST_URL,
+    },
   };
+};
 
 export default function Checkout({
   bid,
