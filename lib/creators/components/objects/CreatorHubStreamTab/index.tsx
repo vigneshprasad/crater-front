@@ -61,7 +61,7 @@ export default function CreatorHubStreamTab(): JSX.Element {
             py={space.xs}
             gridTemplateColumns={[
               "1fr",
-              "repeat(auto-fill, minmax(240px, 1fr))",
+              "repeat(auto-fill, minmax(280px, 1fr))",
             ]}
             gridGap={space.s}
           >
