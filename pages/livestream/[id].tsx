@@ -86,8 +86,6 @@ export default function WebinarPage({
   const { user } = useAuth();
   const { openModal } = useAuthModal();
 
-  console.log(router);
-
   useEffect(() => {
     async function checkAuth(): Promise<void> {
       const session = await getSession();

@@ -122,7 +122,6 @@ export default function TokenBidModal({
   const handleFormSubmit = (event: SyntheticEvent): void => {
     event.preventDefault();
     const data = getValidatedData();
-    console.log(data);
 
     if (data) {
       submitBid(data);
@@ -222,8 +221,8 @@ export default function TokenBidModal({
                 </Text>
                 <CurrencyInput
                   value={fields.bid_price.value}
-                  onChange={(val) =>
-                    fieldValueSetter("bid_price", parseInt(val, 10))
+                  onValueChange={(value) =>
+                    fieldValueSetter("bid_price", parseInt(value ?? "0", 10))
                   }
                   placeholder="Bid amount per token"
                 />

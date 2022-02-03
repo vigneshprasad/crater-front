@@ -17,7 +17,7 @@ interface ICreatorStreamsState {
 export const CreatorStreamsContext = createContext({} as ICreatorStreamsState);
 
 type IProps = PropsWithChildren<{
-  creatorId: string;
+  creatorId?: string;
   upcoming?: Webinar[];
   live?: Webinar[];
 }>;

@@ -138,6 +138,18 @@ const variants = {
     fontSize: ["1.8rem"],
     fontWeight: "400",
   },
+  tableHeader: {
+    fontFamily: fonts.body,
+    lineHeight: ["2.0rem"],
+    fontSize: ["1.4rem"],
+    fontWeight: "600",
+  },
+  tableBody: {
+    fontFamily: fonts.body,
+    lineHeight: ["2.0rem"],
+    fontSize: ["1.6rem"],
+    fontWeight: "400",
+  },
 };
 
 export type TextVariants = keyof typeof variants;

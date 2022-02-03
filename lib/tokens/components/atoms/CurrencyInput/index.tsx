@@ -1,38 +1,52 @@
-import { useState, useCallback } from "react";
+import {
+  default as CurrencyInputComponent,
+  CurrencyInputProps,
+} from "react-currency-input-field";
+import styled from "styled-components";
 
-import { Input, InputProps, Text } from "@/common/components/atoms";
+import { Box } from "@/common/components/atoms";
 
-export type ICurrenceInputProps = Omit<InputProps, "onChange"> & {
-  onChange?: (val: string) => void;
-};
+const Styles = styled(Box)`
+  padding: 6px 8px;
+  background: ${({ theme }) => theme.colors.black[2]};
+  border-radius: ${({ theme }) => theme.radii.xxs}px;
+  align-items: center;
+
+  &:focus-within {
+    border: 2px solid ${({ theme }) => theme.colors.accent};
+  }
+
+  input {
+    font-family: ${({ theme }) => theme.fonts.body};
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 2.4rem;
+    box-sizing: border-box;
+    color: ${({ theme }) => theme.colors.white[0]};
+    background: transparent;
+    box-shadow: none;
+    border: 2px solid transparent;
+    outline: none;
+    width: 100%;
+
+    &::placeholder {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+  }
+`;
 
 export default function CurrencyInput({
-  onChange,
-  ...rest
-}: ICurrenceInputProps): JSX.Element {
-  const [value, setValue] = useState("");
-
-  const handleOnChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const val = event.target.value;
-      const valid = /\d/.test(val);
-      if (valid || val === "") {
-        setValue(val);
-
-        if (onChange) {
-          onChange(val);
-        }
-      }
-    },
-    [onChange]
-  );
-
+  ...props
+}: CurrencyInputProps): JSX.Element {
   return (
-    <Input
-      prefixElement={value && <Text>₹</Text>}
-      value={value}
-      {...rest}
-      onChange={handleOnChange}
-    />
+    <Styles>
+      <CurrencyInputComponent
+        allowNegativeValue={false}
+        prefix="₹"
+        {...props}
+      />
+    </Styles>
   );
 }

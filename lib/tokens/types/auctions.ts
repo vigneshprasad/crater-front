@@ -1,3 +1,5 @@
+import { Profile } from "next-auth";
+
 import { Coin } from "./token";
 
 export enum BidStatus {
@@ -20,6 +22,9 @@ export interface Bid {
   payment: number;
   coin_detail: Coin;
   amount: number;
+  created_at: string;
+  status_detail: string;
+  bidder_profile_detail: Profile;
 }
 
 export interface Auction {
@@ -31,4 +36,11 @@ export interface Auction {
   base_price: number;
   number_of_coins: number;
   coins_sold: number;
+}
+
+export interface CoinPriceLog {
+  id: number;
+  created_at: string;
+  coin: number;
+  price: number;
 }

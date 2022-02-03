@@ -5,12 +5,16 @@ import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ApiResult } from "@/common/types/api";
 
+import { CoinPriceLog } from "../types/auctions";
 import { Coin } from "../types/token";
 
 interface ICoinApiClient {
   getCointforCreator: (
     id: string | number
   ) => Promise<ApiResult<Coin, AxiosError>>;
+  getCoinPriceLogs: (
+    filterCoin: number | string
+  ) => Promise<ApiResult<CoinPriceLog[], AxiosError>>;
 }
 
 export default function CoinApiClient(
@@ -32,7 +36,21 @@ export default function CoinApiClient(
     }
   }
 
+  async function getCoinPriceLogs(
+    filterCoin: number | string
+  ): Promise<ApiResult<CoinPriceLog[], AxiosError>> {
+    try {
+      const { data } = await client.get<CoinPriceLog[]>(
+        `${API_URL_CONSTANTS.auctions.getCoinPriceLogs}?coin=${filterCoin}`
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getCointforCreator,
+    getCoinPriceLogs,
   };
 }

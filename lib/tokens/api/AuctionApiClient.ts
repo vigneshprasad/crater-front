@@ -10,6 +10,7 @@ import { Bid } from "../types/auctions";
 interface IAuctionApiClient {
   postBid: (bid: Partial<Bid>) => Promise<ApiResult<Bid, AxiosError>>;
   retrieveBid: (id: string | number) => Promise<ApiResult<Bid, AxiosError>>;
+  acceptBid: (bid: string | number) => Promise<ApiResult<Bid, AxiosError>>;
 }
 
 export default function AuctionApiClient(
@@ -46,8 +47,22 @@ export default function AuctionApiClient(
     }
   }
 
+  async function acceptBid(
+    bid: string | number
+  ): Promise<ApiResult<Bid, AxiosError>> {
+    try {
+      const { data } = await client.post<Bid>(
+        API_URL_CONSTANTS.auctions.acceptBid(bid)
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     postBid,
     retrieveBid,
+    acceptBid,
   };
 }

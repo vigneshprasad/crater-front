@@ -90,6 +90,12 @@ export const API_URL_CONSTANTS = {
     retrieveBid: (id: number | string): string => `/crater/bid/${id}/`,
     getActiveAuction: (creator: string | number): string =>
       `/crater/auction/${creator}/active_auction/`,
+    getCoinPriceLogs: "/crater/coin_log/",
+    acceptBid: (bid: number | string): string => `/crater/bid/${bid}/accept/`,
+    bidSummaryForCoin: (coin: number | string): string =>
+      `/crater/bid/${coin}/summary/`,
+    auctionSummaryForCoin: (coin: number | string): string =>
+      `/crater/auction/${coin}/summary/`,
   },
   coins: {
     getAuctions: "/crater/auction/",
@@ -104,6 +110,9 @@ export const API_URL_CONSTANTS = {
     createStripeIntent: "/crater/gateways/stripe/",
     retrieveStripeIntent: (client_secret: string): string =>
       `/crater/gateways/stripe/${client_secret}/`,
+  },
+  exchange: {
+    coinHoldingsList: "/crater/exchange/coin_holding/",
   },
 };
 
