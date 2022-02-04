@@ -24,7 +24,7 @@
     }],
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/require-default-props": ["error", { "ignoreFunctionalComponents": true }],
+    "react/require-default-props": ["warning", { "ignoreFunctionalComponents": true }],
     "jsx-a11y/anchor-is-valid": "off",
     "arrow-parens": [2, "always", { "requireForBlockBody": true }],
     "no-prototype-builtins": "off",
@@ -46,6 +46,6 @@
         "variables": true,
         "typedefs": true
       }
-    ]
+    ],
   }
 }
