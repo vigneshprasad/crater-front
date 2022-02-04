@@ -104,4 +104,8 @@ const BaseLayout = forwardRef<HTMLDivElement, Props>(
 
 BaseLayout.displayName = "BaseLayout";
 
+BaseLayout.defaultProps = {
+  aside: undefined,
+};
+
 export default BaseLayout;

@@ -85,4 +85,8 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
 
 StreamCard.displayName = "StreamCard";
 
+StreamCard.defaultProps = {
+  link: undefined,
+};
+
 export default StreamCard;

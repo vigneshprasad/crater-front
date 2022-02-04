@@ -144,7 +144,6 @@ export default function RewardItemPage(): JSX.Element {
     <>
       {creator && (
         <TokenBidModal
-          creatorId={creator.id}
           visible={showModal}
           onClose={() => setShowModal(false)}
         />

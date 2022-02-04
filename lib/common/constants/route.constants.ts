@@ -18,5 +18,5 @@ export const PageRoutes = {
     `/checkout/bid/${bid}/${intent}`,
   bidPaymentSuccess: (bid: number | string): string =>
     `/checkout/bid/success/${bid}`,
-  hub: (tab: HubTabKeys = "streams"): string => `/hub/${tab}`,
+  hub: (tab: HubTabKeys = "stream"): string => `/hub/${tab}`,
 };
