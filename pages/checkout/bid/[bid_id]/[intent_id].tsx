@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps<
       intent: intent as StripePaymentIntent,
       intentSecret: intent?.client_secret as string,
       bid_id: bid?.id as number,
-      publishKey: STRIPE_PUBLISH_KEY,
+      publishKey: `${STRIPE_PUBLISH_KEY}`,
       hostUrl: HOST_URL,
     },
   };
