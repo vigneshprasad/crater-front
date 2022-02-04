@@ -1,17 +1,21 @@
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
-import { Grid, Text, Flex } from "@/common/components/atoms";
+import { Grid, Text, Flex, Box } from "@/common/components/atoms";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useActiveAuction from "@/tokens/context/ActiveAuctionContext";
+import useRewardsList from "@/tokens/context/RewardsListContext";
 
 import BidsDataTable from "../../objects/BidsDataTable";
 import CoinLogGraph from "../../objects/CoinLogGraph";
+import RewardsList from "../../objects/RewardsList";
 import TokenSummaryBox from "../../objects/TokenSummaryBox";
 
 export default function HubMyTokensTab(): JSX.Element {
   const { space } = useTheme();
   const { auction } = useActiveAuction();
+
+  const { rewards, loading } = useRewardsList();
 
   const { data: logs, error } = useSWR(
     auction?.coin
@@ -22,7 +26,7 @@ export default function HubMyTokensTab(): JSX.Element {
   return (
     <Grid
       gridTemplateColumns="2fr 1fr"
-      px={space.xxs}
+      px={space.s}
       py={space.xs}
       gridGap={space.s}
     >
@@ -31,13 +35,22 @@ export default function HubMyTokensTab(): JSX.Element {
           Bids Placed
         </Text>
         <BidsDataTable auction={auction} />
-        <Text px={space.xxs} textStyle="title">
+      </Flex>
+      <TokenSummaryBox coinId={auction?.coin} />
+
+      <Box gridColumn="1 / span 2">
+        <Text px={space.xxs} py={space.s} textStyle="title">
           Price trend
         </Text>
         <CoinLogGraph logs={logs} loading={!logs && !error} />
-      </Flex>
+      </Box>
 
-      <TokenSummaryBox coinId={auction?.coin} />
+      <Box gridColumn="1 / span 2">
+        <Text px={space.xxs} py={space.s} textStyle="title">
+          Tickets for sale
+        </Text>
+        <RewardsList rewards={rewards} loading={loading} split={false} />
+      </Box>
     </Grid>
   );
 }

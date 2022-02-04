@@ -6,6 +6,7 @@ import HubPageLayout, {
 import { Creator } from "@/creators/types/creator";
 import HubMyTokensTab from "@/tokens/components/pages/HubMyTokensTab";
 import { ActiveAuctionProvider } from "@/tokens/context/ActiveAuctionContext";
+import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
 
 interface PageProps {
   creator: Creator | null;
@@ -43,7 +44,9 @@ export default function HubMyTokens({ creator }: IProps): JSX.Element | null {
   return (
     <HubPageLayout activeTab="tokens" creator={creator}>
       <ActiveAuctionProvider creator={creator.id}>
-        <HubMyTokensTab />
+        <RewardsListProvider filterCreatorSlug={creator.slug}>
+          <HubMyTokensTab />
+        </RewardsListProvider>
       </ActiveAuctionProvider>
     </HubPageLayout>
   );
