@@ -11,6 +11,11 @@ import { Button } from "@/common/components/atoms/Button";
 import Spinner from "@/common/components/atoms/Spiner";
 import { OtpInput } from "@/common/components/objects/OtpInput";
 import { PhoneInput } from "@/common/components/objects/PhoneInput";
+import {
+  UTM_SOURCE_STORAGE_KEY,
+  UTM_CAMPAIGN_STORAGE_KEY,
+  UTM_MEDIUM_STORAGE_KEY,
+} from "@/common/constants/global.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
@@ -21,6 +26,7 @@ type AuthFormArgs = {
   otp: string;
   utmSource?: string;
   utmCampaign?: string;
+  utmMedium?: string;
 };
 
 export default function AuthForm(): JSX.Element {
@@ -59,6 +65,10 @@ export default function AuthForm(): JSX.Element {
           intialValue: "",
           validators: [],
         },
+        utmMedium: {
+          intialValue: "",
+          validators: [],
+        },
       },
     });
 
@@ -68,10 +78,13 @@ export default function AuthForm(): JSX.Element {
 
   useEffect(() => {
     if (router) {
-      const { utm_source: utmSource, utm_campaign: utmCampaign } = router.query;
+      const utmSource = localStorage.getItem(UTM_SOURCE_STORAGE_KEY);
+      const utmCampaign = localStorage.getItem(UTM_CAMPAIGN_STORAGE_KEY);
+      const utmMedium = localStorage.getItem(UTM_MEDIUM_STORAGE_KEY);
       if (utmSource || utmCampaign) {
         fieldValueSetter("utmSource", utmSource as string);
         fieldValueSetter("utmCampaign", utmCampaign as string);
+        fieldValueSetter("utmMedium", utmMedium as string);
       }
     }
   }, [router, fieldValueSetter]);
@@ -97,10 +110,17 @@ export default function AuthForm(): JSX.Element {
     phoneNumber: string,
     otp: string,
     utmSource?: string,
-    utmCampaign?: string
+    utmCampaign?: string,
+    utmMedium?: string
   ): Promise<void> => {
     try {
-      await Login("phone-auth", { phoneNumber, otp, utmSource, utmCampaign });
+      await Login("phone-auth", {
+        phoneNumber,
+        otp,
+        utmSource,
+        utmCampaign,
+        utmMedium,
+      });
       track(AnalyticsEvents.phone_verified, {
         phoneNumber,
       });
@@ -131,7 +151,13 @@ export default function AuthForm(): JSX.Element {
 
     if (data !== false) {
       const phoneNumber = data.phoneNumber;
-      performLogin(phoneNumber, data.otp, data.utmSource, data.utmCampaign);
+      performLogin(
+        phoneNumber,
+        data.otp,
+        data.utmSource,
+        data.utmCampaign,
+        data.utmMedium
+      );
     }
   };
 

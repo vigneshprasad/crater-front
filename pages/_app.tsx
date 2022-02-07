@@ -6,11 +6,17 @@ import { ThemeProvider } from "styled-components";
 import { SWRConfig } from "swr";
 
 import type { AppProps } from "next/app";
+import { useRouter } from "next/router";
 
 import AuthModal from "@/auth/components/objects/AuthModal";
 import BasicSignupSheet from "@/auth/components/objects/BasicSignupSheet";
 import { AuthProvider } from "@/auth/context/AuthContext";
 import { AuthModalProvider } from "@/auth/context/AuthModalContext";
+import {
+  UTM_SOURCE_STORAGE_KEY,
+  UTM_CAMPAIGN_STORAGE_KEY,
+  UTM_MEDIUM_STORAGE_KEY,
+} from "@/common/constants/global.constants";
 import { AsideNavProvider } from "@/common/hooks/ui/useAsideNavState";
 import { AnalyticsProvider } from "@/common/utils/analytics";
 import fetcher from "@/common/utils/fetcher";
@@ -19,6 +25,25 @@ import GlobalStyle from "../lib/common/styles/global.styled";
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const { session, user, profile } = pageProps;
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router) {
+      const {
+        utm_source: utmSource,
+        utm_campaign: utmCampaign,
+        utm_medium: utmMedium,
+      } = router.query;
+
+      utmSource &&
+        localStorage.setItem(UTM_SOURCE_STORAGE_KEY, utmSource as string);
+      utmCampaign &&
+        localStorage.setItem(UTM_CAMPAIGN_STORAGE_KEY, utmCampaign as string);
+      utmMedium &&
+        localStorage.setItem(UTM_MEDIUM_STORAGE_KEY, utmMedium as string);
+    }
+  }, [router]);
 
   useEffect(() => {
     OneSignal.init({
