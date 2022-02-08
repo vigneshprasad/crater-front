@@ -50,6 +50,7 @@ export const getCreatorStaticProps: GetStaticProps<
 
   if (!creator) {
     return {
+      revalidate: 10,
       notFound: true,
     };
   }
