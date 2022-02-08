@@ -47,6 +47,7 @@ export const getStaticProps: GetStaticProps<StreamPageProps, IParams> = async ({
 
   if (error || !webinar || !webinar.recording_details) {
     return {
+      revalidate: 10,
       notFound: true,
     };
   }
