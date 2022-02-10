@@ -11,7 +11,6 @@ import useAuthModal from "@/auth/context/AuthModalContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
 import { ChatReactionListProvider } from "@/community/context/ChatReactionListContext";
-import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar as WebinarType } from "@/community/types/community";
 import { Webinar } from "@/community/types/community";
@@ -114,14 +113,12 @@ export default function WebinarPage({
           <DyteWebinarProvider id={id}>
             <StreamChatProvider groupId={id}>
               <ChatReactionListProvider>
-                <UpcomingStreamsProvider>
-                  <RewardsListProvider
-                    initial={rewards}
-                    filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
-                  >
-                    <DynamicWebinarPage orgId={orgId} id={id} />
-                  </RewardsListProvider>
-                </UpcomingStreamsProvider>
+                <RewardsListProvider
+                  initial={rewards}
+                  filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
+                >
+                  <DynamicWebinarPage orgId={orgId} id={id} />
+                </RewardsListProvider>
               </ChatReactionListProvider>
             </StreamChatProvider>
           </DyteWebinarProvider>
