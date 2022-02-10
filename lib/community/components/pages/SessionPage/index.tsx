@@ -18,7 +18,7 @@ import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
 import WebinarApiClient from "@/community/api";
-import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
+// import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { useWebinarRequest } from "@/community/context/WebinarRequestContext";
 import {
@@ -46,7 +46,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const { user } = useAuth();
   const { openModal } = useAuthModal();
   const { track } = useAnalytics();
-  const { upcoming } = useUpcomingStreams();
+  // const { upcoming } = useUpcomingStreams();
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -178,7 +178,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     }
   }, [router, user, webinar, postGroupRequest, postSeriesRequest]);
 
-  if (!webinar || !upcoming) return <Box>Loading..</Box>;
+  if (!webinar) return <Box>Loading..</Box>;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { start, host_detail } = webinar;
@@ -511,7 +511,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           </Box>
         ) : null}
 
-        <Box pb={space.s}>
+        {/* <Box pb={space.s}>
           <Box px={[space.xxs, space.s]} py={space.xs}>
             <Text textStyle="headlineBold">Upcoming Streams</Text>
           </Box>
@@ -530,7 +530,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               }
             })}
           </Grid>
-        </Box>
+        </Box> */}
       </BaseLayout>
     </>
   );

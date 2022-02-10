@@ -3,3 +3,6 @@ export const WEBSOCKET_BASE_URL = process.env
   .NEXT_PUBLIC_WEBINAR_SOCKET_URL as string;
 export const STRIPE_PUBLISH_KEY = process.env.STRIPE_PUBLISHABLE_KEY as string;
 export const HOST_URL = process.env.HOST_URL as string;
+export const UTM_SOURCE_STORAGE_KEY = "utmSource";
+export const UTM_CAMPAIGN_STORAGE_KEY = "utmCampaign";
+export const UTM_MEDIUM_STORAGE_KEY = "utmMedium";
