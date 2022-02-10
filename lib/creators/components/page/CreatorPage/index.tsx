@@ -28,19 +28,18 @@ export interface CreatorPageParams extends ParsedUrlQuery {
   slug: string;
 }
 
-export const getCreatorStaticPaths: GetStaticPaths<
-  CreatorPageParams
-> = async () => {
-  const [pageData] = await CreatorApiClient().getCreatorsList(true, 1, 20);
+export const getCreatorStaticPaths: GetStaticPaths<CreatorPageParams> =
+  async () => {
+    const [pageData] = await CreatorApiClient().getCreatorsList(true, 1, 20);
 
-  if (!pageData) return { paths: [], fallback: "blocking" };
+    if (!pageData) return { paths: [], fallback: "blocking" };
 
-  const paths = pageData.results.map(({ slug }) => ({
-    params: { slug },
-  }));
+    const paths = pageData.results.map(({ slug }) => ({
+      params: { slug },
+    }));
 
-  return { paths, fallback: "blocking" };
-};
+    return { paths, fallback: "blocking" };
+  };
 
 export const getCreatorStaticProps: GetStaticProps<
   CreatorPageProps,
