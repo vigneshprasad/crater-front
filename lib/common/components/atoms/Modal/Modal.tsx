@@ -74,7 +74,7 @@ export function Modal({
             right="50%"
             transform="translate(50%, -50%)"
             zIndex={zIndices.modal}
-            bg={colors.black[4]}
+            bg={colors.black[6]}
             w="100%"
             h="100%"
             maxHeight={["calc(100vh - 72px)", 640]}

@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export default function TokenSummaryBox({ coinId }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, borders, radii } = useTheme();
   const { data: bidSummary } = useSWR(
     coinId ? API_URL_CONSTANTS.auctions.bidSummaryForCoin(coinId) : null
   );
@@ -44,9 +44,34 @@ export default function TokenSummaryBox({ coinId }: IProps): JSX.Element {
     ];
   }, [auctionSummary, colors]);
 
+  if (!coinId) {
+    return (
+      <Box>
+        <Text mb={space.s} textStyle="title">
+          Token Summary
+        </Text>
+        <Box
+          border={`2px solid ${borders.main}`}
+          p={space.xxs}
+          borderRadius={radii.xxs}
+        >
+          <Text mb={space.xs} fontWeight="800">
+            No Token Data
+          </Text>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
+          </Text>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Box>
-      <Text py={space.xs} textStyle="title">
+      <Text mb={space.s} textStyle="title">
         Token Summary
       </Text>
       <Flex flexDirection="column" gridGap={space.xxs}>

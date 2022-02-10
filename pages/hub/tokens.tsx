@@ -1,12 +1,17 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
+import dynamic from "next/dynamic";
+
 import HubPageLayout, {
   getHubServerSideProps,
 } from "@/common/components/layouts/HubPageLayout";
 import { Creator } from "@/creators/types/creator";
-import HubMyTokensTab from "@/tokens/components/pages/HubMyTokensTab";
 import { ActiveAuctionProvider } from "@/tokens/context/ActiveAuctionContext";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
+
+const HubMyTokensTab = dynamic(
+  () => import("@/tokens/components/pages/HubMyTokensTab")
+);
 
 interface PageProps {
   creator: Creator | null;

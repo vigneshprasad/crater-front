@@ -1,7 +1,8 @@
+import PLACEHOLDER_GRAPH from "public/images/img_graph_coming_soon.png";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
-import { Grid, Text, Flex, Box } from "@/common/components/atoms";
+import { Grid, Text, Flex, Box, Image } from "@/common/components/atoms";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useActiveAuction from "@/tokens/context/ActiveAuctionContext";
 import useRewardsList from "@/tokens/context/RewardsListContext";
@@ -42,15 +43,21 @@ export default function HubMyTokensTab(): JSX.Element {
         <Text px={space.xxs} py={space.s} textStyle="title">
           Price trend
         </Text>
-        <CoinLogGraph logs={logs} loading={!logs && !error} />
+        {auction || logs?.length === 0 ? (
+          <CoinLogGraph logs={logs} loading={!logs && !error} />
+        ) : (
+          <Image src={PLACEHOLDER_GRAPH} alt="placeholder_graph" />
+        )}
       </Box>
 
-      <Box gridColumn="1 / span 2">
-        <Text px={space.xxs} py={space.s} textStyle="title">
-          Tickets for sale
-        </Text>
-        <RewardsList rewards={rewards} loading={loading} split={false} />
-      </Box>
+      {rewards && rewards.length > 0 && (
+        <Box gridColumn="1 / span 2">
+          <Text px={space.xxs} py={space.s} textStyle="title">
+            Tickets for sale
+          </Text>
+          <RewardsList rewards={rewards} loading={loading} split={false} />
+        </Box>
+      )}
     </Grid>
   );
 }

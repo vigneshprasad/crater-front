@@ -2,7 +2,8 @@ import { useCallback, useMemo } from "react";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
-import { Box, Flex } from "@/common/components/atoms";
+import { Flex, Text } from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/Button";
 import DataTable from "@/common/components/objects/DataTable";
 import { Column } from "@/common/components/objects/DataTable/types";
 import TextButton from "@/common/components/objects/TextButton";
@@ -16,7 +17,7 @@ interface IProps {
 }
 
 export default function BidsDataTable({ auction }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, radii } = useTheme();
   const { data: bids, mutate } = useSWR<Bid[]>(
     auction
       ? `${API_URL_CONSTANTS.auctions.getBids}?auction=${auction.id}`
@@ -93,7 +94,29 @@ export default function BidsDataTable({ auction }: IProps): JSX.Element {
   );
 
   if (!auction) {
-    return <Box>Start an Auction</Box>;
+    return (
+      <Flex
+        flexDirection="column"
+        p={space.xs}
+        bg={colors.accent}
+        borderRadius={radii.xxs}
+        gridGap={space.xs}
+      >
+        <Text textStyle="headline6">Start an Auction</Text>
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.
+        </Text>
+
+        <Button
+          border={`2px solid ${colors.white[0]}`}
+          variant="dense"
+          text="Contact us"
+        />
+      </Flex>
+    );
   }
 
   return <DataTable columns={columns} data={bids} />;
