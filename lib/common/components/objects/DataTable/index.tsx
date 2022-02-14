@@ -61,7 +61,6 @@ const TableStyles = styled(Box)`
 export default function DataTable<T>({
   data,
   columns,
-  thProps,
 }: IDataTableProps<T>): JSX.Element {
   const headers: { heading: string; id: string }[] = useMemo(() => {
     return columns.map((col) => ({
@@ -89,7 +88,7 @@ export default function DataTable<T>({
         <thead>
           <tr>
             {headers.map(({ heading, id }) => (
-              <th key={id} {...thProps}>
+              <th key={id}>
                 <Text>{heading}</Text>
               </th>
             ))}
