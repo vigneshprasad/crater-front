@@ -24,7 +24,7 @@ export type TopStreams = {
   id: number;
   topic_title: string;
   topic_image?: string;
-  start: DateTime;
+  start: string;
   rsvp_count: number;
   messages_count: number;
 };
