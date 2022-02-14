@@ -7,7 +7,16 @@ import Spinner from "@/common/components/atoms/Spiner";
 import CreatorApiClient from "@/creators/api";
 import CreatorHubPage from "@/creators/components/page/CreatorHubPage";
 import StaticCreatorHub from "@/creators/components/page/StaticCreatorHub";
+import { AverageEngagementProvider } from "@/creators/context/AverageEngagement";
+import { ClubMembersCountProvider } from "@/creators/context/ClubMembersCount";
+import { ClubMembersGrowthProvider } from "@/creators/context/ClubMembersGrowth";
+import { ComparativeEngagementProvider } from "@/creators/context/ComparativeEngagement";
+import { ConversionFunnelProvider } from "@/creators/context/ConversionFunnel";
 import { CreatorFollowerProvider } from "@/creators/context/CreatorFollowerContext";
+import { TopStreamsProvider } from "@/creators/context/CreatorTopStreams";
+import { FollowerGrowthProvider } from "@/creators/context/FollowerGrowth";
+import { TopCreatorsProvider } from "@/creators/context/TopCreators";
+import { TrafficSourceTypesProvider } from "@/creators/context/TrafficSourceTypes";
 
 const CreatorFollowersTab = dynamic(
   () => import("@/creators/components/objects/CreatorFollowersTab")
@@ -45,7 +54,25 @@ export default function CreatorHubFaq({ creator }: IProps): JSX.Element {
   return (
     <CreatorHubPage selectedTab="club_members" creator={creator}>
       <CreatorFollowerProvider userId={user.pk}>
-        <CreatorFollowersTab />
+        <ClubMembersCountProvider>
+          <FollowerGrowthProvider>
+            <AverageEngagementProvider>
+              <ComparativeEngagementProvider>
+                <TopStreamsProvider>
+                  <TopCreatorsProvider>
+                    <ClubMembersGrowthProvider>
+                      <TrafficSourceTypesProvider>
+                        <ConversionFunnelProvider>
+                          <CreatorFollowersTab />
+                        </ConversionFunnelProvider>
+                      </TrafficSourceTypesProvider>
+                    </ClubMembersGrowthProvider>
+                  </TopCreatorsProvider>
+                </TopStreamsProvider>
+              </ComparativeEngagementProvider>
+            </AverageEngagementProvider>
+          </FollowerGrowthProvider>
+        </ClubMembersCountProvider>
       </CreatorFollowerProvider>
     </CreatorHubPage>
   );
