@@ -20,7 +20,6 @@ import {
   Flex,
   Grid,
   Image,
-  Shimmer,
   Text,
 } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
@@ -41,6 +40,7 @@ import { useTrafficSourceTypes } from "@/creators/context/TrafficSourceTypes";
 import { TopCreators } from "@/creators/types/creator";
 import { TopStreams } from "@/creators/types/stream";
 
+import AnalyticsSummaryBox from "../AnalyticsSummaryBox";
 import CreatorFollowerTable from "../CreatorFollowerTable";
 
 export default function CreatorFollowersTab(): JSX.Element {
@@ -189,125 +189,14 @@ export default function CreatorFollowersTab(): JSX.Element {
       px={[0, space.l]}
       py={space.xxs}
     >
-      <Card containerProps={{ px: 0, py: 0 }}>
-        <Grid
-          gridAutoFlow="row"
-          gridGap={space.s}
-          gridTemplateColumns="repeat(4, 1fr)"
-        >
-          <Grid gridAutoFlow="column">
-            <Box
-              w="100%"
-              textAlign="center"
-              border={`1px solid ${colors.black[3]}`}
-              p={space.xxs}
-            >
-              <Text color={colors.accent}>My Club</Text>
-              {clubMembersCountLoading ? (
-                <Spinner m="0 auto" />
-              ) : (
-                <Flex
-                  m="0 auto"
-                  gridGap={space.xxxs}
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Text py={space.xxxs} textStyle="headline3">
-                    {clubMembersCount}
-                  </Text>
-                  <Text>Members</Text>
-                </Flex>
-              )}
-            </Box>
-            <Box
-              w="100%"
-              textAlign="center"
-              border={`1px solid ${colors.black[3]}`}
-              p={space.xxs}
-            >
-              <Text color={colors.accent}>Growth this month</Text>
-              {followerGrowthLoading ? (
-                <Spinner m="0 auto" />
-              ) : (
-                <Text py={space.xxxs} textStyle="headline3">
-                  {followerGrowth}%
-                </Text>
-              )}
-            </Box>
-            <Box
-              w="100%"
-              textAlign="center"
-              border={`1px solid ${colors.black[3]}`}
-              p={space.xxs}
-            >
-              <Text color={colors.accent}>Users brought in by Crater</Text>
-              <Text py={space.xxxs} textStyle="headline3">
-                90%
-              </Text>
-            </Box>
-            <Box
-              w="100%"
-              textAlign="center"
-              border={`1px solid ${colors.black[3]}`}
-              p={space.xxs}
-            >
-              <Text color={colors.accent}>Average Engagement</Text>
-              {averageEngagementLoading ? (
-                <Spinner m="0 auto" />
-              ) : (
-                <Flex
-                  m="0 auto"
-                  gridGap={space.xxxs}
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Text py={space.xxxs} textStyle="headline3">
-                    {averageEngagement}
-                  </Text>
-                  <Text>Messages</Text>
-                </Flex>
-              )}
-            </Box>
-            <Box
-              w="100%"
-              textAlign="center"
-              border={`1px solid ${colors.black[3]}`}
-              p={space.xxs}
-            >
-              <Text color={colors.accent}>Comparative Engagement</Text>
-              {comparativeEngagementLoading ? (
-                <Spinner m="0 auto" />
-              ) : (
-                <Text py={space.xxxs} textStyle="headline3">
-                  {comparativeEngagement}%
-                </Text>
-              )}
-            </Box>
-          </Grid>
-
-          <Box px={space.s} h={320}>
-            {clubMembersGrowthLoading ? (
-              <Shimmer w="100%" h="100%" />
-            ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={clubMembersGrowth}>
-                  <Line
-                    type="monotone"
-                    dataKey="follower_count"
-                    stroke="#8884d8"
-                  />
-                  <CartesianGrid stroke={colors.black[1]} vertical={false} />
-                  <XAxis
-                    dataKey="followed_at_date"
-                    interval="preserveStartEnd"
-                  />
-                  <YAxis orientation="right" allowDecimals={false} />
-                </LineChart>
-              </ResponsiveContainer>
-            )}
-          </Box>
-        </Grid>
-      </Card>
+      <AnalyticsSummaryBox
+        clubMembersCount={clubMembersCount}
+        followerGrowth={followerGrowth}
+        percentageUserFromCrater={90}
+        comparativeEngagement={comparativeEngagement}
+        averageEngagement={averageEngagement}
+        clubMembersGrowth={clubMembersGrowth}
+      />
 
       <Grid
         gridAutoFlow="column"
