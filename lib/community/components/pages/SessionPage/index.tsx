@@ -491,7 +491,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             >
               {seriesData?.groups_detail_list.map((stream) => {
                 if (stream.id !== webinar.id) {
-                  if (stream.is_past || stream.closed) {
+                  if (stream.is_past && stream.closed) {
                     return (
                       <PastStreamCard
                         key={stream.id}
