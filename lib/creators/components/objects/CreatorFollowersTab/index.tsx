@@ -8,6 +8,7 @@ import {
   YAxis,
   PieChart,
   Pie,
+  ResponsiveContainer,
 } from "recharts";
 import { useTheme } from "styled-components";
 
@@ -19,12 +20,14 @@ import {
   Flex,
   Grid,
   Image,
+  Shimmer,
   Text,
 } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
 import DataTable from "@/common/components/objects/DataTable";
 import { Column } from "@/common/components/objects/DataTable/types";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import DateTime from "@/common/utils/datetime/DateTime";
 import { useAverageEngagement } from "@/creators/context/AverageEngagement";
 import { useClubMembersCount } from "@/creators/context/ClubMembersCount";
 import { useClubMembersGrowth } from "@/creators/context/ClubMembersGrowth";
@@ -63,8 +66,6 @@ export default function CreatorFollowersTab(): JSX.Element {
   const { conversionFunnel, loading: conversionFunnelLoading } =
     useConversionFunnel();
 
-  console.log(trafficSourceTypes);
-
   function triggerFileDownload(response: string): void {
     if (ref.current) {
       const blob = new Blob([response], { type: "text/csv" });
@@ -92,9 +93,18 @@ export default function CreatorFollowersTab(): JSX.Element {
         label: "Stream",
         key: "stream",
         valueGetter: (obj) => {
+          console.log(obj.start);
+          const startTime = DateTime.parse_with_milliseconds(obj.start);
+          console.log(startTime);
+
           return (
-            <Flex flexDirection="row" gridGap={space.s} alignItems="center">
-              <Box w={130}>
+            <Grid
+              gridAutoFlow="column"
+              gridTemplateColumns="130px 1fr"
+              gridGap={space.xxs}
+              alignItems="center"
+            >
+              <Box>
                 {obj.topic_image && (
                   <Image
                     objectFit="cover"
@@ -105,26 +115,32 @@ export default function CreatorFollowersTab(): JSX.Element {
                 )}
               </Box>
 
-              <Flex flexDirection="column" gridGap={space.xxs}>
-                <Text>{obj.topic_title}</Text>
-                <Text>{obj.start}</Text>
-              </Flex>
-            </Flex>
+              <Box>
+                <Text textAlign="start">{obj.topic_title}</Text>
+                <Text
+                  textAlign="start"
+                  textStyle="caption"
+                  color={colors.slate}
+                >
+                  {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
+                </Text>
+              </Box>
+            </Grid>
           );
         },
       },
       {
         label: "RSVP",
         key: "rsvp",
-        valueGetter: (obj) => obj.rsvp_count,
+        valueGetter: (obj) => obj.rsvp_count, // Return JSX
       },
       {
         label: "Messages",
         key: "messages",
-        valueGetter: (obj) => obj.messages_count,
+        valueGetter: (obj) => obj.messages_count, // Return JSX
       },
     ];
-  }, [space]);
+  }, [space, colors]);
 
   const topCreatorsColumns = useMemo<Column<TopCreators>[]>(() => {
     return [
@@ -133,7 +149,13 @@ export default function CreatorFollowersTab(): JSX.Element {
         key: "creator",
         valueGetter: (obj) => {
           return (
-            <Flex flexDirection="row" gridGap={space.s} alignItems="center">
+            <Grid
+              gridAutoFlow="column"
+              gridTemplateColumns="max-content 1fr"
+              gridGap={space.xxs}
+              alignItems="center"
+              justifyItems="start"
+            >
               {obj.creator_image && (
                 <Avatar
                   size={56}
@@ -143,7 +165,7 @@ export default function CreatorFollowersTab(): JSX.Element {
               )}
 
               <Text>{obj.creator_name}</Text>
-            </Flex>
+            </Grid>
           );
         },
       },
@@ -161,108 +183,114 @@ export default function CreatorFollowersTab(): JSX.Element {
   }, [space]);
 
   return (
-    <Box px={[0, space.l]} py={space.xxs} overflowX="auto">
-      <Grid gridAutoFlow="row" gridGap={space.s}>
-        <Card containerProps={{ px: 0, py: 0 }}>
-          <Grid gridGap={space.s}>
-            <Grid
-              gridAutoFlow="column"
-              gridTemplateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+    <Flex
+      flexDirection="column"
+      gridGap={space.s}
+      px={[0, space.l]}
+      py={space.xxs}
+    >
+      <Card containerProps={{ px: 0, py: 0 }}>
+        <Grid
+          gridAutoFlow="row"
+          gridGap={space.s}
+          gridTemplateColumns="repeat(4, 1fr)"
+        >
+          <Grid gridAutoFlow="column">
+            <Box
+              w="100%"
+              textAlign="center"
+              border={`1px solid ${colors.black[3]}`}
+              p={space.xxs}
             >
-              <Box
-                w="100%"
-                textAlign="center"
-                border={`1px solid ${colors.black[3]}`}
-                p={space.xxs}
-              >
-                <Text color={colors.accent}>My Club</Text>
-                {clubMembersCountLoading ? (
-                  <Spinner m="0 auto" />
-                ) : (
-                  <Flex
-                    m="0 auto"
-                    gridGap={space.xxxs}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Text py={space.xxxs} textStyle="headline3">
-                      {clubMembersCount}
-                    </Text>
-                    <Text>Members</Text>
-                  </Flex>
-                )}
-              </Box>
-              <Box
-                w="100%"
-                textAlign="center"
-                border={`1px solid ${colors.black[3]}`}
-                p={space.xxs}
-              >
-                <Text color={colors.accent}>Growth this month</Text>
-                {followerGrowthLoading ? (
-                  <Spinner m="0 auto" />
-                ) : (
-                  <Text py={space.xxxs} textStyle="headline3">
-                    {followerGrowth}%
-                  </Text>
-                )}
-              </Box>
-              <Box
-                w="100%"
-                textAlign="center"
-                border={`1px solid ${colors.black[3]}`}
-                p={space.xxs}
-              >
-                <Text color={colors.accent}>Users brought in by Crater</Text>
-                <Text py={space.xxxs} textStyle="headline3">
-                  90%
-                </Text>
-              </Box>
-              <Box
-                w="100%"
-                textAlign="center"
-                border={`1px solid ${colors.black[3]}`}
-                p={space.xxs}
-              >
-                <Text color={colors.accent}>Average Engagement</Text>
-                {averageEngagementLoading ? (
-                  <Spinner m="0 auto" />
-                ) : (
-                  <Flex
-                    m="0 auto"
-                    gridGap={space.xxxs}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Text py={space.xxxs} textStyle="headline3">
-                      {averageEngagement}
-                    </Text>
-                    <Text>Messages</Text>
-                  </Flex>
-                )}
-              </Box>
-              <Box
-                w="100%"
-                textAlign="center"
-                border={`1px solid ${colors.black[3]}`}
-                p={space.xxs}
-              >
-                <Text color={colors.accent}>Comparative Engagement</Text>
-                {comparativeEngagementLoading ? (
-                  <Spinner m="0 auto" />
-                ) : (
-                  <Text py={space.xxxs} textStyle="headline3">
-                    {comparativeEngagement}%
-                  </Text>
-                )}
-              </Box>
-            </Grid>
-
-            <Box px={space.s}>
-              {clubMembersGrowthLoading ? (
+              <Text color={colors.accent}>My Club</Text>
+              {clubMembersCountLoading ? (
                 <Spinner m="0 auto" />
               ) : (
-                <LineChart width={1500} height={200} data={clubMembersGrowth}>
+                <Flex
+                  m="0 auto"
+                  gridGap={space.xxxs}
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Text py={space.xxxs} textStyle="headline3">
+                    {clubMembersCount}
+                  </Text>
+                  <Text>Members</Text>
+                </Flex>
+              )}
+            </Box>
+            <Box
+              w="100%"
+              textAlign="center"
+              border={`1px solid ${colors.black[3]}`}
+              p={space.xxs}
+            >
+              <Text color={colors.accent}>Growth this month</Text>
+              {followerGrowthLoading ? (
+                <Spinner m="0 auto" />
+              ) : (
+                <Text py={space.xxxs} textStyle="headline3">
+                  {followerGrowth}%
+                </Text>
+              )}
+            </Box>
+            <Box
+              w="100%"
+              textAlign="center"
+              border={`1px solid ${colors.black[3]}`}
+              p={space.xxs}
+            >
+              <Text color={colors.accent}>Users brought in by Crater</Text>
+              <Text py={space.xxxs} textStyle="headline3">
+                90%
+              </Text>
+            </Box>
+            <Box
+              w="100%"
+              textAlign="center"
+              border={`1px solid ${colors.black[3]}`}
+              p={space.xxs}
+            >
+              <Text color={colors.accent}>Average Engagement</Text>
+              {averageEngagementLoading ? (
+                <Spinner m="0 auto" />
+              ) : (
+                <Flex
+                  m="0 auto"
+                  gridGap={space.xxxs}
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Text py={space.xxxs} textStyle="headline3">
+                    {averageEngagement}
+                  </Text>
+                  <Text>Messages</Text>
+                </Flex>
+              )}
+            </Box>
+            <Box
+              w="100%"
+              textAlign="center"
+              border={`1px solid ${colors.black[3]}`}
+              p={space.xxs}
+            >
+              <Text color={colors.accent}>Comparative Engagement</Text>
+              {comparativeEngagementLoading ? (
+                <Spinner m="0 auto" />
+              ) : (
+                <Text py={space.xxxs} textStyle="headline3">
+                  {comparativeEngagement}%
+                </Text>
+              )}
+            </Box>
+          </Grid>
+
+          <Box px={space.s} h={320}>
+            {clubMembersGrowthLoading ? (
+              <Shimmer w="100%" h="100%" />
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={clubMembersGrowth}>
                   <Line
                     type="monotone"
                     dataKey="follower_count"
@@ -275,19 +303,23 @@ export default function CreatorFollowersTab(): JSX.Element {
                   />
                   <YAxis orientation="right" allowDecimals={false} />
                 </LineChart>
-              )}
-            </Box>
-          </Grid>
-        </Card>
+              </ResponsiveContainer>
+            )}
+          </Box>
+        </Grid>
+      </Card>
 
-        <Grid
-          gridAutoFlow="column"
-          gridTemplateColumns="1fr 1fr"
-          gridGap={space.s}
-        >
-          <Card containerProps={{ p: 0, textAlign: "center" }}>
-            <Text py={space.xxs}>Traffic Source Types</Text>
+      <Grid
+        gridAutoFlow="column"
+        gridTemplateColumns="1fr 1fr"
+        gridGap={space.s}
+      >
+        <Card containerProps={{ p: 0 }}>
+          <Text textStyle="headline5" py={space.xxs}>
+            Traffic Source Types
+          </Text>
 
+          <Grid gridAutoFlow="row" gridGap={space.xxs}>
             {trafficSourceTypesLoading ? (
               <Spinner m="0 auto" />
             ) : (
@@ -330,74 +362,78 @@ export default function CreatorFollowersTab(): JSX.Element {
                 </Grid>
               </Grid>
             )}
-          </Card>
+          </Grid>
+        </Card>
 
-          <Card containerProps={{ p: 0, textAlign: "center" }}>
-            <Text py={space.xxs}>Traffic Source Types</Text>
-            {conversionFunnelLoading ? (
-              <Spinner />
-            ) : (
-              <Grid my={space.l} gridAutoFlow="row" gridGap={space.xxs}>
-                <Text>Total RSVPs</Text>
-                <Text>{conversionFunnel?.rsvp_count}</Text>
+        <Card containerProps={{ p: 0, textAlign: "center" }}>
+          <Text py={space.xxs} textStyle="headline5">
+            Conversion Funnel
+          </Text>
+          {conversionFunnelLoading ? (
+            <Spinner />
+          ) : (
+            <Grid my={space.l} gridAutoFlow="row" gridGap={space.xxs}>
+              <Text>Total RSVPs</Text>
+              <Text>{conversionFunnel?.rsvp_count}</Text>
 
-                <Text>Total Subscribers</Text>
-                <Text>{conversionFunnel?.subscriber_count}</Text>
+              <Text>Total Subscribers</Text>
+              <Text>{conversionFunnel?.subscriber_count}</Text>
 
-                <Text>Total Recurring Users</Text>
-                <Text>{conversionFunnel?.recurring_user_count}</Text>
-              </Grid>
-            )}
-          </Card>
-        </Grid>
+              <Text>Total Recurring Users</Text>
+              <Text>{conversionFunnel?.recurring_user_count}</Text>
+            </Grid>
+          )}
+        </Card>
+      </Grid>
 
-        <Grid
-          gridAutoFlow="column"
-          gridTemplateColumns="1fr 1fr"
-          gridGap={space.s}
-        >
-          <Card containerProps={{ p: 0, textAlign: "center" }}>
-            <Text py={space.xxs}>Your Top Performing Streams</Text>
+      <Grid
+        gridAutoFlow="column"
+        gridTemplateColumns="1fr 1fr"
+        gridGap={space.s}
+      >
+        <Card containerProps={{ p: 0, textAlign: "center" }}>
+          <Text py={space.xxs} textStyle="headline5">
+            Your Top Performing Streams
+          </Text>
 
-            {topStreamsLoading ? (
+          {topStreamsLoading ? (
+            <Spinner m="0 auto" />
+          ) : (
+            <DataTable columns={topStreamsColumns} data={topStreams} />
+          )}
+        </Card>
+
+        <Card containerProps={{ p: 0, textAlign: "center" }}>
+          <Grid gridAutoFlow="row" gridTemplateRows="max-content 1fr">
+            <Text py={space.xxs} textStyle="headline5" justifySelf="center">
+              Comparative Ranking
+            </Text>
+
+            {topCreatorsLoading ? (
               <Spinner m="0 auto" />
             ) : (
-              <DataTable columns={topStreamsColumns} data={topStreams} />
+              <DataTable columns={topCreatorsColumns} data={topCreators} />
             )}
-          </Card>
-
-          <Card containerProps={{ p: 0, textAlign: "center" }}>
-            <Grid gridAutoFlow="row" gridTemplateRows="max-content 1fr">
-              <Text py={space.xxs} justifySelf="center">
-                Comparative Ranking
-              </Text>
-
-              {topCreatorsLoading ? (
-                <Spinner m="0 auto" />
-              ) : (
-                <DataTable columns={topCreatorsColumns} data={topCreators} />
-              )}
-            </Grid>
-          </Card>
-        </Grid>
-
-        <Box>
-          <a
-            ref={ref}
-            href={href}
-            style={{ display: "none" }}
-            download="followers.csv"
-          />
-          <CreatorFollowerTable
-            pageCount={pageCount}
-            currentPage={currentPage}
-            loading={loading}
-            data={followers}
-            onPressDownloadCSV={handleExportCsvBtnClick}
-            setPage={setPage}
-          />
-        </Box>
+          </Grid>
+        </Card>
       </Grid>
-    </Box>
+
+      <Box>
+        <a
+          ref={ref}
+          href={href}
+          style={{ display: "none" }}
+          download="followers.csv"
+        />
+        <CreatorFollowerTable
+          pageCount={pageCount}
+          currentPage={currentPage}
+          loading={loading}
+          data={followers}
+          onPressDownloadCSV={handleExportCsvBtnClick}
+          setPage={setPage}
+        />
+      </Box>
+    </Flex>
   );
 }
