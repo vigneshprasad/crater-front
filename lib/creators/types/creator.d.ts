@@ -49,7 +49,7 @@ export type TrafficSourceType = {
 };
 
 export type ConversionFunnel = {
-  rsvp_count: number;
-  subscriber_count: number;
-  recurring_user_count: number;
+  name: string;
+  count: number;
+  fill: string;
 };
