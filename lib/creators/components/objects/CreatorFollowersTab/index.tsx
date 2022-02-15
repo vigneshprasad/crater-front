@@ -1,32 +1,10 @@
 import { AxiosError } from "axios";
-import { useMemo, useRef, useState } from "react";
-import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  PieChart,
-  Pie,
-  ResponsiveContainer,
-} from "recharts";
+import { useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import API from "@/common/api";
-import {
-  Avatar,
-  Box,
-  Card,
-  Flex,
-  Grid,
-  Image,
-  Text,
-} from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
-import DataTable from "@/common/components/objects/DataTable";
-import { Column } from "@/common/components/objects/DataTable/types";
+import { Box, Flex, Grid } from "@/common/components/atoms";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import DateTime from "@/common/utils/datetime/DateTime";
 import { useAverageEngagement } from "@/creators/context/AverageEngagement";
 import { useClubMembersCount } from "@/creators/context/ClubMembersCount";
 import { useClubMembersGrowth } from "@/creators/context/ClubMembersGrowth";
@@ -37,34 +15,29 @@ import { useTopStreams } from "@/creators/context/CreatorTopStreams";
 import { useFollowerGrowth } from "@/creators/context/FollowerGrowth";
 import { useTopCreators } from "@/creators/context/TopCreators";
 import { useTrafficSourceTypes } from "@/creators/context/TrafficSourceTypes";
-import { TopCreators } from "@/creators/types/creator";
-import { TopStreams } from "@/creators/types/stream";
 
 import AnalyticsSummaryBox from "../AnalyticsSummaryBox";
+import ConversionFunnelBox from "../ConversionFunnelBox";
 import CreatorFollowerTable from "../CreatorFollowerTable";
+import TopCreatorsTable from "../TopCreatorsTable";
+import TopPerformingStreamsTable from "../TopPerformingStreamsTable";
+import TrafficSourceTypeBox from "../TrafficSourceTypeBox";
 
 export default function CreatorFollowersTab(): JSX.Element {
   const [href, setHref] = useState<string | undefined>(undefined);
   const ref = useRef<HTMLAnchorElement>(null);
   const { followers, setPage, loading, currentPage, pageCount } =
     useCreatorFollowers();
-  const { space, colors } = useTheme();
-  const { clubMembersCount, loading: clubMembersCountLoading } =
-    useClubMembersCount();
-  const { followerGrowth, loading: followerGrowthLoading } =
-    useFollowerGrowth();
-  const { averageEngagement, loading: averageEngagementLoading } =
-    useAverageEngagement();
-  const { comparativeEngagement, loading: comparativeEngagementLoading } =
-    useComparativeEngagement();
-  const { topStreams, loading: topStreamsLoading } = useTopStreams();
-  const { topCreators, loading: topCreatorsLoading } = useTopCreators();
-  const { clubMembersGrowth, loading: clubMembersGrowthLoading } =
-    useClubMembersGrowth();
-  const { trafficSourceTypes, loading: trafficSourceTypesLoading } =
-    useTrafficSourceTypes();
-  const { conversionFunnel, loading: conversionFunnelLoading } =
-    useConversionFunnel();
+  const { space } = useTheme();
+  const { clubMembersCount } = useClubMembersCount();
+  const { followerGrowth } = useFollowerGrowth();
+  const { averageEngagement } = useAverageEngagement();
+  const { comparativeEngagement } = useComparativeEngagement();
+  const { topStreams } = useTopStreams();
+  const { topCreators } = useTopCreators();
+  const { clubMembersGrowth } = useClubMembersGrowth();
+  const { trafficSourceTypes } = useTrafficSourceTypes();
+  const { conversionFunnelData } = useConversionFunnel();
 
   function triggerFileDownload(response: string): void {
     if (ref.current) {
@@ -87,101 +60,6 @@ export default function CreatorFollowersTab(): JSX.Element {
     }
   }
 
-  const topStreamsColumns = useMemo<Column<TopStreams>[]>(() => {
-    return [
-      {
-        label: "Stream",
-        key: "stream",
-        valueGetter: (obj) => {
-          console.log(obj.start);
-          const startTime = DateTime.parse_with_milliseconds(obj.start);
-          console.log(startTime);
-
-          return (
-            <Grid
-              gridAutoFlow="column"
-              gridTemplateColumns="130px 1fr"
-              gridGap={space.xxs}
-              alignItems="center"
-            >
-              <Box>
-                {obj.topic_image && (
-                  <Image
-                    objectFit="cover"
-                    layout="fill"
-                    src={obj.topic_image}
-                    alt={obj.topic_title}
-                  />
-                )}
-              </Box>
-
-              <Box>
-                <Text textAlign="start">{obj.topic_title}</Text>
-                <Text
-                  textAlign="start"
-                  textStyle="caption"
-                  color={colors.slate}
-                >
-                  {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
-                </Text>
-              </Box>
-            </Grid>
-          );
-        },
-      },
-      {
-        label: "RSVP",
-        key: "rsvp",
-        valueGetter: (obj) => obj.rsvp_count, // Return JSX
-      },
-      {
-        label: "Messages",
-        key: "messages",
-        valueGetter: (obj) => obj.messages_count, // Return JSX
-      },
-    ];
-  }, [space, colors]);
-
-  const topCreatorsColumns = useMemo<Column<TopCreators>[]>(() => {
-    return [
-      {
-        label: "Creator",
-        key: "creator",
-        valueGetter: (obj) => {
-          return (
-            <Grid
-              gridAutoFlow="column"
-              gridTemplateColumns="max-content 1fr"
-              gridGap={space.xxs}
-              alignItems="center"
-              justifyItems="start"
-            >
-              {obj.creator_image && (
-                <Avatar
-                  size={56}
-                  alt={obj.creator_name || ""}
-                  image={obj?.creator_image}
-                />
-              )}
-
-              <Text>{obj.creator_name}</Text>
-            </Grid>
-          );
-        },
-      },
-      {
-        label: "Followers",
-        key: "followers",
-        valueGetter: (obj) => obj.follower_count,
-      },
-      {
-        label: "Top Stream",
-        key: "topStream",
-        valueGetter: (obj) => obj.stream_topic,
-      },
-    ];
-  }, [space]);
-
   return (
     <Flex
       flexDirection="column"
@@ -203,76 +81,9 @@ export default function CreatorFollowersTab(): JSX.Element {
         gridTemplateColumns="1fr 1fr"
         gridGap={space.s}
       >
-        <Card containerProps={{ p: 0 }}>
-          <Text textStyle="headline5" py={space.xxs}>
-            Traffic Source Types
-          </Text>
+        <TrafficSourceTypeBox trafficSourceTypes={trafficSourceTypes} />
 
-          <Grid gridAutoFlow="row" gridGap={space.xxs}>
-            {trafficSourceTypesLoading ? (
-              <Spinner m="0 auto" />
-            ) : (
-              <Grid
-                gridAutoFlow="column"
-                gridGap={space.xxs}
-                gridTemplateColumns="1fr 1fr"
-              >
-                <PieChart width={400} height={400}>
-                  <Pie
-                    data={trafficSourceTypes}
-                    dataKey="count"
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={70}
-                    outerRadius={90}
-                    paddingAngle={5}
-                    fill={colors.accent}
-                    label
-                  />
-                </PieChart>
-
-                <Grid
-                  m="auto 0"
-                  gridAutoFlow="row"
-                  alignItems="center"
-                  gridGap={space.xs}
-                >
-                  {trafficSourceTypes &&
-                    trafficSourceTypes.map((obj) => (
-                      <Grid
-                        gridAutoFlow="column"
-                        gridGap={space.xs}
-                        key={obj.source_name}
-                      >
-                        <Text justifySelf="start">{obj.source_name}</Text>
-                        <Text justifySelf="end">{obj.count}</Text>
-                      </Grid>
-                    ))}
-                </Grid>
-              </Grid>
-            )}
-          </Grid>
-        </Card>
-
-        <Card containerProps={{ p: 0, textAlign: "center" }}>
-          <Text py={space.xxs} textStyle="headline5">
-            Conversion Funnel
-          </Text>
-          {conversionFunnelLoading ? (
-            <Spinner />
-          ) : (
-            <Grid my={space.l} gridAutoFlow="row" gridGap={space.xxs}>
-              <Text>Total RSVPs</Text>
-              <Text>{conversionFunnel?.rsvp_count}</Text>
-
-              <Text>Total Subscribers</Text>
-              <Text>{conversionFunnel?.subscriber_count}</Text>
-
-              <Text>Total Recurring Users</Text>
-              <Text>{conversionFunnel?.recurring_user_count}</Text>
-            </Grid>
-          )}
-        </Card>
+        <ConversionFunnelBox conversionFunnelData={conversionFunnelData} />
       </Grid>
 
       <Grid
@@ -280,31 +91,9 @@ export default function CreatorFollowersTab(): JSX.Element {
         gridTemplateColumns="1fr 1fr"
         gridGap={space.s}
       >
-        <Card containerProps={{ p: 0, textAlign: "center" }}>
-          <Text py={space.xxs} textStyle="headline5">
-            Your Top Performing Streams
-          </Text>
+        <TopPerformingStreamsTable topStreams={topStreams} />
 
-          {topStreamsLoading ? (
-            <Spinner m="0 auto" />
-          ) : (
-            <DataTable columns={topStreamsColumns} data={topStreams} />
-          )}
-        </Card>
-
-        <Card containerProps={{ p: 0, textAlign: "center" }}>
-          <Grid gridAutoFlow="row" gridTemplateRows="max-content 1fr">
-            <Text py={space.xxs} textStyle="headline5" justifySelf="center">
-              Comparative Ranking
-            </Text>
-
-            {topCreatorsLoading ? (
-              <Spinner m="0 auto" />
-            ) : (
-              <DataTable columns={topCreatorsColumns} data={topCreators} />
-            )}
-          </Grid>
-        </Card>
+        <TopCreatorsTable topCreators={topCreators} />
       </Grid>
 
       <Box>
