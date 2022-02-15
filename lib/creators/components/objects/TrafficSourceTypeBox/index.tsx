@@ -14,7 +14,7 @@ export default function TrafficSourceTypeBox({
 }: IProps): JSX.Element {
   const { space } = useTheme();
 
-  if (trafficSourceTypes === undefined || trafficSourceTypes === null) {
+  if (trafficSourceTypes === undefined) {
     return <Shimmer w="100%" h="100%" />;
   }
 

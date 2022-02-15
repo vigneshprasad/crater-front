@@ -1,7 +1,14 @@
 import { useMemo } from "react";
 import { useTheme } from "styled-components";
 
-import { Card, Grid, Box, Text, Flex } from "@/common/components/atoms";
+import {
+  Card,
+  Grid,
+  Box,
+  Text,
+  Flex,
+  Shimmer,
+} from "@/common/components/atoms";
 import { ClubMembersGrowth } from "@/creators/types/creator";
 
 import ClubMembersGrowthChart from "../ClubMembersGrowthChart";
@@ -78,7 +85,7 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
         gridGap={space.xxs}
       >
         {columns.map(({ title, key, display }, index) => {
-          if (props[key] === undefined) return null;
+          if (props[key] === undefined) return <Shimmer w="100%" h="100%" />;
 
           return (
             <Flex

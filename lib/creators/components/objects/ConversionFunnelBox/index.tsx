@@ -19,7 +19,7 @@ export default function ConversionFunnelBox({
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
 
-  if (conversionFunnelData === undefined || conversionFunnelData === null) {
+  if (conversionFunnelData === undefined) {
     return <Shimmer w="100%" h="100%" />;
   }
 

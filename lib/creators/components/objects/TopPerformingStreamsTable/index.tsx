@@ -88,7 +88,7 @@ export default function TopPerformingStreamsTable({
     ];
   }, [space, colors]);
 
-  if (topStreams === undefined || topStreams === null) {
+  if (topStreams === undefined) {
     return <Shimmer w="100%" h="100%" />;
   }
 

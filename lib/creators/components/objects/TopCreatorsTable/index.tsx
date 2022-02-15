@@ -72,7 +72,7 @@ export default function TopCreatorsTable({ topCreators }: IProps): JSX.Element {
     ];
   }, [space]);
 
-  if (topCreators === undefined || topCreators === null) {
+  if (topCreators === undefined) {
     return <Shimmer w="100%" h="100%" />;
   }
 
