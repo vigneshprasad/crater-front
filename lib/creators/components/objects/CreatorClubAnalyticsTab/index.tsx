@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import API from "@/common/api";
-import { Box, Flex, Grid } from "@/common/components/atoms";
+import { Box, Card, Flex, Grid, Text } from "@/common/components/atoms";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { useAverageEngagement } from "@/creators/context/AverageEngagement";
 import { useClubMembersCount } from "@/creators/context/ClubMembersCount";
@@ -96,22 +96,27 @@ export default function CreatorClubAnalytics(): JSX.Element {
         <TopCreatorsTable topCreators={topCreators} />
       </Grid>
 
-      <Box>
-        <a
-          ref={ref}
-          href={href}
-          style={{ display: "none" }}
-          download="followers.csv"
-        />
-        <CreatorFollowerTable
-          pageCount={pageCount}
-          currentPage={currentPage}
-          loading={loading}
-          data={followers}
-          onPressDownloadCSV={handleExportCsvBtnClick}
-          setPage={setPage}
-        />
-      </Box>
+      <Card containerProps={{ px: 0, py: 0 }}>
+        <Box p={space.xs}>
+          <Text pb={space.xs} textStyle="headline5">
+            Club Members
+          </Text>
+          <a
+            ref={ref}
+            href={href}
+            style={{ display: "none" }}
+            download="followers.csv"
+          />
+          <CreatorFollowerTable
+            pageCount={pageCount}
+            currentPage={currentPage}
+            loading={loading}
+            data={followers}
+            onPressDownloadCSV={handleExportCsvBtnClick}
+            setPage={setPage}
+          />
+        </Box>
+      </Card>
     </Flex>
   );
 }

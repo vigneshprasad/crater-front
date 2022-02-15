@@ -123,7 +123,7 @@ export default function CreatorFollowerTable({
         flexDirection="row"
       >
         <Button text="Download CSV" onClick={onPressDownloadCSV} />
-        <Flex flexDirection="row" alignItems="center">
+        <Flex flexDirection="row" gridGap={4} alignItems="center">
           <IconButton
             variant="roundSmall"
             icon="ChevronLeft"

@@ -36,6 +36,7 @@ export default function ConversionFunnelBox({
             <Funnel
               dataKey="count"
               data={conversionFunnelData}
+              fill={colors.accent}
               isAnimationActive
             >
               <LabelList

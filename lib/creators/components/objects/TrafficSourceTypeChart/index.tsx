@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
+import { useTheme } from "styled-components";
 
+import colors from "@/common/theme/colors";
 import { TrafficSourceType } from "@/creators/types/creator";
 
 interface IProps {
@@ -36,7 +38,14 @@ const renderActiveShape = (props: any): JSX.Element => {
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
+      <text
+        x={cx}
+        y={cy}
+        dy={8}
+        textAnchor="middle"
+        fill={fill}
+        fontSize="1.4rem"
+      >
         {payload.source_name}
       </text>
       <Sector
@@ -67,14 +76,16 @@ const renderActiveShape = (props: any): JSX.Element => {
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         textAnchor={textAnchor}
-        fill="#333"
+        fill={colors.white[0]}
+        fontSize="1.4rem"
       >{`Count: ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         dy={18}
         textAnchor={textAnchor}
-        fill="#999"
+        fill={colors.white[1]}
+        fontSize="1.2rem"
       >
         {`(Rate ${(percent * 100).toFixed(2)}%)`}
       </text>
@@ -85,6 +96,7 @@ const renderActiveShape = (props: any): JSX.Element => {
 export default function TrafficSourceTypeChart({
   trafficSourceTypes,
 }: IProps): JSX.Element {
+  const { colors } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = (_: unknown, index: number): void => {
@@ -102,7 +114,7 @@ export default function TrafficSourceTypeChart({
           cy="50%"
           innerRadius={60}
           outerRadius={80}
-          fill="#8884d8"
+          fill={colors.accent}
           dataKey="count"
           onMouseEnter={onPieEnter}
         />
