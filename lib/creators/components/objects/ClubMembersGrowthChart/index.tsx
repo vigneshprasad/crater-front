@@ -20,8 +20,6 @@ export default function ClubMembersGrowthChart({
 }: IProps): JSX.Element {
   const { colors } = useTheme();
 
-  console.log(clubMembersGrowth);
-
   if (!clubMembersGrowth) {
     return <Shimmer w="100%" h="100%" />;
   }
