@@ -56,9 +56,9 @@ export default function CreatorHubPage({
             <BaseTabItem label="Faq" />
           </Link>
         ),
-        club_members: (
-          <Link href="/creatorhub/club_members">
-            <BaseTabItem label="Club Members" />
+        club_analytics: (
+          <Link href="/creatorhub/club_analytics">
+            <BaseTabItem label="Club Analytics" />
           </Link>
         ),
       };

@@ -18,8 +18,8 @@ import { FollowerGrowthProvider } from "@/creators/context/FollowerGrowth";
 import { TopCreatorsProvider } from "@/creators/context/TopCreators";
 import { TrafficSourceTypesProvider } from "@/creators/context/TrafficSourceTypes";
 
-const CreatorFollowersTab = dynamic(
-  () => import("@/creators/components/objects/CreatorFollowersTab")
+const CreatorClubAnalyticsTab = dynamic(
+  () => import("@/creators/components/objects/CreatorClubAnalyticsTab")
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -52,7 +52,7 @@ export default function CreatorHubFaq({ creator }: IProps): JSX.Element {
   }
 
   return (
-    <CreatorHubPage selectedTab="club_members" creator={creator}>
+    <CreatorHubPage selectedTab="club_analytics" creator={creator}>
       <CreatorFollowerProvider userId={user.pk}>
         <ClubMembersCountProvider>
           <FollowerGrowthProvider>
@@ -63,7 +63,7 @@ export default function CreatorHubFaq({ creator }: IProps): JSX.Element {
                     <ClubMembersGrowthProvider>
                       <TrafficSourceTypesProvider>
                         <ConversionFunnelProvider>
-                          <CreatorFollowersTab />
+                          <CreatorClubAnalyticsTab />
                         </ConversionFunnelProvider>
                       </TrafficSourceTypesProvider>
                     </ClubMembersGrowthProvider>

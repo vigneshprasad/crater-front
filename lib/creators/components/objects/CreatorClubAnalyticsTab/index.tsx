@@ -23,7 +23,7 @@ import TopCreatorsTable from "../TopCreatorsTable";
 import TopPerformingStreamsTable from "../TopPerformingStreamsTable";
 import TrafficSourceTypeBox from "../TrafficSourceTypeBox";
 
-export default function CreatorFollowersTab(): JSX.Element {
+export default function CreatorClubAnalytics(): JSX.Element {
   const [href, setHref] = useState<string | undefined>(undefined);
   const ref = useRef<HTMLAnchorElement>(null);
   const { followers, setPage, loading, currentPage, pageCount } =
