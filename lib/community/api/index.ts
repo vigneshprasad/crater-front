@@ -23,7 +23,10 @@ interface IApiClientResult {
   ) => Promise<ApiResult<GroupRequest, AxiosError>>;
   getAllUpcominWebinars: () => Promise<ApiResult<Group[], AxiosError>>;
   getAllLiveWebinars: () => Promise<ApiResult<Webinar[], AxiosError>>;
-  getAllSeries: () => Promise<ApiResult<Series[], AxiosError>>;
+  getAllSeries: (
+    page?: number,
+    pageSize?: number
+  ) => Promise<ApiResult<Series[], AxiosError>>;
   postSeriesRequest: (
     series: number
   ) => Promise<ApiResult<GroupRequest[], AxiosError>>;
@@ -112,10 +115,13 @@ export default function WebinarApiClient(
     }
   }
 
-  async function getAllSeries(): Promise<ApiResult<Series[], AxiosError>> {
+  async function getAllSeries(
+    page = 1,
+    pageSize = 10
+  ): Promise<ApiResult<Series[], AxiosError>> {
     try {
       const { data } = await client.get<PageResponse<Series>>(
-        API_URL_CONSTANTS.series.getAllSeries
+        `${API_URL_CONSTANTS.series.getAllSeries}?page=${page}&page_size=${pageSize}`
       );
 
       return [data.results, undefined];
