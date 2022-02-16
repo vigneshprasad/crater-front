@@ -18,6 +18,7 @@ import { LEARN_MORE_URL } from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import DateTime from "@/common/utils/datetime/DateTime";
+import hashString from "@/common/utils/hash/hash";
 import ChatReactionList from "@/community/components/objects/ChatReactionList";
 import { Webinar } from "@/community/types/community";
 import useStreamChat from "@/stream/hooks/useStreamChat";
@@ -65,6 +66,9 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
     if (messages.length && messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.children[
+        messagesContainerRef.current.children.length - 1
+      ].scrollIntoView();
     }
   }, [messages, messagesContainerRef]);
 
@@ -187,7 +191,16 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
                 : message.sender_detail.first_name;
               return (
                 <Text mx={space.xxs} key={message.id} wordBreak="break-word">
-                  <Span color={colors.accent}>{name}:</Span> {message.message}
+                  <Span
+                    color={
+                      colors.chatColors[
+                        hashString(name) % colors.chatColors.length
+                      ]
+                    }
+                  >
+                    {name}:
+                  </Span>{" "}
+                  {message.message}
                 </Text>
               );
             })}
