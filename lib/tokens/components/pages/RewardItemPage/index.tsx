@@ -144,8 +144,10 @@ export default function RewardItemPage(): JSX.Element {
     <>
       {creator && (
         <TokenBidModal
+          creator={creator}
           visible={showModal}
           onClose={() => setShowModal(false)}
+          coins={reward.number_of_coins}
         />
       )}
 

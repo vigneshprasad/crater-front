@@ -13,7 +13,7 @@ const colors = {
   ],
   greenDeep: "#016340",
   amber: "#FFA000",
-  red: ["#e53935", "#db2d16"],
+  red: ["#e53935", "#db2d16", "#FF7A68"],
   white: ["#FFFFFF", "#b9b9b9"],
   lightGrey: "#8C8C8C",
   greenSuccess: "#4FBF67",
@@ -29,6 +29,7 @@ const colors = {
     felicia: "#57BEE6",
     sonic: "#0014A5",
   },
+  redTranslucent: "rgba(255, 102, 40, 0.6)",
 };
 
 export default colors;

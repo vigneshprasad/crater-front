@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { useState, useEffect, useCallback } from "react";
 import styled, { useTheme, css } from "styled-components";
 
@@ -8,7 +9,11 @@ import {
   Span,
   Flex,
   FlexProps,
+  Image,
+  Link,
 } from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/Button";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { CoinApiClient } from "@/tokens/api";
 import { CoinPriceLog } from "@/tokens/types/auctions";
 import { CoinHolding } from "@/tokens/types/exchange";
@@ -36,7 +41,7 @@ export default function CoinHoldingsBox({ holdings }: IProps): JSX.Element {
   const [activeHolding, setActiveHolding] = useState<CoinHolding | undefined>(
     undefined
   );
-  const { space, colors } = useTheme();
+  const { space, colors, borders, radii } = useTheme();
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<CoinPriceLog[] | undefined>(undefined);
 
@@ -65,13 +70,35 @@ export default function CoinHoldingsBox({ holdings }: IProps): JSX.Element {
 
   // Initalize activeHolding to first item in holding
   useEffect(() => {
-    if (holdings) {
+    if (holdings && holdings.length > 0) {
       if (!activeHolding) {
         setActiveHolding(holdings[0]);
         fetchPriceLogs(holdings[0]);
       }
     }
   }, [holdings, activeHolding, setActiveHolding, fetchPriceLogs]);
+
+  console.log(holdings);
+
+  if (holdings && holdings.length === 0) {
+    return (
+      <Flex
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        p={space.s}
+        gridGap={space.xxs}
+        border={`2px dashed ${borders.main}`}
+        borderRadius={radii.xxs}
+      >
+        <Image src={STATIC_IMAGES.ImageEmptyWallet} alt="Hello" />
+        <Text>You currently have no tokens.</Text>
+        <Link href={PageRoutes.tokens()}>
+          <Button text="Place a bid" />
+        </Link>
+      </Flex>
+    );
+  }
 
   return (
     <Grid gridTemplateColumns="minmax(320px, 1fr) 3fr" gridGap={space.xxs}>

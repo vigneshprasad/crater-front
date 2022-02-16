@@ -36,6 +36,8 @@ export interface Auction {
   base_price: number;
   number_of_coins: number;
   coins_sold: number;
+  minimum_bid: number;
+  last_bid?: Bid;
 }
 
 export interface CoinPriceLog {

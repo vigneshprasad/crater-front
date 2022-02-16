@@ -6,10 +6,7 @@ import { Flex, Text, Span, Box } from "@/common/components/atoms";
 import { LEARN_MORE_URL } from "@/common/constants/url.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
-import { CreatorProvider } from "@/creators/context/CreatorContext";
 import { Creator } from "@/creators/types/creator";
-import { ActiveAuctionProvider } from "@/tokens/context/ActiveAuctionContext";
-import { CreatorCoinProvider } from "@/tokens/context/CreatorCoinContext";
 import { Auction } from "@/tokens/types/auctions";
 import { Coin } from "@/tokens/types/token";
 
@@ -36,16 +33,11 @@ export default function AuctionDetailBox({
   return (
     <>
       {creator && (
-        <ActiveAuctionProvider creator={creator.id}>
-          <CreatorProvider slug={creator.slug}>
-            <CreatorCoinProvider creatorId={creator.id}>
-              <TokenBidModal
-                visible={showModal}
-                onClose={() => setShowModal(false)}
-              />
-            </CreatorCoinProvider>
-          </CreatorProvider>
-        </ActiveAuctionProvider>
+        <TokenBidModal
+          creator={creator}
+          visible={showModal}
+          onClose={() => setShowModal(false)}
+        />
       )}
 
       <Flex mx={[0, space.xs]} flexDirection="column">

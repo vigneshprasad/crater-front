@@ -1,4 +1,5 @@
-import { SyntheticEvent, useEffect, useMemo } from "react";
+import { AnimatePresence } from "framer-motion";
+import { SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
@@ -11,6 +12,7 @@ import {
   Avatar,
   Span,
   Form,
+  AnimatedBox,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -26,6 +28,9 @@ import { BidStatus } from "@/tokens/types/auctions";
 
 import CurrencyInput from "../../atoms/CurrencyInput";
 import QuantityPicker from "../../atoms/QuantityPicker";
+import TokenBidModalContainer, {
+  ITokenBidModalContainerProps,
+} from "./container";
 
 interface IBidFormProps {
   number_of_coins: number;
@@ -33,15 +38,14 @@ interface IBidFormProps {
 }
 
 interface IProps {
+  coins?: number;
   visible: boolean;
   onClose: () => void;
 }
 
-export default function TokenBidModal({
-  visible,
-  onClose,
-}: IProps): JSX.Element {
-  const { space, colors, borders } = useTheme();
+export function Content({ coins, visible, onClose }: IProps): JSX.Element {
+  const [minBidError, setMinBidError] = useState(false);
+  const { space, colors, borders, radii } = useTheme();
   const { auction } = useActiveAuction();
   const { coin } = useCreatorCoin();
   const { creator } = useCreator();
@@ -51,7 +55,7 @@ export default function TokenBidModal({
     {
       fields: {
         number_of_coins: {
-          intialValue: 1,
+          intialValue: coins ?? 1,
           validators: [
             {
               validator: Validators.required,
@@ -72,22 +76,31 @@ export default function TokenBidModal({
     }
   );
 
-  useEffect(() => {
-    if (auction && fields.bid_price.value === 0) {
-      fieldValueSetter("bid_price", auction.base_price);
-    }
-  }, [auction, fields.bid_price.value, fieldValueSetter]);
-
-  const totalAmount = useMemo(() => {
-    const formatter = new Intl.NumberFormat("en-IN", {
+  const formatter = useMemo(() => {
+    return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
     });
+  }, []);
+
+  useEffect(() => {
+    if (auction) {
+      fieldValueSetter("bid_price", auction.minimum_bid);
+    }
+  }, [auction, fieldValueSetter]);
+
+  const totalAmount = useMemo(() => {
     const amount = fields.number_of_coins.value * fields.bid_price.value;
     return formatter.format(amount);
-  }, [fields]);
+  }, [fields, formatter]);
 
   const submitBid = async (data: IBidFormProps): Promise<void> => {
+    if (auction && data.bid_price < auction.minimum_bid) {
+      setMinBidError(true);
+      return;
+    }
+
+    setMinBidError(false);
     const amount = data.bid_price * data.number_of_coins;
     const paymentData: Partial<Payment> = {
       amount,
@@ -127,6 +140,8 @@ export default function TokenBidModal({
       submitBid(data);
     }
   };
+
+  console.log(fields.bid_price);
 
   return (
     <Modal
@@ -170,7 +185,9 @@ export default function TokenBidModal({
               Last bid
             </Text>
             <Text textAlign="right" fontSize="2.2rem">
-              Rs 192.45
+              {auction && auction.last_bid
+                ? formatter.format(auction.last_bid.bid_price)
+                : "No previous bids"}
             </Text>
           </Box>
         </Flex>
@@ -227,6 +244,34 @@ export default function TokenBidModal({
                   placeholder="Bid amount per token"
                 />
               </Box>
+              <AnimatePresence>
+                {minBidError && (
+                  <AnimatedBox
+                    initial={{
+                      y: -40,
+                      opacity: 0,
+                    }}
+                    animate={{
+                      y: 0,
+                      opacity: 1,
+                    }}
+                    exit={{
+                      y: -40,
+                      opacity: 0,
+                    }}
+                    border={`2px solid ${colors.red[2]}`}
+                    bg={colors.redTranslucent}
+                    p={space.xxxs}
+                    borderRadius={radii.xxs}
+                  >
+                    <Text textStyle="label">Incorrect Bid</Text>
+                    <Text>
+                      The minimum bid for this auction is{" "}
+                      {formatter.format(auction.minimum_bid)}
+                    </Text>
+                  </AnimatedBox>
+                )}
+              </AnimatePresence>
             </Flex>
 
             <Flex
@@ -249,5 +294,18 @@ export default function TokenBidModal({
         );
       })()}
     </Modal>
+  );
+}
+
+export default function TokenBidModal({
+  visible,
+  onClose,
+  coins,
+  ...props
+}: ITokenBidModalContainerProps & IProps): JSX.Element {
+  return (
+    <TokenBidModalContainer {...props}>
+      <Content visible={visible} onClose={onClose} coins={coins} />
+    </TokenBidModalContainer>
   );
 }

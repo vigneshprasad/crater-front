@@ -20,7 +20,7 @@ export default function QuantityPicker({
   onChange,
 }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(controlledValue ?? 1);
 
   const handleIncrement = useCallback(() => {
     setValue((val) => {
