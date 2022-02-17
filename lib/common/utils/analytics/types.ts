@@ -14,4 +14,5 @@ export enum AnalyticsEvents {
   subscribe_creator = "web_subscribe_creator",
   unsubscribe_creator = "web_unsubscribe_creator",
   rsvp_series = "web_rsvp_series",
+  email_validation_failed = "email_validation_failed",
 }

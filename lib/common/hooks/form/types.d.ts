@@ -9,6 +9,7 @@ export type IFormFieldValidator = <T>(value: T) => boolean;
 export type IFormValidatorEntry<T> = {
   message: string;
   validator: IFormFieldValidator<T>;
+  analyticsEvent?: string;
 };
 
 export type IFieldConfig<T> = {

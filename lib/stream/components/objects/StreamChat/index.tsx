@@ -189,12 +189,13 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
               const name = message.display_name
                 ? message.display_name
                 : message.sender_detail.first_name;
+              const toHash = name + message.sender_detail.pk;
               return (
                 <Text mx={space.xxs} key={message.id} wordBreak="break-word">
                   <Span
                     color={
                       colors.chatColors[
-                        hashString(name) % colors.chatColors.length
+                        hashString(toHash) % colors.chatColors.length
                       ]
                     }
                   >
