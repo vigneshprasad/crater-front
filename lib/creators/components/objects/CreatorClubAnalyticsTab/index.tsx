@@ -4,6 +4,7 @@ import { useTheme } from "styled-components";
 
 import API from "@/common/api";
 import { Box, Card, Flex, Grid, Text } from "@/common/components/atoms";
+import IconButton from "@/common/components/atoms/IconButton";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { useAverageEngagement } from "@/creators/context/AverageEngagement";
 import { useClubMembersCount } from "@/creators/context/ClubMembersCount";
@@ -34,7 +35,7 @@ export default function CreatorClubAnalytics(): JSX.Element {
   const { averageEngagement } = useAverageEngagement();
   const { comparativeEngagement } = useComparativeEngagement();
   const { topStreams } = useTopStreams();
-  const { topCreators } = useTopCreators();
+  const { comparativeRankingData } = useTopCreators();
   const { clubMembersGrowth } = useClubMembersGrowth();
   const { trafficSourceTypes } = useTrafficSourceTypes();
   const { conversionFunnelData } = useConversionFunnel();
@@ -60,12 +61,24 @@ export default function CreatorClubAnalytics(): JSX.Element {
     }
   }
 
+  function onClickNextPage(): void {
+    if (currentPage < pageCount) {
+      setPage((page) => page + 1);
+    }
+  }
+
+  function onClickPrevPage(): void {
+    if (currentPage > 1) {
+      setPage((page) => page - 1);
+    }
+  }
+
   return (
     <Flex
       flexDirection="column"
       gridGap={space.s}
       px={[0, space.l]}
-      py={space.xxs}
+      py={space.xs}
     >
       <AnalyticsSummaryBox
         clubMembersCount={clubMembersCount}
@@ -76,11 +89,7 @@ export default function CreatorClubAnalytics(): JSX.Element {
         clubMembersGrowth={clubMembersGrowth}
       />
 
-      <Grid
-        gridAutoFlow="column"
-        gridTemplateColumns="1fr 1fr"
-        gridGap={space.s}
-      >
+      <Grid gridTemplateColumns="1fr 1fr" gridGap={space.s}>
         <TrafficSourceTypeBox trafficSourceTypes={trafficSourceTypes} />
 
         <ConversionFunnelBox conversionFunnelData={conversionFunnelData} />
@@ -93,14 +102,36 @@ export default function CreatorClubAnalytics(): JSX.Element {
       >
         <TopPerformingStreamsTable topStreams={topStreams} />
 
-        <TopCreatorsTable topCreators={topCreators} />
+        <TopCreatorsTable comparativeRankingData={comparativeRankingData} />
       </Grid>
 
       <Card containerProps={{ px: 0, py: 0 }}>
         <Box p={space.xs}>
-          <Text pb={space.xs} textStyle="headline5">
-            Club Members
-          </Text>
+          <Flex justifyContent="space-between">
+            <Text textStyle="headline5">Club Members</Text>
+
+            <Flex
+              pb={space.xs}
+              flexDirection="row"
+              gridGap={space.xxxs}
+              alignItems="center"
+            >
+              <IconButton
+                variant="roundSmall"
+                icon="ChevronLeft"
+                onClick={onClickPrevPage}
+              />
+              <Text>
+                Page {currentPage} of {pageCount}
+              </Text>
+              <IconButton
+                variant="roundSmall"
+                icon="ChevronRight"
+                onClick={onClickNextPage}
+              />
+            </Flex>
+          </Flex>
+
           <a
             ref={ref}
             href={href}
@@ -108,12 +139,9 @@ export default function CreatorClubAnalytics(): JSX.Element {
             download="followers.csv"
           />
           <CreatorFollowerTable
-            pageCount={pageCount}
-            currentPage={currentPage}
             loading={loading}
             data={followers}
             onPressDownloadCSV={handleExportCsvBtnClick}
-            setPage={setPage}
           />
         </Box>
       </Card>
