@@ -17,10 +17,12 @@ export default function ChatMessageItem({ message }: IProps): JSX.Element {
     ? message.sender_details.name
     : "";
 
+  const toHash = name + message.sender_details?.pk;
+
   return (
     <Text mx={space.xxs} key={message.message} wordBreak="break-word">
       <Span
-        color={colors.chatColors[hashString(name) % colors.chatColors.length]}
+        color={colors.chatColors[hashString(toHash) % colors.chatColors.length]}
       >
         {name}:
       </Span>{" "}

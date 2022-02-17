@@ -68,21 +68,13 @@ export function FirebaseChatProvider({
           type: ChatMessageType.TEXT,
         };
 
-        const res = await axios.post(
-          API_URL_CONSTANTS.firebase.postChatMessage,
-          {
+        try {
+          await axios.post(API_URL_CONSTANTS.firebase.postChatMessage, {
             ...data,
-          }
-        );
-        // const ref = await addDoc(
-        //   collection(getFirestore(firebaseApp), "group_message").withConverter(
-        //     ChatMessageConvertor
-        //   ),
-        //   data
-        // );
-        // console.log(ref);
-
-        console.log(res);
+          });
+        } catch (err) {
+          console.error(err);
+        }
       }
     },
     [firebaseUser, groupCollectionId]
