@@ -85,7 +85,7 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
         gridGap={space.xxs}
       >
         {columns.map(({ title, key, display }, index) => {
-          if (props[key] === undefined) return <Shimmer w="100%" h="100%" />;
+          // if (props[key] === undefined) return <Shimmer w="100%" h="100%" />;
 
           return (
             <Flex
@@ -99,12 +99,18 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
                   : undefined
               }
             >
-              <Text textStyle="label" color={colors.slate}>
-                {title}
-              </Text>
-              <Text fontSize="2.4rem" fontWeight="400">
-                {display}
-              </Text>
+              {props[key] === undefined ? (
+                <Shimmer w="100%" h="100%" />
+              ) : (
+                <>
+                  <Text textStyle="label" color={colors.slate}>
+                    {title}
+                  </Text>
+                  <Text fontSize="2.4rem" fontWeight="400">
+                    {display}
+                  </Text>
+                </>
+              )}
             </Flex>
           );
         })}
