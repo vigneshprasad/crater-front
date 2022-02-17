@@ -10,14 +10,13 @@ import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
-import { ChatReactionListProvider } from "@/community/context/ChatReactionListContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar as WebinarType } from "@/community/types/community";
 import { Webinar } from "@/community/types/community";
 import CreatorApiClient from "@/creators/api";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
-import StreamChatProvider from "@/stream/providers/StreamChatProvider";
+import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
 import { Reward } from "@/tokens/types/tokens";
 
@@ -111,16 +110,14 @@ export default function WebinarPage({
       >
         <WebinarProvider id={id} initial={webinar}>
           <DyteWebinarProvider id={id}>
-            <StreamChatProvider groupId={id}>
-              <ChatReactionListProvider>
-                <RewardsListProvider
-                  initial={rewards}
-                  filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
-                >
-                  <DynamicWebinarPage orgId={orgId} id={id} />
-                </RewardsListProvider>
-              </ChatReactionListProvider>
-            </StreamChatProvider>
+            <FirebaseChatProvider groupId={id}>
+              <RewardsListProvider
+                initial={rewards}
+                filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
+              >
+                <DynamicWebinarPage orgId={orgId} id={id} />
+              </RewardsListProvider>
+            </FirebaseChatProvider>
           </DyteWebinarProvider>
         </WebinarProvider>
       </FollowerProvider>

@@ -11,7 +11,7 @@ import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
 import useStreamChat from "@/stream/hooks/useStreamChat";
-import { ChatMessageType } from "@/stream/types/streamChat";
+import { ChatMessage, ChatMessageType } from "@/stream/types/streamChat";
 
 export type Props = BoxProps & {
   webinar: Webinar;
@@ -32,7 +32,7 @@ export default function DyteMeeting({
   const { user } = useAuth();
   const { track } = useAnalytics();
 
-  const { messages } = useStreamChat();
+  const messages = [] as ChatMessage[];
 
   const meetendEndHandler = useCallback(() => {
     // router.push(PageRoutes.session(groupId.toString()));
