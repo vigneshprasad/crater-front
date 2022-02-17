@@ -49,6 +49,13 @@ export function FirebaseChatProvider({
     snapshotListenOptions: { includeMetadataChanges: true },
   });
 
+  const senderId = useMemo(() => {
+    if (ENV === "production" && firebaseUser) {
+      return firebaseUser.uid;
+    }
+    return `${ENV}_${firebaseUser?.uid}`;
+  }, [firebaseUser]);
+
   const [readyState, setReadyState] = useState(ConnectionStates.UNKNOWN);
 
   const postMessage = useCallback(
@@ -57,7 +64,7 @@ export function FirebaseChatProvider({
         const data: Partial<ChatMessage> = {
           ...message,
           group: 1,
-          sender: firebaseUser.uid,
+          sender: senderId,
           type: ChatMessageType.TEXT,
         };
 
@@ -79,7 +86,7 @@ export function FirebaseChatProvider({
         console.log(res);
       }
     },
-    [firebaseUser, groupCollectionId]
+    [firebaseUser, groupCollectionId, senderId]
   );
 
   useEffect(() => {
