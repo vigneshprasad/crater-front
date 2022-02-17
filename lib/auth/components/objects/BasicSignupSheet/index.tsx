@@ -63,6 +63,7 @@ export default function BasicSignupSheet(): JSX.Element {
           {
             validator: Validators.email,
             message: "Enter valid email",
+            analyticsEvent: AnalyticsEvents.email_validation_failed,
           },
         ],
       },

@@ -1,5 +1,7 @@
 import { useCallback, useState } from "react";
 
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+
 import { IFieldStateMap, IUseFormProps, IUseFormResult } from "./types";
 
 export default function useForm<T>(
@@ -8,6 +10,8 @@ export default function useForm<T>(
   const { fields } = props;
   type U = keyof T;
   const keys = Object.keys(fields) as U[];
+
+  const { track } = useAnalytics();
 
   const initial: IFieldStateMap<T, U> = keys.reduce((acc, key) => {
     const item = fields[key];
@@ -60,8 +64,13 @@ export default function useForm<T>(
 
       const isValid: boolean = config.validators.reduce(
         (acc: boolean, validatorItem) => {
-          const { validator, message } = validatorItem;
+          const { validator, message, analyticsEvent } = validatorItem;
           if (!validator(state.value)) {
+            if (analyticsEvent) {
+              track(analyticsEvent, {
+                value: state.value,
+              });
+            }
             updated = {
               ...updated,
               [key]: {
@@ -88,7 +97,7 @@ export default function useForm<T>(
     }
 
     return formValid;
-  }, [fieldsState, fields]);
+  }, [fieldsState, fields, track]);
 
   const getValidatedData = useCallback((): T | false => {
     const isValid = validate();
