@@ -5,22 +5,26 @@ import {
   Avatar,
   Box,
   Card,
+  Flex,
   Grid,
   Shimmer,
+  Span,
   Text,
 } from "@/common/components/atoms";
 import DataTable from "@/common/components/objects/DataTable";
 import { Column } from "@/common/components/objects/DataTable/types";
-import { TopCreators } from "@/creators/types/creator";
+import { CreatorRanking, TopCreators } from "@/creators/types/creator";
 
 interface IProps {
-  topCreators?: TopCreators[];
+  comparativeRankingData?: TopCreators;
 }
 
-export default function TopCreatorsTable({ topCreators }: IProps): JSX.Element {
-  const { space } = useTheme();
+export default function TopCreatorsTable({
+  comparativeRankingData,
+}: IProps): JSX.Element {
+  const { space, colors } = useTheme();
 
-  const columns = useMemo<Column<TopCreators>[]>(() => {
+  const columns = useMemo<Column<CreatorRanking>[]>(() => {
     return [
       {
         label: "Creator",
@@ -72,17 +76,24 @@ export default function TopCreatorsTable({ topCreators }: IProps): JSX.Element {
     ];
   }, [space]);
 
-  if (topCreators === undefined) {
+  if (comparativeRankingData === undefined) {
     return <Shimmer w="100%" h="100%" />;
   }
 
   return (
     <Card containerProps={{ px: space.xs, py: space.xs }}>
-      <Text pb={space.xs} textStyle="headline5">
-        Top Performing Creators
-      </Text>
+      <Flex pb={space.xs} justifyContent="space-between" alignItems="center">
+        <Text textStyle="headline5">Top Performing Creators</Text>
+        <Text textStyle="headline6" color={colors.slate}>
+          Your Rank:{" "}
+          <Span color={colors.accent}>#{comparativeRankingData.rank}</Span>
+        </Text>
+      </Flex>
 
-      <DataTable columns={columns} data={topCreators} />
+      <DataTable
+        columns={columns}
+        data={comparativeRankingData.creator_ranking}
+      />
     </Card>
   );
 }

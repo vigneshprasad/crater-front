@@ -6,7 +6,7 @@ import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { TopCreators } from "../types/creator";
 
 interface ITopCreatorsState {
-  topCreators?: TopCreators[];
+  comparativeRankingData?: TopCreators;
   error?: unknown;
   loading: boolean;
 }
@@ -14,25 +14,25 @@ interface ITopCreatorsState {
 export const TopCreatorsContext = createContext({} as ITopCreatorsState);
 
 type IProviderProps = PropsWithChildren<{
-  initial?: TopCreators[];
+  initial?: TopCreators;
 }>;
 
 export function TopCreatorsProvider({
   initial,
   ...rest
 }: IProviderProps): JSX.Element {
-  const { data: topCreators, error } = useSWR<TopCreators[]>(
+  const { data: comparativeRankingData, error } = useSWR<TopCreators>(
     API_URL_CONSTANTS.analytics.getTopCreators,
     { initialData: initial }
   );
 
   const value: ITopCreatorsState = useMemo(
     () => ({
-      topCreators,
+      comparativeRankingData,
       error,
-      loading: !topCreators && !error,
+      loading: !comparativeRankingData && !error,
     }),
-    [topCreators, error]
+    [comparativeRankingData, error]
   );
 
   return <TopCreatorsContext.Provider value={value} {...rest} />;

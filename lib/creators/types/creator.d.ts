@@ -30,12 +30,17 @@ export type AverageEngagement = ClubMembersCount;
 
 export type ComparativeEngagement = FollowerGrowth;
 
-export type TopCreators = {
+export type CreatorRanking = {
   creator_user_pk: number;
   creator_name: string;
   creator_image?: string;
   stream_topic: string;
   follower_count: number;
+};
+
+export type TopCreators = {
+  rank?: number;
+  creator_ranking: CreatorRanking[];
 };
 
 export type ClubMembersGrowth = {
@@ -51,5 +56,4 @@ export type TrafficSourceType = {
 export type ConversionFunnel = {
   name: string;
   count: number;
-  fill: string;
 };
