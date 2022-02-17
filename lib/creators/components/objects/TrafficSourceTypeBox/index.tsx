@@ -1,7 +1,14 @@
 import { useMemo } from "react";
 import { useTheme } from "styled-components";
 
-import { Box, Card, Flex, Shimmer, Text } from "@/common/components/atoms";
+import {
+  Box,
+  Card,
+  Flex,
+  Grid,
+  Shimmer,
+  Text,
+} from "@/common/components/atoms";
 import ProgressBar from "@/common/components/objects/ProgressBar";
 import { TrafficSourceType } from "@/creators/types/creator";
 
@@ -36,22 +43,26 @@ export default function TrafficSourceTypeBox({
         <TrafficSourceTypeChart trafficSourceTypes={trafficSourceTypes} />
       </Box>
 
-      <Box w="80%" m="0 auto">
+      <Box m="0 auto" w="50%">
         {trafficSourceTypes.map((obj) => {
           const percent = ((obj.count / total) * 100).toFixed(2);
           return (
-            <Flex
+            <Grid
               my={space.xxs}
-              justifyContent="space-around"
+              gridAutoFlow="column"
+              gridTemplateColumns="repeat(3, 1fr)"
+              gridGap={space.xxxs}
               key={obj.source_name}
             >
-              <Text w="20%">{obj.source_name}</Text>
-              <Text textStyle="caption" color={colors.slate}>
-                {percent}%
-              </Text>
-              <ProgressBar percent={percent} />
-              <Text>{obj.count}</Text>
-            </Flex>
+              <Text justifySelf="start">{obj.source_name}</Text>
+              <Flex flexDirection="row" gridGap={space.xxxs}>
+                <Text textStyle="caption" color={colors.slate}>
+                  {percent}%
+                </Text>
+                <ProgressBar percent={percent} />
+              </Flex>
+              <Text justifySelf="center">{obj.count}</Text>
+            </Grid>
           );
         })}
       </Box>
