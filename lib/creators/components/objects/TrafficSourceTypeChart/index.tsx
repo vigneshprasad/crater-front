@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
-import { useTheme } from "styled-components";
 
 import colors from "@/common/theme/colors";
 import { TrafficSourceType } from "@/creators/types/creator";
@@ -96,7 +95,6 @@ const renderActiveShape = (props: any): JSX.Element => {
 export default function TrafficSourceTypeChart({
   trafficSourceTypes,
 }: IProps): JSX.Element {
-  const { colors } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = (_: unknown, index: number): void => {
@@ -104,7 +102,7 @@ export default function TrafficSourceTypeChart({
   };
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="90%" height="100%">
       <PieChart>
         <Pie
           activeIndex={activeIndex}
@@ -114,7 +112,7 @@ export default function TrafficSourceTypeChart({
           cy="50%"
           innerRadius={60}
           outerRadius={80}
-          fill={colors.accent}
+          fill="#8884d8"
           dataKey="count"
           onMouseEnter={onPieEnter}
         />
