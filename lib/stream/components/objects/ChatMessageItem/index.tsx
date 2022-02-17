@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import { Text, Span } from "@/common/components/atoms";
@@ -11,11 +12,17 @@ interface IProps {
 export default function ChatMessageItem({ message }: IProps): JSX.Element {
   const { space, colors } = useTheme();
 
-  const name = message.display_name
-    ? message.display_name
-    : message.sender_details && message.sender_details.name
-    ? message.sender_details.name
-    : "";
+  const name = useMemo(() => {
+    if (message.display_name) {
+      return message.display_name;
+    }
+
+    if (message.sender_details?.first_name) {
+      return message.sender_details?.first_name;
+    }
+
+    return message.sender_details?.name ?? "";
+  }, [message]);
 
   const toHash = name + message.sender_details?.pk;
 
