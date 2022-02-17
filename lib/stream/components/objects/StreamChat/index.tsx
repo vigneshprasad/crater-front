@@ -82,7 +82,7 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
         display_name: data?.display_name,
       };
 
-      if (!data.display_name || data.display_name === "") {
+      if (!data.display_name) {
         delete message.display_name;
       }
       postMessage(message);
