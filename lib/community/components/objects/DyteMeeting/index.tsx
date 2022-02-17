@@ -10,7 +10,6 @@ import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
-import useStreamChat from "@/stream/hooks/useStreamChat";
 import { ChatMessage, ChatMessageType } from "@/stream/types/streamChat";
 
 export type Props = BoxProps & {
