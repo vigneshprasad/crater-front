@@ -42,8 +42,7 @@ export function FirebaseChatProvider({
     where("group", "==", groupCollectionId)
   );
   const { data: tokenResponse } = useSWR<{ token: string }>(
-    user ? API_URL_CONSTANTS.firebase.getFirebaseToken : null,
-    { revalidateOnFocus: false, revalidateOnMount: false }
+    user ? API_URL_CONSTANTS.firebase.getFirebaseToken : null
   );
   const [firebaseUser] = useAuthState(auth);
   const [messages] = useCollectionData(messagesQuery, {
