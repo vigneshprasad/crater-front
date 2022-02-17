@@ -15,7 +15,7 @@ export interface ChatUserDetails {
 export interface ChatMessage {
   created_at: Timestamp;
   message: string;
-  group: number;
+  group: string | number;
   sender: string;
   type: ChatMessageType;
   data?: {

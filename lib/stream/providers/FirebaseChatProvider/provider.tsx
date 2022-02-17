@@ -42,29 +42,29 @@ export function FirebaseChatProvider({
     where("group", "==", groupCollectionId)
   );
   const { data: tokenResponse } = useSWR<{ token: string }>(
-    user ? API_URL_CONSTANTS.firebase.getFirebaseToken : null
+    user ? API_URL_CONSTANTS.firebase.getFirebaseToken : null,
+    { revalidateOnFocus: false, revalidateOnMount: false }
   );
   const [firebaseUser] = useAuthState(auth);
   const [messages] = useCollectionData(messagesQuery, {
     snapshotListenOptions: { includeMetadataChanges: true },
   });
 
-  const senderId = useMemo(() => {
-    if (ENV === "production" && firebaseUser) {
-      return firebaseUser.uid;
-    }
-    return `${ENV}_${firebaseUser?.uid}`;
-  }, [firebaseUser]);
-
   const [readyState, setReadyState] = useState(ConnectionStates.UNKNOWN);
+
+  useEffect(() => {
+    if (firebaseUser && firebaseUser.uid) {
+      setReadyState(ConnectionStates.CONNECTED);
+    }
+  }, [firebaseUser, setReadyState]);
 
   const postMessage = useCallback(
     async (message: Partial<ChatMessage>) => {
       if (firebaseUser) {
         const data: Partial<ChatMessage> = {
           ...message,
-          group: 1,
-          sender: senderId,
+          group: groupCollectionId,
+          sender: firebaseUser.uid,
           type: ChatMessageType.TEXT,
         };
 
@@ -72,7 +72,6 @@ export function FirebaseChatProvider({
           API_URL_CONSTANTS.firebase.postChatMessage,
           {
             ...data,
-            group: groupCollectionId,
           }
         );
         // const ref = await addDoc(
@@ -86,15 +85,15 @@ export function FirebaseChatProvider({
         console.log(res);
       }
     },
-    [firebaseUser, groupCollectionId, senderId]
+    [firebaseUser, groupCollectionId]
   );
 
   useEffect(() => {
     const token = tokenResponse?.token;
+
     if (!firebaseUser && token) {
       const authenticate = async (token: string): Promise<void> => {
         await signInWithCustomToken(auth, token);
-        setReadyState(ConnectionStates.CONNECTED);
       };
 
       authenticate(token);
@@ -112,8 +111,6 @@ export function FirebaseChatProvider({
     }),
     [readyState, messages, postMessage]
   );
-
-  console.log(value);
 
   return <FirebaseChatContext.Provider value={value} {...rest} />;
 }

@@ -77,7 +77,15 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
     event.preventDefault();
     const data = getValidatedData();
     if (data) {
-      postMessage({ message: data.message, display_name: data.display_name });
+      const message = {
+        message: data?.message,
+        display_name: data?.display_name,
+      };
+
+      if (!data.display_name) {
+        delete message.display_name;
+      }
+      postMessage(message);
       fieldValueSetter("message", "");
     }
   };
