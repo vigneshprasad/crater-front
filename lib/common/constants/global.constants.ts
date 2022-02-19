@@ -4,3 +4,4 @@ export const WEBSOCKET_BASE_URL = process.env
 export const UTM_SOURCE_STORAGE_KEY = "utmSource";
 export const UTM_CAMPAIGN_STORAGE_KEY = "utmCampaign";
 export const UTM_MEDIUM_STORAGE_KEY = "utmMedium";
+export const ENV = process.env.NEXT_PUBLIC_ENV as string;
