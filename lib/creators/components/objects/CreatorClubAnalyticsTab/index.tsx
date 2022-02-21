@@ -16,6 +16,7 @@ import { useTopStreams } from "@/creators/context/CreatorTopStreams";
 import { useFollowerGrowth } from "@/creators/context/FollowerGrowth";
 import { useTopCreators } from "@/creators/context/TopCreators";
 import { useTrafficSourceTypes } from "@/creators/context/TrafficSourceTypes";
+import { useUsersByCrater } from "@/creators/context/UsersByCrater";
 
 import AnalyticsSummaryBox from "../AnalyticsSummaryBox";
 import ConversionFunnelBox from "../ConversionFunnelBox";
@@ -39,6 +40,7 @@ export default function CreatorClubAnalytics(): JSX.Element {
   const { clubMembersGrowth } = useClubMembersGrowth();
   const { trafficSourceTypes } = useTrafficSourceTypes();
   const { conversionFunnelData } = useConversionFunnel();
+  const { usersByCrater: percentageUsersFromCrater } = useUsersByCrater();
 
   function triggerFileDownload(response: string): void {
     if (ref.current) {
@@ -83,7 +85,7 @@ export default function CreatorClubAnalytics(): JSX.Element {
       <AnalyticsSummaryBox
         clubMembersCount={clubMembersCount}
         followerGrowth={followerGrowth}
-        percentageUserFromCrater={90}
+        percentageUsersFromCrater={percentageUsersFromCrater}
         comparativeEngagement={comparativeEngagement}
         averageEngagement={averageEngagement}
         clubMembersGrowth={clubMembersGrowth}
@@ -92,7 +94,7 @@ export default function CreatorClubAnalytics(): JSX.Element {
       <Grid gridTemplateColumns="1fr 1fr" gridGap={space.s}>
         <TrafficSourceTypeBox trafficSourceTypes={trafficSourceTypes} />
 
-        <ConversionFunnelBox conversionFunnelData={conversionFunnelData} />
+        {/* <ConversionFunnelBox conversionFunnelData={conversionFunnelData} /> */}
       </Grid>
 
       <Grid

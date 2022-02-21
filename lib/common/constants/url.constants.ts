@@ -107,6 +107,7 @@ export const API_URL_CONSTANTS = {
     getClubMembersGrowth: "/crater/analytics/club_members_growth/",
     getTrafficSourceTypes: "/crater/analytics/traffic_source_types/",
     getConversionFunnel: "/crater/analytics/conversion_funnel/",
+    getUsersByCrater: "/crater/analytics/users_by_crater/",
   },
 };
 

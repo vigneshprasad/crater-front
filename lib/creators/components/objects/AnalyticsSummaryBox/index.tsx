@@ -16,7 +16,7 @@ import ClubMembersGrowthChart from "../ClubMembersGrowthChart";
 interface IProps {
   clubMembersCount?: number;
   followerGrowth?: number;
-  percentageUserFromCrater?: number;
+  percentageUsersFromCrater?: number;
   comparativeEngagement?: number;
   averageEngagement?: number;
   clubMembersGrowth?: ClubMembersGrowth[];
@@ -28,7 +28,7 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
   const {
     clubMembersCount,
     followerGrowth,
-    percentageUserFromCrater,
+    percentageUsersFromCrater,
     comparativeEngagement,
     averageEngagement,
     clubMembersGrowth,
@@ -56,8 +56,8 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
       },
       {
         title: "Users brought in by Crater",
-        key: "percentageUserFromCrater",
-        display: `${percentageUserFromCrater} %`,
+        key: "percentageUsersFromCrater",
+        display: `${percentageUsersFromCrater} %`,
       },
       {
         title: "Average Engagement",
@@ -73,7 +73,7 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
   }, [
     clubMembersCount,
     followerGrowth,
-    percentageUserFromCrater,
+    percentageUsersFromCrater,
     comparativeEngagement,
     averageEngagement,
   ]);

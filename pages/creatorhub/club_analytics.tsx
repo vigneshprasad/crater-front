@@ -17,6 +17,7 @@ import { TopStreamsProvider } from "@/creators/context/CreatorTopStreams";
 import { FollowerGrowthProvider } from "@/creators/context/FollowerGrowth";
 import { TopCreatorsProvider } from "@/creators/context/TopCreators";
 import { TrafficSourceTypesProvider } from "@/creators/context/TrafficSourceTypes";
+import { UsersByCraterProvider } from "@/creators/context/UsersByCrater";
 
 const CreatorClubAnalyticsTab = dynamic(
   () => import("@/creators/components/objects/CreatorClubAnalyticsTab")
@@ -63,7 +64,9 @@ export default function CreatorHubFaq({ creator }: IProps): JSX.Element {
                     <ClubMembersGrowthProvider>
                       <TrafficSourceTypesProvider>
                         <ConversionFunnelProvider>
-                          <CreatorClubAnalyticsTab />
+                          <UsersByCraterProvider>
+                            <CreatorClubAnalyticsTab />
+                          </UsersByCraterProvider>
                         </ConversionFunnelProvider>
                       </TrafficSourceTypesProvider>
                     </ClubMembersGrowthProvider>
