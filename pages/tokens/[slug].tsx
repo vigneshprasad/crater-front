@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import CreatorApiClient from "@/creators/api";
 import { CreatorWithCoinProvider } from "@/creators/context/CreatorWithCoinContext";
 import { Creator } from "@/creators/types/creator";
+import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import { CoinApiClient } from "@/tokens/api";
 import TokenPageLayout from "@/tokens/components/layout/TokenPageLayout";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
@@ -72,12 +73,14 @@ export default function TokenPage({
       "Crater is where you join live streams with the mentors & creators you follow, get to network with like-minds, and can claim exclusive access to mentors & creator by buying their tokens at the live auction",
   };
   return (
-    <TokenPageLayout seo={seo} activeTab="tokens">
-      <CreatorWithCoinProvider initial={creators}>
-        <RewardsListProvider filterCreatorSlug={activeCreator.slug}>
-          <TokensTab />
-        </RewardsListProvider>
-      </CreatorWithCoinProvider>
-    </TokenPageLayout>
+    <UpcomingStreamsProvider>
+      <TokenPageLayout seo={seo} activeTab="tokens">
+        <CreatorWithCoinProvider initial={creators}>
+          <RewardsListProvider filterCreatorSlug={activeCreator.slug}>
+            <TokensTab />
+          </RewardsListProvider>
+        </CreatorWithCoinProvider>
+      </TokenPageLayout>
+    </UpcomingStreamsProvider>
   );
 }

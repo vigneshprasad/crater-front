@@ -8,9 +8,9 @@ import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import useSeries from "@/community/context/SeriesListContext";
-import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import PastStreamCard from "@/stream/components/objects/PastStreamCard";
 import usePastStreams from "@/stream/context/PastStreamContext";
+import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 import SeriesList from "../../objects/SeriesList";
 import StreamCard from "../../objects/StreamCard";
@@ -27,6 +27,7 @@ const Span = styled.span`
 export default function StreamsPage(): JSX.Element {
   const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
   const { upcoming } = useUpcomingStreams();
+
   const {
     streams: past,
     loading: pastStreamsLoading,
@@ -94,7 +95,7 @@ export default function StreamsPage(): JSX.Element {
         gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
         gridGap={space.s}
       >
-        {upcoming.map((stream) => (
+        {upcoming?.map((stream) => (
           <StreamCard stream={stream} key={stream.id} />
         ))}
       </Grid>

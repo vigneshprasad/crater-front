@@ -1,5 +1,6 @@
+import linkifyHtml from "linkify-html";
 import { useMemo } from "react";
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import { Text, Span } from "@/common/components/atoms";
 import hashString from "@/common/utils/hash/hash";
@@ -9,9 +10,19 @@ interface IProps {
   message: ChatMessage;
 }
 
+const LinkSpan = styled(Span)`
+  & > a {
+    color: ${({ theme }) => theme.colors.linkColor};
+    text-decoration: underline;
+  }
+`;
+
+const LinkifiedText = ({ text }: { text: string }): JSX.Element => {
+  return <LinkSpan dangerouslySetInnerHTML={{ __html: text }} />;
+};
+
 export default function ChatMessageItem({ message }: IProps): JSX.Element {
   const { space, colors } = useTheme();
-
   const name = useMemo(() => {
     if (message.display_name) {
       return message.display_name;
@@ -24,6 +35,11 @@ export default function ChatMessageItem({ message }: IProps): JSX.Element {
     return message.sender_details?.name ?? "";
   }, [message]);
 
+  const text = useMemo(() => {
+    const options = { defaultProtocol: "https", target: "__blank" };
+    return linkifyHtml(message.message, options);
+  }, [message]);
+
   const toHash = name + message.sender_details?.pk;
 
   return (
@@ -33,7 +49,7 @@ export default function ChatMessageItem({ message }: IProps): JSX.Element {
       >
         {name}:
       </Span>{" "}
-      {message.message}
+      <LinkifiedText text={text} />
     </Text>
   );
 }

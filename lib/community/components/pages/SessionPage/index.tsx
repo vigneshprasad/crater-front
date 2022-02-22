@@ -18,7 +18,6 @@ import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
 import WebinarApiClient from "@/community/api";
-// import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { useWebinarRequest } from "@/community/context/WebinarRequestContext";
 import {
@@ -28,6 +27,7 @@ import {
   Series,
 } from "@/community/types/community";
 import PastStreamCard from "@/stream/components/objects/PastStreamCard";
+import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
 import StreamCard from "../../objects/StreamCard";
@@ -46,7 +46,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const { user } = useAuth();
   const { openModal } = useAuthModal();
   const { track } = useAnalytics();
-  // const { upcoming } = useUpcomingStreams();
+  const { upcoming } = useUpcomingStreams();
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -511,7 +511,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           </Box>
         ) : null}
 
-        {/* <Box pb={space.s}>
+        <Box pb={space.s}>
           <Box px={[space.xxs, space.s]} py={space.xs}>
             <Text textStyle="headlineBold">Upcoming Streams</Text>
           </Box>
@@ -524,13 +524,13 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             ]}
             gridGap={space.s}
           >
-            {upcoming.map((stream) => {
+            {upcoming?.map((stream) => {
               if (stream.id !== webinar.id) {
                 return <StreamCard stream={stream} key={stream.id} />;
               }
             })}
           </Grid>
-        </Box> */}
+        </Box>
       </BaseLayout>
     </>
   );

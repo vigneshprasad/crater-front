@@ -2,6 +2,7 @@ import { NextSeoProps } from "next-seo";
 
 import dynamic from "next/dynamic";
 
+import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import TokenPageLayout from "@/tokens/components/layout/TokenPageLayout";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
 
@@ -17,10 +18,12 @@ export default function Tokens(): JSX.Element {
   };
 
   return (
-    <TokenPageLayout seo={seo} activeTab="tickets">
-      <RewardsListProvider>
-        <RewardsTab />
-      </RewardsListProvider>
-    </TokenPageLayout>
+    <UpcomingStreamsProvider>
+      <TokenPageLayout seo={seo} activeTab="tickets">
+        <RewardsListProvider>
+          <RewardsTab />
+        </RewardsListProvider>
+      </TokenPageLayout>
+    </UpcomingStreamsProvider>
   );
 }

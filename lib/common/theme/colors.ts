@@ -29,6 +29,7 @@ const colors = {
     felicia: "#57BEE6",
     sonic: "#0014A5",
   },
+  linkColor: "#865EEA",
   chatColors: [
     "#A17BFF",
     "#5BFCAF",

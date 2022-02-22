@@ -16,6 +16,7 @@ import { Webinar } from "@/community/types/community";
 import CreatorApiClient from "@/creators/api";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
+import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
 import { Reward } from "@/tokens/types/tokens";
@@ -111,12 +112,14 @@ export default function WebinarPage({
         <WebinarProvider id={id} initial={webinar}>
           <DyteWebinarProvider id={id}>
             <FirebaseChatProvider groupId={id}>
-              <RewardsListProvider
-                initial={rewards}
-                filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
-              >
-                <DynamicWebinarPage orgId={orgId} id={id} />
-              </RewardsListProvider>
+              <UpcomingStreamsProvider>
+                <RewardsListProvider
+                  initial={rewards}
+                  filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
+                >
+                  <DynamicWebinarPage orgId={orgId} id={id} />
+                </RewardsListProvider>
+              </UpcomingStreamsProvider>
             </FirebaseChatProvider>
           </DyteWebinarProvider>
         </WebinarProvider>
