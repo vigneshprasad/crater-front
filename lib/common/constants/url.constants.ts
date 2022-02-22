@@ -118,6 +118,11 @@ export const API_URL_CONSTANTS = {
     getAllSeries: "/groups/public/conversations/series/",
     postSeriesRequest: "/groups/conversations/series/requests/",
   },
+  firebase: {
+    getFirebaseToken: "/integrations/firebase/token/",
+    postChatMessage:
+      "https://us-central1-crater-b6a7b.cloudfunctions.net/sendMessage",
+  },
 };
 
 export const LEARN_MORE_URL =

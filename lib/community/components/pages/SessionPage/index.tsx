@@ -290,7 +290,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   }
 
                   if (isHost) {
-                    if (startTime.minus({ minutes: 5 }) > now) {
+                    if (startTime.minus({ minutes: 30 }) > now) {
                       return (
                         <Box
                           bg={colors.black[5]}
@@ -319,8 +319,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
                   if (
                     webinar.is_live ||
-                    (startTime.minus({ minutes: 10 }) < now &&
-                      startTime.plus({ minutes: 10 }) > now)
+                    (startTime.minus({ minutes: 30 }) < now &&
+                      startTime.plus({ minutes: 30 }) > now)
                   ) {
                     return (
                       <Button
@@ -491,7 +491,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             >
               {seriesData?.groups_detail_list.map((stream) => {
                 if (stream.id !== webinar.id) {
-                  if (stream.is_past || stream.closed) {
+                  if (stream.is_past && stream.closed) {
                     return (
                       <PastStreamCard
                         key={stream.id}

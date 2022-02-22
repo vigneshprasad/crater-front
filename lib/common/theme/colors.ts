@@ -30,6 +30,24 @@ const colors = {
     sonic: "#0014A5",
   },
   redTranslucent: "rgba(255, 102, 40, 0.6)",
+  chatColors: [
+    "#A17BFF",
+    "#5BFCAF",
+    "#FCBD72",
+    "#FF7DAC",
+    "#7DCAFF",
+    "#ECFF7D",
+    "#F96479",
+    "#96F464",
+    "#F76D52",
+    "#71ABFF",
+    "#FFCE61",
+    "#F7A9E3",
+    "#49FC49",
+    "#7DFFEC",
+    "#F4A8B0",
+    "#BDFC97",
+  ],
 };
 
 export default colors;
