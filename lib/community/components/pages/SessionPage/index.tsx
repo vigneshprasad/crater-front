@@ -276,6 +276,10 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                         variant="full-width"
                         text={rsvpBtnText}
                         onClick={(): void => {
+                          track(AnalyticsEvents.rsvp_button_clicked, {
+                            new_user: true,
+                            session: webinar.id,
+                          });
                           router.replace({
                             query: {
                               ...router.query,
