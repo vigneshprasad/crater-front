@@ -51,11 +51,6 @@ export default function BidsDataTable({ auction }: IProps): JSX.Element {
         valueGetter: (obj) => obj.bid_price,
       },
       {
-        label: "Number of coins",
-        key: "number_of_coins",
-        valueGetter: (obj) => obj.number_of_coins,
-      },
-      {
         label: "Status",
         key: "status",
         valueGetter: (obj) => obj.status_detail,
