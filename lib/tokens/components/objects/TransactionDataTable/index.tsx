@@ -15,8 +15,7 @@ export default function TransactionDataTable({ bids }: IProps): JSX.Element {
       {
         label: "Creator",
         key: "creator",
-        valueGetter: (obj) =>
-          `${obj.coin_detail.creator_detail.profile_detail.name} (${obj.coin_detail.display.symbol})`,
+        valueGetter: (obj) => `${obj.creator_detail.profile_detail.name})`,
       },
       {
         label: "Price",
@@ -27,13 +26,6 @@ export default function TransactionDataTable({ bids }: IProps): JSX.Element {
             currency: "INR",
           });
           return formatter.format(obj.amount);
-        },
-      },
-      {
-        label: "Coins",
-        key: "coins",
-        valueGetter: (obj) => {
-          return `${obj.number_of_coins} Coin`;
         },
       },
       {
