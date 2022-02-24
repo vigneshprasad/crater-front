@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
@@ -10,11 +10,8 @@ import { Creator } from "@/creators/types/creator";
 import { Auction } from "@/tokens/types/auctions";
 import { Coin } from "@/tokens/types/token";
 
-import RewardBidModal from "../RewardBidModal";
-
 type IProps = PropsWithChildren<{
   auction?: Auction;
-
   creator?: Creator;
 }>;
 
@@ -23,7 +20,6 @@ export default function AuctionDetailBox({
   creator,
   children,
 }: IProps): JSX.Element {
-  const [showModal, setShowModal] = useState(false);
   const { space, radii, borders, colors } = useTheme();
 
   const { data: coin } = useSWR<Coin>(
@@ -32,13 +28,13 @@ export default function AuctionDetailBox({
 
   return (
     <>
-      {creator && (
+      {/* {creator && (
         <RewardBidModal
           creator={creator}
           visible={showModal}
           onClose={() => setShowModal(false)}
         />
-      )}
+      )} */}
 
       <Flex mx={[0, space.xs]} flexDirection="column">
         <Flex
@@ -103,7 +99,6 @@ export default function AuctionDetailBox({
               h={56}
               bg={colors.greenDeep}
               borderRadius={4}
-              onClick={() => setShowModal(true)}
             >
               <Text textStyle="buttonLarge" m="auto auto">
                 Place a Bid
