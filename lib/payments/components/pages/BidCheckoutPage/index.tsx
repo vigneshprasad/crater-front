@@ -12,14 +12,14 @@ import {
   Form,
   Grid,
   Text,
-  Avatar,
   Box,
   Hr,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
-import useStripeIntent from "@/payments/context/StripeIntentContext";
+import RewardImagePreview from "@/tokens/components/objects/RewardImagePreview";
 import useBid from "@/tokens/context/BidContext";
+import useRewardItem from "@/tokens/context/RewardItemContext";
 
 interface IProps {
   hostUrl: string;
@@ -30,9 +30,9 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
   const { space, colors, borders } = useTheme();
   const elements = useElements();
   const { bid } = useBid();
-  const { paymentIntent } = useStripeIntent();
+  const { reward } = useRewardItem();
 
-  console.log(paymentIntent);
+  console.log(reward);
 
   const handleFormSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
@@ -106,12 +106,10 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
           Your Order
         </Text>
         {(() => {
-          if (!bid) {
+          if (!reward || !bid) {
             return <Text>Loading</Text>;
           }
 
-          const { coin_detail: coin } = bid;
-          const { creator_detail: creator } = coin;
           return (
             <Flex flexDirection="column" gridGap={space.xxs}>
               <Flex
@@ -121,22 +119,22 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
                 alignItems="center"
                 gridGap={space.xxs}
               >
-                <Avatar size={48} image={creator.profile_detail.photo} />
+                {reward.photo && (
+                  <RewardImagePreview reward={reward} w={56} h={56} />
+                )}
                 <Box flex="1">
-                  <Text textStyle="title" color={colors.accent}>
-                    {coin.display.symbol}
-                  </Text>
-                  <Text textStyle="caption" color={colors.slate}>
-                    {creator.profile_detail.name}
+                  <Text textStyle="title">{reward.name}</Text>
+                  <Text color={colors.slate}>
+                    {formatter.format(bid.bid_price)}
                   </Text>
                 </Box>
                 <Text textStyle="title">x</Text>
-                <Text textStyle="title">{bid.number_of_coins}</Text>
+                <Text textStyle="title">{bid.quantity}</Text>
               </Flex>
 
               <Flex color={colors.slate}>
                 <Text flex="1">Total Bid Price:</Text>
-                <Text>{formatter.format(bid.amount)}</Text>
+                <Text>{formatter.format(bid.bid_price)}</Text>
               </Flex>
 
               <Flex color={colors.slate}>

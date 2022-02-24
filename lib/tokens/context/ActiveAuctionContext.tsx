@@ -14,17 +14,17 @@ export interface IActiveAuctionState {
 const ActiveAuctionContext = createContext({} as IActiveAuctionState);
 
 type ProviderProps = PropsWithChildren<{
-  creator: number | string;
+  reward: number | string;
   intitial?: Auction;
 }>;
 
 export function ActiveAuctionProvider({
-  creator,
+  reward,
   intitial,
   ...rest
 }: ProviderProps): JSX.Element {
   const { data: auction, error } = useSWR<Auction>(
-    API_URL_CONSTANTS.auctions.getActiveAuction(creator),
+    API_URL_CONSTANTS.auctions.getActiveAuction(reward),
     { initialData: intitial }
   );
 

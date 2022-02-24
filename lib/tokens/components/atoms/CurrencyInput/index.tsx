@@ -8,7 +8,7 @@ import { Box } from "@/common/components/atoms";
 
 const Styles = styled(Box)`
   padding: 6px 8px;
-  background: ${({ theme }) => theme.colors.black[2]};
+  background: ${({ theme }) => theme.colors.black[5]};
   border-radius: ${({ theme }) => theme.radii.xxs}px;
   align-items: center;
 
@@ -18,8 +18,8 @@ const Styles = styled(Box)`
 
   input {
     font-family: ${({ theme }) => theme.fonts.body};
-    font-size: 1.4rem;
-    font-weight: 400;
+    font-size: 1.6rem;
+    font-weight: 600;
     line-height: 2.4rem;
     box-sizing: border-box;
     color: ${({ theme }) => theme.colors.white[0]};
@@ -28,6 +28,8 @@ const Styles = styled(Box)`
     border: 2px solid transparent;
     outline: none;
     width: 100%;
+    height: 42px;
+    padding: 0 8px;
 
     &::placeholder {
       font-size: 1.1rem;

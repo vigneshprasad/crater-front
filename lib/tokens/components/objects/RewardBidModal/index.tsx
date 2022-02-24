@@ -9,53 +9,58 @@ import {
   Box,
   Modal,
   Flex,
-  Avatar,
-  Span,
   Form,
   AnimatedBox,
+  Span,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import { CurrencyFormatter } from "@/common/utils/formatters";
 import { useCreator } from "@/creators/context/CreatorContext";
 import PaymentApiClient from "@/payments/api";
 import { Payment } from "@/payments/types/payments";
 import AuctionApiClient from "@/tokens/api/AuctionApiClient";
 import useActiveAuction from "@/tokens/context/ActiveAuctionContext";
-import useCreatorCoin from "@/tokens/context/CreatorCoinContext";
+import useBidsList from "@/tokens/context/BidListContext";
+import useRewardItem from "@/tokens/context/RewardItemContext";
 import { BidStatus } from "@/tokens/types/auctions";
 
 import CurrencyInput from "../../atoms/CurrencyInput";
 import QuantityPicker from "../../atoms/QuantityPicker";
-import TokenBidModalContainer, {
-  ITokenBidModalContainerProps,
+import AuctionProgressBar from "../AuctionProgressBar";
+import BidsListItem from "../BidListItem";
+import BidsList from "../BidsList";
+import RewardImagePreview from "../RewardImagePreview";
+import RewardBidModalContainer, {
+  IRewardBidModalContainerProps,
 } from "./container";
 
 interface IBidFormProps {
-  number_of_coins: number;
+  quantity: number;
   bid_price: number;
 }
 
 interface IProps {
-  coins?: number;
   visible: boolean;
   onClose: () => void;
 }
 
-export function Content({ coins, visible, onClose }: IProps): JSX.Element {
+export function Content({ visible, onClose }: IProps): JSX.Element {
   const [minBidError, setMinBidError] = useState(false);
-  const { space, colors, borders, radii } = useTheme();
-  const { auction } = useActiveAuction();
-  const { coin } = useCreatorCoin();
+  const { space, colors, borders, radii, gradients } = useTheme();
   const { creator } = useCreator();
+  const { auction } = useActiveAuction();
+  const { reward } = useRewardItem();
   const router = useRouter();
+  const { bids, loading: loadingBids } = useBidsList();
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<IBidFormProps>(
     {
       fields: {
-        number_of_coins: {
-          intialValue: coins ?? 1,
+        quantity: {
+          intialValue: 1,
           validators: [
             {
               validator: Validators.required,
@@ -76,13 +81,6 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
     }
   );
 
-  const formatter = useMemo(() => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-    });
-  }, []);
-
   useEffect(() => {
     if (auction) {
       fieldValueSetter("bid_price", auction.minimum_bid);
@@ -90,9 +88,9 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
   }, [auction, fieldValueSetter]);
 
   const totalAmount = useMemo(() => {
-    const amount = fields.number_of_coins.value * fields.bid_price.value;
-    return formatter.format(amount);
-  }, [fields, formatter]);
+    const amount = fields.quantity.value * fields.bid_price.value;
+    return CurrencyFormatter.format(amount);
+  }, [fields]);
 
   const submitBid = async (data: IBidFormProps): Promise<void> => {
     if (auction && data.bid_price < auction.minimum_bid) {
@@ -101,7 +99,7 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
     }
 
     setMinBidError(false);
-    const amount = data.bid_price * data.number_of_coins;
+    const amount = data.bid_price * data.quantity;
     const paymentData: Partial<Payment> = {
       amount,
     };
@@ -110,10 +108,11 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
 
     if (payment) {
       const [bid] = await AuctionApiClient().postBid({
+        creator: creator?.id,
         payment: payment.id,
         auction: auction?.id,
         bid_price: data.bid_price,
-        number_of_coins: data.number_of_coins,
+        quantity: data.quantity,
         status: BidStatus.PaymentPending,
       });
       if (bid) {
@@ -141,8 +140,6 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
     }
   };
 
-  console.log(fields.bid_price);
-
   return (
     <Modal
       visible={visible}
@@ -150,48 +147,98 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
       overflow="hidden"
       maxWidth={560}
       iconButtonProps={{ top: 24 }}
-      gridTemplateRows="max-content min-content 1fr"
+      gridTemplateRows="min-content min-content 1fr min-content"
       display="grid"
     >
-      <Box px={space.s} py={space.xs}>
-        <Text textStyle="headline5">Place a bid</Text>
-      </Box>
-      <Box
-        mx={space.xs}
-        px={space.xxs}
-        py={space.xxs}
-        borderTop={`2px solid ${borders.main}`}
-        borderBottom={`2px solid ${borders.main}`}
-      >
-        <Flex flexDirection="row" gridGap={space.xxs} alignItems="center">
-          <Avatar image={creator?.profile_detail.photo} size={56} />
-          <Box>
-            <Text mb={4} fontSize="1.6rem">
-              {creator?.profile_detail.name}
-            </Text>
-            <Text color={colors.accent} textStyle="caption">
-              {coin?.display.symbol}
-            </Text>
+      {/* Reward Details */}
+      {reward && (
+        <>
+          <Box px={space.s} py={space.xs}>
+            <Text textStyle="headline5">Place a bid</Text>
           </Box>
-          <Flex flex="1" />
+          <Box
+            mx={space.xs}
+            px={space.xxs}
+            py={space.xxs}
+            borderRadius={radii.xxs}
+            background={gradients.primary}
+          >
+            <Flex flexDirection="row" gridGap={space.xxs} alignItems="center">
+              {reward.photo && (
+                <RewardImagePreview w={96} h={96} reward={reward} />
+              )}
 
-          <Box>
-            <Text
-              textAlign="right"
-              mb={4}
-              textStyle="label"
-              color={colors.slate}
-            >
-              Last bid
-            </Text>
-            <Text textAlign="right" fontSize="2.2rem">
-              {auction && auction.last_bid
-                ? formatter.format(auction.last_bid.bid_price)
-                : "No previous bids"}
-            </Text>
+              <Box>
+                <Text mb={4} fontSize="1.6rem" fontWeight="800">
+                  {reward.name}
+                  <Span
+                    mx={space.xxxs}
+                    px={12}
+                    py={2}
+                    fontSize="1.2rem"
+                    bg={colors.blackAlpha[1]}
+                    borderRadius={18}
+                  >
+                    {reward.quantity_sold}/{reward.quantity}
+                  </Span>
+                </Text>
+                {reward.active_auction && (
+                  <AuctionProgressBar
+                    withLabel
+                    auction={reward.active_auction}
+                  />
+                )}
+              </Box>
+
+              <Flex flex="1" />
+
+              <Text textAlign="right" fontSize="1.8rem" fontWeight="700">
+                {(() => {
+                  if (!reward.active_auction) {
+                    return "No active auction";
+                  }
+
+                  if (reward.active_auction?.last_bid?.bid_price) {
+                    return CurrencyFormatter.format(
+                      reward.active_auction?.last_bid?.bid_price
+                    );
+                  }
+
+                  return CurrencyFormatter.format(
+                    reward.active_auction.minimum_bid
+                  );
+                })()}
+              </Text>
+            </Flex>
           </Box>
-        </Flex>
-      </Box>
+        </>
+      )}
+
+      {/* Bids List */}
+      {(() => {
+        if (!auction || !bids) {
+          return <Box>No active auctions</Box>;
+        }
+        return (
+          <Box overflowY="auto">
+            <Text px={space.s} py={space.xs} textStyle="title">
+              Past Bids
+            </Text>
+            <BidsList
+              px={space.xs}
+              loading={loadingBids}
+              bids={bids}
+              renderList={(bids) => {
+                return bids.map((bid) => {
+                  return <BidsListItem bid={bid} key={bid.id} />;
+                });
+              }}
+            />
+          </Box>
+        );
+      })()}
+
+      {/* Auctiona and place bid */}
       {(() => {
         if (!auction) {
           return <Box>No active auctions</Box>;
@@ -199,6 +246,7 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
 
         return (
           <Form
+            bg={colors.black[2]}
             display="grid"
             px={space.xs}
             py={space.xs}
@@ -208,25 +256,12 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
           >
             <Flex
               gridGap={space.xs}
-              flexDirection="column"
+              flexDirection="row"
+              alignItems="center"
               borderBottom={`2px solid ${borders.main}`}
+              pb={space.xxxs}
             >
-              <QuantityPicker
-                value={fields.number_of_coins.value}
-                onChange={(val) => fieldValueSetter("number_of_coins", val)}
-                label="Number of Tokens"
-                valueSuffix={
-                  <Span
-                    fontSize="1.6rem"
-                    fontWeight="600"
-                    mx={space.xxxs}
-                    color={colors.accent}
-                  >
-                    {coin?.display.symbol}
-                  </Span>
-                }
-              />
-              <Box>
+              <Box flex="1">
                 <Text
                   mb={space.xxxs}
                   px={space.xxxs}
@@ -244,6 +279,12 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
                   placeholder="Bid amount per token"
                 />
               </Box>
+
+              <QuantityPicker
+                value={fields.quantity.value}
+                onChange={(val) => fieldValueSetter("quantity", val)}
+                label="Quantity"
+              />
               <AnimatePresence>
                 {minBidError && (
                   <AnimatedBox
@@ -267,7 +308,7 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
                     <Text textStyle="label">Incorrect Bid</Text>
                     <Text>
                       The minimum bid for this auction is{" "}
-                      {formatter.format(auction.minimum_bid)}
+                      {CurrencyFormatter.format(auction.minimum_bid)}
                     </Text>
                   </AnimatedBox>
                 )}
@@ -297,15 +338,14 @@ export function Content({ coins, visible, onClose }: IProps): JSX.Element {
   );
 }
 
-export default function TokenBidModal({
+export default function RewardBidModal({
   visible,
   onClose,
-  coins,
   ...props
-}: ITokenBidModalContainerProps & IProps): JSX.Element {
+}: IRewardBidModalContainerProps & IProps): JSX.Element {
   return (
-    <TokenBidModalContainer {...props}>
-      <Content visible={visible} onClose={onClose} coins={coins} />
-    </TokenBidModalContainer>
+    <RewardBidModalContainer {...props}>
+      <Content visible={visible} onClose={onClose} />
+    </RewardBidModalContainer>
   );
 }

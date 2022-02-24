@@ -1,4 +1,5 @@
 import { Creator } from "../../creators/types/creator";
+import { Auction } from "./auctions";
 
 export interface CoinDisplayMeta {
   symbol: string;
@@ -14,17 +15,17 @@ export interface Coin {
 export interface Reward {
   id: number;
   creator: number;
-  name: string;
-  quantity: number;
-  remaining_quantity: number;
-  number_of_coins: number;
-  type: string;
-  object_id: number;
-  photo: string;
   is_active: boolean;
-  creator_coin_detail: Coin;
+  name: string;
+  title?: string;
+  text_color: string;
+  object_id: number;
+  type: string;
+  photo: string;
   description?: string;
   photo_mime_type: string;
-  text_color: string;
-  title?: string;
+  quantity: number;
+  quantity_sold: number;
+  active_auction?: Auction;
+  creator_detail: Creator;
 }

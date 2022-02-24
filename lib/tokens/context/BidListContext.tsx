@@ -16,16 +16,33 @@ const BidListContext = createContext({} as IBidListContextState);
 type ProviderProps = PropsWithChildren<{
   initial?: Bid[];
   filterBidder?: string;
+  filterCreator?: string | number;
+  filterReward?: string | number;
 }>;
 
 export function BidListProvider({
   initial,
   filterBidder,
+  filterCreator,
+  filterReward,
   ...rest
 }: ProviderProps): JSX.Element {
-  const url = filterBidder
-    ? `${API_URL_CONSTANTS.auctions.getBids}?bidder=${filterBidder}`
-    : API_URL_CONSTANTS.auctions.getBids;
+  const url = useMemo(() => {
+    if (filterBidder) {
+      return `${API_URL_CONSTANTS.auctions.getBids}?bidder=${filterBidder}`;
+    }
+
+    if (filterCreator) {
+      return `${API_URL_CONSTANTS.auctions.getBids}?creator=${filterCreator}`;
+    }
+
+    if (filterReward) {
+      return `${API_URL_CONSTANTS.auctions.getBids}?reward=${filterReward}`;
+    }
+
+    return API_URL_CONSTANTS.auctions.getBids;
+  }, [filterBidder, filterCreator, filterReward]);
+
   const { data: bids, error } = useSWR(url, { initialData: initial });
 
   const value = useMemo(

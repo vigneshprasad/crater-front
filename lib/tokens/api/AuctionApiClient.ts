@@ -5,12 +5,15 @@ import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ApiResult } from "@/common/types/api";
 
-import { Bid } from "../types/auctions";
+import { Auction, Bid } from "../types/auctions";
 
 interface IAuctionApiClient {
   postBid: (bid: Partial<Bid>) => Promise<ApiResult<Bid, AxiosError>>;
   retrieveBid: (id: string | number) => Promise<ApiResult<Bid, AxiosError>>;
   acceptBid: (bid: string | number) => Promise<ApiResult<Bid, AxiosError>>;
+  retrieveAuction: (
+    id: string | number
+  ) => Promise<ApiResult<Auction, AxiosError>>;
 }
 
 export default function AuctionApiClient(
@@ -60,9 +63,24 @@ export default function AuctionApiClient(
     }
   }
 
+  async function retrieveAuction(
+    id: number | string
+  ): Promise<ApiResult<Auction, AxiosError>> {
+    try {
+      const { data } = await client.get<Auction>(
+        API_URL_CONSTANTS.auctions.retrievAuction(id)
+      );
+
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     postBid,
     retrieveBid,
     acceptBid,
+    retrieveAuction,
   };
 }

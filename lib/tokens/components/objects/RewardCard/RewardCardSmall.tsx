@@ -32,7 +32,7 @@ export default function RewardCardSmall({
   const {
     name,
     photo,
-    creator_coin_detail,
+    creator_detail,
     id,
     photo_mime_type,
     title,
@@ -76,12 +76,7 @@ export default function RewardCardSmall({
       overflow="hidden"
       {...rest}
     >
-      <Link
-        href={PageRoutes.rewardListing(
-          creator_coin_detail.creator_detail.slug,
-          id
-        )}
-      >
+      <Link href={PageRoutes.rewardListing(creator_detail.slug, id)}>
         {preview}
         <Box position="relative" p={space.xxs}>
           <Text textStyle="headline5" color={text_color}>

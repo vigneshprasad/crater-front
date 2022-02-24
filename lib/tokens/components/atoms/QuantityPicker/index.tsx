@@ -52,7 +52,7 @@ export default function QuantityPicker({
   return (
     <Box>
       <Text
-        mb={space.xxxs}
+        mb={space.xxxxs}
         px={space.xxxs}
         textStyle="label"
         fontSize="1.2rem"
@@ -63,14 +63,21 @@ export default function QuantityPicker({
       <Grid
         px={space.xxs}
         py={space.xxxs}
-        bg={colors.black[2]}
-        gridTemplateColumns="1fr max-content max-content"
+        bg={colors.black[5]}
+        gridTemplateColumns="max-content max-content max-content"
         alignItems="center"
         borderRadius={radii.xs}
         gridGap={space.xxs}
       >
+        <IconButton
+          onClick={handleDecrement}
+          variant="roundSmall"
+          icon="Remove"
+          iconProps={{ color: colors.white[0], fill: true, size: 16 }}
+        />
+
         <Box>
-          <Text fontSize="1.8rem">
+          <Text fontSize="1.6rem" fontWeight="700">
             {displayValue}
             {valueSuffix}
           </Text>
@@ -80,13 +87,6 @@ export default function QuantityPicker({
           onClick={handleIncrement}
           variant="roundSmall"
           icon="Add"
-          iconProps={{ color: colors.white[0], fill: true, size: 16 }}
-        />
-
-        <IconButton
-          onClick={handleDecrement}
-          variant="roundSmall"
-          icon="Remove"
           iconProps={{ color: colors.white[0], fill: true, size: 16 }}
         />
       </Grid>

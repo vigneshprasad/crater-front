@@ -87,9 +87,10 @@ export const API_URL_CONSTANTS = {
   auctions: {
     getBids: "/crater/bid/",
     postBid: "/crater/bid/",
+    retrievAuction: (id: number | string): string => `/crater/auction/${id}/`,
     retrieveBid: (id: number | string): string => `/crater/bid/${id}/`,
-    getActiveAuction: (creator: string | number): string =>
-      `/crater/auction/${creator}/active_auction/`,
+    getActiveAuction: (reward: string | number): string =>
+      `/crater/auction/${reward}/active_auction/`,
     getCoinPriceLogs: "/crater/coin_log/",
     acceptBid: (bid: number | string): string => `/crater/bid/${bid}/accept/`,
     bidSummaryForCoin: (coin: number | string): string =>

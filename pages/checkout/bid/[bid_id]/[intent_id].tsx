@@ -13,12 +13,13 @@ import StripeElementsProvider from "@/payments/components/objects/StripeElements
 import { StripeIntentProvider } from "@/payments/context/StripeIntentContext";
 import { StripePaymentIntent } from "@/payments/types/payments";
 import AuctionApiClient from "@/tokens/api/AuctionApiClient";
+import { AuctionProvider } from "@/tokens/context/AuctionContext";
 import { BidProvider } from "@/tokens/context/BidContext";
-import { Bid } from "@/tokens/types/auctions";
+import { RewardItemProvider } from "@/tokens/context/RewardItemContext";
+import { Auction, Bid } from "@/tokens/types/auctions";
 
 const BidCheckoutPage = dynamic(
-  () => import("@/payments/components/pages/BidCheckoutPage"),
-  { ssr: false }
+  () => import("@/payments/components/pages/BidCheckoutPage")
 );
 
 interface QueryProps extends ParsedUrlQuery {
@@ -33,6 +34,7 @@ interface PageProps {
   bid_id: number;
   publishKey: string;
   hostUrl: string;
+  auction: Auction;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -45,6 +47,16 @@ export const getServerSideProps: GetServerSideProps<
     intent_id
   );
 
+  if (!bid || !intent) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const [auction] = await AuctionApiClient({ req }).retrieveAuction(
+    bid.auction
+  );
+
   return {
     props: {
       bid: bid as Bid,
@@ -53,6 +65,7 @@ export const getServerSideProps: GetServerSideProps<
       bid_id: bid?.id as number,
       publishKey: `${STRIPE_PUBLISH_KEY}`,
       hostUrl: HOST_URL,
+      auction: auction as Auction,
     },
   };
 };
@@ -64,6 +77,7 @@ export default function Checkout({
   intentSecret,
   publishKey,
   hostUrl,
+  auction,
 }: PageProps): JSX.Element {
   return (
     <CheckoutPageLayout
@@ -74,14 +88,18 @@ export default function Checkout({
       }}
     >
       <BidProvider id={bid_id} initial={bid}>
-        <StripeIntentProvider initial={intent} secret={intentSecret}>
-          <StripeElementsProvider
-            publishKey={publishKey}
-            clientSecret={intentSecret}
-          >
-            <BidCheckoutPage hostUrl={hostUrl} />
-          </StripeElementsProvider>
-        </StripeIntentProvider>
+        <AuctionProvider id={auction.id} initial={auction}>
+          <StripeIntentProvider initial={intent} secret={intentSecret}>
+            <StripeElementsProvider
+              publishKey={publishKey}
+              clientSecret={intentSecret}
+            >
+              <RewardItemProvider id={auction.reward}>
+                <BidCheckoutPage hostUrl={hostUrl} />
+              </RewardItemProvider>
+            </StripeElementsProvider>
+          </StripeIntentProvider>
+        </AuctionProvider>
       </BidProvider>
     </CheckoutPageLayout>
   );

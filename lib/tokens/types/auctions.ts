@@ -1,6 +1,8 @@
 import { Profile } from "next-auth";
 
-import { Coin } from "./token";
+import { Creator } from "@/creators/types/creator";
+
+import { Reward } from "./token";
 
 export enum BidStatus {
   PaymentPending = 5,
@@ -12,19 +14,21 @@ export enum BidStatus {
 
 export interface Bid {
   id: number;
+  creator: number;
   bidder: string;
   auction: number;
   bid_price: number;
-  number_of_coins: number;
-  bid_time: string;
+  quantity: number;
   status: BidStatus;
   is_processed: boolean;
   payment: number;
-  coin_detail: Coin;
   amount: number;
   created_at: string;
   status_detail: string;
   bidder_profile_detail: Profile;
+  creator_detail: Creator;
+  reward: number;
+  reward_detail: Reward;
 }
 
 export interface Auction {
@@ -38,6 +42,7 @@ export interface Auction {
   coins_sold: number;
   minimum_bid: number;
   last_bid?: Bid;
+  reward: number;
 }
 
 export interface CoinPriceLog {

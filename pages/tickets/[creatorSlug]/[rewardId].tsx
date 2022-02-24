@@ -31,9 +31,9 @@ export const getStaticPaths: GetStaticPaths<IParams> = async () => {
 
   if (!rewards) return { paths: [], fallback: "blocking" };
 
-  const paths = rewards.map(({ creator_coin_detail, id }) => ({
+  const paths = rewards.map(({ creator_detail, id }) => ({
     params: {
-      creatorSlug: creator_coin_detail.creator_detail.slug,
+      creatorSlug: creator_detail.slug,
       rewardId: id.toString(),
     },
   }));

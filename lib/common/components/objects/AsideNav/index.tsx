@@ -15,7 +15,6 @@ interface IProps {
 }
 
 const NavItemContainer = styled(Grid)`
-  background: ${({ theme }) => theme.colors.black[1]};
   border-radius: 4px;
 
   &:hover {
@@ -91,7 +90,7 @@ export default function AsideNav({ activeTab }: IProps): JSX.Element {
             },
           },
         }}
-        bg={colors.black[4]}
+        bg={colors.black[5]}
         py={[space.xxs]}
         px={[0, 16]}
         borderRight={`1px solid ${borders.main}`}

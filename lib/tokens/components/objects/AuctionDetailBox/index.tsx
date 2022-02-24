@@ -10,7 +10,7 @@ import { Creator } from "@/creators/types/creator";
 import { Auction } from "@/tokens/types/auctions";
 import { Coin } from "@/tokens/types/token";
 
-import TokenBidModal from "../TokenBidModal";
+import RewardBidModal from "../RewardBidModal";
 
 type IProps = PropsWithChildren<{
   auction?: Auction;
@@ -33,7 +33,7 @@ export default function AuctionDetailBox({
   return (
     <>
       {creator && (
-        <TokenBidModal
+        <RewardBidModal
           creator={creator}
           visible={showModal}
           onClose={() => setShowModal(false)}

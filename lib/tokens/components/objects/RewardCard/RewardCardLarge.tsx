@@ -39,13 +39,12 @@ export default function RewardCardLarge({
   const {
     name,
     photo,
-    number_of_coins,
-    creator_coin_detail,
     quantity,
-    remaining_quantity,
     id,
     photo_mime_type,
     title,
+    creator_detail,
+    quantity_sold,
   } = reward;
   const { borders, radii, space, colors } = useTheme();
 
@@ -76,12 +75,7 @@ export default function RewardCardLarge({
   }, [photo, colors, name, photo_mime_type]);
 
   return (
-    <Link
-      href={PageRoutes.rewardListing(
-        creator_coin_detail.creator_detail.slug,
-        id
-      )}
-    >
+    <Link href={PageRoutes.rewardListing(creator_detail.slug, id)}>
       <Container
         display="grid"
         borderRadius={radii.xxs}
@@ -96,10 +90,7 @@ export default function RewardCardLarge({
         {...rest}
       >
         {showAvatar && (
-          <Avatar
-            size={32}
-            image={creator_coin_detail.creator_detail.profile_detail.photo}
-          />
+          <Avatar size={32} image={creator_detail.profile_detail.photo} />
         )}
 
         {preview}
@@ -110,14 +101,14 @@ export default function RewardCardLarge({
         <Flex justifyContent="space-between">
           <Box>
             <Text textStyle="caption" color={colors.lightGrey}>
-              {remaining_quantity}
+              {quantity_sold}
               {" / "}
               {quantity}
               {" remaining"}
             </Text>
             <Text textStyle="captionLarge" color={colors.accent}>
               {"Buy Now with "}
-              {number_of_coins} {creator_coin_detail.display.symbol}
+              {quantity_sold} {name}
             </Text>
           </Box>
           <Avatar

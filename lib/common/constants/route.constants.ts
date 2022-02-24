@@ -7,7 +7,8 @@ export const PageRoutes = {
   tokens: (slug?: string): string => (slug ? `/tokens/${slug}` : "/tokens"),
   tickets: "/tickets",
   session: (id: string | number): string => `/session/${id}`,
-  stream: (id: string | number): string => `/livestream/${id}`,
+  stream: (id: string | number, tab?: "chat" | "rewards"): string =>
+    `/livestream/${id}?tab=${tab ?? "chat"}`,
   creatorProfile: (slug: string | number, tab?: string | number): string =>
     `/creator/${slug}/${tab ?? "streams"}`,
   streamVideo: (id: string | number): string => `/video/${id}`,

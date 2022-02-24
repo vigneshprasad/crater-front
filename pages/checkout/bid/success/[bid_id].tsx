@@ -47,7 +47,6 @@ export default function BidCheckoutSuccess({
   bid,
   bid_id,
 }: PageProps): JSX.Element {
-  const creatorSlug = bid.coin_detail.creator_detail.slug;
   return (
     <BidSuccessPageLayout
       seo={{
@@ -57,7 +56,7 @@ export default function BidCheckoutSuccess({
       }}
     >
       <BidProvider id={bid_id} initial={bid}>
-        <RewardsListProvider filterCreatorSlug={creatorSlug}>
+        <RewardsListProvider filterCreatorId={bid.creator}>
           <BidPaymentSuccessPage />
         </RewardsListProvider>
       </BidProvider>

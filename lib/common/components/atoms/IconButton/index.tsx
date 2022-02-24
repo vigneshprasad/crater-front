@@ -41,7 +41,7 @@ const Container = styled(Box)`
       roundSmall: {
         height: "36px",
         width: "36px",
-        bg: "black.4",
+        bg: "black.2",
         borderRadius: "50%",
         transition: "all 50ms ease-in-out",
         ":hover": {

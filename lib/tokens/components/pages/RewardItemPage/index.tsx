@@ -25,8 +25,8 @@ import useCreatorCoin from "@/tokens/context/CreatorCoinContext";
 import useRewardItem from "@/tokens/context/RewardItemContext";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
+import RewardBidModal from "../../objects/RewardBidModal";
 import RewardsList from "../../objects/RewardsList";
-import TokenBidModal from "../../objects/TokenBidModal";
 
 const AnimLoading: Variants = {
   hidden: { opacity: 0, x: 0, y: 20 },
@@ -143,11 +143,11 @@ export default function RewardItemPage(): JSX.Element {
   return (
     <>
       {creator && (
-        <TokenBidModal
+        <RewardBidModal
+          reward={reward}
           creator={creator}
           visible={showModal}
           onClose={() => setShowModal(false)}
-          coins={reward.number_of_coins}
         />
       )}
 
@@ -176,12 +176,12 @@ export default function RewardItemPage(): JSX.Element {
 
             <Link
               href={PageRoutes.creatorProfile(
-                reward.creator_coin_detail.creator_detail.slug,
+                reward.creator_detail.slug,
                 "token"
               )}
             >
               <BreadCrumb textStyle="breadCrumb">
-                {reward.creator_coin_detail.creator_detail.profile_detail.name}
+                {reward.creator_detail.profile_detail.name}
               </BreadCrumb>
             </Link>
 
@@ -208,14 +208,14 @@ export default function RewardItemPage(): JSX.Element {
               justifyContent="space-between"
             >
               <Text textStyle="headline5">
-                {reward.number_of_coins}{" "}
+                {reward.photo_mime_type}{" "}
                 <Span color={colors.accent}>
-                  {reward.creator_coin_detail.display.symbol}
+                  {reward.creator_detail.profile_detail.name}
                 </Span>
               </Text>
 
               <Text textStyle="headline6" color={colors.slate}>
-                {reward.remaining_quantity} / {reward.quantity} remaining
+                remaining
               </Text>
             </Flex>
 
@@ -226,31 +226,18 @@ export default function RewardItemPage(): JSX.Element {
             <Box my={space.xs} h={2} bg={borders.main} />
 
             <Text my={space.xxs} textStyle="title">
-              About{" "}
-              {reward.creator_coin_detail.creator_detail.profile_detail.name}
+              About {reward.creator_detail.profile_detail.name}
             </Text>
 
-            <Link
-              href={PageRoutes.creatorProfile(
-                reward.creator_coin_detail.creator_detail.slug
-              )}
-            >
+            <Link href={PageRoutes.creatorProfile(reward.creator_detail.slug)}>
               <Grid
                 alignItems="center"
                 gridTemplateColumns="max-content 1fr"
                 gridGap={space.xxs}
               >
-                <Avatar
-                  image={
-                    reward.creator_coin_detail.creator_detail.profile_detail
-                      .photo
-                  }
-                />
+                <Avatar image={reward.creator_detail.profile_detail.photo} />
                 <Text maxLines={3}>
-                  {
-                    reward.creator_coin_detail.creator_detail.profile_detail
-                      .introduction
-                  }
+                  {reward.creator_detail.profile_detail.introduction}
                 </Text>
               </Grid>
             </Link>

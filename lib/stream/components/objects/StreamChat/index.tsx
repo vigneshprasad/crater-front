@@ -6,23 +6,16 @@ import {
   Box,
   Input,
   Grid,
-  Text,
   Flex,
-  Span,
   Form,
   GridProps,
-  Shimmer,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import { LEARN_MORE_URL } from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
-import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
 import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
-import { ConnectionStates } from "@/stream/providers/FirebaseChatProvider/context";
 import { ChatMessageType } from "@/stream/types/streamChat";
-import useAuctionsList from "@/tokens/context/AuctionListContext";
 
 import ChatMessageItem from "../ChatMessageItem";
 
@@ -39,10 +32,9 @@ interface ChatFormProps {
 export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const { profile } = useAuth();
-  const { auctions, loading: auctionLoading } = useAuctionsList();
 
-  const { messages, readyState, postMessage } = useFirebaseChat();
-  const { space, colors, borders } = useTheme();
+  const { messages, postMessage } = useFirebaseChat();
+  const { space, borders } = useTheme();
   const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
     {
       fields: {
@@ -92,96 +84,11 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
 
   return (
     <Grid
-      h={["60vh", "auto"]}
-      bg={colors.black[6]}
-      gridTemplateRows={[
-        "min-content 1fr min-content",
-        "min-content min-content 1fr min-content min-content",
-      ]}
+      gridTemplateRows={["1fr max-content", "1fr min-content"]}
       borderTop={[`2px solid ${borders.main}`, "none"]}
       borderLeft={`2px solid ${borders.main}`}
       {...rest}
     >
-      <Grid
-        display={["none", "grid"]}
-        py={space.xxs}
-        px={space.xxs}
-        gridTemplateColumns="1fr min-content"
-        alignItems="center"
-      >
-        <Text textStyle="title">Question Board</Text>
-
-        <Flex
-          justifyContent="space-between"
-          borderBottom={`1px solid ${borders.main}`}
-        >
-          <Flex alignItems="center">
-            <Text textStyle="small" color={colors.slate}>
-              {readyState === ConnectionStates.CONNECTED
-                ? "Connected"
-                : "Connecting"}
-            </Text>
-            <Box
-              mx={space.xxxs}
-              w={8}
-              h={8}
-              borderRadius="50%"
-              bg={
-                readyState === ConnectionStates.CONNECTED
-                  ? colors.greenSuccess
-                  : colors.amber
-              }
-            />
-          </Flex>
-        </Flex>
-      </Grid>
-
-      {auctionLoading || !auctions ? (
-        <Shimmer h={64} />
-      ) : auctions.length > 0 ? (
-        <Box pt={space.xxs} pb={space.xxxs} bg={colors.black[5]}>
-          <Text textAlign="center" fontSize="1.6rem">
-            Auction starts in:{" "}
-            <Span fontWeight="600">
-              {DateTime.parse(auctions[0].start)
-                .diffNow()
-                .toFormat("d'd' h'h' m'm'")}
-            </Span>
-          </Text>
-
-          {/* <Button
-            variant="small"
-            m={`${space.xxxs}px auto`}
-            text="Place a bid"
-          /> */}
-
-          <Box
-            as="a"
-            textAlign="center"
-            href={LEARN_MORE_URL}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Text textStyle="button" color={colors.accent}>
-              Learn More
-            </Text>
-          </Box>
-        </Box>
-      ) : (
-        <Box pt={space.xxs} pb={space.xxxs} bg={colors.black[5]}>
-          <Text textAlign="center">
-            Creator has not launched an auction yet
-          </Text>
-
-          <Button
-            disabled
-            variant="small"
-            m={`${space.xxxs}px auto`}
-            text="Place a bid"
-          />
-        </Box>
-      )}
-
       <Box
         overflowY="auto"
         position="relative"

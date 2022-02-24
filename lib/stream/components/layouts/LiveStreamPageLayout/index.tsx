@@ -1,0 +1,33 @@
+import { Box, Grid } from "@/common/components/atoms";
+import BaseLayout from "@/common/components/layouts/BaseLayout";
+import AsideNav from "@/common/components/objects/AsideNav";
+
+import LiveStreamPanel from "../../objects/LiveStreamPanel";
+
+interface IProps {
+  videoPlayer: React.ReactNode;
+  streamDetail: React.ReactNode;
+  modal?: React.ReactNode;
+}
+
+export default function LiveStreamPageLayout({
+  videoPlayer,
+  streamDetail,
+  modal,
+}: IProps): JSX.Element {
+  return (
+    <BaseLayout aside={<AsideNav />}>
+      {modal}
+      <Grid gridTemplateColumns={["1fr", "1fr 360px"]} h="100%">
+        <Box overflowY="auto">
+          <Box position="relative" pt="56.25%">
+            {videoPlayer}
+          </Box>
+          {streamDetail}
+        </Box>
+
+        <LiveStreamPanel initial="chat" />
+      </Grid>
+    </BaseLayout>
+  );
+}

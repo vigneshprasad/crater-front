@@ -17,7 +17,8 @@ const fontSizes = {
 };
 
 const space = {
-  xxxs: 8,
+  xxxxs: 8,
+  xxxs: 12,
   xxs: 16,
   xs: 24,
   s: 40,
@@ -57,6 +58,10 @@ const zIndices = {
 
 export const icons = iconComponents;
 
+export const gradients = {
+  primary: "linear-gradient(60deg, #4A00E0, #8E2DE2)",
+};
+
 export type IconOptions = keyof typeof icons;
 
 export interface CustomTheme {
@@ -69,6 +74,7 @@ export interface CustomTheme {
   radii: typeof radii;
   outline?: string;
   zIndices: typeof zIndices;
+  gradients: typeof gradients;
 }
 
 export const theme: DefaultTheme = {
@@ -80,5 +86,6 @@ export const theme: DefaultTheme = {
   colors,
   radii,
   outline: `5px auto #52bcdf`,
+  gradients,
   zIndices,
 };

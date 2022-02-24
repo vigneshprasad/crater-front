@@ -22,9 +22,6 @@ export default function BidPaymentSuccessPage(): JSX.Element {
     );
   }
 
-  const { coin_detail: coin } = bid;
-  const { creator_detail: creator } = coin;
-
   return (
     <Flex flexDirection="column" px={space.xs} py={space.s} gridGap={space.xs}>
       <Flex
@@ -57,7 +54,7 @@ export default function BidPaymentSuccessPage(): JSX.Element {
 
       <Box>
         <Text mb={space.xs} textStyle="headline6">
-          More Ticket&#39;s by {creator.profile_detail.name}
+          More Ticket&#39;s
         </Text>
         <RewardsList rewards={rewards} loading={loadingRewards} split={false} />
       </Box>
