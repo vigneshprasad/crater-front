@@ -8,12 +8,13 @@ import {
   Text,
   Flex,
   Shimmer,
+  CardProps,
 } from "@/common/components/atoms";
 import { ClubMembersGrowth } from "@/creators/types/creator";
 
 import ClubMembersGrowthChart from "../ClubMembersGrowthChart";
 
-interface IProps {
+interface IProps extends CardProps {
   clubMembersCount?: number;
   followerGrowth?: number;
   percentageUsersFromCrater?: number;
@@ -32,6 +33,7 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
     comparativeEngagement,
     averageEngagement,
     clubMembersGrowth,
+    ...rest
   } = props;
 
   const { space, colors, borders } = useTheme();
@@ -62,7 +64,7 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
       {
         title: "Average Engagement",
         key: "averageEngagement",
-        display: `${averageEngagement} %`,
+        display: `${averageEngagement} Questions`,
       },
       {
         title: "Comparative Engagement",
@@ -78,15 +80,13 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
     averageEngagement,
   ]);
   return (
-    <Card containerProps={{ px: 0, py: 0 }}>
+    <Card containerProps={{ px: 0, py: 0 }} {...rest}>
       <Grid
         gridTemplateColumns="repeat(5, 1fr)"
         p={space.xs}
         gridGap={space.xxs}
       >
         {columns.map(({ title, key, display }, index) => {
-          // if (props[key] === undefined) return <Shimmer w="100%" h="100%" />;
-
           return (
             <Flex
               key={key}
