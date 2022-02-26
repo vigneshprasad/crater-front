@@ -97,6 +97,18 @@ export const API_URL_CONSTANTS = {
     getAllSeries: "/groups/public/conversations/series/",
     postSeriesRequest: "/groups/conversations/series/requests/",
   },
+  analytics: {
+    getMyClubMembersCount: "/crater/analytics/my_club/",
+    getFollowerGrowth: "/crater/analytics/follower_growth/",
+    getAverageEngagement: "/crater/analytics/average_engagement/",
+    getComparativeEngagement: "/crater/analytics/comparative_engagement/",
+    getMyTopStreams: "/crater/analytics/top_streams/",
+    getTopCreators: "/crater/analytics/comparative_ranking/",
+    getClubMembersGrowth: "/crater/analytics/club_members_growth/",
+    getTrafficSourceTypes: "/crater/analytics/traffic_source_types/",
+    getConversionFunnel: "/crater/analytics/conversion_funnel/",
+    getUsersByCrater: "/crater/analytics/users_by_crater/",
+  },
   firebase: {
     getFirebaseToken: "/integrations/firebase/token/",
     postChatMessage:

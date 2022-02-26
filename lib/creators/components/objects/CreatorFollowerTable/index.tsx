@@ -1,9 +1,8 @@
-import { useCallback, Dispatch, SetStateAction } from "react";
+import { useCallback } from "react";
 import styled, { useTheme } from "styled-components";
 
-import { Text, Flex } from "@/common/components/atoms";
+import { Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import IconButton from "@/common/components/atoms/IconButton";
 import Spinner from "@/common/components/atoms/Spiner";
 import { Follower } from "@/community/types/community";
 
@@ -11,10 +10,7 @@ interface IProps {
   data?: Follower[];
   loading: boolean;
   error?: unknown;
-  pageCount: number;
-  currentPage: number;
   onPressDownloadCSV: () => void;
-  setPage: Dispatch<SetStateAction<number>>;
 }
 
 const Table = styled.table`
@@ -38,10 +34,7 @@ const Td = styled.td`
 export default function CreatorFollowerTable({
   data,
   loading,
-  pageCount,
-  currentPage,
   onPressDownloadCSV,
-  setPage,
 }: IProps): JSX.Element {
   const { space } = useTheme();
 
@@ -71,18 +64,6 @@ export default function CreatorFollowerTable({
       return prev[curr];
     }, data);
   }, []);
-
-  function onClickNextPage(): void {
-    if (currentPage < pageCount) {
-      setPage((page) => page + 1);
-    }
-  }
-
-  function onClickPrevPage(): void {
-    if (currentPage > 1) {
-      setPage((page) => page - 1);
-    }
-  }
 
   return (
     <>
@@ -116,29 +97,13 @@ export default function CreatorFollowerTable({
           })()}
         </Tbody>
       </Table>
-      <Flex
-        mx={space.xs}
-        my={space.xs}
-        justifyContent="space-between"
-        flexDirection="row"
-      >
-        <Button text="Download CSV" onClick={onPressDownloadCSV} />
-        <Flex flexDirection="row" alignItems="center">
-          <IconButton
-            variant="roundSmall"
-            icon="ChevronLeft"
-            onClick={onClickPrevPage}
-          />
-          <Text>
-            Page {currentPage} of {pageCount}
-          </Text>
-          <IconButton
-            variant="roundSmall"
-            icon="ChevronRight"
-            onClick={onClickNextPage}
-          />
-        </Flex>
-      </Flex>
+      <Button
+        ml="auto"
+        mr={0}
+        my={space.xxxs}
+        text="Download CSV"
+        onClick={onPressDownloadCSV}
+      />
     </>
   );
 }
