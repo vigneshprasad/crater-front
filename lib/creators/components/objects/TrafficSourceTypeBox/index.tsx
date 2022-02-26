@@ -45,7 +45,7 @@ export default function TrafficSourceTypeBox({
 
       <Box>
         {trafficSourceTypes.slice(0, 3).map((obj) => {
-          const percent = ((obj.count / total) * 100).toFixed(2);
+          const percent = parseFloat(((obj.count / total) * 100).toFixed(2));
           return (
             <Grid
               my={space.xxs}
