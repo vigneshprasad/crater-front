@@ -11,6 +11,7 @@ import {
 } from "@/common/components/atoms";
 import DataTable from "@/common/components/objects/DataTable";
 import { Column } from "@/common/components/objects/DataTable/types";
+import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { TopStreams } from "@/creators/types/stream";
 
@@ -34,18 +35,24 @@ export default function TopPerformingStreamsTable({
           return (
             <Grid
               gridAutoFlow="column"
-              gridTemplateColumns="130px 1fr"
+              gridTemplateColumns="80px 1fr"
               gridGap={space.xxs}
               alignItems="center"
             >
               <Box>
                 {obj.topic_image && (
-                  <Image
-                    objectFit="cover"
-                    layout="fill"
-                    src={obj.topic_image}
-                    alt={obj.topic_title}
-                  />
+                  <a
+                    href={PageRoutes.streamVideo(obj.id)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Image
+                      objectFit="cover"
+                      layout="fill"
+                      src={obj.topic_image}
+                      alt={obj.topic_title}
+                    />
+                  </a>
                 )}
               </Box>
 
@@ -66,24 +73,12 @@ export default function TopPerformingStreamsTable({
       {
         label: "RSVP",
         key: "rsvp",
-        valueGetter: (obj) => {
-          return (
-            <Box>
-              <Text>{obj.rsvp_count}</Text>
-            </Box>
-          );
-        },
+        valueGetter: (obj) => obj.rsvp_count,
       },
       {
         label: "Messages",
         key: "messages",
-        valueGetter: (obj) => {
-          return (
-            <Box>
-              <Text>{obj.messages_count}</Text>
-            </Box>
-          );
-        },
+        valueGetter: (obj) => obj.messages_count,
       },
     ];
   }, [space, colors]);
