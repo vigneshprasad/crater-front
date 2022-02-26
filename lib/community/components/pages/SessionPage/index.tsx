@@ -18,7 +18,7 @@ import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
 import WebinarApiClient from "@/community/api";
-import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
+// import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { useWebinarRequest } from "@/community/context/WebinarRequestContext";
 import {
@@ -46,7 +46,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const { user } = useAuth();
   const { openModal } = useAuthModal();
   const { track } = useAnalytics();
-  const { upcoming } = useUpcomingStreams();
+  // const { upcoming } = useUpcomingStreams();
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -178,7 +178,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     }
   }, [router, user, webinar, postGroupRequest, postSeriesRequest]);
 
-  if (!webinar || !upcoming) return <Box>Loading..</Box>;
+  if (!webinar) return <Box>Loading..</Box>;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { start, host_detail } = webinar;
@@ -276,6 +276,10 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                         variant="full-width"
                         text={rsvpBtnText}
                         onClick={(): void => {
+                          track(AnalyticsEvents.rsvp_button_clicked, {
+                            new_user: true,
+                            session: webinar.id,
+                          });
                           router.replace({
                             query: {
                               ...router.query,
@@ -290,7 +294,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   }
 
                   if (isHost) {
-                    if (startTime.minus({ minutes: 5 }) > now) {
+                    if (startTime.minus({ minutes: 30 }) > now) {
                       return (
                         <Box
                           bg={colors.black[5]}
@@ -319,8 +323,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
                   if (
                     webinar.is_live ||
-                    (startTime.minus({ minutes: 10 }) < now &&
-                      startTime.plus({ minutes: 10 }) > now)
+                    (startTime.minus({ minutes: 30 }) < now &&
+                      startTime.plus({ minutes: 30 }) > now)
                   ) {
                     return (
                       <Button
@@ -491,7 +495,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             >
               {seriesData?.groups_detail_list.map((stream) => {
                 if (stream.id !== webinar.id) {
-                  if (stream.is_past || stream.closed) {
+                  if (stream.is_past && stream.closed) {
                     return (
                       <PastStreamCard
                         key={stream.id}
@@ -511,7 +515,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           </Box>
         ) : null}
 
-        <Box pb={space.s}>
+        {/* <Box pb={space.s}>
           <Box px={[space.xxs, space.s]} py={space.xs}>
             <Text textStyle="headlineBold">Upcoming Streams</Text>
           </Box>
@@ -530,7 +534,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               }
             })}
           </Grid>
-        </Box>
+        </Box> */}
       </BaseLayout>
     </>
   );

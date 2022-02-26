@@ -109,6 +109,11 @@ export const API_URL_CONSTANTS = {
     getConversionFunnel: "/crater/analytics/conversion_funnel/",
     getUsersByCrater: "/crater/analytics/users_by_crater/",
   },
+  firebase: {
+    getFirebaseToken: "/integrations/firebase/token/",
+    postChatMessage:
+      "https://us-central1-crater-b6a7b.cloudfunctions.net/sendMessage",
+  },
 };
 
 export const LEARN_MORE_URL =

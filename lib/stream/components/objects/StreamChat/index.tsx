@@ -18,11 +18,13 @@ import { LEARN_MORE_URL } from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import DateTime from "@/common/utils/datetime/DateTime";
-import ChatReactionList from "@/community/components/objects/ChatReactionList";
 import { Webinar } from "@/community/types/community";
-import useStreamChat from "@/stream/hooks/useStreamChat";
+import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
+import { ConnectionStates } from "@/stream/providers/FirebaseChatProvider/context";
 import { ChatMessageType } from "@/stream/types/streamChat";
 import useAuctionsList from "@/tokens/context/AuctionListContext";
+
+import ChatMessageItem from "../ChatMessageItem";
 
 interface IProps extends GridProps {
   stream: Webinar;
@@ -39,7 +41,7 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
   const { profile } = useAuth();
   const { auctions, loading: auctionLoading } = useAuctionsList();
 
-  const { messages, sendGroupMessage, connected } = useStreamChat();
+  const { messages, readyState, postMessage } = useFirebaseChat();
   const { space, colors, borders } = useTheme();
   const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
     {
@@ -65,6 +67,9 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
     if (messages.length && messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.children[
+        messagesContainerRef.current.children.length - 1
+      ].scrollIntoView();
     }
   }, [messages, messagesContainerRef]);
 
@@ -72,7 +77,15 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
     event.preventDefault();
     const data = getValidatedData();
     if (data) {
-      sendGroupMessage(data.message, data.display_name);
+      const message = {
+        message: data?.message,
+        display_name: data?.display_name,
+      };
+
+      if (!data.display_name) {
+        delete message.display_name;
+      }
+      postMessage(message);
       fieldValueSetter("message", "");
     }
   };
@@ -104,14 +117,20 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
         >
           <Flex alignItems="center">
             <Text textStyle="small" color={colors.slate}>
-              {connected ? "Connected" : "Connecting"}
+              {readyState === ConnectionStates.CONNECTED
+                ? "Connected"
+                : "Connecting"}
             </Text>
             <Box
               mx={space.xxxs}
               w={8}
               h={8}
               borderRadius="50%"
-              bg={connected ? colors.greenSuccess : colors.amber}
+              bg={
+                readyState === ConnectionStates.CONNECTED
+                  ? colors.greenSuccess
+                  : colors.amber
+              }
             />
           </Flex>
         </Flex>
@@ -181,20 +200,12 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
           {[...messages]
             .filter((obj) => obj.type === ChatMessageType.TEXT)
             .reverse()
-            .map((message) => {
-              const name = message.display_name
-                ? message.display_name
-                : message.sender_detail.first_name;
-              return (
-                <Text mx={space.xxs} key={message.id} wordBreak="break-word">
-                  <Span color={colors.accent}>{name}:</Span> {message.message}
-                </Text>
-              );
-            })}
+            .map((message) => (
+              <ChatMessageItem message={message} key={message.sender} />
+            ))}
         </Box>
       </Box>
 
-      <ChatReactionList />
       <Form
         display="grid"
         mx={space.xxxs}
