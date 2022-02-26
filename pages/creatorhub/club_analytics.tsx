@@ -26,7 +26,7 @@ const CreatorClubAnalyticsTab = dynamic(
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const [creator] = await CreatorApiClient(context).getMyCreator();
 
-  if (!creator || !creator?.show_club_members) {
+  if (!creator || (!creator?.show_club_members && !creator?.show_analytics)) {
     return {
       notFound: true,
     };
@@ -65,7 +65,7 @@ export default function CreatorHubFaq({ creator }: IProps): JSX.Element {
                       <TrafficSourceTypesProvider>
                         <ConversionFunnelProvider>
                           <UsersByCraterProvider>
-                            <CreatorClubAnalyticsTab />
+                            <CreatorClubAnalyticsTab creator={creator} />
                           </UsersByCraterProvider>
                         </ConversionFunnelProvider>
                       </TrafficSourceTypesProvider>
