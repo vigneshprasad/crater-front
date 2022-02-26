@@ -6,6 +6,7 @@ import API from "@/common/api";
 import { Box, Card, Flex, Grid, Text } from "@/common/components/atoms";
 import IconButton from "@/common/components/atoms/IconButton";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 import { useAverageEngagement } from "@/creators/context/AverageEngagement";
 import { useClubMembersCount } from "@/creators/context/ClubMembersCount";
 import { useClubMembersGrowth } from "@/creators/context/ClubMembersGrowth";
@@ -17,6 +18,7 @@ import { useFollowerGrowth } from "@/creators/context/FollowerGrowth";
 import { useTopCreators } from "@/creators/context/TopCreators";
 import { useTrafficSourceTypes } from "@/creators/context/TrafficSourceTypes";
 import { useUsersByCrater } from "@/creators/context/UsersByCrater";
+import { Creator } from "@/creators/types/creator";
 
 import AnalyticsSummaryBox from "../AnalyticsSummaryBox";
 import ConversionFunnelBox from "../ConversionFunnelBox";
@@ -25,7 +27,11 @@ import TopCreatorsTable from "../TopCreatorsTable";
 import TopPerformingStreamsTable from "../TopPerformingStreamsTable";
 import TrafficSourceTypeBox from "../TrafficSourceTypeBox";
 
-export default function CreatorClubAnalytics(): JSX.Element {
+type IProps = {
+  creator?: Creator;
+};
+
+export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
   const [href, setHref] = useState<string | undefined>(undefined);
   const ref = useRef<HTMLAnchorElement>(null);
   const { followers, setPage, loading, currentPage, pageCount } =
@@ -41,6 +47,7 @@ export default function CreatorClubAnalytics(): JSX.Element {
   const { trafficSourceTypes } = useTrafficSourceTypes();
   const { conversionFunnelData } = useConversionFunnel();
   const { usersByCrater: percentageUsersFromCrater } = useUsersByCrater();
+  const { isMobile } = useAsideNavState();
 
   function triggerFileDownload(response: string): void {
     if (ref.current) {
@@ -76,77 +83,93 @@ export default function CreatorClubAnalytics(): JSX.Element {
   }
 
   return (
-    <Flex
-      flexDirection="column"
-      gridGap={space.s}
-      px={[0, space.l]}
-      py={space.xs}
-    >
-      <AnalyticsSummaryBox
-        clubMembersCount={clubMembersCount}
-        followerGrowth={followerGrowth}
-        percentageUsersFromCrater={percentageUsersFromCrater}
-        comparativeEngagement={comparativeEngagement}
-        averageEngagement={averageEngagement}
-        clubMembersGrowth={clubMembersGrowth}
-      />
-
-      <Grid gridTemplateColumns="1fr 1fr" gridGap={space.s}>
-        <TrafficSourceTypeBox trafficSourceTypes={trafficSourceTypes} />
-
-        {/* <ConversionFunnelBox conversionFunnelData={conversionFunnelData} /> */}
-      </Grid>
-
-      <Grid
-        gridAutoFlow="column"
-        gridTemplateColumns="1fr 1fr"
-        gridGap={space.s}
-      >
-        <TopPerformingStreamsTable topStreams={topStreams} />
-
-        <TopCreatorsTable comparativeRankingData={comparativeRankingData} />
-      </Grid>
-
-      <Card containerProps={{ px: 0, py: 0 }}>
-        <Box p={space.xs}>
-          <Flex justifyContent="space-between">
-            <Text textStyle="headline5">Club Members</Text>
-
-            <Flex
-              pb={space.xs}
-              flexDirection="row"
-              gridGap={space.xxxs}
-              alignItems="center"
-            >
-              <IconButton
-                variant="roundSmall"
-                icon="ChevronLeft"
-                onClick={onClickPrevPage}
-              />
-              <Text>
-                Page {currentPage} of {pageCount}
-              </Text>
-              <IconButton
-                variant="roundSmall"
-                icon="ChevronRight"
-                onClick={onClickNextPage}
-              />
-            </Flex>
-          </Flex>
-
-          <a
-            ref={ref}
-            href={href}
-            style={{ display: "none" }}
-            download="followers.csv"
-          />
-          <CreatorFollowerTable
-            loading={loading}
-            data={followers}
-            onPressDownloadCSV={handleExportCsvBtnClick}
-          />
+    <>
+      {isMobile ? (
+        <Box py={space.xs}>
+          <Text textAlign="center">
+            Mobile view unavailable. Please view on desktop.
+          </Text>
         </Box>
-      </Card>
-    </Flex>
+      ) : (
+        <>
+          <Grid
+            gridTemplateColumns="1fr 1fr"
+            gridGap={space.s}
+            px={[0, space.l]}
+            py={space.xs}
+          >
+            {creator?.show_analytics && (
+              <>
+                <AnalyticsSummaryBox
+                  clubMembersCount={clubMembersCount}
+                  followerGrowth={followerGrowth}
+                  percentageUsersFromCrater={percentageUsersFromCrater}
+                  comparativeEngagement={comparativeEngagement}
+                  averageEngagement={averageEngagement}
+                  clubMembersGrowth={clubMembersGrowth}
+                  gridColumn="1 / span 2"
+                />
+
+                <TrafficSourceTypeBox trafficSourceTypes={trafficSourceTypes} />
+
+                <ConversionFunnelBox
+                  conversionFunnelData={conversionFunnelData}
+                />
+
+                <TopPerformingStreamsTable topStreams={topStreams} />
+
+                <TopCreatorsTable
+                  comparativeRankingData={comparativeRankingData}
+                />
+              </>
+            )}
+
+            {creator?.show_club_members && (
+              <Card containerProps={{ px: 0, py: 0 }} gridColumn="1 / span 2">
+                <Box p={space.xs}>
+                  <Flex justifyContent="space-between">
+                    <Text textStyle="headline5">Club Members</Text>
+
+                    <Flex
+                      pb={space.xs}
+                      flexDirection="row"
+                      gridGap={space.xxxs}
+                      alignItems="center"
+                    >
+                      <IconButton
+                        variant="roundSmall"
+                        icon="ChevronLeft"
+                        onClick={onClickPrevPage}
+                      />
+                      <Text>
+                        Page {currentPage} of {pageCount}
+                      </Text>
+                      <IconButton
+                        variant="roundSmall"
+                        icon="ChevronRight"
+                        onClick={onClickNextPage}
+                      />
+                    </Flex>
+                  </Flex>
+
+                  <a
+                    ref={ref}
+                    href={href}
+                    style={{ display: "none" }}
+                    download="followers.csv"
+                  />
+                  <CreatorFollowerTable
+                    loading={loading}
+                    data={followers}
+                    onPressDownloadCSV={handleExportCsvBtnClick}
+                  />
+                </Box>
+              </Card>
+            )}
+          </Grid>
+          )
+        </>
+      )}
+    </>
   );
 }
