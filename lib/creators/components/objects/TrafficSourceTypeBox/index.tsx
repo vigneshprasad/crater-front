@@ -4,6 +4,7 @@ import { useTheme } from "styled-components";
 import {
   Box,
   Card,
+  CardProps,
   Flex,
   Grid,
   Shimmer,
@@ -14,12 +15,13 @@ import { TrafficSourceType } from "@/creators/types/creator";
 
 import TrafficSourceTypeChart from "../TrafficSourceTypeChart";
 
-interface IProps {
+interface IProps extends CardProps {
   trafficSourceTypes?: TrafficSourceType[];
 }
 
 export default function TrafficSourceTypeBox({
   trafficSourceTypes,
+  ...rest
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
 
@@ -34,17 +36,15 @@ export default function TrafficSourceTypeBox({
   }
 
   return (
-    <Card containerProps={{ px: space.xs, py: space.xs }}>
+    <Card containerProps={{ px: space.xs, py: space.xs }} {...rest}>
       <Text pb={space.xs} textStyle="headline5">
         Traffic Source Types
       </Text>
 
-      <Box h={240} display="flex" justifyContent="center">
-        <TrafficSourceTypeChart trafficSourceTypes={trafficSourceTypes} />
-      </Box>
+      <TrafficSourceTypeChart trafficSourceTypes={trafficSourceTypes} />
 
-      <Box m="0 auto" w="50%">
-        {trafficSourceTypes.map((obj) => {
+      <Box>
+        {trafficSourceTypes.slice(0, 3).map((obj) => {
           const percent = ((obj.count / total) * 100).toFixed(2);
           return (
             <Grid
