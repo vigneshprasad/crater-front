@@ -44,7 +44,7 @@ export default function CreatorHubPage({
       return undefined;
     }
 
-    if (creator.show_club_members) {
+    if (creator.show_club_members || creator.show_analytics) {
       return {
         stream: (
           <Link href="/creatorhub/stream">
@@ -56,9 +56,11 @@ export default function CreatorHubPage({
             <BaseTabItem label="Faq" />
           </Link>
         ),
-        club_members: (
-          <Link href="/creatorhub/club_members">
-            <BaseTabItem label="Club Members" />
+        club_analytics: (
+          <Link href="/creatorhub/club_analytics">
+            <BaseTabItem
+              label={creator.show_analytics ? "Club Analytics" : "Club Members"}
+            />
           </Link>
         ),
       };
