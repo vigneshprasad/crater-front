@@ -13,6 +13,7 @@ import {
 } from "@/common/components/atoms";
 import DataTable from "@/common/components/objects/DataTable";
 import { Column } from "@/common/components/objects/DataTable/types";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { CreatorRanking, TopCreators } from "@/creators/types/creator";
 
 interface IProps {
@@ -31,34 +32,25 @@ export default function TopCreatorsTable({
         key: "creator",
         valueGetter: (obj) => {
           return (
-            <Grid
-              gridAutoFlow="column"
-              gridTemplateColumns="max-content 1fr"
-              gridGap={space.xxs}
-              alignItems="center"
-              justifyItems="start"
+            <a
+              href={PageRoutes.creatorProfile(obj.slug)}
+              target="_blank"
+              rel="noreferrer"
             >
-              {obj.creator_image && (
-                <Avatar
-                  size={56}
-                  alt={obj.creator_name || ""}
-                  image={obj?.creator_image}
-                />
-              )}
+              <Grid
+                gridAutoFlow="column"
+                gridTemplateColumns="max-content 1fr"
+                gridGap={space.xxs}
+                alignItems="center"
+                justifyItems="start"
+              >
+                {obj.image && (
+                  <Avatar size={46} alt={obj.name || ""} image={obj?.image} />
+                )}
 
-              <Text>{obj.creator_name}</Text>
-            </Grid>
-          );
-        },
-      },
-      {
-        label: "Followers",
-        key: "followers",
-        valueGetter: (obj) => {
-          return (
-            <Box>
-              <Text>{obj.follower_count}</Text>
-            </Box>
+                <Text>{obj.name}</Text>
+              </Grid>
+            </a>
           );
         },
       },
@@ -67,9 +59,15 @@ export default function TopCreatorsTable({
         key: "topStream",
         valueGetter: (obj) => {
           return (
-            <Box>
-              <Text>{obj.stream_topic}</Text>
-            </Box>
+            <a
+              href={PageRoutes.streamVideo(obj.stream_id)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Box>
+                <Text>{obj.stream_topic}</Text>
+              </Box>
+            </a>
           );
         },
       },
