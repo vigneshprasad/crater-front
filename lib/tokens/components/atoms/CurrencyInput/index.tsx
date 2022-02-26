@@ -11,12 +11,13 @@ const Styles = styled(Box)`
   background: ${({ theme }) => theme.colors.black[5]};
   border-radius: ${({ theme }) => theme.radii.xxs}px;
   align-items: center;
+  border: 2px solid transparent;
 
   &:focus-within {
     border: 2px solid ${({ theme }) => theme.colors.accent};
   }
 
-  input {
+  & > input {
     font-family: ${({ theme }) => theme.fonts.body};
     font-size: 1.6rem;
     font-weight: 600;
@@ -25,7 +26,7 @@ const Styles = styled(Box)`
     color: ${({ theme }) => theme.colors.white[0]};
     background: transparent;
     box-shadow: none;
-    border: 2px solid transparent;
+
     outline: none;
     width: 100%;
     height: 42px;

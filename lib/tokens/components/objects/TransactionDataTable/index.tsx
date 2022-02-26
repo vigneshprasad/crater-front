@@ -15,7 +15,7 @@ export default function TransactionDataTable({ bids }: IProps): JSX.Element {
       {
         label: "Creator",
         key: "creator",
-        valueGetter: (obj) => `${obj.creator_detail.profile_detail.name})`,
+        valueGetter: (obj) => obj.creator_detail?.profile_detail.name,
       },
       {
         label: "Price",

@@ -2,19 +2,31 @@ import { useTheme } from "styled-components";
 
 import { Text, Flex } from "@/common/components/atoms";
 import useBidsList from "@/tokens/context/BidListContext";
-import useCoinHoldingList from "@/tokens/context/CoinHoldingListContext";
+import useUserRewardList from "@/tokens/context/UserRewardListContext";
 
-import CoinHoldingsBox from "../../objects/CoinHoldingsBox";
 import TransactionDataTable from "../../objects/TransactionDataTable";
+import UserRewardItem from "../../objects/UserRewardItem";
+import UserRewardList from "../../objects/UserRewardList";
 
 export default function HubPortfolioTab(): JSX.Element {
   const { space } = useTheme();
   const { bids } = useBidsList();
-  const { holdings, loading: holdingsLoading } = useCoinHoldingList();
+  const { userRewards } = useUserRewardList();
+  console.log(userRewards);
 
   return (
     <Flex px={space.s} py={space.xs} gridGap={space.s} flexDirection="column">
-      <CoinHoldingsBox holdings={holdings} loading={holdingsLoading} />
+      <Text textStyle="title">Your Tickets</Text>
+      <UserRewardList
+        userRewards={userRewards}
+        renderList={(items) => {
+          return items.map((userReward) => {
+            return (
+              <UserRewardItem userReward={userReward} key={userReward.id} />
+            );
+          });
+        }}
+      />
       <Text textStyle="title">Transaction Log</Text>
       <TransactionDataTable bids={bids} />
     </Flex>

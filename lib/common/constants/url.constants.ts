@@ -114,6 +114,7 @@ export const API_URL_CONSTANTS = {
   },
   exchange: {
     coinHoldingsList: "/crater/exchange/coin_holding/",
+    userRewardList: "/crater/exchange/user_reward/",
   },
   series: {
     getAllSeries: "/groups/public/conversations/series/",

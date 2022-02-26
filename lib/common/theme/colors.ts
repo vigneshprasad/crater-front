@@ -25,6 +25,7 @@ const colors = {
   ],
   blackAlpha: ["rgba(0,0,0,0.1)", "rgba(0,0,0,0.4)"],
   error: "#FF6628",
+  errorDeep: "#CC5D2F",
   twitter: "#1DA1F2",
   linkedin: "#2867B2",
   modalOverlay: "rgba(0,0,0,0.8)",

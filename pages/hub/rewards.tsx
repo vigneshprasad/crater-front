@@ -7,10 +7,11 @@ import HubPageLayout, {
 } from "@/common/components/layouts/HubPageLayout";
 import { Creator } from "@/creators/types/creator";
 import { ActiveAuctionProvider } from "@/tokens/context/ActiveAuctionContext";
+import { BidListProvider } from "@/tokens/context/BidListContext";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
 
-const HubMyTokensTab = dynamic(
-  () => import("@/tokens/components/pages/HubMyTokensTab")
+const HubmMyRewardsTab = dynamic(
+  () => import("@/tokens/components/pages/HubmMyRewardsTab")
 );
 
 interface PageProps {
@@ -47,10 +48,12 @@ export default function HubMyTokens({ creator }: IProps): JSX.Element | null {
   }
 
   return (
-    <HubPageLayout activeTab="tokens" creator={creator}>
+    <HubPageLayout activeTab="rewards" creator={creator}>
       <ActiveAuctionProvider reward={1}>
         <RewardsListProvider filterCreatorSlug={creator.slug}>
-          <HubMyTokensTab />
+          <BidListProvider filterCreator={creator.id}>
+            <HubmMyRewardsTab creator={creator} />
+          </BidListProvider>
         </RewardsListProvider>
       </ActiveAuctionProvider>
     </HubPageLayout>

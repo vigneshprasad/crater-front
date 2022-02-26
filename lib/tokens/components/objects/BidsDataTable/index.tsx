@@ -1,28 +1,27 @@
 import { useCallback, useMemo } from "react";
 import { useTheme } from "styled-components";
-import useSWR from "swr";
+import { SWRResponse } from "swr";
 
-import { Flex, Text } from "@/common/components/atoms";
+import { Flex, Shimmer, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import DataTable from "@/common/components/objects/DataTable";
 import { Column } from "@/common/components/objects/DataTable/types";
-import TextButton from "@/common/components/objects/TextButton";
-import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import AuctionApiClient from "@/tokens/api/AuctionApiClient";
-import { Auction, Bid, BidStatus } from "@/tokens/types/auctions";
+import { Bid, BidStatus } from "@/tokens/types/auctions";
 
 interface IProps {
-  auction?: Auction;
+  bids?: Bid[];
+  mutate: SWRResponse<Bid[], unknown>["mutate"];
+  loading: boolean;
 }
 
-export default function BidsDataTable({ auction }: IProps): JSX.Element {
+export default function BidsDataTable({
+  bids,
+  mutate,
+  loading,
+}: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
-  const { data: bids, mutate } = useSWR<Bid[]>(
-    auction
-      ? `${API_URL_CONSTANTS.auctions.getBids}?auction=${auction.id}`
-      : null
-  );
 
   const acceptBidRequest = useCallback(
     async (bid: Bid) => {
@@ -68,14 +67,16 @@ export default function BidsDataTable({ auction }: IProps): JSX.Element {
           if (obj.status == BidStatus.Pending) {
             return (
               <Flex gridGap={space.xxxs}>
-                <TextButton
+                <Button
+                  variant="green-success"
                   color={colors.greenSuccess}
-                  label="Accept"
+                  text="Accept"
                   onClick={() => acceptBidRequest(obj)}
                 />
-                <TextButton
+                <Button
+                  variant="red-error"
                   color={colors.red[0]}
-                  label="Decline"
+                  text="Decline"
                   onClick={() => acceptBidRequest(obj)}
                 />
               </Flex>
@@ -88,7 +89,10 @@ export default function BidsDataTable({ auction }: IProps): JSX.Element {
     [space, acceptBidRequest, colors]
   );
 
-  if (!auction) {
+  if (!bids) {
+    if (loading) {
+      return <Shimmer h={240} />;
+    }
     return (
       <Flex
         flexDirection="column"
@@ -113,6 +117,8 @@ export default function BidsDataTable({ auction }: IProps): JSX.Element {
       </Flex>
     );
   }
+
+  console.log(bids);
 
   return <DataTable columns={columns} data={bids} />;
 }

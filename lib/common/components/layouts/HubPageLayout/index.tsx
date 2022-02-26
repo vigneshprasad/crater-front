@@ -25,9 +25,9 @@ const CREATOR_TABS = {
       <BaseTabItem textStyle="title" label="Club Members" />
     </Link>
   ),
-  tokens: (
-    <Link href={PageRoutes.hub("tokens")} shallow>
-      <BaseTabItem textStyle="title" label="My Tokens" />
+  rewards: (
+    <Link href={PageRoutes.hub("rewards")} shallow>
+      <BaseTabItem textStyle="title" label="My Rewards" />
     </Link>
   ),
   portfolio: (

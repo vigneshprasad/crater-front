@@ -1,6 +1,6 @@
 import { AnimatePresence } from "framer-motion";
-import { SyntheticEvent, useEffect, useMemo, useState } from "react";
-import { useTheme } from "styled-components";
+import { SyntheticEvent, useEffect, useState } from "react";
+import styled, { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
@@ -23,15 +23,11 @@ import PaymentApiClient from "@/payments/api";
 import { Payment } from "@/payments/types/payments";
 import AuctionApiClient from "@/tokens/api/AuctionApiClient";
 import useActiveAuction from "@/tokens/context/ActiveAuctionContext";
-import useBidsList from "@/tokens/context/BidListContext";
 import useRewardItem from "@/tokens/context/RewardItemContext";
 import { BidStatus } from "@/tokens/types/auctions";
 
 import CurrencyInput from "../../atoms/CurrencyInput";
-import QuantityPicker from "../../atoms/QuantityPicker";
 import AuctionProgressBar from "../AuctionProgressBar";
-import BidsListItem from "../BidListItem";
-import BidsList from "../BidsList";
 import RewardImagePreview from "../RewardImagePreview";
 import RewardBidModalContainer, {
   IRewardBidModalContainerProps,
@@ -47,14 +43,39 @@ interface IProps {
   onClose: () => void;
 }
 
+const DescriptionContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  grid-gap: 12px;
+
+  & > h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  & > p {
+    font-size: 1.4rem;
+  }
+
+  & > ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 16px;
+  }
+
+  & > ul > li {
+    list-style: square;
+    font-size: 1.2rem;
+  }
+`;
+
 export function Content({ visible, onClose }: IProps): JSX.Element {
   const [minBidError, setMinBidError] = useState(false);
-  const { space, colors, borders, radii, gradients } = useTheme();
+  const { space, colors, radii, gradients } = useTheme();
   const { creator } = useCreator();
   const { auction } = useActiveAuction();
   const { reward } = useRewardItem();
   const router = useRouter();
-  const { bids, loading: loadingBids } = useBidsList();
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<IBidFormProps>(
     {
@@ -86,11 +107,6 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
       fieldValueSetter("bid_price", auction.minimum_bid);
     }
   }, [auction, fieldValueSetter]);
-
-  const totalAmount = useMemo(() => {
-    const amount = fields.quantity.value * fields.bid_price.value;
-    return CurrencyFormatter.format(amount);
-  }, [fields]);
 
   const submitBid = async (data: IBidFormProps): Promise<void> => {
     if (auction && data.bid_price < auction.minimum_bid) {
@@ -214,25 +230,17 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
         </>
       )}
 
-      {/* Bids List */}
       {(() => {
-        if (!auction || !bids) {
-          return <Box>No active auctions</Box>;
+        if (!reward || !reward.description) {
+          return <Box>Loading...</Box>;
         }
+
         return (
           <Box overflowY="auto">
-            <Text px={space.s} py={space.xs} textStyle="title">
-              Past Bids
-            </Text>
-            <BidsList
-              px={space.xs}
-              loading={loadingBids}
-              bids={bids}
-              renderList={(bids) => {
-                return bids.map((bid) => {
-                  return <BidsListItem bid={bid} key={bid.id} />;
-                });
-              }}
+            <DescriptionContainer
+              py={space.xs}
+              px={space.s}
+              dangerouslySetInnerHTML={{ __html: reward.description }}
             />
           </Box>
         );
@@ -249,27 +257,54 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
             bg={colors.black[2]}
             display="grid"
             px={space.xs}
-            py={space.xs}
+            py={space.xxxs}
             gridTemplateRows="1fr max-content"
             gridGap={space.xxs}
             onSubmit={handleFormSubmit}
           >
+            <AnimatePresence>
+              {minBidError && (
+                <AnimatedBox
+                  initial={{
+                    y: -40,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    y: 0,
+                    opacity: 1,
+                  }}
+                  exit={{
+                    y: -40,
+                    opacity: 0,
+                  }}
+                  border={`2px solid ${colors.red[2]}`}
+                  bg={colors.redTranslucent}
+                  p={space.xxxs}
+                  borderRadius={radii.xxs}
+                >
+                  <Text textStyle="label">Incorrect Bid</Text>
+                  <Text>
+                    The minimum bid for this auction is{" "}
+                    {CurrencyFormatter.format(auction.minimum_bid)}
+                  </Text>
+                </AnimatedBox>
+              )}
+            </AnimatePresence>
+
             <Flex
-              gridGap={space.xs}
               flexDirection="row"
-              alignItems="center"
-              borderBottom={`2px solid ${borders.main}`}
-              pb={space.xxxs}
+              justifyContent="space-between"
+              alignItems="end"
             >
-              <Box flex="1">
+              <Box>
                 <Text
-                  mb={space.xxxs}
+                  mb={space.xxxxs}
                   px={space.xxxs}
                   textStyle="label"
-                  fontSize="1.2rem"
+                  fontSize="1.4rem"
                   color={colors.white[0]}
                 >
-                  Your bid price:
+                  Your bid
                 </Text>
                 <CurrencyInput
                   value={fields.bid_price.value}
@@ -278,55 +313,6 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
                   }
                   placeholder="Bid amount per token"
                 />
-              </Box>
-
-              <QuantityPicker
-                value={fields.quantity.value}
-                onChange={(val) => fieldValueSetter("quantity", val)}
-                label="Quantity"
-              />
-              <AnimatePresence>
-                {minBidError && (
-                  <AnimatedBox
-                    initial={{
-                      y: -40,
-                      opacity: 0,
-                    }}
-                    animate={{
-                      y: 0,
-                      opacity: 1,
-                    }}
-                    exit={{
-                      y: -40,
-                      opacity: 0,
-                    }}
-                    border={`2px solid ${colors.red[2]}`}
-                    bg={colors.redTranslucent}
-                    p={space.xxxs}
-                    borderRadius={radii.xxs}
-                  >
-                    <Text textStyle="label">Incorrect Bid</Text>
-                    <Text>
-                      The minimum bid for this auction is{" "}
-                      {CurrencyFormatter.format(auction.minimum_bid)}
-                    </Text>
-                  </AnimatedBox>
-                )}
-              </AnimatePresence>
-            </Flex>
-
-            <Flex
-              flexDirection="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Box>
-                <Text textStyle="label" color={colors.slate}>
-                  Total amount
-                </Text>
-                <Text textStyle="headline4" fontWeight="300">
-                  {totalAmount}
-                </Text>
               </Box>
 
               <Button type="submit" text="Place bid" />

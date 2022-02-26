@@ -18,8 +18,12 @@ export default function LiveStreamPageLayout({
   return (
     <BaseLayout aside={<AsideNav />}>
       {modal}
-      <Grid gridTemplateColumns={["1fr", "1fr 360px"]} h="100%">
-        <Box overflowY="auto">
+      <Grid
+        gridTemplateColumns={["1fr", "1fr 360px"]}
+        h="100%"
+        gridTemplateRows={["min-content 1fr", "1fr"]}
+      >
+        <Box overflowY={["hidden", "auto"]}>
           <Box position="relative" pt="56.25%">
             {videoPlayer}
           </Box>

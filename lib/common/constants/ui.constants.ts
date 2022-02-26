@@ -31,7 +31,7 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
   {
     label: "Tokens",
     icon: "Wallet",
-    url: PageRoutes.tokens(),
+    url: PageRoutes.tickets,
     key: "tokens",
     iconFill: false,
   },

@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useMemo, useContext } from "react";
-import useSWR from "swr";
+import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
@@ -9,6 +9,7 @@ interface IBidListContextState {
   bids?: Bid[];
   loading: boolean;
   error?: unknown;
+  mutateBids: SWRResponse<Bid[], unknown>["mutate"];
 }
 
 const BidListContext = createContext({} as IBidListContextState);
@@ -43,15 +44,20 @@ export function BidListProvider({
     return API_URL_CONSTANTS.auctions.getBids;
   }, [filterBidder, filterCreator, filterReward]);
 
-  const { data: bids, error } = useSWR(url, { initialData: initial });
+  const {
+    data: bids,
+    error,
+    mutate: mutateBids,
+  } = useSWR(url, { initialData: initial });
 
   const value = useMemo(
     () => ({
       bids,
       error,
       loading: !bids && !error,
+      mutateBids,
     }),
-    [bids, error]
+    [bids, error, mutateBids]
   );
 
   return <BidListContext.Provider value={value} {...rest} />;
