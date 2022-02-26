@@ -16,6 +16,7 @@ export type Creator = {
   is_follower: boolean;
   show_club_members: boolean;
   video?: string;
+  show_analytics: boolean;
 };
 
 export type ClubMembersCount = {
@@ -30,12 +31,15 @@ export type AverageEngagement = ClubMembersCount;
 
 export type ComparativeEngagement = FollowerGrowth;
 
+export type UsersByCrater = FollowerGrowth;
+
 export type CreatorRanking = {
-  creator_user_pk: number;
-  creator_name: string;
-  creator_image?: string;
+  pk: number;
+  slug: string;
+  name: string;
+  image?: string;
+  stream_id: number;
   stream_topic: string;
-  follower_count: number;
 };
 
 export type TopCreators = {
