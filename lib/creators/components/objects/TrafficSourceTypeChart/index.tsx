@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
 
+import { Box } from "@/common/components/atoms";
 import colors from "@/common/theme/colors";
 import { TrafficSourceType } from "@/creators/types/creator";
 
@@ -102,21 +103,23 @@ export default function TrafficSourceTypeChart({
   };
 
   return (
-    <ResponsiveContainer width="90%" height="100%">
-      <PieChart>
-        <Pie
-          activeIndex={activeIndex}
-          activeShape={renderActiveShape}
-          data={trafficSourceTypes}
-          cx="50%"
-          cy="50%"
-          innerRadius={60}
-          outerRadius={80}
-          fill="#8884d8"
-          dataKey="count"
-          onMouseEnter={onPieEnter}
-        />
-      </PieChart>
-    </ResponsiveContainer>
+    <Box w="100%">
+      <ResponsiveContainer aspect={16 / 9}>
+        <PieChart>
+          <Pie
+            activeIndex={activeIndex}
+            activeShape={renderActiveShape}
+            data={trafficSourceTypes}
+            cx="50%"
+            cy="50%"
+            innerRadius="50%"
+            outerRadius="60%"
+            fill="#8884d8"
+            dataKey="count"
+            onMouseEnter={onPieEnter}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </Box>
   );
 }
