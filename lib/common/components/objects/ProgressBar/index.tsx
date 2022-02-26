@@ -27,16 +27,11 @@ const Background = styled(BaseBox)`
   width: 100%;
 `;
 
-const Progress = styled(BaseBox)`
-  background: #8884d8;
-  width: ${({ percent }) => percent}%;
-`;
-
 export default function ProgressBar({ percent }: IProps): JSX.Element {
   return (
     <Container>
       <Background />
-      <Progress percent={percent} />
+      <Box background="#8884d8" w={`${percent}%`} />
     </Container>
   );
 }
