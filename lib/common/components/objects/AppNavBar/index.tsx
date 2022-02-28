@@ -35,8 +35,6 @@ export default function AppNavBar(): JSX.Element {
     router.push(PageRoutes.home);
   };
 
-  console.log(router);
-
   return (
     <Grid
       bg={colors.black[5]}
