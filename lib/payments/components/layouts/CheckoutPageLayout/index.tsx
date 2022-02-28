@@ -1,6 +1,7 @@
 import { NextSeoProps } from "next-seo";
+import { useTheme } from "styled-components";
 
-import { Box, BoxProps } from "@/common/components/atoms";
+import { BoxProps } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import Page from "@/common/components/objects/Page";
 
@@ -15,12 +16,17 @@ export default function CheckoutPageLayout({
   containerProps,
   children,
 }: Props): JSX.Element {
+  const { space } = useTheme();
   return (
     <Page seo={seo}>
-      <BaseLayout>
-        <Box m="0 auto" maxWidth={1280} overflowY="auto" {...containerProps}>
-          {children}
-        </Box>
+      <BaseLayout
+        m="0 auto"
+        maxWidth={1280}
+        overflowY="auto"
+        pb={space.m}
+        {...containerProps}
+      >
+        {children}
       </BaseLayout>
     </Page>
   );

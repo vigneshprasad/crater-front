@@ -37,39 +37,59 @@ const BaseLayout = forwardRef<HTMLDivElement, Props>(
             gridTemplateRows="calc(100vh - 56px)"
           >
             {aside}
-            <Box position="relative" {...rest} ref={ref}>
-              <Overlay
-                initial="hidden"
-                animate={animate}
-                onClick={() => toggleNavBar()}
-                variants={{
-                  hidden: {
-                    background: "transparent",
-                    transitionEnd: {
-                      display: "none",
+            <Box position="relative">
+              <Box
+                position="absolute"
+                top={0}
+                right={0}
+                left={0}
+                bottom={0}
+                {...rest}
+                ref={ref}
+              >
+                <Overlay
+                  initial="hidden"
+                  animate={animate}
+                  onClick={() => toggleNavBar()}
+                  variants={{
+                    hidden: {
+                      background: "transparent",
+                      transitionEnd: {
+                        display: "none",
+                      },
                     },
-                  },
-                  collapse: {
-                    background: colors.black[2],
-                    transitionEnd: {
-                      display: "none",
+                    collapse: {
+                      background: colors.black[2],
+                      transitionEnd: {
+                        display: "none",
+                      },
                     },
-                  },
-                  expanded: {
-                    background: colors.drawerOverlay,
-                    display: "block",
-                  },
-                }}
-              />
-              {children}
+                    expanded: {
+                      background: colors.drawerOverlay,
+                      display: "block",
+                    },
+                  }}
+                />
+                {children}
+              </Box>
             </Box>
           </Grid>
         );
       }
 
       return (
-        <Box position="relative" {...rest} ref={ref}>
-          {children}
+        <Box position="relative">
+          <Box
+            position="absolute"
+            top={0}
+            right={0}
+            left={0}
+            bottom={0}
+            {...rest}
+            ref={ref}
+          >
+            {children}
+          </Box>
         </Box>
       );
     }, [aside, children, rest, toggleNavBar, animate, colors, ref]);
@@ -78,7 +98,7 @@ const BaseLayout = forwardRef<HTMLDivElement, Props>(
       <Grid
         as="main"
         gridTemplateColumns="100vw"
-        gridTemplateRows="max-content 1fr"
+        gridTemplateRows="100vh"
         overflow="hidden"
       >
         <Grid gridTemplateRows="56px 1fr">

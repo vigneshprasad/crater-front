@@ -1,6 +1,6 @@
 import { useTheme } from "styled-components";
 
-import { Flex, Box, Text } from "@/common/components/atoms";
+import { Flex, Box, Text, Shimmer } from "@/common/components/atoms";
 import { Webinar } from "@/community/types/community";
 import BidsListItem from "@/tokens/components/objects/BidListItem";
 import BidsList from "@/tokens/components/objects/BidsList";
@@ -20,6 +20,31 @@ export default function StreamRewardsPanel({}: IProps): JSX.Element {
   const { bids, loading: loadingBids } = useBidsList();
   const { rewards, loading } = useRewardsList();
   const { setActiveReward, setTokenModalVisible } = useLiveStreamPageContext();
+
+  if (!rewards) {
+    if (loading) {
+      return (
+        <Flex py={space.xxs}>
+          <Shimmer flex="1" />
+          <Shimmer flex="1" />
+        </Flex>
+      );
+    }
+    return <Box>Empty State</Box>;
+  }
+
+  const hasActiveReward = rewards.reduce((acc, curr) => {
+    if (!acc) {
+      if (curr.active_auction) {
+        return true;
+      }
+    }
+    return acc;
+  }, false);
+
+  if (rewards.length === 0 || !hasActiveReward) {
+    return <Box>Empty State</Box>;
+  }
 
   return (
     <Flex position="relative">

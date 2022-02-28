@@ -6,18 +6,10 @@ import {
 import { SyntheticEvent } from "react";
 import { useTheme } from "styled-components";
 
-import {
-  Flex,
-  Card,
-  Form,
-  Grid,
-  Text,
-  Box,
-  Hr,
-} from "@/common/components/atoms";
+import { Flex, Card, Form, Grid, Text, Hr } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
-import RewardImagePreview from "@/tokens/components/objects/RewardImagePreview";
+import TicketCard from "@/tokens/components/objects/TicketCard";
 import useBid from "@/tokens/context/BidContext";
 import useRewardItem from "@/tokens/context/RewardItemContext";
 
@@ -27,12 +19,10 @@ interface IProps {
 
 export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
   const stripe = useStripe();
-  const { space, colors, borders } = useTheme();
+  const { space, colors } = useTheme();
   const elements = useElements();
   const { bid } = useBid();
   const { reward } = useRewardItem();
-
-  console.log(reward);
 
   const handleFormSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
@@ -47,9 +37,9 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `${hostUrl}${PageRoutes.bidPaymentSuccess(
-          bid?.id as number
-        )}`,
+        return_url: `${hostUrl}${PageRoutes.hub(
+          "portfolio"
+        )}?bid_payment_success=${bid?.id}`,
       },
     });
 
@@ -70,7 +60,7 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
 
   return (
     <Grid
-      gridTemplateColumns="1fr 1fr"
+      gridTemplateColumns="1fr minmax(320px, 640px)"
       py={space.s}
       gridRowGap={space.xs}
       gridColumnGap={space.l}
@@ -112,26 +102,12 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
 
           return (
             <Flex flexDirection="column" gridGap={space.xxs}>
-              <Flex
-                py={space.xxs}
-                borderTop={`2px solid ${borders.main}`}
-                borderBottom={`2px solid ${borders.main}`}
-                alignItems="center"
-                gridGap={space.xxs}
-              >
-                {reward.photo && (
-                  <RewardImagePreview reward={reward} w={56} h={56} />
-                )}
-                <Box flex="1">
-                  <Text textStyle="title">{reward.name}</Text>
-                  <Text color={colors.slate}>
-                    {formatter.format(bid.bid_price)}
-                  </Text>
-                </Box>
-                <Text textStyle="title">x</Text>
-                <Text textStyle="title">{bid.quantity}</Text>
-              </Flex>
-
+              <TicketCard
+                cursor="default"
+                reward={reward}
+                withCTA={false}
+                withDetail
+              />
               <Flex color={colors.slate}>
                 <Text flex="1">Total Bid Price:</Text>
                 <Text>{formatter.format(bid.bid_price)}</Text>

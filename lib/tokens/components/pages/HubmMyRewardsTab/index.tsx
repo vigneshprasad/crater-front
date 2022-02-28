@@ -1,7 +1,6 @@
-import PLACEHOLDER_GRAPH from "public/images/img_graph_coming_soon.png";
 import { useTheme } from "styled-components";
 
-import { Grid, Text, Flex, Box, Image } from "@/common/components/atoms";
+import { Grid, Text, Flex, Box, Shimmer } from "@/common/components/atoms";
 import { Creator } from "@/creators/types/creator";
 import useBidsList from "@/tokens/context/BidListContext";
 import useRewardsList from "@/tokens/context/RewardsListContext";
@@ -20,6 +19,18 @@ export default function HubmMyRewardsTab({ creator }: IProps): JSX.Element {
   const { rewards, loading } = useRewardsList();
   const { bids, mutateBids, loading: loadingBids } = useBidsList();
 
+  if (!rewards || loading) {
+    return <Shimmer />;
+  }
+
+  if (rewards.length === 0) {
+    return (
+      <Box>
+        <Text>No Rewards</Text>
+      </Box>
+    );
+  }
+
   return (
     <Grid
       gridTemplateColumns="2fr 1fr"
@@ -33,15 +44,8 @@ export default function HubmMyRewardsTab({ creator }: IProps): JSX.Element {
         </Text>
         <BidsDataTable bids={bids} mutate={mutateBids} loading={loadingBids} />
       </Flex>
+
       <BidsSummaryBox creator={creator.id} />
-
-      <Box gridColumn="1 / span 2">
-        <Text px={space.xxs} py={space.s} textStyle="title">
-          Price trend
-        </Text>
-
-        <Image src={PLACEHOLDER_GRAPH} alt="placeholder_graph" />
-      </Box>
 
       {rewards && rewards.length > 0 && (
         <Box gridColumn="1 / span 2">

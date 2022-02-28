@@ -1,6 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import { SyntheticEvent, useEffect, useState } from "react";
-import styled, { useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
@@ -28,6 +28,7 @@ import { BidStatus } from "@/tokens/types/auctions";
 
 import CurrencyInput from "../../atoms/CurrencyInput";
 import AuctionProgressBar from "../AuctionProgressBar";
+import RewardDescriptionPreview from "../RewardDescriptionPreview";
 import RewardImagePreview from "../RewardImagePreview";
 import RewardBidModalContainer, {
   IRewardBidModalContainerProps,
@@ -42,32 +43,6 @@ interface IProps {
   visible: boolean;
   onClose: () => void;
 }
-
-const DescriptionContainer = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  grid-gap: 12px;
-
-  & > h3 {
-    font-size: 1.6rem;
-    font-weight: 700;
-  }
-
-  & > p {
-    font-size: 1.4rem;
-  }
-
-  & > ul {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 16px;
-  }
-
-  & > ul > li {
-    list-style: square;
-    font-size: 1.2rem;
-  }
-`;
 
 export function Content({ visible, onClose }: IProps): JSX.Element {
   const [minBidError, setMinBidError] = useState(false);
@@ -237,7 +212,7 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
 
         return (
           <Box overflowY="auto">
-            <DescriptionContainer
+            <RewardDescriptionPreview
               py={space.xs}
               px={space.s}
               dangerouslySetInnerHTML={{ __html: reward.description }}

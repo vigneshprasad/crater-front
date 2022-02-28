@@ -111,8 +111,8 @@ function InputWithRef({
       </InputContainer>
       {error && (
         <Text
-          px={space.xxxs}
-          py={space.xxxs}
+          px={space.xxxxs}
+          py={space.xxxxs}
           color={colors.error}
           textStyle="error"
         >

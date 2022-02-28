@@ -3,7 +3,7 @@ import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
-import { Bid } from "../types/auctions";
+import { Bid, BidStatus } from "../types/auctions";
 
 interface IBidListContextState {
   bids?: Bid[];
@@ -28,21 +28,22 @@ export function BidListProvider({
   filterReward,
   ...rest
 }: ProviderProps): JSX.Element {
+  const statusFilters = `status=${BidStatus.Accepted}&status=${BidStatus.Pending}&status=${BidStatus.Rejected}`;
   const url = useMemo(() => {
     if (filterBidder) {
-      return `${API_URL_CONSTANTS.auctions.getBids}?bidder=${filterBidder}`;
+      return `${API_URL_CONSTANTS.auctions.getBids}?bidder=${filterBidder}&${statusFilters}`;
     }
 
     if (filterCreator) {
-      return `${API_URL_CONSTANTS.auctions.getBids}?creator=${filterCreator}`;
+      return `${API_URL_CONSTANTS.auctions.getBids}?creator=${filterCreator}&${statusFilters}`;
     }
 
     if (filterReward) {
-      return `${API_URL_CONSTANTS.auctions.getBids}?reward=${filterReward}`;
+      return `${API_URL_CONSTANTS.auctions.getBids}?reward=${filterReward}?${statusFilters}`;
     }
 
     return API_URL_CONSTANTS.auctions.getBids;
-  }, [filterBidder, filterCreator, filterReward]);
+  }, [filterBidder, filterCreator, filterReward, statusFilters]);
 
   const {
     data: bids,

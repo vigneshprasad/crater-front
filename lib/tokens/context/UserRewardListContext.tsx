@@ -7,6 +7,7 @@ import { UserReward } from "../types/exchange";
 
 interface IUserRewardListState {
   userRewards?: UserReward[];
+  loading: boolean;
   error?: unknown;
 }
 
@@ -28,7 +29,10 @@ export function UserRewardListProvider({
       : API_URL_CONSTANTS.exchange.userRewardList
   );
 
-  const value = useMemo(() => ({ userRewards, error }), [userRewards, error]);
+  const value = useMemo(
+    () => ({ userRewards, error, loading: !userRewards && !error }),
+    [userRewards, error]
+  );
 
   return (
     <UserRewardListContext.Provider value={value}>

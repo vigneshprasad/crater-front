@@ -123,7 +123,7 @@ export function PhoneInput({
           left={0}
           borderRadius={radii.xxs}
           bg={colors.black[1]}
-          p={space.xxxs}
+          p={space.xxxxs}
           zIndex={zIndices.dropdownContainer}
           gridTemplateColumns="min-content 1fr"
           gridGap={space.xxxs}

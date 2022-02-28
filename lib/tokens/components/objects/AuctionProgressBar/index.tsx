@@ -1,6 +1,6 @@
 import { useTheme } from "styled-components";
 
-import { AnimatedBox, Text } from "@/common/components/atoms";
+import { AnimatedBox, Text, Box } from "@/common/components/atoms";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Auction } from "@/tokens/types/auctions";
 
@@ -24,7 +24,7 @@ export default function AuctionProgressBar({
   );
 
   return (
-    <>
+    <Box>
       <Text>
         {withLabel &&
           `Auctions ends ${DateTime.parse_with_milliseconds(
@@ -54,6 +54,6 @@ export default function AuctionProgressBar({
           borderRadius={radii.xs}
         />
       </AnimatedBox>
-    </>
+    </Box>
   );
 }
