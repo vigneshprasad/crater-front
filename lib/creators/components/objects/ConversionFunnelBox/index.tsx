@@ -54,7 +54,7 @@ export default function ConversionFunnelBox({
               borderLeft="25px solid transparent"
               borderRight="25px solid transparent"
             >
-              <Box mt={["-80px", "-80px", "-80px"]}>
+              <Box mt={["-77px", "-77px", "-77px"]}>
                 <Text textStyle="headline6">{obj.name}</Text>
                 <Text textStyle="headline6">
                   {obj.value} {obj.name !== "RSVP" ? "%" : ""}
