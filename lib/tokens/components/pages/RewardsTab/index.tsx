@@ -15,6 +15,7 @@ export default function RewardsTab(): JSX.Element {
         Use tokens to claim tickets that provide access to exclusive
         content/time
       </Text>
+
       <RewardsList rewards={rewards} loading={loading} />
     </Box>
   );

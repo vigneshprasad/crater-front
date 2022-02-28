@@ -2,7 +2,7 @@ import { NextSeoProps } from "next-seo";
 
 import dynamic from "next/dynamic";
 
-import TokenPageLayout from "@/tokens/components/layout/TokenPageLayout";
+import HomePageLayout from "@/common/components/layouts/HomePageLayout";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
 
 const RewardsTab = dynamic(
@@ -17,10 +17,10 @@ export default function Tokens(): JSX.Element {
   };
 
   return (
-    <TokenPageLayout seo={seo} activeTab="tickets">
+    <HomePageLayout heading="Tickets" seo={seo} activeTab="tokens">
       <RewardsListProvider>
         <RewardsTab />
       </RewardsListProvider>
-    </TokenPageLayout>
+    </HomePageLayout>
   );
 }

@@ -12,6 +12,13 @@ export interface Coin {
   is_active: boolean;
   display: CoinDisplayMeta;
 }
+
+export interface RewardType {
+  id: number;
+  name: string;
+  is_active: boolean;
+}
+
 export interface Reward {
   id: number;
   creator: number;
@@ -28,4 +35,5 @@ export interface Reward {
   quantity_sold: number;
   active_auction?: Auction;
   creator_detail: Creator;
+  type_detail: RewardType;
 }
