@@ -57,7 +57,13 @@ export type TrafficSourceType = {
   count: number;
 };
 
+export enum ConversionFunnelKey {
+  RSVP = "RSVP",
+  Subscribers = "Subscribers",
+  RecurringUsers = "Recurring Users",
+}
+
 export type ConversionFunnel = {
-  name: string;
-  count: number;
+  name: ConversionFunnelKey;
+  value: number;
 };

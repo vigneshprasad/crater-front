@@ -56,7 +56,9 @@ export default function ConversionFunnelBox({
             >
               <Box mt={["-80px", "-80px", "-80px"]}>
                 <Text textStyle="headline6">{obj.name}</Text>
-                <Text textStyle="headline6">{obj.count}</Text>
+                <Text textStyle="headline6">
+                  {obj.value} {obj.name !== "RSVP" ? "%" : ""}
+                </Text>
               </Box>
             </Flex>
           );
