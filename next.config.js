@@ -15,6 +15,10 @@ const withTM = require("next-transpile-modules")(["@segment/analytics-next"], {
  * @type {import("next/dist/next-server/server/config").NextConfig}
  **/
 const nextConfig = {
+  swcMinify: true,
+  compiler: {
+    styledComponents: true,
+  },
   compression: true,
   reactStrictMode: true,
   experimental: { esmExternals: true },
