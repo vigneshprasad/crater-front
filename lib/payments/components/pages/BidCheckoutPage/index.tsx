@@ -3,11 +3,12 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { SyntheticEvent } from "react";
+import { SyntheticEvent, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { Flex, Card, Form, Grid, Text, Hr } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
 import TicketCard from "@/tokens/components/objects/TicketCard";
 import useBid from "@/tokens/context/BidContext";
@@ -23,6 +24,7 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
   const elements = useElements();
   const { bid } = useBid();
   const { reward } = useRewardItem();
+  const [requestLoading, setRequestLoading] = useState(false);
 
   const handleFormSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
@@ -32,6 +34,8 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
+
+    setRequestLoading(true);
 
     const result = await stripe.confirmPayment({
       //`Elements` instance that was used to create the Payment Element
@@ -51,6 +55,8 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
     }
+
+    setRequestLoading(false);
   };
 
   const formatter = new Intl.NumberFormat("en-IN", {
@@ -88,7 +94,12 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
           eiusmod tempor incididunt ut.
         </Text>
 
-        <Button type="submit" text="Place Order" />
+        <Button
+          type="submit"
+          text="Place Order"
+          disabled={requestLoading}
+          suffixElement={requestLoading ? <Spinner size={32} /> : undefined}
+        />
       </Form>
 
       <Card justifySelf="center" minWidth={["100%", 420]}>

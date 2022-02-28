@@ -12,6 +12,7 @@ import {
   Form,
   AnimatedBox,
   Span,
+  Spiner,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -51,6 +52,7 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
   const { auction } = useActiveAuction();
   const { reward } = useRewardItem();
   const router = useRouter();
+  const [postBidLoading, setPostBidLoading] = useState(false);
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<IBidFormProps>(
     {
@@ -95,6 +97,8 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
       amount,
     };
 
+    setPostBidLoading(true);
+
     const [payment] = await PaymentApiClient().postPayment(paymentData);
 
     if (payment) {
@@ -120,6 +124,8 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
         }
       }
     }
+
+    setPostBidLoading(false);
   };
 
   const handleFormSubmit = (event: SyntheticEvent): void => {
@@ -290,7 +296,14 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
                 />
               </Box>
 
-              <Button type="submit" text="Place bid" />
+              <Button
+                type="submit"
+                text="Place bid"
+                disabled={postBidLoading}
+                suffixElement={
+                  postBidLoading ? <Spiner size={32} /> : undefined
+                }
+              />
             </Flex>
           </Form>
         );
