@@ -6,7 +6,7 @@ import { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Card, Grid, Text, Box, Link } from "@/common/components/atoms";
+import { Card, Grid, Text, Box } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 
 import StaticHubCard from "../StaticHubCard";
@@ -42,12 +42,13 @@ export default function CreatorHubFaqTab(): JSX.Element {
               care of everything. From helping you bring the crowd, engaging
               your community &amp; monetizing your time.
             </Text>
-            <Link
-              href="//calendly.com/craterclub"
-              boxProps={{ target: "_blank" }}
+            <a
+              href="https://calendly.com/craterclub/introduction-to-crater?utm_source=website&utm_medium=navbar"
+              target="_blank"
+              rel="noreferrer"
             >
               <Button text="Talk to us" />
-            </Link>
+            </a>
           </Box>
 
           <Box position="relative" h={[140, "100%"]}>

@@ -16,4 +16,48 @@ export type Creator = {
   is_follower: boolean;
   show_club_members: boolean;
   video?: string;
+  show_analytics: boolean;
+};
+
+export type ClubMembersCount = {
+  count: number;
+};
+
+export type FollowerGrowth = {
+  percentage: number;
+};
+
+export type AverageEngagement = ClubMembersCount;
+
+export type ComparativeEngagement = FollowerGrowth;
+
+export type UsersByCrater = FollowerGrowth;
+
+export type CreatorRanking = {
+  pk: number;
+  slug: string;
+  name: string;
+  image?: string;
+  stream_id: number;
+  stream_topic: string;
+};
+
+export type TopCreators = {
+  rank?: number;
+  creator_ranking: CreatorRanking[];
+};
+
+export type ClubMembersGrowth = {
+  followed_at_date: string;
+  follower_count: number;
+};
+
+export type TrafficSourceType = {
+  source_name: string;
+  count: number;
+};
+
+export type ConversionFunnel = {
+  name: string;
+  count: number;
 };

@@ -41,6 +41,7 @@ const TableStyles = styled(Box)`
     th,
     td {
       margin: 0;
+      vertical-align: middle;
       padding: ${({ theme }) => `${theme.space.xxs}px ${theme.space.xxs}px`};
 
       /* The secret sauce */
@@ -89,7 +90,7 @@ export default function DataTable<T>({
           <tr>
             {headers.map(({ heading, id }) => (
               <th key={id}>
-                <Text textStyle="tableHeader">{heading}</Text>
+                <Text>{heading}</Text>
               </th>
             ))}
           </tr>
@@ -98,11 +99,13 @@ export default function DataTable<T>({
         <tbody>
           {rows.map(({ key, cells }) => (
             <tr key={key}>
-              {cells.map((cell) => (
-                <td key={cell.key}>
-                  <Text textStyle="tableBody">{cell.value}</Text>
-                </td>
-              ))}
+              {cells.map((cell) => {
+                return (
+                  <td key={cell.key}>
+                    <Text>{cell.value}</Text>
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
