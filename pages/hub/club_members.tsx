@@ -8,8 +8,8 @@ import HubPageLayout, {
 import { CreatorFollowerProvider } from "@/creators/context/CreatorFollowerContext";
 import { Creator } from "@/creators/types/creator";
 
-const CreatorFollowersTab = dynamic(
-  () => import("@/creators/components/objects/CreatorFollowersTab")
+const CreatorClubAnalyticsTab = dynamic(
+  () => import("@/creators/components/objects/CreatorClubAnalyticsTab")
 );
 
 interface PageProps {
@@ -47,7 +47,7 @@ export default function CreatorHubFaq({
   return (
     <HubPageLayout activeTab="club_members" creator={creator}>
       <CreatorFollowerProvider userId={userId}>
-        <CreatorFollowersTab />
+        {creator && <CreatorClubAnalyticsTab creator={creator} />}
       </CreatorFollowerProvider>
     </HubPageLayout>
   );
