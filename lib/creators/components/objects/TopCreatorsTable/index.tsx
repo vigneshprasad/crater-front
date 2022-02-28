@@ -44,9 +44,7 @@ export default function TopCreatorsTable({
                 alignItems="center"
                 justifyItems="start"
               >
-                {obj.image && (
-                  <Avatar size={46} alt={obj.name || ""} image={obj?.image} />
-                )}
+                <Avatar size={46} alt={obj.name || ""} image={obj.image} />
 
                 <Text>{obj.name}</Text>
               </Grid>

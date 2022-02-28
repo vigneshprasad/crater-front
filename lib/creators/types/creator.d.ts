@@ -48,8 +48,8 @@ export type TopCreators = {
 };
 
 export type ClubMembersGrowth = {
-  followed_at_date: string;
-  follower_count: number;
+  rsvp_at: string;
+  rsvp_count: number;
 };
 
 export type TrafficSourceType = {
@@ -57,7 +57,13 @@ export type TrafficSourceType = {
   count: number;
 };
 
+export enum ConversionFunnelKey {
+  RSVP = "RSVP",
+  Subscribers = "Subscribers",
+  RecurringUsers = "Recurring Users",
+}
+
 export type ConversionFunnel = {
-  name: string;
-  count: number;
+  name: ConversionFunnelKey;
+  value: number;
 };
