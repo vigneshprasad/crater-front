@@ -35,6 +35,8 @@ export default function AppNavBar(): JSX.Element {
     router.push(PageRoutes.home);
   };
 
+  console.log(router);
+
   return (
     <Grid
       bg={colors.black[5]}
@@ -82,11 +84,13 @@ export default function AppNavBar(): JSX.Element {
 
       <Box />
 
-      <Link href={PageRoutes.creatorHub} boxProps={{ mx: space.xxs }}>
-        <Text textStyle="button" color={colors.accent}>
-          Go Live
-        </Text>
-      </Link>
+      {router.pathname !== "/livestream/[id]" && (
+        <Link href={PageRoutes.creatorHub} boxProps={{ mx: space.xxs }}>
+          <Text textStyle="button" color={colors.accent}>
+            Go Live
+          </Text>
+        </Link>
+      )}
 
       <Grid
         gridAutoFlow="column"
