@@ -15,6 +15,7 @@ import {
   UTM_SOURCE_STORAGE_KEY,
   UTM_CAMPAIGN_STORAGE_KEY,
   UTM_MEDIUM_STORAGE_KEY,
+  REFERRER_ID_STORAGE_KEY,
 } from "@/common/constants/global.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
@@ -27,6 +28,7 @@ type AuthFormArgs = {
   utmSource?: string;
   utmCampaign?: string;
   utmMedium?: string;
+  referrerId?: string;
 };
 
 export default function AuthForm(): JSX.Element {
@@ -69,6 +71,10 @@ export default function AuthForm(): JSX.Element {
           intialValue: "",
           validators: [],
         },
+        referrerId: {
+          intialValue: "",
+          validators: [],
+        },
       },
     });
 
@@ -81,10 +87,12 @@ export default function AuthForm(): JSX.Element {
       const utmSource = localStorage.getItem(UTM_SOURCE_STORAGE_KEY);
       const utmCampaign = localStorage.getItem(UTM_CAMPAIGN_STORAGE_KEY);
       const utmMedium = localStorage.getItem(UTM_MEDIUM_STORAGE_KEY);
+      const referrerId = localStorage.getItem(REFERRER_ID_STORAGE_KEY);
       if (utmSource || utmCampaign) {
         fieldValueSetter("utmSource", utmSource as string);
         fieldValueSetter("utmCampaign", utmCampaign as string);
         fieldValueSetter("utmMedium", utmMedium as string);
+        fieldValueSetter("referrerId", referrerId as string);
       }
     }
   }, [router, fieldValueSetter]);
@@ -111,7 +119,8 @@ export default function AuthForm(): JSX.Element {
     otp: string,
     utmSource?: string,
     utmCampaign?: string,
-    utmMedium?: string
+    utmMedium?: string,
+    referrerId?: string
   ): Promise<void> => {
     try {
       await Login("phone-auth", {
@@ -120,6 +129,7 @@ export default function AuthForm(): JSX.Element {
         utmSource,
         utmCampaign,
         utmMedium,
+        referrerId,
       });
       track(AnalyticsEvents.phone_verified, {
         phoneNumber,
@@ -156,7 +166,8 @@ export default function AuthForm(): JSX.Element {
         data.otp,
         data.utmSource,
         data.utmCampaign,
-        data.utmMedium
+        data.utmMedium,
+        data.referrerId
       );
     }
   };

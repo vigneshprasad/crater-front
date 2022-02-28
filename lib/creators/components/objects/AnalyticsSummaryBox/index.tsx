@@ -49,27 +49,33 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
       {
         title: "My Club",
         key: "clubMembersCount",
-        display: `${clubMembersCount} members`,
+        display:
+          clubMembersCount === null ? "-" : `${clubMembersCount} members`,
       },
       {
         title: "Growth this month",
         key: "followerGrowth",
-        display: `${followerGrowth} %`,
+        display: followerGrowth === null ? "-" : `${followerGrowth} %`,
       },
       {
         title: "Users brought in by Crater",
         key: "percentageUsersFromCrater",
-        display: `${percentageUsersFromCrater} %`,
+        display:
+          percentageUsersFromCrater === null
+            ? "-"
+            : `${percentageUsersFromCrater} %`,
       },
       {
         title: "Average Engagement",
         key: "averageEngagement",
-        display: `${averageEngagement} Questions`,
+        display:
+          averageEngagement === null ? "-" : `${averageEngagement} Questions`,
       },
       {
         title: "Comparative Engagement",
         key: "comparativeEngagement",
-        display: `${comparativeEngagement} %`,
+        display:
+          comparativeEngagement === null ? "-" : `${comparativeEngagement} %`,
       },
     ];
   }, [
@@ -79,6 +85,7 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
     comparativeEngagement,
     averageEngagement,
   ]);
+
   return (
     <Card containerProps={{ px: 0, py: 0 }} {...rest}>
       <Grid

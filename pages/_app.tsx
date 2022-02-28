@@ -16,6 +16,7 @@ import {
   UTM_SOURCE_STORAGE_KEY,
   UTM_CAMPAIGN_STORAGE_KEY,
   UTM_MEDIUM_STORAGE_KEY,
+  REFERRER_ID_STORAGE_KEY,
 } from "@/common/constants/global.constants";
 import { AsideNavProvider } from "@/common/hooks/ui/useAsideNavState";
 import { AnalyticsProvider } from "@/common/utils/analytics";
@@ -34,6 +35,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         utm_source: utmSource,
         utm_campaign: utmCampaign,
         utm_medium: utmMedium,
+        referrer_id: referrerId,
       } = router.query;
 
       utmSource &&
@@ -42,6 +44,8 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         localStorage.setItem(UTM_CAMPAIGN_STORAGE_KEY, utmCampaign as string);
       utmMedium &&
         localStorage.setItem(UTM_MEDIUM_STORAGE_KEY, utmMedium as string);
+      referrerId &&
+        localStorage.setItem(REFERRER_ID_STORAGE_KEY, referrerId as string);
     }
   }, [router]);
 
