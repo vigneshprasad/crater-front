@@ -56,7 +56,7 @@ export default function BidPaymentSuccessPage(): JSX.Element {
         <Text mb={space.xs} textStyle="headline6">
           More Ticket&#39;s
         </Text>
-        <RewardsList rewards={rewards} loading={loadingRewards} split={false} />
+        <RewardsList rewards={rewards} loading={loadingRewards} />
       </Box>
     </Flex>
   );

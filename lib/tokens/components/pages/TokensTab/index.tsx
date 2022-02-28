@@ -16,7 +16,7 @@ import { Auction } from "@/tokens/types/auctions";
 
 import AuctionDetailBox from "../../objects/AuctionDetailBox";
 import { CreatorTokenSlider } from "../../objects/CreatorTokenSlider";
-import { RewardCard } from "../../objects/RewardCard";
+import RewardCard from "../../objects/RewardCard";
 
 const Video = styled.video`
   position: absolute;
@@ -144,7 +144,7 @@ export default function TokensTab(): JSX.Element {
           gridGap={space.xxs}
         >
           {rewards?.map((reward) => (
-            <RewardCard type="large" reward={reward} key={reward.id} />
+            <RewardCard reward={reward} key={reward.id} />
           ))}
         </Grid>
 

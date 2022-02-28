@@ -10,9 +10,9 @@ interface IProps {
   loading: boolean;
 }
 
-export default function RewardsList({ rewards, loading }: IProps): JSX.Element {
+export default function RewardsList({ rewards }: IProps): JSX.Element {
   const { space } = useTheme();
-  console.log("rewards", rewards);
+
   return (
     <Grid
       gridTemplateColumns="repeat(auto-fill, minmax(320px, 1fr))"

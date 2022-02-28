@@ -52,7 +52,7 @@ export default function HubmMyRewardsTab({ creator }: IProps): JSX.Element {
           <Text px={space.xxs} py={space.s} textStyle="title">
             Tickets for sale
           </Text>
-          <RewardsList rewards={rewards} loading={loading} split={false} />
+          <RewardsList rewards={rewards} loading={loading} />
         </Box>
       )}
     </Grid>

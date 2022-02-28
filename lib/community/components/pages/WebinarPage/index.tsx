@@ -226,11 +226,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
               </Text>
             )}
 
-            <RewardsList
-              loading={rewardsLoading}
-              rewards={rewards}
-              split={false}
-            />
+            <RewardsList loading={rewardsLoading} rewards={rewards} />
           </Box>
         </Grid>
 

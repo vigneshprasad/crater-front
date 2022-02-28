@@ -263,11 +263,7 @@ export default function RewardItemPage(): JSX.Element {
               Explore more
             </Text>
 
-            <RewardsList
-              rewards={filteredRewards}
-              loading={rewardsLoading}
-              split={false}
-            />
+            <RewardsList rewards={filteredRewards} loading={rewardsLoading} />
           </Box>
         )}
       </AnimatedBox>
