@@ -48,8 +48,8 @@ export type TopCreators = {
 };
 
 export type ClubMembersGrowth = {
-  followed_at_date: string;
-  follower_count: number;
+  rsvp_at: string;
+  rsvp_count: number;
 };
 
 export type TrafficSourceType = {
