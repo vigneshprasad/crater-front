@@ -85,6 +85,7 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
     comparativeEngagement,
     averageEngagement,
   ]);
+
   return (
     <Card containerProps={{ px: 0, py: 0 }} {...rest}>
       <Grid
