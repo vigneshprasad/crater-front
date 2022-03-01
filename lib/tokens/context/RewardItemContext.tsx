@@ -3,7 +3,7 @@ import useSwr from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
-import { Reward } from "../types/tokens";
+import { Reward } from "../types/token";
 
 export interface IRewardItemState {
   reward?: Reward;

@@ -87,7 +87,7 @@ export function BaseTabBar({
         gridAutoColumns="max-content"
         gridGap={space.xxs}
         ref={containerRef}
-        py={space.xxs}
+        py={12}
         px={space.xxs}
         {...rest}
       >

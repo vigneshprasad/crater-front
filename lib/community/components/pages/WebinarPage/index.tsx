@@ -29,10 +29,10 @@ import { AuctionListProvider } from "@/tokens/context/AuctionListContext";
 import { CreatorCoinProvider } from "@/tokens/context/CreatorCoinContext";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
-import { Props as DyteMeetingProps } from "../../objects/DyteMeeting";
+import { Props as DyteMeetingProps } from "../../../../dyte/components/objects/DyteMeeting";
 
 const DyteMeeting = dynamic<DyteMeetingProps>(
-  () => import("../../objects/DyteMeeting"),
+  () => import("../../../../dyte/components/objects/DyteMeeting"),
   {
     ssr: false,
     loading: () => {
@@ -226,11 +226,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
               </Text>
             )}
 
-            <RewardsList
-              loading={rewardsLoading}
-              rewards={rewards}
-              split={false}
-            />
+            <RewardsList loading={rewardsLoading} rewards={rewards} />
           </Box>
         </Grid>
 

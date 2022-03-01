@@ -1,0 +1,60 @@
+import { useMemo } from "react";
+
+import { Text } from "@/common/components/atoms";
+import DataTable from "@/common/components/objects/DataTable";
+import { Column } from "@/common/components/objects/DataTable/types";
+import DateTime from "@/common/utils/datetime/DateTime";
+import { Bid } from "@/tokens/types/auctions";
+
+interface IProps {
+  bids?: Bid[];
+}
+
+export default function TransactionDataTable({ bids }: IProps): JSX.Element {
+  const columns = useMemo<Column<Bid>[]>(
+    () => [
+      {
+        label: "Reward",
+        key: "reward",
+        valueGetter: (obj) => (
+          <Text fontWeight="600">{obj.reward_detail.name}</Text>
+        ),
+      },
+      {
+        label: "Creator",
+        key: "creator",
+        valueGetter: (obj) => obj.creator_detail.profile_detail.name,
+      },
+      {
+        label: "Price",
+        key: "price",
+        valueGetter: (obj) => {
+          const formatter = new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency: "INR",
+          });
+          return formatter.format(obj.amount);
+        },
+      },
+      {
+        label: "Status",
+        key: "status",
+        valueGetter: (obj) => {
+          return obj.status_detail;
+        },
+      },
+      {
+        label: "Time",
+        key: "time",
+        valueGetter: (obj) => {
+          return DateTime.parse_with_milliseconds(obj.created_at).toFormat(
+            DateTime.DEFAULT_FORMAT
+          );
+        },
+      },
+    ],
+    []
+  );
+
+  return <DataTable<Bid> data={bids} columns={columns} />;
+}

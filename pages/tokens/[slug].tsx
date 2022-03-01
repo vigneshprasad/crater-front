@@ -10,7 +10,7 @@ import { Creator } from "@/creators/types/creator";
 import { CoinApiClient } from "@/tokens/api";
 import TokenPageLayout from "@/tokens/components/layout/TokenPageLayout";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
-import { Coin } from "@/tokens/types/tokens";
+import { Coin } from "@/tokens/types/token";
 
 const TokensTab = dynamic(() => import("@/tokens/components/pages/TokensTab"));
 

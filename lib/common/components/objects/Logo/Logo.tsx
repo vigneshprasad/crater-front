@@ -1,41 +1,23 @@
-import LOGO from "public/images/logo.png";
-
-import Image from "next/image";
-
 import { theme } from "@/common/theme";
 
-import { Box, Grid, Text, GridProps } from "../../atoms";
+import { Grid, GridProps, Icon } from "../../atoms";
 
 export type ILogoProps = GridProps & {
   withText?: boolean;
 };
 
-export function Logo({
-  withText = false,
-  onClick,
-  ...rest
-}: ILogoProps): JSX.Element {
-  const { space, colors } = theme;
+export function Logo({ onClick, ...rest }: ILogoProps): JSX.Element {
+  const { space } = theme;
   return (
     <Grid
-      gridTemplateColumns={["32px max-content"]}
+      gridTemplateColumns={["max-content"]}
       alignItems="center"
       gridGap={[space.xxxs, space.xxs]}
       cursor={onClick ? "pointer" : "auto"}
       onClick={onClick}
       {...rest}
     >
-      <Image src={LOGO} alt="Crater" />
-      {withText && (
-        <Grid
-          gridAutoFlow="column"
-          alignItems="center"
-          gridGap={[space.xxxs, space.xxs]}
-        >
-          <Text textStyle="logo">Crater</Text>
-          <Box w={1} h="40%" bg={colors.slate} display={["none", "block"]} />
-        </Grid>
-      )}
+      <Icon icon="Logo" h={32} w="auto" />
     </Grid>
   );
 }

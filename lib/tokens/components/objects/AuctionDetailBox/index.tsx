@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
@@ -7,13 +7,11 @@ import { LEARN_MORE_URL } from "@/common/constants/url.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Creator } from "@/creators/types/creator";
-import { Auction, Coin } from "@/tokens/types/tokens";
-
-import TokenBidModal from "../TokenBidModal";
+import { Auction } from "@/tokens/types/auctions";
+import { Coin } from "@/tokens/types/token";
 
 type IProps = PropsWithChildren<{
   auction?: Auction;
-
   creator?: Creator;
 }>;
 
@@ -22,7 +20,6 @@ export default function AuctionDetailBox({
   creator,
   children,
 }: IProps): JSX.Element {
-  const [showModal, setShowModal] = useState(false);
   const { space, radii, borders, colors } = useTheme();
 
   const { data: coin } = useSWR<Coin>(
@@ -31,13 +28,13 @@ export default function AuctionDetailBox({
 
   return (
     <>
-      {creator && (
-        <TokenBidModal
-          creatorId={creator.id}
+      {/* {creator && (
+        <RewardBidModal
+          creator={creator}
           visible={showModal}
           onClose={() => setShowModal(false)}
         />
-      )}
+      )} */}
 
       <Flex mx={[0, space.xs]} flexDirection="column">
         <Flex
@@ -102,7 +99,6 @@ export default function AuctionDetailBox({
               h={56}
               bg={colors.greenDeep}
               borderRadius={4}
-              onClick={() => setShowModal(true)}
             >
               <Text textStyle="buttonLarge" m="auto auto">
                 Place a Bid

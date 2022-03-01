@@ -83,15 +83,39 @@ export const API_URL_CONSTANTS = {
   },
   rewards: {
     rewardsList: "/crater/reward/",
+    rewardTypesList: "/crater/reward/type/",
+  },
+  auctions: {
+    getBids: "/crater/bid/",
+    postBid: "/crater/bid/",
+    retrievAuction: (id: number | string): string => `/crater/auction/${id}/`,
+    retrieveBid: (id: number | string): string => `/crater/bid/${id}/`,
+    getActiveAuction: (reward: string | number): string =>
+      `/crater/auction/${reward}/active_auction/`,
+    getCoinPriceLogs: "/crater/coin_log/",
+    acceptBid: (bid: number | string): string => `/crater/bid/${bid}/accept/`,
+    bidSummaryForCoin: (coin: number | string): string =>
+      `/crater/bid/${coin}/summary/`,
+    auctionSummaryForCoin: (coin: number | string): string =>
+      `/crater/auction/${coin}/summary/`,
   },
   coins: {
-    getBids: "/crater/bid/",
     getAuctions: "/crater/auction/",
     getCointForCreator: (id: string | number): string =>
       `/crater/coins/${id}/creator/`,
   },
   chat: {
     getChatReactions: "/groups/conversations/chatreactions/",
+  },
+  payments: {
+    postPayment: "/crater/payment/",
+    createStripeIntent: "/crater/gateways/stripe/",
+    retrieveStripeIntent: (client_secret: string): string =>
+      `/crater/gateways/stripe/${client_secret}/`,
+  },
+  exchange: {
+    coinHoldingsList: "/crater/exchange/coin_holding/",
+    userRewardList: "/crater/exchange/user_reward/",
   },
   series: {
     getAllSeries: "/groups/public/conversations/series/",

@@ -138,6 +138,18 @@ const variants = {
     fontSize: ["1.8rem"],
     fontWeight: "400",
   },
+  tableHeader: {
+    fontFamily: fonts.body,
+    lineHeight: ["2.0rem"],
+    fontSize: ["1.4rem"],
+    fontWeight: "600",
+  },
+  tableBody: {
+    fontFamily: fonts.body,
+    lineHeight: ["2.0rem"],
+    fontSize: ["1.6rem"],
+    fontWeight: "400",
+  },
 };
 
 export type TextVariants = keyof typeof variants;
@@ -179,6 +191,7 @@ const whiteSpace = style({
 });
 
 export const Text = styled(Box)<TextProps>`
+  font-smooth: antialiased;
   ${variant({
     prop: "textStyle",
     variants,
@@ -191,7 +204,7 @@ export const Text = styled(Box)<TextProps>`
       overflow: hidden;
       text-overflow: ellipsis;
     `}
-  ${({ maxLines }) =>
+    ${({ maxLines }) =>
     maxLines &&
     css`
       overflow: hidden;
@@ -199,10 +212,7 @@ export const Text = styled(Box)<TextProps>`
       -webkit-line-clamp: ${maxLines};
       -webkit-box-orient: vertical;
     `}
-
-  ${whiteSpace}
-  ${textOverflow}
-  ${typography}
+    ${whiteSpace} ${textOverflow} ${typography};
 `;
 
 Text.defaultProps = {

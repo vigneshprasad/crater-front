@@ -3,7 +3,7 @@ import useSWR from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
-import { Coin } from "../types/tokens";
+import { Coin } from "../types/token";
 
 export interface ICreatorCoinState {
   coin?: Coin;
