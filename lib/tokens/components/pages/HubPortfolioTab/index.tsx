@@ -24,7 +24,6 @@ export default function HubPortfolioTab(): JSX.Element {
 
   useEffect(() => {
     if (router.query.bid_payment_success) {
-      console.log(router.query.bid_payment_success);
       setSuccess(true);
     }
   }, [router]);
