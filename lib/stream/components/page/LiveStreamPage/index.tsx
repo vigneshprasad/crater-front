@@ -126,7 +126,8 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
                     variant="nav-button"
                     text="Follow"
                     onClick={() => {
-                      const creator = webinar.host_detail?.creator_detail?.id;
+                      const creator =
+                        cachedWebinar?.host_detail?.creator_detail?.id;
                       if (creator) {
                         subscribeCreator(creator);
                       }
@@ -134,15 +135,22 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
                   />
                 );
               })()}
-              <Button
-                border={`2px solid ${colors.slate}`}
-                bg="transparent"
-                prefixElement={
-                  <Icon mx={space.xxxxs} size={18} icon="Linktree" />
-                }
-                variant="nav-button"
-                text="LinkTree"
-              />
+              {cachedWebinar?.host_profile_details?.primary_url && (
+                <Link
+                  href={cachedWebinar?.host_profile_details?.primary_url}
+                  boxProps={{ target: "_blank" }}
+                >
+                  <Button
+                    border={`2px solid ${colors.slate}`}
+                    bg="transparent"
+                    prefixElement={
+                      <Icon mx={space.xxxxs} size={18} icon="Linktree" />
+                    }
+                    variant="nav-button"
+                    text="LinkTree"
+                  />
+                </Link>
+              )}
             </Flex>
             <Flex
               display={["none", "flex"]}
