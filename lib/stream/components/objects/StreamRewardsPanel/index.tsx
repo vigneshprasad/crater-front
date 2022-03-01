@@ -17,25 +17,13 @@ interface IProps {
   stream: Webinar;
 }
 
-export default function StreamRewardsPanel({}: IProps): JSX.Element {
+export default function StreamRewardsPanel({ stream }: IProps): JSX.Element {
   const { space, radii } = useTheme();
   const { bids, loading: loadingBids } = useBidsList();
   const { rewards, loading } = useRewardsList();
   const { setActiveReward, setTokenModalVisible } = useLiveStreamPageContext();
 
-  if (!rewards) {
-    if (loading) {
-      return (
-        <Flex py={space.xxs}>
-          <Shimmer flex="1" />
-          <Shimmer flex="1" />
-        </Flex>
-      );
-    }
-    return <Box>Empty State</Box>;
-  }
-
-  const hasActiveReward = rewards.reduce((acc, curr) => {
+  const hasActiveReward = rewards?.reduce((acc, curr) => {
     if (!acc) {
       if (curr.active_auction) {
         return true;
@@ -43,6 +31,15 @@ export default function StreamRewardsPanel({}: IProps): JSX.Element {
     }
     return acc;
   }, false);
+
+  if (!rewards || loading) {
+    return (
+      <Flex py={space.xxs}>
+        <Shimmer flex="1" />
+        <Shimmer flex="1" />
+      </Flex>
+    );
+  }
 
   if (rewards.length === 0 || !hasActiveReward) {
     return (
@@ -67,9 +64,9 @@ export default function StreamRewardsPanel({}: IProps): JSX.Element {
         </Box>
 
         <Text textStyle="title" textAlign="center">
-          Creator has not launched an auction yet
+          {stream.host_detail.name} has not launched an auction
         </Text>
-        <Text>
+        <Text textAlign="center">
           Auctions are where you monetize access to exclusive content,
           communities, goods or time.{" "}
         </Text>

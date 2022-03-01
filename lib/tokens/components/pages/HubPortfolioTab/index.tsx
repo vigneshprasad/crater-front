@@ -29,7 +29,7 @@ export default function HubPortfolioTab(): JSX.Element {
     }
   }, [router]);
 
-  if (!bids && !userRewards) {
+  if (bids?.length == 0 && userRewards?.length == 0) {
     return (
       <Flex
         alignItems="center"

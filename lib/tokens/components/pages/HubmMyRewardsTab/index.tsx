@@ -1,4 +1,7 @@
+import STATIC_IMAGES from "public/images";
 import { useTheme } from "styled-components";
+
+import Image from "next/image";
 
 import { Grid, Text, Flex, Box, Shimmer } from "@/common/components/atoms";
 import { Creator } from "@/creators/types/creator";
@@ -8,6 +11,7 @@ import useRewardsList from "@/tokens/context/RewardsListContext";
 import BidsDataTable from "../../objects/BidsDataTable";
 import BidsSummaryBox from "../../objects/BidsSummaryBox";
 import RewardsList from "../../objects/RewardsList";
+import StaticAuctionInfo from "../../objects/StaticAuctionInfo";
 
 interface IProps {
   creator: Creator;
@@ -25,9 +29,26 @@ export default function HubmMyRewardsTab({ creator }: IProps): JSX.Element {
 
   if (rewards.length === 0) {
     return (
-      <Box>
-        <Text>No Rewards</Text>
-      </Box>
+      <Grid py={space.xxs}>
+        <Flex
+          gridGap={space.xxs}
+          m="auto auto"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <Box w={240}>
+            <Image alt="" src={STATIC_IMAGES.ImageAuctionInactive} />
+          </Box>
+          <Text textStyle="title">
+            You haven&apos;t launched an auction yet{" "}
+          </Text>
+          <Text>
+            Auctions are where you monetize access to exclusive content,
+            communities, goods or time.
+          </Text>
+          <StaticAuctionInfo />
+        </Flex>
+      </Grid>
     );
   }
 

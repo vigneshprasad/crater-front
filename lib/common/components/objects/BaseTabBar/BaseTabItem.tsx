@@ -14,8 +14,13 @@ export function BaseTabItem({
 }: BaseTabItemProps): JSX.Element {
   const { space } = useTheme();
   return (
-    <Grid gridTemplateColumns="1fr max-content" alignItems="center" {...rest}>
-      <Text px={space.xxxs} textStyle="menu">
+    <Grid
+      px={space.xxxxs}
+      gridTemplateColumns="1fr max-content"
+      alignItems="center"
+      {...rest}
+    >
+      <Text px={space.xxxxs} textStyle="menu">
         {label}
       </Text>
       {suffixElement}
