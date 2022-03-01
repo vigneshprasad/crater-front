@@ -11,7 +11,7 @@ import RewardItemPage from "@/tokens/components/pages/RewardItemPage";
 import { CreatorCoinProvider } from "@/tokens/context/CreatorCoinContext";
 import { RewardItemProvider } from "@/tokens/context/RewardItemContext";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
-import { Coin, Reward } from "@/tokens/types/tokens";
+import { Coin, Reward } from "@/tokens/types/token";
 
 interface IParams extends ParsedUrlQuery {
   creatorSlug: string;
@@ -31,9 +31,9 @@ export const getStaticPaths: GetStaticPaths<IParams> = async () => {
 
   if (!rewards) return { paths: [], fallback: "blocking" };
 
-  const paths = rewards.map(({ creator_coin_detail, id }) => ({
+  const paths = rewards.map(({ creator_detail, id }) => ({
     params: {
-      creatorSlug: creator_coin_detail.creator_detail.slug,
+      creatorSlug: creator_detail.slug,
       rewardId: id.toString(),
     },
   }));

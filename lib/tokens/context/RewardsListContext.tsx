@@ -3,7 +3,7 @@ import useSWR from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
-import { Reward } from "../types/tokens";
+import { Reward } from "../types/token";
 
 export interface IRewardsContext {
   rewards?: Reward[];
@@ -15,20 +15,34 @@ export const RewardsContext = createContext({} as IRewardsContext);
 
 type IProviderProps = PropsWithChildren<{
   initial?: Reward[];
-  filterCreatorSlug?: number | string | string;
+  filterCreatorSlug?: number | string;
+  filterCreatorId?: number | string;
+  filterRewardTypeId?: number | string;
 }>;
 
 export function RewardsListProvider({
   initial,
   filterCreatorSlug,
+  filterCreatorId,
+  filterRewardTypeId,
   ...rest
 }: IProviderProps): JSX.Element {
-  const { data: rewards, error } = useSWR<Reward[]>(
-    filterCreatorSlug
-      ? `${API_URL_CONSTANTS.rewards.rewardsList}?creator__slug=${filterCreatorSlug}`
-      : API_URL_CONSTANTS.rewards.rewardsList,
-    { initialData: initial }
-  );
+  const url = useMemo(() => {
+    if (filterRewardTypeId) {
+      return `${API_URL_CONSTANTS.rewards.rewardsList}?type=${filterRewardTypeId}`;
+    }
+    if (filterCreatorSlug) {
+      return `${API_URL_CONSTANTS.rewards.rewardsList}?creator__slug=${filterCreatorSlug}`;
+    }
+    if (filterCreatorId) {
+      return `${API_URL_CONSTANTS.rewards.rewardsList}?creator=${filterCreatorId}`;
+    }
+    return API_URL_CONSTANTS.rewards.rewardsList;
+  }, [filterCreatorSlug, filterCreatorId, filterRewardTypeId]);
+
+  const { data: rewards, error } = useSWR<Reward[]>(url, {
+    initialData: initial,
+  });
 
   const value = useMemo(
     () => ({

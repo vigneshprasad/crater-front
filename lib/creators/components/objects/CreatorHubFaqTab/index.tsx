@@ -15,7 +15,7 @@ export default function CreatorHubFaqTab(): JSX.Element {
   const { space, colors } = useTheme();
 
   return (
-    <Box m="0 auto" overflowY="auto" px={[space.xxs, space.m]} pt={space.xs}>
+    <Box m="0 auto" overflowY="auto" px={[space.xxs, space.s]} py={space.s}>
       <Grid gridTemplateColumns={["1fr", "repeat(4, 1fr)"]} gridGap={space.xs}>
         <Card
           gridColumn={["1 / span 1", "1 / span 4"]}

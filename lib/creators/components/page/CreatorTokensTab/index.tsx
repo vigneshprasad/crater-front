@@ -37,7 +37,7 @@ export default function CreatorTokensTab(): JSX.Element {
       <Text my={space.xs} textStyle="title">
         Available Rewards
       </Text>
-      <RewardsList rewards={rewards} loading={loading} split={false} />
+      <RewardsList rewards={rewards} loading={loading} />
     </Box>
   );
 }

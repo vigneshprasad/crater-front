@@ -3,7 +3,7 @@ import useSWR from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
-import { Auction } from "../types/tokens";
+import { Auction } from "../types/auctions";
 
 export interface IAuctionListState {
   auctions?: Auction[];
