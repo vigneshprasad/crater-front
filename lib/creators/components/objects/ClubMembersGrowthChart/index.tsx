@@ -39,13 +39,13 @@ export default function ClubMembersGrowthChart({
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart data={clubMembersGrowth}>
         <CartesianGrid stroke={colors.black[3]} strokeDasharray="3 3" />
-        <XAxis dataKey="followed_at_date" interval="preserveStartEnd" />
+        <XAxis dataKey="rsvp_at" interval="preserveStartEnd" />
         <YAxis orientation="right" allowDecimals={false} />
         <Legend formatter={renderColorfulLegendText} verticalAlign="top" />
         <Area
           type={cardinal}
           dot={{ stroke: colors.white[0], strokeWidth: 1 }}
-          dataKey="follower_count"
+          dataKey="rsvp_count"
           stroke="#8884d8"
           fill="#8884d8"
         />
