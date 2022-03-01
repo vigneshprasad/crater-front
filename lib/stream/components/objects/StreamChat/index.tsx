@@ -1,4 +1,4 @@
-import { useRef, useEffect, SyntheticEvent } from "react";
+import { useRef, useEffect, SyntheticEvent, useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
@@ -9,13 +9,17 @@ import {
   Flex,
   Form,
   GridProps,
+  Text,
+  Link,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import { PageRoutes } from "@/common/constants/route.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import { Webinar } from "@/community/types/community";
 import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
 import { ChatMessageType } from "@/stream/types/streamChat";
+import useRewardsList from "@/tokens/context/RewardsListContext";
 
 import ChatMessageItem from "../ChatMessageItem";
 
@@ -32,9 +36,9 @@ interface ChatFormProps {
 export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const { profile } = useAuth();
-
+  const { rewards } = useRewardsList();
   const { messages, postMessage } = useFirebaseChat();
-  const { space, borders } = useTheme();
+  const { space, borders, gradients, radii } = useTheme();
   const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
     {
       fields: {
@@ -82,13 +86,49 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
     }
   };
 
+  const hasActiveReward = useMemo(() => {
+    if (!rewards) {
+      return false;
+    }
+    return rewards.reduce((acc, curr) => {
+      if (!acc) {
+        if (curr.active_auction) {
+          return true;
+        }
+      }
+      return acc;
+    }, false);
+  }, [rewards]);
+
   return (
     <Grid
-      gridTemplateRows={["1fr max-content", "1fr min-content"]}
+      gridTemplateRows={
+        hasActiveReward
+          ? ["max-content 1fr max-content", "max-content 1fr max-content"]
+          : ["max-content 1fr max-content", "1fr max-content"]
+      }
       borderTop={[`2px solid ${borders.main}`, "none"]}
       borderLeft={`2px solid ${borders.main}`}
       {...rest}
     >
+      {hasActiveReward && (
+        <Link href={PageRoutes.stream(stream.id, "auction")} shallow>
+          <Box
+            borderRadius={radii.xxs}
+            p={space.xxxs}
+            m={space.xxs}
+            background={gradients.primary}
+          >
+            <Text mb={space.xxxxs} textStyle="title">
+              {stream.host_detail.name}&apos;s auction is live now
+            </Text>
+            <Text>
+              To get access to exclusive content, time, communities or goods you
+              can place a bid at the auction.
+            </Text>
+          </Box>
+        </Link>
+      )}
       <Box
         overflowY="auto"
         position="relative"

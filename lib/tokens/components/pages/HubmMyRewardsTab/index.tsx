@@ -33,7 +33,7 @@ export default function HubmMyRewardsTab({ creator }: IProps): JSX.Element {
 
   return (
     <Grid
-      gridTemplateColumns="2fr 1fr"
+      gridTemplateColumns="3fr minmax(180px, 1fr)"
       px={space.s}
       py={space.xs}
       gridGap={space.s}

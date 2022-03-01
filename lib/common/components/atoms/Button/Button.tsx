@@ -177,7 +177,7 @@ export function Button({
       bg={bg}
       borderRadius={radii.xxxs}
       type={type}
-      px={["0.5em"]}
+      px={["0.2em"]}
       borderColor={colors.accent}
       variant={variantProp}
       as="button"
@@ -188,8 +188,8 @@ export function Button({
       {prefixElement && prefixElement}
       <Text
         minWidth={["none", 96]}
-        px={["0.5em"]}
-        py={["0.6em"]}
+        px={["0.3em"]}
+        py={["0.4em"]}
         m="auto auto"
         color="inherit"
         textStyle={fontVariant}

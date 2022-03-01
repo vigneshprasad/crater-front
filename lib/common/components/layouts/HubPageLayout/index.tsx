@@ -17,27 +17,27 @@ import BaseLayout from "../BaseLayout";
 const CREATOR_TABS = {
   stream: (
     <Link href={PageRoutes.hub("stream")} shallow>
-      <BaseTabItem textStyle="title" label="Streams" />
+      <BaseTabItem textStyle="title" label="Stream" />
     </Link>
   ),
   club_members: (
     <Link href={PageRoutes.hub("club_members")} shallow>
-      <BaseTabItem textStyle="title" label="Club Members" />
+      <BaseTabItem textStyle="title" label="Analytics" />
     </Link>
   ),
-  rewards: (
-    <Link href={PageRoutes.hub("rewards")} shallow>
-      <BaseTabItem textStyle="title" label="My Rewards" />
+  auction: (
+    <Link href={PageRoutes.hub("auction")} shallow>
+      <BaseTabItem textStyle="title" label="Auction" />
     </Link>
   ),
-  portfolio: (
-    <Link href={PageRoutes.hub("portfolio")} shallow>
-      <BaseTabItem textStyle="title" label="My Portfolio" />
+  wallet: (
+    <Link href={PageRoutes.hub("wallet")} shallow>
+      <BaseTabItem textStyle="title" label="Wallet" />
     </Link>
   ),
   faq: (
     <Link href={PageRoutes.hub("faq")} shallow>
-      <BaseTabItem textStyle="title" label="Know More" />
+      <BaseTabItem textStyle="title" label="FAQ" />
     </Link>
   ),
 };
@@ -48,14 +48,14 @@ const USER_TABS = {
       <BaseTabItem textStyle="title" label="Streams" />
     </Link>
   ),
-  portfolio: (
-    <Link href={PageRoutes.hub("portfolio")} shallow>
-      <BaseTabItem textStyle="title" label="My Portfolio" />
+  wallet: (
+    <Link href={PageRoutes.hub("wallet")} shallow>
+      <BaseTabItem textStyle="title" label="Wallet" />
     </Link>
   ),
   faq: (
     <Link href={PageRoutes.hub("faq")} shallow>
-      <BaseTabItem textStyle="title" label="Know More" />
+      <BaseTabItem textStyle="title" label="FAQ" />
     </Link>
   ),
 };
@@ -124,6 +124,7 @@ export default function HubPageLayout({
           top={0}
           mt={[space.xxxs, space.xxs]}
           px={[space.xxs, space.s]}
+          py={space.xxs}
           tabs={tabs}
           activeTab={activeTab}
         />

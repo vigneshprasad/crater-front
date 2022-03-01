@@ -1,16 +1,24 @@
 import { useTheme } from "styled-components";
 
-import { Text, TextProps } from "../../atoms";
+import { Text, GridProps, Grid } from "../../atoms";
 
-export interface BaseTabItemProps extends TextProps {
+export interface BaseTabItemProps extends GridProps {
   label: string;
+  suffixElement?: JSX.Element;
 }
 
-export function BaseTabItem({ label, ...rest }: BaseTabItemProps): JSX.Element {
+export function BaseTabItem({
+  label,
+  suffixElement,
+  ...rest
+}: BaseTabItemProps): JSX.Element {
   const { space } = useTheme();
   return (
-    <Text px={space.xxxs} textStyle="menu" {...rest}>
-      {label}
-    </Text>
+    <Grid gridTemplateColumns="1fr max-content" alignItems="center" {...rest}>
+      <Text px={space.xxxs} textStyle="menu">
+        {label}
+      </Text>
+      {suffixElement}
+    </Grid>
   );
 }

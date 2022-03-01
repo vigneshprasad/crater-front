@@ -19,7 +19,7 @@ export default function LiveStreamPageLayout({
     <BaseLayout aside={<AsideNav />}>
       {modal}
       <Grid
-        gridTemplateColumns={["1fr", "1fr 360px"]}
+        gridTemplateColumns={["1fr", "1fr 400px"]}
         h="100%"
         gridTemplateRows={["min-content 1fr", "1fr"]}
       >

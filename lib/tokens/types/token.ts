@@ -36,4 +36,5 @@ export interface Reward {
   active_auction?: Auction;
   creator_detail: Creator;
   type_detail: RewardType;
+  card_background?: string;
 }

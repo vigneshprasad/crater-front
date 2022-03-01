@@ -38,6 +38,14 @@ const TableStyles = styled(Box)`
       text-align: left;
     }
 
+    tbody tr {
+      transition: background 200ms ease-in-out;
+    }
+
+    tbody tr:hover {
+      background: ${({ theme }) => theme.colors.black[1]};
+    }
+
     th,
     td {
       margin: 0;

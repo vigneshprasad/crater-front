@@ -13,6 +13,7 @@ import {
   AnimatedBox,
   Span,
   Spiner,
+  Shimmer,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -30,7 +31,6 @@ import { BidStatus } from "@/tokens/types/auctions";
 import CurrencyInput from "../../atoms/CurrencyInput";
 import AuctionProgressBar from "../AuctionProgressBar";
 import RewardDescriptionPreview from "../RewardDescriptionPreview";
-import RewardImagePreview from "../RewardImagePreview";
 import RewardBidModalContainer, {
   IRewardBidModalContainerProps,
 } from "./container";
@@ -49,7 +49,7 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
   const [minBidError, setMinBidError] = useState(false);
   const { space, colors, radii, gradients } = useTheme();
   const { creator } = useCreator();
-  const { auction } = useActiveAuction();
+  const { auction, loading: auctionLoading } = useActiveAuction();
   const { reward } = useRewardItem();
   const router = useRouter();
   const [postBidLoading, setPostBidLoading] = useState(false);
@@ -99,31 +99,44 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
 
     setPostBidLoading(true);
 
-    const [payment] = await PaymentApiClient().postPayment(paymentData);
+    const [payment, paymentError] = await PaymentApiClient().postPayment(
+      paymentData
+    );
 
-    if (payment) {
-      const [bid] = await AuctionApiClient().postBid({
-        creator: creator?.id,
-        payment: payment.id,
-        auction: auction?.id,
-        bid_price: data.bid_price,
-        quantity: data.quantity,
-        status: BidStatus.PaymentPending,
-      });
-      if (bid) {
-        const [stripeIntent] =
-          await PaymentApiClient().createStripePaymentIntent(
-            payment.id,
-            amount,
-            bid.id
-          );
-        if (stripeIntent) {
-          router.push(
-            PageRoutes.checkoutBid(bid.id, stripeIntent.client_secret)
-          );
-        }
-      }
+    if (paymentError || !payment) {
+      setPostBidLoading(false);
+      return;
     }
+
+    const [bid, bidError] = await AuctionApiClient().postBid({
+      creator: creator?.id,
+      payment: payment.id,
+      auction: auction?.id,
+      bid_price: data.bid_price,
+      quantity: data.quantity,
+      status: BidStatus.PaymentPending,
+    });
+
+    if (bidError || !bid) {
+      setPostBidLoading(false);
+      return;
+    }
+
+    const [stripeIntent, stripeIntentError] =
+      await PaymentApiClient().createStripePaymentIntent(
+        payment.id,
+        amount,
+        bid.id
+      );
+
+    if (!stripeIntent || stripeIntentError) {
+      setPostBidLoading(false);
+      return;
+    }
+
+    await router.push(
+      PageRoutes.checkoutBid(bid.id, stripeIntent.client_secret)
+    );
 
     setPostBidLoading(false);
   };
@@ -158,13 +171,9 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
             px={space.xxs}
             py={space.xxs}
             borderRadius={radii.xxs}
-            background={gradients.primary}
+            background={reward.card_background ?? gradients.primary}
           >
             <Flex flexDirection="row" gridGap={space.xxs} alignItems="center">
-              {reward.photo && (
-                <RewardImagePreview w={96} h={96} reward={reward} />
-              )}
-
               <Box>
                 <Text mb={4} fontSize="1.6rem" fontWeight="800">
                   {reward.name}
@@ -230,6 +239,9 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
       {/* Auctiona and place bid */}
       {(() => {
         if (!auction) {
+          if (auctionLoading) {
+            return <Shimmer />;
+          }
           return <Box>No active auctions</Box>;
         }
 

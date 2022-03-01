@@ -40,9 +40,11 @@ export default function BidsDataTable({
   const columns = useMemo<Column<Bid>[]>(
     () => [
       {
-        label: "Bidder",
-        key: "bidder",
-        valueGetter: (obj) => obj.bidder_profile_detail.name,
+        label: "Reward",
+        key: "reward",
+        valueGetter: (obj) => (
+          <Text fontWeight="600">{obj.reward_detail.name}</Text>
+        ),
       },
       {
         label: "Price",
@@ -117,8 +119,6 @@ export default function BidsDataTable({
       </Flex>
     );
   }
-
-  console.log(bids);
 
   return <DataTable columns={columns} data={bids} />;
 }

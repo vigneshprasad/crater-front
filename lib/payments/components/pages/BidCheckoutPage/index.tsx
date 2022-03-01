@@ -42,21 +42,21 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
       elements,
       confirmParams: {
         return_url: `${hostUrl}${PageRoutes.hub(
-          "portfolio"
+          "wallet"
         )}?bid_payment_success=${bid?.id}`,
       },
     });
 
     if (result.error) {
       // Show error to your customer (for example, payment details incomplete)
+      setRequestLoading(false);
       console.log(result.error.message);
     } else {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
+      setRequestLoading(false);
     }
-
-    setRequestLoading(false);
   };
 
   const formatter = new Intl.NumberFormat("en-IN", {
@@ -66,7 +66,7 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
 
   return (
     <Grid
-      gridTemplateColumns="1fr minmax(320px, 640px)"
+      gridTemplateColumns="1fr minmax(320px, 600px)"
       py={space.s}
       gridRowGap={space.xs}
       gridColumnGap={space.l}
@@ -84,14 +84,15 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
         onSubmit={handleFormSubmit}
       >
         <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Enter your card details to place the bid. No card information is ever
+          stored with us &amp; transactions are processed using Stripe.
         </Text>
         <PaymentElement />
 
         <Text color={colors.slate}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut.
+          Note if a bid is accepted the money will not be refunded. By placing a
+          bid you are accepting the terms and conditions. WhatsApp Help:
+          +919930474469
         </Text>
 
         <Button
@@ -119,15 +120,6 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
                 withCTA={false}
                 withDetail
               />
-              <Flex color={colors.slate}>
-                <Text flex="1">Total Bid Price:</Text>
-                <Text>{formatter.format(bid.bid_price)}</Text>
-              </Flex>
-
-              <Flex color={colors.slate}>
-                <Text flex="1">Processing fees:</Text>
-                <Text>{formatter.format(20)}</Text>
-              </Flex>
 
               <Hr />
 

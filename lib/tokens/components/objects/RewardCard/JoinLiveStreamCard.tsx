@@ -1,13 +1,13 @@
 import Image from "next/image";
 
 import { Box, Text, Span, Flex } from "@/common/components/atoms";
-import { Reward } from "@/tokens/types/token";
 
-interface IProps {
-  reward: Reward;
-}
+import { RewardCardProps } from ".";
 
-export default function JoinLiveStreamCard({ reward }: IProps): JSX.Element {
+export default function JoinLiveStreamCard({
+  reward,
+  showCount,
+}: RewardCardProps): JSX.Element {
   return (
     <Box pt="53.80%" position="relative" overflow="hidden">
       <Image src={reward.photo} layout="fill" alt="" />
@@ -19,16 +19,19 @@ export default function JoinLiveStreamCard({ reward }: IProps): JSX.Element {
         bottom={42}
         w="38%"
       >
-        <Text fontSize="2rem" lineHeight="2.8rem">
+        <Text fontSize="1.6rem" lineHeight="2.rem">
           Ticket to{" "}
-          <Span>{reward.creator_detail.profile_detail.name}&apos;s</Span>
+          <Span fontWeight="700">
+            {reward.creator_detail.profile_detail.name}&apos;s
+          </Span>
           Livestream
         </Text>
 
         <Box flex="1" />
 
         <Text fontWeight="600" fontSize="1.6rem">
-          {reward.quantity_sold} / {reward.quantity}
+          {showCount && showCount}
+          {!showCount && `${reward.quantity_sold} / ${reward.quantity}`}
         </Text>
       </Flex>
     </Box>

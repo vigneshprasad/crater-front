@@ -1,10 +1,9 @@
-import { useMemo } from "react";
-import { PieChart, Pie, Tooltip, Cell } from "recharts";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
-import { Box, Text, Flex, Hr } from "@/common/components/atoms";
+import { Box, Text, Flex, Card } from "@/common/components/atoms";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { BidCreatorSummary } from "@/tokens/types/auctions";
 
 interface IProps {
   creator?: number;
@@ -12,37 +11,14 @@ interface IProps {
 
 export default function BidsSummaryBox({ creator }: IProps): JSX.Element {
   const { space, colors, borders, radii } = useTheme();
-  const { data: bidSummary } = useSWR(
+  const { data: bidSummary } = useSWR<BidCreatorSummary>(
     creator ? API_URL_CONSTANTS.auctions.bidSummaryForCoin(creator) : null
-  );
-
-  const { data: auctionSummary } = useSWR(
-    creator ? API_URL_CONSTANTS.auctions.auctionSummaryForCoin(creator) : null
   );
 
   const formatter = new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
   });
-
-  const pieData = useMemo(() => {
-    if (!auctionSummary) {
-      return [];
-    }
-
-    return [
-      {
-        key: "total_coins",
-        value: auctionSummary["total_coins"],
-        color: colors.amber,
-      },
-      {
-        key: "tokens_circulation",
-        value: auctionSummary["tokens_circulation"],
-        color: colors.greenSuccess,
-      },
-    ];
-  }, [auctionSummary, colors]);
 
   if (!creator) {
     return (
@@ -70,50 +46,37 @@ export default function BidsSummaryBox({ creator }: IProps): JSX.Element {
   }
 
   return (
-    <Box>
-      <Text mb={space.s} textStyle="title">
-        Bids Summary
-      </Text>
-      <Flex flexDirection="column" gridGap={space.xxs}>
-        <Text color={colors.slate}>Total Worth</Text>
-        <Text textStyle="headline4" fontWeight="400">
-          {formatter.format(bidSummary?.total_recieved)}
-        </Text>
-        <Text color={colors.slate}>Net Worth</Text>
-        <Text textStyle="headline4" fontWeight="400">
-          {formatter.format(bidSummary?.net_worth)}
-        </Text>
-        <Hr px={space.xxs} />
-
-        <Flex alignItems="center">
-          <PieChart width={196} height={196}>
-            <Pie
-              data={pieData}
-              outerRadius={72}
-              innerRadius={64}
-              stroke="transparent"
-              dataKey="value"
-            >
-              {pieData.map((data) => (
-                <Cell key="value" fill={data.color} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
+    <Card>
+      {bidSummary && (
+        <Flex flexDirection="column" gridGap={space.xxs}>
+          <Box>
+            <Text color={colors.slate}>Total Worth</Text>
+            <Text fontSize="2.4rem" lineHeight="3.2rem" fontWeight="400">
+              {formatter.format(bidSummary.total_net_worth)}
+            </Text>
+          </Box>
 
           <Box>
-            <Text color={colors.slate}>Total Coins:</Text>
-            <Text textStyle="headline5" fontWeight="400">
-              {auctionSummary?.total_coins}
+            <Text color={colors.slate}>Net Worth</Text>
+            <Text fontSize="2.4rem" lineHeight="3.2rem" fontWeight="400">
+              {formatter.format(bidSummary.accepted_net_worth)}
             </Text>
+          </Box>
 
-            <Text color={colors.slate}>Coins in circulation:</Text>
-            <Text textStyle="headline5" fontWeight="400">
-              {auctionSummary?.tokens_circulation}
+          <Box>
+            <Text color={colors.slate}>Total bids:</Text>
+            <Text fontSize="2.4rem" lineHeight="3.2rem" fontWeight="400">
+              {bidSummary.total_bids}
+            </Text>
+          </Box>
+          <Box>
+            <Text color={colors.slate}>Total accepeted bids:</Text>
+            <Text fontSize="2.4rem" lineHeight="3.2rem" fontWeight="400">
+              {bidSummary.total_accepted}
             </Text>
           </Box>
         </Flex>
-      </Flex>
-    </Box>
+      )}
+    </Card>
   );
 }

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { Text } from "@/common/components/atoms";
 import DataTable from "@/common/components/objects/DataTable";
 import { Column } from "@/common/components/objects/DataTable/types";
 import DateTime from "@/common/utils/datetime/DateTime";
@@ -13,9 +14,16 @@ export default function TransactionDataTable({ bids }: IProps): JSX.Element {
   const columns = useMemo<Column<Bid>[]>(
     () => [
       {
+        label: "Reward",
+        key: "reward",
+        valueGetter: (obj) => (
+          <Text fontWeight="600">{obj.reward_detail.name}</Text>
+        ),
+      },
+      {
         label: "Creator",
         key: "creator",
-        valueGetter: (obj) => obj.creator_detail?.profile_detail.name,
+        valueGetter: (obj) => obj.creator_detail.profile_detail.name,
       },
       {
         label: "Price",

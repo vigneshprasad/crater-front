@@ -48,7 +48,7 @@ export default function HubMyTokens({ creator }: IProps): JSX.Element | null {
   }
 
   return (
-    <HubPageLayout activeTab="rewards" creator={creator}>
+    <HubPageLayout activeTab="auction" creator={creator}>
       <ActiveAuctionProvider reward={1}>
         <RewardsListProvider filterCreatorSlug={creator.slug}>
           <BidListProvider filterCreator={creator.id}>

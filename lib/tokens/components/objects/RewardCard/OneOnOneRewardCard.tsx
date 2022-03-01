@@ -3,15 +3,13 @@ import { useTheme } from "styled-components";
 import Image from "next/image";
 
 import { Box, Flex, Text, Icon } from "@/common/components/atoms";
-import { Reward } from "@/tokens/types/token";
 
+import { RewardCardProps } from ".";
 import { Card, Container } from "./common";
 
-interface IProps {
-  reward: Reward;
-}
-
-export default function OneOnOneRewardCard({ ...props }: IProps): JSX.Element {
+export default function OneOnOneRewardCard({
+  ...props
+}: RewardCardProps): JSX.Element {
   const { reward } = props;
 
   const { space, colors, radii } = useTheme();

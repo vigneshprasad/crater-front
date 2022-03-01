@@ -3,18 +3,19 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
-import { Box, Grid, Link } from "@/common/components/atoms";
+import { Box, Grid, Link, Icon } from "@/common/components/atoms";
 import {
   BaseTabBar,
   BaseTabItem,
 } from "@/common/components/objects/BaseTabBar";
 import { PageRoutes } from "@/common/constants/route.constants";
+import { theme } from "@/common/theme";
 import { useWebinar } from "@/community/context/WebinarContext";
 
 import StreamChat from "../StreamChat";
 import StreamRewardsPanel from "../StreamRewardsPanel";
 
-type TabKeys = "chat" | "rewards";
+type TabKeys = "chat" | "auction";
 
 const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
   chat: (
@@ -22,9 +23,15 @@ const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
       <BaseTabItem label="Chat" />
     </Link>
   ),
-  rewards: (
-    <Link href={PageRoutes.stream(id, "rewards")} shallow>
-      <BaseTabItem label="Rewards" />
+  auction: (
+    <Link href={PageRoutes.stream(id, "auction")} shallow>
+      <BaseTabItem
+        title="Exclusive time, content, goods or communities that you can bid on to access."
+        label="Auction"
+        suffixElement={
+          <Icon size={12} color={theme.colors.slate} fill icon="Info" />
+        }
+      />
     </Link>
   ),
 });
@@ -52,7 +59,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
 
   return (
     <Grid
-      gridTemplateRows="max-content 1fr"
+      gridTemplateRows={["max-content 1fr"]}
       bg={["black.5", "black.5"]}
       borderLeft={["none", `2px solid ${borders.main}`]}
     >
@@ -63,7 +70,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       )}
 
       {activeTab === "chat" && webinar && <StreamChat stream={webinar} />}
-      {activeTab === "rewards" && webinar && (
+      {activeTab === "auction" && webinar && (
         <StreamRewardsPanel stream={webinar} />
       )}
     </Grid>

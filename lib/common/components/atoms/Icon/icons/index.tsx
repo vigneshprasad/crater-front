@@ -22,6 +22,7 @@ export { default as Globe } from "./Globe";
 export { default as Grid } from "./Grid";
 export { default as IcNotficationFill } from "./IcNotficationFill";
 export { default as IcNotification } from "./IcNotification";
+export { default as Info } from "./Info";
 export { default as InstagramColor } from "./InstagramColor";
 export { default as Instagram } from "./Instagram";
 export { default as Linkedin } from "./Linkedin";

@@ -43,7 +43,7 @@ export default function HubPortfolio({
   userId,
 }: PageProps): JSX.Element {
   return (
-    <HubPageLayout creator={creator} activeTab="portfolio">
+    <HubPageLayout creator={creator} activeTab="wallet">
       <BidListProvider filterBidder={userId}>
         <UserRewardListProvider filterUser={userId}>
           <HubPortfolioTab />

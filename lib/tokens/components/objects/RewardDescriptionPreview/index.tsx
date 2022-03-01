@@ -22,9 +22,28 @@ const RewardDescriptionPreview = styled(Box)`
     grid-gap: 16px;
   }
 
-  & > ul > li {
-    list-style: square;
-    font-size: 1.2rem;
+  & > div.grid {
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  & > div.grid > div.grid-item {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: center;
+    grid-gap: 16px;
+  }
+
+  & > div.grid > div.grid-item > img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  & > div.grid > div.grid-item > p {
+    font-size: 1.4rem;
   }
 `;
 

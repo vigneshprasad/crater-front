@@ -14,7 +14,6 @@ import { Reward } from "@/tokens/types/token";
 
 import AuctionProgressBar from "../AuctionProgressBar";
 import RewardDescriptionPreview from "../RewardDescriptionPreview";
-import RewardImagePreview from "../RewardImagePreview";
 
 interface IProps extends BoxProps {
   reward: Reward;
@@ -44,27 +43,20 @@ export default function TicketCard({
   ...rest
 }: IProps): JSX.Element {
   const { space, gradients, colors, radii } = useTheme();
-  const { name, quantity, quantity_sold, active_auction } = reward;
+  const { name, quantity, quantity_sold, active_auction, card_background } =
+    reward;
+
+  const background = card_background ?? gradients.primary;
 
   return (
     <Box cursor="pointer" {...rest}>
       <Container
         px={space.xxs}
         py={space.xxxs}
-        background={gradients.primary}
+        background={background}
         borderRadius={radii.xxs}
       >
         <Flex alignItems="center" gridGap={space.xxxs}>
-          {reward.photo && (
-            <RewardImagePreview
-              h={48}
-              w={48}
-              borderRadius={radii.xxxs}
-              reward={reward}
-              overflow="hidden"
-            />
-          )}
-
           <Box flex={1}>
             <Text fontSize="1.6rem" fontWeight="800">
               {name}
@@ -122,7 +114,7 @@ export default function TicketCard({
         >
           {reward.description && (
             <RewardDescriptionPreview
-              px={space.xs}
+              p={space.xxs}
               dangerouslySetInnerHTML={{ __html: reward.description }}
             />
           )}

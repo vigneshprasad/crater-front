@@ -29,8 +29,14 @@ export default function BidPaymentSuccessCard({
           }}
         />
         <Box flex="1">
-          <Text textStyle="headline6">Payment Success!</Text>
-          <Text>Your bid was placed successfully.</Text>
+          <Text textStyle="headline6">
+            Congratulations! You have successfully placed a bid.
+          </Text>
+          <Text>
+            If the creator accepts the bid, you will receive access. If the bid
+            is rejected your money will be refunded. Need help? Whatsapp:
+            +919930474469
+          </Text>
         </Box>
       </Flex>
     </Box>

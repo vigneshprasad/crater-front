@@ -3,13 +3,15 @@ import { Reward } from "@/tokens/types/token";
 import JoinLiveStreamCard from "./JoinLiveStreamCard";
 import OneOnOneRewardCard from "./OneOnOneRewardCard";
 
-interface IProps {
+export interface RewardCardProps {
   reward: Reward;
+  showCount?: JSX.Element;
 }
 
-export default function RewardCard({ reward }: IProps): JSX.Element {
+export default function RewardCard({ ...props }: RewardCardProps): JSX.Element {
+  const { reward } = props;
   if (reward.type_detail.name === "Join Livestream") {
-    return <JoinLiveStreamCard reward={reward} />;
+    return <JoinLiveStreamCard {...props} />;
   }
-  return <OneOnOneRewardCard reward={reward} />;
+  return <OneOnOneRewardCard {...props} />;
 }

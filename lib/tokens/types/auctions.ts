@@ -51,3 +51,10 @@ export interface CoinPriceLog {
   coin: number;
   price: number;
 }
+
+export interface BidCreatorSummary {
+  total_net_worth: number;
+  accepted_net_worth: number;
+  total_bids: number;
+  total_accepted: number;
+}
