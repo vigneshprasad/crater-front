@@ -55,7 +55,6 @@
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "@types/react-lottie": "^1.2.6",
-    "@types/react-table": "^7.7.9",
     "@types/styled-components": "^5.1.11",
     "@types/styled-system": "^5.1.13",
     "@types/validator": "^13.6.3",
