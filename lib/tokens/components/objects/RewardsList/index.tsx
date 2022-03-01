@@ -8,9 +8,13 @@ import RewardCard from "../RewardCard";
 interface IProps {
   rewards?: Reward[];
   loading: boolean;
+  onClickReward?: (reward: Reward) => void;
 }
 
-export default function RewardsList({ rewards }: IProps): JSX.Element {
+export default function RewardsList({
+  rewards,
+  onClickReward,
+}: IProps): JSX.Element {
   const { space } = useTheme();
 
   return (
@@ -21,7 +25,16 @@ export default function RewardsList({ rewards }: IProps): JSX.Element {
       alignItems="start"
     >
       {rewards &&
-        rewards.map((reward) => <RewardCard key={reward.id} reward={reward} />)}
+        rewards.map((reward) => (
+          <RewardCard
+            cursor="pointer"
+            key={reward.id}
+            reward={reward}
+            onClick={() => {
+              onClickReward && onClickReward(reward);
+            }}
+          />
+        ))}
     </Grid>
   );
 }

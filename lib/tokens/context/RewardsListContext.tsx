@@ -17,15 +17,20 @@ type IProviderProps = PropsWithChildren<{
   initial?: Reward[];
   filterCreatorSlug?: number | string;
   filterCreatorId?: number | string;
+  filterRewardTypeId?: number | string;
 }>;
 
 export function RewardsListProvider({
   initial,
   filterCreatorSlug,
   filterCreatorId,
+  filterRewardTypeId,
   ...rest
 }: IProviderProps): JSX.Element {
   const url = useMemo(() => {
+    if (filterRewardTypeId) {
+      return `${API_URL_CONSTANTS.rewards.rewardsList}?type=${filterRewardTypeId}`;
+    }
     if (filterCreatorSlug) {
       return `${API_URL_CONSTANTS.rewards.rewardsList}?creator__slug=${filterCreatorSlug}`;
     }
@@ -33,7 +38,8 @@ export function RewardsListProvider({
       return `${API_URL_CONSTANTS.rewards.rewardsList}?creator=${filterCreatorId}`;
     }
     return API_URL_CONSTANTS.rewards.rewardsList;
-  }, [filterCreatorSlug, filterCreatorId]);
+  }, [filterCreatorSlug, filterCreatorId, filterRewardTypeId]);
+
   const { data: rewards, error } = useSWR<Reward[]>(url, {
     initialData: initial,
   });

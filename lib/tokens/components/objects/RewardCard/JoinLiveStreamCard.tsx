@@ -7,9 +7,10 @@ import { RewardCardProps } from ".";
 export default function JoinLiveStreamCard({
   reward,
   showCount,
+  ...rest
 }: RewardCardProps): JSX.Element {
   return (
-    <Box pt="53.80%" position="relative" overflow="hidden">
+    <Box pt="53.80%" position="relative" overflow="hidden" {...rest}>
       <Image src={reward.photo} layout="fill" alt="" />
       <Flex
         flexDirection="column"

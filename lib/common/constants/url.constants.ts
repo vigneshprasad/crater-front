@@ -83,6 +83,7 @@ export const API_URL_CONSTANTS = {
   },
   rewards: {
     rewardsList: "/crater/reward/",
+    rewardTypesList: "/crater/reward/type/",
   },
   auctions: {
     getBids: "/crater/bid/",

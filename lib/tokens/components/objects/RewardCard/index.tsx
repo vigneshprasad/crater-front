@@ -1,9 +1,10 @@
+import { GridProps } from "@/common/components/atoms";
 import { Reward } from "@/tokens/types/token";
 
 import JoinLiveStreamCard from "./JoinLiveStreamCard";
 import OneOnOneRewardCard from "./OneOnOneRewardCard";
 
-export interface RewardCardProps {
+export interface RewardCardProps extends GridProps {
   reward: Reward;
   showCount?: JSX.Element;
 }
