@@ -107,6 +107,7 @@ export default function TicketCard({
       </Container>
       {withDetail && (
         <Box
+          display={["none", "block"]}
           p={space.xxxs}
           w="calc(100% - 16px)"
           bg={colors.black[3]}

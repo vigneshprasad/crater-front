@@ -166,8 +166,8 @@ export function Button({
   }, [variantProp, colors]);
 
   const gridTemplateColumns = useMemo(() => {
-    const prefix = prefixElement ? "min-content " : "";
-    const suffix = suffixElement ? " min-content" : "";
+    const prefix = prefixElement ? "max-content " : "";
+    const suffix = suffixElement ? " max-content" : "";
 
     return `${prefix}1fr${suffix}`;
   }, [prefixElement, suffixElement]);

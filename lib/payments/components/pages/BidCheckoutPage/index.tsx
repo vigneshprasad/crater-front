@@ -66,27 +66,34 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
 
   return (
     <Grid
-      gridTemplateColumns="1fr minmax(320px, 600px)"
+      gridTemplateColumns={["1fr", "1fr minmax(320px, 600px)"]}
       py={space.s}
+      px={[space.xxs, 0]}
       gridRowGap={space.xs}
       gridColumnGap={space.l}
       alignItems="start"
     >
-      <Text px={space.xxxs} textStyle="headline4" gridColumn="1 / span 2">
+      <Text
+        gridRow={["1", "1"]}
+        textStyle="headline4"
+        gridColumn={["1", "1 / span 2"]}
+      >
         Checkout
       </Text>
 
+      <Text gridRow={["2", "2"]} gridColumn={["1", "1 / span 2"]}>
+        Enter your card details to place the bid. No card information is ever
+        stored with us &amp; transactions are processed using Stripe.
+      </Text>
+
       <Form
+        gridRow={["4", "3"]}
         px={space.xxxs}
         display="flex"
         flexDirection="column"
         gridGap={space.xs}
         onSubmit={handleFormSubmit}
       >
-        <Text>
-          Enter your card details to place the bid. No card information is ever
-          stored with us &amp; transactions are processed using Stripe.
-        </Text>
         <PaymentElement />
 
         <Text color={colors.slate}>
@@ -103,7 +110,7 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
         />
       </Form>
 
-      <Card justifySelf="center" minWidth={["100%", 420]}>
+      <Card gridRow={["3", "3"]} justifySelf="center" minWidth={["100%", 420]}>
         <Text mb={space.xs} textStyle="title">
           Your Order
         </Text>

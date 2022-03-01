@@ -122,6 +122,7 @@ export default function HubPageLayout({
 
         <BaseTabBar
           top={0}
+          overflowX="auto"
           mt={[space.xxxs, space.xxs]}
           px={[space.xxs, space.s]}
           py={space.xxs}

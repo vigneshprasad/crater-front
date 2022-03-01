@@ -13,13 +13,10 @@ interface IDataTableProps<P> {
 
 const TableStyles = styled(Box)`
   /* This will make the table scrollable when it gets too small */
-  .tableWrap {
-    display: block;
-    max-width: 100%;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    border-bottom: 1px solid black;
-  }
+  display: block;
+  max-width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
 
   table {
     border-spacing: 0;
@@ -63,6 +60,18 @@ const TableStyles = styled(Box)`
       :last-child {
         border-right: 0;
       }
+    }
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints[0]}) {
+    display: block;
+    max-width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    table {
+      border-spacing: 0;
+      border-top: 1px solid ${({ theme }) => theme.borders.main};
     }
   }
 `;

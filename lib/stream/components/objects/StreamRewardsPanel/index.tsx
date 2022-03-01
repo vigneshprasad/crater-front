@@ -77,13 +77,13 @@ export default function StreamRewardsPanel({ stream }: IProps): JSX.Element {
 
   return (
     <>
-      <Flex position="relative">
+      <Flex position="relative" flexDirection="column">
         <TicketsList
-          position="absolute"
-          top={0}
-          right={0}
-          left={0}
-          bottom="50%"
+          position={["static", "absolute"]}
+          top={["auto", 0]}
+          right={["auto", 0]}
+          left={["auto", 0]}
+          bottom={["auto", "50%"]}
           rewards={rewards}
           loading={loading}
           renderList={(rewards) => {
@@ -106,11 +106,11 @@ export default function StreamRewardsPanel({ stream }: IProps): JSX.Element {
 
         {bids && bids.length > 0 && (
           <Box
-            position="absolute"
-            top="52%"
-            right={0}
-            left={0}
-            bottom={0}
+            position={["static", "absolute"]}
+            top={["auto", "52%"]}
+            right={["auto", 0]}
+            left={["auto", 0]}
+            bottom={["auto", 0]}
             overflowY="auto"
           >
             <Text

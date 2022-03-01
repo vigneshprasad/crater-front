@@ -105,7 +105,7 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
       gridTemplateRows={
         hasActiveReward
           ? ["max-content 1fr max-content", "max-content 1fr max-content"]
-          : ["max-content 1fr max-content", "1fr max-content"]
+          : ["1fr max-content", "1fr max-content"]
       }
       borderTop={[`2px solid ${borders.main}`, "none"]}
       borderLeft={`2px solid ${borders.main}`}

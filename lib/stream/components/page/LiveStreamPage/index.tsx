@@ -3,9 +3,22 @@ import { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
 
-import { Box, Shimmer, Text } from "@/common/components/atoms";
+import useAuth from "@/auth/context/AuthContext";
+import {
+  Box,
+  Shimmer,
+  Text,
+  Grid,
+  Icon,
+  Flex,
+  Avatar,
+  Link,
+} from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/Button";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
+import { useFollower } from "@/creators/context/FollowerContext";
 import { Props as DyteMeetingProps } from "@/dyte/components/objects/DyteMeeting";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 import RewardBidModal from "@/tokens/components/objects/RewardBidModal";
@@ -43,11 +56,14 @@ type IProps = {
 };
 
 export function Content({ webinar, orgId }: IProps): JSX.Element {
+  const { user } = useAuth();
   const { webinar: cachedWebinar } = useWebinar();
   const { dyteParticipant } = useDyteWebinar();
-  const { space, borders } = useTheme();
+  const { space, borders, colors } = useTheme();
   const { setTokenModalVisible, tokenModalVisible, activeReward } =
     useLiveStreamPageContext();
+
+  const { followers, subscribeCreator } = useFollower();
 
   return (
     <LiveStreamPageLayout
@@ -69,8 +85,96 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
         )
       }
       streamDetail={
-        <Box p={space.xs}>
-          <Text textStyle="headline5">{cachedWebinar?.topic_detail.name}</Text>
+        <Box>
+          <Grid
+            p={space.xs}
+            gridTemplateColumns={["1fr", "1fr min-content"]}
+            alignItems="center"
+            gridRowGap={[space.xxs, 0]}
+          >
+            <Box>
+              <Text textStyle="headline5" maxLines={2}>
+                {cachedWebinar?.topic_detail.name}
+              </Text>
+            </Box>
+
+            <Flex>
+              {(() => {
+                // If the logged in user is the host, do not show `Follow` button
+                if (cachedWebinar?.host === user?.pk) return null;
+
+                if (
+                  followers &&
+                  followers?.length > 0 &&
+                  followers?.[0].notify
+                ) {
+                  return (
+                    <Button
+                      mr={space.xxs}
+                      text="Following"
+                      variant="nav-button"
+                      bg={colors.black[5]}
+                      border="1px solid rgba(255, 255, 255, 0.1)"
+                      disabled={true}
+                    />
+                  );
+                }
+
+                return (
+                  <Button
+                    mr={space.xxs}
+                    variant="nav-button"
+                    text="Follow"
+                    onClick={() => {
+                      const creator = webinar.host_detail?.creator_detail?.id;
+                      if (creator) {
+                        subscribeCreator(creator);
+                      }
+                    }}
+                  />
+                );
+              })()}
+              <Button
+                border={`2px solid ${colors.slate}`}
+                bg="transparent"
+                prefixElement={
+                  <Icon mx={space.xxxxs} size={18} icon="Linktree" />
+                }
+                variant="nav-button"
+                text="LinkTree"
+              />
+            </Flex>
+            <Flex
+              display={["none", "flex"]}
+              flexDirection="column"
+              gridColumn="1 / span 2"
+            >
+              <Text my={space.xxs} textStyle="title">
+                Speakers
+              </Text>
+              <Flex>
+                {cachedWebinar?.speakers_detail_list.map((speaker) => {
+                  return (
+                    <Link
+                      key={speaker.pk}
+                      href={PageRoutes.creatorProfile(
+                        speaker.creator_detail?.slug ?? ""
+                      )}
+                    >
+                      <Flex
+                        flexDirection="row"
+                        alignItems="center"
+                        gridGap={space.xxxs}
+                      >
+                        <Avatar size={42} image={speaker.photo} />
+                        <Text fontWeight="600">{speaker.name}</Text>
+                      </Flex>
+                    </Link>
+                  );
+                })}
+              </Flex>
+            </Flex>
+          </Grid>
         </Box>
       }
       modal={

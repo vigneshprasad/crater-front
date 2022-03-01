@@ -16,7 +16,7 @@ export default function LiveStreamPageLayout({
   modal,
 }: IProps): JSX.Element {
   return (
-    <BaseLayout aside={<AsideNav />}>
+    <BaseLayout aside={<AsideNav />} overflowY={["auto", "hidden"]}>
       {modal}
       <Grid
         gridTemplateColumns={["1fr", "1fr 400px"]}
