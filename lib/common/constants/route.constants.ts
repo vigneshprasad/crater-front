@@ -12,7 +12,6 @@ export const PageRoutes = {
   creatorProfile: (slug: string | number, tab?: string | number): string =>
     `/creator/${slug}/${tab ?? "streams"}`,
   streamVideo: (id: string | number): string => `/video/${id}`,
-  creatorHub: "/hub/stream",
   rewardListing: (slug: string, id: string | number): string =>
     `/tickets/${slug}/${id}`,
   checkoutBid: (bid: number | string, intent: string | number): string =>
