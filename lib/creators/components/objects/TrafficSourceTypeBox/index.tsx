@@ -54,7 +54,7 @@ export default function TrafficSourceTypeBox({
               gridGap={space.xxxs}
               key={obj.source_name}
             >
-              <Text justifySelf="start">{obj.source_name}</Text>
+              <Text justifySelf="center">{obj.source_name}</Text>
               <Flex flexDirection="row" gridGap={space.xxxs}>
                 <Text textStyle="caption" color={colors.slate}>
                   {percent}%
