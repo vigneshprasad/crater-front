@@ -50,27 +50,27 @@ export default function BidsSummaryBox({ creator }: IProps): JSX.Element {
       {bidSummary && (
         <Flex flexDirection="column" gridGap={space.xxs}>
           <Box>
-            <Text color={colors.slate}>Total Worth</Text>
+            <Text color={colors.slate}>Potential Earnings</Text>
             <Text fontSize="2.4rem" lineHeight="3.2rem" fontWeight="400">
               {formatter.format(bidSummary.total_net_worth)}
             </Text>
           </Box>
 
           <Box>
-            <Text color={colors.slate}>Net Worth</Text>
+            <Text color={colors.slate}>Actualised Earnings</Text>
             <Text fontSize="2.4rem" lineHeight="3.2rem" fontWeight="400">
               {formatter.format(bidSummary.accepted_net_worth)}
             </Text>
           </Box>
 
           <Box>
-            <Text color={colors.slate}>Total bids:</Text>
+            <Text color={colors.slate}>Bids Received</Text>
             <Text fontSize="2.4rem" lineHeight="3.2rem" fontWeight="400">
               {bidSummary.total_bids}
             </Text>
           </Box>
           <Box>
-            <Text color={colors.slate}>Total accepeted bids:</Text>
+            <Text color={colors.slate}>Bids Accepted</Text>
             <Text fontSize="2.4rem" lineHeight="3.2rem" fontWeight="400">
               {bidSummary.total_accepted}
             </Text>

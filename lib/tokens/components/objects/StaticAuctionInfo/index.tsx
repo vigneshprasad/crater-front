@@ -15,7 +15,7 @@ export default function StaticAuctionInfo(props: GridProps): JSX.Element {
             alt="place bid"
           />
         </Box>
-        <Text>Place a bid </Text>
+        <Text>1. Place a bid </Text>
       </Grid>
 
       <Grid gridTemplateColumns="max-content 1fr" alignItems="center">
@@ -26,7 +26,7 @@ export default function StaticAuctionInfo(props: GridProps): JSX.Element {
             alt="creator accepted"
           />
         </Box>
-        <Text>Creator Accepts the bid</Text>
+        <Text>2. Creator Accepts the bid</Text>
       </Grid>
       <Grid gridTemplateColumns="max-content 1fr" alignItems="center">
         <Box w={56} h={56} overflow="hidden" position="relative">
@@ -36,7 +36,7 @@ export default function StaticAuctionInfo(props: GridProps): JSX.Element {
             alt="creator accepted"
           />
         </Box>
-        <Text>You get access</Text>
+        <Text>3. You get access</Text>
       </Grid>
       <Grid gridTemplateColumns="max-content 1fr" alignItems="center">
         <Box w={56} h={56} overflow="hidden" position="relative">
@@ -46,7 +46,7 @@ export default function StaticAuctionInfo(props: GridProps): JSX.Element {
             alt="creator accepted"
           />
         </Box>
-        <Text>If a bid is denied, the money is refunded </Text>
+        <Text>4. If a bid is denied, the money is refunded </Text>
       </Grid>
     </Grid>
   );

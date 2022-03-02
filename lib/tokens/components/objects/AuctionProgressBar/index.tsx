@@ -5,11 +5,13 @@ import DateTime from "@/common/utils/datetime/DateTime";
 import { Auction } from "@/tokens/types/auctions";
 
 interface IProps {
+  color?: string;
   withLabel?: boolean;
   auction: Auction;
 }
 
 export default function AuctionProgressBar({
+  color = "#D9ADEE",
   auction,
   withLabel = false,
 }: IProps): JSX.Element {
@@ -49,7 +51,7 @@ export default function AuctionProgressBar({
           animate={{
             width: `${progress}%`,
           }}
-          bg="#D9ADEE"
+          bg={color}
           transform="translate(0, -25%)"
           borderRadius={radii.xs}
         />
