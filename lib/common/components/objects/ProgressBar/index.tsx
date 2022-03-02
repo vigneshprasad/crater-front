@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { useTheme } from "styled-components";
 
 import { Box } from "../../atoms";
 
@@ -6,32 +6,25 @@ type IProps = {
   percent: number;
 };
 
-const Container = styled(Box)`
-  height: 6px;
-  width: 100%;
-  margin: auto 0;
-  position: relative;
-`;
-
-const BaseBox = styled(Box)`
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  border-radius: 3px;
-  transition: width 10s ease-in-out;
-`;
-
-const Background = styled(BaseBox)`
-  background: ${({ theme }) => theme.colors.black[6]};
-  width: 100%;
-`;
-
 export default function ProgressBar({ percent }: IProps): JSX.Element {
+  const { colors } = useTheme();
+
   return (
-    <Container>
-      <Background />
-      <Box background="#8884d8" w={`${percent}%`} />
-    </Container>
+    <Box
+      h={6}
+      w="100%"
+      margin="auto 0"
+      backgroundColor={colors.black[4]}
+      borderRadius={3}
+    >
+      <Box
+        h="100%"
+        w={`${percent}%`}
+        backgroundColor="#8884d8"
+        left={0}
+        top={0}
+        borderRadius={3}
+      />
+    </Box>
   );
 }
