@@ -121,7 +121,19 @@ export default function TopCreatorsTable({
   return (
     <Card containerProps={{ px: space.xs, py: space.xs }}>
       <Flex pb={space.xs} justifyContent="space-between" alignItems="center">
-        <Text textStyle="headline5">Top Performing Creators</Text>
+        <Box>
+          <Text textStyle="headline5" display="inline-block">
+            Top Performing Creators
+          </Text>
+          <Text
+            textStyle="caption"
+            color={colors.slate}
+            display="inline-block"
+            ml={5}
+          >
+            (Last 30 days)
+          </Text>
+        </Box>
         <Text textStyle="headline6" color={colors.slate}>
           Your Rank:{" "}
           <Span color={colors.accent}>#{comparativeRankingData.rank}</Span>
