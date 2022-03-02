@@ -17,7 +17,7 @@ export default function Tokens(): JSX.Element {
   };
 
   return (
-    <HomePageLayout heading="Tickets" seo={seo} activeTab="tokens">
+    <HomePageLayout heading="Auctions" seo={seo} activeTab="auctions">
       <RewardTypeListProvider>
         <RewardsTab />
       </RewardTypeListProvider>

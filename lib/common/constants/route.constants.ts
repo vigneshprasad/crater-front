@@ -4,6 +4,7 @@ export const PageRoutes = {
   home: "/",
   community: "/network",
   account: "/account",
+  auctions: "/auctions",
   tokens: (slug?: string): string => (slug ? `/tokens/${slug}` : "/tokens"),
   tickets: "/tickets",
   session: (id: string | number): string => `/session/${id}`,

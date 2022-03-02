@@ -2,6 +2,8 @@ import STATIC_IMAGES from "public/images";
 import { useTheme } from "styled-components";
 
 import { Flex, Box, Text, Shimmer, Image } from "@/common/components/atoms";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import { Webinar } from "@/community/types/community";
 import BidsListItem from "@/tokens/components/objects/BidListItem";
 import BidsList from "@/tokens/components/objects/BidsList";
@@ -22,6 +24,7 @@ export default function StreamRewardsPanel({ stream }: IProps): JSX.Element {
   const { bids, loading: loadingBids } = useBidsList();
   const { rewards, loading } = useRewardsList();
   const { setActiveReward, setTokenModalVisible } = useLiveStreamPageContext();
+  const { track } = useAnalytics();
 
   const hasActiveReward = rewards?.reduce((acc, curr) => {
     if (!acc) {
@@ -44,6 +47,7 @@ export default function StreamRewardsPanel({ stream }: IProps): JSX.Element {
   if (rewards.length === 0 || !hasActiveReward) {
     return (
       <Flex
+        py={space.xs}
         px={space.s}
         alignItems="center"
         justifyContent="center"
@@ -67,8 +71,8 @@ export default function StreamRewardsPanel({ stream }: IProps): JSX.Element {
           {stream.host_detail.name} has not launched an auction
         </Text>
         <Text textAlign="center">
-          Auctions are where you monetize access to exclusive content,
-          communities, goods or time.{" "}
+          Auctions are where you bid on exclusive content, communities or time
+          with your favourite creators
         </Text>
         <StaticAuctionInfo gridTemplateColumns="1fr" />
       </Flex>
@@ -94,6 +98,9 @@ export default function StreamRewardsPanel({ stream }: IProps): JSX.Element {
                   key={reward.id}
                   onClick={() => {
                     if (reward.active_auction) {
+                      track(AnalyticsEvents.livestream_reward_card_clicked, {
+                        reward: reward.id,
+                      });
                       setActiveReward(reward);
                       setTokenModalVisible(true);
                     }

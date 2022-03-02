@@ -104,7 +104,7 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
     <Grid
       gridTemplateRows={
         hasActiveReward
-          ? ["max-content 1fr max-content", "max-content 1fr max-content"]
+          ? ["1fr max-content", "max-content 1fr max-content"]
           : ["1fr max-content", "1fr max-content"]
       }
       borderTop={[`2px solid ${borders.main}`, "none"]}
@@ -112,7 +112,13 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
       {...rest}
     >
       {hasActiveReward && (
-        <Link href={PageRoutes.stream(stream.id, "auction")} shallow>
+        <Link
+          href={PageRoutes.stream(stream.id, "auction")}
+          boxProps={{
+            display: ["none", "block"],
+          }}
+          shallow
+        >
           <Box
             borderRadius={radii.xxs}
             p={space.xxxs}

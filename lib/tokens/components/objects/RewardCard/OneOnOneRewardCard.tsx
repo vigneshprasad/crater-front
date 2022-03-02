@@ -1,8 +1,6 @@
 import { useTheme } from "styled-components";
 
-import Image from "next/image";
-
-import { Box, Flex, Text, Icon } from "@/common/components/atoms";
+import { Box, Flex, Text, Icon, Image } from "@/common/components/atoms";
 
 import { RewardCardProps } from ".";
 import { Card, Container } from "./common";
@@ -10,7 +8,7 @@ import { Card, Container } from "./common";
 export default function OneOnOneRewardCard({
   ...props
 }: RewardCardProps): JSX.Element {
-  const { reward } = props;
+  const { reward, showCount } = props;
 
   const { space, colors, radii } = useTheme();
   return (
@@ -18,8 +16,8 @@ export default function OneOnOneRewardCard({
       <Card
         py={space.xs}
         px={space.xxs}
-        gridTemplateColumns="160px 1fr"
-        gridGap={space.xs}
+        gridTemplateColumns="180px 1fr"
+        gridGap={space.xxxs}
       >
         <Flex
           flexDirection="column"
@@ -50,20 +48,18 @@ export default function OneOnOneRewardCard({
             borderRadius={radii.xxs}
           >
             <Text fontWeight="600" fontSize="1.6rem">
-              {reward.quantity_sold} / {reward.quantity}
+              {showCount && showCount}
+              {!showCount &&
+                `${reward.quantity - reward.quantity_sold} / ${
+                  reward.quantity
+                }`}
             </Text>
           </Box>
         </Flex>
 
         <Box position="relative">
           {reward.photo && (
-            <Image
-              src={reward.photo}
-              objectFit="contain"
-              layout="fill"
-              objectPosition="center"
-              alt=""
-            />
+            <Image src={reward.photo} objectPosition="center" alt="" />
           )}
         </Box>
       </Card>

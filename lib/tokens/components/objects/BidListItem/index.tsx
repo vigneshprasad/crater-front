@@ -16,14 +16,13 @@ const Container = styled(Box)`
 
 export default function BidsListItem({ bid }: IProps): JSX.Element {
   const { space } = useTheme();
-  const { bidder_profile_detail, bid_price, reward_detail } = bid;
+  const { bid_price, reward_detail } = bid;
   return (
     <Container px={space.xxs} py={space.xxxs}>
       <Text lineHeight="2.4rem">
-        <Span fontWeight="600">{bidder_profile_detail.name}</Span> has placed a
-        bid of{" "}
-        <Span fontWeight="600">{CurrencyFormatter.format(bid_price)}</Span> on{" "}
-        <Span fontWeight="600">{reward_detail.name}</Span>
+        Bid of{" "}
+        <Span fontWeight="600">{CurrencyFormatter.format(bid_price)}</Span>{" "}
+        placed for <Span fontWeight="600">{reward_detail.name}</Span>
       </Text>
     </Container>
   );

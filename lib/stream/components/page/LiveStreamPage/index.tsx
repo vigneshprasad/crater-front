@@ -160,7 +160,7 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
               <Text my={space.xxs} textStyle="title">
                 Speakers
               </Text>
-              <Flex>
+              <Flex gridGap={space.xxs} alignItems="center">
                 {cachedWebinar?.speakers_detail_list.map((speaker) => {
                   return (
                     <Link

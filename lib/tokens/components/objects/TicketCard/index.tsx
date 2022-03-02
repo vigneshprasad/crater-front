@@ -19,32 +19,31 @@ interface IProps extends BoxProps {
   reward: Reward;
   withDetail?: boolean;
   withCTA?: boolean;
+  priceValue?: number;
+  priceLabel?: string;
 }
 
-const HoverButton = styled(Box)`
-  transition: background-color 300ms ease-in-out;
-  background-color: transparent;
+const HoverButton = styled(Box)``;
 
-  &:hover {
-    background-color: ${(props) => props.theme.colors.whiteAlpha[2]};
-  }
-`;
-
-const Container = styled(Box)`
-  &:hover ${HoverButton} {
-    background-color: ${(props) => props.theme.colors.whiteAlpha[2]};
-  }
-`;
+const Container = styled(Box)``;
 
 export default function TicketCard({
   reward,
   withCTA = true,
   withDetail = false,
+  priceValue,
+  priceLabel = "Last bid",
   ...rest
 }: IProps): JSX.Element {
   const { space, gradients, colors, radii } = useTheme();
-  const { name, quantity, quantity_sold, active_auction, card_background } =
-    reward;
+  const {
+    name,
+    quantity,
+    quantity_sold,
+    active_auction,
+    card_background,
+    text_color,
+  } = reward;
 
   const background = card_background ?? gradients.primary;
 
@@ -68,7 +67,7 @@ export default function TicketCard({
                 bg={colors.blackAlpha[1]}
                 borderRadius={18}
               >
-                {quantity_sold}/{quantity}
+                {quantity - quantity_sold}/{quantity}
               </Span>
             </Text>
 
@@ -81,24 +80,33 @@ export default function TicketCard({
             </Text>
           </Box>
 
-          {active_auction && (
-            <Text fontSize="1.6rem" fontWeight="800">
-              {CurrencyFormatter.format(
-                active_auction.last_bid?.bid_price
-                  ? active_auction.last_bid?.bid_price
-                  : active_auction.minimum_bid
-              )}
-            </Text>
-          )}
+          <Box>
+            {active_auction && (
+              <>
+                <Text textAlign="right" fontSize="1.2rem">
+                  {priceLabel}
+                </Text>
+                <Text fontSize="1.6rem" fontWeight="800">
+                  {priceValue && CurrencyFormatter.format(priceValue)}
+                  {!priceValue &&
+                    CurrencyFormatter.format(
+                      active_auction.last_bid?.bid_price
+                        ? active_auction.last_bid?.bid_price
+                        : active_auction.minimum_bid
+                    )}
+                </Text>
+              </>
+            )}
+          </Box>
         </Flex>
 
         <Grid gridTemplateColumns="1fr max-content" gridGap={space.xs}>
           {active_auction && withCTA && (
-            <AuctionProgressBar auction={active_auction} />
+            <AuctionProgressBar color={text_color} auction={active_auction} />
           )}
           {active_auction && withCTA && (
             <Flex justifyContent="flex-end">
-              <HoverButton px={8} py={space.xxxxs} borderRadius={radii.xxxs}>
+              <HoverButton py={space.xxxxs} borderRadius={radii.xxxs}>
                 <Text textStyle="button">Place Bid</Text>
               </HoverButton>
             </Flex>

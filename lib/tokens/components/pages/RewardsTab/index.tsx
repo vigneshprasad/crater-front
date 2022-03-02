@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
-import { Box, Text } from "@/common/components/atoms";
+import { Box, Text, Span } from "@/common/components/atoms";
+import TypingText from "@/common/components/objects/TypingText";
 import colors from "@/common/theme/colors";
 import { Creator } from "@/creators/types/creator";
 import useRewardTypeList from "@/tokens/context/RewardTypeListContext";
@@ -38,14 +39,21 @@ export default function RewardsTab(): JSX.Element {
       )}
       <Box px={space.s}>
         <Box
-          my={space.xxs}
+          my={space.xs}
           background={colors.whiteAlpha[1]}
           px={space.xxs}
           py={space.xxs}
           borderRadius={radii.xxs}
+          backgroundImage={`url('/images/img_auction_inactive.png')`}
+          backgroundSize="contain"
+          backgroundPosition="right"
+          backgroundRepeat="no-repeat"
         >
           <Text textStyle="headline6" mb={space.xxxxs}>
-            Get access to exclusive (Content, Time, Communities, Art, NFTS )
+            Get access to exclusive{" "}
+            <Span color={colors.accent}>
+              <TypingText strings={["Content", "Time", "Communities", "Art"]} />
+            </Span>{" "}
             with Creators
           </Text>
           <Text>
