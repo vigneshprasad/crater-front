@@ -60,6 +60,7 @@ export const icons = iconComponents;
 
 export const gradients = {
   primary: "linear-gradient(60deg, #4A00E0, #8E2DE2)",
+  blue: "linear-gradient(60deg, #0E509D, #116BAD)",
 };
 
 export type IconOptions = keyof typeof icons;

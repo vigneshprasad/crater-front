@@ -1,13 +1,20 @@
 import styled from "styled-components";
 
-import { Grid } from "@/common/components/atoms";
+import { Grid, GridProps } from "@/common/components/atoms";
 
-export const Card = styled(Grid)`
-  background: linear-gradient(
+export const Card = styled(Grid)<
+  GridProps & {
+    gradient?: string;
+  }
+>`
+  background: ${({ gradient }) =>
+    gradient
+      ? gradient
+      : `linear-gradient(
     170deg,
     rgba(157, 9, 255, 0.6),
     rgba(255, 255, 255, 0.1)
-  );
+  )`};
   backdrop-filter: blur(40px);
   mix-blend-mode: color-burn;
 

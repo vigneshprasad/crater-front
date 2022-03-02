@@ -146,3 +146,6 @@ export const LEARN_MORE_URL =
 export const DISCORD_URL = "https://discord.gg/WBBgYSD8YQ";
 
 export const ABOUT_URL = "http://www.joincrater.club/";
+
+export const AUCTION_LEARN_MORE_URL =
+  "https://calendly.com/vivan-1/learn-more-about-auctions";

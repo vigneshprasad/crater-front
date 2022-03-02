@@ -22,7 +22,7 @@ const CREATOR_TABS = {
   ),
   club_members: (
     <Link href={PageRoutes.hub("club_members")} shallow>
-      <BaseTabItem textStyle="title" label="Analytics" />
+      <BaseTabItem textStyle="title" label="Analyse" />
     </Link>
   ),
   auction: (

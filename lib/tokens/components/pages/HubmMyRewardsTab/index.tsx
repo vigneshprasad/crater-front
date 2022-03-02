@@ -4,6 +4,8 @@ import { useTheme } from "styled-components";
 import Image from "next/image";
 
 import { Grid, Text, Flex, Box, Shimmer } from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/Button";
+import { AUCTION_LEARN_MORE_URL } from "@/common/constants/url.constants";
 import { Creator } from "@/creators/types/creator";
 import useBidsList from "@/tokens/context/BidListContext";
 import useRewardsList from "@/tokens/context/RewardsListContext";
@@ -29,7 +31,7 @@ export default function HubmMyRewardsTab({ creator }: IProps): JSX.Element {
 
   if (rewards.length === 0) {
     return (
-      <Grid py={space.xxs}>
+      <Grid py={space.xxs} px={space.xxs}>
         <Flex
           gridGap={space.xxs}
           m="auto auto"
@@ -39,14 +41,18 @@ export default function HubmMyRewardsTab({ creator }: IProps): JSX.Element {
           <Box w={240}>
             <Image alt="" src={STATIC_IMAGES.ImageAuctionInactive} />
           </Box>
-          <Text textStyle="title">
+          <Text textStyle="title" textAlign="center">
             You haven&apos;t launched an auction yet{" "}
           </Text>
-          <Text>
+          <Text textAlign="center">
             Auctions are where you monetize access to exclusive content,
             communities, goods or time.
           </Text>
-          <StaticAuctionInfo />
+          <StaticAuctionInfo gridTemplateColumns={["1fr", "repeat(2, 1fr)"]} />
+
+          <a target="_blank" href={AUCTION_LEARN_MORE_URL} rel="noreferrer">
+            <Button variant="small" text="Learn More" />
+          </a>
         </Flex>
       </Grid>
     );

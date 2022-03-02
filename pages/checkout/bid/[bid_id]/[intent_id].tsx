@@ -82,7 +82,7 @@ export default function Checkout({
   return (
     <CheckoutPageLayout
       seo={{
-        title: "Crater Club: Streams",
+        title: "Crater Club: Checkout",
         description:
           "Crater is where you join live streams with the mentors & creators you follow, get to network with like-minds, and can claim exclusive access to mentors & creator by buying their tokens at the live auction",
       }}

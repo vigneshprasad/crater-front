@@ -10,6 +10,9 @@ import { Flex, Card, Form, Grid, Text, Hr } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
+import WatiWhatsappButton from "@/integrations/wati/components/WatiWhatsappButton";
 import TicketCard from "@/tokens/components/objects/TicketCard";
 import useBid from "@/tokens/context/BidContext";
 import useRewardItem from "@/tokens/context/RewardItemContext";
@@ -25,6 +28,7 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
   const { bid } = useBid();
   const { reward } = useRewardItem();
   const [requestLoading, setRequestLoading] = useState(false);
+  const { track } = useAnalytics();
 
   const handleFormSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
@@ -50,11 +54,16 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
     if (result.error) {
       // Show error to your customer (for example, payment details incomplete)
       setRequestLoading(false);
+      track(AnalyticsEvents.card_payment_error, {
+        bid: bid?.id,
+        reward: reward?.id,
+      });
       console.log(result.error.message);
     } else {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
+      track(AnalyticsEvents.card_payment_sucess, { error: result.error });
       setRequestLoading(false);
     }
   };
@@ -69,31 +78,31 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
       gridTemplateColumns={["1fr", "1fr minmax(320px, 600px)"]}
       py={space.s}
       px={[space.xxs, 0]}
-      gridRowGap={space.xs}
+      gridRowGap={[space.xxs, space.xs]}
       gridColumnGap={space.l}
       alignItems="start"
     >
+      <WatiWhatsappButton />
       <Text
         gridRow={["1", "1"]}
         textStyle="headline4"
-        gridColumn={["1", "1 / span 2"]}
+        gridColumn={["1", "1 / span 1"]}
       >
         Checkout
       </Text>
 
-      <Text gridRow={["2", "2"]} gridColumn={["1", "1 / span 2"]}>
-        Enter your card details to place the bid. No card information is ever
-        stored with us &amp; transactions are processed using Stripe.
-      </Text>
-
       <Form
         gridRow={["4", "3"]}
-        px={space.xxxs}
+        px={4}
         display="flex"
         flexDirection="column"
         gridGap={space.xs}
         onSubmit={handleFormSubmit}
       >
+        <Text>
+          Enter your card details to place the bid. No card information is ever
+          stored with us &amp; transactions are processed using Stripe.
+        </Text>
         <PaymentElement />
 
         <Text color={colors.slate}>
@@ -125,6 +134,8 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
                 cursor="default"
                 reward={reward}
                 withCTA={false}
+                priceValue={bid.amount}
+                priceLabel="Your Bid"
                 withDetail
               />
 

@@ -14,6 +14,11 @@ export enum AnalyticsEvents {
   subscribe_creator = "web_subscribe_creator",
   unsubscribe_creator = "web_unsubscribe_creator",
   rsvp_series = "web_rsvp_series",
-  email_validation_failed = "email_validation_failed",
-  rsvp_button_clicked = "rsvp_button_clicked",
+  email_validation_failed = "web_email_validation_failed",
+  rsvp_button_clicked = "web_rsvp_button_clicked",
+  reward_card_clicked = "web_reward_card_clicked",
+  livestram_reward_card_clicked = "web_livestram_reward_card_clicked",
+  modal_placed_bid = "web_modal_placed_bid",
+  card_payment_sucess = "web_card_payment_sucess",
+  card_payment_error = "web_card_payment_error",
 }

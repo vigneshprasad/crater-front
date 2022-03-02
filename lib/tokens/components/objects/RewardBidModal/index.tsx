@@ -2,8 +2,6 @@ import { AnimatePresence } from "framer-motion";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { useRouter } from "next/router";
-
 import {
   Text,
   Box,
@@ -19,6 +17,8 @@ import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import { CurrencyFormatter } from "@/common/utils/formatters";
 import { useCreator } from "@/creators/context/CreatorContext";
 import PaymentApiClient from "@/payments/api";
@@ -51,8 +51,8 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
   const { creator } = useCreator();
   const { auction, loading: auctionLoading } = useActiveAuction();
   const { reward } = useRewardItem();
-  const router = useRouter();
   const [postBidLoading, setPostBidLoading] = useState(false);
+  const { track } = useAnalytics();
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<IBidFormProps>(
     {
@@ -81,7 +81,8 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
 
   useEffect(() => {
     if (auction) {
-      fieldValueSetter("bid_price", auction.minimum_bid);
+      const rounded = Math.ceil(auction.minimum_bid);
+      fieldValueSetter("bid_price", rounded);
     }
   }, [auction, fieldValueSetter]);
 
@@ -134,9 +135,17 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
       return;
     }
 
-    await router.push(
-      PageRoutes.checkoutBid(bid.id, stripeIntent.client_secret)
+    track(AnalyticsEvents.modal_placed_bid, {
+      bid: bid.id,
+      reward: reward?.id,
+      payment: payment.id,
+    });
+    window.open(
+      PageRoutes.checkoutBid(bid.id, stripeIntent.client_secret),
+      "_blank"
     );
+
+    onClose();
 
     setPostBidLoading(false);
   };
@@ -198,23 +207,26 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
 
               <Flex flex="1" />
 
-              <Text textAlign="right" fontSize="1.8rem" fontWeight="700">
-                {(() => {
-                  if (!reward.active_auction) {
-                    return "No active auction";
-                  }
+              <Box>
+                <Text textAlign="right">Last bid</Text>
+                <Text textAlign="right" fontSize="1.8rem" fontWeight="700">
+                  {(() => {
+                    if (!reward.active_auction) {
+                      return "No active auction";
+                    }
 
-                  if (reward.active_auction?.last_bid?.bid_price) {
+                    if (reward.active_auction?.last_bid?.bid_price) {
+                      return CurrencyFormatter.format(
+                        reward.active_auction?.last_bid?.bid_price
+                      );
+                    }
+
                     return CurrencyFormatter.format(
-                      reward.active_auction?.last_bid?.bid_price
+                      reward.active_auction.minimum_bid
                     );
-                  }
-
-                  return CurrencyFormatter.format(
-                    reward.active_auction.minimum_bid
-                  );
-                })()}
-              </Text>
+                  })()}
+                </Text>
+              </Box>
             </Flex>
           </Box>
         </>
@@ -242,7 +254,7 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
           if (auctionLoading) {
             return <Shimmer />;
           }
-          return <Box>No active auctions</Box>;
+          return <Box />;
         }
 
         return (
@@ -297,7 +309,7 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
                   fontSize="1.4rem"
                   color={colors.white[0]}
                 >
-                  Your bid
+                  Enter bid amount
                 </Text>
                 <CurrencyInput
                   value={fields.bid_price.value}
