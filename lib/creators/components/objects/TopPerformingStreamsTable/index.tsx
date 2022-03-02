@@ -33,55 +33,59 @@ export default function TopPerformingStreamsTable({
           const startTime = DateTime.parse_with_milliseconds(obj.start);
 
           return (
-            <Grid
-              gridAutoFlow="column"
-              gridTemplateColumns="80px 1fr"
-              gridGap={space.xxs}
-              alignItems="center"
+            <a
+              href={PageRoutes.streamVideo(obj.id)}
+              target="_blank"
+              rel="noreferrer"
             >
-              <Box>
-                {obj.topic_image && (
-                  <a
-                    href={PageRoutes.streamVideo(obj.id)}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+              <Grid
+                gridAutoFlow="column"
+                gridTemplateColumns="max-content 80px max-content"
+                gridGap={space.xxs}
+                alignItems="center"
+              >
+                <Text>
+                  {topStreams &&
+                    topStreams?.findIndex((x) => x.id === obj.id) + 1}
+                </Text>
+                <Box>
+                  {obj.topic_image && (
                     <Image
                       objectFit="cover"
                       layout="fill"
                       src={obj.topic_image}
                       alt={obj.topic_title}
                     />
-                  </a>
-                )}
-              </Box>
+                  )}
+                </Box>
 
-              <Box>
-                <Text textAlign="start">{obj.topic_title}</Text>
-                <Text
-                  textAlign="start"
-                  textStyle="caption"
-                  color={colors.slate}
-                >
-                  {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
-                </Text>
-              </Box>
-            </Grid>
+                <Box>
+                  <Text textAlign="start">{obj.topic_title}</Text>
+                  <Text
+                    textAlign="start"
+                    textStyle="caption"
+                    color={colors.slate}
+                  >
+                    {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
+                  </Text>
+                </Box>
+              </Grid>
+            </a>
           );
         },
       },
-      {
-        label: "RSVP",
-        key: "rsvp",
-        valueGetter: (obj) => obj.rsvp_count,
-      },
-      {
-        label: "Messages",
-        key: "messages",
-        valueGetter: (obj) => obj.messages_count,
-      },
+      // {
+      //   label: "RSVP",
+      //   key: "rsvp",
+      //   valueGetter: (obj) => obj.rsvp_count,
+      // },
+      // {
+      //   label: "Messages",
+      //   key: "messages",
+      //   valueGetter: (obj) => obj.messages_count,
+      // },
     ];
-  }, [space, colors]);
+  }, [space, colors, topStreams]);
 
   if (topStreams === undefined) {
     return <Shimmer w="100%" h="100%" />;
