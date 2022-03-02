@@ -17,7 +17,7 @@ export enum AnalyticsEvents {
   email_validation_failed = "web_email_validation_failed",
   rsvp_button_clicked = "web_rsvp_button_clicked",
   reward_card_clicked = "web_reward_card_clicked",
-  livestram_reward_card_clicked = "web_livestram_reward_card_clicked",
+  livestream_reward_card_clicked = "web_livestream_reward_card_clicked",
   modal_placed_bid = "web_modal_placed_bid",
   card_payment_sucess = "web_card_payment_sucess",
   card_payment_error = "web_card_payment_error",

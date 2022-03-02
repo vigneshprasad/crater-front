@@ -43,7 +43,7 @@ export default function TokenPageLayout({
       <BaseLayout
         pb={space.xl}
         overflowY="auto"
-        aside={<AsideNav activeTab="tokens" />}
+        aside={<AsideNav activeTab="auctions" />}
       >
         <MeetingsTicker />
         <BaseTabBar

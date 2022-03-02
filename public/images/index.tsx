@@ -8,7 +8,6 @@ import ImageEmptyWallet from "public/images/img_empty_wallet.png";
 import ImagePlaceBidIcon from "public/images/img_place_bid.png";
 import ImageRewardBlob from "public/images/img_reward_blob.png";
 import ImageRewardCard from "public/images/img_reward_card.png";
-import ImageSaurabhCard from "public/images/img_saurabh_card.png";
 
 const STATIC_IMAGES = {
   ImageEmptyWallet,
@@ -20,7 +19,6 @@ const STATIC_IMAGES = {
   ImageBidAcceptedIcon,
   ImageBidRejectedIcon,
   ImageDiscordIcon,
-  ImageSaurabhCard,
   ImageBlobBlue,
 };
 

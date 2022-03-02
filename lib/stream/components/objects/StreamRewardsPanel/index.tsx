@@ -98,7 +98,7 @@ export default function StreamRewardsPanel({ stream }: IProps): JSX.Element {
                   key={reward.id}
                   onClick={() => {
                     if (reward.active_auction) {
-                      track(AnalyticsEvents.livestram_reward_card_clicked, {
+                      track(AnalyticsEvents.livestream_reward_card_clicked, {
                         reward: reward.id,
                       });
                       setActiveReward(reward);

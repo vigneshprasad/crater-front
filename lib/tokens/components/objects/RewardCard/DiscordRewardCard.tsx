@@ -12,7 +12,7 @@ export default function DiscordRewardCard({
   showCount,
   ...rest
 }: RewardCardProps): JSX.Element {
-  const { creator_detail, quantity, quantity_sold } = reward;
+  const { creator_detail, quantity, quantity_sold, photo } = reward;
   const { space, colors, radii } = useTheme();
 
   return (
@@ -28,7 +28,7 @@ export default function DiscordRewardCard({
       >
         <Logo mb={space.xxxs} />
         <Box position="relative" mb={space.xxxs}>
-          <Image src={STATIC_IMAGES.ImageSaurabhCard} alt="" layout="fill" />
+          {photo && <Image src={photo} alt="" layout="fill" />}
           <Box right={-16} top={-16} position="absolute">
             <Box h={56} w={56} position="relative">
               <Image
