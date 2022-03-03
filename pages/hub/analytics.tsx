@@ -2,11 +2,10 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 import dynamic from "next/dynamic";
 
-import useAuth from "@/auth/context/AuthContext";
-import Spinner from "@/common/components/atoms/Spiner";
-import CreatorApiClient from "@/creators/api";
-import CreatorHubPage from "@/creators/components/page/CreatorHubPage";
-import StaticCreatorHub from "@/creators/components/page/StaticCreatorHub";
+import HubPageLayout, {
+  getHubServerSideProps,
+} from "@/common/components/layouts/HubPageLayout";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { AverageEngagementProvider } from "@/creators/context/AverageEngagement";
 import { ClubMembersCountProvider } from "@/creators/context/ClubMembersCount";
 import { ClubMembersGrowthProvider } from "@/creators/context/ClubMembersGrowth";
@@ -18,43 +17,54 @@ import { FollowerGrowthProvider } from "@/creators/context/FollowerGrowth";
 import { TopCreatorsProvider } from "@/creators/context/TopCreators";
 import { TrafficSourceTypesProvider } from "@/creators/context/TrafficSourceTypes";
 import { UsersByCraterProvider } from "@/creators/context/UsersByCrater";
+import { Creator } from "@/creators/types/creator";
 
 const CreatorClubAnalyticsTab = dynamic(
   () => import("@/creators/components/objects/CreatorClubAnalyticsTab")
 );
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const [creator] = await CreatorApiClient(context).getMyCreator();
+interface PageProps {
+  creator: Creator | null;
+  userId?: string;
+}
 
-  if (!creator || (!creator?.show_club_members && !creator?.show_analytics)) {
+export const getServerSideProps: GetServerSideProps<PageProps> = async (
+  context
+) => {
+  try {
+    const data = await getHubServerSideProps(context);
+    const { creator } = data;
+
+    if (!creator?.show_analytics && !creator?.show_club_members) {
+      return {
+        redirect: {
+          destination: PageRoutes.hub(),
+        },
+        props: {} as PageProps,
+      };
+    }
+
     return {
-      notFound: true,
+      props: {
+        ...data,
+      },
+    };
+  } catch {
+    return {
+      redirect: {
+        destination: "/join",
+      },
+      props: {} as PageProps,
     };
   }
-
-  return {
-    props: {
-      creator: creator || null,
-    },
-  };
 };
 
 type IProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function CreatorHubFaq({ creator }: IProps): JSX.Element {
-  const { user, profile, loading } = useAuth();
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (!user || !profile) {
-    return <StaticCreatorHub />;
-  }
-
+export default function HubAnalytics({ creator, userId }: IProps): JSX.Element {
   return (
-    <CreatorHubPage selectedTab="club_analytics" creator={creator}>
-      <CreatorFollowerProvider userId={user.pk}>
+    <HubPageLayout activeTab="analytics" creator={creator}>
+      <CreatorFollowerProvider userId={userId}>
         <ClubMembersCountProvider>
           <FollowerGrowthProvider>
             <AverageEngagementProvider>
@@ -65,7 +75,9 @@ export default function CreatorHubFaq({ creator }: IProps): JSX.Element {
                       <TrafficSourceTypesProvider>
                         <ConversionFunnelProvider>
                           <UsersByCraterProvider>
-                            <CreatorClubAnalyticsTab creator={creator} />
+                            {creator && (
+                              <CreatorClubAnalyticsTab creator={creator} />
+                            )}
                           </UsersByCraterProvider>
                         </ConversionFunnelProvider>
                       </TrafficSourceTypesProvider>
@@ -77,6 +89,6 @@ export default function CreatorHubFaq({ creator }: IProps): JSX.Element {
           </FollowerGrowthProvider>
         </ClubMembersCountProvider>
       </CreatorFollowerProvider>
-    </CreatorHubPage>
+    </HubPageLayout>
   );
 }

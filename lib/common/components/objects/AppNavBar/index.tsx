@@ -83,7 +83,7 @@ export default function AppNavBar(): JSX.Element {
       <Box />
 
       {router.pathname !== "/livestream/[id]" && (
-        <Link href={PageRoutes.creatorHub} boxProps={{ mx: space.xxs }}>
+        <Link href={PageRoutes.hub()} boxProps={{ mx: space.xxs }}>
           <Text textStyle="button" color={colors.accent}>
             Go Live
           </Text>
