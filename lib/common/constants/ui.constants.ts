@@ -43,9 +43,9 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
     iconFill: false,
   },
   {
-    label: "Creator Hub",
+    label: "Hub",
     icon: "Grid",
-    url: PageRoutes.creatorHub,
+    url: PageRoutes.hub(),
     key: "creatorhub",
     iconFill: false,
   },
