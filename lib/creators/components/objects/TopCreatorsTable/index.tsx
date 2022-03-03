@@ -65,8 +65,10 @@ export default function TopCreatorsTable({
         label: "Top Stream",
         key: "topStream",
         valueGetter: (obj) => {
+          if (!obj.stream_date) {
+            return;
+          }
           const startTime = DateTime.parse_with_milliseconds(obj.stream_date);
-
           return (
             <a
               href={PageRoutes.streamVideo(obj.stream_id)}
