@@ -40,6 +40,8 @@ export type CreatorRanking = {
   image?: string;
   stream_id: number;
   stream_topic: string;
+  stream_image: string;
+  stream_date: string;
 };
 
 export type TopCreators = {

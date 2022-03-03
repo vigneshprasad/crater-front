@@ -20,8 +20,8 @@ const CREATOR_TABS = {
       <BaseTabItem textStyle="title" label="Stream" />
     </Link>
   ),
-  club_members: (
-    <Link href={PageRoutes.hub("club_members")} shallow>
+  analytics: (
+    <Link href={PageRoutes.hub("analytics")} shallow>
       <BaseTabItem textStyle="title" label="Analyse" />
     </Link>
   ),
@@ -98,9 +98,9 @@ export default function HubPageLayout({
       return USER_TABS;
     }
 
-    if (!creator.show_club_members) {
+    if (!creator.show_club_members && !creator.show_analytics) {
       // @ts-expect-error: delete error
-      delete CREATOR_TABS.club_members;
+      delete CREATOR_TABS.analytics;
       return CREATOR_TABS;
     }
 

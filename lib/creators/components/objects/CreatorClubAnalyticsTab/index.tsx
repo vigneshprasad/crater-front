@@ -95,8 +95,8 @@ export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
           <Grid
             gridTemplateColumns="1fr 1fr"
             gridGap={space.s}
-            px={[0, space.l]}
-            py={space.xs}
+            px={[space.xxs, space.s]}
+            py={space.s}
           >
             {creator?.show_analytics && (
               <>
