@@ -13,6 +13,10 @@ interface IUpcomingStreamsState {
     PageResponse<Webinar>,
     unknown
   >["setSize"];
+  mutateUpcomingStreams: SWRInfiniteResponse<
+    PageResponse<Webinar>,
+    unknown
+  >["mutate"];
 }
 
 export const UpcomingStreamsContext = createContext(
@@ -35,6 +39,7 @@ export function UpcomingStreamsProvider({
     data: streams,
     error,
     setSize: setUpcomingStreamsPage,
+    mutate: mutateUpcomingStreams,
   } = useSWRInfinite<PageResponse<Webinar>>(
     (index, previousData) => {
       const page = index + 1;
@@ -55,8 +60,9 @@ export function UpcomingStreamsProvider({
       error,
       loading: !streams && !error,
       setUpcomingStreamsPage,
+      mutateUpcomingStreams,
     }),
-    [streams, error, setUpcomingStreamsPage]
+    [streams, error, setUpcomingStreamsPage, mutateUpcomingStreams]
   );
 
   return <UpcomingStreamsContext.Provider value={value} {...rest} />;
