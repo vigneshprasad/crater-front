@@ -14,7 +14,7 @@ interface IProps {
 
 const SeriesCard = forwardRef<HTMLDivElement, IProps>(({ series }, ref) => {
   const { space } = useTheme();
-  const firstStream = series.group[0];
+  const firstStream = series.groups[0];
 
   return (
     <Link key={series.id} href={`/session/${firstStream}`}>
