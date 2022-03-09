@@ -281,7 +281,7 @@ export default function RsvpSuccesModal({
                           bg={colors.black[5]}
                           borderRadius={50}
                           justifySelf="end"
-                          textProps={{ minWidth: 38, px: 0 }}
+                          // textProps={{ minWidth: 38, px: 0 }}
                           onClick={() => {
                             const creator =
                               streamCreator.host_detail?.creator_detail?.id;
@@ -302,7 +302,7 @@ export default function RsvpSuccesModal({
                           bg={colors.white[1]}
                           borderRadius={50}
                           justifySelf="end"
-                          textProps={{ minWidth: 38, px: 0 }}
+                          // textProps={{ minWidth: 38, px: 0 }}
                           disabled={true}
                         />
                       )}
@@ -337,8 +337,6 @@ export default function RsvpSuccesModal({
                   ) : (
                     liveAndUpcomingStreams &&
                     liveAndUpcomingStreams().map((stream, index) => {
-                      console.log("host: ", stream.host_detail.pk);
-                      console.log("user: ", user.pk);
                       if (
                         stream.id !== group.id &&
                         stream.host_detail.pk !== user.pk
@@ -350,7 +348,7 @@ export default function RsvpSuccesModal({
                             gridTemplateRows="max-content max-content max-content"
                             key={stream.id}
                             ref={
-                              index == liveAndUpcomingStreams.length - 1
+                              index == liveAndUpcomingStreams().length - 1
                                 ? ref
                                 : null
                             }
@@ -415,7 +413,6 @@ export default function RsvpSuccesModal({
                                 borderRadius={50}
                                 justifySelf="center"
                                 alignSelf="end"
-                                textProps={{ minWidth: 38, px: 0 }}
                                 onClick={() => postGroupRequest(stream, true)}
                               />
                             ) : stream.rsvp ? (
@@ -427,7 +424,6 @@ export default function RsvpSuccesModal({
                                 borderRadius={50}
                                 justifySelf="center"
                                 alignSelf="end"
-                                textProps={{ minWidth: 38, px: 0 }}
                                 disabled={true}
                               />
                             ) : (
@@ -439,7 +435,7 @@ export default function RsvpSuccesModal({
                                 borderRadius={50}
                                 justifySelf="center"
                                 alignSelf="end"
-                                textProps={{ minWidth: 38, px: 0 }}
+                                // textProps={{ minWidth: 38, px: 0 }}
                                 onClick={() => postGroupRequest(stream)}
                               />
                             )}
