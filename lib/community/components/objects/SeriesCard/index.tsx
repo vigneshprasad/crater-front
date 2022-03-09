@@ -14,10 +14,10 @@ interface IProps {
 
 const SeriesCard = forwardRef<HTMLDivElement, IProps>(({ series }, ref) => {
   const { space } = useTheme();
-  const firstStream = series.groups_detail_list[0];
+  const firstStream = series.group[0];
 
   return (
-    <Link key={series.id} href={`/session/${firstStream.id}`}>
+    <Link key={series.id} href={`/session/${firstStream}`}>
       <Grid ref={ref}>
         <AnimateSharedLayout>
           <AnimatedBox position="relative" layout h={[200, 220]}>

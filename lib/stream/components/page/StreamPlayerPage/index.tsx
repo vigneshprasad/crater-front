@@ -1,14 +1,10 @@
 import styled, { useTheme } from "styled-components";
 
-import { Grid, Text, Box, Avatar, Link } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
+import { Grid, Text, Box, Avatar } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
-import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
-import NetworkList from "@/community/components/objects/NetworkList";
-import useNetworkList from "@/community/context/NetworkListContext";
 import { useWebinar } from "@/community/context/WebinarContext";
 import useStreamRecording from "@/stream/context/StreamRecordingContext";
 
@@ -27,7 +23,6 @@ const Video = styled.video`
 export default function StreamPlayerPage(): JSX.Element {
   const { webinar, loading } = useWebinar();
   const { recording } = useStreamRecording();
-  const { members, loading: membersLoading } = useNetworkList();
 
   const { space, colors, borders } = useTheme();
 
@@ -71,18 +66,7 @@ export default function StreamPlayerPage(): JSX.Element {
 
         <Box py={space.s}>
           <PastStreamsList displayedPastStreamId={webinar.id} />
-
           <Box h={space.xs} />
-
-          <NetworkList
-            webinar={webinar}
-            members={members}
-            loading={membersLoading}
-          />
-          <Link href={PageRoutes.community} boxProps={{ target: "_blank" }}>
-            <Button variant="full-width" text="Network with Members" />
-          </Link>
-          <Box h={space.m} />
         </Box>
       </Grid>
     </BaseLayout>

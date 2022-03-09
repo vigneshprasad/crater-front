@@ -2,7 +2,6 @@ import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { NextSeoProps } from "next-seo";
 
 import HomePageLayout from "@/common/components/layouts/HomePageLayout";
-import { MetaProvider } from "@/common/context/MetaContext";
 import { PageResponse } from "@/common/types/api";
 import CreatorApiClient from "@/creators/api";
 import CommunityPage from "@/creators/components/page/CommunityPage";
@@ -40,9 +39,7 @@ export default function ClubsTabPage({ creators }: PageProps): JSX.Element {
       heading="Creators & Educators"
     >
       <CreatorListProvider pageSize={20} initial={creators}>
-        <MetaProvider fetchKeys={["user_tags"]}>
-          <CommunityPage />
-        </MetaProvider>
+        <CommunityPage />
       </CreatorListProvider>
     </HomePageLayout>
   );

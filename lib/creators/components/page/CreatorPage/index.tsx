@@ -164,7 +164,7 @@ export default function CreatorPage({
             top: 0,
             zIndex: zIndices.navHeader,
           }}
-          tabs={["club", "streams", "about", "token"]}
+          tabs={["streams", "about"]}
           baseUrl={`/creator/${creator.slug}`}
         />
         {children}
