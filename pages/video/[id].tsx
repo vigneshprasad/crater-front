@@ -77,11 +77,9 @@ export default function StreamPage({
     <Page seo={seo}>
       <WebinarProvider id={id} initial={webinar}>
         <StreamRecordingProvider id={recordingId}>
-          <NetworkListProvider>
-            <PastStreamProvider>
-              <StreamPlayerPage />
-            </PastStreamProvider>
-          </NetworkListProvider>
+          <PastStreamProvider>
+            <StreamPlayerPage />
+          </PastStreamProvider>
         </StreamRecordingProvider>
       </WebinarProvider>
     </Page>

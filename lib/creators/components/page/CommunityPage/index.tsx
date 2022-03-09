@@ -1,20 +1,7 @@
-import { useState } from "react";
-
-import {
-  AnimatedBox,
-  Box,
-  Text,
-  BackgroundVideo,
-  Grid,
-} from "@/common/components/atoms";
-import useMeta from "@/common/context/MetaContext";
+import { Box, Text } from "@/common/components/atoms";
 import { theme } from "@/common/theme";
-import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
-import { AnalyticsEvents } from "@/common/utils/analytics/types";
-import NetworkRow from "@/community/components/objects/NetworkRow";
 import { useCreatorsList } from "@/creators/context/CreatorsListContext";
 
-import ConnectModal from "../../objects/ConnectModal";
 import CreatorsList from "../../objects/CreatorsList";
 
 export type ICommunityPageProps = {
@@ -22,22 +9,16 @@ export type ICommunityPageProps = {
 };
 
 export default function CommunityPage(): JSX.Element {
-  const [visible, setVisible] = useState(false);
-  const { space, colors } = theme;
-  const { track } = useAnalytics();
+  const { space } = theme;
   const {
     creators,
     loading: creatorsLoading,
     setCreatorsPage,
   } = useCreatorsList();
-  const { userTags, loading: tagsLoading } = useMeta();
 
   function onCreatorScrollEnd(): void {
     setCreatorsPage((page) => page + 1);
   }
-
-  const videoUrl =
-    "https://1worknetwork-prod.s3.amazonaws.com/media/mp4_community_banner.mp4";
 
   return (
     <>
@@ -49,63 +30,6 @@ export default function CommunityPage(): JSX.Element {
         creators={creators}
         onScrollEnd={onCreatorScrollEnd}
       />
-
-      <BackgroundVideo my={space.xs} h={[72, 180]} muted autoPlay loop w="100%">
-        <source src={videoUrl} type="video/mp4" />
-      </BackgroundVideo>
-
-      <Box px={[space.xs, space.s]} py={space.xxs}>
-        <Text textStyle="headlineBold">Member Only</Text>
-        <Text color={colors.slate}>
-          Let the AI match you or request a meeting with your preferences
-        </Text>
-      </Box>
-      <>
-        {(() => {
-          if (tagsLoading) {
-            return (
-              <Grid
-                gridAutoFlow="column"
-                px={[space.xs, space.s]}
-                py={space.xs}
-                gridGap={space.xs}
-                gridAutoColumns="min-content"
-              >
-                {Array(4)
-                  .fill("")
-                  .map((_, index) => (
-                    <AnimatedBox
-                      w={180}
-                      key={index}
-                      h={[200, 220]}
-                      animate={{ background: ["#353535", "#a8a8a8"] }}
-                      transition={{ flip: Infinity, duration: 1 }}
-                    />
-                  ))}
-              </Grid>
-            );
-          }
-
-          return userTags?.map((tag) => (
-            <NetworkRow
-              px={[space.xs, space.s]}
-              py={space.xs}
-              tag={tag}
-              key={tag.pk}
-              onClickItem={() => {
-                track(AnalyticsEvents.connect_with_clicked);
-                setVisible(true);
-              }}
-              onClickCardButton={() => {
-                track(AnalyticsEvents.match_me_clicked);
-                setVisible(true);
-              }}
-            />
-          ));
-        })()}
-      </>
-
-      <ConnectModal visible={visible} onClose={() => setVisible(false)} />
     </>
   );
 }
