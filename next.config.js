@@ -5,12 +5,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 const withFonts = require("next-fonts");
-const withTM = require("next-transpile-modules")(
-  ["@segment/analytics-next", "d3"],
-  {
-    resolveSymlinks: true,
-  }
-);
+const withTM = require("next-transpile-modules")(["@segment/analytics-next"], {
+  resolveSymlinks: true,
+});
 
 // @ts-check
 
@@ -18,13 +15,18 @@ const withTM = require("next-transpile-modules")(
  * @type {import("next/dist/next-server/server/config").NextConfig}
  **/
 const nextConfig = {
+  compiler: {
+    styledComponents: true,
+  },
   compression: true,
   reactStrictMode: true,
   experimental: { esmExternals: true },
   future: {},
   images: {
     domains: [
-      "randomuser.me",
+      "worknetwork-api-dev-media.s3.amazonaws.com",
+      "worknetwork-api-dev-statics.s3.ap-south-1.amazonaws.com",
+      "worknetwork-api-prod-statics.s3.ap-south-1.amazonaws.com",
       "1worknetwork-dev.s3.amazonaws.com",
       "1worknetwork-prod.s3.ap-south-1.amazonaws.com",
       "1worknetwork-prod.s3.amazonaws.com",

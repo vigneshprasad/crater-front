@@ -83,9 +83,23 @@ export const API_URL_CONSTANTS = {
   },
   rewards: {
     rewardsList: "/crater/reward/",
+    rewardTypesList: "/crater/reward/type/",
+  },
+  auctions: {
+    getBids: "/crater/bid/",
+    postBid: "/crater/bid/",
+    retrievAuction: (id: number | string): string => `/crater/auction/${id}/`,
+    retrieveBid: (id: number | string): string => `/crater/bid/${id}/`,
+    getActiveAuction: (reward: string | number): string =>
+      `/crater/auction/${reward}/active_auction/`,
+    getCoinPriceLogs: "/crater/coin_log/",
+    acceptBid: (bid: number | string): string => `/crater/bid/${bid}/accept/`,
+    bidSummaryForCoin: (coin: number | string): string =>
+      `/crater/bid/${coin}/summary/`,
+    auctionSummaryForCoin: (coin: number | string): string =>
+      `/crater/auction/${coin}/summary/`,
   },
   coins: {
-    getBids: "/crater/bid/",
     getAuctions: "/crater/auction/",
     getCointForCreator: (id: string | number): string =>
       `/crater/coins/${id}/creator/`,
@@ -93,9 +107,31 @@ export const API_URL_CONSTANTS = {
   chat: {
     getChatReactions: "/groups/conversations/chatreactions/",
   },
+  payments: {
+    postPayment: "/crater/payment/",
+    createStripeIntent: "/crater/gateways/stripe/",
+    retrieveStripeIntent: (client_secret: string): string =>
+      `/crater/gateways/stripe/${client_secret}/`,
+  },
+  exchange: {
+    coinHoldingsList: "/crater/exchange/coin_holding/",
+    userRewardList: "/crater/exchange/user_reward/",
+  },
   series: {
     getAllSeries: "/groups/public/conversations/series/",
     postSeriesRequest: "/groups/conversations/series/requests/",
+  },
+  analytics: {
+    getMyClubMembersCount: "/crater/analytics/my_club/",
+    getFollowerGrowth: "/crater/analytics/follower_growth/",
+    getAverageEngagement: "/crater/analytics/average_engagement/",
+    getComparativeEngagement: "/crater/analytics/comparative_engagement/",
+    getMyTopStreams: "/crater/analytics/top_streams/",
+    getTopCreators: "/crater/analytics/comparative_ranking/",
+    getClubMembersGrowth: "/crater/analytics/club_members_growth/",
+    getTrafficSourceTypes: "/crater/analytics/traffic_source_types/",
+    getConversionFunnel: "/crater/analytics/conversion_funnel/",
+    getUsersByCrater: "/crater/analytics/users_by_crater/",
   },
   firebase: {
     getFirebaseToken: "/integrations/firebase/token/",
@@ -110,3 +146,6 @@ export const LEARN_MORE_URL =
 export const DISCORD_URL = "https://discord.gg/WBBgYSD8YQ";
 
 export const ABOUT_URL = "http://www.joincrater.club/";
+
+export const AUCTION_LEARN_MORE_URL =
+  "https://calendly.com/vivan-1/learn-more-about-auctions";

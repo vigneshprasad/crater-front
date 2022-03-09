@@ -11,4 +11,5 @@ export const Hr = styled(Box)<HorizontalRuleProps>``;
 Hr.defaultProps = {
   as: "hr",
   borderColor: "rgba(228, 228, 228, 0.1)",
+  w: "100%",
 };

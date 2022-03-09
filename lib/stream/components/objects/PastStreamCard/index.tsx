@@ -53,4 +53,9 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
 
 PastStreamCard.displayName = "PastStreamCard";
 
+PastStreamCard.defaultProps = {
+  hostImage: undefined,
+  hostName: undefined,
+};
+
 export default PastStreamCard;

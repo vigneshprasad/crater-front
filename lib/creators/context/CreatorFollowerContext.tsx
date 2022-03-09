@@ -27,7 +27,7 @@ export const CreatorFollowerContext = createContext({} as IContext);
 
 type IProviderProps = PropsWithChildren<{
   pageSize?: number;
-  userId: string;
+  userId?: string;
   initial?: Follower[];
 }>;
 

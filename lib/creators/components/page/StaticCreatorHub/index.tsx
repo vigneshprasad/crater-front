@@ -69,7 +69,7 @@ export default function StaticCreatorHub(): JSX.Element {
                 engaging your community &amp; monetizing your time.
               </Text>
               <a
-                href="https://calendly.com/craterclub/introduction-to-crater"
+                href="https://calendly.com/craterclub/introduction-to-crater?utm_source=website&utm_medium=navbar"
                 target="_blank"
                 rel="noreferrer"
               >

@@ -16,7 +16,9 @@ type Variants =
   | "small"
   | "round"
   | "round-secondary"
-  | "full-width-secondary";
+  | "full-width-secondary"
+  | "green-success"
+  | "red-error";
 
 export type ButtonProps = Omit<BoxProps, "variant"> &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -100,6 +102,22 @@ const StyledButton = styled(Grid)<ButtonProps>`
         borderRadius: 6,
         width: "100%",
       },
+      "green-success": {
+        bg: "greenSuccess",
+        borderColor: "greenSuccess",
+        ":hover": {
+          bg: "greenDeep",
+          borderColor: "greenDeep",
+        },
+      },
+      "red-error": {
+        bg: "error",
+        borderColor: "error",
+        ":hover": {
+          bg: "errorDeep",
+          borderColor: "errorDeep",
+        },
+      },
     },
   })}
 `;
@@ -113,7 +131,7 @@ export function Button({
   textProps,
   ...rest
 }: ButtonProps): JSX.Element {
-  const { space, colors, radii } = useTheme();
+  const { colors, radii } = useTheme();
 
   const fontVariant: TextVariants = useMemo(() => {
     const map: Record<Variants, TextVariants> = {
@@ -125,6 +143,8 @@ export function Button({
       round: "button",
       "round-secondary": "button",
       "full-width-secondary": "button",
+      "green-success": "buttonLarge",
+      "red-error": "buttonLarge",
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp]);
@@ -139,13 +159,15 @@ export function Button({
       round: colors.accent,
       "round-secondary": colors.accent,
       "full-width-secondary": colors.accent,
+      "green-success": colors.greenSuccess,
+      "red-error": colors.error,
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp, colors]);
 
   const gridTemplateColumns = useMemo(() => {
-    const prefix = prefixElement ? "min-content " : "";
-    const suffix = suffixElement ? " min-content" : "";
+    const prefix = prefixElement ? "max-content " : "";
+    const suffix = suffixElement ? " max-content" : "";
 
     return `${prefix}1fr${suffix}`;
   }, [prefixElement, suffixElement]);
@@ -155,7 +177,7 @@ export function Button({
       bg={bg}
       borderRadius={radii.xxxs}
       type={type}
-      px={[space.xxs, space.xxs]}
+      px={["0.2em"]}
       borderColor={colors.accent}
       variant={variantProp}
       as="button"
@@ -166,7 +188,8 @@ export function Button({
       {prefixElement && prefixElement}
       <Text
         minWidth={["none", 96]}
-        px={[space.xxxs, space.xxs]}
+        px={["0.3em"]}
+        py={["0.4em"]}
         m="auto auto"
         color="inherit"
         textStyle={fontVariant}

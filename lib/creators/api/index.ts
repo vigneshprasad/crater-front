@@ -10,7 +10,7 @@ import {
   Follower,
   Webinar,
 } from "../../community/types/community";
-import { Reward } from "../../tokens/types/tokens";
+import { Reward } from "../../tokens/types/token";
 import { Creator } from "../types/creator";
 import { CreateWebinar, StreamFormArgs } from "../types/stream";
 

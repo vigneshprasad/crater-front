@@ -19,3 +19,12 @@ export type CreateWebinar = Partial<Webinar> & {
   topic_image?: string;
   rtmp_link?: string;
 };
+
+export type TopStreams = {
+  id: number;
+  topic_title: string;
+  topic_image?: string;
+  start: string;
+  // rsvp_count: number;
+  // messages_count: number;
+};

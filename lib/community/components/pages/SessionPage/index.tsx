@@ -276,6 +276,10 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                         variant="full-width"
                         text={rsvpBtnText}
                         onClick={(): void => {
+                          track(AnalyticsEvents.rsvp_button_clicked, {
+                            new_user: true,
+                            session: webinar.id,
+                          });
                           router.replace({
                             query: {
                               ...router.query,
@@ -290,7 +294,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   }
 
                   if (isHost) {
-                    if (startTime.minus({ minutes: 5 }) > now) {
+                    if (startTime.minus({ minutes: 30 }) > now) {
                       return (
                         <Box
                           bg={colors.black[5]}
@@ -319,8 +323,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
                   if (
                     webinar.is_live ||
-                    (startTime.minus({ minutes: 10 }) < now &&
-                      startTime.plus({ minutes: 10 }) > now)
+                    (startTime.minus({ minutes: 30 }) < now &&
+                      startTime.plus({ minutes: 30 }) > now)
                   ) {
                     return (
                       <Button

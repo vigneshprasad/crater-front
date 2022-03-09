@@ -11,10 +11,10 @@ const { colors } = theme;
 
 type Variants = "flat" | "flatNoBg" | "round" | "roundSmall";
 
-type IProps = GridProps & {
+export type IconButtonProps = GridProps & {
   icon: IconOptions;
   onClick?: MouseEventHandler<HTMLDivElement>;
-  variant?: Variants;
+  variant?: Variants | GridProps["variant"];
   iconProps?: Partial<IconProps>;
 };
 
@@ -35,17 +35,17 @@ const Container = styled(Box)`
       round: {
         height: "56px",
         width: "56px",
-        background: "accent",
+        bg: "accent",
         borderRadius: "50%",
       },
       roundSmall: {
-        height: "32px",
-        width: "32px",
-        background: colors.black[5],
+        height: "36px",
+        width: "36px",
+        bg: "black.2",
         borderRadius: "50%",
         transition: "all 50ms ease-in-out",
         ":hover": {
-          background: colors.black[0],
+          bg: "accent",
         },
       },
       flatNoBg: {
@@ -63,7 +63,7 @@ export default function IconButton({
   onClick,
   iconProps,
   ...rest
-}: IProps): JSX.Element {
+}: IconButtonProps): JSX.Element {
   return (
     <Container onClick={onClick} position="relative" cursor="pointer" {...rest}>
       <Icon

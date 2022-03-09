@@ -10,19 +10,13 @@ import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
-import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar as WebinarType } from "@/community/types/community";
 import { Webinar } from "@/community/types/community";
 import CreatorApiClient from "@/creators/api";
-import { FollowerProvider } from "@/creators/context/FollowerContext";
-import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
-import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
-import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
-import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
-import { Reward } from "@/tokens/types/tokens";
+import { Reward } from "@/tokens/types/token";
 
-const DynamicWebinarPage = dynamic(
-  () => import("@/community/components/pages/WebinarPage")
+const LiveStreamPage = dynamic(
+  () => import("@/stream/components/page/LiveStreamPage")
 );
 
 interface IParams extends ParsedUrlQuery {
@@ -105,25 +99,13 @@ export default function WebinarPage({
         description: webinar.topic_detail?.description,
       }}
     >
-      <FollowerProvider
-        creator={webinar.host_detail?.creator_detail?.id}
-        user={user?.pk}
-      >
-        <WebinarProvider id={id} initial={webinar}>
-          <DyteWebinarProvider id={id}>
-            <FirebaseChatProvider groupId={id}>
-              <UpcomingStreamsProvider>
-                <RewardsListProvider
-                  initial={rewards}
-                  filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
-                >
-                  <DynamicWebinarPage orgId={orgId} id={id} />
-                </RewardsListProvider>
-              </UpcomingStreamsProvider>
-            </FirebaseChatProvider>
-          </DyteWebinarProvider>
-        </WebinarProvider>
-      </FollowerProvider>
+      <LiveStreamPage
+        user={user}
+        webinar={webinar}
+        orgId={orgId}
+        id={id}
+        rewards={rewards}
+      />
     </Page>
   );
 }

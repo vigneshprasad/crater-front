@@ -40,7 +40,7 @@ export default function AppNavBar(): JSX.Element {
       bg={colors.black[5]}
       borderBottom={`2px solid ${borders.main}`}
       px={[space.xxs, space.xs]}
-      py={[space.xxxs]}
+      h={56}
       gridTemplateColumns="max-content 1fr max-content min-content"
       alignItems="center"
     >
@@ -53,7 +53,7 @@ export default function AppNavBar(): JSX.Element {
             onClick={toggleNavBar}
           />
         )}
-        <Logo withText onClick={handleLogoClick} />
+        <Logo onClick={handleLogoClick} />
 
         <Flex
           display={["none", "flex"]}
@@ -82,11 +82,13 @@ export default function AppNavBar(): JSX.Element {
 
       <Box />
 
-      <Link href={PageRoutes.creatorHub} boxProps={{ mx: space.xxs }}>
-        <Text textStyle="button" color={colors.accent}>
-          Go Live
-        </Text>
-      </Link>
+      {router.pathname !== "/livestream/[id]" && (
+        <Link href={PageRoutes.hub()} boxProps={{ mx: space.xxs }}>
+          <Text textStyle="button" color={colors.accent}>
+            Go Live
+          </Text>
+        </Link>
+      )}
 
       <Grid
         gridAutoFlow="column"

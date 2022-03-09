@@ -30,6 +30,7 @@ import {
   BoxShadowProps,
   grid,
   GridProps,
+  compose,
 } from "styled-system";
 
 import { CustomTheme } from "@/common/theme";
@@ -139,29 +140,31 @@ export const Box = styled.div<BoxProps>`
   display: block;
   box-sizing: border-box;
 
-  ${w}
-  ${h}
-  ${borders}
-  ${background}
-  ${color}
-  ${colorStyle}
-  ${flexbox}
-  ${layout}
-  ${grid}
-  ${opacity}
-  ${position}
-  ${space}
-  ${textStyle}
-  ${textDecoration}
-  ${textTransform}
-  ${cursor}
-  ${transform}
-  ${typography}
-  ${boxShadow}
-  ${placeItems}
-  ${placeContent}
-  ${visibility}
-  ${wordBreak}
-  ${float}
-  ${clear}
+  ${compose(
+    w,
+    h,
+    borders,
+    background,
+    color,
+    colorStyle,
+    flexbox,
+    layout,
+    grid,
+    opacity,
+    position,
+    space,
+    textStyle,
+    textDecoration,
+    textTransform,
+    cursor,
+    transform,
+    typography,
+    boxShadow,
+    placeItems,
+    placeContent,
+    visibility,
+    wordBreak,
+    float,
+    clear
+  )}
 `;

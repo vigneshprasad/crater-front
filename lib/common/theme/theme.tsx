@@ -17,7 +17,8 @@ const fontSizes = {
 };
 
 const space = {
-  xxxs: 8,
+  xxxxs: 8,
+  xxxs: 12,
   xxs: 16,
   xs: 24,
   s: 40,
@@ -49,13 +50,18 @@ const zIndices = {
   dropdownContainer: 10,
   dropdownSheet: 4,
   modal: 1000,
-  overlay: 900,
+  overlay: 990,
   navHeader: 100,
   sliderControls: 5,
   asideNav: 950,
 };
 
 export const icons = iconComponents;
+
+export const gradients = {
+  primary: "linear-gradient(60deg, #4A00E0, #8E2DE2)",
+  blue: "linear-gradient(60deg, #0E509D, #116BAD)",
+};
 
 export type IconOptions = keyof typeof icons;
 
@@ -69,6 +75,7 @@ export interface CustomTheme {
   radii: typeof radii;
   outline?: string;
   zIndices: typeof zIndices;
+  gradients: typeof gradients;
 }
 
 export const theme: DefaultTheme = {
@@ -80,5 +87,6 @@ export const theme: DefaultTheme = {
   colors,
   radii,
   outline: `5px auto #52bcdf`,
+  gradients,
   zIndices,
 };

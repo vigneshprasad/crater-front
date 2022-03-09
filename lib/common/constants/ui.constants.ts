@@ -9,7 +9,7 @@ export type INavKeys =
   | "creatorhub"
   | "account"
   | "logout"
-  | "tokens"
+  | "auctions"
   | "discord";
 
 export type IMenuItem = {
@@ -29,10 +29,10 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
     iconFill: false,
   },
   {
-    label: "Tokens",
+    label: "Auctions",
     icon: "Wallet",
-    url: PageRoutes.tokens(),
-    key: "tokens",
+    url: PageRoutes.auctions,
+    key: "auctions",
     iconFill: false,
   },
   {
@@ -43,9 +43,9 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
     iconFill: false,
   },
   {
-    label: "Creator Hub",
+    label: "Hub",
     icon: "Grid",
-    url: PageRoutes.creatorHub,
+    url: PageRoutes.hub(),
     key: "creatorhub",
     iconFill: false,
   },
