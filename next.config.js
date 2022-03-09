@@ -24,7 +24,9 @@ const nextConfig = {
   future: {},
   images: {
     domains: [
-      "randomuser.me",
+      "worknetwork-api-dev-media.s3.amazonaws.com",
+      "worknetwork-api-dev-statics.s3.ap-south-1.amazonaws.com",
+      "worknetwork-api-prod-statics.s3.ap-south-1.amazonaws.com",
       "1worknetwork-dev.s3.amazonaws.com",
       "1worknetwork-prod.s3.ap-south-1.amazonaws.com",
       "1worknetwork-prod.s3.amazonaws.com",
