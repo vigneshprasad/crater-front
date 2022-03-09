@@ -9,6 +9,7 @@ interface IUpcomingStreamsState {
   upcoming?: Webinar[];
   error?: unknown;
   loading: boolean;
+  nextPage: boolean;
   setUpcomingStreamsPage: SWRInfiniteResponse<
     PageResponse<Webinar>,
     unknown
@@ -54,11 +55,15 @@ export function UpcomingStreamsProvider({
     }
   );
 
+  console.log(streams);
+
   const value: IUpcomingStreamsState = useMemo(
     () => ({
       upcoming: streams?.flatMap((page) => page.results),
       error,
       loading: !streams && !error,
+      nextPage:
+        streams && streams[streams.length - 1]?.next === null ? false : true,
       setUpcomingStreamsPage,
       mutateUpcomingStreams,
     }),

@@ -3,7 +3,8 @@ import styled, { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
 
-import { Box, Grid, Text } from "@/common/components/atoms";
+import { Box, Flex, Grid, Text } from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/Button";
 import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
@@ -26,7 +27,11 @@ const Span = styled.span`
 
 export default function StreamsPage(): JSX.Element {
   const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
-  const { upcoming } = useUpcomingStreams();
+  const {
+    upcoming,
+    setUpcomingStreamsPage,
+    nextPage: upcomingStreamsNextPage,
+  } = useUpcomingStreams();
 
   const {
     streams: past,
@@ -51,6 +56,10 @@ export default function StreamsPage(): JSX.Element {
     },
     [_observer, pastStreamsLoading, setPastStreamsPage]
   );
+
+  const showMoreUpcomingStreams = useCallback(() => {
+    setUpcomingStreamsPage((page) => page + 1);
+  }, [setUpcomingStreamsPage]);
 
   if (
     liveStreamsLoading ||
@@ -100,9 +109,31 @@ export default function StreamsPage(): JSX.Element {
         ))}
       </Grid>
 
-      <Box p="1rem 4rem">
-        <hr color={colors.black[4]} />
-      </Box>
+      <Flex
+        pt={space.s}
+        px="4rem"
+        mb={space.xxxs}
+        flexDirection="row"
+        alignItems="center"
+      >
+        <Box flexGrow={1}>
+          <hr color={colors.black[4]} />
+        </Box>
+
+        {upcomingStreamsNextPage ? (
+          <Button
+            mx={space.s}
+            flexGrow={0}
+            variant="round"
+            text="Show more"
+            onClick={showMoreUpcomingStreams}
+          />
+        ) : null}
+
+        <Box flexGrow={1}>
+          <hr color={colors.black[4]} />
+        </Box>
+      </Flex>
 
       <Box px={[space.xxs, space.s]} py={space.xxs}>
         <Text textStyle="headlineBold">
