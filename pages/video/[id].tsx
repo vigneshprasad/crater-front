@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
-import { NetworkListProvider } from "@/community/context/NetworkListContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import StreamApiClient from "@/stream/api";
