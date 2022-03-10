@@ -40,32 +40,34 @@ export const getStaticPaths: GetStaticPaths<IParams> = async () => {
   return { paths, fallback: "blocking" };
 };
 
-export const getStaticProps: GetStaticProps<WebinarPageProps, IParams> =
-  async ({ params }) => {
-    const { id } = params as IParams;
-    const [webinar, error] = await WebinarApiClient().getWebinar(id);
-    const orgId = process.env.DYTE_ORG_ID as string;
+export const getStaticProps: GetStaticProps<
+  WebinarPageProps,
+  IParams
+> = async ({ params }) => {
+  const { id } = params as IParams;
+  const [webinar, error] = await WebinarApiClient().getWebinar(id);
+  const orgId = process.env.DYTE_ORG_ID as string;
 
-    if (error || !webinar) {
-      return {
-        notFound: true,
-        revalidate: 10,
-      };
-    }
-
-    const slug = webinar.host_detail.creator_detail?.slug;
-    const [rewards] = await CreatorApiClient().getAllRewards(slug);
-
+  if (error || !webinar) {
     return {
-      props: {
-        orgId,
-        id,
-        webinar,
-        rewards: rewards ?? [],
-      },
+      notFound: true,
       revalidate: 10,
     };
+  }
+
+  const slug = webinar.host_detail.creator_detail?.slug;
+  const [rewards] = await CreatorApiClient().getAllRewards(slug);
+
+  return {
+    props: {
+      orgId,
+      id,
+      webinar,
+      rewards: rewards ?? [],
+    },
+    revalidate: 10,
   };
+};
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
