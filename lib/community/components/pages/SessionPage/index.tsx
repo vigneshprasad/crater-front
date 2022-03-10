@@ -39,7 +39,7 @@ interface IProps {
 
 export default function SessionPage({ id }: IProps): JSX.Element {
   const router = useRouter();
-  const { webinar, mutateWebinar } = useWebinar();
+  const { webinar } = useWebinar();
   const { webinarRequest, mutateRequest } = useWebinarRequest();
   const { space, radii, colors, zIndices } = useTheme();
   const [showSuccess, setShowSuccess] = useState(false);
@@ -91,7 +91,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           const [request] = await WebinarApiClient().postWebinarRequest(data);
 
           if (request) {
-            await mutateWebinar();
             track(AnalyticsEvents.rsvp_stream, {
               stream: webinar.id,
               stream_name: webinar.topic_detail?.name,
@@ -119,7 +118,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
         setShowSuccess(true);
       }
     },
-    [webinar, id, mutateRequest, router, track, mutateWebinar, webinarRequest]
+    [webinar, id, mutateRequest, router, track, webinarRequest]
   );
 
   const { data: seriesData } = useSWR<Series>(
