@@ -22,6 +22,7 @@ import {
   DD_CLIENT_TOKEN,
   DD_APPLICATION_ID,
   DD_SITE,
+  DD_SERVICE,
 } from "@/common/constants/global.constants";
 import { AsideNavProvider } from "@/common/hooks/ui/useAsideNavState";
 import { AnalyticsProvider } from "@/common/utils/analytics";
@@ -59,12 +60,15 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       applicationId: DD_APPLICATION_ID,
       clientToken: DD_CLIENT_TOKEN,
       site: DD_SITE,
-      //  service: 'my-web-application',
+      service: DD_SERVICE,
       env: ENV,
       //  version: '1.0.0',
       sampleRate: 100,
       trackInteractions: true,
+      defaultPrivacyLevel: "mask-user-input",
     });
+
+    datadogRum.startSessionReplayRecording();
   }
 
   useEffect(() => {

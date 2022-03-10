@@ -13,3 +13,4 @@ export const DD_CLIENT_TOKEN = process.env
 export const DD_SITE = process.env.NEXT_PUBLIC_DD_SITE as string;
 export const DD_APPLICATION_ID = process.env
   .NEXT_PUBLIC_DD_APPLICATION_ID as string;
+export const DD_SERVICE = process.env.NEXT_PUBLIC_DD_SERVICE as string;
