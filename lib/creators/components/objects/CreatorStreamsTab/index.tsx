@@ -60,6 +60,7 @@ export default function CreatorStreamsTab(): JSX.Element {
             hostImage={stream.speakers_detail_list[0]?.photo}
             hostName={stream.speakers_detail_list[0]?.name}
             time={stream.start}
+            hostSlug={stream.host_detail?.creator_detail?.slug}
           />
         ))}
       </Grid>

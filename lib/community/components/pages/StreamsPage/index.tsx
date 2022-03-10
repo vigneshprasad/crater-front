@@ -155,6 +155,7 @@ export default function StreamsPage(): JSX.Element {
             hostImage={stream.host_detail?.photo}
             hostName={stream.host_detail?.name}
             time={stream.start}
+            hostSlug={stream.host_detail?.creator_detail?.slug}
             ref={index == past.length - 1 ? ref : null}
           />
         ))}

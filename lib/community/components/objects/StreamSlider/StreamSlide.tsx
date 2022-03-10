@@ -12,6 +12,7 @@ import {
   Link,
 } from "@/common/components/atoms";
 import ExpandingText from "@/common/components/objects/ExpandingText";
+import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
@@ -167,11 +168,17 @@ export function StreamSlide({
             gridTemplateColumns="min-content 1fr"
             alignItems="center"
           >
-            <Avatar
-              size={32}
-              image={stream.host_detail?.photo}
-              alt={stream.host_detail?.name ?? ""}
-            />
+            <Link
+              href={PageRoutes.creatorProfile(
+                stream.host_detail?.creator_detail?.slug ?? ""
+              )}
+            >
+              <Avatar
+                size={32}
+                image={stream.host_detail?.photo}
+                alt={stream.host_detail?.name ?? ""}
+              />
+            </Link>
             <Text textStyle="title">{stream.host_detail?.name}</Text>
           </Grid>
           <ExpandingText textStyle="body" color={colors.slate} maxLines={3}>

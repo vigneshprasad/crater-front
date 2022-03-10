@@ -7,7 +7,15 @@ import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
-import { Avatar, Box, Flex, Grid, Icon, Text } from "@/common/components/atoms";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Grid,
+  Icon,
+  Link,
+  Text,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
@@ -461,11 +469,17 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 {webinar.speakers_detail_list &&
                   webinar.speakers_detail_list.map((speaker) => (
                     <>
-                      <Avatar
-                        size={56}
-                        image={speaker?.photo}
-                        alt={speaker?.name ?? "host"}
-                      />
+                      <Link
+                        href={PageRoutes.creatorProfile(
+                          speaker.creator_detail?.slug ?? ""
+                        )}
+                      >
+                        <Avatar
+                          size={56}
+                          image={speaker?.photo}
+                          alt={speaker?.name ?? "host"}
+                        />
+                      </Link>
                       <Box>
                         <Text textStyle="bodyLarge">{speaker?.name}</Text>
                         <ExpandingText color={colors.slate}>
@@ -505,6 +519,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                         hostImage={stream.host_detail?.photo}
                         hostName={stream.host_detail?.name}
                         time={stream.start}
+                        hostSlug={stream.host_detail?.creator_detail?.slug}
                       />
                     );
                   }
