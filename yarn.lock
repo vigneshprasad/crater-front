@@ -1606,6 +1606,26 @@
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.4.0.tgz#c3c5ae543c897caa9c2a68630bed355be5f9990f"
   integrity sha512-JZButFdZ1+/xAfpguQHoabIXkcqRRKpMrWKBkpEZZyxfY9C1DpADFB8PEqGSTeFr135SaTRfKqGKx5xSCLI7ZQ==
 
+"@datadog/browser-core@4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-4.6.1.tgz#a75185b5ef42ad543a981278866ff6f0e47db0ea"
+  integrity sha512-E/d1VJXZ2/AYiC9Js0ItTu4tOmIQdC8x133i9N7P0Ngu2LXUClK1uoFbccKwOKs99ZYJDgpIt5+bIvzjEc2ZhQ==
+
+"@datadog/browser-rum-core@4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-rum-core/-/browser-rum-core-4.6.1.tgz#fb11ff99020fc830ee6ea501f60896c85971c487"
+  integrity sha512-dv8fwpMdqnjdsE8SlQSom6pIFImoT5FIUrttJ4R3yrUoG2zDU3gYqcsdV0XxxjgxwgwjQOUopGgg7GOp2IIJaQ==
+  dependencies:
+    "@datadog/browser-core" "4.6.1"
+
+"@datadog/browser-rum@^4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-rum/-/browser-rum-4.6.1.tgz#ab75a89ca15bea077a0af6253800134cddf71c26"
+  integrity sha512-0v6vjry08v7mm3Wa79LQwt4TB8LPehRrPyZ5sbz4eWAiaR6oq7SnZJrGoSjglqN5qLPks0fx0D3V1YoBjNLTxQ==
+  dependencies:
+    "@datadog/browser-core" "4.6.1"
+    "@datadog/browser-rum-core" "4.6.1"
+
 "@dyteinternals/callstats@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@dyteinternals/callstats/-/callstats-1.2.0.tgz#df98d9a62a0c90a6893a57d2ffe288095e1ded3f"

@@ -8,3 +8,8 @@ export const UTM_CAMPAIGN_STORAGE_KEY = "utmCampaign";
 export const UTM_MEDIUM_STORAGE_KEY = "utmMedium";
 export const REFERRER_ID_STORAGE_KEY = "referrerId";
 export const ENV = process.env.NEXT_PUBLIC_ENV as string;
+export const DD_CLIENT_TOKEN = process.env
+  .NEXT_PUBLIC_DD_CLIENT_TOKEN as string;
+export const DD_SITE = process.env.NEXT_PUBLIC_DD_SITE as string;
+export const DD_APPLICATION_ID = process.env
+  .NEXT_PUBLIC_DD_APPLICATION_ID as string;
