@@ -20,6 +20,7 @@ export default function Footer(): JSX.Element {
 
   return (
     <Grid
+      mt={space.xs}
       px={[space.xxs, space.s]}
       py={space.xs}
       gridRowGap={space.xs}
@@ -98,7 +99,7 @@ export default function Footer(): JSX.Element {
         borderTop={`2px solid ${borders.main}`}
       >
         <Text color={colors.slate} textStyle="small" textAlign="center">
-          All righs reserved Wurknet Pvt. Ltd.
+          All rights reserved Wurknet Pvt. Ltd.
         </Text>
       </Box>
     </Grid>
