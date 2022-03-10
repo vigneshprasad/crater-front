@@ -23,7 +23,6 @@ const Video = styled.video`
 export default function StreamPlayerPage(): JSX.Element {
   const { webinar, loading } = useWebinar();
   const { recording } = useStreamRecording();
-  // const { members, loading: membersLoading } = useNetworkList();
 
   const { space, colors, borders } = useTheme();
 
@@ -67,18 +66,7 @@ export default function StreamPlayerPage(): JSX.Element {
 
         <Box py={space.s}>
           <PastStreamsList displayedPastStreamId={webinar.id} />
-
-          {/* <Box h={space.xs} />
-
-          <NetworkList
-            webinar={webinar}
-            members={members}
-            loading={membersLoading}
-          />
-          <Link href={PageRoutes.community} boxProps={{ target: "_blank" }}>
-            <Button variant="full-width" text="Network with Members" />
-          </Link>
-          <Box h={space.m} /> */}
+          <Box h={space.xs} />
         </Box>
       </Grid>
     </BaseLayout>
