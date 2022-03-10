@@ -57,7 +57,7 @@ export default function CreatorApiClient(
   async function getCreatorsList(
     certified = true,
     page = 1,
-    pageSize = 10
+    pageSize = 20
   ): Promise<ApiResult<PageResponse<Creator>, AxiosError>> {
     try {
       const { data } = await API(context).get<PageResponse<Creator>>(
