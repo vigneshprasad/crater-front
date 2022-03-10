@@ -186,6 +186,17 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     }
   }, [router, user, webinar, postGroupRequest, postSeriesRequest]);
 
+  const shareUrl = useCallback(
+    (utmSource: string): string => {
+      if (user) {
+        return `${url}?utm_source=${utmSource}&referrer=${user.pk}`;
+      } else {
+        return url;
+      }
+    },
+    [user, url]
+  );
+
   if (!webinar) return <Box>Loading..</Box>;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -399,7 +410,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 gridGap={space.xxs}
               >
                 <a
-                  href={`//www.linkedin.com/shareArticle?mini=true&url=${url}&title=${webinar.topic_detail?.name}`}
+                  href={`//www.linkedin.com/shareArticle?mini=true&url=${shareUrl(
+                    "LinkedIn"
+                  )}&title=${webinar.topic_detail?.name}`}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -424,7 +437,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   />
                 </a>
                 <a
-                  href={`//twitter.com/share?text=${webinar.topic_detail?.name}&url=${url}`}
+                  href={`//twitter.com/share?text=${
+                    webinar.topic_detail?.name
+                  }&url=${shareUrl("Twitter")}`}
                   target="_blank"
                   rel="noreferrer"
                 >
