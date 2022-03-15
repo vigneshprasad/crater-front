@@ -12,21 +12,28 @@ interface IWebinarRequestState {
 
 type IWebinarRequestProviderProps = PropsWithChildren<{
   groupId: string;
+  user?: string;
 }>;
 
 export const WebinarRequestContext = createContext({} as IWebinarRequestState);
 
 export function WebinarRequestProvider({
   groupId,
+  user,
   ...rest
 }: IWebinarRequestProviderProps): JSX.Element {
   const {
     data: webinarRequest,
     error,
     mutate: mutateRequest,
-  } = useSWR(API_URL_CONSTANTS.groups.retrieveGroupRequest(groupId), {
-    shouldRetryOnError: false,
-  });
+  } = useSWR(
+    user && groupId
+      ? API_URL_CONSTANTS.groups.retrieveGroupRequest(groupId)
+      : null,
+    {
+      shouldRetryOnError: false,
+    }
+  );
 
   const value: IWebinarRequestState = useMemo(
     () => ({

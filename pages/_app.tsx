@@ -1,3 +1,4 @@
+import { datadogRum } from "@datadog/browser-rum";
 import { theme } from "lib/common/theme";
 import { Provider } from "next-auth/client";
 import { useEffect } from "react";
@@ -17,6 +18,11 @@ import {
   UTM_CAMPAIGN_STORAGE_KEY,
   UTM_MEDIUM_STORAGE_KEY,
   REFERRER_ID_STORAGE_KEY,
+  ENV,
+  DD_CLIENT_TOKEN,
+  DD_APPLICATION_ID,
+  DD_SITE,
+  DD_SERVICE,
 } from "@/common/constants/global.constants";
 import { AsideNavProvider } from "@/common/hooks/ui/useAsideNavState";
 import { AnalyticsProvider } from "@/common/utils/analytics";
@@ -49,11 +55,29 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
     }
   }, [router]);
 
+  function intializeDataDog(): void {
+    datadogRum.init({
+      applicationId: DD_APPLICATION_ID,
+      clientToken: DD_CLIENT_TOKEN,
+      site: DD_SITE,
+      service: DD_SERVICE,
+      env: ENV,
+      //  version: '1.0.0',
+      sampleRate: 100,
+      trackInteractions: true,
+      defaultPrivacyLevel: "mask-user-input",
+    });
+
+    datadogRum.startSessionReplayRecording();
+  }
+
   useEffect(() => {
     OneSignal.init({
       appId: "a8d5ac89-ade7-4394-8d2d-6b093a430f88",
     });
+    intializeDataDog();
   }, []);
+
   return (
     <SWRConfig
       value={{

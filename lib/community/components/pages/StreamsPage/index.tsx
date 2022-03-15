@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { Box, Flex, Grid, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import Spinner from "@/common/components/atoms/Spiner";
+import Footer from "@/common/components/objects/Footer";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import useSeries from "@/community/context/SeriesListContext";
@@ -160,6 +161,7 @@ export default function StreamsPage(): JSX.Element {
           />
         ))}
       </Grid>
+      <Footer />
     </>
   );
 }

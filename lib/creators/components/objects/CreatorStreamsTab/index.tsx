@@ -57,8 +57,8 @@ export default function CreatorStreamsTab(): JSX.Element {
             title={stream.topic_detail.name}
             href={PageRoutes.streamVideo(stream.id)}
             image={stream.topic_detail.image}
-            hostImage={stream.speakers_detail_list[0]?.photo}
-            hostName={stream.speakers_detail_list[0]?.name}
+            hostImage={stream.host_detail.photo}
+            hostName={stream.host_detail.name}
             time={stream.start}
             hostSlug={stream.host_detail?.creator_detail?.slug}
           />

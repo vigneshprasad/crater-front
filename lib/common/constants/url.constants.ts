@@ -149,3 +149,10 @@ export const ABOUT_URL = "http://www.joincrater.club/";
 
 export const AUCTION_LEARN_MORE_URL =
   "https://calendly.com/vivan-1/learn-more-about-auctions";
+
+export const INSTAGRAM_URL = "https://www.instagram.com/crater.club/";
+
+export const LINKEDIN_URL = "https://www.linkedin.com/company/craterclub/";
+
+export const HIRING_URL =
+  "https://crater-about.notion.site/Lets-build-together-b1babcce8a4d4ef2b5787af058d391d1";

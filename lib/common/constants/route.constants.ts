@@ -20,4 +20,5 @@ export const PageRoutes = {
   bidPaymentSuccess: (bid: number | string): string =>
     `/checkout/bid/success/${bid}`,
   hub: (tab: HubTabKeys = "stream"): string => `/hub/${tab}`,
+  join: "/join",
 };
