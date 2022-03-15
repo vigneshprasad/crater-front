@@ -17,7 +17,7 @@ export function Logo({ onClick, ...rest }: ILogoProps): JSX.Element {
       onClick={onClick}
       {...rest}
     >
-      <Icon icon="Logo" h={32} w="auto" />
+      <Icon icon="Logo" h={32} w={124} />
     </Grid>
   );
 }
