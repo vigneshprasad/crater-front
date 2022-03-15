@@ -53,8 +53,9 @@ export default function Footer(): JSX.Element {
         </Box>
 
         <Box>
-          <Text textStyle="small">Address</Text>
+          <Text textStyle="small">Company Details</Text>
           <Text color={colors.slate}>
+            Wurknet Private Limited <br />
             Shalaka, 204, Juhu Rd, Santacruz West <br />
             Mumbai, Maharashtra 400054
           </Text>
@@ -99,7 +100,7 @@ export default function Footer(): JSX.Element {
         borderTop={`2px solid ${borders.main}`}
       >
         <Text color={colors.slate} textStyle="small" textAlign="center">
-          All rights reserved Wurknet Pvt. Ltd.
+          All rights reserved Wurknet Private Limited
         </Text>
       </Box>
     </Grid>
