@@ -32,11 +32,7 @@ export default function HomePageLayout({
   const { space } = useTheme();
   return (
     <Page seo={seo}>
-      <BaseLayout
-        pb={space.xl}
-        aside={<AsideNav activeTab={activeTab} />}
-        overflowY="auto"
-      >
+      <BaseLayout aside={<AsideNav activeTab={activeTab} />} overflowY="auto">
         <Box p={[space.xs, space.s]}>
           <TabHeading>{heading}</TabHeading>
         </Box>
