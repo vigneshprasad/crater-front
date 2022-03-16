@@ -8,7 +8,6 @@ import WebinarApiClient from "@/community/api";
 import { LiveStreamsProvider } from "@/community/context/LiveStreamsContext";
 import { SeriesListProvider } from "@/community/context/SeriesListContext";
 import { Series, Webinar } from "@/community/types/community";
-import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 
 const StreamsPage = dynamic(
@@ -56,9 +55,7 @@ export default function Home({
       <LiveStreamsProvider initial={liveStreams}>
         <UpcomingStreamsProvider initial={upcoming}>
           <SeriesListProvider initial={series}>
-            <PastStreamProvider>
-              <StreamsPage />
-            </PastStreamProvider>
+            <StreamsPage />
           </SeriesListProvider>
         </UpcomingStreamsProvider>
       </LiveStreamsProvider>
