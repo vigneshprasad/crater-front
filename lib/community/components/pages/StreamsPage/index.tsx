@@ -1,21 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Stream } from "stream";
+import { useCallback, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import useSWR from "swr";
 
 import dynamic from "next/dynamic";
 
-import { Box, Flex, Grid, Shimmer, Text } from "@/common/components/atoms";
+import { Box, Flex, Grid, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import Spinner from "@/common/components/atoms/Spiner";
 import Footer from "@/common/components/objects/Footer";
-import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import useSeries from "@/community/context/SeriesListContext";
-import { Webinar } from "@/community/types/community";
 import { StreamCategory } from "@/creators/types/stream";
-import PastStreamCard from "@/stream/components/objects/PastStreamCard";
+import PastStreamListHome from "@/stream/components/objects/PastStreamListHome";
 import {
   PastStreamContext,
   PastStreamProvider,
@@ -57,35 +54,9 @@ export default function StreamsPage(): JSX.Element {
     number | undefined
   >(undefined);
 
-  // const ref = useCallback(
-  //   (node: HTMLDivElement | null) => {
-  //     if (pastStreamsLoading) return;
-  //     if (_observer.current) _observer.current.disconnect();
-  //     _observer.current = new IntersectionObserver((entries) => {
-  //       if (entries[0].isIntersecting) {
-  //         setPastStreamsPage((page) => page + 1);
-  //       }
-  //     });
-
-  //     if (node != null) _observer.current.observe(node);
-  //   },
-  //   [_observer, pastStreamsLoading, setPastStreamsPage]
-  // );
-
   const showMoreUpcomingStreams = useCallback(() => {
     setUpcomingStreamsPage((page) => page + 1);
   }, [setUpcomingStreamsPage]);
-
-  // useEffect(() => {
-  //   if (
-  //     activeCategoryFilter === undefined &&
-  //     homePageCategories &&
-  //     homePageCategories?.length > 0
-  //   ) {
-  //     console.log("useEffect");
-  //     setActiveCategoryFilter(homePageCategories[0].pk);
-  //   }
-  // }, [activeCategoryFilter, homePageCategories]);
 
   if (
     liveStreamsLoading ||
@@ -190,14 +161,14 @@ export default function StreamsPage(): JSX.Element {
           : null}
       </Grid>
 
-      <Grid
+      {/* <Grid
         px={space.s}
         gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
         gridGap={space.s}
       >
         <PastStreamProvider categoryFilter={activeCategoryFilter}>
           <PastStreamContext.Consumer>
-            {({ streams: past, loading }) => {
+            {({ streams: past, loading, setPastStreamsPage }) => {
               if (loading) return <Shimmer w="100%" h="100%" />;
 
               if (past?.length === 0)
@@ -219,7 +190,14 @@ export default function StreamsPage(): JSX.Element {
             }}
           </PastStreamContext.Consumer>
         </PastStreamProvider>
-      </Grid>
+      </Grid> */}
+
+      <PastStreamProvider categoryFilter={activeCategoryFilter}>
+        <PastStreamContext.Consumer>
+          {(pastStreamsData) => <PastStreamListHome {...pastStreamsData} />}
+        </PastStreamContext.Consumer>
+      </PastStreamProvider>
+
       <Footer />
     </>
   );
