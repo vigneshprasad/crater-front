@@ -24,6 +24,7 @@ const nextConfig = {
   future: {},
   images: {
     domains: [
+      "localhost",
       "worknetwork-api-dev-media.s3.amazonaws.com",
       "worknetwork-api-dev-statics.s3.ap-south-1.amazonaws.com",
       "worknetwork-api-prod-statics.s3.ap-south-1.amazonaws.com",
