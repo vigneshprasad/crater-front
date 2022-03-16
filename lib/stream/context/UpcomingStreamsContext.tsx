@@ -55,8 +55,6 @@ export function UpcomingStreamsProvider({
     }
   );
 
-  console.log(streams);
-
   const value: IUpcomingStreamsState = useMemo(
     () => ({
       upcoming: streams?.flatMap((page) => page.results),
