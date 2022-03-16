@@ -187,11 +187,13 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
   const shareUrl = useCallback(
     (utmSource: string): string => {
+      let encodedUrl = url;
+
       if (user) {
-        return `${url}?utm_source=${utmSource}&referrer=${user.pk}`;
-      } else {
-        return url;
+        encodedUrl = `${url}?utm_source=${utmSource}&referrer=${user.pk}`;
       }
+
+      return encodeURIComponent(encodedUrl);
     },
     [user, url]
   );
@@ -409,7 +411,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 gridGap={space.xxs}
               >
                 <a
-                  href={`//www.linkedin.com/shareArticle?mini=true&url=${shareUrl(
+                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl(
                     "LinkedIn"
                   )}&title=${webinar.topic_detail?.name}`}
                   target="_blank"
@@ -436,7 +438,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   />
                 </a>
                 <a
-                  href={`//twitter.com/share?text=${
+                  href={`https://twitter.com/share?text=${
                     webinar.topic_detail?.name
                   }&url=${shareUrl("Twitter")}`}
                   target="_blank"
