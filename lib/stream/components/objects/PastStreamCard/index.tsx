@@ -39,7 +39,7 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
             alignItems="center"
             gridGap={space.xxs}
           >
-            <Link href={PageRoutes.creatorProfile(hostSlug) ?? ""}>
+            <Link href={PageRoutes.creatorProfile(hostSlug ?? "")}>
               <Avatar size={56} image={hostImage} alt={title} />
             </Link>
             <Flex flexDirection="column">
