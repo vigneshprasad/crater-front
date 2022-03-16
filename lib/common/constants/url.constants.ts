@@ -80,6 +80,7 @@ export const API_URL_CONSTANTS = {
   stream: {
     createStream: "/groups/conversations/webinars/",
     getCategories: "/groups/conversations/categories/",
+    getHomePageCategories: "/groups/conversations/categories/home/",
   },
   rewards: {
     rewardsList: "/crater/reward/",
