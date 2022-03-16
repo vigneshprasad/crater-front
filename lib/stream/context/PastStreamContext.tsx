@@ -5,7 +5,7 @@ import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
 import { Webinar } from "@/community/types/community";
 
-interface IPastStreamState {
+export interface IPastStreamState {
   streams?: Webinar[];
   error?: unknown;
   loading: boolean;
