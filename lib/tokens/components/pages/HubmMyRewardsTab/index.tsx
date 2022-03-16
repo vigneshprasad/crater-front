@@ -60,7 +60,7 @@ export default function HubmMyRewardsTab({ creator }: IProps): JSX.Element {
 
   return (
     <Grid
-      gridTemplateColumns="3fr minmax(180px, 1fr)"
+      gridTemplateColumns={["1fr", "3fr minmax(180px, 1fr)"]}
       px={space.s}
       py={space.xs}
       gridGap={space.s}
@@ -75,7 +75,7 @@ export default function HubmMyRewardsTab({ creator }: IProps): JSX.Element {
       <BidsSummaryBox creator={creator.id} />
 
       {rewards && rewards.length > 0 && (
-        <Box gridColumn="1 / span 2">
+        <Box gridColumn={["1", "1 / span 2"]}>
           <Text px={space.xxs} py={space.s} textStyle="title">
             Tickets for sale
           </Text>
