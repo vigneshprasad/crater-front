@@ -142,19 +142,18 @@ export default function StreamsPage(): JSX.Element {
         pb={space.s}
         gridTemplateColumns={[
           "1fr 1fr",
-          "repeat(auto-fill, minmax(120px, 1fr))",
+          "repeat(auto-fill, minmax(200px, 1fr))",
         ]}
-        gridGap={space.s}
+        gridGap={space.xxs}
       >
         {homePageCategories && homePageCategories.length > 0
           ? homePageCategories.map((category) => {
               return (
                 <Button
-                  variant="full-width"
+                  variant="active-outline"
                   text={category.name}
                   key={category.pk}
                   onClick={() => setActiveCategoryFilter(category.pk)}
-                  disabled={activeCategoryFilter === category.pk}
                 />
               );
             })
