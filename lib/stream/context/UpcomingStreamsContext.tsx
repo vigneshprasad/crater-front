@@ -1,8 +1,15 @@
-import { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { SWRInfiniteResponse, useSWRInfinite } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
+import fetcher from "@/common/utils/fetcher";
 import { Webinar } from "@/community/types/community";
 
 interface IUpcomingStreamsState {
@@ -36,6 +43,7 @@ export function UpcomingStreamsProvider({
   pageSize = 10,
   ...rest
 }: IProviderProps): JSX.Element {
+  const [nextPage, setNextPage] = useState(false);
   const {
     data: streams,
     error,
@@ -50,6 +58,11 @@ export function UpcomingStreamsProvider({
         ? `${API_URL_CONSTANTS.groups.getUpcominWebinars}?host=${host}&page=${page}&page_size=${pageSize}`
         : `${API_URL_CONSTANTS.groups.getUpcominWebinars}?page=${page}&page_size=${pageSize}`;
     },
+    async (key: string) => {
+      const response = await fetcher<PageResponse<Webinar>>(key);
+      if (response.next) setNextPage(true);
+      return response;
+    },
     {
       initialData: initial ? [initial] : undefined,
     }
@@ -60,12 +73,11 @@ export function UpcomingStreamsProvider({
       upcoming: streams?.flatMap((page) => page.results),
       error,
       loading: !streams && !error,
-      nextPage:
-        streams && streams[streams.length - 1]?.next === null ? false : true,
+      nextPage,
       setUpcomingStreamsPage,
       mutateUpcomingStreams,
     }),
-    [streams, error, setUpcomingStreamsPage, mutateUpcomingStreams]
+    [streams, error, nextPage, setUpcomingStreamsPage, mutateUpcomingStreams]
   );
 
   return <UpcomingStreamsContext.Provider value={value} {...rest} />;
