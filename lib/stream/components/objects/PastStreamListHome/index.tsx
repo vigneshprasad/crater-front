@@ -1,9 +1,8 @@
 import { useCallback, useRef } from "react";
 import { useTheme } from "styled-components";
 
-import { Grid, Shimmer, Text } from "@/common/components/atoms";
+import { Grid, Shimmer } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
-import { Webinar } from "@/community/types/community";
 import { IPastStreamState } from "@/stream/context/PastStreamContext";
 
 import PastStreamCard from "../PastStreamCard";
@@ -34,30 +33,29 @@ export default function PastStreamListHome({
 
   return (
     <Grid
-      px={space.s}
       gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
       gridGap={space.s}
     >
-      {(() => {
-        if (loading) return <Shimmer w="100%" h="100%" />;
-
-        if (pastStreams?.length === 0)
-          return <Text>No streams in this category.</Text>;
-
-        return pastStreams?.map((stream: Webinar, index: number) => (
-          <PastStreamCard
-            key={stream.id}
-            title={stream.topic_detail.name}
-            href={PageRoutes.streamVideo(stream.id)}
-            image={stream.topic_detail.image}
-            hostImage={stream.host_detail?.photo}
-            hostName={stream.host_detail?.name}
-            time={stream.start}
-            hostSlug={stream.host_detail?.creator_detail?.slug}
-            ref={index == pastStreams.length - 1 ? ref : null}
-          />
-        ));
-      })()}
+      {loading ? (
+        <Shimmer w="100%" h="100%" />
+      ) : (
+        pastStreams &&
+        pastStreams
+          .slice(0, 5)
+          .map((stream, index) => (
+            <PastStreamCard
+              key={stream.id}
+              title={stream.topic_detail.name}
+              href={PageRoutes.streamVideo(stream.id)}
+              image={stream.topic_detail.image}
+              hostImage={stream.host_detail?.photo}
+              hostName={stream.host_detail?.name}
+              time={stream.start}
+              hostSlug={stream.host_detail?.creator_detail?.slug}
+              ref={index == pastStreams.length - 1 ? ref : null}
+            />
+          ))
+      )}
     </Grid>
   );
 }
