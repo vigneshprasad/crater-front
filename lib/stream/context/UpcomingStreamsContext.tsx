@@ -41,7 +41,7 @@ type IProviderProps = PropsWithChildren<{
 export function UpcomingStreamsProvider({
   host,
   initial,
-  pageSize = 4,
+  pageSize = 20,
   category,
   ...rest
 }: IProviderProps): JSX.Element {
