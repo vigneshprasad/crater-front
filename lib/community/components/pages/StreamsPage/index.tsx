@@ -1,22 +1,28 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import styled, { useTheme } from "styled-components";
-import useSWR from "swr";
 
 import dynamic from "next/dynamic";
 
-import { Box, Flex, Grid, Text } from "@/common/components/atoms";
+import {
+  Box,
+  Flex,
+  Grid,
+  Link,
+  Shimmer,
+  Text,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import Spinner from "@/common/components/atoms/Spiner";
 import Footer from "@/common/components/objects/Footer";
-import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import useSeries from "@/community/context/SeriesListContext";
-import { StreamCategory } from "@/creators/types/stream";
 import PastStreamListHome from "@/stream/components/objects/PastStreamListHome";
 import {
   PastStreamContext,
   PastStreamProvider,
 } from "@/stream/context/PastStreamContext";
+import useStreamCategories from "@/stream/context/StreamCategoryContext";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 import SeriesList from "../../objects/SeriesList";
@@ -38,21 +44,10 @@ export default function StreamsPage(): JSX.Element {
     setUpcomingStreamsPage,
     nextPage: upcomingStreamsNextPage,
   } = useUpcomingStreams();
-
-  // const {
-  //   streams: past,
-  //   loading: pastStreamsLoading,
-  //   setPastStreamsPage,
-  // } = usePastStreams();
-  const { space, colors } = useTheme();
-  // const _observer = useRef<IntersectionObserver>();
+  const { space, colors, radii } = useTheme();
   const { series: seriesList, loading: seriesLoading } = useSeries();
-  const { data: homePageCategories } = useSWR<StreamCategory[]>(
-    API_URL_CONSTANTS.stream.getHomePageCategories
-  );
-  const [activeCategoryFilter, setActiveCategoryFilter] = useState<
-    number | undefined
-  >(undefined);
+  const { streamCategories, loading: streamCategoryLoading } =
+    useStreamCategories();
 
   const showMoreUpcomingStreams = useCallback(() => {
     setUpcomingStreamsPage((page) => page + 1);
@@ -106,7 +101,7 @@ export default function StreamsPage(): JSX.Element {
       </Grid>
 
       <Flex
-        pt={space.s}
+        pt={space.xxxs}
         px="4rem"
         mb={space.xxxs}
         flexDirection="row"
@@ -139,63 +134,82 @@ export default function StreamsPage(): JSX.Element {
 
       <Grid
         px={space.s}
-        pb={space.s}
         gridTemplateColumns={[
           "1fr 1fr",
-          "repeat(auto-fill, minmax(200px, 1fr))",
+          "repeat(auto-fit, minmax(200px, 1fr))",
         ]}
         gridGap={space.xxs}
       >
-        {homePageCategories && homePageCategories.length > 0
-          ? homePageCategories.map((category) => {
-              return (
-                <Button
-                  variant="active-outline"
-                  text={category.name}
-                  key={category.pk}
-                  onClick={() => setActiveCategoryFilter(category.pk)}
+        {streamCategoryLoading
+          ? Array(5)
+              .fill("")
+              .map((_, index) => (
+                <Shimmer
+                  w="100%"
+                  h={40}
+                  borderRadius={radii.xxxs}
+                  key={index}
                 />
+              ))
+          : streamCategories?.map((category) => {
+              return (
+                <Link
+                  href={PageRoutes.pastStreams(category.pk)}
+                  key={category.pk}
+                >
+                  <Button
+                    variant="filter-button"
+                    text={category.name}
+                    textProps={{ m: 0, textAlign: "start" }}
+                  />
+                </Link>
               );
-            })
-          : null}
+            })}
       </Grid>
 
-      {/* <Grid
-        px={space.s}
-        gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
-        gridGap={space.s}
-      >
-        <PastStreamProvider categoryFilter={activeCategoryFilter}>
-          <PastStreamContext.Consumer>
-            {({ streams: past, loading, setPastStreamsPage }) => {
-              if (loading) return <Shimmer w="100%" h="100%" />;
+      {!streamCategoryLoading &&
+        streamCategories?.map((category, index) => {
+          return (
+            <Box key={category.pk}>
+              <PastStreamProvider categoryFilter={category.pk}>
+                <PastStreamContext.Consumer>
+                  {(pastStreamsData) => {
+                    return (
+                      <Box px={[space.xxs, space.s]}>
+                        <Flex
+                          py={space.xxs}
+                          flexDirection="row"
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <Text textStyle="headline6" color={colors.slate}>
+                            {category.name}
+                          </Text>
+                          <Link
+                            href={PageRoutes.pastStreams(category.pk)}
+                            boxProps={{ mx: space.xxs }}
+                          >
+                            <Text textStyle="button" color={colors.accent}>
+                              View more
+                            </Text>
+                          </Link>
+                        </Flex>
 
-              if (past?.length === 0)
-                return <Text>No streams in this category.</Text>;
+                        <PastStreamListHome {...pastStreamsData} />
 
-              return past?.map((stream: Webinar, index: number) => (
-                <PastStreamCard
-                  key={stream.id}
-                  title={stream.topic_detail.name}
-                  href={PageRoutes.streamVideo(stream.id)}
-                  image={stream.topic_detail.image}
-                  hostImage={stream.host_detail?.photo}
-                  hostName={stream.host_detail?.name}
-                  time={stream.start}
-                  hostSlug={stream.host_detail?.creator_detail?.slug}
-                  // ref={index == past.length - 1 ? ref : null}
-                />
-              ));
-            }}
-          </PastStreamContext.Consumer>
-        </PastStreamProvider>
-      </Grid> */}
-
-      <PastStreamProvider categoryFilter={activeCategoryFilter}>
-        <PastStreamContext.Consumer>
-          {(pastStreamsData) => <PastStreamListHome {...pastStreamsData} />}
-        </PastStreamContext.Consumer>
-      </PastStreamProvider>
+                        {index !== streamCategories.length - 1 && (
+                          <Box pt={space.xxxs} flexGrow={1}>
+                            <hr color={colors.black[4]} />
+                          </Box>
+                        )}
+                      </Box>
+                    );
+                  }}
+                </PastStreamContext.Consumer>
+              </PastStreamProvider>
+            </Box>
+          );
+        })}
 
       <Footer />
     </>
