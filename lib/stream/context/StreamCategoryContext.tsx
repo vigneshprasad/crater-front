@@ -21,7 +21,7 @@ export function StreamCategoryProvider({
   ...rest
 }: IProviderProps): JSX.Element {
   const { data: streamCategories, error } = useSWR<StreamCategory[]>(
-    API_URL_CONSTANTS.stream.getHomePageCategories,
+    `${API_URL_CONSTANTS.stream.getCategories}?show_on_home_page=true`,
     { initialData: initial }
   );
 

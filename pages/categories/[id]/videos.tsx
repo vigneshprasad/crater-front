@@ -27,7 +27,9 @@ interface Props {
 }
 
 export const getStaticPaths: GetStaticPaths<IParams> = async () => {
-  const [streamCategories] = await StreamApiClient().getAllStreamCategories();
+  const [streamCategories] = await StreamApiClient().getAllStreamCategories(
+    true
+  );
 
   const paths = (streamCategories as StreamCategory[]).map(({ pk }) => ({
     params: { id: pk.toString() },

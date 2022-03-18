@@ -11,9 +11,9 @@ interface IStreamApiClient {
   getPastStreams: (
     pageSize?: number
   ) => Promise<ApiResult<PageResponse<Webinar>, AxiosError>>;
-  getAllStreamCategories: () => Promise<
-    ApiResult<StreamCategory[], AxiosError>
-  >;
+  getAllStreamCategories: (
+    homePage: boolean
+  ) => Promise<ApiResult<StreamCategory[], AxiosError>>;
   retrieveStreamCategory: (
     id: number | string
   ) => Promise<ApiResult<StreamCategory, AxiosError>>;
@@ -35,12 +35,14 @@ export default function StreamApiClient(
     }
   }
 
-  async function getAllStreamCategories(): Promise<
-    ApiResult<StreamCategory[], AxiosError>
-  > {
+  async function getAllStreamCategories(
+    homePage = false
+  ): Promise<ApiResult<StreamCategory[], AxiosError>> {
     try {
       const { data } = await API(context).get<StreamCategory[]>(
-        API_URL_CONSTANTS.stream.getHomePageCategories
+        homePage
+          ? `${API_URL_CONSTANTS.stream.getCategories}?show_on_home_page=true`
+          : API_URL_CONSTANTS.stream.getCategories
       );
       return [data, undefined];
     } catch (err) {
