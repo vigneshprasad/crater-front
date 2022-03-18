@@ -35,12 +35,14 @@ type IProviderProps = PropsWithChildren<{
   host?: string;
   initial?: PageResponse<Webinar>;
   pageSize?: number;
+  category?: number;
 }>;
 
 export function UpcomingStreamsProvider({
   host,
   initial,
-  pageSize = 10,
+  pageSize = 4,
+  category,
   ...rest
 }: IProviderProps): JSX.Element {
   const [nextPage, setNextPage] = useState(false);
@@ -54,13 +56,18 @@ export function UpcomingStreamsProvider({
       const page = index + 1;
       if (previousData && !previousData.next) return null;
 
-      return host
-        ? `${API_URL_CONSTANTS.groups.getUpcominWebinars}?host=${host}&page=${page}&page_size=${pageSize}`
-        : `${API_URL_CONSTANTS.groups.getUpcominWebinars}?page=${page}&page_size=${pageSize}`;
+      if (category) {
+        return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?categories=${category}&page=${page}&page_size=${pageSize}`;
+      }
+      if (host) {
+        return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?host=${host}&page=${page}&page_size=${pageSize}`;
+      }
+
+      return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?page=${page}&page_size=${pageSize}`;
     },
     async (key: string) => {
       const response = await fetcher<PageResponse<Webinar>>(key);
-      if (response.next) setNextPage(true);
+      !response.next ? setNextPage(false) : setNextPage(true);
       return response;
     },
     {
