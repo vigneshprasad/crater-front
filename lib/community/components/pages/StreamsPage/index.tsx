@@ -7,6 +7,7 @@ import {
   Box,
   Flex,
   Grid,
+  Image,
   Link,
   Shimmer,
   Text,
@@ -157,11 +158,33 @@ export default function StreamsPage(): JSX.Element {
                   href={PageRoutes.pastStreams(category.pk)}
                   key={category.pk}
                 >
-                  <Button
-                    variant="filter-button"
-                    text={category.name}
-                    textProps={{ m: 0, textAlign: "start" }}
-                  />
+                  {category.photo ? (
+                    <Button
+                      variant="filter-button"
+                      text={category.name}
+                      textProps={{ m: 0, textAlign: "start" }}
+                      position="relative"
+                      suffixElement={
+                        <Image
+                          src={category.photo}
+                          alt={category.name}
+                          boxProps={{
+                            display: "inline-flex",
+                            justifyContent: "right",
+                            width: "100%",
+                            height: "70px",
+                            position: "absolute",
+                          }}
+                        />
+                      }
+                    />
+                  ) : (
+                    <Button
+                      variant="filter-button"
+                      text={category.name}
+                      textProps={{ m: 0, textAlign: "start" }}
+                    />
+                  )}
                 </Link>
               );
             })}

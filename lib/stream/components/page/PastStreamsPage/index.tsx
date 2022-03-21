@@ -9,6 +9,7 @@ import {
   Flex,
   Shimmer,
   Span,
+  Image,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -47,16 +48,16 @@ export default function PastStreamsPage({
 
   return (
     <Box px={[space.xs, space.s]} pb={space.s}>
-      <Text
-        textStyle="headline5"
-        color={colors.slate}
-      >{`Explore streams on ${streamCategory.name.toLocaleLowerCase()}`}</Text>
+      <Text textStyle="headline5" color={colors.slate}>
+        {streamCategory.tagline ??
+          `Explore streams on ${streamCategory.name.toLocaleLowerCase()}`}
+      </Text>
 
       <Grid
         py={space.xs}
         gridTemplateColumns={[
           "1fr 1fr",
-          "repeat(auto-fit, minmax(200px, 1fr))",
+          "repeat(auto-fit, minmax(220px, 1fr))",
         ]}
         gridGap={space.xxs}
       >
@@ -77,16 +78,33 @@ export default function PastStreamsPage({
                   href={PageRoutes.pastStreams(category.pk)}
                   key={category.pk}
                 >
-                  <Button
-                    variant="filter-button"
-                    text={category.name}
-                    border={
-                      streamCategory.pk === category.pk
-                        ? `2px solid ${colors.white[0]}`
-                        : undefined
-                    }
-                    textProps={{ m: 0, textAlign: "start" }}
-                  />
+                  {category.photo ? (
+                    <Button
+                      variant="filter-button"
+                      text={category.name}
+                      textProps={{ m: 0, textAlign: "start" }}
+                      position="relative"
+                      suffixElement={
+                        <Image
+                          src={category.photo}
+                          alt={category.name}
+                          boxProps={{
+                            display: "inline-flex",
+                            justifyContent: "right",
+                            width: "100%",
+                            height: "65px",
+                            position: "absolute",
+                          }}
+                        />
+                      }
+                    />
+                  ) : (
+                    <Button
+                      variant="filter-button"
+                      text={category.name}
+                      textProps={{ m: 0, textAlign: "start" }}
+                    />
+                  )}
                 </Link>
               );
             })}
