@@ -49,8 +49,9 @@ export default function PastStreamsPage({
   return (
     <Box px={[space.xs, space.s]} pb={space.s}>
       <Text textStyle="headline5" color={colors.slate}>
-        {streamCategory.tagline ??
-          `Explore streams on ${streamCategory.name.toLocaleLowerCase()}`}
+        {streamCategory.tagline
+          ? streamCategory.tagline
+          : `Explore streams on ${streamCategory.name.toLocaleLowerCase()}`}
       </Text>
 
       <Grid
