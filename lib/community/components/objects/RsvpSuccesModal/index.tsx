@@ -89,33 +89,34 @@ export default function RsvpSuccesModal({
   const router = useRouter();
   const { user } = useAuth();
 
-  const ref = useCallback(
+  const followersRef = useCallback(
     (node: HTMLDivElement | null) => {
-      if (rsvpModalPage === RsvpModalPage.DiscoverFollowers) {
-        if (streamCreatorsLoading) return;
-        if (_observer.current) _observer.current.disconnect();
-        _observer.current = new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting) {
-            setStreamCreatorsPage((page) => page + 1);
-          }
-        });
-      } else if (rsvpModalPage === RsvpModalPage.LiveAndUpcomingStreams) {
-        if (liveStreamsLoading && upcomingStreamsLoading) return;
-        if (_observer.current) _observer.current.disconnect();
-        _observer.current = new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting) {
-            setFeaturedStreamPage((page) => page + 1);
-            setUpcomingStreamsPage((page) => page + 1);
-          }
-        });
-      }
+      if (streamCreatorsLoading) return;
+      if (_observer.current) _observer.current.disconnect();
+      _observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          setStreamCreatorsPage((page) => page + 1);
+        }
+      });
 
-      if (node != null && _observer.current) _observer.current.observe(node);
+      if (node != null) _observer.current.observe(node);
+    },
+    [streamCreatorsLoading, setStreamCreatorsPage]
+  );
+
+  const streamsRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (liveStreamsLoading && upcomingStreamsLoading) return;
+      if (_observer.current) _observer.current.disconnect();
+      _observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          setFeaturedStreamPage((page) => page + 1);
+          setUpcomingStreamsPage((page) => page + 1);
+        }
+      });
+      if (node != null) _observer.current.observe(node);
     },
     [
-      rsvpModalPage,
-      streamCreatorsLoading,
-      setStreamCreatorsPage,
       liveStreamsLoading,
       upcomingStreamsLoading,
       setFeaturedStreamPage,
@@ -257,7 +258,9 @@ export default function RsvpSuccesModal({
                       gridTemplateColumns="max-content 1fr max-content"
                       alignItems="center"
                       key={streamCreator.id}
-                      ref={index == streamCreators.length - 1 ? ref : null}
+                      ref={
+                        index == streamCreators.length - 1 ? followersRef : null
+                      }
                     >
                       <Avatar
                         image={streamCreator.host_detail?.photo}
@@ -349,7 +352,7 @@ export default function RsvpSuccesModal({
                             key={stream.id}
                             ref={
                               index == liveAndUpcomingStreams().length - 1
-                                ? ref
+                                ? streamsRef
                                 : null
                             }
                           >
