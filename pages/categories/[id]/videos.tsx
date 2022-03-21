@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async ({
   const { id } = params as IParams;
   const [streamCategory] = await StreamApiClient().retrieveStreamCategory(id);
 
-  if (!streamCategory) {
+  if (!streamCategory || !streamCategory?.show_on_home_page) {
     return {
       notFound: true,
       revalidate: 10,
