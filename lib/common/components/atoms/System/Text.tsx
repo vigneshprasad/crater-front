@@ -152,7 +152,7 @@ const variants = {
   },
   categoryFilter: {
     fontFamily: fonts.body,
-    fontSize: ["2.4rem"],
+    fontSize: ["1.5rem", "2rem"],
     fontWeight: "600",
   },
 };
