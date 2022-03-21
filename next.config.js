@@ -33,6 +33,7 @@ const nextConfig = {
       "1worknetwork-prod.s3.amazonaws.com",
       "1worknetwork-pre.s3.amazonaws.com",
       "1worknetwork-stage.s3.amazonaws.com",
+      "crater-local.s3.amazonaws.com",
     ],
   },
   i18n: {
