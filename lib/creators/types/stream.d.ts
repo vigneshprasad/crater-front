@@ -5,6 +5,7 @@ export type StreamCategory = {
   name: string;
   photo?: string;
   tagline?: string;
+  show_on_home_page: boolean;
 };
 
 export type StreamFormArgs = {
