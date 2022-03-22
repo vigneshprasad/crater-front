@@ -92,7 +92,7 @@ export default function WebinarApiClient(
 
   async function getAllUpcominWebinars(
     page = 1,
-    pageSize = 10
+    pageSize = 20
   ): Promise<ApiResult<PageResponse<Webinar>, AxiosError>> {
     try {
       const { data } = await client.get<PageResponse<Webinar>>(

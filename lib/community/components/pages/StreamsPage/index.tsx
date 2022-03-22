@@ -218,7 +218,10 @@ export default function StreamsPage(): JSX.Element {
                           </Link>
                         </Flex>
 
-                        <PastStreamListHome {...pastStreamsData} />
+                        <PastStreamListHome
+                          {...pastStreamsData}
+                          streams={pastStreamsData.streams?.slice(0, 4)}
+                        />
 
                         {index !== streamCategories.length - 1 && (
                           <Box pt={space.xxxs} flexGrow={1}>
