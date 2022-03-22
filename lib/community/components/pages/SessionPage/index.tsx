@@ -7,7 +7,15 @@ import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
-import { Avatar, Box, Flex, Grid, Icon, Text } from "@/common/components/atoms";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Grid,
+  Icon,
+  Link,
+  Text,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
@@ -18,7 +26,6 @@ import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
 import WebinarApiClient from "@/community/api";
-// import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { useWebinarRequest } from "@/community/context/WebinarRequestContext";
 import {
@@ -28,6 +35,7 @@ import {
   Series,
 } from "@/community/types/community";
 import PastStreamCard from "@/stream/components/objects/PastStreamCard";
+import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
 import StreamCard from "../../objects/StreamCard";
@@ -46,7 +54,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const { user } = useAuth();
   const { openModal } = useAuthModal();
   const { track } = useAnalytics();
-  // const { upcoming } = useUpcomingStreams();
+  const { upcoming } = useUpcomingStreams();
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -176,6 +184,19 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       action();
     }
   }, [router, user, webinar, postGroupRequest, postSeriesRequest]);
+
+  const shareUrl = useCallback(
+    (utmSource: string): string => {
+      let encodedUrl = url;
+
+      if (user) {
+        encodedUrl = `${url}?utm_source=${utmSource}&referrer=${user.pk}`;
+      }
+
+      return encodeURIComponent(encodedUrl);
+    },
+    [user, url]
+  );
 
   if (!webinar) return <Box>Loading..</Box>;
 
@@ -390,7 +411,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 gridGap={space.xxs}
               >
                 <a
-                  href={`//www.linkedin.com/shareArticle?mini=true&url=${url}&title=${webinar.topic_detail?.name}`}
+                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl(
+                    "LinkedIn"
+                  )}&title=${webinar.topic_detail?.name}`}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -415,7 +438,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   />
                 </a>
                 <a
-                  href={`//twitter.com/share?text=${webinar.topic_detail?.name}&url=${url}`}
+                  href={`https://twitter.com/share?text=${
+                    webinar.topic_detail?.name
+                  }&url=${shareUrl("Twitter")}`}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -460,11 +485,20 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 {webinar.speakers_detail_list &&
                   webinar.speakers_detail_list.map((speaker) => (
                     <>
-                      <Avatar
-                        size={56}
-                        image={speaker?.photo}
-                        alt={speaker?.name ?? "host"}
-                      />
+                      {speaker.creator_detail?.slug && (
+                        <Link
+                          href={PageRoutes.creatorProfile(
+                            speaker.creator_detail?.slug
+                          )}
+                        >
+                          <Avatar
+                            size={56}
+                            image={speaker?.photo}
+                            alt={speaker?.name ?? "host"}
+                          />
+                        </Link>
+                      )}
+
                       <Box>
                         <Text textStyle="bodyLarge">{speaker?.name}</Text>
                         <ExpandingText color={colors.slate}>
@@ -504,6 +538,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                         hostImage={stream.host_detail?.photo}
                         hostName={stream.host_detail?.name}
                         time={stream.start}
+                        hostSlug={stream.host_detail?.slug}
                       />
                     );
                   }
@@ -514,7 +549,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           </Box>
         ) : null}
 
-        {/* <Box pb={space.s}>
+        <Box pb={space.s}>
           <Box px={[space.xxs, space.s]} py={space.xs}>
             <Text textStyle="headlineBold">Upcoming Streams</Text>
           </Box>
@@ -527,13 +562,13 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             ]}
             gridGap={space.s}
           >
-            {upcoming.map((stream) => {
+            {upcoming?.map((stream) => {
               if (stream.id !== webinar.id) {
                 return <StreamCard stream={stream} key={stream.id} />;
               }
             })}
           </Grid>
-        </Box> */}
+        </Box>
       </BaseLayout>
     </>
   );

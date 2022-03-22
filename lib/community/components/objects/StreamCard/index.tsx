@@ -4,6 +4,7 @@ import styled, { useTheme } from "styled-components";
 import Image from "next/image";
 
 import { Avatar, Box, Grid, Link, Text } from "@/common/components/atoms";
+import { PageRoutes } from "@/common/constants/route.constants";
 import colors from "@/common/theme/colors";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
@@ -65,11 +66,15 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
             gridGap={space.xxs}
             alignItems="center"
           >
-            <Avatar
-              size={56}
-              alt={stream.host_detail?.name || ""}
-              image={stream.host_detail?.photo}
-            />
+            {stream.host_detail?.slug && (
+              <Link href={PageRoutes.creatorProfile(stream.host_detail?.slug)}>
+                <Avatar
+                  size={56}
+                  alt={stream.host_detail?.name || ""}
+                  image={stream.host_detail?.photo}
+                />
+              </Link>
+            )}
             <Box>
               <Text maxLines={3}>{stream.topic_detail?.name}</Text>
               <Text color={colors.slate} textStyle="caption">

@@ -36,6 +36,7 @@ const colors = {
     felicia: "#57BEE6",
     sonic: "#0014A5",
   },
+  linkColor: "#865EEA",
   redTranslucent: "rgba(255, 102, 40, 0.6)",
   chatColors: [
     "#A17BFF",

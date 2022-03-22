@@ -3,6 +3,9 @@ import DateTime from "@/common/utils/datetime/DateTime";
 export type StreamCategory = {
   pk: number;
   name: string;
+  photo?: string;
+  tagline?: string;
+  show_on_home_page: boolean;
 };
 
 export type StreamFormArgs = {

@@ -1,22 +1,18 @@
 import { useTheme } from "styled-components";
-import useSWR from "swr";
 
 import { Marquee, Text, Box, Span } from "@/common/components/atoms";
-import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
-import { Webinar } from "@/community/types/community";
+import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 export default function MeetingsTicker(): JSX.Element {
-  const { data } = useSWR<Webinar[]>(
-    API_URL_CONSTANTS.groups.getUpcominWebinars
-  );
+  const { upcoming } = useUpcomingStreams();
   const { colors, space } = useTheme();
 
-  if (!data) {
+  if (!upcoming) {
     return <Box h={40} />;
   }
 
-  const content: JSX.Element[] = data.reduce((acc, curr) => {
+  const content: JSX.Element[] = upcoming?.reduce((acc, curr) => {
     const date = DateTime.parse(curr.start).toFormat("dd LLL");
     const time = DateTime.parse(curr.start).toFormat("t");
 

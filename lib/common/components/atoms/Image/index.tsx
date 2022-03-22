@@ -2,7 +2,11 @@ import styled from "styled-components";
 
 import NextImage, { ImageProps } from "next/image";
 
-import { Box } from "../System/Box";
+import { Box, BoxProps } from "../System/Box";
+
+export type CustomImageProps = ImageProps & {
+  boxProps?: BoxProps;
+};
 
 const Container = styled(Box)`
   & > span {
@@ -17,9 +21,9 @@ const StyledImage = styled(NextImage)`
   height: unset !important;
 `;
 
-export function Image({ ...props }: ImageProps): JSX.Element {
+export function Image({ boxProps, ...props }: CustomImageProps): JSX.Element {
   return (
-    <Container>
+    <Container {...boxProps}>
       <StyledImage layout="fill" {...props} />
     </Container>
   );

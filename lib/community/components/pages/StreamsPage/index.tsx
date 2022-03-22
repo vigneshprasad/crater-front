@@ -1,17 +1,30 @@
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import styled, { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
 
-import { Box, Grid, Text } from "@/common/components/atoms";
+import {
+  Box,
+  Flex,
+  Grid,
+  Image,
+  Link,
+  Shimmer,
+  Text,
+} from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/Button";
 import Spinner from "@/common/components/atoms/Spiner";
 import Footer from "@/common/components/objects/Footer";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import useSeries from "@/community/context/SeriesListContext";
-import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
-import PastStreamCard from "@/stream/components/objects/PastStreamCard";
-import usePastStreams from "@/stream/context/PastStreamContext";
+import PastStreamListHome from "@/stream/components/objects/PastStreamListHome";
+import {
+  PastStreamContext,
+  PastStreamProvider,
+} from "@/stream/context/PastStreamContext";
+import useStreamCategories from "@/stream/context/StreamCategoryContext";
+import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 import SeriesList from "../../objects/SeriesList";
 import StreamCard from "../../objects/StreamCard";
@@ -27,36 +40,24 @@ const Span = styled.span`
 
 export default function StreamsPage(): JSX.Element {
   const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
-  const { upcoming } = useUpcomingStreams();
   const {
-    streams: past,
-    loading: pastStreamsLoading,
-    setPastStreamsPage,
-  } = usePastStreams();
-  const { space, colors } = useTheme();
-  const _observer = useRef<IntersectionObserver>();
+    upcoming,
+    setUpcomingStreamsPage,
+    nextPage: upcomingStreamsNextPage,
+  } = useUpcomingStreams();
+  const { space, colors, radii } = useTheme();
   const { series: seriesList, loading: seriesLoading } = useSeries();
+  const { streamCategories, loading: streamCategoryLoading } =
+    useStreamCategories();
 
-  const ref = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (pastStreamsLoading) return;
-      if (_observer.current) _observer.current.disconnect();
-      _observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          setPastStreamsPage((page) => page + 1);
-        }
-      });
-
-      if (node != null) _observer.current.observe(node);
-    },
-    [_observer, pastStreamsLoading, setPastStreamsPage]
-  );
+  const showMoreUpcomingStreams = useCallback(() => {
+    setUpcomingStreamsPage((page) => page + 1);
+  }, [setUpcomingStreamsPage]);
 
   if (
     liveStreamsLoading ||
     !liveStreams ||
     !upcoming ||
-    !past ||
     seriesLoading ||
     !seriesList
   )
@@ -95,14 +96,36 @@ export default function StreamsPage(): JSX.Element {
         gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
         gridGap={space.s}
       >
-        {upcoming.map((stream) => (
+        {upcoming?.map((stream) => (
           <StreamCard stream={stream} key={stream.id} />
         ))}
       </Grid>
 
-      <Box p="1rem 4rem">
-        <hr color={colors.black[4]} />
-      </Box>
+      <Flex
+        pt={space.xxxs}
+        px="4rem"
+        mb={space.xxxs}
+        flexDirection="row"
+        alignItems="center"
+      >
+        <Box flexGrow={1}>
+          <hr color={colors.black[4]} />
+        </Box>
+
+        {upcomingStreamsNextPage ? (
+          <Button
+            mx={space.s}
+            flexGrow={0}
+            variant="round"
+            text="Show more"
+            onClick={showMoreUpcomingStreams}
+          />
+        ) : null}
+
+        <Box flexGrow={1}>
+          <hr color={colors.black[4]} />
+        </Box>
+      </Flex>
 
       <Box px={[space.xxs, space.s]} py={space.xxs}>
         <Text textStyle="headlineBold">
@@ -112,22 +135,105 @@ export default function StreamsPage(): JSX.Element {
 
       <Grid
         px={space.s}
-        gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
-        gridGap={space.s}
+        gridTemplateColumns={[
+          "1fr 1fr",
+          "repeat(auto-fit, minmax(200px, 1fr))",
+        ]}
+        gridGap={space.xxs}
       >
-        {past?.map((stream, index) => (
-          <PastStreamCard
-            key={stream.id}
-            title={stream.topic_detail.name}
-            href={PageRoutes.streamVideo(stream.id)}
-            image={stream.topic_detail.image}
-            hostImage={stream.host_detail?.photo}
-            hostName={stream.host_detail?.name}
-            time={stream.start}
-            ref={index == past.length - 1 ? ref : null}
-          />
-        ))}
+        {streamCategoryLoading
+          ? Array(5)
+              .fill("")
+              .map((_, index) => (
+                <Shimmer
+                  w="100%"
+                  h={40}
+                  borderRadius={radii.xxxs}
+                  key={index}
+                />
+              ))
+          : streamCategories?.map((category) => {
+              return (
+                <Link
+                  href={PageRoutes.pastStreams(category.pk)}
+                  key={category.pk}
+                >
+                  {category.photo ? (
+                    <Button
+                      variant="filter-button"
+                      text={category.name}
+                      textProps={{ m: 0, textAlign: "start" }}
+                      position="relative"
+                      suffixElement={
+                        <Image
+                          src={category.photo}
+                          alt={category.name}
+                          boxProps={{
+                            display: "inline-flex",
+                            justifyContent: "right",
+                            width: "100%",
+                            height: "70px",
+                            position: "absolute",
+                          }}
+                        />
+                      }
+                    />
+                  ) : (
+                    <Button
+                      variant="filter-button"
+                      text={category.name}
+                      textProps={{ m: 0, textAlign: "start" }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
       </Grid>
+
+      {!streamCategoryLoading &&
+        streamCategories?.map((category, index) => {
+          return (
+            <Box key={category.pk}>
+              <PastStreamProvider categoryFilter={category.pk}>
+                <PastStreamContext.Consumer>
+                  {(pastStreamsData) => {
+                    return (
+                      <Box px={[space.xxs, space.s]}>
+                        <Flex
+                          py={space.xxs}
+                          flexDirection="row"
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <Text textStyle="headline6" color={colors.slate}>
+                            {category.name}
+                          </Text>
+                          <Link
+                            href={PageRoutes.pastStreams(category.pk)}
+                            boxProps={{ mx: space.xxs }}
+                          >
+                            <Text textStyle="button" color={colors.accent}>
+                              View more
+                            </Text>
+                          </Link>
+                        </Flex>
+
+                        <PastStreamListHome {...pastStreamsData} />
+
+                        {index !== streamCategories.length - 1 && (
+                          <Box pt={space.xxxs} flexGrow={1}>
+                            <hr color={colors.black[4]} />
+                          </Box>
+                        )}
+                      </Box>
+                    );
+                  }}
+                </PastStreamContext.Consumer>
+              </PastStreamProvider>
+            </Box>
+          );
+        })}
+
       <Footer />
     </>
   );

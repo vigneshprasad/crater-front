@@ -150,6 +150,11 @@ const variants = {
     fontSize: ["1.6rem"],
     fontWeight: "400",
   },
+  categoryFilter: {
+    fontFamily: fonts.body,
+    fontSize: ["1.5rem", "2rem"],
+    fontWeight: "600",
+  },
 };
 
 export type TextVariants = keyof typeof variants;

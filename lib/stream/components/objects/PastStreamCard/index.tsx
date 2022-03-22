@@ -4,6 +4,7 @@ import { useTheme } from "styled-components";
 import Image from "next/image";
 
 import { Box, Grid, Link, Text, Flex, Avatar } from "@/common/components/atoms";
+import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 
 interface IProps {
@@ -13,10 +14,11 @@ interface IProps {
   hostImage?: string;
   time: string;
   hostName?: string;
+  hostSlug?: string;
 }
 
 const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
-  ({ image, title, href, hostImage, hostName, time }, ref) => {
+  ({ image, title, href, hostImage, hostName, time, hostSlug }, ref) => {
     const { radii, space, colors } = useTheme();
     const start = DateTime.parse(time);
     return (
@@ -37,7 +39,12 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
             alignItems="center"
             gridGap={space.xxs}
           >
-            <Avatar size={56} image={hostImage} alt={title} />
+            {hostSlug && (
+              <Link href={PageRoutes.creatorProfile(hostSlug)}>
+                <Avatar size={56} image={hostImage} alt={title} />
+              </Link>
+            )}
+
             <Flex flexDirection="column">
               <Text textStyle="bodyLarge">{title}</Text>
               <Text textStyle="caption" color={colors.slate}>
@@ -56,6 +63,7 @@ PastStreamCard.displayName = "PastStreamCard";
 PastStreamCard.defaultProps = {
   hostImage: undefined,
   hostName: undefined,
+  hostSlug: undefined,
 };
 
 export default PastStreamCard;

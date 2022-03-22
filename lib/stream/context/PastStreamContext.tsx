@@ -5,7 +5,7 @@ import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
 import { Webinar } from "@/community/types/community";
 
-interface IPastStreamState {
+export interface IPastStreamState {
   streams?: Webinar[];
   error?: unknown;
   loading: boolean;
@@ -21,12 +21,14 @@ type IProviderProps = PropsWithChildren<{
   host?: string;
   initial?: PageResponse<Webinar>;
   pageSize?: number;
+  categoryFilter?: number;
 }>;
 
 export function PastStreamProvider({
   host,
   initial,
   pageSize = 10,
+  categoryFilter,
   ...rest
 }: IProviderProps): JSX.Element {
   const {
@@ -38,9 +40,15 @@ export function PastStreamProvider({
       const page = index + 1;
       if (previousData && !previousData.next) return null;
 
-      return host
-        ? `${API_URL_CONSTANTS.groups.getPastWebinars}?host=${host}&page=${page}&page_size=${pageSize}`
-        : `${API_URL_CONSTANTS.groups.getPastWebinars}?page=${page}&page_size=${pageSize}`;
+      if (host) {
+        return `${API_URL_CONSTANTS.groups.getPastWebinars}?host=${host}&page=${page}&page_size=${pageSize}`;
+      }
+
+      if (categoryFilter) {
+        return `${API_URL_CONSTANTS.groups.getPastWebinars}?categories=${categoryFilter}&page=${page}&page_size=${pageSize}`;
+      }
+
+      return `${API_URL_CONSTANTS.groups.getPastWebinars}?page=${page}&page_size=${pageSize}`;
     },
     {
       initialData: initial ? [initial] : undefined,

@@ -23,6 +23,7 @@ import { useWebinar } from "@/community/context/WebinarContext";
 import { useFollower } from "@/creators/context/FollowerContext";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 import StreamChat from "@/stream/components/objects/StreamChat";
+import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import MeetingsTicker from "@/tokens/components/objects/MeetingsTicker";
 import RewardsList from "@/tokens/components/objects/RewardsList";
 import { AuctionListProvider } from "@/tokens/context/AuctionListContext";
@@ -238,7 +239,9 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
             <AuctionListProvider
               filterCreator={webinar.host_detail.creator_detail?.id}
             >
-              <StreamChat stream={webinar} />
+              <UpcomingStreamsProvider>
+                <StreamChat stream={webinar} />
+              </UpcomingStreamsProvider>
             </AuctionListProvider>
           </CreatorCoinProvider>
         )}
