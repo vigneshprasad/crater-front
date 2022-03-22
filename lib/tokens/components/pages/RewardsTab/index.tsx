@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
+import { useRouter } from "next/router";
+
 import { Box, Text, Span } from "@/common/components/atoms";
 import TypingText from "@/common/components/objects/TypingText";
 import colors from "@/common/theme/colors";
@@ -18,6 +20,7 @@ import RewardsList from "../../objects/RewardsList";
 export default function RewardsTab(): JSX.Element {
   const { space, radii } = useTheme();
   const { types } = useRewardTypeList();
+  const router = useRouter();
 
   const [showModal, setShowModal] = useState(false);
   const [activeCreator, setActiveCreator] = useState<Creator | undefined>(
@@ -76,7 +79,10 @@ export default function RewardsTab(): JSX.Element {
                       onClickReward={(reward) => {
                         setActiveCreator(reward.creator_detail);
                         setActiveReward(reward);
-                        setShowModal(true);
+                        // setShowModal(true);
+                        router.push(
+                          `/auction/${reward.creator_detail.slug}/${reward.id}`
+                        );
                       }}
                     />
                   </Box>
