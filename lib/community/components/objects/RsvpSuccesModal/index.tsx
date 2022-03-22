@@ -4,6 +4,7 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
+import useAuth from "@/auth/context/AuthContext";
 import {
   Grid,
   Text,
@@ -12,6 +13,7 @@ import {
   Box,
   Image,
   Span,
+  Shimmer,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import IconButton from "@/common/components/atoms/IconButton";
@@ -20,8 +22,6 @@ import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
 import WebinarApiClient from "@/community/api";
-import { useLiveStreams } from "@/community/context/LiveStreamsContext";
-import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import {
   ParticpantType,
   PostGroupRequest,
@@ -30,6 +30,7 @@ import {
 } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import useStreamCreator from "@/stream/context/StreamCreatorContext";
+import useStreamsToRsvp from "@/stream/context/StreamsToRsvpContext";
 
 interface IProps {
   group: Webinar;
@@ -59,16 +60,12 @@ export default function RsvpSuccesModal({
   group,
   onClose,
 }: IProps): JSX.Element | null {
-  const { space, colors } = useTheme();
+  const { space, colors, radii } = useTheme();
   const hostName = group.host_detail?.name;
   const [subscribe, setSubscribe] = useState({});
+  const { subscribeCreator } = useFollower();
   const {
-    followers,
-    loading: followersLoading,
-    subscribeCreator,
-  } = useFollower();
-  const {
-    streams,
+    streams: streamCreators,
     loading: streamCreatorsLoading,
     setStreamCreatorsPage,
   } = useStreamCreator();
@@ -76,16 +73,24 @@ export default function RsvpSuccesModal({
   const [rsvpModalPage, setRsvpModalPage] = useState<number>(
     RsvpModalPage.DiscoverFollowers
   );
-  const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
   const {
-    upcoming: upcomingStreams,
-    loading: upcomingStreamsLoading,
-    mutateUpcomingStreams,
-  } = useUpcomingStreams();
+    streams: streamsToRsvp,
+    loading: streamsToRsvpLoading,
+    setStreamsToRsvpPage,
+    nextPage: streamsToRsvpNextPage,
+  } = useStreamsToRsvp();
   const { track } = useAnalytics();
   const router = useRouter();
+  const { user } = useAuth();
+  const [rsvpedStreams, setRsvpedStreams] = useState<number[]>([]);
 
-  const ref = useCallback(
+  const onCloseModal = useCallback(() => {
+    setRsvpedStreams([]);
+    setSubscribe({});
+    onClose();
+  }, [onClose, setRsvpedStreams, setSubscribe]);
+
+  const followersRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (streamCreatorsLoading) return;
       if (_observer.current) _observer.current.disconnect();
@@ -97,7 +102,21 @@ export default function RsvpSuccesModal({
 
       if (node != null) _observer.current.observe(node);
     },
-    [_observer, streamCreatorsLoading, setStreamCreatorsPage]
+    [streamCreatorsLoading, setStreamCreatorsPage]
+  );
+
+  const streamsRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (streamsToRsvpLoading) return;
+      if (_observer.current) _observer.current.disconnect();
+      _observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          streamsToRsvpNextPage && setStreamsToRsvpPage((page) => page + 1);
+        }
+      });
+      if (node != null) _observer.current.observe(node);
+    },
+    [setStreamsToRsvpPage, streamsToRsvpNextPage, streamsToRsvpLoading]
   );
 
   const postGroupRequest = useCallback(
@@ -111,8 +130,7 @@ export default function RsvpSuccesModal({
       const [request] = await WebinarApiClient().postWebinarRequest(data);
 
       if (request) {
-        mutateUpcomingStreams();
-
+        setRsvpedStreams((prev) => [...prev, webinar.id]);
         track(AnalyticsEvents.rsvp_stream, {
           stream: webinar.id,
           stream_name: webinar.topic_detail?.name,
@@ -133,18 +151,22 @@ export default function RsvpSuccesModal({
         router.push(PageRoutes.stream(webinar.id.toString()));
       }
     },
-    [track, mutateUpcomingStreams, router]
+    [track, router]
   );
 
   const goToNextScreen = useCallback(async (): Promise<void> => {
     if (rsvpModalPage === RsvpModalPage.__length - 1) {
-      onClose();
+      // Clear `rsvpedStreams` and `subscribe` state
+      setRsvpedStreams([]);
+      setSubscribe({});
+
+      onCloseModal();
     } else {
       if (RsvpModalPage.__length - rsvpModalPage - 1 > 0) {
         setRsvpModalPage((prevValue) => prevValue + 1);
       }
     }
-  }, [onClose, rsvpModalPage]);
+  }, [onCloseModal, rsvpModalPage]);
 
   const goToPreviousScreen = useCallback(async (): Promise<void> => {
     if (rsvpModalPage > 0) {
@@ -152,21 +174,7 @@ export default function RsvpSuccesModal({
     }
   }, [rsvpModalPage]);
 
-  if (
-    !followers ||
-    followersLoading ||
-    streamCreatorsLoading ||
-    liveStreamsLoading ||
-    !liveStreams ||
-    upcomingStreamsLoading ||
-    !upcomingStreams ||
-    !streams
-  )
-    return null;
-
-  const liveAndUpcomingStreams = [...liveStreams, ...upcomingStreams].filter(
-    (stream, index, self) => index === self.findIndex((x) => x.id === stream.id)
-  );
+  if (!user) return null;
 
   const text = `
     We will notify you prior to the stream with ${hostName}.
@@ -182,7 +190,7 @@ export default function RsvpSuccesModal({
       gridTemplateRows="max-content max-content 1fr max-content"
       maxWidth={600}
       visible={visble}
-      onClose={onClose}
+      onClose={onCloseModal}
       overflowY="hidden"
       px={space.xs}
       py={space.xxs}
@@ -219,73 +227,90 @@ export default function RsvpSuccesModal({
               </Box>
 
               <Box overflowY="scroll">
-                {streams &&
-                  streams?.map((stream, index) => (
-                    <Grid
-                      mb={space.xxs}
-                      gridGap={space.xxs}
-                      gridTemplateColumns="max-content 1fr max-content"
-                      alignItems="center"
-                      key={stream.id}
-                      ref={index == streams.length - 1 ? ref : null}
-                    >
-                      <Avatar
-                        image={stream.host_detail?.photo}
-                        size={56}
-                        alt={stream.host_detail?.name || ""}
-                      />
-                      <Box justifySelf="start">
-                        <Text textStyle="bodyLarge">
-                          {stream.host_detail.name}
-                        </Text>
-                        <Text display={["none", "grid"]} color={colors.slate}>
-                          {stream.is_live ? "Live Now: " : "Upcoming: "}
-                          {stream.topic_detail.name}
-                        </Text>
-                      </Box>
-                      {!subscribe.hasOwnProperty(stream.id) ? (
-                        <Button
-                          text="Follow"
-                          variant="round-secondary"
-                          border="1px solid white"
-                          bg={colors.black[5]}
-                          borderRadius={50}
-                          justifySelf="end"
-                          textProps={{ minWidth: 38, px: 0 }}
-                          onClick={() => {
-                            const creator =
-                              stream.host_detail?.creator_detail?.id;
-                            if (creator) {
-                              subscribeCreator(creator);
-                              setSubscribe((prevSubscriber) => ({
-                                ...prevSubscriber,
-                                [stream.id]: true,
-                              }));
-                            }
-                          }}
+                {streamCreatorsLoading
+                  ? Array(5)
+                      .fill("")
+                      .map((_, index) => (
+                        <Shimmer
+                          w="100%"
+                          h={55}
+                          mb={space.xxs}
+                          borderRadius={radii.xxs}
+                          key={index}
                         />
-                      ) : (
-                        <Button
-                          text="Followed"
-                          variant="round-secondary"
-                          color="black.2"
-                          bg={colors.white[1]}
-                          borderRadius={50}
-                          justifySelf="end"
-                          textProps={{ minWidth: 38, px: 0 }}
-                          disabled={true}
-                        />
-                      )}
-                      <Text
-                        display={["grid", "none"]}
-                        gridColumn="1 / span 3"
-                        color={colors.slate}
+                      ))
+                  : streamCreators?.map((streamCreator, index) => (
+                      <Grid
+                        mb={space.xxs}
+                        gridGap={space.xxs}
+                        gridTemplateColumns="max-content 1fr max-content"
+                        alignItems="center"
+                        key={streamCreator.id}
+                        ref={
+                          index == streamCreators.length - 1
+                            ? followersRef
+                            : null
+                        }
                       >
-                        {stream.is_live ? "Live Now: " : "Upcoming: "}
-                        {stream.topic_detail.name}
-                      </Text>
-                    </Grid>
-                  ))}
+                        <Avatar
+                          image={streamCreator.host_detail?.photo}
+                          size={56}
+                          alt={streamCreator.host_detail?.name || ""}
+                        />
+                        <Box justifySelf="start">
+                          <Text textStyle="bodyLarge">
+                            {streamCreator.host_detail.name}
+                          </Text>
+                          <Text display={["none", "grid"]} color={colors.slate}>
+                            {streamCreator.is_live
+                              ? "Live Now: "
+                              : "Upcoming: "}
+                            {streamCreator.topic_detail.name}
+                          </Text>
+                        </Box>
+                        {!subscribe.hasOwnProperty(streamCreator.id) ? (
+                          <Button
+                            text="Follow"
+                            variant="round-secondary"
+                            border="1px solid white"
+                            bg={colors.black[5]}
+                            borderRadius={50}
+                            justifySelf="end"
+                            // textProps={{ minWidth: 38, px: 0 }}
+                            onClick={() => {
+                              const creator =
+                                streamCreator.host_detail?.creator_detail?.id;
+                              if (creator) {
+                                subscribeCreator(creator);
+                                setSubscribe((prevSubscriber) => ({
+                                  ...prevSubscriber,
+                                  [streamCreator.id]: true,
+                                }));
+                              }
+                            }}
+                          />
+                        ) : (
+                          <Button
+                            text="Followed"
+                            variant="round-secondary"
+                            color="black.2"
+                            bg={colors.white[1]}
+                            borderRadius={50}
+                            justifySelf="end"
+                            // textProps={{ minWidth: 38, px: 0 }}
+                            disabled={true}
+                          />
+                        )}
+                        <Text
+                          display={["grid", "none"]}
+                          gridColumn="1 / span 3"
+                          color={colors.slate}
+                        >
+                          {streamCreator.is_live ? "Live Now: " : "Upcoming: "}
+                          {streamCreator.topic_detail.name}
+                        </Text>
+                      </Grid>
+                    ))}
               </Box>
             </>
           );
@@ -302,105 +327,121 @@ export default function RsvpSuccesModal({
                   gridColumnGap={space.xs}
                   gridRowGap={space.xs}
                 >
-                  {liveAndUpcomingStreams.map((stream) => {
-                    if (stream.id !== group.id) {
-                      return (
-                        <Grid
-                          gridAutoFlow="row"
-                          gridGap={space.xxs}
-                          gridTemplateRows="max-content max-content max-content"
-                          key={stream.id}
-                        >
-                          <Grid
-                            gridTemplateColumns="max-content 1fr"
-                            gridGap={space.xxs}
-                            alignItems="center"
-                          >
-                            <Avatar
-                              size={36}
-                              image={stream.host_detail?.photo}
-                              alt={stream.host_detail?.name || ""}
-                            />
-                            <Text>{stream.host_detail.name}</Text>
-                          </Grid>
-
-                          <Box position="relative" h={["none", 150]}>
-                            {stream.topic_detail?.image && (
-                              <Image
-                                objectFit="cover"
-                                layout="fill"
-                                src={stream.topic_detail?.image}
-                                alt={stream.topic_detail.name}
-                              />
-                            )}
-
-                            <Box
-                              borderRadius={4}
-                              py={2}
-                              px={space.xxxs}
-                              bg={
-                                stream.is_live ? colors.red[0] : colors.black[0]
+                  {streamsToRsvpLoading
+                    ? Array(4)
+                        .fill("")
+                        .map((_, index) => (
+                          <Shimmer
+                            w="100%"
+                            h={250}
+                            borderRadius={radii.xxs}
+                            key={index}
+                          />
+                        ))
+                    : streamsToRsvp?.map((stream, index) => {
+                        if (stream.id !== group.id) {
+                          return (
+                            <Grid
+                              gridAutoFlow="row"
+                              gridGap={space.xxs}
+                              gridTemplateRows="max-content max-content max-content"
+                              key={stream.id}
+                              ref={
+                                index == streamsToRsvp.length - 1
+                                  ? streamsRef
+                                  : null
                               }
-                              position="absolute"
-                              top={space.xxxs}
-                              left={space.xxxs}
                             >
-                              <Text textStyle="caption">
-                                {stream.is_live ? (
-                                  "LIVE"
-                                ) : (
-                                  <>
-                                    <Span>Live On</Span>{" "}
-                                    {DateTime.parse(stream.start).toFormat(
-                                      DateTime.DEFAULT_FORMAT
-                                    )}
-                                  </>
-                                )}
-                              </Text>
-                            </Box>
-                          </Box>
+                              <Grid
+                                gridTemplateColumns="max-content 1fr"
+                                gridGap={space.xxs}
+                                alignItems="center"
+                              >
+                                <Avatar
+                                  size={36}
+                                  image={stream.host_detail?.photo}
+                                  alt={stream.host_detail?.name || ""}
+                                />
+                                <Text>{stream.host_detail.name}</Text>
+                              </Grid>
 
-                          {stream.is_live ? (
-                            <Button
-                              text="Join Stream"
-                              variant="round-secondary"
-                              border="1px solid white"
-                              bg={colors.black[5]}
-                              borderRadius={50}
-                              justifySelf="center"
-                              alignSelf="end"
-                              textProps={{ minWidth: 38, px: 0 }}
-                              onClick={() => postGroupRequest(stream, true)}
-                            />
-                          ) : stream.rsvp ? (
-                            <Button
-                              text="RSVP'd"
-                              variant="round-secondary"
-                              color="black.2"
-                              bg={colors.white[1]}
-                              borderRadius={50}
-                              justifySelf="center"
-                              alignSelf="end"
-                              textProps={{ minWidth: 38, px: 0 }}
-                              disabled={true}
-                            />
-                          ) : (
-                            <Button
-                              text="RSVP"
-                              variant="round-secondary"
-                              border="1px solid white"
-                              bg={colors.black[5]}
-                              borderRadius={50}
-                              justifySelf="center"
-                              alignSelf="end"
-                              textProps={{ minWidth: 38, px: 0 }}
-                              onClick={() => postGroupRequest(stream)}
-                            />
-                          )}
-                        </Grid>
-                      );
-                    }
-                  })}
+                              <Box position="relative" h={["none", 150]}>
+                                {stream.topic_detail?.image && (
+                                  <Image
+                                    objectFit="cover"
+                                    layout="fill"
+                                    src={stream.topic_detail?.image}
+                                    alt={stream.topic_detail.name}
+                                  />
+                                )}
+
+                                <Box
+                                  borderRadius={4}
+                                  py={2}
+                                  px={space.xxxs}
+                                  bg={
+                                    stream.is_live
+                                      ? colors.red[0]
+                                      : colors.black[0]
+                                  }
+                                  position="absolute"
+                                  top={space.xxxs}
+                                  left={space.xxxs}
+                                >
+                                  <Text textStyle="caption">
+                                    {stream.is_live ? (
+                                      "LIVE"
+                                    ) : (
+                                      <>
+                                        <Span>Live On</Span>{" "}
+                                        {DateTime.parse(stream.start).toFormat(
+                                          DateTime.DEFAULT_FORMAT
+                                        )}
+                                      </>
+                                    )}
+                                  </Text>
+                                </Box>
+                              </Box>
+
+                              {stream.is_live ? (
+                                <Button
+                                  text="Join Stream"
+                                  variant="round-secondary"
+                                  border="1px solid white"
+                                  bg={colors.black[5]}
+                                  borderRadius={50}
+                                  justifySelf="center"
+                                  alignSelf="end"
+                                  onClick={() => postGroupRequest(stream, true)}
+                                />
+                              ) : rsvpedStreams?.includes(stream.id) ? (
+                                <Button
+                                  text="RSVP'd"
+                                  variant="round-secondary"
+                                  color="black.2"
+                                  bg={colors.white[1]}
+                                  borderRadius={50}
+                                  justifySelf="center"
+                                  alignSelf="end"
+                                  disabled={true}
+                                />
+                              ) : (
+                                <Button
+                                  text="RSVP"
+                                  variant="round-secondary"
+                                  border="1px solid white"
+                                  bg={colors.black[5]}
+                                  borderRadius={50}
+                                  justifySelf="center"
+                                  alignSelf="end"
+                                  // textProps={{ minWidth: 38, px: 0 }}
+                                  onClick={() => postGroupRequest(stream)}
+                                />
+                              )}
+                            </Grid>
+                          );
+                        }
+                      })}
                 </Grid>
               </Box>
             </>

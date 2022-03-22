@@ -8,7 +8,7 @@ import { Box } from "@/common/components/atoms";
 
 const Styles = styled(Box)`
   padding: 6px 8px;
-  background: ${({ theme }) => theme.colors.black[5]};
+  background: ${({ theme }) => theme.colors.black[4]};
   border-radius: ${({ theme }) => theme.radii.xxs}px;
   align-items: center;
   border: 2px solid transparent;
@@ -26,6 +26,7 @@ const Styles = styled(Box)`
     color: ${({ theme }) => theme.colors.white[0]};
     background: transparent;
     box-shadow: none;
+    border: none;
 
     outline: none;
     width: 100%;

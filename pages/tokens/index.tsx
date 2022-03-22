@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 
 import CreatorApiClient from "@/creators/api";
 import { CreatorWithCoinProvider } from "@/creators/context/CreatorWithCoinContext";
+import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import TokenPageLayout from "@/tokens/components/layout/TokenPageLayout";
 
 const TokensTab = dynamic(() => import("@/tokens/components/pages/TokensTab"));
@@ -38,10 +39,12 @@ export default function Tokens({ creators }: IPageProps): JSX.Element {
   };
 
   return (
-    <TokenPageLayout seo={seo} activeTab="tokens">
-      <CreatorWithCoinProvider initial={creators}>
-        <TokensTab />
-      </CreatorWithCoinProvider>
-    </TokenPageLayout>
+    <UpcomingStreamsProvider>
+      <TokenPageLayout seo={seo} activeTab="tokens">
+        <CreatorWithCoinProvider initial={creators}>
+          <TokensTab />
+        </CreatorWithCoinProvider>
+      </TokenPageLayout>
+    </UpcomingStreamsProvider>
   );
 }

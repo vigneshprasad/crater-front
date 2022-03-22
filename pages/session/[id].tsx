@@ -8,13 +8,13 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
-import { LiveStreamsProvider } from "@/community/context/LiveStreamsContext";
-// import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { WebinarRequestProvider } from "@/community/context/WebinarRequestContext";
 import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { StreamCreatorProvider } from "@/stream/context/StreamCreatorContext";
+import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
+import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 
 const SessionPage = dynamic(
   () => import("@/community/components/pages/SessionPage")
@@ -94,11 +94,11 @@ export default function Session({ webinar, id }: Props): JSX.Element {
         <StreamCreatorProvider>
           <WebinarProvider id={id} initial={webinar}>
             <WebinarRequestProvider groupId={id} user={user?.pk}>
-              <LiveStreamsProvider>
-                {/* <UpcomingStreamsProvider> */}
-                <SessionPage id={id} />
-                {/* </UpcomingStreamsProvider> */}
-              </LiveStreamsProvider>
+              <UpcomingStreamsProvider>
+                <StreamsToRsvpProvider user={user?.pk}>
+                  <SessionPage id={id} />
+                </StreamsToRsvpProvider>
+              </UpcomingStreamsProvider>
             </WebinarRequestProvider>
           </WebinarProvider>
         </StreamCreatorProvider>

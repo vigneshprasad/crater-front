@@ -21,4 +21,5 @@ export const PageRoutes = {
     `/checkout/bid/success/${bid}`,
   hub: (tab: HubTabKeys = "stream"): string => `/hub/${tab}`,
   join: "/join",
+  pastStreams: (id: string | number): string => `/categories/${id}/videos/`,
 };

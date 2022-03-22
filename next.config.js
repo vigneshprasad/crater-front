@@ -24,6 +24,7 @@ const nextConfig = {
   future: {},
   images: {
     domains: [
+      "localhost",
       "worknetwork-api-dev-media.s3.amazonaws.com",
       "worknetwork-api-dev-statics.s3.ap-south-1.amazonaws.com",
       "worknetwork-api-prod-statics.s3.ap-south-1.amazonaws.com",
@@ -32,6 +33,7 @@ const nextConfig = {
       "1worknetwork-prod.s3.amazonaws.com",
       "1worknetwork-pre.s3.amazonaws.com",
       "1worknetwork-stage.s3.amazonaws.com",
+      "crater-local.s3.amazonaws.com",
     ],
   },
   i18n: {

@@ -3,12 +3,13 @@ import { GetStaticProps, InferGetStaticPropsType } from "next";
 import dynamic from "next/dynamic";
 
 import HomePageLayout from "@/common/components/layouts/HomePageLayout";
+import { PageResponse } from "@/common/types/api";
 import WebinarApiClient from "@/community/api";
 import { LiveStreamsProvider } from "@/community/context/LiveStreamsContext";
 import { SeriesListProvider } from "@/community/context/SeriesListContext";
-import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { Series, Webinar } from "@/community/types/community";
-import { PastStreamProvider } from "@/stream/context/PastStreamContext";
+import { StreamCategoryProvider } from "@/stream/context/StreamCategoryContext";
+import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 
 const StreamsPage = dynamic(
   () => import("@/community/components/pages/StreamsPage")
@@ -16,7 +17,7 @@ const StreamsPage = dynamic(
 
 interface ServerProps {
   liveStreams: Webinar[];
-  upcoming: Webinar[];
+  upcoming: PageResponse<Webinar>;
   series: Series[];
 }
 
@@ -28,7 +29,7 @@ export const getStaticProps: GetStaticProps<ServerProps> = async () => {
   return {
     props: {
       liveStreams: liveStreams ?? [],
-      upcoming: upcoming ?? [],
+      upcoming: upcoming ?? ({} as PageResponse<Webinar>),
       series: series ?? [],
     },
     revalidate: 10,
@@ -55,9 +56,9 @@ export default function Home({
       <LiveStreamsProvider initial={liveStreams}>
         <UpcomingStreamsProvider initial={upcoming}>
           <SeriesListProvider initial={series}>
-            <PastStreamProvider>
+            <StreamCategoryProvider>
               <StreamsPage />
-            </PastStreamProvider>
+            </StreamCategoryProvider>
           </SeriesListProvider>
         </UpcomingStreamsProvider>
       </LiveStreamsProvider>

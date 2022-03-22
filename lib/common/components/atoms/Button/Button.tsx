@@ -18,7 +18,9 @@ type Variants =
   | "round-secondary"
   | "full-width-secondary"
   | "green-success"
-  | "red-error";
+  | "red-error"
+  | "filter-button"
+  | "filter-button-selected";
 
 export type ButtonProps = Omit<BoxProps, "variant"> &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -118,6 +120,20 @@ const StyledButton = styled(Grid)<ButtonProps>`
           borderColor: "errorDeep",
         },
       },
+      "filter-button": {
+        minHeight: 44,
+        borderRadius: 6,
+        width: "100%",
+        ":hover": {
+          border: "2px solid white",
+        },
+      },
+      "filter-button-selected": {
+        minHeight: 44,
+        borderRadius: 6,
+        width: "100%",
+        border: "2px solid white",
+      },
     },
   })}
 `;
@@ -145,6 +161,8 @@ export function Button({
       "full-width-secondary": "button",
       "green-success": "buttonLarge",
       "red-error": "buttonLarge",
+      "filter-button": "categoryFilter",
+      "filter-button-selected": "categoryFilter",
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp]);
@@ -161,6 +179,8 @@ export function Button({
       "full-width-secondary": colors.accent,
       "green-success": colors.greenSuccess,
       "red-error": colors.error,
+      "filter-button": colors.accent,
+      "filter-button-selected": colors.accent,
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp, colors]);

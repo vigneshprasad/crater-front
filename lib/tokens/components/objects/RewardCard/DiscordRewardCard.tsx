@@ -39,12 +39,12 @@ export default function DiscordRewardCard({
             </Box>
           </Box>
           <Text
-            fontSize="1.8rem"
-            lineHeight="2.4rem"
+            fontSize="1.6rem"
+            lineHeight="2.0rem"
             position="absolute"
             top={36}
             left={48}
-            w="40%"
+            w="50%"
           >
             Join{" "}
             <Span fontWeight="700">
@@ -60,7 +60,6 @@ export default function DiscordRewardCard({
             bg={colors.whiteAlpha[1]}
             p={space.xxxxs}
             borderRadius={radii.xxs}
-            px={space.xxs}
             mt={space.xxs}
           >
             {showCount && showCount}
