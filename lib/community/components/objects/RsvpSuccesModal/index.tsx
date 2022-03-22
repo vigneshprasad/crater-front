@@ -22,7 +22,6 @@ import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
 import WebinarApiClient from "@/community/api";
-import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import {
   ParticpantType,
   PostGroupRequest,
@@ -31,7 +30,7 @@ import {
 } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import useStreamCreator from "@/stream/context/StreamCreatorContext";
-import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
+import useStreamsToRsvp from "@/stream/context/StreamsToRsvpContext";
 
 interface IProps {
   group: Webinar;
@@ -75,21 +74,21 @@ export default function RsvpSuccesModal({
     RsvpModalPage.DiscoverFollowers
   );
   const {
-    liveStreams,
-    loading: liveStreamsLoading,
-    setFeaturedStreamPage,
-    nextPage: liveStreamsNextPage,
-  } = useLiveStreams();
-  const {
-    upcoming: upcomingStreams,
-    loading: upcomingStreamsLoading,
-    setUpcomingStreamsPage,
-    mutateUpcomingStreams,
-    nextPage: upcomingStreamsNextPage,
-  } = useUpcomingStreams();
+    streams: streamsToRsvp,
+    loading: streamsToRsvpLoading,
+    setStreamsToRsvpPage,
+    nextPage: streamsToRsvpNextPage,
+  } = useStreamsToRsvp();
   const { track } = useAnalytics();
   const router = useRouter();
   const { user } = useAuth();
+  const [rsvpedStreams, setRsvpedStreams] = useState<number[]>([]);
+
+  const onCloseModal = useCallback(() => {
+    setRsvpedStreams([]);
+    setSubscribe({});
+    onClose();
+  }, [onClose, setRsvpedStreams, setSubscribe]);
 
   const followersRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -108,24 +107,16 @@ export default function RsvpSuccesModal({
 
   const streamsRef = useCallback(
     (node: HTMLDivElement | null) => {
-      if (liveStreamsLoading && upcomingStreamsLoading) return;
+      if (streamsToRsvpLoading) return;
       if (_observer.current) _observer.current.disconnect();
       _observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          liveStreamsNextPage && setFeaturedStreamPage((page) => page + 1);
-          upcomingStreamsNextPage && setUpcomingStreamsPage((page) => page + 1);
+          streamsToRsvpNextPage && setStreamsToRsvpPage((page) => page + 1);
         }
       });
       if (node != null) _observer.current.observe(node);
     },
-    [
-      liveStreamsLoading,
-      upcomingStreamsLoading,
-      liveStreamsNextPage,
-      upcomingStreamsNextPage,
-      setFeaturedStreamPage,
-      setUpcomingStreamsPage,
-    ]
+    [setStreamsToRsvpPage, streamsToRsvpNextPage, streamsToRsvpLoading]
   );
 
   const postGroupRequest = useCallback(
@@ -139,8 +130,7 @@ export default function RsvpSuccesModal({
       const [request] = await WebinarApiClient().postWebinarRequest(data);
 
       if (request) {
-        mutateUpcomingStreams();
-
+        setRsvpedStreams((prev) => [...prev, webinar.id]);
         track(AnalyticsEvents.rsvp_stream, {
           stream: webinar.id,
           stream_name: webinar.topic_detail?.name,
@@ -161,44 +151,28 @@ export default function RsvpSuccesModal({
         router.push(PageRoutes.stream(webinar.id.toString()));
       }
     },
-    [track, mutateUpcomingStreams, router]
+    [track, router]
   );
 
   const goToNextScreen = useCallback(async (): Promise<void> => {
     if (rsvpModalPage === RsvpModalPage.__length - 1) {
-      onClose();
+      // Clear `rsvpedStreams` and `subscribe` state
+      setRsvpedStreams([]);
+      setSubscribe({});
+
+      onCloseModal();
     } else {
       if (RsvpModalPage.__length - rsvpModalPage - 1 > 0) {
         setRsvpModalPage((prevValue) => prevValue + 1);
       }
     }
-  }, [onClose, rsvpModalPage]);
+  }, [onCloseModal, rsvpModalPage]);
 
   const goToPreviousScreen = useCallback(async (): Promise<void> => {
     if (rsvpModalPage > 0) {
       setRsvpModalPage((prevValue) => prevValue - 1);
     }
   }, [rsvpModalPage]);
-
-  const liveAndUpcomingStreams = useCallback((): Webinar[] => {
-    if (
-      liveStreamsLoading ||
-      upcomingStreamsLoading ||
-      !liveStreams ||
-      !upcomingStreams
-    )
-      return [] as Webinar[];
-
-    return [...liveStreams, ...upcomingStreams].filter(
-      (stream, index, self) =>
-        index === self.findIndex((x) => x.id === stream.id)
-    );
-  }, [
-    liveStreams,
-    liveStreamsLoading,
-    upcomingStreams,
-    upcomingStreamsLoading,
-  ]);
 
   if (!user) return null;
 
@@ -216,7 +190,7 @@ export default function RsvpSuccesModal({
       gridTemplateRows="max-content max-content 1fr max-content"
       maxWidth={600}
       visible={visble}
-      onClose={onClose}
+      onClose={onCloseModal}
       overflowY="hidden"
       px={space.xs}
       py={space.xxs}
@@ -353,7 +327,7 @@ export default function RsvpSuccesModal({
                   gridColumnGap={space.xs}
                   gridRowGap={space.xs}
                 >
-                  {liveStreamsLoading && upcomingStreamsLoading
+                  {streamsToRsvpLoading
                     ? Array(4)
                         .fill("")
                         .map((_, index) => (
@@ -364,12 +338,8 @@ export default function RsvpSuccesModal({
                             key={index}
                           />
                         ))
-                    : liveAndUpcomingStreams &&
-                      liveAndUpcomingStreams().map((stream, index) => {
-                        if (
-                          stream.id !== group.id &&
-                          stream.host_detail.pk !== user.pk
-                        ) {
+                    : streamsToRsvp?.map((stream, index) => {
+                        if (stream.id !== group.id) {
                           return (
                             <Grid
                               gridAutoFlow="row"
@@ -377,7 +347,7 @@ export default function RsvpSuccesModal({
                               gridTemplateRows="max-content max-content max-content"
                               key={stream.id}
                               ref={
-                                index == liveAndUpcomingStreams().length - 1
+                                index == streamsToRsvp.length - 1
                                   ? streamsRef
                                   : null
                               }
@@ -444,7 +414,7 @@ export default function RsvpSuccesModal({
                                   alignSelf="end"
                                   onClick={() => postGroupRequest(stream, true)}
                                 />
-                              ) : stream.rsvp ? (
+                              ) : rsvpedStreams?.includes(stream.id) ? (
                                 <Button
                                   text="RSVP'd"
                                   variant="round-secondary"
