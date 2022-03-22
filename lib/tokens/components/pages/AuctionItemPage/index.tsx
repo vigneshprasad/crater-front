@@ -33,6 +33,7 @@ import { BidStatus } from "@/tokens/types/auctions";
 import CurrencyInput from "../../atoms/CurrencyInput";
 import BidsDataTable from "../../objects/BidsDataTable";
 import RewardCard from "../../objects/RewardCard";
+import RewardDescriptionPreview from "../../objects/RewardDescriptionPreview";
 import Container, { IContainerProps } from "./container";
 
 const BreadCrumb = styled(Text)`
@@ -176,7 +177,11 @@ function Content(): JSX.Element {
         <BreadCrumb textStyle="breadCrumb">{reward.name}</BreadCrumb>
       </Flex>
 
-      <Grid mt={space.s} gridTemplateColumns="1fr 1fr" gridGap={space.xs}>
+      <Grid
+        mt={space.s}
+        gridTemplateColumns={["1fr", "1fr 1fr"]}
+        gridGap={space.xs}
+      >
         <Grid maxWidth={520}>
           <RewardCard reward={reward} />
         </Grid>
@@ -243,6 +248,14 @@ function Content(): JSX.Element {
           )}
         </Box>
       </Grid>
+
+      <Box py={space.s}>
+        {reward.description && (
+          <RewardDescriptionPreview
+            dangerouslySetInnerHTML={{ __html: reward.description }}
+          />
+        )}
+      </Box>
 
       <Text textStyle="title" my={space.s}>
         Recent Bids
