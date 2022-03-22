@@ -36,28 +36,25 @@ export default function PastStreamListHome({
       gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
       gridGap={space.s}
     >
-      {loading
+      {!pastStreams || loading
         ? Array(4)
             .fill("")
             .map((_, index) => (
               <Shimmer w="100%" h={180} borderRadius={radii.xxs} key={index} />
             ))
-        : pastStreams &&
-          pastStreams
-            .slice(0, 4)
-            .map((stream, index) => (
-              <PastStreamCard
-                key={stream.id}
-                title={stream.topic_detail.name}
-                href={PageRoutes.streamVideo(stream.id)}
-                image={stream.topic_detail.image}
-                hostImage={stream.host_detail?.photo}
-                hostName={stream.host_detail?.name}
-                time={stream.start}
-                hostSlug={stream.host_detail?.slug}
-                ref={index == pastStreams.length - 1 ? ref : null}
-              />
-            ))}
+        : pastStreams.map((stream, index) => (
+            <PastStreamCard
+              key={stream.id}
+              title={stream.topic_detail.name}
+              href={PageRoutes.streamVideo(stream.id)}
+              image={stream.topic_detail.image}
+              hostImage={stream.host_detail?.photo}
+              hostName={stream.host_detail?.name}
+              time={stream.start}
+              hostSlug={stream.host_detail?.slug}
+              ref={index == pastStreams.length - 1 ? ref : null}
+            />
+          ))}
     </Grid>
   );
 }
