@@ -40,7 +40,7 @@ export default function RewardsTab(): JSX.Element {
           onClose={() => setShowModal(false)}
         />
       )}
-      <Box px={space.s}>
+      <Box px={[space.xxs, space.s]}>
         <Box
           my={space.xs}
           background={colors.whiteAlpha[1]}

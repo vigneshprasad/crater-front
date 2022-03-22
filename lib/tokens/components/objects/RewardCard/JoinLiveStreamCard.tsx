@@ -32,7 +32,8 @@ export default function JoinLiveStreamCard({
 
         <Text fontWeight="600" fontSize="1.6rem">
           {showCount && showCount}
-          {!showCount && `${reward.quantity_sold} / ${reward.quantity}`}
+          {!showCount &&
+            `${reward.quantity - reward.quantity_sold} / ${reward.quantity}`}
         </Text>
       </Flex>
     </Box>

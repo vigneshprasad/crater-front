@@ -80,6 +80,7 @@ export default function HubPortfolioTab(): JSX.Element {
         <Text textStyle="title">Transaction Log</Text>
         <TransactionDataTable bids={bids} />
       </Flex>
+      <Box h={space.m} />
     </>
   );
 }
