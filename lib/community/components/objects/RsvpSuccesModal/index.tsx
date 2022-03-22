@@ -228,7 +228,7 @@ export default function RsvpSuccesModal({
 
               <Box overflowY="scroll">
                 {streamCreatorsLoading
-                  ? Array(5)
+                  ? Array(3)
                       .fill("")
                       .map((_, index) => (
                         <Shimmer
