@@ -17,6 +17,7 @@ export type Speaker = {
   name: string;
   photo?: string;
   pk: string;
+  slug?: string;
   creator_detail?: Creator;
 };
 

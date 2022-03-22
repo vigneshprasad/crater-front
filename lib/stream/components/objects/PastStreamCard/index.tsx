@@ -39,9 +39,12 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
             alignItems="center"
             gridGap={space.xxs}
           >
-            <Link href={PageRoutes.creatorProfile(hostSlug ?? "")}>
-              <Avatar size={56} image={hostImage} alt={title} />
-            </Link>
+            {hostSlug && (
+              <Link href={PageRoutes.creatorProfile(hostSlug)}>
+                <Avatar size={56} image={hostImage} alt={title} />
+              </Link>
+            )}
+
             <Flex flexDirection="column">
               <Text textStyle="bodyLarge">{title}</Text>
               <Text textStyle="caption" color={colors.slate}>

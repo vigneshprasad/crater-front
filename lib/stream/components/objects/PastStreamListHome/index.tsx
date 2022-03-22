@@ -54,7 +54,7 @@ export default function PastStreamListHome({
                 hostImage={stream.host_detail?.photo}
                 hostName={stream.host_detail?.name}
                 time={stream.start}
-                hostSlug={stream.host_detail?.creator_detail?.slug}
+                hostSlug={stream.host_detail?.slug}
                 ref={index == pastStreams.length - 1 ? ref : null}
               />
             ))}

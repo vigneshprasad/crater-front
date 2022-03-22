@@ -485,17 +485,20 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 {webinar.speakers_detail_list &&
                   webinar.speakers_detail_list.map((speaker) => (
                     <>
-                      <Link
-                        href={PageRoutes.creatorProfile(
-                          speaker.creator_detail?.slug ?? ""
-                        )}
-                      >
-                        <Avatar
-                          size={56}
-                          image={speaker?.photo}
-                          alt={speaker?.name ?? "host"}
-                        />
-                      </Link>
+                      {speaker.creator_detail?.slug && (
+                        <Link
+                          href={PageRoutes.creatorProfile(
+                            speaker.creator_detail?.slug
+                          )}
+                        >
+                          <Avatar
+                            size={56}
+                            image={speaker?.photo}
+                            alt={speaker?.name ?? "host"}
+                          />
+                        </Link>
+                      )}
+
                       <Box>
                         <Text textStyle="bodyLarge">{speaker?.name}</Text>
                         <ExpandingText color={colors.slate}>
@@ -535,7 +538,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                         hostImage={stream.host_detail?.photo}
                         hostName={stream.host_detail?.name}
                         time={stream.start}
-                        hostSlug={stream.host_detail?.creator_detail?.slug}
+                        hostSlug={stream.host_detail?.slug}
                       />
                     );
                   }

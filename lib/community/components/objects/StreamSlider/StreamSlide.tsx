@@ -168,17 +168,15 @@ export function StreamSlide({
             gridTemplateColumns="min-content 1fr"
             alignItems="center"
           >
-            <Link
-              href={PageRoutes.creatorProfile(
-                stream.host_detail?.creator_detail?.slug ?? ""
-              )}
-            >
-              <Avatar
-                size={32}
-                image={stream.host_detail?.photo}
-                alt={stream.host_detail?.name ?? ""}
-              />
-            </Link>
+            {stream.host_detail?.slug && (
+              <Link href={PageRoutes.creatorProfile(stream.host_detail?.slug)}>
+                <Avatar
+                  size={56}
+                  alt={stream.host_detail?.name || ""}
+                  image={stream.host_detail?.photo}
+                />
+              </Link>
+            )}
             <Text textStyle="title">{stream.host_detail?.name}</Text>
           </Grid>
           <ExpandingText textStyle="body" color={colors.slate} maxLines={3}>

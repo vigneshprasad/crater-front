@@ -55,13 +55,19 @@ export default function StreamPlayerPage(): JSX.Element {
             alignItems="start"
             gridTemplateColumns="max-content 1fr"
           >
-            <Link
-              href={PageRoutes.creatorProfile(
-                webinar.host_detail?.creator_detail?.slug ?? ""
-              )}
-            >
-              <Avatar size={52} image={webinar?.host_profile_details?.photo} />
-            </Link>
+            {webinar.host_detail?.creator_detail?.slug && (
+              <Link
+                href={PageRoutes.creatorProfile(
+                  webinar.host_detail?.creator_detail?.slug
+                )}
+              >
+                <Avatar
+                  size={52}
+                  image={webinar?.host_profile_details?.photo}
+                />
+              </Link>
+            )}
+
             <Box px={space.xxs}>
               <Text textStyle="title">{webinar?.host_detail?.name}</Text>
               <ExpandingText maxLines={1}>

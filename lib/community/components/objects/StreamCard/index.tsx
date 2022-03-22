@@ -66,17 +66,15 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
             gridGap={space.xxs}
             alignItems="center"
           >
-            <Link
-              href={PageRoutes.creatorProfile(
-                stream.host_detail?.creator_detail?.slug ?? ""
-              )}
-            >
-              <Avatar
-                size={56}
-                alt={stream.host_detail?.name || ""}
-                image={stream.host_detail?.photo}
-              />
-            </Link>
+            {stream.host_detail?.slug && (
+              <Link href={PageRoutes.creatorProfile(stream.host_detail?.slug)}>
+                <Avatar
+                  size={56}
+                  alt={stream.host_detail?.name || ""}
+                  image={stream.host_detail?.photo}
+                />
+              </Link>
+            )}
             <Box>
               <Text maxLines={3}>{stream.topic_detail?.name}</Text>
               <Text color={colors.slate} textStyle="caption">
