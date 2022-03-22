@@ -81,7 +81,11 @@ export default function PastStreamsPage({
                 >
                   {category.photo ? (
                     <Button
-                      variant="filter-button"
+                      variant={
+                        category.pk === streamCategory.pk
+                          ? "filter-button-selected"
+                          : "filter-button"
+                      }
                       text={category.name}
                       textProps={{ m: 0, textAlign: "start" }}
                       position="relative"
@@ -101,7 +105,11 @@ export default function PastStreamsPage({
                     />
                   ) : (
                     <Button
-                      variant="filter-button"
+                      variant={
+                        category.pk === streamCategory.pk
+                          ? "filter-button-selected"
+                          : "filter-button"
+                      }
                       text={category.name}
                       textProps={{ m: 0, textAlign: "start" }}
                     />
