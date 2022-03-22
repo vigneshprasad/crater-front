@@ -32,11 +32,13 @@ export const StreamsToRsvpContext = createContext({} as IStreamsToRsvpState);
 type IProviderProps = PropsWithChildren<{
   initial?: PageResponse<Webinar>;
   pageSize?: number;
+  user?: string;
 }>;
 
 export function StreamsToRsvpProvider({
   initial,
   pageSize = 10,
+  user,
   ...rest
 }: IProviderProps): JSX.Element {
   const [nextPage, setNextPage] = useState(false);
@@ -50,7 +52,9 @@ export function StreamsToRsvpProvider({
       const page = index + 1;
       if (previousData && !previousData.next) return null;
 
-      return `${API_URL_CONSTANTS.stream.streamsToRsvp}?page=${page}&page_size=${pageSize}`;
+      return user
+        ? `${API_URL_CONSTANTS.stream.streamsToRsvp}?page=${page}&page_size=${pageSize}`
+        : null;
     },
     async (key: string) => {
       const response = await fetcher<PageResponse<Webinar>>(key);
@@ -64,14 +68,21 @@ export function StreamsToRsvpProvider({
 
   const value: IStreamsToRsvpState = useMemo(
     () => ({
-      streams: streams?.flatMap((page) => page.results),
+      streams: user ? streams?.flatMap((page) => page.results) : [],
       error,
-      loading: !streams && !error,
+      loading: !!user && !streams && !error,
       nextPage,
       setStreamsToRsvpPage,
       mutateStreamsToRsvpPage,
     }),
-    [streams, error, nextPage, setStreamsToRsvpPage, mutateStreamsToRsvpPage]
+    [
+      streams,
+      error,
+      nextPage,
+      setStreamsToRsvpPage,
+      mutateStreamsToRsvpPage,
+      user,
+    ]
   );
 
   return <StreamsToRsvpContext.Provider value={value} {...rest} />;

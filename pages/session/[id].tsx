@@ -95,7 +95,7 @@ export default function Session({ webinar, id }: Props): JSX.Element {
           <WebinarProvider id={id} initial={webinar}>
             <WebinarRequestProvider groupId={id} user={user?.pk}>
               <UpcomingStreamsProvider>
-                <StreamsToRsvpProvider>
+                <StreamsToRsvpProvider user={user?.pk}>
                   <SessionPage id={id} />
                 </StreamsToRsvpProvider>
               </UpcomingStreamsProvider>
