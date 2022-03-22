@@ -82,6 +82,7 @@ export const API_URL_CONSTANTS = {
     getCategories: "/groups/conversations/categories/",
     retrieveCategory: (id: number | string): string =>
       `/groups/conversations/categories/${id}/`,
+    streamsToRsvp: "/groups/conversations/webinars/suggested/",
   },
   rewards: {
     rewardsList: "/crater/reward/",
