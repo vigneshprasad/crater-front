@@ -26,12 +26,10 @@ import PaymentApiClient from "@/payments/api";
 import { Payment } from "@/payments/types/payments";
 import { AuctionApiClient } from "@/tokens/api";
 import useActiveAuction from "@/tokens/context/ActiveAuctionContext";
-import useBidsList from "@/tokens/context/BidListContext";
 import useRewardItem from "@/tokens/context/RewardItemContext";
 import { BidStatus } from "@/tokens/types/auctions";
 
 import CurrencyInput from "../../atoms/CurrencyInput";
-import BidsDataTable from "../../objects/BidsDataTable";
 import RewardCard from "../../objects/RewardCard";
 import RewardDescriptionPreview from "../../objects/RewardDescriptionPreview";
 import Container, { IContainerProps } from "./container";
@@ -56,7 +54,6 @@ function Content(): JSX.Element {
   const [postBidLoading, setPostBidLoading] = useState(false);
   const router = useRouter();
   const { track } = useAnalytics();
-  const { bids, mutateBids, loading: loadingBids } = useBidsList();
 
   const { fields, fieldValueSetter, getValidatedData, fieldErrorSetter } =
     useForm<IFormProps>({
@@ -257,11 +254,11 @@ function Content(): JSX.Element {
         )}
       </Box>
 
-      <Text textStyle="title" my={space.s}>
+      {/* <Text textStyle="title" my={space.s}>
         Recent Bids
       </Text>
 
-      <BidsDataTable bids={bids} mutate={mutateBids} loading={loadingBids} />
+      <BidsDataTable bids={bids} mutate={mutateBids} loading={loadingBids} /> */}
     </AnimatedBox>
   );
 }
