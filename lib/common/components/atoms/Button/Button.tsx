@@ -121,18 +121,18 @@ const StyledButton = styled(Grid)<ButtonProps>`
         },
       },
       "filter-button": {
-        minHeight: 44,
+        minHeight: [32, 44],
         borderRadius: 6,
         width: "100%",
-        ":hover": {
-          border: "2px solid white",
-        },
       },
       "filter-button-selected": {
-        minHeight: 44,
+        minHeight: [32, 44],
         borderRadius: 6,
         width: "100%",
         border: "2px solid white",
+        ":hover": {
+          border: "2px solid white",
+        },
       },
     },
   })}
