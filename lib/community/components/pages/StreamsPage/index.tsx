@@ -134,7 +134,7 @@ export default function StreamsPage(): JSX.Element {
       </Box>
 
       <Grid
-        px={space.s}
+        px={[space.xs, space.s]}
         gridTemplateColumns={[
           "1fr 1fr",
           "repeat(auto-fit, minmax(200px, 1fr))",
@@ -174,6 +174,7 @@ export default function StreamsPage(): JSX.Element {
                             width: "100%",
                             height: "70px",
                             position: "absolute",
+                            py: [space.xxxs, 0],
                           }}
                         />
                       }
