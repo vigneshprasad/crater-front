@@ -97,8 +97,9 @@ export default function PastStreamsPage({
                             display: "inline-flex",
                             justifyContent: "right",
                             width: "100%",
-                            height: "65px",
+                            height: "70px",
                             position: "absolute",
+                            py: [space.xxxs, 0],
                           }}
                         />
                       }
