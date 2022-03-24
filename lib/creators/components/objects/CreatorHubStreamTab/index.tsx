@@ -35,7 +35,6 @@ export default function CreatorHubStreamTab(): JSX.Element {
   return (
     <Grid gridAutoFlow="row" px={[space.xs, space.s]} py={space.xs}>
       {(() => {
-        console.log(upcoming);
         if (!upcoming.length) {
           return null;
         }
