@@ -2,7 +2,6 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
 import dynamic from "next/dynamic";
 
-import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import CreatorPageLayout from "@/creators/components/layouts/CreatorPageLayout";
 import CreatorPage, {
   CreatorPageParams,
@@ -11,6 +10,7 @@ import CreatorPage, {
   getCreatorStaticProps,
 } from "@/creators/components/page/CreatorPage";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
+import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 
 const CreatorStreamsTab = dynamic(
   () => import("@/creators/components/objects/CreatorStreamsTab")

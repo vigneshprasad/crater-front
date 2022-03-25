@@ -3,9 +3,9 @@ import { useTheme } from "styled-components";
 import { Box, Grid, Text } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
 import StreamCard from "@/community/components/objects/StreamCard";
-import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import PastStreamCard from "@/stream/components/objects/PastStreamCard";
 import usePastStreams from "@/stream/context/PastStreamContext";
+import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 export default function CreatorStreamsTab(): JSX.Element {
   const { upcoming } = useUpcomingStreams();
@@ -36,6 +36,7 @@ export default function CreatorStreamsTab(): JSX.Element {
               <StreamCard
                 link={PageRoutes.session(stream.id)}
                 stream={stream}
+                hostSlug={stream.host_detail?.slug}
                 key={stream.id}
               />
             ))}

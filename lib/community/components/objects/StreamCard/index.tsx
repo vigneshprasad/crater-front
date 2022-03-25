@@ -12,6 +12,7 @@ import { Webinar } from "@/community/types/community";
 interface IProps {
   stream: Webinar;
   link?: string;
+  hostSlug?: string;
 }
 
 const Span = styled.span`
@@ -19,7 +20,7 @@ const Span = styled.span`
 `;
 
 const StreamCard = forwardRef<HTMLDivElement, IProps>(
-  ({ stream, link }, ref) => {
+  ({ stream, link, hostSlug }, ref) => {
     const { space, radii } = useTheme();
     const startTime = DateTime.parse(stream.start);
     return (
@@ -66,8 +67,8 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
             gridGap={space.xxs}
             alignItems="center"
           >
-            {stream.host_detail?.slug && (
-              <Link href={PageRoutes.creatorProfile(stream.host_detail?.slug)}>
+            {hostSlug && (
+              <Link href={PageRoutes.creatorProfile(hostSlug)}>
                 <Avatar
                   size={56}
                   alt={stream.host_detail?.name || ""}
@@ -92,6 +93,7 @@ StreamCard.displayName = "StreamCard";
 
 StreamCard.defaultProps = {
   link: undefined,
+  hostSlug: undefined,
 };
 
 export default StreamCard;

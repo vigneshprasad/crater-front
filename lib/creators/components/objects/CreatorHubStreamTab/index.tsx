@@ -5,11 +5,11 @@ import { useRouter } from "next/router";
 import { Text, Grid, Box } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
-import StreamCard from "@/community/components/objects/StreamCard";
 import { StreamSlider } from "@/community/components/objects/StreamSlider";
-import { useUpcomingStreams } from "@/community/context/UpcomingStreamsContext";
 import { Webinar } from "@/community/types/community";
+import PastStreamCard from "@/stream/components/objects/PastStreamCard";
 import usePastStreams from "@/stream/context/PastStreamContext";
+import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 import ScheduleStreamForm from "../../forms/ScheduleStreamForm";
 
@@ -66,7 +66,16 @@ export default function CreatorHubStreamTab(): JSX.Element {
             gridGap={space.s}
           >
             {past.map((stream) => (
-              <StreamCard stream={stream} key={stream.id} />
+              <PastStreamCard
+                key={stream.id}
+                title={stream.topic_detail.name}
+                href={PageRoutes.streamVideo(stream.id)}
+                image={stream.topic_detail.image}
+                hostImage={stream.host_detail?.photo}
+                hostName={stream.host_detail?.name}
+                time={stream.start}
+                hostSlug={stream.host_detail?.slug}
+              />
             ))}
           </Grid>
         </Box>
