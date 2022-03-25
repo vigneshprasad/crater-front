@@ -485,7 +485,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 {webinar.speakers_detail_list &&
                   webinar.speakers_detail_list.map((speaker) => (
                     <>
-                      {speaker.creator_detail?.slug && (
+                      {speaker.creator_detail?.slug ? (
                         <Link
                           href={PageRoutes.creatorProfile(
                             speaker.creator_detail?.slug
@@ -497,6 +497,12 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                             alt={speaker?.name ?? "host"}
                           />
                         </Link>
+                      ) : (
+                        <Avatar
+                          size={56}
+                          image={speaker?.photo}
+                          alt={speaker?.name ?? "host"}
+                        />
                       )}
 
                       <Box>
@@ -538,11 +544,17 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                         hostImage={stream.host_detail?.photo}
                         hostName={stream.host_detail?.name}
                         time={stream.start}
-                        hostSlug={stream.host_detail?.slug}
+                        hostSlug={stream.host_detail?.creator_detail?.slug}
                       />
                     );
                   }
-                  return <StreamCard stream={stream} key={stream.id} />;
+                  return (
+                    <StreamCard
+                      stream={stream}
+                      hostSlug={stream.host_detail?.creator_detail?.slug}
+                      key={stream.id}
+                    />
+                  );
                 }
               })}
             </Grid>
@@ -564,7 +576,13 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           >
             {upcoming?.map((stream) => {
               if (stream.id !== webinar.id) {
-                return <StreamCard stream={stream} key={stream.id} />;
+                return (
+                  <StreamCard
+                    stream={stream}
+                    hostSlug={stream.host_detail?.slug}
+                    key={stream.id}
+                  />
+                );
               }
             })}
           </Grid>

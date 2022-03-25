@@ -150,7 +150,11 @@ export default function PastStreamsPage({
                 />
               ))
           : upcoming?.map((stream) => (
-              <StreamCard stream={stream} key={stream.id} />
+              <StreamCard
+                stream={stream}
+                hostSlug={stream.host_detail?.slug}
+                key={stream.id}
+              />
             ))}
       </Grid>
 

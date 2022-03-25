@@ -5,10 +5,10 @@ import dynamic from "next/dynamic";
 import HubPageLayout, {
   getHubServerSideProps,
 } from "@/common/components/layouts/HubPageLayout";
-import { UpcomingStreamsProvider } from "@/community/context/UpcomingStreamsContext";
 import { CreatorStreamProvider } from "@/creators/context/CreatorStreamsContext";
 import { Creator } from "@/creators/types/creator";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
+import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 
 const CreatorHubStreamTab = dynamic(
   () => import("@/creators/components/objects/CreatorHubStreamTab")
