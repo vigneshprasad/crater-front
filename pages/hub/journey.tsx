@@ -1,7 +1,9 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
 
+import { Box } from "@/common/components/atoms";
 import HubPageLayout, {
   getHubServerSideProps,
 } from "@/common/components/layouts/HubPageLayout";
@@ -39,9 +41,13 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 type IProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function CreatorHubJourney({ creator }: IProps): JSX.Element {
+  const { space } = useTheme();
+
   return (
     <HubPageLayout creator={creator} activeTab="journey">
+      {/* <Box overflowY="auto" px={[space.xxs, space.s]} py={space.s}> */}
       <CreatorHubJourneyTab />
+      {/* </Box> */}
     </HubPageLayout>
   );
 }

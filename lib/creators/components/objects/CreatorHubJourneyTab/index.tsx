@@ -1,7 +1,7 @@
 import { AnyObject } from "immer/dist/internal";
 import styled, { useTheme } from "styled-components";
 
-import { Box, Flex, Grid, Image, Link, Text } from "@/common/components/atoms";
+import { Box, Grid, Image, Link, Text } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 
 const Container = styled(Box)`
@@ -345,7 +345,7 @@ export default function CreatorHubJourneyTab(): JSX.Element {
   ];
 
   return (
-    <Box overflowY="auto" px={[space.xxs, space.s]} py={space.s}>
+    <Box>
       <Box pb={space.xs}>
         <Text textStyle="headline3" textAlign="center">
           Start your creator journey
