@@ -40,6 +40,11 @@ const CREATOR_TABS = {
       <BaseTabItem textStyle="title" label="FAQ" />
     </Link>
   ),
+  journey: (
+    <Link href={PageRoutes.hub("journey")} shallow>
+      <BaseTabItem textStyle="title" label="Journey" />
+    </Link>
+  ),
 };
 
 const USER_TABS = {
@@ -56,6 +61,11 @@ const USER_TABS = {
   faq: (
     <Link href={PageRoutes.hub("faq")} shallow>
       <BaseTabItem textStyle="title" label="FAQ" />
+    </Link>
+  ),
+  journey: (
+    <Link href={PageRoutes.hub("journey")} shallow>
+      <BaseTabItem textStyle="title" label="Journey" />
     </Link>
   ),
 };
