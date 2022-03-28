@@ -163,21 +163,26 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
               <Flex gridGap={space.xxs} alignItems="center">
                 {cachedWebinar?.speakers_detail_list.map((speaker) => {
                   return (
-                    <Link
+                    <Flex
+                      flexDirection="row"
+                      alignItems="center"
+                      gridGap={space.xxxs}
                       key={speaker.pk}
-                      href={PageRoutes.creatorProfile(
-                        speaker.creator_detail?.slug ?? ""
-                      )}
                     >
-                      <Flex
-                        flexDirection="row"
-                        alignItems="center"
-                        gridGap={space.xxxs}
-                      >
+                      {speaker.creator_detail?.slug ? (
+                        <Link
+                          href={PageRoutes.creatorProfile(
+                            speaker.creator_detail?.slug
+                          )}
+                        >
+                          <Avatar size={42} image={speaker.photo} />
+                        </Link>
+                      ) : (
                         <Avatar size={42} image={speaker.photo} />
-                        <Text fontWeight="600">{speaker.name}</Text>
-                      </Flex>
-                    </Link>
+                      )}
+
+                      <Text fontWeight="600">{speaker.name}</Text>
+                    </Flex>
                   );
                 })}
               </Flex>
