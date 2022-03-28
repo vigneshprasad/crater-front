@@ -78,8 +78,12 @@ export default function UpcomingStreamsWidget(): JSX.Element {
         variants={{
           closed: {
             transform: "translate(420px, 0)",
+            transitionEnd: {
+              display: "none",
+            },
           },
           opened: {
+            display: "block",
             transform: "translate(0px, 0)",
           },
         }}
