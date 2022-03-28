@@ -345,7 +345,7 @@ export default function CreatorHubJourneyTab(): JSX.Element {
   ];
 
   return (
-    <Box>
+    <Box overflowY="auto" px={[space.xxs, space.s]} py={space.xs}>
       <Box pb={space.xs}>
         <Text textStyle="headline3" textAlign="center">
           Start your creator journey
