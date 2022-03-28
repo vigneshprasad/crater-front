@@ -154,7 +154,7 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
             .filter((obj) => obj.type === ChatMessageType.TEXT)
             .reverse()
             .map((message) => (
-              <ChatMessageItem message={message} key={message.sender} />
+              <ChatMessageItem message={message} key={message.created_at} />
             ))}
         </Box>
       </Box>
