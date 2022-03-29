@@ -11,6 +11,7 @@ import {
   Text,
   IconButton,
   Button,
+  Shimmer,
 } from "@/common/components/atoms";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import WebinarApiClient from "@/community/api";
@@ -112,7 +113,7 @@ export default function UpcomingStreamsWidget(): JSX.Element {
           <Box overflowY="auto" py={space.xxs}>
             <StreamsToRsvpProvider>
               <StreamsToRsvpContext.Consumer>
-                {({ streams, mutateStreamsToRsvpPage }) => {
+                {({ streams, mutateStreamsToRsvpPage, loading }) => {
                   const handleClick = async (
                     stream: Webinar
                   ): Promise<void> => {
@@ -127,6 +128,12 @@ export default function UpcomingStreamsWidget(): JSX.Element {
 
                     animationController.start("closed");
                   };
+
+                  if (loading) {
+                    return Array(3)
+                      .fill("")
+                      .map((_, index) => <Shimmer key={index} pt="56.25%" />);
+                  }
 
                   return streams?.map((stream) => (
                     <Box
