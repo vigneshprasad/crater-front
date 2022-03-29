@@ -140,11 +140,13 @@ export default function UpcomingStreamsWidget(): JSX.Element {
                         overflow="hidden"
                         borderRadius={radii.xxs}
                       >
-                        <Image
-                          src={stream.topic_detail.image}
-                          alt={stream.topic_detail.name}
-                          layout="fill"
-                        />
+                        {stream.topic_detail.image && (
+                          <Image
+                            src={stream.topic_detail.image}
+                            alt={stream.topic_detail.name}
+                            layout="fill"
+                          />
+                        )}
                       </Box>
                       <Button
                         m="12px auto"
