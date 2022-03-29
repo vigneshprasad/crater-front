@@ -2,7 +2,6 @@ import { datadogRum } from "@datadog/browser-rum";
 import { theme } from "lib/common/theme";
 import { Provider } from "next-auth/client";
 import { useEffect } from "react";
-import OneSignal from "react-onesignal";
 import { ThemeProvider } from "styled-components";
 import { SWRConfig } from "swr";
 
@@ -72,9 +71,6 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   }
 
   useEffect(() => {
-    OneSignal.init({
-      appId: "a8d5ac89-ade7-4394-8d2d-6b093a430f88",
-    });
     intializeDataDog();
   }, []);
 

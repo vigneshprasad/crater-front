@@ -15,3 +15,5 @@ export { default as BackgroundVideo } from "./BackgroundVideo";
 export { default as Shimmer } from "./Shimmer";
 export * from "./Image";
 export * from "./Marquee";
+export { default as IconButton } from "./IconButton";
+export * from "./Button";
