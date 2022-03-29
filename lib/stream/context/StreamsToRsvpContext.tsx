@@ -7,6 +7,7 @@ import {
 } from "react";
 import { SWRInfiniteResponse, useSWRInfinite } from "swr";
 
+import useAuth from "@/auth/context/AuthContext";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
 import fetcher from "@/common/utils/fetcher";
@@ -32,16 +33,15 @@ export const StreamsToRsvpContext = createContext({} as IStreamsToRsvpState);
 type IProviderProps = PropsWithChildren<{
   initial?: PageResponse<Webinar>;
   pageSize?: number;
-  user?: string;
 }>;
 
 export function StreamsToRsvpProvider({
   initial,
   pageSize = 10,
-  user,
   ...rest
 }: IProviderProps): JSX.Element {
   const [nextPage, setNextPage] = useState(false);
+  const { user } = useAuth();
   const {
     data: streams,
     error,
@@ -50,11 +50,10 @@ export function StreamsToRsvpProvider({
   } = useSWRInfinite<PageResponse<Webinar>>(
     (index, previousData) => {
       const page = index + 1;
+      if (!user) return null;
       if (previousData && !previousData.next) return null;
 
-      return user
-        ? `${API_URL_CONSTANTS.stream.streamsToRsvp}?page=${page}&page_size=${pageSize}`
-        : null;
+      return `${API_URL_CONSTANTS.stream.streamsToRsvp}?page=${page}&page_size=${pageSize}`;
     },
     async (key: string) => {
       const response = await fetcher<PageResponse<Webinar>>(key);
@@ -68,7 +67,7 @@ export function StreamsToRsvpProvider({
 
   const value: IStreamsToRsvpState = useMemo(
     () => ({
-      streams: user ? streams?.flatMap((page) => page.results) : [],
+      streams: streams?.flatMap((page) => page.results),
       error,
       loading: !!user && !streams && !error,
       nextPage,

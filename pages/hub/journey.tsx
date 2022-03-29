@@ -7,8 +7,8 @@ import HubPageLayout, {
 } from "@/common/components/layouts/HubPageLayout";
 import { Creator } from "@/creators/types/creator";
 
-const CreatorHubFaqTab = dynamic(
-  () => import("@/creators/components/objects/CreatorHubFaqTab")
+const CreatorHubJourneyTab = dynamic(
+  () => import("@/creators/components/objects/CreatorHubJourneyTab")
 );
 
 interface PageProps {
@@ -21,7 +21,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 ) => {
   try {
     const data = await getHubServerSideProps(context);
-
     return {
       props: {
         ...data,
@@ -39,10 +38,10 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 
 type IProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function CreatorHubFaq({ creator }: IProps): JSX.Element {
+export default function CreatorHubJourney({ creator }: IProps): JSX.Element {
   return (
-    <HubPageLayout activeTab="faq" creator={creator}>
-      <CreatorHubFaqTab />
+    <HubPageLayout creator={creator} activeTab="journey">
+      <CreatorHubJourneyTab />
     </HubPageLayout>
   );
 }

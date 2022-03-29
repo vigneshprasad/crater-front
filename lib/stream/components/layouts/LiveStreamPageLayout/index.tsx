@@ -3,6 +3,7 @@ import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 
 import LiveStreamPanel from "../../objects/LiveStreamPanel";
+import UpcomingStreamsWidget from "../../objects/UpcomingStreamsWidget";
 
 interface IProps {
   videoPlayer: React.ReactNode;
@@ -26,6 +27,7 @@ export default function LiveStreamPageLayout({
         <Box overflowY={["hidden", "auto"]}>
           <Box position="relative" pt="56.25%">
             {videoPlayer}
+            <UpcomingStreamsWidget />
           </Box>
           {streamDetail}
         </Box>

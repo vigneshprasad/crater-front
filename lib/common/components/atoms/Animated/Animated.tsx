@@ -7,6 +7,8 @@ import { Box, BoxProps } from "../System";
 export type AnimatedBoxProps = BoxProps & GridProps & MotionProps;
 
 // eslint-disable-next-line import/prefer-default-export
-export const AnimatedBox = styled(motion(Box))<AnimatedBoxProps>`
+export const AnimatedBox = styled(
+  motion(Box, { forwardMotionProps: true })
+)<AnimatedBoxProps>`
   ${grid}
 `;
