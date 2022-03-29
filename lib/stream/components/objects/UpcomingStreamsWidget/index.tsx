@@ -3,9 +3,15 @@ import { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, Icon, AnimatedBox, Flex, Text } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
-import IconButton from "@/common/components/atoms/IconButton";
+import {
+  AnimatedBox,
+  Box,
+  Flex,
+  Icon,
+  Text,
+  IconButton,
+  Button,
+} from "@/common/components/atoms";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import WebinarApiClient from "@/community/api";
 import {
@@ -31,8 +37,6 @@ export default function UpcomingStreamsWidget(): JSX.Element {
   const handleClosePanel = (): void => {
     animationController.start("closed");
   };
-
-  console.log(matches);
 
   return (
     <>
