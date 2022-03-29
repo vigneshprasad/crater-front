@@ -82,6 +82,7 @@ export default function UpcomingStreamsWidget(): JSX.Element {
           position="absolute"
           top={16}
           bottom={16}
+          overflowY="auto"
           right={8}
           w={280}
           bg={colors.blackAlpha[1]}
@@ -110,7 +111,7 @@ export default function UpcomingStreamsWidget(): JSX.Element {
               onClick={handleClosePanel}
             />
           </Flex>
-          <Box overflowY="auto" py={space.xxs}>
+          <Box py={space.xxs}>
             <StreamsToRsvpProvider>
               <StreamsToRsvpContext.Consumer>
                 {({ streams, mutateStreamsToRsvpPage, loading }) => {
