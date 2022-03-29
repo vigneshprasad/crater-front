@@ -4,7 +4,11 @@ import { useTheme } from "styled-components";
 import { Flex, Text } from "@/common/components/atoms";
 import IconButton from "@/common/components/atoms/IconButton";
 
-export default function UrlShare(): JSX.Element {
+interface IProps {
+  referrer?: string;
+}
+
+export default function UrlShare({ referrer }: IProps): JSX.Element {
   const [url, setUrl] = useState("");
   const { space, radii, colors, borders } = useTheme();
 
@@ -18,8 +22,12 @@ export default function UrlShare(): JSX.Element {
     const location = window.location.href;
     const urlObj = new URL(location);
 
-    setUrl(`${urlObj.origin}${urlObj.pathname}`);
-  }, []);
+    if (referrer) {
+      setUrl(`${urlObj.origin}${urlObj.pathname}?referrer=${referrer}`);
+    } else {
+      setUrl(`${urlObj.origin}${urlObj.pathname}`);
+    }
+  }, [referrer]);
 
   return (
     <Flex
