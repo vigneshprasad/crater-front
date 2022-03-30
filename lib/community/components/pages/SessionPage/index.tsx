@@ -401,27 +401,24 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 })()}
               </Box>
 
-              {/* <Text
+              <Text
                 pt={space.xxs}
                 borderTop="1px solid rgba(255, 255, 255, 0.1)"
                 textStyle="title"
               >
                 Let others know
-              </Text> */}
+              </Text>
 
               {user && user.pk === webinar.host && (
                 <>
-                  <Flex
-                    alignItems="center"
-                    justifyContent="space-between"
-                    gridGap={space.xxxs}
-                  >
-                    <Text textStyle="title">
+                  <Flex alignItems="center" gridGap={space.xxxs}>
+                    <Text textStyle="captionLarge">
                       Earn ₹50 for each friend you refer 🎉
                     </Text>
                     <Button
                       text="Details"
-                      variant="round"
+                      variant="text-button"
+                      textProps={{ minWidth: 38, px: 5 }}
                       onClick={() => setShowReferralModal(true)}
                     />
                   </Flex>
