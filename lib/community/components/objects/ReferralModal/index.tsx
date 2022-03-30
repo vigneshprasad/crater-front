@@ -47,6 +47,7 @@ export default function ReferralModal({
       p={space.xs}
       gridGap={space.xxs}
       alignItems="center"
+      overflowY="hidden"
     >
       <Box>
         <Text textStyle="headline4" pb={space.xs}>
@@ -71,7 +72,7 @@ export default function ReferralModal({
 
       <Box
         px={space.xxs}
-        border={`1px solid ${colors.slate}`}
+        border={`1px solid ${colors.accent}`}
         alignSelf="center"
       >
         <Text textStyle="headline6" py={space.xxs}>
