@@ -88,7 +88,7 @@ export default function AuthForm(): JSX.Element {
       const utmCampaign = localStorage.getItem(UTM_CAMPAIGN_STORAGE_KEY);
       const utmMedium = localStorage.getItem(UTM_MEDIUM_STORAGE_KEY);
       const referrerId = localStorage.getItem(REFERRER_ID_STORAGE_KEY);
-      if (utmSource || utmCampaign) {
+      if (utmSource || utmCampaign || referrerId) {
         fieldValueSetter("utmSource", utmSource as string);
         fieldValueSetter("utmCampaign", utmCampaign as string);
         fieldValueSetter("utmMedium", utmMedium as string);
