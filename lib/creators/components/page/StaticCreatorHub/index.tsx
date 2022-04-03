@@ -1,49 +1,43 @@
 import { NextSeoProps } from "next-seo";
-import HeroImage from "public/images/img_creatorhub.png";
-import DistributionImage from "public/images/img_distribution.png";
-import EngagementImage from "public/images/img_engagement.png";
-import MonetizationImage from "public/images/img_monetization.png";
 import { useTheme } from "styled-components";
 
-import Image from "next/image";
-
-import useAuth from "@/auth/context/AuthContext";
-import { Box, Text, Grid, Card } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import Page from "@/common/components/objects/Page";
 
-import StaticHubCard from "../../objects/StaticHubCard";
+import CreatorHubJourneyTab from "../../objects/CreatorHubJourneyTab";
+
+// import StaticHubCard from "../../objects/StaticHubCard";
 
 export default function StaticCreatorHub(): JSX.Element {
   const seo: NextSeoProps = {
     title: "Crater Club",
     description: "Creator Hub",
   };
-  const { profile } = useAuth();
-  const { space, colors } = useTheme();
+  // const { profile } = useAuth();
+  const { space } = useTheme();
 
-  const heading = profile ? `Welcome, ${profile.name}` : "Let's go live";
+  // const heading = profile ? `Welcome, ${profile.name}` : "Let's go live";
 
   return (
     <Page seo={seo}>
       <BaseLayout
         m="0 auto"
-        maxWidth={1280}
+        // maxWidth={1280}
         overflowY="auto"
-        px={[space.xxs, space.m]}
+        // px={[space.xxs, space.m]}
         pt={space.xs}
         aside={<AsideNav activeTab="creatorhub" />}
+        background="linear-gradient(#000000, #4f3099)"
       >
-        <Text textStyle="headline4" textAlign="center" mb={space.xs}>
+        {/* <Text textStyle="headline4" textAlign="center" mb={space.xs}>
           {heading}
         </Text>
         <Grid
           gridTemplateColumns={["1fr", "repeat(4, 1fr)"]}
           gridGap={space.xs}
-        >
-          <Card
+        > */}
+        {/* <Card
             gridColumn={["1 / span 1", "1 / span 4"]}
             containerProps={{
               display: "grid",
@@ -117,11 +111,13 @@ export default function StaticCreatorHub(): JSX.Element {
             auction to monetize. We also promote your websites, courses &amp;
             links."
             image={MonetizationImage}
-          />
+          /> */}
 
-          {/* <Card>Card one</Card> */}
-        </Grid>
-        <Box h={space.s} />
+        {/* <Card>Card one</Card> */}
+        {/* </Grid> */}
+
+        <CreatorHubJourneyTab />
+        {/* <Box h={space.s} /> */}
       </BaseLayout>
     </Page>
   );

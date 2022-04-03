@@ -1,6 +1,7 @@
 export { default as AccountCircle } from "./AccountCircle";
 export { default as Activity } from "./Activity";
 export { default as Add } from "./Add";
+export { default as ArrowLeft } from "./ArrowLeft";
 export { default as AtSign } from "./AtSign";
 export { default as CalendarDays } from "./CalendarDays";
 export { default as CallEnd } from "./CallEnd";
@@ -39,4 +40,5 @@ export { default as Tv } from "./Tv";
 export { default as Twitter } from "./Twitter";
 export { default as User } from "./User";
 export { default as Users } from "./Users";
+export { default as ViewStream } from "./ViewStream";
 export { default as Wallet } from "./Wallet";

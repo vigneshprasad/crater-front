@@ -2,9 +2,7 @@ import { useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 import { variant } from "styled-system";
 
-import { Grid, BoxProps, Text, TextVariants } from "@/common/components/atoms";
-
-import { TextProps } from "../System";
+import { TextProps, BoxProps, Grid, Text, TextVariants } from "../System";
 
 type ButtonElements = "button" | "a";
 
