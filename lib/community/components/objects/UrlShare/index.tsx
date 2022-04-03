@@ -23,7 +23,7 @@ export default function UrlShare({ referrer }: IProps): JSX.Element {
     const urlObj = new URL(location);
 
     if (referrer) {
-      setUrl(`${urlObj.origin}${urlObj.pathname}?referrer=${referrer}`);
+      setUrl(`${urlObj.origin}${urlObj.pathname}?referrer_id=${referrer}`);
     } else {
       setUrl(`${urlObj.origin}${urlObj.pathname}`);
     }
