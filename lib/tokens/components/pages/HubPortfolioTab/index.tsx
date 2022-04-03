@@ -15,6 +15,7 @@ import StaticAuctionInfo from "../../objects/StaticAuctionInfo";
 import TransactionDataTable from "../../objects/TransactionDataTable";
 import UserRewardItem from "../../objects/UserRewardItem";
 import UserRewardList from "../../objects/UserRewardList";
+import HubMyReferrals from "../HubMyReferrals";
 
 export default function HubPortfolioTab(): JSX.Element {
   const [showSuccess, setSuccess] = useState(false);
@@ -32,30 +33,34 @@ export default function HubPortfolioTab(): JSX.Element {
   if (bids && userRewards) {
     if (bids.length == 0 && userRewards.length == 0) {
       return (
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          height="65%"
-          flexDirection="column"
-          gridGap={space.xxs}
-        >
-          <Box
-            position="relative"
-            w={240}
-            borderRadius={radii.xs}
-            overflow="hidden"
+        <>
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            height="65%"
+            flexDirection="column"
+            gridGap={space.xxs}
           >
-            <Image src={STATIC_IMAGES.ImageAuctionInactive} alt="" />
-          </Box>
+            <Box
+              position="relative"
+              w={240}
+              borderRadius={radii.xs}
+              overflow="hidden"
+            >
+              <Image src={STATIC_IMAGES.ImageAuctionInactive} alt="" />
+            </Box>
 
-          <Text textStyle="title">You haven&apos;t placed any bids yet!</Text>
-          <Text fontSize="1.5rem">
-            Auctions are where you bid on exclusive content, communities or time
-            with your favourite creators
-          </Text>
-          <Text textStyle="title">How it works</Text>
-          <StaticAuctionInfo />
-        </Flex>
+            <Text textStyle="title">You haven&apos;t placed any bids yet!</Text>
+            <Text fontSize="1.5rem">
+              Auctions are where you bid on exclusive content, communities or
+              time with your favourite creators
+            </Text>
+            <Text textStyle="title">How it works</Text>
+            <StaticAuctionInfo />
+          </Flex>
+
+          <HubMyReferrals />
+        </>
       );
     }
   }
@@ -80,6 +85,7 @@ export default function HubPortfolioTab(): JSX.Element {
         <Text textStyle="title">Transaction Log</Text>
         <TransactionDataTable bids={bids} />
       </Flex>
+      <HubMyReferrals />
       <Box h={space.m} />
     </>
   );
