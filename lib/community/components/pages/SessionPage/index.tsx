@@ -409,11 +409,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 Let others know
               </Text>
 
-              {user && user.pk === webinar.host && (
+              {user && user.pk !== webinar.host && (
                 <>
                   <Flex alignItems="center" gridGap={space.xxxs}>
                     <Text textStyle="captionLarge">
-                      Earn ₹50 for each friend you refer 🎉
+                      Earn ₹100 for each friend you refer 🎉
                     </Text>
                     <Button
                       text="Details"

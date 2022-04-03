@@ -8,6 +8,7 @@ import {
   Flex,
   Grid,
 } from "@/common/components/atoms";
+import { useReferralSummary } from "@/tokens/context/ReferralSummaryContext";
 
 interface IProps {
   visible: boolean;
@@ -19,6 +20,7 @@ export default function ReferralModal({
   onClose,
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
+  const { referralSummary } = useReferralSummary();
 
   const steps = [
     {
@@ -28,7 +30,7 @@ export default function ReferralModal({
       text: "Your friend uses the link to sign up & watch their first stream",
     },
     {
-      text: "You get ₹50 when they watch their first 20min of live content",
+      text: "You get ₹100 when they watch their first 20 minutes of live content",
     },
     {
       text: "Withdraw the money or use it at the auctions",
@@ -81,22 +83,22 @@ export default function ReferralModal({
 
         <Flex alignItems="center" justifyContent="space-between" pb={space.xxs}>
           <Text>Referrals who watched streams</Text>
-          <Text>10</Text>
+          <Text>{referralSummary?.total_referrals}</Text>
         </Flex>
 
         <Flex alignItems="center" justifyContent="space-between" pb={space.xxs}>
           <Text>Total Payable</Text>
-          <Text>500</Text>
+          <Text>{referralSummary?.total_payable}</Text>
         </Flex>
 
         <Flex alignItems="center" justifyContent="space-between" pb={space.xxs}>
           <Text>Paid out</Text>
-          <Text>350</Text>
+          <Text>{referralSummary?.paid_out}</Text>
         </Flex>
 
         <Flex alignItems="center" justifyContent="space-between" pb={space.xxs}>
           <Text>Outstanding</Text>
-          <Text>200</Text>
+          <Text>{referralSummary?.outstanding_payment}</Text>
         </Flex>
       </Box>
     </Modal>
