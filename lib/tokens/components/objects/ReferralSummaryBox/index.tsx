@@ -53,7 +53,7 @@ export default function ReferralSummaryBox(props: IProps): JSX.Element {
       <Grid
         px={space.xxs}
         py={space.xxxs}
-        gridTemplateColumns="repeat(4, 1fr)"
+        gridTemplateColumns={["repeat(2, 1fr)", "repeat(4, 1fr)"]}
         gridGap={space.xxs}
       >
         {columns.map(({ title, key, display }, index) => {
@@ -63,11 +63,10 @@ export default function ReferralSummaryBox(props: IProps): JSX.Element {
               flexDirection="column"
               gridGap={space.xxxs}
               py={space.xxxs}
-              borderRight={
-                index < columns.length - 1
-                  ? `1px solid ${borders.main}`
-                  : undefined
-              }
+              borderRight={[
+                null,
+                index < columns.length - 1 ? `1px solid ${borders.main}` : null,
+              ]}
             >
               {props[key] === undefined ? (
                 <Shimmer w="100%" h="100%" />
