@@ -12,7 +12,7 @@ export default function HubMyReferrals(): JSX.Element | null {
   const { referrals, loading } = useReferralsList();
   const { referralSummary } = useReferralSummary();
 
-  if (loading || !referrals) {
+  if (loading || !referrals || referrals?.length === 0) {
     return null;
   }
 
