@@ -79,7 +79,7 @@ export default function CreatorHubJourneyTab(): JSX.Element {
             product, answer questions & just get to know each other.
           </Text>
           <a
-            href="https://calendly.com/craterclub/introduction-to-crater?utm_source=website&utm_medium=navbar"
+            href="https://calendly.com/craterclub/go_live_on_crater?utm_source=website&utm_medium=navbar"
             target="_blank"
             rel="noreferrer"
           >
