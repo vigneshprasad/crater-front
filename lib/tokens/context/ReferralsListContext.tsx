@@ -49,8 +49,6 @@ export function ReferralListProvider({
     }
   );
 
-  console.log("referrals: ", referrals);
-
   const value: IReferralListState = useMemo(
     () => ({
       referrals: referrals?.flatMap((page) => page.results),
