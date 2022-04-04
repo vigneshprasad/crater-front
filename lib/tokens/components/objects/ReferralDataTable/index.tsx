@@ -19,21 +19,21 @@ export default function ReferralDataTable({ referrals }: IProps): JSX.Element {
       {
         label: "Referral",
         key: "referral",
-        valueGetter: (obj) => obj.username,
+        valueGetter: (obj) => (obj.user ? obj.user : "-"),
       },
       {
         label: "Watched Stream",
         key: "stream",
         valueGetter: (obj) => {
-          const startTime = obj.stream_start
-            ? DateTime.parse_with_milliseconds(obj.stream_start)
+          const startTime = obj.stream_detail?.start
+            ? DateTime.parse_with_milliseconds(obj.stream_detail?.start)
             : null;
 
           return (
             <Box>
-              {obj.stream_topic ? (
+              {obj.stream_detail ? (
                 <>
-                  <Text>{obj.stream_topic} </Text>
+                  <Text>{obj.stream_detail.topic} </Text>
                   <Text color={colors.slate} textStyle="caption">
                     {startTime?.toFormat(DateTime.DEFAULT_FORMAT)}
                   </Text>

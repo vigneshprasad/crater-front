@@ -1,11 +1,14 @@
 export interface Referral {
   id: string;
-  username: string;
-  referrer_name: string;
+  user: string;
+  referrer: string;
   amount: number;
   status: string;
-  stream_topic?: string;
-  stream_start?: string;
+  stream_detail?: {
+    id: number;
+    topic: string;
+    start: string;
+  };
 }
 
 export interface ReferralSummary {
