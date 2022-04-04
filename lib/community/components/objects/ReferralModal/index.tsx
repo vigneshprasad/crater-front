@@ -38,22 +38,22 @@ export default function ReferralModal({
       {
         title: "Referrals who watched streams",
         key: "total_referrals",
-        display: `${referralSummary?.total_referrals}`,
+        display: `${referralSummary?.total_referrals ?? 0}`,
       },
       {
         title: "Total Payable",
         key: "total_payable",
-        display: `${referralSummary?.total_payable}`,
+        display: `${referralSummary?.total_payable ?? 0}`,
       },
       {
         title: "Total Paid Out",
         key: "paid_out",
-        display: `${referralSummary?.paid_out}`,
+        display: `${referralSummary?.paid_out ?? 0}`,
       },
       {
         title: "Outstanding Payment",
         key: "outstanding_payment",
-        display: `${referralSummary?.outstanding_payment}`,
+        display: `${referralSummary?.outstanding_payment ?? 0}`,
       },
     ];
   }, [referralSummary]);
