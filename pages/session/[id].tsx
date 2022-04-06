@@ -15,6 +15,7 @@ import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { StreamCreatorProvider } from "@/stream/context/StreamCreatorContext";
 import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
+import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
 
 const SessionPage = dynamic(
   () => import("@/community/components/pages/SessionPage")
@@ -96,7 +97,9 @@ export default function Session({ webinar, id }: Props): JSX.Element {
             <WebinarRequestProvider groupId={id} user={user?.pk}>
               <UpcomingStreamsProvider>
                 <StreamsToRsvpProvider>
-                  <SessionPage id={id} />
+                  <ReferralSummaryProvider>
+                    <SessionPage id={id} />
+                  </ReferralSummaryProvider>
                 </StreamsToRsvpProvider>
               </UpcomingStreamsProvider>
             </WebinarRequestProvider>

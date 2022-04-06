@@ -7,6 +7,8 @@ import HubPageLayout, {
 } from "@/common/components/layouts/HubPageLayout";
 import { Creator } from "@/creators/types/creator";
 import { BidListProvider } from "@/tokens/context/BidListContext";
+import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
+import { ReferralListProvider } from "@/tokens/context/ReferralsListContext";
 import { UserRewardListProvider } from "@/tokens/context/UserRewardListContext";
 
 interface PageProps {
@@ -46,7 +48,11 @@ export default function HubPortfolio({
     <HubPageLayout creator={creator} activeTab="wallet">
       <BidListProvider filterBidder={userId}>
         <UserRewardListProvider filterUser={userId}>
-          <HubPortfolioTab />
+          <ReferralListProvider>
+            <ReferralSummaryProvider>
+              <HubPortfolioTab />
+            </ReferralSummaryProvider>
+          </ReferralListProvider>
         </UserRewardListProvider>
       </BidListProvider>
     </HubPageLayout>

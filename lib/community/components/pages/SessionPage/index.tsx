@@ -37,6 +37,7 @@ import {
 import PastStreamCard from "@/stream/components/objects/PastStreamCard";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
+import ReferralModal from "../../objects/ReferralModal";
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
 import StreamCard from "../../objects/StreamCard";
 import UrlShare from "../../objects/UrlShare";
@@ -59,6 +60,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [url, setUrl] = useState("");
+  const [showReferralModal, setShowReferralModal] = useState(false);
 
   const scrollToTop = useCallback(() => {
     if (scrollContainerRef.current) {
@@ -220,6 +222,10 @@ export default function SessionPage({ id }: IProps): JSX.Element {
         group={webinar}
         visble={showSuccess}
         onClose={() => setShowSuccess(false)}
+      />
+      <ReferralModal
+        visible={showReferralModal}
+        onClose={() => setShowReferralModal(false)}
       />
       <BaseLayout
         // px={[space.xs, space.m]}
@@ -398,12 +404,27 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               <Text
                 pt={space.xxs}
                 borderTop="1px solid rgba(255, 255, 255, 0.1)"
-                textStyle="caption"
+                textStyle="title"
               >
                 Let others know
               </Text>
 
-              <UrlShare />
+              {user && user.pk !== webinar.host && (
+                <>
+                  <Flex alignItems="center" gridGap={space.xxxs}>
+                    <Text textStyle="captionLarge">
+                      Earn ₹100 for each friend you refer 🎉
+                    </Text>
+                    <Button
+                      text="Details"
+                      variant="text-button"
+                      textProps={{ minWidth: 38, px: 5 }}
+                      onClick={() => setShowReferralModal(true)}
+                    />
+                  </Flex>
+                  <UrlShare referrer={user.pk} />
+                </>
+              )}
 
               <Grid
                 gridTemplateColumns="1fr 1fr"

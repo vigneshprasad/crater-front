@@ -11,6 +11,7 @@ export type IModalProps = GridProps & {
   visible?: boolean;
   onClose?: () => void;
   maxWidth?: number;
+  maxHeight?: number;
   iconButtonProps?: GridProps;
 };
 
@@ -29,6 +30,7 @@ export function Modal({
   onClose,
   visible = false,
   maxWidth = 720,
+  maxHeight = 640,
   iconButtonProps,
   ...rest
 }: IModalProps): JSX.Element | null {
@@ -77,7 +79,7 @@ export function Modal({
             bg={colors.black[6]}
             w="100%"
             h="100%"
-            maxHeight={["calc(100vh - 72px)", 640]}
+            maxHeight={["calc(100vh - 72px)", maxHeight]}
             borderRadius={radii.s}
             overflowY="auto"
           >

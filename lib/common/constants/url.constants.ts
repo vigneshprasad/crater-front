@@ -13,6 +13,8 @@ export const API_URL_CONSTANTS = {
     profile: "/user/auth/profile/",
     network: "/user/auth/network/",
     user_count: "/user/auth/users/count/",
+    getAllReferrals: "/user/auth/referrals/",
+    getReferralSummary: "/user/auth/referrals/summary/",
   },
   integrations: {
     dyte: {
