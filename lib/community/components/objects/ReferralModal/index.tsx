@@ -1,15 +1,7 @@
 import { useMemo } from "react";
 import { useTheme } from "styled-components";
 
-import {
-  Avatar,
-  Box,
-  Modal,
-  Text,
-  Flex,
-  Grid,
-  Image,
-} from "@/common/components/atoms";
+import { Box, Modal, Text, Grid, Image } from "@/common/components/atoms";
 import { useReferralSummary } from "@/tokens/context/ReferralSummaryContext";
 import { ReferralSummary } from "@/tokens/types/referrals";
 
