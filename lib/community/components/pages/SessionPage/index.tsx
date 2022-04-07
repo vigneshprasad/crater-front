@@ -14,6 +14,7 @@ import {
   Grid,
   Icon,
   Link,
+  Shimmer,
   Text,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
@@ -52,7 +53,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const { webinarRequest, mutateRequest } = useWebinarRequest();
   const { space, radii, colors, zIndices } = useTheme();
   const [showSuccess, setShowSuccess] = useState(false);
-  const { user } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const { openModal } = useAuthModal();
   const { track } = useAnalytics();
   const { upcoming } = useUpcomingStreams();
@@ -409,7 +410,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 Let others know
               </Text>
 
-              {user && user.pk !== webinar.host && (
+              {authLoading && (
+                <Shimmer w="100%" h={80} borderRadius={radii.xxs} />
+              )}
+
+              {user && profile && !profile?.is_creator ? (
                 <>
                   <Flex alignItems="center" gridGap={space.xxxs}>
                     <Text textStyle="captionLarge">
@@ -424,6 +429,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   </Flex>
                   <UrlShare referrer={user.pk} />
                 </>
+              ) : (
+                <UrlShare />
               )}
 
               <Grid
