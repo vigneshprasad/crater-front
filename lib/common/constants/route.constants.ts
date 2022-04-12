@@ -22,4 +22,5 @@ export const PageRoutes = {
   hub: (tab: HubTabKeys = "stream"): string => `/hub/${tab}`,
   join: "/join",
   pastStreams: (id: string | number): string => `/categories/${id}/streams/`,
+  leaderboard: "/leaderboard",
 };

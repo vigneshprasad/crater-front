@@ -9,6 +9,7 @@ import { Column, Row } from "./types";
 interface IDataTableProps<P> {
   data?: P[];
   columns: Column<P>[];
+  onClickRow?: (row: P) => void;
 }
 
 const TableStyles = styled(Box)`
@@ -79,6 +80,7 @@ const TableStyles = styled(Box)`
 export default function DataTable<T>({
   data,
   columns,
+  onClickRow,
 }: IDataTableProps<T>): JSX.Element {
   const headers: { heading: string; id: string }[] = useMemo(() => {
     return columns.map((col) => ({
@@ -107,15 +109,23 @@ export default function DataTable<T>({
           <tr>
             {headers.map(({ heading, id }) => (
               <th key={id}>
-                <Text>{heading}</Text>
+                <Text textStyle="tableHeader">{heading}</Text>
               </th>
             ))}
           </tr>
         </thead>
 
         <tbody>
-          {rows.map(({ key, cells }) => (
-            <tr key={key}>
+          {rows.map(({ key, cells }, index) => (
+            <tr
+              key={key}
+              onClick={
+                onClickRow ? () => onClickRow(data?.[index] as T) : undefined
+              }
+              style={{
+                cursor: onClickRow ? "pointer" : "default",
+              }}
+            >
               {cells.map((cell) => {
                 return (
                   <td key={cell.key}>

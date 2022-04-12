@@ -143,6 +143,13 @@ export const API_URL_CONSTANTS = {
     postChatMessage:
       "https://us-central1-crater-b6a7b.cloudfunctions.net/sendMessage",
   },
+  leaderboard: {
+    getChallengeList: "/leaderboard/challenges/",
+    retrieveChallenge: (id: number | string): string =>
+      `/leaderboard/challenges/${id}/`,
+    getLeaderboardList: "/leaderboard/leaderboards/",
+    getUserLeaderboardList: "/leaderboard/user/leaderboards/",
+  },
 };
 
 export const LEARN_MORE_URL =
