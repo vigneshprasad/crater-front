@@ -213,35 +213,6 @@ export function StreamSlide({
           </ExpandingText>
         </AnimatedBox>
 
-        {/* {stream.is_live && (
-          <Box
-            borderRadius={4}
-            py={2}
-            px={space.xxxs}
-            bg={colors.red[0]}
-            position="absolute"
-            top={space.xxs}
-            left={space.xxs}
-          >
-            <Text textStyle="caption">LIVE</Text>
-          </Box>
-        )}
-        {!stream.is_live && (
-          <Box
-            borderRadius={4}
-            py={2}
-            px={space.xxxs}
-            bg={colors.black[0]}
-            position="absolute"
-            top={space.xxs}
-            left={space.xxs}
-          >
-            <Text textStyle="caption">
-              <Span>Live On</Span> {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
-            </Text>
-          </Box>
-        )} */}
-
         <Box
           borderRadius={4}
           py={2}
