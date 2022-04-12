@@ -14,7 +14,7 @@ export type SelectProps<T> = {
   value?: unknown;
   itemLabelGetter: (val: T) => string;
   label: string;
-  onChange?: (val: T) => void;
+  onChange?: (val: unknown) => void;
   dataTransform?: (val: T) => unknown;
 };
 

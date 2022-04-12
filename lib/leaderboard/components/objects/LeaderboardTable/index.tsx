@@ -103,7 +103,7 @@ export default function LeaderboardTable(): JSX.Element {
               itemLabelGetter={(item) => item.name}
               value={challenge}
               onChange={async (item) => {
-                router.query.challenge = item.id.toString();
+                router.query.challenge = (item as Challenge).id.toString();
                 await router.push(router);
                 router.reload();
               }}
@@ -124,7 +124,7 @@ export default function LeaderboardTable(): JSX.Element {
               itemLabelGetter={(item) => item.duration_type_detail.name}
               value={leaderboard}
               onChange={(item) => {
-                router.query.leaderboard = item.id.toString();
+                router.query.leaderboard = (item as Leaderboard).id.toString();
                 router.push(router);
               }}
             />
