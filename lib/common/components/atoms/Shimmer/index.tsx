@@ -13,7 +13,7 @@ export default function Shimmer({ colors, ...props }: IProps): JSX.Element {
   return (
     <AnimatedBox
       animate={{ background: list }}
-      transition={{ flip: Infinity, duration: 1 }}
+      transition={{ duration: 1, repeatType: "reverse", repeat: Infinity }}
       {...props}
     />
   );
