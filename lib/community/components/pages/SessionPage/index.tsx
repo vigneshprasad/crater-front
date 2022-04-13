@@ -36,6 +36,7 @@ import {
 } from "@/community/types/community";
 import PastStreamCard from "@/stream/components/objects/PastStreamCard";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
+import { useReferralSummary } from "@/tokens/context/ReferralSummaryContext";
 
 import ReferralModal from "../../objects/ReferralModal";
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
@@ -58,6 +59,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const { upcoming } = useUpcomingStreams();
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { referralSummary } = useReferralSummary();
 
   const [url, setUrl] = useState("");
   const [showReferralModal, setShowReferralModal] = useState(false);
@@ -221,9 +223,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       <RsvpSuccesModal
         group={webinar}
         visble={showSuccess}
+        referralSummary={referralSummary}
         onClose={() => setShowSuccess(false)}
       />
       <ReferralModal
+        referralSummary={referralSummary}
         visible={showReferralModal}
         onClose={() => setShowReferralModal(false)}
       />
