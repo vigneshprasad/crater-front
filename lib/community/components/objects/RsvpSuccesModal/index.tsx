@@ -1,5 +1,5 @@
 import CRATER_LOGO from "public/images/crater_logo.png";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
