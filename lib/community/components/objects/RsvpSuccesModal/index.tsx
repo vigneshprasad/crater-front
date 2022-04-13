@@ -1,5 +1,5 @@
 import CRATER_LOGO from "public/images/crater_logo.png";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
@@ -14,6 +14,7 @@ import {
   Image,
   Span,
   Shimmer,
+  Flex,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import IconButton from "@/common/components/atoms/IconButton";
@@ -31,33 +32,30 @@ import {
 import { useFollower } from "@/creators/context/FollowerContext";
 import useStreamCreator from "@/stream/context/StreamCreatorContext";
 import useStreamsToRsvp from "@/stream/context/StreamsToRsvpContext";
+import { ReferralSummary } from "@/tokens/types/referrals";
+
+import ReferralStepsStatic from "../../../../tokens/components/objects/ReferralStepsStatic";
+import TrackReferralsBox from "../TrackReferralsBox";
+import UrlShare from "../UrlShare";
 
 interface IProps {
   group: Webinar;
+  referralSummary?: ReferralSummary;
   visble: boolean;
   onClose: () => void;
 }
 
 enum RsvpModalPage {
-  DiscoverFollowers,
   LiveAndUpcomingStreams,
-  // ExploreMore,
+  DiscoverFollowers,
+  ShareAndEarn,
   __length,
 }
-
-// const Video = styled.video`
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover;
-
-//   @media (min-width: ${({ theme }) => theme.breakpoints[0]}) {
-//     max-height: 100%;
-//   }
-// `;
 
 export default function RsvpSuccesModal({
   visble,
   group,
+  referralSummary,
   onClose,
 }: IProps): JSX.Element | null {
   const { space, colors, radii } = useTheme();
@@ -71,7 +69,7 @@ export default function RsvpSuccesModal({
   } = useStreamCreator();
   const _observer = useRef<IntersectionObserver>();
   const [rsvpModalPage, setRsvpModalPage] = useState<number>(
-    RsvpModalPage.DiscoverFollowers
+    RsvpModalPage.LiveAndUpcomingStreams
   );
   const {
     streams: streamsToRsvp,
@@ -81,8 +79,16 @@ export default function RsvpSuccesModal({
   } = useStreamsToRsvp();
   const { track } = useAnalytics();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [rsvpedStreams, setRsvpedStreams] = useState<number[]>([]);
+
+  const getLastModalPage = useCallback(() => {
+    if (user && profile && profile.is_creator) {
+      return RsvpModalPage.__length - 1;
+    } else {
+      return RsvpModalPage.__length;
+    }
+  }, [user, profile]);
 
   const onCloseModal = useCallback(() => {
     setRsvpedStreams([]);
@@ -154,25 +160,38 @@ export default function RsvpSuccesModal({
     [track, router]
   );
 
-  const goToNextScreen = useCallback(async (): Promise<void> => {
-    if (rsvpModalPage === RsvpModalPage.__length - 1) {
+  const skipScreen = useCallback(async (): Promise<void> => {
+    const lastModalPage = getLastModalPage();
+
+    if (rsvpModalPage === lastModalPage) {
       // Clear `rsvpedStreams` and `subscribe` state
       setRsvpedStreams([]);
       setSubscribe({});
 
       onCloseModal();
     } else {
-      if (RsvpModalPage.__length - rsvpModalPage - 1 > 0) {
+      if (lastModalPage - rsvpModalPage - 1 > 0) {
         setRsvpModalPage((prevValue) => prevValue + 1);
       }
     }
-  }, [onCloseModal, rsvpModalPage]);
+  }, [getLastModalPage, onCloseModal, rsvpModalPage]);
 
   const goToPreviousScreen = useCallback(async (): Promise<void> => {
     if (rsvpModalPage > 0) {
       setRsvpModalPage((prevValue) => prevValue - 1);
     }
   }, [rsvpModalPage]);
+
+  const shareUrl = useCallback(() => {
+    const url = window.location.href;
+    let encodedUrl = url;
+
+    if (user && profile && !profile?.is_creator) {
+      encodedUrl = `${url}?referrer_id=${user.pk}`;
+    }
+
+    return encodeURIComponent(encodedUrl);
+  }, [user, profile]);
 
   if (!user) return null;
 
@@ -181,8 +200,8 @@ export default function RsvpSuccesModal({
     You can also follow other creators to get notified when they are live on Crater.
   `;
 
-  // const videoUrl =
-  //   "https://1worknetwork-prod.s3.amazonaws.com/media/mp4_rsvp.mp4";
+  const referralShareText = `Hey,\n\nI will be joining this livestream on Crater.Club: a live streaming & auctions platform for creators & educators. 
+  \nSharing the link with you as I think you will enjoy the content & the interaction with the streamer.`;
 
   return (
     <Modal
@@ -191,12 +210,12 @@ export default function RsvpSuccesModal({
       maxWidth={600}
       visible={visble}
       onClose={onCloseModal}
-      overflowY="hidden"
-      px={space.xs}
+      overflowY={["auto", "hidden"]}
+      px={[space.xxs, space.xs]}
       py={space.xxs}
       gridGap={space.xxs}
     >
-      {rsvpModalPage !== RsvpModalPage.DiscoverFollowers && (
+      {rsvpModalPage !== RsvpModalPage.LiveAndUpcomingStreams && (
         <IconButton
           zIndex={20}
           variant="roundSmall"
@@ -276,7 +295,6 @@ export default function RsvpSuccesModal({
                             bg={colors.black[5]}
                             borderRadius={50}
                             justifySelf="end"
-                            // textProps={{ minWidth: 38, px: 0 }}
                             onClick={() => {
                               const creator =
                                 streamCreator.host_detail?.creator_detail?.id;
@@ -297,7 +315,6 @@ export default function RsvpSuccesModal({
                             bg={colors.white[1]}
                             borderRadius={50}
                             justifySelf="end"
-                            // textProps={{ minWidth: 38, px: 0 }}
                             disabled={true}
                           />
                         )}
@@ -434,7 +451,6 @@ export default function RsvpSuccesModal({
                                   borderRadius={50}
                                   justifySelf="center"
                                   alignSelf="end"
-                                  // textProps={{ minWidth: 38, px: 0 }}
                                   onClick={() => postGroupRequest(stream)}
                                 />
                               )}
@@ -446,60 +462,109 @@ export default function RsvpSuccesModal({
               </Box>
             </>
           );
-        }
-        // TODO: Design to be confirmed for last screen of modal
+        } else if (rsvpModalPage === RsvpModalPage.ShareAndEarn) {
+          return (
+            <>
+              <Box pt={space.xxs}>
+                <Text textStyle="headline5">Share and Earn</Text>
+              </Box>
 
-        // else if (rsvpModalPage === RsvpModalPage.ExploreMore) {
-        //   return (
-        //     <>
-        //       <Box pt={space.xxs}>
-        //         <Text textStyle="headline5">Explore more on Crater</Text>
-        //       </Box>
-        //       <Grid
-        //         gridAutoFlow="row"
-        //         gridGap={space.xxs}
-        //         gridAutoRows="1fr min-content"
-        //       >
-        //         <Box maxWidth="90%" justifySelf="center">
-        //           <Video autoPlay loop muted>
-        //             <source src={videoUrl} type="video/mp4" />
-        //           </Video>
-        //         </Box>
-        //         <Grid
-        //           m="0 auto"
-        //           gridGap={space.xxs}
-        //           justifyItems="center"
-        //           w={300}
-        //           alignItems="center"
-        //         >
-        //           <Button
-        //             variant="full-width-secondary"
-        //             text="Be a Creator"
-        //             onClick={() => router.push("/creatorhub/faq/")}
-        //           />
-        //           <Button
-        //             variant="full-width-secondary"
-        //             text="Explore Auctions"
-        //             onClick={() => router.push("/tokens/")}
-        //           />
-        //           <Button
-        //             variant="full-width-secondary"
-        //             text="Explore Other Streams"
-        //             onClick={() => router.push("/")}
-        //           />
-        //         </Grid>
-        //       </Grid>
-        //     </>
-        //   );
-        // }
+              <Box>
+                <Text pb={space.xxs} textStyle="captionLarge">
+                  Earn ₹100 for each friend you refer 🎉
+                </Text>
+
+                <UrlShare referrer={user.pk} />
+
+                <Flex
+                  pt={[space.xs, space.s]}
+                  flexDirection="row"
+                  gridGap={space.xs}
+                  justifyContent="space-evenly"
+                >
+                  <IconButton
+                    variant="flat"
+                    icon="Whatsapp"
+                    iconProps={{
+                      color: colors.white[0],
+                      fill: true,
+                      size: [20, 30],
+                    }}
+                  />
+
+                  <a
+                    href={`https://www.linkedin.com/shareArticle?mini=false&url=${shareUrl()}&title=${
+                      group.topic_detail?.name
+                    }`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <IconButton
+                      variant="flat"
+                      icon="Linkedin"
+                      iconProps={{
+                        color: colors.white[0],
+                        fill: true,
+                        size: [20, 30],
+                      }}
+                    />
+                  </a>
+
+                  <a
+                    href={`https://twitter.com/share?text=${encodeURIComponent(
+                      referralShareText
+                    )}&url=${shareUrl()}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <IconButton
+                      variant="flat"
+                      icon="Twitter"
+                      iconProps={{
+                        color: colors.white[0],
+                        fill: true,
+                        size: [20, 30],
+                      }}
+                    />
+                  </a>
+
+                  <IconButton
+                    variant="flat"
+                    icon="Instagram"
+                    iconProps={{
+                      color: colors.white[0],
+                      fill: true,
+                      size: [20, 30],
+                    }}
+                  />
+                </Flex>
+
+                <Grid
+                  pt={[space.xs, space.s]}
+                  gridTemplateColumns={["1fr", "1fr auto"]}
+                  gridTemplateRows={["1fr auto", "1fr"]}
+                  gridGap={space.xxs}
+                >
+                  <Box>
+                    <Text textStyle="headline6" pb={space.xxxs}>
+                      How it works?
+                    </Text>
+                    <ReferralStepsStatic imageSize={30} />
+                  </Box>
+                  <TrackReferralsBox referralSummary={referralSummary} />
+                </Grid>
+              </Box>
+            </>
+          );
+        }
       })()}
 
-      {rsvpModalPage === RsvpModalPage.__length - 1 ? null : (
+      {rsvpModalPage === getLastModalPage() - 1 ? null : (
         <Button
-          text="Next"
+          text="Skip"
           variant="round"
           justifySelf="center"
-          onClick={goToNextScreen}
+          onClick={skipScreen}
         />
       )}
     </Modal>
