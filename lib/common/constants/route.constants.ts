@@ -8,8 +8,10 @@ export const PageRoutes = {
   tokens: (slug?: string): string => (slug ? `/tokens/${slug}` : "/tokens"),
   tickets: "/tickets",
   session: (id: string | number): string => `/session/${id}`,
-  stream: (id: string | number, tab?: "chat" | "auction"): string =>
-    `/livestream/${id}?tab=${tab ?? "chat"}`,
+  stream: (
+    id: string | number,
+    tab?: "chat" | "auction" | "leaderboard"
+  ): string => `/livestream/${id}?tab=${tab ?? "chat"}`,
   creatorProfile: (slug: string | number, tab?: string | number): string =>
     `/creator/${slug}/${tab ?? "streams"}`,
   streamVideo: (id: string | number): string => `/video/${id}`,
@@ -22,4 +24,5 @@ export const PageRoutes = {
   hub: (tab: HubTabKeys = "stream"): string => `/hub/${tab}`,
   join: "/join",
   pastStreams: (id: string | number): string => `/categories/${id}/streams/`,
+  leaderboard: "/leaderboard",
 };

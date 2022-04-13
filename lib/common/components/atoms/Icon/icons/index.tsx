@@ -26,6 +26,7 @@ export { default as IcNotification } from "./IcNotification";
 export { default as Info } from "./Info";
 export { default as InstagramColor } from "./InstagramColor";
 export { default as Instagram } from "./Instagram";
+export { default as Leaderboard } from "./Leaderboard";
 export { default as Linkedin } from "./Linkedin";
 export { default as Linktree } from "./Linktree";
 export { default as LogOut } from "./LogOut";
