@@ -12,6 +12,7 @@ import {
   Flex,
   Text,
   Icon,
+  BoxProps,
 } from "@/common/components/atoms";
 import DataTable from "@/common/components/objects/DataTable";
 import { Column } from "@/common/components/objects/DataTable/types";
@@ -25,7 +26,9 @@ import {
   UserLeaderboard,
 } from "@/leaderboard/types/leaderboard";
 
-export default function LeaderboardTable(): JSX.Element {
+type IProps = BoxProps;
+
+export default function LeaderboardTable({ ...props }: IProps): JSX.Element {
   const router = useRouter();
   const { space, radii } = useTheme();
   const { challenges, loading: loadingChallenges } = useChallengesList();
@@ -90,11 +93,11 @@ export default function LeaderboardTable(): JSX.Element {
   );
 
   return (
-    <Box px={[space.xxxs, space.s]} py={space.xs}>
+    <Box px={[space.xxxs, space.s]} py={space.xs} {...props}>
       <Grid gridTemplateColumns="max-content 1fr max-content">
         {(() => {
           if (!challenges || loadingChallenges) {
-            return <Shimmer h={48} w={180} borderRadius={radii.xxs} />;
+            return <Shimmer h={48} w={120} borderRadius={radii.xxs} />;
           }
           return (
             <Select<Challenge>
@@ -115,7 +118,7 @@ export default function LeaderboardTable(): JSX.Element {
 
         {(() => {
           if (!leaderboards || loadingLeaderboards) {
-            return <Shimmer h={48} w={180} borderRadius={radii.xxs} />;
+            return <Shimmer h={48} w={120} borderRadius={radii.xxs} />;
           }
           return (
             <Select<Leaderboard>
