@@ -17,6 +17,7 @@ export type Creator = {
   show_club_members: boolean;
   video?: string;
   show_analytics: boolean;
+  is_subscriber: boolean;
 };
 
 export type ClubMembersCount = {
