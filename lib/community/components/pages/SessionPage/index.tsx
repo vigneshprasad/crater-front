@@ -414,11 +414,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 Let others know
               </Text>
 
-              {authLoading && (
+              {authLoading ? (
                 <Shimmer w="100%" h={80} borderRadius={radii.xxs} />
-              )}
-
-              {user && profile && !profile?.is_creator ? (
+              ) : profile?.is_creator ? (
+                <UrlShare />
+              ) : (
                 <>
                   <Flex alignItems="center" gridGap={space.xxxs}>
                     <Text textStyle="captionLarge">
@@ -431,10 +431,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                       onClick={() => setShowReferralModal(true)}
                     />
                   </Flex>
-                  <UrlShare referrer={user.pk} />
+                  <UrlShare referrer={user?.pk} />
                 </>
-              ) : (
-                <UrlShare />
               )}
 
               <Grid

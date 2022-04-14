@@ -84,20 +84,18 @@ export default function RsvpSuccesModal({
   const { user, profile } = useAuth();
   const [rsvpedStreams, setRsvpedStreams] = useState<number[]>([]);
 
-  const getModalSkipValue = useCallback(() => {
-    if (profile && profile.is_creator) {
-      if (
-        rsvpModalPage === RsvpModalPage.DiscoverFollowers ||
-        rsvpModalPage === RsvpModalPage.DownloadMobileApp
-      ) {
-        return 2;
-      } else {
-        return 1;
-      }
-    } else {
-      return 1;
-    }
-  }, [profile, rsvpModalPage]);
+  const trackModalAnalytics = useCallback(
+    (eventName: string) => {
+      console.log("event: ", eventName);
+
+      track(eventName, {
+        stream: group.id,
+        stream_name: group.topic_detail?.name,
+        modal_section: RsvpModalPage[rsvpModalPage],
+      });
+    },
+    [group, rsvpModalPage, track]
+  );
 
   const onCloseModal = useCallback(() => {
     setRsvpedStreams([]);
@@ -147,6 +145,7 @@ export default function RsvpSuccesModal({
       if (request) {
         setRsvpedStreams((prev) => [...prev, webinar.id]);
         track(AnalyticsEvents.rsvp_stream, {
+          page: "RSVP modal",
           stream: webinar.id,
           stream_name: webinar.topic_detail?.name,
           host: {
@@ -157,6 +156,7 @@ export default function RsvpSuccesModal({
 
       if (redirect) {
         track(AnalyticsEvents.join_stream, {
+          page: "RSVP modal",
           stream: webinar.id,
           stream_name: webinar.topic_detail?.name,
           host: {
@@ -170,7 +170,13 @@ export default function RsvpSuccesModal({
   );
 
   const skipScreen = useCallback(async (): Promise<void> => {
-    const skipValue = getModalSkipValue();
+    let skipValue = 1;
+    if (
+      profile?.is_creator &&
+      rsvpModalPage === RsvpModalPage.DiscoverFollowers
+    ) {
+      skipValue = 2;
+    }
 
     if (rsvpModalPage === RsvpModalPage.__length) {
       // Clear `rsvpedStreams` and `subscribe` state
@@ -183,16 +189,25 @@ export default function RsvpSuccesModal({
         setRsvpModalPage((prevValue) => prevValue + skipValue);
       }
     }
-  }, [getModalSkipValue, onCloseModal, rsvpModalPage]);
+
+    trackModalAnalytics(AnalyticsEvents.rsvp_modal_skip_clicked);
+  }, [profile, onCloseModal, rsvpModalPage, trackModalAnalytics]);
 
   const goToPreviousScreen = useCallback(async (): Promise<void> => {
-    const skipValue = getModalSkipValue();
-    console.log(skipValue);
+    let skipValue = 1;
+    if (
+      profile?.is_creator &&
+      rsvpModalPage === RsvpModalPage.DownloadMobileApp
+    ) {
+      skipValue = 2;
+    }
 
     if (rsvpModalPage > 0) {
       setRsvpModalPage((prevValue) => prevValue - skipValue);
     }
-  }, [rsvpModalPage, getModalSkipValue]);
+
+    trackModalAnalytics(AnalyticsEvents.rsvp_modal_previous_clicked);
+  }, [profile, rsvpModalPage, trackModalAnalytics]);
 
   const shareUrl = useCallback(() => {
     const url = window.location.href;
@@ -246,6 +261,7 @@ export default function RsvpSuccesModal({
 
       {(() => {
         if (rsvpModalPage === RsvpModalPage.DiscoverFollowers) {
+          trackModalAnalytics(AnalyticsEvents.rsvp_modal_followers_opened);
           return (
             <>
               <Box pt={space.xxs}>
@@ -344,6 +360,7 @@ export default function RsvpSuccesModal({
             </>
           );
         } else if (rsvpModalPage === RsvpModalPage.LiveAndUpcomingStreams) {
+          trackModalAnalytics(AnalyticsEvents.rsvp_modal_streams_opened);
           return (
             <>
               <Box pt={space.xxs}>
@@ -475,6 +492,7 @@ export default function RsvpSuccesModal({
             </>
           );
         } else if (rsvpModalPage === RsvpModalPage.ShareAndEarn) {
+          trackModalAnalytics(AnalyticsEvents.rsvp_modal_referral_opened);
           return (
             <>
               <Box pt={space.xxs}>
@@ -502,6 +520,11 @@ export default function RsvpSuccesModal({
                       fill: true,
                       size: [20, 30],
                     }}
+                    onClick={() =>
+                      trackModalAnalytics(
+                        AnalyticsEvents.rsvp_modal_referral_whatsapp_share
+                      )
+                    }
                   />
 
                   <a
@@ -519,6 +542,11 @@ export default function RsvpSuccesModal({
                         fill: true,
                         size: [20, 30],
                       }}
+                      onClick={() =>
+                        trackModalAnalytics(
+                          AnalyticsEvents.rsvp_modal_referral_linkedin_share
+                        )
+                      }
                     />
                   </a>
 
@@ -537,18 +565,13 @@ export default function RsvpSuccesModal({
                         fill: true,
                         size: [20, 30],
                       }}
+                      onClick={() =>
+                        trackModalAnalytics(
+                          AnalyticsEvents.rsvp_modal_referral_twitter_share
+                        )
+                      }
                     />
                   </a>
-
-                  <IconButton
-                    variant="flat"
-                    icon="Instagram"
-                    iconProps={{
-                      color: colors.white[0],
-                      fill: true,
-                      size: [20, 30],
-                    }}
-                  />
                 </Flex>
 
                 <Grid
@@ -569,6 +592,7 @@ export default function RsvpSuccesModal({
             </>
           );
         } else if (rsvpModalPage === RsvpModalPage.DownloadMobileApp) {
+          trackModalAnalytics(AnalyticsEvents.rsvp_modal_download_app_opened);
           return (
             <>
               <Box pt={space.xxs}>
@@ -587,7 +611,12 @@ export default function RsvpSuccesModal({
                 />
 
                 <Flex pt={[space.xxxs, space.xxs]} justifyContent="center">
-                  <AppLink buttonType={AppLinkType.android} />
+                  <AppLink
+                    buttonType={AppLinkType.android}
+                    analyticsEventName={
+                      AnalyticsEvents.rsvp_modal_google_play_badge_clicked
+                    }
+                  />
                 </Flex>
               </Box>
             </>
@@ -600,7 +629,10 @@ export default function RsvpSuccesModal({
           text="Explore"
           variant="round"
           justifySelf="center"
-          onClick={() => router.push(PageRoutes.pastStreams(1))}
+          onClick={() => {
+            trackModalAnalytics(AnalyticsEvents.rsvp_modal_explore_clicked);
+            router.push(PageRoutes.pastStreams(1));
+          }}
         />
       ) : (
         <Button
