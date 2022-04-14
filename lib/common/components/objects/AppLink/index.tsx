@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import Image from "next/image";
 
 import { PageRoutes } from "@/common/constants/route.constants";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 
 import { Link } from "../../atoms";
 
@@ -15,9 +17,15 @@ export enum AppLinkType {
 
 interface IProps {
   buttonType: AppLinkType;
+  analyticsEventName?: string;
 }
 
-export default function AppLink({ buttonType }: IProps): JSX.Element {
+export default function AppLink({
+  buttonType,
+  analyticsEventName,
+}: IProps): JSX.Element {
+  const { track } = useAnalytics();
+
   const url = useMemo(() => {
     if (buttonType === AppLinkType.android) {
       return "//play.google.com/store/apps/details?id=com.wurknet.mobile&hl=en_IN&gl=US";
@@ -50,7 +58,18 @@ export default function AppLink({ buttonType }: IProps): JSX.Element {
         w: 160,
       }}
     >
-      <Image layout="fill" objectFit="contain" src={src} alt="App download" />
+      <Image
+        layout="fill"
+        objectFit="contain"
+        src={src}
+        alt="App download"
+        onClick={() => {
+          console.log(
+            analyticsEventName ?? AnalyticsEvents.mobile_app_badge_clicked
+          );
+          track(analyticsEventName ?? AnalyticsEvents.mobile_app_badge_clicked);
+        }}
+      />
     </Link>
   );
 }
