@@ -1,12 +1,25 @@
+import { useRef, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
-import { Grid, Text, Box, Avatar, Link } from "@/common/components/atoms";
+import useAuth from "@/auth/context/AuthContext";
+import useAuthModal from "@/auth/context/AuthModalContext";
+import {
+  Grid,
+  Text,
+  Box,
+  Avatar,
+  Link,
+  Flex,
+  Button,
+} from "@/common/components/atoms";
+import Spinner from "@/common/components/atoms/Spiner";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { useWebinar } from "@/community/context/WebinarContext";
+import { useFollower } from "@/creators/context/FollowerContext";
 import useStreamRecording from "@/stream/context/StreamRecordingContext";
 
 import PastStreamsList from "../../objects/PastStreamsList";
@@ -22,31 +35,112 @@ const Video = styled.video`
 `;
 
 export default function StreamPlayerPage(): JSX.Element {
-  const { webinar, loading } = useWebinar();
+  const { webinar, loading, mutateWebinar } = useWebinar();
   const { recording } = useStreamRecording();
 
   const { space, colors, borders } = useTheme();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { subscribeCreator } = useFollower();
+  const [followBtnLoading, setFollowBtnLoading] = useState(false);
+  const { user } = useAuth();
+  const { openModal } = useAuthModal();
 
   if (!webinar || loading) return <Box>Loading...</Box>;
 
   const startTime = DateTime.parse(webinar?.start).toFormat("ff");
 
+  const followCreator = async (): Promise<void> => {
+    const creator = webinar.host_detail.creator_detail;
+
+    if (creator) {
+      await subscribeCreator(creator.id);
+      await mutateWebinar();
+      setFollowBtnLoading(false);
+    }
+  };
+
   return (
     <BaseLayout px={[space.xs, space.s]} aside={<AsideNav />} overflowY="auto">
-      <Grid gridTemplateColumns={["1fr", "2fr 1fr"]} gridGap={space.xs}>
-        <Box py={space.s}>
+      <Grid
+        gridTemplateColumns={["1fr", "2fr 1fr"]}
+        gridGap={[space.xxxs, space.xs]}
+      >
+        <Box py={[space.xxs, space.s]}>
           <Box position="relative" pt="56.25%">
             <Video
               poster={webinar?.topic_detail?.image}
               controls
               controlsList="nodownload"
-              src={recording?.recording}
+              src={`${recording?.recording}#t=600`}
+              ref={videoRef}
+              onEnded={() => {
+                if (videoRef.current) {
+                  videoRef.current.play();
+                  videoRef.current.currentTime += 600;
+                }
+              }}
             />
           </Box>
 
           <Box py={space.xxs}>
-            <Text textStyle="headline5">{webinar?.topic_detail?.name}</Text>
-            <Text color={colors.slate}>{startTime}</Text>
+            <Flex
+              flexDirection={["column", "row"]}
+              justifyContent="space-between"
+              alignItems="start"
+              gridGap={[space.xxs, 0]}
+            >
+              <Box>
+                <Text textStyle="headline5">{webinar?.topic_detail?.name}</Text>
+                <Text color={colors.slate}>{startTime}</Text>
+              </Box>
+
+              {(() => {
+                // If the logged in user is the host, do not show `Follow` button
+                if (webinar?.host === user?.pk) return null;
+
+                if (
+                  webinar?.host_detail.creator_detail?.is_subscriber &&
+                  user
+                ) {
+                  return (
+                    <Button
+                      mr={space.xxs}
+                      text="Following"
+                      variant="nav-button"
+                      bg={colors.black[5]}
+                      border="1px solid rgba(255, 255, 255, 0.1)"
+                      disabled={true}
+                    />
+                  );
+                }
+
+                return (
+                  <Button
+                    mr={space.xxs}
+                    variant="nav-button"
+                    text="Follow"
+                    onClick={() => {
+                      if (user) {
+                        setFollowBtnLoading(true);
+                        followCreator();
+                      } else {
+                        openModal();
+                      }
+                    }}
+                    suffixElement={
+                      followBtnLoading ? (
+                        <Spinner
+                          size={24}
+                          strokeWidth={2}
+                          strokeColor={colors.white[0]}
+                        />
+                      ) : undefined
+                    }
+                    disabled={followBtnLoading}
+                  />
+                );
+              })()}
+            </Flex>
           </Box>
 
           <Grid
@@ -77,7 +171,7 @@ export default function StreamPlayerPage(): JSX.Element {
           </Grid>
         </Box>
 
-        <Box py={space.s}>
+        <Box py={[space.xxxs, space.s]}>
           <PastStreamsList displayedPastStreamId={webinar.id} />
           <Box h={space.xs} />
         </Box>
