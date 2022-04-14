@@ -146,6 +146,8 @@ export function StreamSlide({
               <Video
                 autoPlay
                 muted
+                controls
+                controlsList="nodownload"
                 src={`${stream.recording_details.recording}#t=600`}
                 ref={videoRef}
                 onEnded={() => {
@@ -225,7 +227,9 @@ export function StreamSlide({
           {stream.is_live ? (
             <Text textStyle="caption">LIVE</Text>
           ) : stream.is_past ? (
-            <Text textStyle="caption">Previously LIVE</Text>
+            <Text textStyle="caption" color={colors.accent}>
+              Previously LIVE
+            </Text>
           ) : (
             <Text textStyle="caption">
               <Span>Live On</Span> {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
