@@ -146,12 +146,12 @@ export function StreamSlide({
               <Video
                 autoPlay
                 muted
-                src={`${stream.recording_details.recording}#t=10`}
+                src={`${stream.recording_details.recording}#t=600`}
                 ref={videoRef}
                 onEnded={() => {
                   if (videoRef.current) {
                     videoRef.current.play();
-                    videoRef.current.currentTime += 10;
+                    videoRef.current.currentTime += 600;
                   }
                 }}
               />
