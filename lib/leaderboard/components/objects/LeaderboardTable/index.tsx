@@ -13,6 +13,7 @@ import {
   Text,
   BoxProps,
   Button,
+  Icon,
 } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
@@ -170,15 +171,30 @@ export default function LeaderboardTable({
                   borderBottom={`2px solid ${borders.main}`}
                 >
                   <Grid>
-                    <Grid
-                      m="auto auto"
-                      bg={colors.accent}
-                      borderRadius="50%"
-                      w={24}
-                      h={24}
-                    >
-                      <Text m="auto auto">{index + 1}</Text>
-                    </Grid>
+                    {(() => {
+                      if (index === 0) {
+                        return <Icon m="auto auto" size={48} icon="Rank1" />;
+                      }
+
+                      if (index === 1) {
+                        return <Icon m="auto auto" size={48} icon="Rank2" />;
+                      }
+
+                      if (index === 2) {
+                        return <Icon m="auto auto" size={48} icon="Rank3" />;
+                      }
+                      return (
+                        <Grid
+                          m="auto auto"
+                          bg={colors.accent}
+                          borderRadius="50%"
+                          w={24}
+                          h={24}
+                        >
+                          <Text m="auto auto">{index + 1}</Text>
+                        </Grid>
+                      );
+                    })()}
                   </Grid>
                   <Box>
                     <Flex alignItems="center" gridGap={space.xxxs}>
