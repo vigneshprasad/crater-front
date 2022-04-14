@@ -86,8 +86,6 @@ export default function RsvpSuccesModal({
 
   const trackModalAnalytics = useCallback(
     (eventName: string) => {
-      console.log("event: ", eventName);
-
       track(eventName, {
         stream: group.id,
         stream_name: group.topic_detail?.name,

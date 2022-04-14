@@ -64,9 +64,6 @@ export default function AppLink({
         src={src}
         alt="App download"
         onClick={() => {
-          console.log(
-            analyticsEventName ?? AnalyticsEvents.mobile_app_badge_clicked
-          );
           track(analyticsEventName ?? AnalyticsEvents.mobile_app_badge_clicked);
         }}
       />
