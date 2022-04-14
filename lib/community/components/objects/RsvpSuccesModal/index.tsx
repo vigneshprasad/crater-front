@@ -18,6 +18,7 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import IconButton from "@/common/components/atoms/IconButton";
+import AppLink, { AppLinkType } from "@/common/components/objects/AppLink";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
@@ -49,6 +50,7 @@ enum RsvpModalPage {
   LiveAndUpcomingStreams,
   DiscoverFollowers,
   ShareAndEarn,
+  DownloadMobileApp,
   __length,
 }
 
@@ -82,13 +84,20 @@ export default function RsvpSuccesModal({
   const { user, profile } = useAuth();
   const [rsvpedStreams, setRsvpedStreams] = useState<number[]>([]);
 
-  const getLastModalPage = useCallback(() => {
-    if (user && profile && profile.is_creator) {
-      return RsvpModalPage.__length - 1;
+  const getModalSkipValue = useCallback(() => {
+    if (profile && profile.is_creator) {
+      if (
+        rsvpModalPage === RsvpModalPage.DiscoverFollowers ||
+        rsvpModalPage === RsvpModalPage.DownloadMobileApp
+      ) {
+        return 2;
+      } else {
+        return 1;
+      }
     } else {
-      return RsvpModalPage.__length;
+      return 1;
     }
-  }, [user, profile]);
+  }, [profile, rsvpModalPage]);
 
   const onCloseModal = useCallback(() => {
     setRsvpedStreams([]);
@@ -161,26 +170,29 @@ export default function RsvpSuccesModal({
   );
 
   const skipScreen = useCallback(async (): Promise<void> => {
-    const lastModalPage = getLastModalPage();
+    const skipValue = getModalSkipValue();
 
-    if (rsvpModalPage === lastModalPage) {
+    if (rsvpModalPage === RsvpModalPage.__length) {
       // Clear `rsvpedStreams` and `subscribe` state
       setRsvpedStreams([]);
       setSubscribe({});
 
       onCloseModal();
     } else {
-      if (lastModalPage - rsvpModalPage - 1 > 0) {
-        setRsvpModalPage((prevValue) => prevValue + 1);
+      if (RsvpModalPage.__length - rsvpModalPage - 1 > 0) {
+        setRsvpModalPage((prevValue) => prevValue + skipValue);
       }
     }
-  }, [getLastModalPage, onCloseModal, rsvpModalPage]);
+  }, [getModalSkipValue, onCloseModal, rsvpModalPage]);
 
   const goToPreviousScreen = useCallback(async (): Promise<void> => {
+    const skipValue = getModalSkipValue();
+    console.log(skipValue);
+
     if (rsvpModalPage > 0) {
-      setRsvpModalPage((prevValue) => prevValue - 1);
+      setRsvpModalPage((prevValue) => prevValue - skipValue);
     }
-  }, [rsvpModalPage]);
+  }, [rsvpModalPage, getModalSkipValue]);
 
   const shareUrl = useCallback(() => {
     const url = window.location.href;
@@ -477,7 +489,7 @@ export default function RsvpSuccesModal({
                 <UrlShare referrer={user.pk} />
 
                 <Flex
-                  pt={[space.xs, space.s]}
+                  pt={space.xs}
                   flexDirection="row"
                   gridGap={space.xs}
                   justifyContent="space-evenly"
@@ -540,7 +552,7 @@ export default function RsvpSuccesModal({
                 </Flex>
 
                 <Grid
-                  pt={[space.xs, space.s]}
+                  pt={space.xs}
                   gridTemplateColumns={["1fr", "1fr auto"]}
                   gridTemplateRows={["1fr auto", "1fr"]}
                   gridGap={space.xxs}
@@ -556,10 +568,41 @@ export default function RsvpSuccesModal({
               </Box>
             </>
           );
+        } else if (rsvpModalPage === RsvpModalPage.DownloadMobileApp) {
+          return (
+            <>
+              <Box pt={space.xxs}>
+                <Text textStyle="headline5">Never miss a stream!</Text>
+                <Text>Get the android app</Text>
+              </Box>
+
+              <Box justifySelf="center" alignSelf="center">
+                <Image
+                  src="/images/img_android_app_qr_code.png"
+                  alt="QR code"
+                  objectFit="cover"
+                  boxProps={{
+                    w: [200, 300],
+                  }}
+                />
+
+                <Flex pt={[space.xxxs, space.xxs]} justifyContent="center">
+                  <AppLink buttonType={AppLinkType.android} />
+                </Flex>
+              </Box>
+            </>
+          );
         }
       })()}
 
-      {rsvpModalPage === getLastModalPage() - 1 ? null : (
+      {rsvpModalPage === RsvpModalPage.__length - 1 ? (
+        <Button
+          text="Explore"
+          variant="round"
+          justifySelf="center"
+          onClick={() => router.push(PageRoutes.pastStreams(1))}
+        />
+      ) : (
         <Button
           text="Skip"
           variant="round"
