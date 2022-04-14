@@ -200,7 +200,15 @@ export default function LeaderboardTable({
             {DateTime.parse_with_milliseconds(challenge?.end).toRelative()}
           </Text>
         )}
-        {showBelowDropdown && <Button m="auto auto" text="Join Challenge" />}
+        {showBelowDropdown && (
+          <a
+            href="https://calendly.com/craterclub/crater-leaderboard-onboarding"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button m="auto auto" text="Join Challenge" />
+          </a>
+        )}
       </Box>
     </Box>
   );
