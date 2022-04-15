@@ -4,6 +4,7 @@ import { PropsWithChildren, useState } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
+import useAuthModal from "@/auth/context/AuthModalContext";
 import {
   Avatar,
   Box,
@@ -79,6 +80,7 @@ export default function CreatorPage({
   const { space, colors, zIndices } = useTheme();
   const { subscribeCreator } = useFollower();
   const [loading, setLoading] = useState(false);
+  const { openModal } = useAuthModal();
 
   const followCreator = async (): Promise<void> => {
     if (creator) {
@@ -152,8 +154,12 @@ export default function CreatorPage({
                 <Button
                   text="Follow"
                   onClick={() => {
-                    setLoading(true);
-                    followCreator();
+                    if (user) {
+                      setLoading(true);
+                      followCreator();
+                    } else {
+                      openModal();
+                    }
                   }}
                   suffixElement={
                     loading ? (
