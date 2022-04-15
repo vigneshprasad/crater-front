@@ -208,14 +208,16 @@ export default function RsvpSuccesModal({
   }, [profile, rsvpModalPage, trackModalAnalytics]);
 
   const shareUrl = useCallback(() => {
-    const url = window.location.href;
-    let encodedUrl = url;
+    if (user && profile) {
+      const url = window.location.href;
+      let encodedUrl = url;
 
-    if (user && profile && !profile?.is_creator) {
-      encodedUrl = `${url}?referrer_id=${user.pk}`;
+      if (!profile.is_creator) {
+        encodedUrl = `${url}?referrer_id=${user.pk}`;
+      }
+
+      return encodeURIComponent(encodedUrl);
     }
-
-    return encodeURIComponent(encodedUrl);
   }, [user, profile]);
 
   if (!user) return null;
@@ -225,8 +227,7 @@ export default function RsvpSuccesModal({
     You can also follow other creators to get notified when they are live on Crater.
   `;
 
-  const referralShareText = `Hey,\n\nI will be joining this livestream on Crater.Club: a live streaming & auctions platform for creators & educators. 
-  \nSharing the link with you as I think you will enjoy the content & the interaction with the streamer.`;
+  const referralShareText = `Hey,\n\nI will be joining this livestream on Crater.Club: a live streaming & auctions platform for creators & educators.\nSharing the link with you as I think you will enjoy the content & the interaction with the streamer.\n\n`;
 
   return (
     <Modal
@@ -510,25 +511,31 @@ export default function RsvpSuccesModal({
                   gridGap={space.xs}
                   justifyContent="space-evenly"
                 >
-                  <IconButton
-                    variant="flat"
-                    icon="Whatsapp"
-                    iconProps={{
-                      color: colors.white[0],
-                      fill: true,
-                      size: [20, 30],
-                    }}
-                    onClick={() =>
-                      trackModalAnalytics(
-                        AnalyticsEvents.rsvp_modal_referral_whatsapp_share
-                      )
-                    }
-                  />
+                  <a
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                      referralShareText
+                    )}${shareUrl()}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <IconButton
+                      variant="flat"
+                      icon="Whatsapp"
+                      iconProps={{
+                        color: colors.white[0],
+                        fill: true,
+                        size: [20, 30],
+                      }}
+                      onClick={() =>
+                        trackModalAnalytics(
+                          AnalyticsEvents.rsvp_modal_referral_whatsapp_share
+                        )
+                      }
+                    />
+                  </a>
 
                   <a
-                    href={`https://www.linkedin.com/shareArticle?mini=false&url=${shareUrl()}&title=${
-                      group.topic_detail?.name
-                    }`}
+                    href={`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl()}`}
                     target="_blank"
                     rel="noreferrer"
                   >
