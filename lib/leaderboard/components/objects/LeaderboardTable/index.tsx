@@ -150,9 +150,14 @@ export default function LeaderboardTable({
                 <Box>
                   <Text textStyle="tableHeader">Creator</Text>
                 </Box>
-                <Box>
+                <Flex
+                  alignItems="center"
+                  gridGap={space.xxxs}
+                  title="These numbers are indicative and not 100% accurate. They will be recomputed at the end of each day and verified at the end of the competition"
+                >
                   <Text textStyle="tableHeader">Watchtime</Text>
-                </Box>
+                  <Icon icon="Info" size={12} color={colors.slate} fill />
+                </Flex>
               </Grid>
               {users.map((user, index) => (
                 <Row
