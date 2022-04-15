@@ -507,14 +507,16 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               >
                 Speakers
               </Text>
-              <Grid
-                gridTemplateColumns="min-content 1fr"
-                alignItems="start"
-                gridGap={space.xxs}
-              >
+              <Box>
                 {webinar.speakers_detail_list &&
                   webinar.speakers_detail_list.map((speaker) => (
-                    <>
+                    <Grid
+                      pb={space.xxs}
+                      gridTemplateColumns="min-content 1fr"
+                      alignItems="start"
+                      gridGap={space.xxs}
+                      key={speaker.pk}
+                    >
                       {speaker.creator_detail?.slug ? (
                         <Link
                           href={PageRoutes.creatorProfile(
@@ -541,9 +543,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                           {speaker?.introduction}
                         </ExpandingText>
                       </Box>
-                    </>
+                    </Grid>
                   ))}
-              </Grid>
+              </Box>
             </Grid>
           </Grid>
         </Box>
