@@ -1,9 +1,10 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
+import useAuthModal from "@/auth/context/AuthModalContext";
 import {
   Avatar,
   Box,
@@ -14,6 +15,7 @@ import {
   TabBar,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import Spinner from "@/common/components/atoms/Spiner";
 import CreatorApiClient from "@/creators/api";
 import { useCreator } from "@/creators/context/CreatorContext";
 import { useFollower } from "@/creators/context/FollowerContext";
@@ -76,21 +78,19 @@ export default function CreatorPage({
   const { user } = useAuth();
   const { creator, mutateCreator } = useCreator();
   const { space, colors, zIndices } = useTheme();
-  const {
-    followers,
-    loading: followersLoading,
-    subscribeCreator,
-  } = useFollower();
+  const { subscribeCreator } = useFollower();
+  const [loading, setLoading] = useState(false);
+  const { openModal } = useAuthModal();
 
   const followCreator = async (): Promise<void> => {
     if (creator) {
-      subscribeCreator(creator.id);
-
-      mutateCreator();
+      await subscribeCreator(creator.id);
+      await mutateCreator();
+      setLoading(false);
     }
   };
 
-  if (!creator || !followers || followersLoading) return <Box>Loading...</Box>;
+  if (!creator) return <Box>Loading...</Box>;
 
   return (
     <Box bg={colors.accent} minHeight="calc(100vh - 56px)">
@@ -139,7 +139,7 @@ export default function CreatorPage({
               // If the logged in user is the host, do not show `Follow` button
               if (creator.user === user?.pk) return null;
 
-              if (followers.length > 0 && followers[0].notify) {
+              if (creator.is_subscriber) {
                 return (
                   <Button
                     text="Following"
@@ -150,7 +150,29 @@ export default function CreatorPage({
                 );
               }
 
-              return <Button text="Follow" onClick={followCreator} />;
+              return (
+                <Button
+                  text="Follow"
+                  onClick={() => {
+                    if (user) {
+                      setLoading(true);
+                      followCreator();
+                    } else {
+                      openModal();
+                    }
+                  }}
+                  suffixElement={
+                    loading ? (
+                      <Spinner
+                        size={24}
+                        strokeWidth={2}
+                        strokeColor={colors.white[0]}
+                      />
+                    ) : undefined
+                  }
+                  disabled={loading}
+                />
+              );
             })()}
           </Grid>
         </Grid>

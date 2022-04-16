@@ -8,6 +8,7 @@ import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
+import { FollowerProvider } from "@/creators/context/FollowerContext";
 import StreamApiClient from "@/stream/api";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamRecordingProvider } from "@/stream/context/StreamRecordingContext";
@@ -77,7 +78,9 @@ export default function StreamPage({
       <WebinarProvider id={id} initial={webinar}>
         <StreamRecordingProvider id={recordingId}>
           <PastStreamProvider>
-            <StreamPlayerPage />
+            <FollowerProvider>
+              <StreamPlayerPage />
+            </FollowerProvider>
           </PastStreamProvider>
         </StreamRecordingProvider>
       </WebinarProvider>

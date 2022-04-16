@@ -1,73 +1,23 @@
-import { useMemo } from "react";
 import { useTheme } from "styled-components";
 
-import { Box, Modal, Text, Grid, Image } from "@/common/components/atoms";
-import { useReferralSummary } from "@/tokens/context/ReferralSummaryContext";
+import { Box, Modal, Text } from "@/common/components/atoms";
 import { ReferralSummary } from "@/tokens/types/referrals";
 
+import ReferralStepsStatic from "../../../../tokens/components/objects/ReferralStepsStatic";
+import TrackReferralsBox from "../TrackReferralsBox";
+
 interface IProps {
+  referralSummary?: ReferralSummary;
   visible: boolean;
   onClose: () => void;
 }
 
-type ValueKeys = keyof ReferralSummary;
-
 export default function ReferralModal({
+  referralSummary,
   visible,
   onClose,
 }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
-  const { referralSummary } = useReferralSummary();
-
-  const referralSummaryData = useMemo<
-    {
-      title: string;
-      key: ValueKeys;
-      display: string;
-    }[]
-  >(() => {
-    return [
-      {
-        title: "Referrals who watched streams",
-        key: "total_referrals",
-        display: `${referralSummary?.total_referrals ?? 0}`,
-      },
-      {
-        title: "Total Payable",
-        key: "total_payable",
-        display: `${referralSummary?.total_payable ?? 0}`,
-      },
-      {
-        title: "Total Paid Out",
-        key: "paid_out",
-        display: `${referralSummary?.paid_out ?? 0}`,
-      },
-      {
-        title: "Outstanding Payment",
-        key: "outstanding_payment",
-        display: `${referralSummary?.outstanding_payment ?? 0}`,
-      },
-    ];
-  }, [referralSummary]);
-
-  const steps = [
-    {
-      text: "Share the referral link with your friends",
-      image: "/images/img_journey_planet_1.png",
-    },
-    {
-      text: "Your friend uses the link to sign up & watch their first stream",
-      image: "/images/img_journey_planet_2.png",
-    },
-    {
-      text: "You get ₹100 when they watch their first 20 minutes of live content",
-      image: "/images/img_journey_planet_3.png",
-    },
-    {
-      text: "Withdraw the money or use it at the auctions",
-      image: "/images/img_journey_planet_4.png",
-    },
-  ];
+  const { space } = useTheme();
 
   return (
     <Modal
@@ -87,50 +37,10 @@ export default function ReferralModal({
           How it works?
         </Text>
 
-        <Grid gridAutoFlow="row" gridGap={[space.xs, space.xxs]}>
-          {steps.map((step, index) => (
-            <Grid
-              gridAutoFlow="column"
-              gridTemplateColumns="max-content 1fr"
-              gridGap={space.xxs}
-              alignItems="center"
-              key={index}
-            >
-              <Image
-                src={step.image}
-                alt={`${index + 1}`}
-                boxProps={{ w: 50 }}
-              />
-              <Text>{step.text}</Text>
-            </Grid>
-          ))}
-        </Grid>
+        <ReferralStepsStatic />
       </Box>
 
-      <Box
-        p={space.xxs}
-        border={`1px solid ${colors.accent}`}
-        alignSelf={["start", "center"]}
-      >
-        <Text textStyle="headline6" pb={space.xs}>
-          Track your referrals
-        </Text>
-
-        {referralSummaryData.map(({ title, key, display }) => {
-          return (
-            <Grid
-              pb={space.xxs}
-              gridAutoFlow="column"
-              gridGap={space.xxxs}
-              gridTemplateColumns="1fr auto"
-              key={key}
-            >
-              <Text>{title}</Text>
-              <Text>{display}</Text>
-            </Grid>
-          );
-        })}
-      </Box>
+      <TrackReferralsBox referralSummary={referralSummary} />
     </Modal>
   );
 }
