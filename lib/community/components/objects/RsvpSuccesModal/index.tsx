@@ -62,7 +62,6 @@ export default function RsvpSuccesModal({
   onClose,
 }: IProps): JSX.Element | null {
   const { space } = useTheme();
-  const hostName = group.host_detail?.name;
   const [subscribe, setSubscribe] = useState({});
   const { subscribeCreator } = useFollower();
   const {
@@ -174,7 +173,7 @@ export default function RsvpSuccesModal({
     [track, router]
   );
 
-  const skipScreen = useCallback(async (): Promise<void> => {
+  const skipScreen = useCallback((): void => {
     const lastIndex = modalPages.length - 1;
 
     if (lastIndex - modalPages[currentModalPage] > 0) {
@@ -184,7 +183,7 @@ export default function RsvpSuccesModal({
     trackModalAnalytics(AnalyticsEvents.rsvp_modal_skip_clicked);
   }, [modalPages, currentModalPage, trackModalAnalytics]);
 
-  const goToPreviousScreen = useCallback(async (): Promise<void> => {
+  const goToPreviousScreen = useCallback((): void => {
     if (modalPages[currentModalPage] > 0) {
       setCurrentModalPage((prevValue) => prevValue - 1);
     }
