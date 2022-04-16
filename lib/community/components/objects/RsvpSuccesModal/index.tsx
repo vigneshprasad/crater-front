@@ -1,5 +1,5 @@
 import CRATER_LOGO from "public/images/crater_logo.png";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
@@ -51,8 +51,20 @@ enum RsvpModalPage {
   DiscoverFollowers,
   ShareAndEarn,
   DownloadMobileApp,
-  __length,
 }
+
+const CREATOR_MODAL_PAGES = [
+  RsvpModalPage.LiveAndUpcomingStreams,
+  RsvpModalPage.DiscoverFollowers,
+  RsvpModalPage.DownloadMobileApp,
+];
+
+const USER_MODAL_PAGES = [
+  RsvpModalPage.LiveAndUpcomingStreams,
+  RsvpModalPage.DiscoverFollowers,
+  RsvpModalPage.ShareAndEarn,
+  RsvpModalPage.DownloadMobileApp,
+];
 
 export default function RsvpSuccesModal({
   visble,
@@ -70,9 +82,7 @@ export default function RsvpSuccesModal({
     setStreamCreatorsPage,
   } = useStreamCreator();
   const _observer = useRef<IntersectionObserver>();
-  const [rsvpModalPage, setRsvpModalPage] = useState<number>(
-    RsvpModalPage.LiveAndUpcomingStreams
-  );
+  const [currentModalPage, setCurrentModalPage] = useState<number>(0);
   const {
     streams: streamsToRsvp,
     loading: streamsToRsvpLoading,
@@ -84,15 +94,23 @@ export default function RsvpSuccesModal({
   const { user, profile } = useAuth();
   const [rsvpedStreams, setRsvpedStreams] = useState<number[]>([]);
 
+  const modalPages = useMemo(() => {
+    if (profile && profile.is_creator) {
+      return CREATOR_MODAL_PAGES;
+    }
+
+    return USER_MODAL_PAGES;
+  }, [profile]);
+
   const trackModalAnalytics = useCallback(
     (eventName: string) => {
       track(eventName, {
         stream: group.id,
         stream_name: group.topic_detail?.name,
-        modal_section: RsvpModalPage[rsvpModalPage],
+        modal_section: modalPages[currentModalPage],
       });
     },
-    [group, rsvpModalPage, track]
+    [currentModalPage, group, modalPages, track]
   );
 
   const onCloseModal = useCallback(() => {
@@ -168,44 +186,22 @@ export default function RsvpSuccesModal({
   );
 
   const skipScreen = useCallback(async (): Promise<void> => {
-    let skipValue = 1;
-    if (
-      profile?.is_creator &&
-      rsvpModalPage === RsvpModalPage.DiscoverFollowers
-    ) {
-      skipValue = 2;
-    }
+    const lastIndex = modalPages.length - 1;
 
-    if (rsvpModalPage === RsvpModalPage.__length) {
-      // Clear `rsvpedStreams` and `subscribe` state
-      setRsvpedStreams([]);
-      setSubscribe({});
-
-      onCloseModal();
-    } else {
-      if (RsvpModalPage.__length - rsvpModalPage - 1 > 0) {
-        setRsvpModalPage((prevValue) => prevValue + skipValue);
-      }
+    if (lastIndex - modalPages[currentModalPage] > 0) {
+      setCurrentModalPage((prevValue) => prevValue + 1);
     }
 
     trackModalAnalytics(AnalyticsEvents.rsvp_modal_skip_clicked);
-  }, [profile, onCloseModal, rsvpModalPage, trackModalAnalytics]);
+  }, [modalPages, currentModalPage, trackModalAnalytics]);
 
   const goToPreviousScreen = useCallback(async (): Promise<void> => {
-    let skipValue = 1;
-    if (
-      profile?.is_creator &&
-      rsvpModalPage === RsvpModalPage.DownloadMobileApp
-    ) {
-      skipValue = 2;
-    }
-
-    if (rsvpModalPage > 0) {
-      setRsvpModalPage((prevValue) => prevValue - skipValue);
+    if (modalPages[currentModalPage] > 0) {
+      setCurrentModalPage((prevValue) => prevValue - 1);
     }
 
     trackModalAnalytics(AnalyticsEvents.rsvp_modal_previous_clicked);
-  }, [profile, rsvpModalPage, trackModalAnalytics]);
+  }, [modalPages, currentModalPage, trackModalAnalytics]);
 
   const shareUrl = useCallback(() => {
     if (user && profile) {
@@ -228,7 +224,7 @@ export default function RsvpSuccesModal({
   `;
 
   const referralShareText = `Hey,\n\nI will be joining this livestream on Crater.Club: a live streaming & auctions platform for creators & educators.\nSharing the link with you as I think you will enjoy the content & the interaction with the streamer.\n\n`;
-
+  console.log(modalPages[currentModalPage]);
   return (
     <Modal
       display="grid"
@@ -241,7 +237,8 @@ export default function RsvpSuccesModal({
       py={space.xxs}
       gridGap={space.xxs}
     >
-      {rsvpModalPage !== RsvpModalPage.LiveAndUpcomingStreams && (
+      {modalPages[currentModalPage] !==
+        RsvpModalPage.LiveAndUpcomingStreams && (
         <IconButton
           zIndex={20}
           variant="roundSmall"
@@ -259,7 +256,7 @@ export default function RsvpSuccesModal({
       </Box>
 
       {(() => {
-        if (rsvpModalPage === RsvpModalPage.DiscoverFollowers) {
+        if (modalPages[currentModalPage] === RsvpModalPage.DiscoverFollowers) {
           trackModalAnalytics(AnalyticsEvents.rsvp_modal_followers_opened);
           return (
             <>
@@ -358,7 +355,9 @@ export default function RsvpSuccesModal({
               </Box>
             </>
           );
-        } else if (rsvpModalPage === RsvpModalPage.LiveAndUpcomingStreams) {
+        } else if (
+          modalPages[currentModalPage] === RsvpModalPage.LiveAndUpcomingStreams
+        ) {
           trackModalAnalytics(AnalyticsEvents.rsvp_modal_streams_opened);
           return (
             <>
@@ -490,7 +489,9 @@ export default function RsvpSuccesModal({
               </Box>
             </>
           );
-        } else if (rsvpModalPage === RsvpModalPage.ShareAndEarn) {
+        } else if (
+          modalPages[currentModalPage] === RsvpModalPage.ShareAndEarn
+        ) {
           trackModalAnalytics(AnalyticsEvents.rsvp_modal_referral_opened);
           return (
             <>
@@ -596,7 +597,9 @@ export default function RsvpSuccesModal({
               </Box>
             </>
           );
-        } else if (rsvpModalPage === RsvpModalPage.DownloadMobileApp) {
+        } else if (
+          modalPages[currentModalPage] === RsvpModalPage.DownloadMobileApp
+        ) {
           trackModalAnalytics(AnalyticsEvents.rsvp_modal_download_app_opened);
           return (
             <>
@@ -629,14 +632,14 @@ export default function RsvpSuccesModal({
         }
       })()}
 
-      {rsvpModalPage === RsvpModalPage.__length - 1 ? (
+      {modalPages[currentModalPage] === RsvpModalPage.DownloadMobileApp ? (
         <Button
           text="Explore"
           variant="round"
           justifySelf="center"
           onClick={() => {
             trackModalAnalytics(AnalyticsEvents.rsvp_modal_explore_clicked);
-            router.push(PageRoutes.pastStreams(1));
+            router.push(PageRoutes.pastStreams(9));
           }}
         />
       ) : (
