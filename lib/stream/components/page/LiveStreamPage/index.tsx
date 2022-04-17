@@ -1,4 +1,5 @@
 import { User } from "next-auth";
+import { useState } from "react";
 import { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
@@ -15,6 +16,7 @@ import {
   Link,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
@@ -57,13 +59,24 @@ type IProps = {
 
 export function Content({ webinar, orgId }: IProps): JSX.Element {
   const { user } = useAuth();
-  const { webinar: cachedWebinar } = useWebinar();
+  const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
   const { dyteParticipant } = useDyteWebinar();
   const { space, borders, colors } = useTheme();
   const { setTokenModalVisible, tokenModalVisible, activeReward } =
     useLiveStreamPageContext();
+  const [loading, setLoading] = useState(false);
 
-  const { followers, subscribeCreator } = useFollower();
+  const { subscribeCreator } = useFollower();
+
+  const followCreator = async (): Promise<void> => {
+    const creator = webinar.host_detail.creator_detail;
+
+    if (creator) {
+      await subscribeCreator(creator.id);
+      await mutateWebinar();
+      setLoading(false);
+    }
+  };
 
   return (
     <LiveStreamPageLayout
@@ -103,11 +116,7 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
                 // If the logged in user is the host, do not show `Follow` button
                 if (cachedWebinar?.host === user?.pk) return null;
 
-                if (
-                  followers &&
-                  followers?.length > 0 &&
-                  followers?.[0].notify
-                ) {
+                if (cachedWebinar?.host_detail.creator_detail?.is_subscriber) {
                   return (
                     <Button
                       mr={space.xxs}
@@ -126,12 +135,19 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
                     variant="nav-button"
                     text="Follow"
                     onClick={() => {
-                      const creator =
-                        cachedWebinar?.host_detail?.creator_detail?.id;
-                      if (creator) {
-                        subscribeCreator(creator);
-                      }
+                      setLoading(true);
+                      followCreator();
                     }}
+                    suffixElement={
+                      loading ? (
+                        <Spinner
+                          size={24}
+                          strokeWidth={2}
+                          strokeColor={colors.white[0]}
+                        />
+                      ) : undefined
+                    }
+                    disabled={loading}
                   />
                 );
               })()}

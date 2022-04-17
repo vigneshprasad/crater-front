@@ -11,11 +11,15 @@ import {
 import { PageRoutes } from "@/common/constants/route.constants";
 import { theme } from "@/common/theme";
 import { useWebinar } from "@/community/context/WebinarContext";
+import { ChallengeListProvider } from "@/leaderboard/context/ChallegeListContext";
+import { LeaderboardListProvider } from "@/leaderboard/context/LeaderboardListContext";
+import { UserLeaderboardListProvider } from "@/leaderboard/context/UserLeaderboardListContext";
 
 import StreamChat from "../StreamChat";
+import StreamLeaderboardPanel from "../StreamLeaderboardPanel";
 import StreamRewardsPanel from "../StreamRewardsPanel";
 
-type TabKeys = "chat" | "auction";
+type TabKeys = "chat" | "auction" | "leaderboard";
 
 const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
   chat: (
@@ -32,6 +36,11 @@ const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
           <Icon size={12} color={theme.colors.slate} fill icon="Info" />
         }
       />
+    </Link>
+  ),
+  leaderboard: (
+    <Link href={PageRoutes.stream(id, "leaderboard")} shallow>
+      <BaseTabItem label="Leaderboard" />
     </Link>
   ),
 });
@@ -74,6 +83,19 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       )}
       {activeTab === "auction" && webinar && (
         <StreamRewardsPanel stream={webinar} />
+      )}
+      {activeTab === "leaderboard" && (
+        <ChallengeListProvider>
+          <LeaderboardListProvider
+            filterChallenge={router.query.challenge as string}
+          >
+            <UserLeaderboardListProvider
+              filterLeaderboard={router.query.leaderboard as string}
+            >
+              <StreamLeaderboardPanel />
+            </UserLeaderboardListProvider>
+          </LeaderboardListProvider>
+        </ChallengeListProvider>
       )}
     </Grid>
   );

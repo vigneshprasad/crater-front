@@ -10,7 +10,8 @@ export type INavKeys =
   | "account"
   | "logout"
   | "auctions"
-  | "discord";
+  | "discord"
+  | "leaderboard";
 
 export type IMenuItem = {
   label: string;
@@ -41,6 +42,13 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
     url: PageRoutes.community,
     key: "community",
     iconFill: false,
+  },
+  {
+    label: "Leaderboard",
+    icon: "Leaderboard",
+    url: PageRoutes.leaderboard,
+    key: "leaderboard",
+    iconFill: true,
   },
   {
     label: "Hub",

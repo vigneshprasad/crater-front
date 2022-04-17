@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { getSession, GetSessionOptions, signout } from "next-auth/client";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { API_BASE_URL } from "../constants/global.constants";
 
 export default function API(context?: GetSessionOptions): AxiosInstance {
   const client = axios.create({
