@@ -297,7 +297,6 @@ export default function RsvpSuccesModal({
       gridGap={space.xxs}
     >
       {pages.map(({ key, display, backButton, skipButton }) => {
-        console.log(currentModalPage, modalPages[currentModalPage]);
         return (
           modalPages[currentModalPage] === key && (
             <>
