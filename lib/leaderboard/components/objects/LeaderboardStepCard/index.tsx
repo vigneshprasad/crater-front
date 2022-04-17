@@ -5,7 +5,7 @@ import { Box, Text, Image } from "@/common/components/atoms";
 interface IProps {
   stepNumber: string;
   heading: string;
-  subheading: string;
+  subheading?: string;
   color?: string;
   image: StaticImageData;
 }
@@ -45,9 +45,11 @@ export default function LeaderboardStepCard({
         >
           {heading}
         </Text>
-        <Text color={textColor} textAlign="right">
-          {subheading}
-        </Text>
+        {subheading && (
+          <Text color={textColor} textAlign="right">
+            {subheading}
+          </Text>
+        )}
       </Box>
 
       <Text
