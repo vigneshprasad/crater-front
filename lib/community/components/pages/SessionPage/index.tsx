@@ -37,6 +37,7 @@ import {
 } from "@/community/types/community";
 import PastStreamCard from "@/stream/components/objects/PastStreamCard";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
+import { useReferralSummary } from "@/tokens/context/ReferralSummaryContext";
 
 import ReferralModal from "../../objects/ReferralModal";
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
@@ -59,6 +60,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const { upcoming } = useUpcomingStreams();
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { referralSummary } = useReferralSummary();
 
   const [url, setUrl] = useState("");
   const [showReferralModal, setShowReferralModal] = useState(false);
@@ -222,9 +224,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       <RsvpSuccesModal
         group={webinar}
         visble={showSuccess}
+        referralSummary={referralSummary}
         onClose={() => setShowSuccess(false)}
       />
       <ReferralModal
+        referralSummary={referralSummary}
         visible={showReferralModal}
         onClose={() => setShowReferralModal(false)}
       />
@@ -410,11 +414,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 Let others know
               </Text>
 
-              {authLoading && (
+              {authLoading ? (
                 <Shimmer w="100%" h={80} borderRadius={radii.xxs} />
-              )}
-
-              {user && profile && !profile?.is_creator ? (
+              ) : profile?.is_creator ? (
+                <UrlShare />
+              ) : (
                 <>
                   <Flex alignItems="center" gridGap={space.xxxs}>
                     <Text textStyle="captionLarge">
@@ -427,10 +431,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                       onClick={() => setShowReferralModal(true)}
                     />
                   </Flex>
-                  <UrlShare referrer={user.pk} />
+                  <UrlShare referrer={user?.pk} />
                 </>
-              ) : (
-                <UrlShare />
               )}
 
               <Grid
@@ -505,14 +507,16 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               >
                 Speakers
               </Text>
-              <Grid
-                gridTemplateColumns="min-content 1fr"
-                alignItems="start"
-                gridGap={space.xxs}
-              >
+              <Box>
                 {webinar.speakers_detail_list &&
                   webinar.speakers_detail_list.map((speaker) => (
-                    <>
+                    <Grid
+                      pb={space.xxs}
+                      gridTemplateColumns="min-content 1fr"
+                      alignItems="start"
+                      gridGap={space.xxs}
+                      key={speaker.pk}
+                    >
                       {speaker.creator_detail?.slug ? (
                         <Link
                           href={PageRoutes.creatorProfile(
@@ -539,9 +543,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                           {speaker?.introduction}
                         </ExpandingText>
                       </Box>
-                    </>
+                    </Grid>
                   ))}
-              </Grid>
+              </Box>
             </Grid>
           </Grid>
         </Box>

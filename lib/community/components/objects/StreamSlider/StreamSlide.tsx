@@ -1,4 +1,5 @@
 import { AnimationControls, Variant } from "framer-motion";
+import { useRef } from "react";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -79,6 +80,16 @@ const Span = styled.span`
   color: ${({ theme }) => theme.colors.accent};
 `;
 
+const Video = styled.video`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  border-radius: ${({ theme }) => theme.radii.xxs}px;
+`;
+
 export function StreamSlide({
   stream,
   initial,
@@ -90,6 +101,7 @@ export function StreamSlide({
   const { breakpoints } = useTheme();
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   if (isMobile === undefined) return null;
 
@@ -118,6 +130,8 @@ export function StreamSlide({
           href={
             stream.is_live
               ? `/livestream/${stream.id}`
+              : stream.is_past
+              ? `/video/${stream.id}`
               : `/session/${stream.id}`
           }
         >
@@ -128,13 +142,30 @@ export function StreamSlide({
             pl={[0, "100%"]}
             pt={["56.25%"]}
           >
-            {stream.topic_detail?.image && (
-              <Image
-                objectFit="cover"
-                src={stream.topic_detail?.image}
-                layout="fill"
-                alt={stream.topic_detail.name}
+            {stream.is_past && stream.recording_details?.is_published ? (
+              <Video
+                autoPlay
+                muted
+                controls
+                controlsList="nodownload"
+                src={`${stream.recording_details.recording}#t=600`}
+                ref={videoRef}
+                onEnded={() => {
+                  if (videoRef.current) {
+                    videoRef.current.play();
+                    videoRef.current.currentTime += 600;
+                  }
+                }}
               />
+            ) : (
+              stream.topic_detail?.image && (
+                <Image
+                  objectFit="cover"
+                  src={stream.topic_detail?.image}
+                  layout="fill"
+                  alt={stream.topic_detail.name}
+                />
+              )
             )}
           </Box>
         </Link>
@@ -183,34 +214,28 @@ export function StreamSlide({
             {stream.host_detail?.introduction}
           </ExpandingText>
         </AnimatedBox>
-        {stream.is_live && (
-          <Box
-            borderRadius={4}
-            py={2}
-            px={space.xxxs}
-            bg={colors.red[0]}
-            position="absolute"
-            top={space.xxs}
-            left={space.xxs}
-          >
+
+        <Box
+          borderRadius={4}
+          py={2}
+          px={space.xxxs}
+          bg={stream.is_live ? colors.red[0] : colors.black[0]}
+          position="absolute"
+          top={space.xxs}
+          left={space.xxs}
+        >
+          {stream.is_live ? (
             <Text textStyle="caption">LIVE</Text>
-          </Box>
-        )}
-        {!stream.is_live && (
-          <Box
-            borderRadius={4}
-            py={2}
-            px={space.xxxs}
-            bg={colors.black[0]}
-            position="absolute"
-            top={space.xxs}
-            left={space.xxs}
-          >
+          ) : stream.is_past ? (
+            <Text textStyle="caption" color={colors.accent}>
+              Previously LIVE
+            </Text>
+          ) : (
             <Text textStyle="caption">
               <Span>Live On</Span> {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
             </Text>
-          </Box>
-        )}
+          )}
+        </Box>
       </Grid>
     </AnimatedBox>
   );

@@ -1,27 +1,18 @@
 import CRATER_LOGO from "public/images/crater_logo.png";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
-import {
-  Grid,
-  Text,
-  Modal,
-  Avatar,
-  Box,
-  Image,
-  Span,
-  Shimmer,
-} from "@/common/components/atoms";
+import { Modal, Box, Image } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import IconButton from "@/common/components/atoms/IconButton";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
-import DateTime from "@/common/utils/datetime/DateTime";
 import WebinarApiClient from "@/community/api";
+import StreamsModalPage from "@/community/components/objects/StreamsModalPage";
 import {
   ParticpantType,
   PostGroupRequest,
@@ -31,37 +22,46 @@ import {
 import { useFollower } from "@/creators/context/FollowerContext";
 import useStreamCreator from "@/stream/context/StreamCreatorContext";
 import useStreamsToRsvp from "@/stream/context/StreamsToRsvpContext";
+import { ReferralSummary } from "@/tokens/types/referrals";
+
+import DownloadMobileAppModalPage from "../DownloadMobileAppModalPage";
+import FollowersModalPage from "../FollowersModalPage";
+import ShareAndEarnModalPage from "../ShareAndEarnModalPage";
 
 interface IProps {
   group: Webinar;
+  referralSummary?: ReferralSummary;
   visble: boolean;
   onClose: () => void;
 }
 
 enum RsvpModalPage {
-  DiscoverFollowers,
   LiveAndUpcomingStreams,
-  // ExploreMore,
-  __length,
+  DiscoverFollowers,
+  ShareAndEarn,
+  DownloadMobileApp,
 }
 
-// const Video = styled.video`
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover;
+const CREATOR_MODAL_PAGES = [
+  RsvpModalPage.LiveAndUpcomingStreams,
+  RsvpModalPage.DiscoverFollowers,
+  RsvpModalPage.DownloadMobileApp,
+];
 
-//   @media (min-width: ${({ theme }) => theme.breakpoints[0]}) {
-//     max-height: 100%;
-//   }
-// `;
+const USER_MODAL_PAGES = [
+  RsvpModalPage.LiveAndUpcomingStreams,
+  RsvpModalPage.DiscoverFollowers,
+  RsvpModalPage.ShareAndEarn,
+  RsvpModalPage.DownloadMobileApp,
+];
 
 export default function RsvpSuccesModal({
   visble,
   group,
+  referralSummary,
   onClose,
 }: IProps): JSX.Element | null {
-  const { space, colors, radii } = useTheme();
-  const hostName = group.host_detail?.name;
+  const { space } = useTheme();
   const [subscribe, setSubscribe] = useState({});
   const { subscribeCreator } = useFollower();
   const {
@@ -70,9 +70,7 @@ export default function RsvpSuccesModal({
     setStreamCreatorsPage,
   } = useStreamCreator();
   const _observer = useRef<IntersectionObserver>();
-  const [rsvpModalPage, setRsvpModalPage] = useState<number>(
-    RsvpModalPage.DiscoverFollowers
-  );
+  const [currentModalPage, setCurrentModalPage] = useState<number>(0);
   const {
     streams: streamsToRsvp,
     loading: streamsToRsvpLoading,
@@ -81,8 +79,27 @@ export default function RsvpSuccesModal({
   } = useStreamsToRsvp();
   const { track } = useAnalytics();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [rsvpedStreams, setRsvpedStreams] = useState<number[]>([]);
+
+  const modalPages = useMemo(() => {
+    if (profile && profile.is_creator) {
+      return CREATOR_MODAL_PAGES;
+    }
+
+    return USER_MODAL_PAGES;
+  }, [profile]);
+
+  const trackModalAnalytics = useCallback(
+    (eventName: string) => {
+      track(eventName, {
+        stream: group.id,
+        stream_name: group.topic_detail?.name,
+        modal_section: modalPages[currentModalPage],
+      });
+    },
+    [currentModalPage, group, modalPages, track]
+  );
 
   const onCloseModal = useCallback(() => {
     setRsvpedStreams([]);
@@ -132,6 +149,7 @@ export default function RsvpSuccesModal({
       if (request) {
         setRsvpedStreams((prev) => [...prev, webinar.id]);
         track(AnalyticsEvents.rsvp_stream, {
+          page: "RSVP modal",
           stream: webinar.id,
           stream_name: webinar.topic_detail?.name,
           host: {
@@ -142,6 +160,7 @@ export default function RsvpSuccesModal({
 
       if (redirect) {
         track(AnalyticsEvents.join_stream, {
+          page: "RSVP modal",
           stream: webinar.id,
           stream_name: webinar.topic_detail?.name,
           host: {
@@ -154,35 +173,116 @@ export default function RsvpSuccesModal({
     [track, router]
   );
 
-  const goToNextScreen = useCallback(async (): Promise<void> => {
-    if (rsvpModalPage === RsvpModalPage.__length - 1) {
-      // Clear `rsvpedStreams` and `subscribe` state
-      setRsvpedStreams([]);
-      setSubscribe({});
+  const skipScreen = useCallback((): void => {
+    const lastIndex = modalPages.length - 1;
 
-      onCloseModal();
-    } else {
-      if (RsvpModalPage.__length - rsvpModalPage - 1 > 0) {
-        setRsvpModalPage((prevValue) => prevValue + 1);
+    if (lastIndex - modalPages[currentModalPage] > 0) {
+      setCurrentModalPage((prevValue) => prevValue + 1);
+    }
+
+    trackModalAnalytics(AnalyticsEvents.rsvp_modal_skip_clicked);
+  }, [modalPages, currentModalPage, trackModalAnalytics]);
+
+  const goToPreviousScreen = useCallback((): void => {
+    if (modalPages[currentModalPage] > 0) {
+      setCurrentModalPage((prevValue) => prevValue - 1);
+    }
+
+    trackModalAnalytics(AnalyticsEvents.rsvp_modal_previous_clicked);
+  }, [modalPages, currentModalPage, trackModalAnalytics]);
+
+  const shareUrl = useCallback(() => {
+    if (user && profile) {
+      const url = window.location.href;
+      let encodedUrl = url;
+
+      if (!profile.is_creator) {
+        encodedUrl = `${url}?referrer_id=${user.pk}`;
       }
-    }
-  }, [onCloseModal, rsvpModalPage]);
 
-  const goToPreviousScreen = useCallback(async (): Promise<void> => {
-    if (rsvpModalPage > 0) {
-      setRsvpModalPage((prevValue) => prevValue - 1);
+      return encodeURIComponent(encodedUrl);
     }
-  }, [rsvpModalPage]);
+  }, [user, profile]);
+
+  const pages = useMemo<
+    {
+      key: number;
+      display: JSX.Element;
+      backButton: boolean;
+      skipButton: boolean;
+    }[]
+  >(() => {
+    return [
+      {
+        key: RsvpModalPage.LiveAndUpcomingStreams,
+        display: (
+          <StreamsModalPage
+            currentStream={group}
+            streams={streamsToRsvp}
+            loading={streamsToRsvpLoading}
+            rsvpedStreams={rsvpedStreams}
+            postGroupRequest={postGroupRequest}
+            ref={streamsRef}
+          />
+        ),
+        backButton: false,
+        skipButton: true,
+      },
+      {
+        key: RsvpModalPage.DiscoverFollowers,
+        display: (
+          <FollowersModalPage
+            currentStream={group}
+            streams={streamCreators}
+            loading={streamCreatorsLoading}
+            subscribe={subscribe}
+            setSubscribe={setSubscribe}
+            subscribeCreator={subscribeCreator}
+            ref={followersRef}
+          />
+        ),
+        backButton: true,
+        skipButton: true,
+      },
+      {
+        key: RsvpModalPage.ShareAndEarn,
+        display: (
+          <ShareAndEarnModalPage
+            user={user?.pk}
+            referralSummary={referralSummary}
+            shareUrl={shareUrl}
+            trackModalAnalytics={trackModalAnalytics}
+          />
+        ),
+        backButton: true,
+        skipButton: true,
+      },
+      {
+        key: RsvpModalPage.DownloadMobileApp,
+        display: <DownloadMobileAppModalPage />,
+        backButton: true,
+        skipButton: false,
+      },
+    ];
+  }, [
+    followersRef,
+    group,
+    postGroupRequest,
+    referralSummary,
+    rsvpedStreams,
+    shareUrl,
+    streamCreators,
+    streamCreatorsLoading,
+    streamsRef,
+    streamsToRsvp,
+    streamsToRsvpLoading,
+    subscribe,
+    subscribeCreator,
+    trackModalAnalytics,
+    user,
+  ]);
 
   if (!user) return null;
-
-  const text = `
-    We will notify you prior to the stream with ${hostName}.
-    You can also follow other creators to get notified when they are live on Crater.
-  `;
-
-  // const videoUrl =
-  //   "https://1worknetwork-prod.s3.amazonaws.com/media/mp4_rsvp.mp4";
 
   return (
     <Modal
@@ -191,12 +291,62 @@ export default function RsvpSuccesModal({
       maxWidth={600}
       visible={visble}
       onClose={onCloseModal}
-      overflowY="hidden"
-      px={space.xs}
+      overflowY={["auto", "hidden"]}
+      px={[space.xxs, space.xs]}
       py={space.xxs}
       gridGap={space.xxs}
     >
-      {rsvpModalPage !== RsvpModalPage.DiscoverFollowers && (
+      {pages.map(({ key, display, backButton, skipButton }) => {
+        console.log(currentModalPage, modalPages[currentModalPage]);
+        return (
+          modalPages[currentModalPage] === key && (
+            <>
+              {backButton && (
+                <IconButton
+                  zIndex={20}
+                  variant="roundSmall"
+                  left={16}
+                  top={16}
+                  position="absolute"
+                  icon="ChevronLeft"
+                  onClick={goToPreviousScreen}
+                  iconProps={{ padding: "2px" }}
+                />
+              )}
+
+              <Box w={100} justifySelf="center" alignSelf="center">
+                <Image src={CRATER_LOGO} alt="Crater Logo" objectFit="cover" />
+              </Box>
+
+              {display}
+
+              {skipButton ? (
+                <Button
+                  text="Skip"
+                  variant="round"
+                  justifySelf="center"
+                  onClick={skipScreen}
+                />
+              ) : (
+                <Button
+                  text="Explore"
+                  variant="round"
+                  justifySelf="center"
+                  onClick={() => {
+                    trackModalAnalytics(
+                      AnalyticsEvents.rsvp_modal_explore_clicked
+                    );
+                    router.push(PageRoutes.pastStreams(9));
+                  }}
+                />
+              )}
+            </>
+          )
+        );
+      })}
+
+      {/* {modalPages[currentModalPage] !==
+        RsvpModalPage.LiveAndUpcomingStreams && (
         <IconButton
           zIndex={20}
           variant="roundSmall"
@@ -214,294 +364,71 @@ export default function RsvpSuccesModal({
       </Box>
 
       {(() => {
-        if (rsvpModalPage === RsvpModalPage.DiscoverFollowers) {
+        if (modalPages[currentModalPage] === RsvpModalPage.DiscoverFollowers) {
+          trackModalAnalytics(AnalyticsEvents.rsvp_modal_followers_opened);
           return (
-            <>
-              <Box pt={space.xxs}>
-                <Text textStyle="headline5">Don&apos;t miss out!</Text>
-                <Text my={space.xxs} color={colors.white[1]}>
-                  {text}
-                </Text>
-
-                <Text textStyle="headline6">Discover creators</Text>
-              </Box>
-
-              <Box overflowY="scroll">
-                {streamCreatorsLoading
-                  ? Array(3)
-                      .fill("")
-                      .map((_, index) => (
-                        <Shimmer
-                          w="100%"
-                          h={55}
-                          mb={space.xxs}
-                          borderRadius={radii.xxs}
-                          key={index}
-                        />
-                      ))
-                  : streamCreators?.map((streamCreator, index) => (
-                      <Grid
-                        mb={space.xxs}
-                        gridGap={space.xxs}
-                        gridTemplateColumns="max-content 1fr max-content"
-                        alignItems="center"
-                        key={streamCreator.id}
-                        ref={
-                          index == streamCreators.length - 1
-                            ? followersRef
-                            : null
-                        }
-                      >
-                        <Avatar
-                          image={streamCreator.host_detail?.photo}
-                          size={56}
-                          alt={streamCreator.host_detail?.name || ""}
-                        />
-                        <Box justifySelf="start">
-                          <Text textStyle="bodyLarge">
-                            {streamCreator.host_detail.name}
-                          </Text>
-                          <Text display={["none", "grid"]} color={colors.slate}>
-                            {streamCreator.is_live
-                              ? "Live Now: "
-                              : "Upcoming: "}
-                            {streamCreator.topic_detail.name}
-                          </Text>
-                        </Box>
-                        {!subscribe.hasOwnProperty(streamCreator.id) ? (
-                          <Button
-                            text="Follow"
-                            variant="round-secondary"
-                            border="1px solid white"
-                            bg={colors.black[5]}
-                            borderRadius={50}
-                            justifySelf="end"
-                            // textProps={{ minWidth: 38, px: 0 }}
-                            onClick={() => {
-                              const creator =
-                                streamCreator.host_detail?.creator_detail?.id;
-                              if (creator) {
-                                subscribeCreator(creator);
-                                setSubscribe((prevSubscriber) => ({
-                                  ...prevSubscriber,
-                                  [streamCreator.id]: true,
-                                }));
-                              }
-                            }}
-                          />
-                        ) : (
-                          <Button
-                            text="Followed"
-                            variant="round-secondary"
-                            color="black.2"
-                            bg={colors.white[1]}
-                            borderRadius={50}
-                            justifySelf="end"
-                            // textProps={{ minWidth: 38, px: 0 }}
-                            disabled={true}
-                          />
-                        )}
-                        <Text
-                          display={["grid", "none"]}
-                          gridColumn="1 / span 3"
-                          color={colors.slate}
-                        >
-                          {streamCreator.is_live ? "Live Now: " : "Upcoming: "}
-                          {streamCreator.topic_detail.name}
-                        </Text>
-                      </Grid>
-                    ))}
-              </Box>
-            </>
+            <FollowersModalPage
+              hostName={hostName}
+              streams={streamCreators}
+              loading={streamCreatorsLoading}
+              subscribe={subscribe}
+              setSubscribe={setSubscribe}
+              subscribeCreator={subscribeCreator}
+              ref={followersRef}
+            />
           );
-        } else if (rsvpModalPage === RsvpModalPage.LiveAndUpcomingStreams) {
+        } else if (
+          modalPages[currentModalPage] === RsvpModalPage.LiveAndUpcomingStreams
+        ) {
+          trackModalAnalytics(AnalyticsEvents.rsvp_modal_streams_opened);
           return (
-            <>
-              <Box pt={space.xxs}>
-                <Text textStyle="headline5">Live & Upcoming Streams</Text>
-              </Box>
-
-              <Box overflowY="scroll">
-                <Grid
-                  gridTemplateColumns={["1fr", "repeat(2, 1fr)"]}
-                  gridColumnGap={space.xs}
-                  gridRowGap={space.xs}
-                >
-                  {streamsToRsvpLoading
-                    ? Array(4)
-                        .fill("")
-                        .map((_, index) => (
-                          <Shimmer
-                            w="100%"
-                            h={250}
-                            borderRadius={radii.xxs}
-                            key={index}
-                          />
-                        ))
-                    : streamsToRsvp?.map((stream, index) => {
-                        if (stream.id !== group.id) {
-                          return (
-                            <Grid
-                              gridAutoFlow="row"
-                              gridGap={space.xxs}
-                              gridTemplateRows="max-content max-content max-content"
-                              key={stream.id}
-                              ref={
-                                index == streamsToRsvp.length - 1
-                                  ? streamsRef
-                                  : null
-                              }
-                            >
-                              <Grid
-                                gridTemplateColumns="max-content 1fr"
-                                gridGap={space.xxs}
-                                alignItems="center"
-                              >
-                                <Avatar
-                                  size={36}
-                                  image={stream.host_detail?.photo}
-                                  alt={stream.host_detail?.name || ""}
-                                />
-                                <Text>{stream.host_detail.name}</Text>
-                              </Grid>
-
-                              <Box position="relative" h={["none", 150]}>
-                                {stream.topic_detail?.image && (
-                                  <Image
-                                    objectFit="cover"
-                                    layout="fill"
-                                    src={stream.topic_detail?.image}
-                                    alt={stream.topic_detail.name}
-                                  />
-                                )}
-
-                                <Box
-                                  borderRadius={4}
-                                  py={2}
-                                  px={space.xxxs}
-                                  bg={
-                                    stream.is_live
-                                      ? colors.red[0]
-                                      : colors.black[0]
-                                  }
-                                  position="absolute"
-                                  top={space.xxxs}
-                                  left={space.xxxs}
-                                >
-                                  <Text textStyle="caption">
-                                    {stream.is_live ? (
-                                      "LIVE"
-                                    ) : (
-                                      <>
-                                        <Span>Live On</Span>{" "}
-                                        {DateTime.parse(stream.start).toFormat(
-                                          DateTime.DEFAULT_FORMAT
-                                        )}
-                                      </>
-                                    )}
-                                  </Text>
-                                </Box>
-                              </Box>
-
-                              {stream.is_live ? (
-                                <Button
-                                  text="Join Stream"
-                                  variant="round-secondary"
-                                  border="1px solid white"
-                                  bg={colors.black[5]}
-                                  borderRadius={50}
-                                  justifySelf="center"
-                                  alignSelf="end"
-                                  onClick={() => postGroupRequest(stream, true)}
-                                />
-                              ) : rsvpedStreams?.includes(stream.id) ? (
-                                <Button
-                                  text="RSVP'd"
-                                  variant="round-secondary"
-                                  color="black.2"
-                                  bg={colors.white[1]}
-                                  borderRadius={50}
-                                  justifySelf="center"
-                                  alignSelf="end"
-                                  disabled={true}
-                                />
-                              ) : (
-                                <Button
-                                  text="RSVP"
-                                  variant="round-secondary"
-                                  border="1px solid white"
-                                  bg={colors.black[5]}
-                                  borderRadius={50}
-                                  justifySelf="center"
-                                  alignSelf="end"
-                                  // textProps={{ minWidth: 38, px: 0 }}
-                                  onClick={() => postGroupRequest(stream)}
-                                />
-                              )}
-                            </Grid>
-                          );
-                        }
-                      })}
-                </Grid>
-              </Box>
-            </>
+            <StreamsModalPage
+              currentStream={group}
+              streams={streamsToRsvp}
+              loading={streamsToRsvpLoading}
+              rsvpedStreams={rsvpedStreams}
+              postGroupRequest={postGroupRequest}
+              ref={streamsRef}
+            />
           );
+        } else if (
+          modalPages[currentModalPage] === RsvpModalPage.ShareAndEarn
+        ) {
+          trackModalAnalytics(AnalyticsEvents.rsvp_modal_referral_opened);
+          return (
+            <ShareAndEarnModalPage
+              user={user.pk}
+              referralSummary={referralSummary}
+              shareUrl={shareUrl}
+              trackModalAnalytics={trackModalAnalytics}
+            />
+          );
+        } else if (
+          modalPages[currentModalPage] === RsvpModalPage.DownloadMobileApp
+        ) {
+          trackModalAnalytics(AnalyticsEvents.rsvp_modal_download_app_opened);
+          return <DownloadMobileAppModalPage />;
         }
-        // TODO: Design to be confirmed for last screen of modal
-
-        // else if (rsvpModalPage === RsvpModalPage.ExploreMore) {
-        //   return (
-        //     <>
-        //       <Box pt={space.xxs}>
-        //         <Text textStyle="headline5">Explore more on Crater</Text>
-        //       </Box>
-        //       <Grid
-        //         gridAutoFlow="row"
-        //         gridGap={space.xxs}
-        //         gridAutoRows="1fr min-content"
-        //       >
-        //         <Box maxWidth="90%" justifySelf="center">
-        //           <Video autoPlay loop muted>
-        //             <source src={videoUrl} type="video/mp4" />
-        //           </Video>
-        //         </Box>
-        //         <Grid
-        //           m="0 auto"
-        //           gridGap={space.xxs}
-        //           justifyItems="center"
-        //           w={300}
-        //           alignItems="center"
-        //         >
-        //           <Button
-        //             variant="full-width-secondary"
-        //             text="Be a Creator"
-        //             onClick={() => router.push("/creatorhub/faq/")}
-        //           />
-        //           <Button
-        //             variant="full-width-secondary"
-        //             text="Explore Auctions"
-        //             onClick={() => router.push("/tokens/")}
-        //           />
-        //           <Button
-        //             variant="full-width-secondary"
-        //             text="Explore Other Streams"
-        //             onClick={() => router.push("/")}
-        //           />
-        //         </Grid>
-        //       </Grid>
-        //     </>
-        //   );
-        // }
       })()}
 
-      {rsvpModalPage === RsvpModalPage.__length - 1 ? null : (
+      {modalPages[currentModalPage] === RsvpModalPage.DownloadMobileApp ? (
         <Button
-          text="Next"
+          text="Explore"
           variant="round"
           justifySelf="center"
-          onClick={goToNextScreen}
+          onClick={() => {
+            trackModalAnalytics(AnalyticsEvents.rsvp_modal_explore_clicked);
+            router.push(PageRoutes.pastStreams(9));
+          }}
         />
-      )}
+      ) : (
+        <Button
+          text="Skip"
+          variant="round"
+          justifySelf="center"
+          onClick={skipScreen}
+        />
+      )} */}
     </Modal>
   );
 }
