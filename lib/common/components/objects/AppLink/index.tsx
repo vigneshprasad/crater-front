@@ -28,11 +28,11 @@ export default function AppLink({
 
   const url = useMemo(() => {
     if (buttonType === AppLinkType.android) {
-      return "//play.google.com/store/apps/details?id=com.wurknet.mobile&hl=en_IN&gl=US";
+      return "https://play.google.com/store/apps/details?id=com.wurknet.mobile&hl=en_IN&gl=US";
     }
 
     if (buttonType === AppLinkType.apple) {
-      return "//apps.apple.com/us/app/worknetwork/id1504844194";
+      return "https://apps.apple.com/us/app/worknetwork/id1504844194";
     }
     return PageRoutes.home;
   }, [buttonType]);
