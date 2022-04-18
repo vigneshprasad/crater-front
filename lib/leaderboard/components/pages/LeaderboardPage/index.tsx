@@ -25,15 +25,15 @@ export default function LeaderboardPage(): JSX.Element {
         pb={space.s}
       >
         <Text textStyle="title" textAlign="center" mb={space.xs}>
-          It&apos;s easy to start playing Fantasy Cricket on Dream11
+          It&apos;s easy to stream and win on Crater
         </Text>
         <Text maxWidth="75%" m="0 auto" textAlign="center" mb={space.xl}>
-          Enter into the thrilling world of Fantasy sports, a strategy-based
-          online sports game wherein you can create a virtual team of real
-          players playing in real life matches. Choose your team smartly to win
-          good points based on the player&apos;s performance in a live game.
-          Dream11 is one of the leading fantasy cricket sites for Indian sports
-          fans.
+          Take part in a competition with other streamers &amp; win about 50K in
+          cash prizes. Start by picking a category of streamers you want to
+          compete against. Once you enter the competition, set up your stream
+          &amp; invite your friends to watch. If you get the most time spent on
+          your stream ( Number of Viewers x Watch time) you win the competition.
+          There are both weekly &amp; monthly competitions &amp; prizes.
         </Text>
         <Flex
           flexDirection={["column", "row"]}
@@ -45,15 +45,13 @@ export default function LeaderboardPage(): JSX.Element {
             color="#ffe36c"
             image={STATIC_IMAGES.ImageHand}
             heading="Select a Competition"
-            subheading="Lorem ipsum dolor sit amet, consectetur adipiscing magna aliqua"
           />
 
           <LeaderboardStepCard
             stepNumber="2"
             color="#85f978"
             image={STATIC_IMAGES.ImageTv}
-            heading="Stream Live"
-            subheading="Lorem ipsum dolor sit amet, consectetur adipiscing magna aliqua"
+            heading="Stream & Engage"
           />
 
           <LeaderboardStepCard
@@ -61,7 +59,6 @@ export default function LeaderboardPage(): JSX.Element {
             color="#f2f2f2"
             image={STATIC_IMAGES.ImageCash}
             heading="Win & Earn"
-            subheading="Lorem ipsum dolor sit amet, consectetur adipiscing magna aliqua"
           />
         </Flex>
       </Box>
