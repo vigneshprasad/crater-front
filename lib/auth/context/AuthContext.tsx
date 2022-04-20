@@ -5,12 +5,15 @@ import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
+import { UserPermission } from "../types/auth";
+
 interface IAuthState {
   session: Session | null;
   user?: User;
   profile?: Profile;
   loading: boolean;
   error?: unknown;
+  permission?: UserPermission;
   mutateProfile: SWRResponse<Profile, unknown>["mutate"];
 }
 
@@ -43,6 +46,10 @@ export function AuthProvider({
     initialData: initialProfile,
   });
 
+  const { data: permission, error: permissionError } = useSWR<UserPermission>(
+    user ? API_URL_CONSTANTS.auth.getUserPermission : null
+  );
+
   const value: IAuthState = useMemo(
     () => ({
       user,
@@ -50,9 +57,10 @@ export function AuthProvider({
       loading: session
         ? (!user && !userError) || (!profile && !profileError)
         : sessionLoading,
-      error: userError || profileError,
+      error: userError || profileError || permissionError,
       mutateProfile,
       session,
+      permission,
     }),
     [
       user,
@@ -62,6 +70,8 @@ export function AuthProvider({
       profileError,
       mutateProfile,
       session,
+      permission,
+      permissionError,
     ]
   );
 

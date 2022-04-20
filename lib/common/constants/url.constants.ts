@@ -7,6 +7,7 @@ export const API_URL_CONSTANTS = {
     phoneLogin: "/crater/auth/verify/",
     getProfile: "/user/auth/profile/",
     postProfileCoverFile: "/user/auth/profile/cover_file/",
+    getUserPermission: "user/auth/users/permission/",
   },
   user: {
     user: "/user/auth/user/",
