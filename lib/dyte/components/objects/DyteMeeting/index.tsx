@@ -1,9 +1,8 @@
 import { DyteMeeting as DyteComponent, Meeting } from "dyte-client";
 import { useCallback, useEffect, useRef } from "react";
 
-import { useRouter } from "next/router";
-
-import useAuth from "@/auth/context/AuthContext";
+// import { useRouter } from "next/router";
+// import useAuth from "@/auth/context/AuthContext";
 import { Box, BoxProps } from "@/common/components/atoms";
 // import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
@@ -26,9 +25,9 @@ export default function DyteMeeting({
   roomName,
   ...rest
 }: Props): JSX.Element {
-  const router = useRouter();
+  // const router = useRouter();
   const meeting = useRef<Meeting>();
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const { track } = useAnalytics();
 
   const messages = [] as ChatMessage[];
