@@ -35,7 +35,7 @@ interface ChatFormProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const { profile } = useAuth();
+  const { profile, permission } = useAuth();
   const { rewards } = useRewardsList();
   const { messages, postMessage } = useFirebaseChat();
   const { space, borders, gradients, radii } = useTheme();
@@ -162,51 +162,53 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
         </Box>
       </Box>
 
-      <Form
-        display="grid"
-        mx={space.xxxs}
-        my={space.xxxs}
-        gridAutoFlow="row"
-        gridGap={space.xxs}
-        onSubmit={handleChatSubmit}
-      >
-        <Input
-          placeholder="Ask a Question"
-          value={fields.message.value}
-          onChange={(e) => fieldValueSetter("message", e.currentTarget.value)}
-        />
-        <Flex justifyContent="flex-end" flexDirection="row">
-          {(() => {
-            if (!profile) return null;
-
-            const isAdmin = profile.groups.filter(
-              (group) => group.name === "livestream_chat_admin"
-            )[0]
-              ? true
-              : false;
-
-            if (isAdmin) {
-              return (
-                <Input
-                  value={fields.display_name.value}
-                  onChange={(e) =>
-                    fieldValueSetter("display_name", e.currentTarget.value)
-                  }
-                  placeholder="Display Name"
-                />
-              );
-            }
-
-            return null;
-          })()}
-          <Button
-            type="submit"
-            variant="nav-button"
-            px={space.xxxs}
-            text="Ask"
+      {permission?.allow_chat && (
+        <Form
+          display="grid"
+          mx={space.xxxs}
+          my={space.xxxs}
+          gridAutoFlow="row"
+          gridGap={space.xxs}
+          onSubmit={handleChatSubmit}
+        >
+          <Input
+            placeholder="Ask a Question"
+            value={fields.message.value}
+            onChange={(e) => fieldValueSetter("message", e.currentTarget.value)}
           />
-        </Flex>
-      </Form>
+          <Flex justifyContent="flex-end" flexDirection="row">
+            {(() => {
+              if (!profile) return null;
+
+              const isAdmin = profile.groups.filter(
+                (group) => group.name === "livestream_chat_admin"
+              )[0]
+                ? true
+                : false;
+
+              if (isAdmin) {
+                return (
+                  <Input
+                    value={fields.display_name.value}
+                    onChange={(e) =>
+                      fieldValueSetter("display_name", e.currentTarget.value)
+                    }
+                    placeholder="Display Name"
+                  />
+                );
+              }
+
+              return null;
+            })()}
+            <Button
+              type="submit"
+              variant="nav-button"
+              px={space.xxxs}
+              text="Ask"
+            />
+          </Flex>
+        </Form>
+      )}
     </Grid>
   );
 }
