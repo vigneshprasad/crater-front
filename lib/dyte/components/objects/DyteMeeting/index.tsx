@@ -1,11 +1,10 @@
 import { DyteMeeting as DyteComponent, Meeting } from "dyte-client";
 import { useCallback, useEffect, useRef } from "react";
 
-import { useRouter } from "next/router";
-
-import useAuth from "@/auth/context/AuthContext";
+// import { useRouter } from "next/router";
+// import useAuth from "@/auth/context/AuthContext";
 import { Box, BoxProps } from "@/common/components/atoms";
-import { PageRoutes } from "@/common/constants/route.constants";
+// import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
@@ -26,9 +25,9 @@ export default function DyteMeeting({
   roomName,
   ...rest
 }: Props): JSX.Element {
-  const router = useRouter();
+  // const router = useRouter();
   const meeting = useRef<Meeting>();
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const { track } = useAnalytics();
 
   const messages = [] as ChatMessage[];
@@ -40,11 +39,12 @@ export default function DyteMeeting({
   const participantLeaveHandler = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (participant: any) => {
-      if (participant.clientSpecificId === user?.pk) {
-        router.push(PageRoutes.session(webinar.id.toString()));
-      }
+      console.log("Participant left", participant);
+      // if (participant.clientSpecificId === user?.pk) {
+      //   router.push(PageRoutes.session(webinar.id.toString()));
+      // }
     },
-    [router, webinar, user]
+    []
   );
 
   const participantJoinHandler = useCallback(() => {
