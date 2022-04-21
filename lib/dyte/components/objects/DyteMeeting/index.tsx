@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import { Box, BoxProps } from "@/common/components/atoms";
-import { PageRoutes } from "@/common/constants/route.constants";
+// import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DateTime from "@/common/utils/datetime/DateTime";
@@ -45,7 +45,7 @@ export default function DyteMeeting({
       //   router.push(PageRoutes.session(webinar.id.toString()));
       // }
     },
-    [router, webinar, user]
+    []
   );
 
   const participantJoinHandler = useCallback(() => {
