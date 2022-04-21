@@ -2,6 +2,7 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
+import useAuth from "@/auth/context/AuthContext";
 import { Text, Grid, Box } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -22,6 +23,7 @@ export default function CreatorHubStreamTab(): JSX.Element {
   const router = useRouter();
   const { streams: past } = usePastStreams();
   const { space } = useTheme();
+  const { permission } = useAuth();
 
   const handleFormSubmit = (stream: Webinar): void => {
     mutateUpcomingStreams();
@@ -51,7 +53,10 @@ export default function CreatorHubStreamTab(): JSX.Element {
 
       <Box>
         <Text textStyle="title">Schedule New Stream</Text>
-        <ScheduleStreamForm onSubmitComplete={handleFormSubmit} />
+        <ScheduleStreamForm
+          onSubmitComplete={handleFormSubmit}
+          permission={permission?.allow_create_stream}
+        />
       </Box>
 
       {past && past.length > 0 && (
