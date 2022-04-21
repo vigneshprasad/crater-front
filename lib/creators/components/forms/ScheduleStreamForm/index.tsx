@@ -17,7 +17,10 @@ import { MultiSelect } from "@/common/components/atoms/MultiSelect";
 import Spinner from "@/common/components/atoms/Spiner";
 import DateTimeInput from "@/common/components/objects/DateTimeInput";
 import FormField from "@/common/components/objects/FormField";
-import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import {
+  API_URL_CONSTANTS,
+  BECOME_CREATOR_CALENDLY,
+} from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import { BaseApiError } from "@/common/types/api";
@@ -327,7 +330,9 @@ export default function ScheduleStreamForm({
         >
           <Box m="auto auto" textAlign="center">
             <Text m="auto auto">Do you want to stream? Connect with us</Text>
-            <Button m="16px auto" text="Become a Creator" />
+            <a href={BECOME_CREATOR_CALENDLY} target="_blank" rel="noreferrer">
+              <Button m="16px auto" text="Become a Creator" />
+            </a>
           </Box>
         </Grid>
       )}

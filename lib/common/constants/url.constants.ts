@@ -171,3 +171,5 @@ export const LINKEDIN_URL = "https://www.linkedin.com/company/craterclub/";
 
 export const HIRING_URL =
   "https://crater-about.notion.site/Lets-build-together-b1babcce8a4d4ef2b5787af058d391d1";
+
+export const BECOME_CREATOR_CALENDLY = "https://bit.ly/3rDsnaL";
