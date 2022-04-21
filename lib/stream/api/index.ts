@@ -17,6 +17,10 @@ interface IStreamApiClient {
   retrieveStreamCategory: (
     id: number | string
   ) => Promise<ApiResult<StreamCategory, AxiosError>>;
+  generateCoverPhoto: (
+    topic: string,
+    avatarUrl: string
+  ) => Promise<ApiResult<string, AxiosError>>;
 }
 
 export default function StreamApiClient(
@@ -63,9 +67,29 @@ export default function StreamApiClient(
     }
   }
 
+  async function generateCoverPhoto(
+    topic: string,
+    avatarUrl: string
+  ): Promise<ApiResult<string, AxiosError>> {
+    try {
+      const body = JSON.stringify({
+        topic,
+        avatar_url: avatarUrl,
+      });
+      const { data } = await API(context).post(
+        API_URL_CONSTANTS.stream.generateCoverPhoto,
+        body
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getPastStreams,
     getAllStreamCategories,
     retrieveStreamCategory,
+    generateCoverPhoto,
   };
 }

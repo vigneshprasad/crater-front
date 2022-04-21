@@ -7,7 +7,11 @@ interface IProps extends AnimatedBoxProps {
   colors?: CSS.Property.Color[];
 }
 
-export default function Shimmer({ colors, ...props }: IProps): JSX.Element {
+export default function Shimmer({
+  colors,
+  children,
+  ...props
+}: IProps): JSX.Element {
   const { colors: themeColors } = useTheme();
   const list = colors ? colors : [themeColors.black[2], themeColors.black[5]];
   return (
@@ -15,6 +19,8 @@ export default function Shimmer({ colors, ...props }: IProps): JSX.Element {
       animate={{ background: list }}
       transition={{ duration: 1, repeatType: "reverse", repeat: Infinity }}
       {...props}
-    />
+    >
+      {children}
+    </AnimatedBox>
   );
 }
