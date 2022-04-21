@@ -1,3 +1,4 @@
+export { default as Images } from "./Images";
 export { default as AccountCircle } from "./AccountCircle";
 export { default as Activity } from "./Activity";
 export { default as Add } from "./Add";
@@ -40,10 +41,10 @@ export { default as Rank1 } from "./Rank1";
 export { default as Rank2 } from "./Rank2";
 export { default as Rank3 } from "./Rank3";
 export { default as Remove } from "./Remove";
+export { default as Shuffle } from "./Shuffle";
 export { default as Tv } from "./Tv";
 export { default as Twitter } from "./Twitter";
 export { default as User } from "./User";
 export { default as Users } from "./Users";
 export { default as ViewStream } from "./ViewStream";
 export { default as Wallet } from "./Wallet";
-export { default as Whatsapp } from "./Whatsapp";

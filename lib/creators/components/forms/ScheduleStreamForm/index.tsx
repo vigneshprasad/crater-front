@@ -1,19 +1,27 @@
 import { SyntheticEvent, useCallback, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { Form, Input, Flex, TextArea, Card } from "@/common/components/atoms";
+import useAuth from "@/auth/context/AuthContext";
+import {
+  Form,
+  Input,
+  Flex,
+  TextArea,
+  Card,
+  Grid,
+  Text,
+  Box,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { MultiSelect } from "@/common/components/atoms/MultiSelect";
 import Spinner from "@/common/components/atoms/Spiner";
 import DateTimeInput from "@/common/components/objects/DateTimeInput";
 import FormField from "@/common/components/objects/FormField";
-import ImageDropBox from "@/common/components/objects/ImageDropBox";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import { BaseApiError } from "@/common/types/api";
 import DateTime from "@/common/utils/datetime/DateTime";
-import toBase64 from "@/common/utils/image/toBase64";
 import { Webinar } from "@/community/types/community";
 import CreatorApiClient from "@/creators/api";
 import {
@@ -22,15 +30,20 @@ import {
   StreamFormArgs,
 } from "@/creators/types/stream";
 
+import StreamCoverPhotoUpload from "../../objects/StreamCoverPhotoUpload";
+
 interface IProps {
+  permission?: boolean;
   onSubmitComplete?: (stream: Webinar) => void;
 }
 
 export default function ScheduleStreamForm({
+  permission,
   onSubmitComplete,
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
   const [loading, setLoading] = useState(false);
+  const { profile } = useAuth();
 
   const {
     fields,
@@ -134,18 +147,9 @@ export default function ScheduleStreamForm({
     [getValidatedData, clearForm, onSubmitComplete, fieldErrorSetter]
   );
 
-  const handlePhotoChange = useCallback(
-    async (photo: File) => {
-      const base64Image = await toBase64(photo);
-      if (base64Image) {
-        fieldValueSetter("image", base64Image as string);
-      }
-    },
-    [fieldValueSetter]
-  );
-
   return (
     <Card
+      position="relative"
       my={space.s}
       containerProps={{ py: space.xxs }}
       maxWidth={960}
@@ -282,12 +286,17 @@ export default function ScheduleStreamForm({
           border={false}
           required={true}
         >
-          <ImageDropBox
+          <StreamCoverPhotoUpload
+            profile={profile}
+            topic={fields.topic.value}
+            onChange={(image) => fieldValueSetter("image", image)}
+          />
+          {/* <ImageDropBox
             error={fields.image.errors[0]}
             alt="cover photo"
             value={fields.image.value}
             onChange={handlePhotoChange}
-          />
+          /> */}
         </FormField>
 
         <FormField
@@ -307,6 +316,21 @@ export default function ScheduleStreamForm({
           />
         </FormField>
       </Form>
+      {!permission && (
+        <Grid
+          position="absolute"
+          top={0}
+          bottom={0}
+          left={0}
+          right={0}
+          bg="rgba(0,0,0,0.8)"
+        >
+          <Box m="auto auto" textAlign="center">
+            <Text m="auto auto">Do you want to stream? Connect with us</Text>
+            <Button m="16px auto" text="Become a Creator" />
+          </Box>
+        </Grid>
+      )}
     </Card>
   );
 }

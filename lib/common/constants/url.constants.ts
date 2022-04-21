@@ -86,6 +86,8 @@ export const API_URL_CONSTANTS = {
     retrieveCategory: (id: number | string): string =>
       `/groups/conversations/categories/${id}/`,
     streamsToRsvp: "/groups/conversations/webinars/suggested/",
+    generateCoverPhoto:
+      "https://84wp6p3fi7.execute-api.ap-south-1.amazonaws.com/test",
   },
   rewards: {
     rewardsList: "/crater/reward/",
