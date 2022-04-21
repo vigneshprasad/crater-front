@@ -48,3 +48,4 @@ export { default as User } from "./User";
 export { default as Users } from "./Users";
 export { default as ViewStream } from "./ViewStream";
 export { default as Wallet } from "./Wallet";
+export { default as Whatsapp } from "./Whatsapp";
