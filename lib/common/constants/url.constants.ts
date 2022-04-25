@@ -7,6 +7,7 @@ export const API_URL_CONSTANTS = {
     phoneLogin: "/crater/auth/verify/",
     getProfile: "/user/auth/profile/",
     postProfileCoverFile: "/user/auth/profile/cover_file/",
+    getUserPermission: "user/auth/users/permission/",
   },
   user: {
     user: "/user/auth/user/",
@@ -85,6 +86,8 @@ export const API_URL_CONSTANTS = {
     retrieveCategory: (id: number | string): string =>
       `/groups/conversations/categories/${id}/`,
     streamsToRsvp: "/groups/conversations/webinars/suggested/",
+    generateCoverPhoto:
+      "https://84wp6p3fi7.execute-api.ap-south-1.amazonaws.com/test",
   },
   rewards: {
     rewardsList: "/crater/reward/",
@@ -168,3 +171,5 @@ export const LINKEDIN_URL = "https://www.linkedin.com/company/craterclub/";
 
 export const HIRING_URL =
   "https://crater-about.notion.site/Lets-build-together-b1babcce8a4d4ef2b5787af058d391d1";
+
+export const BECOME_CREATOR_CALENDLY = "https://bit.ly/3rDsnaL";

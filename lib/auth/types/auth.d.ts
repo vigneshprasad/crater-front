@@ -62,3 +62,10 @@ export interface Profile {
   instagram: string | null;
   twitter: string | null;
 }
+
+export interface UserPermission {
+  id: number;
+  user: string;
+  allow_create_stream: boolean;
+  allow_chat: boolean;
+}
