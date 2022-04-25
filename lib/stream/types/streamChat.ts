@@ -1,6 +1,13 @@
 export enum ChatMessageType {
   TEXT = 1,
   REACTION = 2,
+  ACTION = 3,
+}
+
+export enum ChatActionType {
+  FOLLOW = 1,
+  REFERRAL = 2,
+  STREAMS = 3,
 }
 
 export interface ChatMessage {
@@ -22,4 +29,5 @@ export interface ChatMessage {
     email: string;
     first_name: string;
   };
+  action: ChatActionType;
 }
