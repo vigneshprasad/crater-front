@@ -169,6 +169,7 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
                   stream={cachedWebinar}
                   mutateStream={mutateWebinar}
                   message={message}
+                  key={message.created_at.toString()}
                 />
               );
             }
