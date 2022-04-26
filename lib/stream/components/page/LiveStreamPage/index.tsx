@@ -69,7 +69,7 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
   const { subscribeCreator } = useFollower();
 
   const followCreator = async (): Promise<void> => {
-    const creator = cachedWebinar?.host_detail.creator_detail;
+    const creator = webinar.host_detail.creator_detail;
 
     if (creator) {
       await subscribeCreator(creator.id);
