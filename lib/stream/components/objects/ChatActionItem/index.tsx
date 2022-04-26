@@ -136,10 +136,10 @@ export default function ChatActionItem({
         onClose={() => setShowReferralModal(false)}
       />
 
-      {actions.map(({ action, display }, index) => {
+      {actions.map(({ action, display }) => {
         const chatAction = parseInt(message.action.toString());
         if (action === chatAction) {
-          return <Box key={index}>{display}</Box>;
+          return display;
         }
       })}
     </Box>
