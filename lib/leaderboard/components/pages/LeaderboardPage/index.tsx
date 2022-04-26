@@ -1,8 +1,6 @@
 import STATIC_IMAGES from "public/images";
 import { useTheme } from "styled-components";
 
-import { useRouter } from "next/router";
-
 import { Box, Button, Flex, Text } from "@/common/components/atoms";
 import { LEADERBOARD_URL } from "@/common/constants/url.constants";
 
@@ -12,7 +10,6 @@ import LeaderboardTable from "../../objects/LeaderboardTable";
 
 export default function LeaderboardPage(): JSX.Element {
   const { colors, space } = useTheme();
-  const router = useRouter();
 
   return (
     <Box>
