@@ -1,10 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { Box, Text, Button } from "@/common/components/atoms";
+import useAuth from "@/auth/context/AuthContext";
+import { Box, Text, Button, Modal, Shimmer } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
-import ReferralModal from "@/community/components/objects/ReferralModal";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import ShareAndEarnModalPage from "@/community/components/objects/ShareAndEarnModalPage";
 import { Webinar } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import { ChatMessage } from "@/stream/providers/FirebaseChatProvider/types";
@@ -13,8 +15,8 @@ import { useReferralSummary } from "@/tokens/context/ReferralSummaryContext";
 
 interface IProps {
   stream?: Webinar;
-  mutateStream: () => void;
   message: ChatMessage;
+  mutateStream: () => void;
 }
 
 export default function ChatActionItem({
@@ -22,11 +24,41 @@ export default function ChatActionItem({
   message,
   mutateStream,
 }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, radii } = useTheme();
   const [showReferralModal, setShowReferralModal] = useState(false);
   const { referralSummary } = useReferralSummary();
-  const { subscribeCreator } = useFollower();
+  const {
+    followers,
+    loading: followersLoading,
+    subscribeCreator,
+  } = useFollower();
+  const { user, profile } = useAuth();
   const [loading, setLoading] = useState(false);
+  const { track } = useAnalytics();
+
+  const trackModalAnalytics = useCallback(
+    (eventName: string) => {
+      track(eventName, {
+        stream: stream?.id,
+        stream_name: stream?.topic_detail?.name,
+        page: "livestream",
+      });
+    },
+    [stream, track]
+  );
+
+  const shareUrl = useCallback(() => {
+    if (user && profile) {
+      const url = window.location.href;
+      let encodedUrl = url;
+
+      if (!profile.is_creator) {
+        encodedUrl = `${url}?referrer_id=${user.pk}`;
+      }
+
+      return encodeURIComponent(encodedUrl);
+    }
+  }, [user, profile]);
 
   const followCreator = useCallback(async (): Promise<void> => {
     const creator = stream?.host_detail.creator_detail;
@@ -47,44 +79,54 @@ export default function ChatActionItem({
     return [
       {
         action: ChatActionType.FOLLOW,
-        display: !stream?.host_detail.creator_detail?.is_subscriber ? (
-          <Box
-            mx={space.xxs}
-            my={6}
-            backgroundColor={colors.black[4]}
-            p={space.xxxs}
-          >
-            <Text pb={space.xxxs}>{message.message}</Text>
-            {stream?.host_detail.creator_detail?.is_subscriber ? (
-              <Button
-                variant="full-width-outline-small"
-                text="Following"
-                disabled={true}
-                textProps={{ p: 0 }}
-              />
-            ) : (
-              <Button
-                variant="full-width-outline-small"
-                text="Follow"
-                onClick={() => {
-                  setLoading(true);
-                  followCreator();
-                }}
-                suffixElement={
-                  loading ? (
-                    <Spinner
-                      size={24}
-                      strokeWidth={2}
-                      strokeColor={colors.white[0]}
-                    />
-                  ) : undefined
-                }
-                disabled={loading}
-                textProps={{ p: 0 }}
-              />
-            )}
-          </Box>
-        ) : null,
+        display:
+          stream?.host !== user?.pk ? (
+            <Box
+              mx={space.xxs}
+              my={6}
+              backgroundColor={colors.black[4]}
+              p={space.xxxs}
+              borderRadius={radii.xxs}
+            >
+              <Text pb={space.xxxs}>{message.message}</Text>
+              {(() => {
+                return followersLoading ? (
+                  <Shimmer
+                    w="100%"
+                    h={35}
+                    borderRadius={radii.xxxs}
+                    mr={space.xxs}
+                  />
+                ) : followers && followers.length > 0 && followers[0].notify ? (
+                  <Button
+                    variant="full-width-outline-small"
+                    text={`Following ${stream?.host_detail.name}`}
+                    disabled={true}
+                  />
+                ) : (
+                  <Button
+                    variant="full-width-outline-small"
+                    text={`Follow ${stream?.host_detail.name}`}
+                    onClick={() => {
+                      setLoading(true);
+                      followCreator();
+                    }}
+                    suffixElement={
+                      loading ? (
+                        <Spinner
+                          size={24}
+                          strokeWidth={2}
+                          strokeColor={colors.white[0]}
+                        />
+                      ) : undefined
+                    }
+                    disabled={loading}
+                    textProps={{ p: 0 }}
+                  />
+                );
+              })()}
+            </Box>
+          ) : null,
       },
       {
         action: ChatActionType.REFERRAL,
@@ -94,11 +136,12 @@ export default function ChatActionItem({
             my={6}
             backgroundColor={colors.black[4]}
             p={space.xxxs}
+            borderRadius={radii.xxs}
           >
             <Text pb={space.xxxs}>{message.message}</Text>
             <Button
               variant="full-width-outline-small"
-              text="Learn more"
+              text="Refer a friend"
               onClick={() => setShowReferralModal(true)}
               textProps={{ p: 0 }}
             />
@@ -113,12 +156,13 @@ export default function ChatActionItem({
             my={6}
             backgroundColor={colors.black[4]}
             p={space.xxxs}
+            borderRadius={radii.xxs}
           >
             <Text pb={space.xxxs}>{message.message}</Text>
             <a href={PageRoutes.home} target="_blank" rel="noreferrer">
               <Button
                 variant="full-width-outline-small"
-                text="Explore"
+                text="Explore Streams"
                 textProps={{ p: 0 }}
               />
             </a>
@@ -126,15 +170,40 @@ export default function ChatActionItem({
         ),
       },
     ];
-  }, [stream, space, colors, message, followCreator, loading]);
+  }, [
+    stream,
+    space,
+    colors,
+    message,
+    followCreator,
+    loading,
+    radii,
+    followersLoading,
+    followers,
+    user,
+  ]);
 
   return (
     <Box>
-      <ReferralModal
-        referralSummary={referralSummary}
+      <Modal
+        display="grid"
+        gridTemplateRows="max-content 1fr"
+        maxWidth={600}
+        maxHeight={575}
         visible={showReferralModal}
         onClose={() => setShowReferralModal(false)}
-      />
+        overflowY={["auto", "hidden"]}
+        px={[space.xxs, space.xs]}
+        py={space.xxs}
+        gridGap={space.xxs}
+      >
+        <ShareAndEarnModalPage
+          user={user?.pk}
+          referralSummary={referralSummary}
+          shareUrl={shareUrl}
+          trackModalAnalytics={trackModalAnalytics}
+        />
+      </Modal>
 
       {actions.map(({ action, display }, index) => {
         const chatAction = parseInt(message.action.toString());
