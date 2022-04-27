@@ -140,13 +140,22 @@ export default function ChatActionItem({
       await mutateStream();
       setLoading(false);
 
+      trackModalAnalytics(AnalyticsEvents.chat_action_follow_clicked);
+
       const message = {
         message: `${user?.name} just followed ${stream?.host_detail.name}.`,
         display_name: "Follow Update",
       };
       postMessage(message);
     }
-  }, [stream, user, mutateStream, subscribeCreator, postMessage]);
+  }, [
+    stream,
+    user,
+    mutateStream,
+    subscribeCreator,
+    postMessage,
+    trackModalAnalytics,
+  ]);
 
   const postGroupRequest = useCallback(
     async (webinar: Webinar, redirect = false): Promise<void> => {
@@ -161,7 +170,7 @@ export default function ChatActionItem({
       if (request) {
         setRsvpedStreams((prev) => [...prev, webinar.id]);
         track(AnalyticsEvents.rsvp_stream, {
-          page: "RSVP modal",
+          page: "Livestream",
           stream: webinar.id,
           stream_name: webinar.topic_detail?.name,
           host: {
@@ -172,7 +181,7 @@ export default function ChatActionItem({
 
       if (redirect) {
         track(AnalyticsEvents.join_stream, {
-          page: "RSVP modal",
+          page: "Livestream",
           stream: webinar.id,
           stream_name: webinar.topic_detail?.name,
           host: {
@@ -285,7 +294,12 @@ export default function ChatActionItem({
             <ReferralActionButton
               variant="full-width-outline-small"
               text="Refer a friend"
-              onClick={() => setShowReferralModal(true)}
+              onClick={() => {
+                setShowReferralModal(true);
+                trackModalAnalytics(
+                  AnalyticsEvents.chat_action_referral_modal_opened
+                );
+              }}
               textProps={{ p: 0 }}
             />
           </Box>
@@ -306,8 +320,20 @@ export default function ChatActionItem({
               {message.message}
             </Text>
             <Flex flexDirection="row" justifyContent="space-between">
-              <AppLink height={47} buttonType={AppLinkType.android} />
-              <AppLink height={48} buttonType={AppLinkType.apple} />
+              <AppLink
+                height={47}
+                buttonType={AppLinkType.android}
+                analyticsEventName={
+                  AnalyticsEvents.chat_action_google_play_badge_clicked
+                }
+              />
+              <AppLink
+                height={48}
+                buttonType={AppLinkType.apple}
+                analyticsEventName={
+                  AnalyticsEvents.chat_action_appstore_badge_clicked
+                }
+              />
             </Flex>
           </Box>
         ),
@@ -328,7 +354,12 @@ export default function ChatActionItem({
               variant="full-width-outline-small"
               text="Explore Streams"
               textProps={{ p: 0 }}
-              onClick={() => setShowStreamsModal(true)}
+              onClick={() => {
+                setShowStreamsModal(true);
+                trackModalAnalytics(
+                  AnalyticsEvents.chat_action_streams_modal_opened
+                );
+              }}
             />
           </Box>
         ),
@@ -339,11 +370,12 @@ export default function ChatActionItem({
     space,
     colors,
     message,
-    followCreator,
     loading,
     radii,
     followersLoading,
     followers,
+    followCreator,
+    trackModalAnalytics,
   ]);
 
   return (
