@@ -18,11 +18,15 @@ export enum AppLinkType {
 interface IProps {
   buttonType: AppLinkType;
   analyticsEventName?: string;
+  width?: number;
+  height?: number;
 }
 
 export default function AppLink({
   buttonType,
   analyticsEventName,
+  width,
+  height,
 }: IProps): JSX.Element {
   const { track } = useAnalytics();
 
@@ -54,8 +58,8 @@ export default function AppLink({
       boxProps={{
         target: "_blank",
         position: "relative",
-        h: 54,
-        w: 160,
+        h: height ?? 54,
+        w: width ?? 160,
       }}
     >
       <Image
