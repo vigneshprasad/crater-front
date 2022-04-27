@@ -8,6 +8,7 @@ export enum ChatActionType {
   FOLLOW = 1,
   REFERRAL = 2,
   STREAMS = 3,
+  MOBILE_APP = 4,
 }
 
 export interface ChatMessage {
