@@ -147,7 +147,6 @@ const StyledButton = styled(Grid)<ButtonProps>`
       },
       "full-width-outline-small": {
         minHeight: 34,
-        borderColor: "#808191",
         borderRadius: 6,
         width: "100%",
       },
