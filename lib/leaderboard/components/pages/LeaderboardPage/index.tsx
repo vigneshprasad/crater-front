@@ -102,7 +102,7 @@ export default function LeaderboardPage(): JSX.Element {
 
           <FaqExpander
             heading="What do I get if I am the top weekly or monthly streamer?"
-            subText="Weekly prizes: leader (1st) gets paid 6k, 2nd 3k & third 1k. Monthly bumper prize: the top streamer in the category gets 50k, 2nd place gets 10k & 3rd gets 5k. Prize money is subject to tds & applicable taxes"
+            subText="Weekly prizes: leader (1st) gets paid 6k, 2nd 3k & third 1k. Monthly bumper prize: the top streamer in the category gets 35k, 2nd place gets 10k & 3rd gets 5k. Prize money is subject to tds & applicable taxes"
           />
 
           <FaqExpander
