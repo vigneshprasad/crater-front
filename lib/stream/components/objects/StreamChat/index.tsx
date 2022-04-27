@@ -16,13 +16,11 @@ import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
-import { useWebinar } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
 import { ChatMessageType } from "@/stream/types/streamChat";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
-import ChatActionItem from "../ChatActionItem";
 import ChatMessageItem from "../ChatMessageItem";
 
 interface IProps extends GridProps {
@@ -41,8 +39,6 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
   const { rewards } = useRewardsList();
   const { messages, postMessage } = useFirebaseChat();
   const { space, borders, gradients, radii } = useTheme();
-  const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
-
   const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
     {
       fields: {
@@ -154,26 +150,15 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
           py={space.xxxs}
           flexDirection="column-reverse"
         >
-          {[...messages].reverse().map((message) => {
-            const messageType = parseInt(message.type.toString());
-            if (messageType === ChatMessageType.TEXT) {
-              return (
-                <ChatMessageItem
-                  message={message}
-                  key={message.created_at.toString()}
-                />
-              );
-            } else if (messageType === ChatMessageType.ACTION) {
-              return (
-                <ChatActionItem
-                  stream={cachedWebinar}
-                  mutateStream={mutateWebinar}
-                  message={message}
-                  key={message.created_at.toString()}
-                />
-              );
-            }
-          })}
+          {[...messages]
+            .filter((obj) => obj.type === ChatMessageType.TEXT)
+            .reverse()
+            .map((message) => (
+              <ChatMessageItem
+                message={message}
+                key={message.created_at.toString()}
+              />
+            ))}
         </Box>
       </Box>
 
