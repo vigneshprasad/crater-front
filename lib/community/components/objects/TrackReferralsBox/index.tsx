@@ -46,29 +46,36 @@ export default function TrackReferralsBox({
   }, [referralSummary]);
 
   return (
-    <Box
-      p={space.xxs}
-      border={`1px solid ${colors.accent}`}
-      alignSelf={["start", "center"]}
-    >
-      <Text textStyle="headline6" pb={space.xs}>
-        Track your referrals
-      </Text>
+    <Box alignSelf={["start", "center"]}>
+      <Box p={space.xxs} border={`1px solid ${colors.accent}`}>
+        <Text textStyle="headline6" pb={space.xs}>
+          Track your referrals
+        </Text>
 
-      {referralSummaryData.map(({ title, key, display }) => {
-        return (
-          <Grid
-            pb={space.xxs}
-            gridAutoFlow="column"
-            gridGap={space.xxxs}
-            gridTemplateColumns="1fr auto"
-            key={key}
-          >
-            <Text>{title}</Text>
-            <Text>{display}</Text>
-          </Grid>
-        );
-      })}
+        {referralSummaryData.map(({ title, key, display }) => {
+          return (
+            <Grid
+              pb={space.xxs}
+              gridAutoFlow="column"
+              gridGap={space.xxxs}
+              gridTemplateColumns="1fr auto"
+              key={key}
+            >
+              <Text>{title}</Text>
+              <Text>{display}</Text>
+            </Grid>
+          );
+        })}
+      </Box>
+
+      <Text
+        py={space.xxxs}
+        textStyle="captionLarge"
+        fontStyle="italic"
+        fontWeight={600}
+      >
+        * Payout happens every ₹250.
+      </Text>
     </Box>
   );
 }
