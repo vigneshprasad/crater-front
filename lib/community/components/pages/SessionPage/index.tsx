@@ -195,7 +195,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       let encodedUrl = url;
 
       if (user) {
-        encodedUrl = `${url}?utm_source=${utmSource}&referrer=${user.pk}`;
+        encodedUrl = `${url}?utm_source=${utmSource}&referrer_id=${user.pk}`;
       }
 
       return encodeURIComponent(encodedUrl);
@@ -218,6 +218,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     : webinar.series !== null
     ? `RSVP for the series`
     : "RSVP for this session";
+
+  const shareText = `Watch livestream on "${webinar.topic_detail.name}" on Crater.`;
+  const referralText = "Signup with my referral link and get ₹50. Signup now!";
 
   return (
     <>
@@ -305,7 +308,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     return (
                       <Button
                         variant="full-width"
-                        text={rsvpBtnText}
+                        text="Signup for Livestream"
                         onClick={(): void => {
                           track(AnalyticsEvents.rsvp_button_clicked, {
                             new_user: true,
@@ -422,7 +425,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 <>
                   <Flex alignItems="center" gridGap={space.xxxs}>
                     <Text textStyle="captionLarge">
-                      Earn ₹100 for each friend you refer 🎉
+                      Earn ₹50 and gift ₹50 for every referral 🎉
                     </Text>
                     <Button
                       text="Details"
@@ -436,7 +439,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               )}
 
               <Grid
-                gridTemplateColumns="1fr 1fr"
+                gridTemplateColumns="1fr 1fr 1fr"
                 alignItems="start"
                 gridGap={space.xxs}
               >
@@ -453,6 +456,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     border="1px solid rgba(255, 255, 255, 0.1)"
                     prefixElement={
                       <Icon
+                        ml={5}
                         size={20}
                         icon="Linkedin"
                         fill
@@ -468,9 +472,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                   />
                 </a>
                 <a
-                  href={`https://twitter.com/share?text=${
-                    webinar.topic_detail?.name
-                  }&url=${shareUrl("Twitter")}`}
+                  href={`https://twitter.com/share?text=${encodeURIComponent(
+                    `${shareText}\n\n`
+                  )}&url=${shareUrl("Twitter")}`}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -480,6 +484,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     bg={colors.black[5]}
                     prefixElement={
                       <Icon
+                        ml={5}
                         size={20}
                         icon="Twitter"
                         fill
@@ -487,6 +492,36 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                       />
                     }
                     text="Tweet"
+                    onClick={(): void => {
+                      track(AnalyticsEvents.share_stream_url, {
+                        social_provider: "twitter",
+                      });
+                    }}
+                  />
+                </a>
+                <a
+                  href={`https://api.whatsapp.com/send?text=${
+                    user && !profile?.is_creator
+                      ? encodeURIComponent(`${shareText} ${referralText}\n\n`)
+                      : encodeURIComponent(`${shareText}\n\n`)
+                  }${shareUrl("WhatsApp")}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Button
+                    variant="full-width"
+                    border="1px solid rgba(255, 255, 255, 0.1)"
+                    bg={colors.black[5]}
+                    prefixElement={
+                      <Icon
+                        ml={5}
+                        size={20}
+                        icon="Whatsapp"
+                        fill
+                        color={colors.white[0]}
+                      />
+                    }
+                    text="Share"
                     onClick={(): void => {
                       track(AnalyticsEvents.share_stream_url, {
                         social_provider: "twitter",

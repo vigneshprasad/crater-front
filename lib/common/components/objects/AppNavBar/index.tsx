@@ -113,7 +113,13 @@ export default function AppNavBar(): JSX.Element {
           }
 
           return (
-            <Button variant="nav-button" text="Login" onClick={openModal} />
+            <Button
+              variant="nav-button"
+              text={
+                router.pathname === "/session/[id]" ? "Join for Free" : "Login"
+              }
+              onClick={openModal}
+            />
           );
         })()}
       </Grid>
