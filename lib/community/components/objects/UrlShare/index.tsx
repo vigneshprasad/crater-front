@@ -18,7 +18,7 @@ export default function UrlShare({ referrer }: IProps): JSX.Element {
       await navigator.clipboard.writeText(url);
     }
 
-    setTimeout(() => setBtnText("Share now"), 1000);
+    setTimeout(() => setBtnText("Share now"), 500);
   }, [url]);
 
   useEffect(() => {
@@ -55,6 +55,7 @@ export default function UrlShare({ referrer }: IProps): JSX.Element {
         variant="text-button"
         textProps={{ px: 0 }}
         onClick={performCopyClipboard}
+        disabled={btnText === "Copied"}
       />
     </Flex>
   );
