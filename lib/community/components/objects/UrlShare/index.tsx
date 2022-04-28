@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { Flex, Text } from "@/common/components/atoms";
-import IconButton from "@/common/components/atoms/IconButton";
+import { Button, Flex, Text } from "@/common/components/atoms";
 
 interface IProps {
   referrer?: string;
@@ -11,11 +10,15 @@ interface IProps {
 export default function UrlShare({ referrer }: IProps): JSX.Element {
   const [url, setUrl] = useState("");
   const { space, radii, colors, borders } = useTheme();
+  const [btnText, setBtnText] = useState("Share now");
 
   const performCopyClipboard = useCallback(async () => {
+    setBtnText("Copied");
     if (url) {
       await navigator.clipboard.writeText(url);
     }
+
+    setTimeout(() => setBtnText("Share now"), 1000);
   }, [url]);
 
   useEffect(() => {
@@ -38,12 +41,19 @@ export default function UrlShare({ referrer }: IProps): JSX.Element {
       borderRadius={radii.xxs}
       border={`2px solid ${borders.main}`}
     >
-      <Text maxLines={1} flex="1" wordBreak="break-word">
+      <Text maxLines={1} flex="1" wordBreak="break-all">
         {url}
       </Text>
-      <IconButton
+      {/* <IconButton
         iconProps={{ fill: true }}
         icon="ContentCopy"
+        onClick={performCopyClipboard}
+      /> */}
+
+      <Button
+        text={btnText}
+        variant="text-button"
+        textProps={{ px: 0 }}
         onClick={performCopyClipboard}
       />
     </Flex>
