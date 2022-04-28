@@ -143,6 +143,10 @@ const StyledButton = styled(Grid)<ButtonProps>`
           color: "#772CE8",
           textDecoration: "underline",
         },
+
+        ":disabled": {
+          textDecoration: "none",
+        },
       },
     },
   })}
