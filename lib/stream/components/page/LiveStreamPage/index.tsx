@@ -23,6 +23,7 @@ import { Webinar } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import { Props as DyteMeetingProps } from "@/dyte/components/objects/DyteMeeting";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
+import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
 import RewardBidModal from "@/tokens/components/objects/RewardBidModal";
 import { Reward } from "@/tokens/types/token";
 
@@ -61,20 +62,30 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
   const { user } = useAuth();
   const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
   const { dyteParticipant } = useDyteWebinar();
-  const { space, borders, colors } = useTheme();
+  const { space, borders, colors, radii } = useTheme();
   const { setTokenModalVisible, tokenModalVisible, activeReward } =
     useLiveStreamPageContext();
   const [loading, setLoading] = useState(false);
-
-  const { subscribeCreator } = useFollower();
+  const {
+    followers,
+    loading: followersLoading,
+    subscribeCreator,
+  } = useFollower();
+  const { postMessage } = useFirebaseChat();
 
   const followCreator = async (): Promise<void> => {
-    const creator = webinar.host_detail.creator_detail;
+    const creator = cachedWebinar?.host_detail.creator_detail;
 
     if (creator) {
       await subscribeCreator(creator.id);
       await mutateWebinar();
       setLoading(false);
+
+      const message = {
+        message: `${user?.name} just followed ${cachedWebinar?.host_detail.name}.`,
+        display_name: "Follow Update",
+      };
+      postMessage(message);
     }
   };
 
@@ -116,20 +127,23 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
                 // If the logged in user is the host, do not show `Follow` button
                 if (cachedWebinar?.host === user?.pk) return null;
 
-                if (cachedWebinar?.host_detail.creator_detail?.is_subscriber) {
-                  return (
-                    <Button
-                      mr={space.xxs}
-                      text="Following"
-                      variant="nav-button"
-                      bg={colors.black[5]}
-                      border="1px solid rgba(255, 255, 255, 0.1)"
-                      disabled={true}
-                    />
-                  );
-                }
-
-                return (
+                return followersLoading ? (
+                  <Shimmer
+                    w={100}
+                    h={35}
+                    borderRadius={radii.xxxs}
+                    mr={space.xxs}
+                  />
+                ) : followers && followers.length > 0 && followers[0].notify ? (
+                  <Button
+                    mr={space.xxs}
+                    text="Following"
+                    variant="nav-button"
+                    bg={colors.black[5]}
+                    border="1px solid rgba(255, 255, 255, 0.1)"
+                    disabled={true}
+                  />
+                ) : (
                   <Button
                     mr={space.xxs}
                     variant="nav-button"
