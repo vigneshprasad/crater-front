@@ -4,10 +4,8 @@ import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
-import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
 import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
 import { BidListProvider } from "@/tokens/context/BidListContext";
-import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
 import { Reward } from "@/tokens/types/token";
 
@@ -43,11 +41,7 @@ export default function Container({
                 initial={rewards}
                 filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
               >
-                <StreamsToRsvpProvider>
-                  <ReferralSummaryProvider>
-                    <LiveStreamPageProvider>{children}</LiveStreamPageProvider>
-                  </ReferralSummaryProvider>
-                </StreamsToRsvpProvider>
+                <LiveStreamPageProvider>{children}</LiveStreamPageProvider>
               </RewardsListProvider>
             </BidListProvider>
           </FirebaseChatProvider>
