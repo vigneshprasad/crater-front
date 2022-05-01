@@ -208,7 +208,7 @@ export default function LeaderboardTable({
                     </Flex>
                   </Box>
                   <Box>
-                    <Text>{user.total_minutes * 1.5} mins</Text>
+                    <Text>{(user.total_minutes * 1.5).toFixed(2)} mins</Text>
                   </Box>
                 </Row>
               ))}
