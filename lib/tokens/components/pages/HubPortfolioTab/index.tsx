@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { Text, Flex, Box } from "@/common/components/atoms";
-import WatiWhatsappButton from "@/integrations/wati/components/WatiWhatsappButton";
 import BidPaymentSuccessCard from "@/payments/components/objects/BidPaymentSuccessCard";
 import useBidsList from "@/tokens/context/BidListContext";
 import useUserRewardList from "@/tokens/context/UserRewardListContext";
@@ -68,7 +67,6 @@ export default function HubPortfolioTab(): JSX.Element {
   return (
     <>
       {showSuccess && <BidPaymentSuccessCard />}
-      <WatiWhatsappButton />
       <Flex px={space.s} py={space.xs} gridGap={space.s} flexDirection="column">
         <Text textStyle="title">Your Tickets</Text>
         <UserRewardList

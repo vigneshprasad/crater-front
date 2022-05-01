@@ -12,7 +12,6 @@ import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
-import WatiWhatsappButton from "@/integrations/wati/components/WatiWhatsappButton";
 import TicketCard from "@/tokens/components/objects/TicketCard";
 import useBid from "@/tokens/context/BidContext";
 import useRewardItem from "@/tokens/context/RewardItemContext";
@@ -82,7 +81,6 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
       gridColumnGap={space.l}
       alignItems="start"
     >
-      <WatiWhatsappButton />
       <Text
         gridRow={["1", "1"]}
         textStyle="headline4"
