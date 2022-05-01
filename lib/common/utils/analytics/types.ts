@@ -33,9 +33,4 @@ export enum AnalyticsEvents {
   rsvp_modal_download_app_opened = "web_rsvp_modal_download_app_opened",
   rsvp_modal_google_play_badge_clicked = "web_rsvp_modal_google_play_badge_clicked",
   mobile_app_badge_clicked = "web_mobile_app_badge_clicked",
-  chat_action_follow_clicked = "web_chat_action_follow_clicked",
-  chat_action_referral_modal_opened = "web_chat_action_referral_modal_opened",
-  chat_action_streams_modal_opened = "web_chat_action_streams_modal_opened",
-  chat_action_google_play_badge_clicked = "web_chat_action_google_play_badge_clicked",
-  chat_action_appstore_badge_clicked = "web_chat_action_appstore_badge_clicked",
 }
