@@ -1,8 +1,11 @@
 import { QueryDocumentSnapshot, Timestamp } from "firebase/firestore";
 
+import { ChatActionType } from "@/stream/types/streamChat";
+
 export enum ChatMessageType {
   TEXT = 1,
   REACTION = 2,
+  ACTION = 3,
 }
 
 export interface ChatUserDetails {
@@ -25,6 +28,7 @@ export interface ChatMessage {
   };
   display_name?: string;
   sender_details?: ChatUserDetails;
+  action: ChatActionType;
 }
 
 export const ChatMessageConvertor = {
