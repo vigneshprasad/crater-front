@@ -16,7 +16,7 @@ import {
   Grid,
 } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
-import AppLink, { AppLinkType } from "@/common/components/objects/AppLink";
+import { AppLinkType } from "@/common/components/objects/AppLink";
 import AppLinkButton from "@/common/components/objects/AppLinkButton";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
