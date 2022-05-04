@@ -13,9 +13,11 @@ import {
   Flex,
   Avatar,
   ButtonProps,
+  Grid,
 } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
 import AppLink, { AppLinkType } from "@/common/components/objects/AppLink";
+import AppLinkButton from "@/common/components/objects/AppLinkButton";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
@@ -320,22 +322,24 @@ export default function ChatActionItem({
             <Text pb={space.xxxs} color="#D5BBFF">
               {message.message}
             </Text>
-            <Flex flexDirection="row" justifyContent="space-between">
-              <AppLink
-                height={47}
+            <Grid
+              gridAutoFlow="column"
+              gridTemplateColumns="1fr 1fr"
+              gridGap={space.xxxs}
+            >
+              <AppLinkButton
                 buttonType={AppLinkType.android}
                 analyticsEventName={
                   AnalyticsEvents.chat_action_google_play_badge_clicked
                 }
               />
-              <AppLink
-                height={48}
+              <AppLinkButton
                 buttonType={AppLinkType.apple}
                 analyticsEventName={
                   AnalyticsEvents.chat_action_appstore_badge_clicked
                 }
               />
-            </Flex>
+            </Grid>
           </Box>
         ),
       },
