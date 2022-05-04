@@ -144,8 +144,8 @@ export default function ChatActionItem({
       trackModalAnalytics(AnalyticsEvents.chat_action_follow_clicked);
 
       const message = {
-        message: `${user?.name} just followed ${stream?.host_detail.name}.`,
-        display_name: "Follow Update",
+        message: `${user?.name} just followed ${stream?.host_detail.name}'s channel.`,
+        display_name: "New Follower",
       };
       postMessage(message);
     }
