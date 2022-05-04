@@ -82,7 +82,7 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
       setLoading(false);
 
       const message = {
-        message: `${user?.name} just followed ${cachedWebinar?.host_detail.name}.`,
+        message: `${user?.name} just followed ${stream?.host_detail.name}'s channel.`,
         display_name: "Follow Update",
       };
       postMessage(message);
