@@ -42,11 +42,10 @@ interface IProps {
 }
 
 const FollowActionButton = styled(Button)<ButtonProps>`
-  min-height: 34;
-  border-radius: 10;
   width: 100%;
   background: #223596;
   border-color: #223596;
+  border-radius: 4px;
 
   &:hover {
     background: #1f2d76;
@@ -63,6 +62,7 @@ const FollowActionButton = styled(Button)<ButtonProps>`
 const ReferralActionButton = styled(Button)<ButtonProps>`
   background: #820f54;
   border-color: #820f54;
+  border-radius: 4px;
 
   &:hover {
     background: #621543;
@@ -73,6 +73,7 @@ const ReferralActionButton = styled(Button)<ButtonProps>`
 const StreamsActionButton = styled(Button)<ButtonProps>`
   background: #8822ee;
   border-color: #8822ee;
+  border-radius: 4px;
 
   &:hover {
     background: #7320c6;
@@ -223,7 +224,7 @@ export default function ChatActionItem({
             my={6}
             backgroundColor="#1E254C"
             p={space.xxxs}
-            borderRadius={radii.xxs}
+            borderRadius={4}
             border="2px solid #202F79"
           >
             <Flex
@@ -287,7 +288,7 @@ export default function ChatActionItem({
             my={6}
             backgroundColor="#541D3E"
             p={space.xxxs}
-            borderRadius={radii.xxs}
+            borderRadius={4}
             border="2px solid #6F154B"
           >
             <Text pb={space.xxxs}>{message.message}</Text>
@@ -313,7 +314,7 @@ export default function ChatActionItem({
             my={6}
             backgroundColor="#272727"
             p={space.xxxs}
-            borderRadius={radii.xxs}
+            borderRadius={4}
             border="2px solid #7146AE"
           >
             <Text pb={space.xxxs} color="#D5BBFF">
@@ -346,7 +347,7 @@ export default function ChatActionItem({
             my={6}
             backgroundColor="#401E67"
             p={space.xxxs}
-            borderRadius={radii.xxs}
+            borderRadius={4}
             border="2px solid #7146AE"
           >
             <Text pb={space.xxxs}>{message.message}</Text>
