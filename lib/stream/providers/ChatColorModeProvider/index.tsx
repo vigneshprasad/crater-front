@@ -1,0 +1,94 @@
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { DefaultTheme, ThemeProvider } from "styled-components";
+
+import useAuth from "@/auth/context/AuthContext";
+
+interface ProviderProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+interface IChatColorModeState {
+  colorMode: string;
+  toggleColorMode: () => void;
+}
+
+export const ChatColorModeContext = createContext({} as IChatColorModeState);
+
+export function ChatColorModeProvider({
+  children,
+}: ProviderProps): JSX.Element {
+  const [colorMode, setColorMode] = useState<string>();
+  const { profile } = useAuth();
+
+  useEffect(() => {
+    const mode = localStorage.getItem("chatColorMode") || "dark";
+    setColorMode(mode);
+  }, []);
+
+  const toggleColorMode = useCallback(() => {
+    const newColorMode =
+      profile?.is_creator && colorMode === "dark" ? "light" : "dark";
+    setColorMode(newColorMode);
+    localStorage.setItem("chatColorMode", newColorMode);
+  }, [colorMode, profile]);
+
+  const setTheme = useCallback(
+    (theme: DefaultTheme): DefaultTheme => {
+      if (colorMode === "light") {
+        return {
+          ...theme,
+          colors: {
+            ...theme.colors,
+            slate: "#868686",
+            white: ["#9146FF", "#b9b9b9"],
+            black: [
+              "#333333",
+              "#1B1D21",
+              "#E6E6E6",
+              "#242731",
+              "#191B20",
+              "#EDEDED",
+              "#18181A",
+              "#000000",
+            ],
+            chatColors: ["#5971D3", "#35AF27", "#CE2088"],
+          },
+        };
+      }
+
+      return theme;
+    },
+    [colorMode]
+  );
+
+  const value: IChatColorModeState = useMemo(
+    () => ({
+      colorMode: colorMode ?? "dark",
+      toggleColorMode,
+    }),
+    [colorMode, toggleColorMode]
+  );
+
+  return (
+    <ChatColorModeContext.Provider value={value}>
+      <ThemeProvider theme={setTheme}>{children}</ThemeProvider>
+    </ChatColorModeContext.Provider>
+  );
+}
+
+export default function useChatColorMode(): IChatColorModeState {
+  const context = useContext(ChatColorModeContext);
+
+  if (!context) {
+    throw new Error("You need to wrap ChatColorModeProvider.");
+  }
+
+  return context;
+}
