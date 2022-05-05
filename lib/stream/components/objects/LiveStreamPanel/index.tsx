@@ -14,6 +14,7 @@ import { useWebinar } from "@/community/context/WebinarContext";
 import { ChallengeListProvider } from "@/leaderboard/context/ChallegeListContext";
 import { LeaderboardListProvider } from "@/leaderboard/context/LeaderboardListContext";
 import { UserLeaderboardListProvider } from "@/leaderboard/context/UserLeaderboardListContext";
+import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 
 import StreamChat from "../StreamChat";
 import StreamLeaderboardPanel from "../StreamLeaderboardPanel";
@@ -79,7 +80,9 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       )}
 
       {activeTab === "chat" && webinar && !webinar.closed && (
-        <StreamChat stream={webinar} />
+        <ChatColorModeProvider>
+          <StreamChat stream={webinar} />
+        </ChatColorModeProvider>
       )}
       {activeTab === "auction" && webinar && (
         <StreamRewardsPanel stream={webinar} />
