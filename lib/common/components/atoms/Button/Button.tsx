@@ -19,7 +19,8 @@ type Variants =
   | "red-error"
   | "filter-button"
   | "filter-button-selected"
-  | "text-button";
+  | "text-button"
+  | "full-width-outline-small";
 
 export type ButtonProps = Omit<BoxProps, "variant"> &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -148,6 +149,11 @@ const StyledButton = styled(Grid)<ButtonProps>`
           textDecoration: "none",
         },
       },
+      "full-width-outline-small": {
+        minHeight: 34,
+        borderRadius: 6,
+        width: "100%",
+      },
     },
   })}
 `;
@@ -178,6 +184,7 @@ export function Button({
       "filter-button": "categoryFilter",
       "filter-button-selected": "categoryFilter",
       "text-button": "button",
+      "full-width-outline-small": "button",
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp]);
@@ -197,6 +204,7 @@ export function Button({
       "filter-button": colors.accent,
       "filter-button-selected": colors.accent,
       "text-button": colors.accent,
+      "full-width-outline-small": "transparent",
     };
     return variantProp ? map[variantProp] : "button";
   }, [variantProp, colors]);
