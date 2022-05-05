@@ -62,8 +62,8 @@ export default function AppLinkButton({
     <a href={buttonData.url} target="_blank" rel="noreferrer">
       <LinkButton
         variant="full-width-outline-small"
-        gridTemplateColumns="50px 1fr"
-        gridGap={4}
+        gridTemplateColumns={["40px 1fr", "50px 1fr"]}
+        gridGap={6}
         text={buttonData.text}
         onClick={() => {
           track(analyticsEventName ?? AnalyticsEvents.mobile_app_badge_clicked);
