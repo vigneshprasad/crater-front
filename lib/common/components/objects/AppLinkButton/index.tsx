@@ -62,8 +62,8 @@ export default function AppLinkButton({
     <a href={buttonData.url} target="_blank" rel="noreferrer">
       <LinkButton
         variant="full-width-outline-small"
-        gridTemplateColumns="1fr 1fr"
-        gridGap={4}
+        gridTemplateColumns={["40px 1fr", "50px 1fr"]}
+        gridGap={6}
         text={buttonData.text}
         onClick={() => {
           track(analyticsEventName ?? AnalyticsEvents.mobile_app_badge_clicked);
@@ -73,7 +73,13 @@ export default function AppLinkButton({
             <Icon size={20} icon={buttonData.icon} justifySelf="end" />
           )
         }
-        textProps={{ textAlign: "start", px: 0, color: "#d5bbff" }}
+        textProps={{
+          textAlign: "start",
+          px: 0,
+          color: "#d5bbff",
+          w: "100%",
+          justifySelf: "start",
+        }}
       />
     </a>
   );
