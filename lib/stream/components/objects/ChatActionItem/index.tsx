@@ -235,7 +235,7 @@ export default function ChatActionItem({
               gridGap={space.xxxs}
               alignItems="center"
             >
-              <Avatar size={32} image={stream?.host_profile_details?.image} />
+              <Avatar size={32} image={stream?.host_detail?.photo} />
               <Text color="#EDEDED" variant="title">
                 {stream?.host_detail.name}
               </Text>
