@@ -3,6 +3,7 @@ import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 
 import LiveStreamPanel from "../../objects/LiveStreamPanel";
+import StreamViewerCount from "../../objects/StreamViewerCount";
 import UpcomingStreamsWidget from "../../objects/UpcomingStreamsWidget";
 
 interface IProps {
@@ -28,6 +29,7 @@ export default function LiveStreamPageLayout({
           <Box position="relative" pt="56.25%">
             {videoPlayer}
             <UpcomingStreamsWidget />
+            <StreamViewerCount />
           </Box>
           {streamDetail}
         </Box>

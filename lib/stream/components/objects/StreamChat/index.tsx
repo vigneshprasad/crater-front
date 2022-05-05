@@ -2,6 +2,7 @@ import { useRef, useEffect, SyntheticEvent, useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
+import useSystemSocket from "@/auth/context/SystemSocketContext";
 import {
   Box,
   Input,
@@ -37,7 +38,8 @@ interface ChatFormProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const { profile, permission } = useAuth();
+  const { profile } = useAuth();
+  const { permission } = useSystemSocket();
   const { rewards } = useRewardsList();
   const { messages, postMessage } = useFirebaseChat();
   const { space, borders, gradients, radii } = useTheme();
