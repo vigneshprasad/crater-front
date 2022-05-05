@@ -13,11 +13,13 @@ import {
   Link,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
+import { Checkbox } from "@/common/components/atoms/Checkbox";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
+import useChatColorMode from "@/stream/providers/ChatColorModeProvider";
 import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
 import { ChatMessageType } from "@/stream/types/streamChat";
 import useRewardsList from "@/tokens/context/RewardsListContext";
@@ -40,8 +42,9 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
   const { profile, permission } = useAuth();
   const { rewards } = useRewardsList();
   const { messages, postMessage } = useFirebaseChat();
-  const { space, borders, gradients, radii } = useTheme();
+  const { space, borders, gradients, radii, colors } = useTheme();
   const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
+  const { colorMode, toggleColorMode } = useChatColorMode();
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
     {
@@ -113,6 +116,7 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
       }
       borderTop={[`2px solid ${borders.main}`, "none"]}
       borderLeft={`2px solid ${borders.main}`}
+      bg={["black.5", "black.5"]}
       {...rest}
     >
       {hasActiveReward && (
@@ -161,6 +165,9 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
                 <ChatMessageItem
                   message={message}
                   key={message.created_at.toString()}
+                  textColor={
+                    colorMode === "light" ? colors.black[0] : undefined
+                  }
                 />
               );
             } else if (messageType === ChatMessageType.ACTION) {
@@ -190,8 +197,29 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
             placeholder="Ask a Question"
             value={fields.message.value}
             onChange={(e) => fieldValueSetter("message", e.currentTarget.value)}
+            placeholderColor={colorMode === "dark" ? undefined : "#969696"}
           />
-          <Flex justifyContent="flex-end" flexDirection="row">
+          <Flex
+            justifyContent={profile?.is_creator ? "space-between" : "flex-end"}
+            flexDirection="row"
+          >
+            {profile?.is_creator && (
+              <Flex
+                justifySelf="flex-start"
+                alignItems="center"
+                gridGap={space.xxxxs}
+              >
+                <Text
+                  color={colorMode === "light" ? colors.black[0] : undefined}
+                >
+                  Dark Mode
+                </Text>
+                <Checkbox
+                  checked={colorMode === "dark"}
+                  onClick={() => toggleColorMode()}
+                />
+              </Flex>
+            )}
             {(() => {
               if (!profile) return null;
 
@@ -220,6 +248,7 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
               variant="nav-button"
               px={space.xxxs}
               text="Ask"
+              textProps={{ color: colorMode === "dark" ? undefined : "#fff" }}
             />
           </Flex>
         </Form>
