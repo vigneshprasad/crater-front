@@ -426,7 +426,7 @@ export default function ChatActionItem({
 
       {actions.map(({ action, display }, index) => {
         const chatAction = parseInt(message.action.toString());
-        if (action === chatAction && !profile?.is_creator) {
+        if (action === chatAction && profile && !profile?.is_creator) {
           return <Box key={index}>{display}</Box>;
         }
       })}
