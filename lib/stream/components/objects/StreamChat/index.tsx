@@ -198,6 +198,7 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
             value={fields.message.value}
             onChange={(e) => fieldValueSetter("message", e.currentTarget.value)}
             placeholderColor={colorMode === "dark" ? undefined : "#969696"}
+            color={colorMode === "dark" ? undefined : colors.black[0]}
           />
           <Flex
             justifyContent={
@@ -211,15 +212,16 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
                 alignItems="center"
                 gridGap={space.xxxxs}
               >
-                <Text
-                  color={colorMode === "light" ? colors.black[0] : undefined}
-                >
-                  Dark Mode
-                </Text>
                 <Checkbox
                   checked={colorMode === "dark"}
+                  labelProps={{
+                    color: colorMode === "light" ? colors.black[0] : undefined,
+                    textStyle: "button",
+                  }}
                   onClick={() => toggleColorMode()}
-                />
+                >
+                  Dark Mode
+                </Checkbox>
               </Flex>
             )}
             {(() => {
