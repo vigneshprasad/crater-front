@@ -80,7 +80,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       )}
 
       {activeTab === "chat" && webinar && !webinar.closed && (
-        <ChatColorModeProvider>
+        <ChatColorModeProvider host={webinar.host}>
           <StreamChat stream={webinar} />
         </ChatColorModeProvider>
       )}

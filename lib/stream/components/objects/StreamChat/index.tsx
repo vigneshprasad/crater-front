@@ -39,7 +39,7 @@ interface ChatFormProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const { profile, permission } = useAuth();
+  const { user, profile, permission } = useAuth();
   const { rewards } = useRewardsList();
   const { messages, postMessage } = useFirebaseChat();
   const { space, borders, gradients, radii, colors } = useTheme();
@@ -200,10 +200,12 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
             placeholderColor={colorMode === "dark" ? undefined : "#969696"}
           />
           <Flex
-            justifyContent={profile?.is_creator ? "space-between" : "flex-end"}
+            justifyContent={
+              user?.pk === stream.host ? "space-between" : "flex-end"
+            }
             flexDirection="row"
           >
-            {profile?.is_creator && (
+            {user?.pk === stream.host && (
               <Flex
                 justifySelf="flex-start"
                 alignItems="center"

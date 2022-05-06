@@ -12,6 +12,7 @@ import useAuth from "@/auth/context/AuthContext";
 
 interface ProviderProps {
   children: React.ReactNode | React.ReactNode[];
+  host?: string;
 }
 
 interface IChatColorModeState {
@@ -23,9 +24,10 @@ export const ChatColorModeContext = createContext({} as IChatColorModeState);
 
 export function ChatColorModeProvider({
   children,
+  host,
 }: ProviderProps): JSX.Element {
   const [colorMode, setColorMode] = useState<string>();
-  const { profile } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const mode = localStorage.getItem("chatColorMode") || "dark";
@@ -34,10 +36,10 @@ export function ChatColorModeProvider({
 
   const toggleColorMode = useCallback(() => {
     const newColorMode =
-      profile?.is_creator && colorMode === "dark" ? "light" : "dark";
+      user?.pk === host && colorMode === "dark" ? "light" : "dark";
     setColorMode(newColorMode);
     localStorage.setItem("chatColorMode", newColorMode);
-  }, [colorMode, profile]);
+  }, [colorMode, user, host]);
 
   const setTheme = useCallback(
     (theme: DefaultTheme): DefaultTheme => {
