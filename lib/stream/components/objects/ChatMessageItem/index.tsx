@@ -48,6 +48,7 @@ export default function ChatMessageItem({
 
   return (
     <Text
+      textStyle="chatText"
       mx={space.xxs}
       key={message.message}
       wordBreak="break-word"
