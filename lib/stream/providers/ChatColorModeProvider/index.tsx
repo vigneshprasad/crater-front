@@ -58,7 +58,14 @@ export function ChatColorModeProvider({
               "#18181A",
               "#000000",
             ],
-            chatColors: ["#5971D3", "#35AF27", "#CE2088"],
+            chatColors: [
+              "#6308BA",
+              "#1C91B5",
+              "#D39409",
+              "#15AF04",
+              "#D34242",
+              "#2752CC",
+            ],
           },
         };
       }
