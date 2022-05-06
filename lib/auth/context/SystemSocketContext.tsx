@@ -70,7 +70,7 @@ export default function useSystemSocket(): ISystemSocketContextState {
   const context = useContext(SystemSocketContext);
 
   if (!context) {
-    throw new Error("You need to wrap AuthModalProvider.");
+    throw new Error("You need to wrap SystemSocketProvider.");
   }
 
   return context;
