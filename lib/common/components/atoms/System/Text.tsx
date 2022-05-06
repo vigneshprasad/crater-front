@@ -159,7 +159,7 @@ const variants = {
     fontFamily: fonts.body,
     fontSize: ["1.6rem"],
     fontWeight: "400",
-    lineHeight: ["2.2rem"],
+    lineHeight: ["2.4rem"],
   },
 };
 
