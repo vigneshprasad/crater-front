@@ -76,7 +76,7 @@ export default function AppLinkButton({
         textProps={{
           textAlign: "start",
           px: 0,
-          color: "#d5bbff",
+          color: "#ffffff",
           w: "100%",
           justifySelf: "start",
         }}
