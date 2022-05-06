@@ -116,7 +116,7 @@ export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
       }
       borderTop={[`2px solid ${borders.main}`, "none"]}
       borderLeft={`2px solid ${borders.main}`}
-      bg={["black.5", "black.5"]}
+      bg={colors.black[5]}
       {...rest}
     >
       {hasActiveReward && (
