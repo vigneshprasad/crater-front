@@ -222,7 +222,10 @@ export default function StreamChat({
                                 : undefined,
                             textStyle: "button",
                           }}
-                          onClick={() => toggleColorMode()}
+                          onClick={() => {
+                            console.log(toggleColorMode);
+                            toggleColorMode();
+                          }}
                         >
                           Dark Mode
                         </Checkbox>
