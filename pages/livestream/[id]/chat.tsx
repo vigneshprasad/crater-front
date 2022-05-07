@@ -6,6 +6,7 @@ import WebinarApiClient from "@/community/api";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import StreamChat from "@/stream/components/objects/StreamChat";
+import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 
 interface IParams extends ParsedUrlQuery {
   id: string;
@@ -43,9 +44,11 @@ export default function StreamChatPage({
 }: StreamChatPageProps): JSX.Element {
   return (
     <WebinarProvider initial={webinar} id={id}>
-      <Box h="100vh">
-        <StreamChat showPopup={false} stream={webinar} />
-      </Box>
+      <ChatColorModeProvider>
+        <Box h="100vh">
+          <StreamChat showPopup={false} stream={webinar} />
+        </Box>
+      </ChatColorModeProvider>
     </WebinarProvider>
   );
 }
