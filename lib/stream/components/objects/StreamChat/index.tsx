@@ -223,7 +223,6 @@ export default function StreamChat({
                             textStyle: "button",
                           }}
                           onClick={() => {
-                            console.log(toggleColorMode);
                             toggleColorMode();
                           }}
                         >
