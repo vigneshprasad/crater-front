@@ -39,8 +39,12 @@ interface ChatFormProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function StreamChat({ stream, ...rest }: IProps): JSX.Element {
-  const { profile } = useAuth();
+export default function StreamChat({
+  stream,
+  showPopup = true,
+  ...rest
+}: IProps): JSX.Element {
+  const { profile, user } = useAuth();
   const { permission } = useSystemSocket();
   const { rewards } = useRewardsList();
   const { space, borders, gradients, radii, colors } = useTheme();
