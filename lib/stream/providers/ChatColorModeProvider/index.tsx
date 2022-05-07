@@ -26,7 +26,7 @@ export function ChatColorModeProvider({
   children,
   host,
 }: ProviderProps): JSX.Element {
-  const [colorMode, setColorMode] = useState<string>();
+  const [colorMode, setColorMode] = useState<string>("dark");
   const { user } = useAuth();
 
   useEffect(() => {
