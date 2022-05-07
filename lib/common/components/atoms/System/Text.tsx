@@ -155,6 +155,12 @@ const variants = {
     fontSize: ["1.5rem", "2rem"],
     fontWeight: "600",
   },
+  chatText: {
+    fontFamily: fonts.body,
+    fontSize: ["1.6rem"],
+    fontWeight: "400",
+    lineHeight: ["2.4rem"],
+  },
 };
 
 export type TextVariants = keyof typeof variants;

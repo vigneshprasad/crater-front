@@ -8,6 +8,7 @@ import { ChatMessage } from "@/stream/providers/FirebaseChatProvider/types";
 
 interface IProps {
   message: ChatMessage;
+  textColor?: string;
 }
 
 const LinkSpan = styled(Span)`
@@ -21,7 +22,10 @@ const LinkifiedText = ({ text }: { text: string }): JSX.Element => {
   return <LinkSpan dangerouslySetInnerHTML={{ __html: text }} />;
 };
 
-export default function ChatMessageItem({ message }: IProps): JSX.Element {
+export default function ChatMessageItem({
+  message,
+  textColor,
+}: IProps): JSX.Element {
   const { space, colors } = useTheme();
   const name = useMemo(() => {
     if (message.display_name) {
@@ -43,7 +47,13 @@ export default function ChatMessageItem({ message }: IProps): JSX.Element {
   const toHash = name + message.sender_details?.pk;
 
   return (
-    <Text mx={space.xxs} key={message.message} wordBreak="break-word">
+    <Text
+      textStyle="chatText"
+      mx={space.xxs}
+      key={message.message}
+      wordBreak="break-word"
+      color={textColor}
+    >
       <Span
         color={colors.chatColors[hashString(toHash) % colors.chatColors.length]}
       >

@@ -44,9 +44,12 @@ export type InputProps = BackgroundProps &
     prefixElement?: React.ReactNode;
     error?: string;
     boxProps?: BoxProps;
+    placeholderColor?: string;
   };
 
-export const StyledInput = styled.input<InputProps>`
+export const StyledInput = styled.input<
+  InputProps & { placeholderColor?: string }
+>`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: 1.4rem;
   font-weight: 400;
@@ -63,6 +66,7 @@ export const StyledInput = styled.input<InputProps>`
     font-size: 1.1rem;
     font-weight: 700;
     text-transform: uppercase;
+    color: ${({ placeholderColor }) => placeholderColor};
   }
 
   ${background}

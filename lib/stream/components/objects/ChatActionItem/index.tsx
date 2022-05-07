@@ -235,7 +235,7 @@ export default function ChatActionItem({
               gridGap={space.xxxs}
               alignItems="center"
             >
-              <Avatar size={32} image={stream?.host_profile_details?.image} />
+              <Avatar size={32} image={stream?.host_detail?.photo} />
               <Text color="#EDEDED" variant="title">
                 {stream?.host_detail.name}
               </Text>
@@ -426,7 +426,7 @@ export default function ChatActionItem({
 
       {actions.map(({ action, display }, index) => {
         const chatAction = parseInt(message.action.toString());
-        if (action === chatAction && !profile?.is_creator) {
+        if (action === chatAction && profile && !profile?.is_creator) {
           return <Box key={index}>{display}</Box>;
         }
       })}

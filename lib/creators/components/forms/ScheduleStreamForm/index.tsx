@@ -79,7 +79,7 @@ export default function ScheduleStreamForm({
         ],
       },
       start: {
-        intialValue: DateTime.now().plus({ hours: 24 }),
+        intialValue: DateTime.now().plus({ minutes: 15 }),
         validators: [
           {
             validator: Validators.required,
@@ -130,7 +130,7 @@ export default function ScheduleStreamForm({
             const error = err.response.data as BaseApiError;
             if (
               error.error_code === "groupStartDateTimeNotInFuture" ||
-              error.error_code === "groupStartLessThan24Hours"
+              error.error_code === "groupStartLessThan15Minutes"
             ) {
               fieldErrorSetter("start", error.error_message);
             }

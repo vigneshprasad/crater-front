@@ -5,7 +5,6 @@ import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
 import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
-import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
 import StreamChatProvider from "@/stream/providers/StreamChatProvider";
 import { BidListProvider } from "@/tokens/context/BidListContext";
 import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
@@ -36,26 +35,22 @@ export default function Container({
         user={user?.pk}
       >
         <DyteWebinarProvider id={id}>
-          <FirebaseChatProvider groupId={id}>
-            <BidListProvider
-              filterCreator={webinar.host_detail?.creator_detail?.id}
+          <BidListProvider
+            filterCreator={webinar.host_detail?.creator_detail?.id}
+          >
+            <RewardsListProvider
+              initial={rewards}
+              filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
             >
-              <RewardsListProvider
-                initial={rewards}
-                filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
-              >
-                <StreamsToRsvpProvider>
-                  <ReferralSummaryProvider>
-                    <LiveStreamPageProvider>
-                      <StreamChatProvider id={id}>
-                        {children}
-                      </StreamChatProvider>
-                    </LiveStreamPageProvider>
-                  </ReferralSummaryProvider>
-                </StreamsToRsvpProvider>
-              </RewardsListProvider>
-            </BidListProvider>
-          </FirebaseChatProvider>
+              <StreamsToRsvpProvider>
+                <ReferralSummaryProvider>
+                  <LiveStreamPageProvider>
+                    <StreamChatProvider id={id}>{children}</StreamChatProvider>
+                  </LiveStreamPageProvider>
+                </ReferralSummaryProvider>
+              </StreamsToRsvpProvider>
+            </RewardsListProvider>
+          </BidListProvider>
         </DyteWebinarProvider>
       </FollowerProvider>
     </WebinarProvider>
