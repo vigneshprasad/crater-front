@@ -33,7 +33,7 @@ export default function ShareAndEarnModalPage({
 
       <Box>
         <Text pb={space.xxs} textStyle="captionLarge">
-          Earn ₹50 and gift ₹50 for every referral 🎉
+          Earn ₹100 for every referral 🎉
         </Text>
 
         <UrlShare referrer={user} />
