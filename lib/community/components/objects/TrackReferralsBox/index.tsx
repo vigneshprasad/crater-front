@@ -74,7 +74,7 @@ export default function TrackReferralsBox({
         fontStyle="italic"
         fontWeight={600}
       >
-        * Payout happens every ₹250.
+        * Payout happens every ₹500.
       </Text>
     </Box>
   );
