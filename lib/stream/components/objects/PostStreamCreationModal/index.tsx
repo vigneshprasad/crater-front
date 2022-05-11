@@ -76,9 +76,8 @@ export default function PostStreamCreationModal({
   }, [currentModalPage]);
 
   const skipAllScreens = useCallback(() => {
-    onClose();
     router.push(PageRoutes.session(`${streamId}`));
-  }, [onClose, router, streamId]);
+  }, [router, streamId]);
 
   const { data: creator } = useSWR<Creator>(
     user ? API_URL_CONSTANTS.creator.getMyCreator : null
