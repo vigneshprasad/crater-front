@@ -176,6 +176,7 @@ export default function ScheduleStreamForm({
                 />
               ) : undefined
             }
+            disabled={loading}
           />
         </Flex>
       }
