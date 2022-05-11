@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styled, { useTheme } from "styled-components";
 
-import IconButton from "../IconButton";
+import IconButton, { IconButtonProps } from "../IconButton";
 import { Box } from "../System/Box";
 import { GridProps } from "../System/Grid";
 
@@ -12,7 +12,7 @@ export type IModalProps = GridProps & {
   onClose?: () => void;
   maxWidth?: number;
   maxHeight?: number;
-  iconButtonProps?: GridProps;
+  iconButtonProps?: GridProps | IconButtonProps;
 };
 
 const Overlay = styled(Box)`
