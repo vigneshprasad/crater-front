@@ -44,8 +44,8 @@ export default function StreamChat({
   showPopup = true,
   ...rest
 }: IProps): JSX.Element {
-  const { profile, user } = useAuth();
-  const { permission } = useSystemSocket();
+  const { profile, user, permission: apiPermission } = useAuth();
+  const { permission: socketPermission } = useSystemSocket();
   const { rewards } = useRewardsList();
   const { space, borders, gradients, radii, colors } = useTheme();
   const { colorMode, toggleColorMode } = useChatColorMode();
@@ -71,6 +71,11 @@ export default function StreamChat({
       },
     }
   );
+
+  const permission = useMemo(() => {
+    if (socketPermission) return socketPermission;
+    return apiPermission;
+  }, [apiPermission, socketPermission]);
 
   const hasActiveReward = useMemo(() => {
     if (!rewards) {
