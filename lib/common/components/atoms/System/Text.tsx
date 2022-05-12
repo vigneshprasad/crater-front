@@ -35,9 +35,9 @@ const variants = {
   },
   headline5: {
     fontFamily: fonts.body,
-    fontSize: ["1.8rem", "2.2rem"],
-    fontWeight: "600",
-    lineHeight: ["3.2rem"],
+    fontSize: ["1.8rem", "2.4rem"],
+    fontWeight: "500",
+    lineHeight: ["3.6rem"],
   },
   headline6: {
     fontFamily: fonts.body,
@@ -68,8 +68,8 @@ const variants = {
   },
   caption: {
     fontFamily: fonts.body,
-    fontSize: ["1.3rem"],
-    fontWeight: "500",
+    fontSize: ["1.2rem"],
+    fontWeight: "600",
     lineHeight: ["2.2rem"],
   },
   captionLarge: {
@@ -80,19 +80,20 @@ const variants = {
   },
   body: {
     fontFamily: fonts.body,
-    fontSize: ["1.3rem"],
+    fontSize: ["1.4rem"],
     fontWeight: "400",
+    lineHeight: ["2.0rem"],
   },
   bodyLarge: {
     fontFamily: fonts.body,
-    fontSize: ["1.4rem"],
-    fontWeight: "400",
-    lineHeight: ["2.2rem"],
+    fontSize: ["1.6rem"],
+    fontWeight: "500",
+    lineHeight: ["2.4rem"],
   },
   button: {
     fontFamily: fonts.body,
-    fontSize: ["1.3rem"],
-    fontWeight: "600",
+    fontSize: ["1.4rem"],
+    fontWeight: "500",
   },
   buttonLarge: {
     fontFamily: fonts.body,
@@ -123,7 +124,7 @@ const variants = {
   },
   small: {
     fontFamily: fonts.body,
-    lineHeight: ["1.6rem"],
+    lineHeight: ["1.8rem"],
     fontSize: ["1.2rem"],
   },
   dropdownItem: {
@@ -157,9 +158,21 @@ const variants = {
   },
   chatText: {
     fontFamily: fonts.body,
-    fontSize: ["1.6rem"],
-    fontWeight: "400",
+    fontSize: ["1.3rem"],
+    fontWeight: "500",
     lineHeight: ["2.4rem"],
+  },
+  tabLabel: {
+    fontFamily: fonts.body,
+    fontSize: ["1.3rem"],
+    fontWeight: "600",
+  },
+  cardHeader: {
+    fontFamily: fonts.body,
+    fontSize: ["1.2rem"],
+    fontWeight: "600",
+    lineHeight: ["2.2rem"],
+    textTransform: "uppercase",
   },
 };
 
@@ -170,6 +183,7 @@ export type TextProps = BoxProps &
   React.HTMLAttributes<HTMLParagraphElement> &
   React.HTMLAttributes<HTMLLabelElement> & {
     as?:
+      | "div"
       | "p"
       | "small"
       | "strong"
@@ -223,7 +237,9 @@ export const Text = styled(Box)<TextProps>`
       -webkit-line-clamp: ${maxLines};
       -webkit-box-orient: vertical;
     `}
-    ${whiteSpace} ${textOverflow} ${typography};
+    ${whiteSpace} 
+    ${textOverflow} 
+    ${typography}
 `;
 
 Text.defaultProps = {

@@ -17,6 +17,7 @@ const fontSizes = {
 };
 
 const space = {
+  xxxxxs: 4,
   xxxxs: 8,
   xxxs: 12,
   xxs: 16,
@@ -31,15 +32,17 @@ const space = {
 
 const borders = {
   main: "rgba(228, 228, 228, 0.1)",
+  input: "#353535",
 };
 
 const fonts = {
-  heading: "Roobert, sans-serif",
-  body: "Roobert, sans-serif",
+  heading: "Inter, sans-serif",
+  body: "Inter, sans-serif",
 };
 
 const radii = {
-  xxxs: 4,
+  xxxxs: 4,
+  xxxs: 6,
   xxs: 8,
   xs: 12,
   s: 16,

@@ -10,10 +10,13 @@
     "svgr": "npx @svgr/cli@5.5.0 ./public/svg --template ./public/svg/svgrtemplate.js --index-template ./public/svg/index-template.js --icon --ext tsx --out-dir ./lib/common/components/atoms/Icon/icons",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
-    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@datadog/browser-rum": "^4.6.1",
+    "@fontsource/inter": "^4.5.10",
     "@segment/analytics-next": "^1.30.0",
     "@stripe/react-stripe-js": "^1.7.0",
     "@stripe/stripe-js": "^1.22.0",
@@ -51,7 +54,14 @@
     "world-countries": "^4.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.10",
     "@next/bundle-analyzer": "^11.1.2",
+    "@storybook/addon-actions": "^6.4.22",
+    "@storybook/addon-essentials": "^6.4.22",
+    "@storybook/addon-interactions": "^6.4.22",
+    "@storybook/addon-links": "^6.4.22",
+    "@storybook/react": "^6.4.22",
+    "@storybook/testing-library": "^0.0.11",
     "@svgr/webpack": "^5.5.0",
     "@trivago/prettier-plugin-sort-imports": "^2.0.2",
     "@types/luxon": "^2.0.4",
@@ -64,6 +74,7 @@
     "@types/validator": "^13.6.3",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.28.3",
+    "babel-loader": "^8.2.5",
     "circular-dependency-plugin": "^5.2.2",
     "cross-env": "^7.0.3",
     "eslint": "7.30.0",

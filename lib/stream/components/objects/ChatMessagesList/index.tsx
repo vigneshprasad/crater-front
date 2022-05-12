@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useTheme } from "styled-components";
 
-import { Box } from "@/common/components/atoms";
+import { Box, Flex } from "@/common/components/atoms";
 import { useWebinar } from "@/community/context/WebinarContext";
 import {
   ChatMessage,
@@ -35,12 +35,8 @@ export default function ChatMessagesList({
   }, [messages, messagesContainerRef]);
 
   return (
-    <Box
-      overflowY="auto"
-      position="relative"
-      borderBottom={`1px solid ${borders.main}`}
-    >
-      <Box
+    <Box position="relative" borderBottom={`1px solid ${borders.main}`}>
+      <Flex
         position="absolute"
         top={0}
         right={0}
@@ -48,9 +44,12 @@ export default function ChatMessagesList({
         bottom={0}
         ref={messagesContainerRef}
         py={space.xxxs}
+        gridGap={space.xxxxs}
         flexDirection="column-reverse"
+        alignItems="flex-start"
+        overflowY="auto"
       >
-        {[...messages].reverse().map((message) => {
+        {[...messages].map((message) => {
           const messageType = parseInt(message.type.toString());
           if (messageType === ChatMessageType.TEXT) {
             return (
@@ -71,7 +70,7 @@ export default function ChatMessagesList({
             );
           }
         })}
-      </Box>
+      </Flex>
     </Box>
   );
 }

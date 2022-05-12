@@ -51,21 +51,21 @@ export const StyledInput = styled.input<
   InputProps & { placeholderColor?: string }
 >`
   font-family: ${({ theme }) => theme.fonts.body};
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 400;
-  line-height: 2.4rem;
+  line-height: 1.8rem;
   box-sizing: border-box;
   color: ${({ theme }) => theme.colors.white[0]};
   background: transparent;
   box-shadow: none;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   outline: none;
   width: 100%;
 
   &::placeholder {
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-transform: uppercase;
+    font-family: ${({ theme }) => theme.fonts.body};
+    font-size: 1.2rem;
+    font-weight: 600;
     color: ${({ placeholderColor }) => placeholderColor};
   }
 
@@ -84,12 +84,11 @@ export const StyledInput = styled.input<
 
 export const InputContainer = styled(Flex)<FlexProps>`
   padding: 6px 8px;
-  background: ${({ theme }) => theme.colors.black[2]};
-  border-radius: ${({ theme }) => theme.radii.xxs}px;
+  border-radius: ${({ theme }) => theme.radii.xxxxs}px;
   align-items: center;
 
   &:focus-within {
-    border: 2px solid ${({ theme }) => theme.colors.accent};
+    border: 1px solid ${({ theme }) => theme.colors.accent};
   }
 `;
 
@@ -98,18 +97,19 @@ function InputWithRef({
   prefixElement,
   boxProps,
   error,
+  bg,
   ...rest
 }: InputProps & {
   inputRef: React.ForwardedRef<HTMLInputElement>;
 }): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, borders } = useTheme();
 
   const border = useMemo(() => {
-    return `2px solid ${error ? colors.error : "transparent"}`;
+    return `1px solid ${error ? colors.error : borders.input}`;
   }, [error, colors]);
   return (
     <Box {...boxProps}>
-      <InputContainer border={border}>
+      <InputContainer bg={bg ?? colors.primaryBackground} border={border}>
         {prefixElement && prefixElement}
         <StyledInput ref={inputRef} {...rest} />
       </InputContainer>

@@ -3,7 +3,16 @@ import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Avatar, Box, Grid, Link, Text } from "@/common/components/atoms";
+import {
+  Avatar,
+  Box,
+  Grid,
+  Link,
+  Text,
+  Flex,
+  Icon,
+} from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
 import colors from "@/common/theme/colors";
 import DateTime from "@/common/utils/datetime/DateTime";
@@ -15,18 +24,33 @@ interface IProps {
   hostSlug?: string;
 }
 
-const Span = styled.span`
-  color: ${({ theme }) => theme.colors.accent};
+const ImageContainer = styled(Box)``;
+
+const Overlay = styled(Grid)``;
+
+const Container = styled(Grid)`
+  &:hover > ${ImageContainer} > ${Overlay} {
+    display: grid;
+    opacity: 1;
+    background: rgba(145, 70, 255, 0.4);
+  }
+
+  .overlay {
+    transition: all 0.2s ease-in;
+  }
 `;
 
 const StreamCard = forwardRef<HTMLDivElement, IProps>(
   ({ stream, link, hostSlug }, ref) => {
     const { space, radii } = useTheme();
-    const startTime = DateTime.parse(stream.start);
+    const startTime = DateTime.parse(stream.start).toFormat(
+      DateTime.DEFAULT_FORMAT
+    );
     return (
       <Link key={stream.id} href={link ?? `/session/${stream.id}`}>
-        <Grid gridGap={space.xs} ref={ref}>
-          <Box
+        <Container gridGap={space.xxs} ref={ref}>
+          <ImageContainer
+            className="image-container"
             h={180}
             position="relative"
             pt="56.25%"
@@ -41,49 +65,58 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
                 alt={stream.topic_detail.name}
               />
             )}
-            <Box
-              borderRadius={4}
-              py={2}
-              px={space.xxxs}
-              bg={stream.is_live ? colors.red[0] : colors.black[0]}
+            {stream.is_live && (
+              <Box
+                borderRadius={4}
+                py={2}
+                px={space.xxxs}
+                bg={stream.is_live ? colors.red[0] : colors.black[0]}
+                position="absolute"
+                top={space.xxxs}
+                left={space.xxxs}
+              >
+                <Text textStyle="caption">LIVE</Text>
+              </Box>
+            )}
+            <Overlay
+              display="none"
+              opacity={0}
               position="absolute"
-              top={space.xxxs}
-              left={space.xxxs}
+              top={0}
+              right={0}
+              left={0}
+              bottom={0}
+              bg="transparent"
             >
-              <Text textStyle="caption">
-                {stream.is_live ? (
-                  "LIVE"
-                ) : (
-                  <>
-                    <Span>Live On</Span>{" "}
-                    {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
-                  </>
-                )}
-              </Text>
-            </Box>
-          </Box>
-          <Grid
-            gridTemplateColumns="min-content 1fr"
-            gridGap={space.xxs}
-            alignItems="center"
-          >
+              <Button m="auto auto" label="RSVP" />
+            </Overlay>
+          </ImageContainer>
+          <Flex alignItems="center" gridGap={space.xxxs}>
             {hostSlug && (
               <Link href={PageRoutes.creatorProfile(hostSlug)}>
                 <Avatar
-                  size={56}
+                  size={28}
                   alt={stream.host_detail?.name || ""}
                   image={stream.host_detail?.photo}
                 />
               </Link>
             )}
-            <Box>
-              <Text maxLines={3}>{stream.topic_detail?.name}</Text>
-              <Text color={colors.slate} textStyle="caption">
-                {stream.host_detail?.name}
-              </Text>
-            </Box>
-          </Grid>
-        </Grid>
+
+            <Text textStyle="body">{stream.host_detail?.name}</Text>
+          </Flex>
+          <Text maxLines={3}>{stream.topic_detail?.name}</Text>
+
+          <Flex
+            color={colors.textSecondary}
+            alignItems="center"
+            gridGap={space.xxxs}
+          >
+            <Icon size={16} color="inherit" icon="Calendar" />
+            <Text textStyle="body" color="inherit">
+              {startTime}
+            </Text>
+          </Flex>
+        </Container>
       </Link>
     );
   }

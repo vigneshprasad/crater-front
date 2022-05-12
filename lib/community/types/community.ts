@@ -33,6 +33,7 @@ export type Topic = {
   name: string;
   parent?: number;
   root?: number;
+  slug?: string;
 };
 
 export type Group = {

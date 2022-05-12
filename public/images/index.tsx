@@ -1,3 +1,4 @@
+import ImageAppBannerStream from "public/images/img_app_banner_livestream.png";
 import ImageAuctionInactive from "public/images/img_auction_inactive.png";
 import ImageBidAcceptedIcon from "public/images/img_bid_accepted.png";
 import ImageBidRejectedIcon from "public/images/img_bid_rejected.png";
@@ -34,6 +35,7 @@ const STATIC_IMAGES = {
   ImageHand,
   ImageCash,
   ImageStarryBg,
+  ImageAppBannerStream,
 };
 
 export default STATIC_IMAGES;

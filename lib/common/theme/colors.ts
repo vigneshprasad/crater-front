@@ -1,6 +1,7 @@
 const colors = {
   accent: "#9146FF",
   accentHover: "#772CE8",
+  accentLight: "#D5BBFF",
   black: [
     "#333333",
     "#1B1D21",
@@ -56,6 +57,12 @@ const colors = {
     "#F4A8B0",
     "#BDFC97",
   ],
+  primaryBackground: "#121212",
+  primaryLight: "#272727",
+  primaryDark: "#1B1B1B",
+  primaryDarkSecondary: "#2B2B2B",
+  textSecondary: "rgba(255, 255, 255, 0.6)",
+  outline: "rgba(237, 237, 237, 0.6)",
 };
 
 export default colors;
