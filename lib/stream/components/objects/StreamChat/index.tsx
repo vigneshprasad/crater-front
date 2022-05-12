@@ -208,6 +208,7 @@ export default function StreamChat({
                     >
                       {showPopup && (
                         <IconButton
+                          display={["none", "grid"]}
                           icon="PopOut"
                           onClick={openChatPopOut}
                           color={colors.white[0]}

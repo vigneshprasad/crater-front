@@ -220,7 +220,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     : "RSVP for this session";
 
   const shareText = `Watch livestream on "${webinar.topic_detail.name}" on Crater.`;
-  const referralText = "Signup with my referral link and get ₹50. Signup now!";
 
   return (
     <>
@@ -425,7 +424,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 <>
                   <Flex alignItems="center" gridGap={space.xxxs}>
                     <Text textStyle="captionLarge">
-                      Earn ₹50 and gift ₹50 for every referral 🎉
+                      Earn ₹100 for every referral 🎉
                     </Text>
                     <Button
                       text="Details"
@@ -502,7 +501,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 <a
                   href={`https://api.whatsapp.com/send?text=${
                     user && !profile?.is_creator
-                      ? encodeURIComponent(`${shareText} ${referralText}\n\n`)
+                      ? encodeURIComponent(`${shareText}\n\n`)
                       : encodeURIComponent(`${shareText}\n\n`)
                   }${shareUrl("WhatsApp")}`}
                   target="_blank"
