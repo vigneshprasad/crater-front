@@ -188,7 +188,33 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     ) {
       action();
     }
-  }, [router, user, webinar, postGroupRequest, postSeriesRequest]);
+
+    // First time RSVP analytics event tracking
+    if (
+      router.query?.join === "true" &&
+      router.query?.newUser === "true" &&
+      user &&
+      webinar &&
+      !user.name &&
+      !user.email
+    ) {
+      track(AnalyticsEvents.first_time_rsvp, {
+        stream: webinar.id,
+        stream_name: webinar.topic_detail?.name,
+        host: {
+          ...webinar.host_detail,
+        },
+      });
+    }
+  }, [
+    router,
+    user,
+    webinar,
+    profile,
+    postGroupRequest,
+    postSeriesRequest,
+    track,
+  ]);
 
   const shareUrl = useCallback(
     (utmSource: string): string => {
