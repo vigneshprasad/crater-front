@@ -15,7 +15,6 @@ export default function StreamAboutSection({
   followers,
 }: IProps): JSX.Element {
   const { colors, space, radii } = useTheme();
-  console.log(stream);
 
   if (!stream) {
     return <Box>Loading...</Box>;

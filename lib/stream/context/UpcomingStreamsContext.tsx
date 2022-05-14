@@ -1,6 +1,8 @@
 import {
   createContext,
+  Dispatch,
   PropsWithChildren,
+  SetStateAction,
   useContext,
   useMemo,
   useState,
@@ -25,6 +27,8 @@ interface IUpcomingStreamsState {
     PageResponse<Webinar>,
     unknown
   >["mutate"];
+  setPageSize: Dispatch<SetStateAction<number>>;
+  isValidating: boolean;
 }
 
 export const UpcomingStreamsContext = createContext(
@@ -41,16 +45,18 @@ type IProviderProps = PropsWithChildren<{
 export function UpcomingStreamsProvider({
   host,
   initial,
-  pageSize = 20,
+  pageSize: intialPageSize = 20,
   category,
   ...rest
 }: IProviderProps): JSX.Element {
+  const [pageSize, setPageSize] = useState(intialPageSize);
   const [nextPage, setNextPage] = useState(initial?.next ? true : false);
   const {
     data: streams,
     error,
     setSize: setUpcomingStreamsPage,
     mutate: mutateUpcomingStreams,
+    isValidating,
   } = useSWRInfinite<PageResponse<Webinar>>(
     (index, previousData) => {
       const page = index + 1;
@@ -83,8 +89,18 @@ export function UpcomingStreamsProvider({
       nextPage,
       setUpcomingStreamsPage,
       mutateUpcomingStreams,
+      setPageSize,
+      isValidating,
     }),
-    [streams, error, nextPage, setUpcomingStreamsPage, mutateUpcomingStreams]
+    [
+      streams,
+      error,
+      nextPage,
+      setUpcomingStreamsPage,
+      mutateUpcomingStreams,
+      setPageSize,
+      isValidating,
+    ]
   );
 
   return <UpcomingStreamsContext.Provider value={value} {...rest} />;

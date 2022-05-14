@@ -42,7 +42,7 @@ export default function Container({
               initial={rewards}
               filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
             >
-              <UpcomingStreamsProvider pageSize={10}>
+              <UpcomingStreamsProvider pageSize={4}>
                 <StreamsToRsvpProvider>
                   <ReferralSummaryProvider>
                     <LiveStreamPageProvider>{children}</LiveStreamPageProvider>

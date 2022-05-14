@@ -12,7 +12,6 @@ import { useFollower } from "@/creators/context/FollowerContext";
 import { Props as DyteMeetingProps } from "@/dyte/components/objects/DyteMeeting";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
 import UpcomingStreamsList from "@/stream/components//objects/UpcomingStreamsList";
-import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
 import RewardBidModal from "@/tokens/components/objects/RewardBidModal";
 import { Reward } from "@/tokens/types/token";
@@ -64,7 +63,6 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
     subscribeCreator,
   } = useFollower();
   const { postMessage } = useFirebaseChat();
-  const { upcoming } = useUpcomingStreams();
 
   const followCreator = async (): Promise<void> => {
     const creator = cachedWebinar?.host_detail.creator_detail;
@@ -120,7 +118,7 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
           />
         )
       }
-      upcomingsStreams={<UpcomingStreamsList upcoming={upcoming} />}
+      upcomingsStreams={<UpcomingStreamsList />}
     />
   );
 }
