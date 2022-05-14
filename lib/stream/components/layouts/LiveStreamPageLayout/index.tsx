@@ -38,7 +38,7 @@ export default function LiveStreamPageLayout({
                 (group) => group.name === "livestream_chat_admin"
               )[0];
 
-              if (!isAdmin) {
+              if (isAdmin) {
                 return <StreamViewerCount />;
               }
               return null;
