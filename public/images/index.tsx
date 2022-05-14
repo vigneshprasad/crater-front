@@ -15,6 +15,7 @@ import ImagePlaceBidIcon from "public/images/img_place_bid.png";
 import ImageRewardBlob from "public/images/img_reward_blob.png";
 import ImageRewardCard from "public/images/img_reward_card.png";
 import ImageStarryBg from "public/images/img_starry_bg.png";
+import ImageCraterStream from "public/images/img_stream_crater.png";
 import ImageTv from "public/images/img_tv.png";
 
 const STATIC_IMAGES = {
@@ -36,6 +37,7 @@ const STATIC_IMAGES = {
   ImageCash,
   ImageStarryBg,
   ImageAppBannerStream,
+  ImageCraterStream,
 };
 
 export default STATIC_IMAGES;

@@ -18,6 +18,7 @@ export default function UpcomingStreamsList(): JSX.Element {
         gridTemplateColumns="repeat(auto-fill, minmax(280px, 1fr))"
         gridGap={space.xs}
         borderRadius={radii.xxxs}
+        mb={space.xs}
       >
         {(() => {
           if (!upcoming) {
@@ -50,12 +51,7 @@ export default function UpcomingStreamsList(): JSX.Element {
         })()}
       </Grid>
       {nextPage && (
-        <Flex
-          mx={space.xxs}
-          gridGap={space.xxs}
-          py={space.xxs}
-          alignItems="center"
-        >
+        <Flex mx={space.xxs} gridGap={space.xxs} alignItems="center">
           <Flex flex="1" h={1} bg={colors.black[0]} />
           <Button
             label="Show More"

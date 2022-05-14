@@ -14,6 +14,7 @@ interface IProps {
   modal?: React.ReactNode;
   shareSection: React.ReactNode;
   upcomingsStreams: React.ReactNode;
+  pastStreams: React.ReactNode;
 }
 
 export default function LiveStreamPageLayout({
@@ -22,6 +23,7 @@ export default function LiveStreamPageLayout({
   modal,
   shareSection,
   upcomingsStreams,
+  pastStreams,
 }: IProps): JSX.Element {
   const { space } = useTheme();
   return (
@@ -52,7 +54,7 @@ export default function LiveStreamPageLayout({
         </Grid>
 
         <Box gridArea="pageContent">
-          <Box>
+          <Box my={space.xxs}>
             <Image
               src={STATIC_IMAGES.ImageAppBannerStream}
               alt="Get the crater app."
@@ -60,6 +62,14 @@ export default function LiveStreamPageLayout({
           </Box>
           <StyledHeadingDivider label="Explore Streams" />
           {upcomingsStreams}
+          <Box my={space.xxs}>
+            <Image
+              src={STATIC_IMAGES.ImageCraterStream}
+              alt="Get the crater app."
+            />
+          </Box>
+          <StyledHeadingDivider label="Previously Streamed" />
+          {pastStreams}
         </Box>
       </Grid>
     </BaseLayout>
