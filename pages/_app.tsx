@@ -12,7 +12,6 @@ import AuthModal from "@/auth/components/objects/AuthModal";
 import BasicSignupSheet from "@/auth/components/objects/BasicSignupSheet";
 import { AuthProvider } from "@/auth/context/AuthContext";
 import { AuthModalProvider } from "@/auth/context/AuthModalContext";
-import { SystemSocketProvider } from "@/auth/context/SystemSocketContext";
 import {
   UTM_SOURCE_STORAGE_KEY,
   UTM_CAMPAIGN_STORAGE_KEY,
@@ -92,9 +91,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
               <ThemeProvider theme={theme}>
                 <GlobalStyle />
                 <AsideNavProvider>
-                  <SystemSocketProvider>
-                    <Component {...pageProps} />
-                  </SystemSocketProvider>
+                  <Component {...pageProps} />
                 </AsideNavProvider>
                 <AuthModal />
                 <BasicSignupSheet />
