@@ -10,11 +10,11 @@ async function fetchCreator(slug: string): Promise<Creator | null> {
     `${API_BASE_URL}${API_URL_CONSTANTS.creator.retrieveCreatorSlug(slug)}`
   );
 
-  const creator = await response.json();
-
-  if (creator.detail === "Not found.") {
+  if (response.status === 404) {
     return null;
   }
+
+  const creator = await response.json();
 
   return creator;
 }
@@ -30,12 +30,6 @@ async function fetchUpcomingStreamByCreator(host: string): Promise<Webinar> {
 }
 
 export const middleware: NextMiddleware = async (req) => {
-  const path = req.page.name;
-
-  if (path !== "/creator/[slug]/upcoming") {
-    return NextResponse.next();
-  }
-
   const slug = req.page.params?.slug;
 
   if (!slug) {
