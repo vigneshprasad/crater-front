@@ -100,7 +100,8 @@ export default function Footer(): JSX.Element {
         borderTop={`2px solid ${borders.main}`}
       >
         <Text color={colors.slate} textStyle="small" textAlign="center">
-          All rights reserved Wurknet Private Limited
+          Copyright 2019 CRATER, All rights reserved <br />
+          Copyright 2019 CRATER CLUB, All rights reserved
         </Text>
       </Box>
     </Grid>

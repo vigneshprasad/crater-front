@@ -5,7 +5,6 @@ import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
 import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
-import StreamChatProvider from "@/stream/providers/StreamChatProvider";
 import { BidListProvider } from "@/tokens/context/BidListContext";
 import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
 import { RewardsListProvider } from "@/tokens/context/RewardsListContext";
@@ -44,9 +43,7 @@ export default function Container({
             >
               <StreamsToRsvpProvider>
                 <ReferralSummaryProvider>
-                  <LiveStreamPageProvider>
-                    <StreamChatProvider id={id}>{children}</StreamChatProvider>
-                  </LiveStreamPageProvider>
+                  <LiveStreamPageProvider>{children}</LiveStreamPageProvider>
                 </ReferralSummaryProvider>
               </StreamsToRsvpProvider>
             </RewardsListProvider>

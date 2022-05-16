@@ -15,5 +15,3 @@ export const DD_APPLICATION_ID = process.env
   .NEXT_PUBLIC_DD_APPLICATION_ID as string;
 export const DD_SERVICE = process.env.NEXT_PUBLIC_DD_SERVICE as string;
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-export const SOCKET_IO_BASE_URL = process.env
-  .NEXT_PUBLIC_SOCKETIO_URL as string;
