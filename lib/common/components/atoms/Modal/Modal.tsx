@@ -1,9 +1,11 @@
+import * as CSS from "csstype";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styled, { useTheme } from "styled-components";
+import { ResponsiveValue } from "styled-system";
 
-import IconButton from "../IconButton";
+import IconButton, { IconButtonProps } from "../IconButton";
 import { Box } from "../System/Box";
 import { GridProps } from "../System/Grid";
 
@@ -12,7 +14,8 @@ export type IModalProps = GridProps & {
   onClose?: () => void;
   maxWidth?: number;
   maxHeight?: number;
-  iconButtonProps?: GridProps;
+  iconButtonProps?: GridProps | IconButtonProps;
+  modalVisibility?: ResponsiveValue<CSS.Property.Visibility>;
 };
 
 const Overlay = styled(Box)`
@@ -32,6 +35,7 @@ export function Modal({
   maxWidth = 720,
   maxHeight = 640,
   iconButtonProps,
+  modalVisibility = "visible",
   ...rest
 }: IModalProps): JSX.Element | null {
   const [showModal, setShowModal] = useState(visible);
@@ -67,7 +71,11 @@ export function Modal({
   return createPortal(
     <AnimatePresence exitBeforeEnter>
       {showModal && (
-        <Overlay bg={colors.modalOverlay} onClick={onClose}>
+        <Overlay
+          bg={colors.modalOverlay}
+          onClick={onClose}
+          visibility={modalVisibility}
+        >
           <Box
             maxWidth={["calc(100% - 32px)", maxWidth]}
             onClick={(e) => e.stopPropagation()}
@@ -82,6 +90,8 @@ export function Modal({
             maxHeight={["calc(100vh - 72px)", maxHeight]}
             borderRadius={radii.s}
             overflowY="auto"
+            overflowX="hidden"
+            visibility={modalVisibility}
           >
             <Box w="100%" overflowY="auto" maxHeight="100%" h="100%" {...rest}>
               {children}

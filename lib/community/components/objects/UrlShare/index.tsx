@@ -1,36 +1,53 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { Button, Flex, Text } from "@/common/components/atoms";
+import {
+  BoxProps,
+  Button,
+  Flex,
+  IconButton,
+  Text,
+} from "@/common/components/atoms";
 
-interface IProps {
+interface IProps extends BoxProps {
   referrer?: string;
+  shareUrl?: string;
+  icon?: boolean;
+  iconButtonVariant?: string;
 }
 
-export default function UrlShare({ referrer }: IProps): JSX.Element {
+export default function UrlShare({
+  referrer,
+  shareUrl,
+  icon,
+  iconButtonVariant,
+  ...rest
+}: IProps): JSX.Element {
   const [url, setUrl] = useState("");
   const { space, radii, colors, borders } = useTheme();
   const [btnText, setBtnText] = useState("Share now");
 
   const performCopyClipboard = useCallback(async () => {
-    setBtnText("Copied");
+    if (!icon) setBtnText("Copied");
     if (url) {
       await navigator.clipboard.writeText(url);
     }
 
-    setTimeout(() => setBtnText("Share now"), 500);
-  }, [url]);
+    if (!icon) setTimeout(() => setBtnText("Share now"), 500);
+  }, [url, icon]);
 
   useEffect(() => {
     const location = window.location.href;
     const urlObj = new URL(location);
 
+    const pathname = shareUrl ? shareUrl : urlObj.pathname;
+
     if (referrer) {
-      setUrl(`${urlObj.origin}${urlObj.pathname}?referrer_id=${referrer}`);
+      setUrl(`${urlObj.origin}${pathname}?referrer_id=${referrer}`);
     } else {
-      setUrl(`${urlObj.origin}${urlObj.pathname}`);
+      setUrl(`${urlObj.origin}${pathname}`);
     }
-  }, [referrer]);
+  }, [referrer, shareUrl]);
 
   return (
     <Flex
@@ -40,23 +57,28 @@ export default function UrlShare({ referrer }: IProps): JSX.Element {
       bg={colors.black[2]}
       borderRadius={radii.xxs}
       border={`2px solid ${borders.main}`}
+      {...rest}
     >
-      <Text maxLines={1} flex="1" wordBreak="break-all">
+      <Text maxLines={1} flex="1" wordBreak="break-word">
         {url}
       </Text>
-      {/* <IconButton
-        iconProps={{ fill: true }}
-        icon="ContentCopy"
-        onClick={performCopyClipboard}
-      /> */}
 
-      <Button
-        text={btnText}
-        variant="text-button"
-        textProps={{ px: 0 }}
-        onClick={performCopyClipboard}
-        disabled={btnText === "Copied"}
-      />
+      {icon ? (
+        <IconButton
+          variant={iconButtonVariant}
+          iconProps={{ fill: true }}
+          icon="ContentCopy"
+          onClick={performCopyClipboard}
+        />
+      ) : (
+        <Button
+          text={btnText}
+          variant="text-button"
+          textProps={{ px: 0 }}
+          onClick={performCopyClipboard}
+          disabled={btnText === "Copied"}
+        />
+      )}
     </Flex>
   );
 }
