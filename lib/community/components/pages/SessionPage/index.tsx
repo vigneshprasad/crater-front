@@ -21,6 +21,7 @@ import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
+import { UTM_SOURCE_STORAGE_KEY } from "@/common/constants/global.constants";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
@@ -188,7 +189,34 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     ) {
       action();
     }
-  }, [router, user, webinar, postGroupRequest, postSeriesRequest]);
+
+    // First time RSVP analytics event tracking
+    if (
+      router.query?.join === "true" &&
+      router.query?.newUser === "true" &&
+      user &&
+      webinar &&
+      !user.name &&
+      !user.email &&
+      localStorage.getItem(UTM_SOURCE_STORAGE_KEY) == "Facebook"
+    ) {
+      track(AnalyticsEvents.first_time_rsvp, {
+        stream: webinar.id,
+        stream_name: webinar.topic_detail?.name,
+        host: {
+          ...webinar.host_detail,
+        },
+      });
+    }
+  }, [
+    router,
+    user,
+    webinar,
+    profile,
+    postGroupRequest,
+    postSeriesRequest,
+    track,
+  ]);
 
   const shareUrl = useCallback(
     (utmSource: string): string => {
@@ -220,7 +248,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     : "RSVP for this session";
 
   const shareText = `Watch livestream on "${webinar.topic_detail.name}" on Crater.`;
-  const referralText = "Signup with my referral link and get ₹50. Signup now!";
 
   return (
     <>
@@ -425,7 +452,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 <>
                   <Flex alignItems="center" gridGap={space.xxxs}>
                     <Text textStyle="captionLarge">
-                      Earn ₹50 and gift ₹50 for every referral 🎉
+                      Earn ₹100 for every referral 🎉
                     </Text>
                     <Button
                       text="Details"
@@ -502,7 +529,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 <a
                   href={`https://api.whatsapp.com/send?text=${
                     user && !profile?.is_creator
-                      ? encodeURIComponent(`${shareText} ${referralText}\n\n`)
+                      ? encodeURIComponent(`${shareText}\n\n`)
                       : encodeURIComponent(`${shareText}\n\n`)
                   }${shareUrl("WhatsApp")}`}
                   target="_blank"

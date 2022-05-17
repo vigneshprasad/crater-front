@@ -41,7 +41,7 @@ export type Group = {
   closed_at?: string;
   description?: string;
   end: string;
-  host?: string;
+  host: string;
   host_detail: Speaker;
   id: number;
   is_live: boolean;

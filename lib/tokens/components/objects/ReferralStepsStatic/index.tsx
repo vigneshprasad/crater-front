@@ -21,7 +21,7 @@ export default function ReferralStepsStatic({
       image: "/images/img_journey_planet_2.png",
     },
     {
-      text: "You get ₹50 and your friend gets ₹50 after they watch their first 20 minutes of live content",
+      text: "You get ₹100 after they watch their first 20 minutes of live content",
       image: "/images/img_journey_planet_3.png",
     },
     {

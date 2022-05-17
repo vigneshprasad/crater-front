@@ -13,9 +13,11 @@ import {
   Flex,
   Avatar,
   ButtonProps,
+  Grid,
 } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spiner";
-import AppLink, { AppLinkType } from "@/common/components/objects/AppLink";
+import { AppLinkType } from "@/common/components/objects/AppLink";
+import AppLinkButton from "@/common/components/objects/AppLinkButton";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
@@ -42,11 +44,10 @@ interface IProps {
 }
 
 const FollowActionButton = styled(Button)<ButtonProps>`
-  min-height: 34;
-  border-radius: 10;
   width: 100%;
   background: #223596;
   border-color: #223596;
+  border-radius: 4px;
 
   &:hover {
     background: #1f2d76;
@@ -63,6 +64,7 @@ const FollowActionButton = styled(Button)<ButtonProps>`
 const ReferralActionButton = styled(Button)<ButtonProps>`
   background: #820f54;
   border-color: #820f54;
+  border-radius: 4px;
 
   &:hover {
     background: #621543;
@@ -73,6 +75,7 @@ const ReferralActionButton = styled(Button)<ButtonProps>`
 const StreamsActionButton = styled(Button)<ButtonProps>`
   background: #8822ee;
   border-color: #8822ee;
+  border-radius: 4px;
 
   &:hover {
     background: #7320c6;
@@ -143,8 +146,8 @@ export default function ChatActionItem({
       trackModalAnalytics(AnalyticsEvents.chat_action_follow_clicked);
 
       const message = {
-        message: `${user?.name} just followed ${stream?.host_detail.name}.`,
-        display_name: "Follow Update",
+        message: `${user?.name} just followed ${stream?.host_detail.name}'s channel.`,
+        display_name: "New Follower",
       };
       postMessage(message);
     }
@@ -223,7 +226,7 @@ export default function ChatActionItem({
             my={6}
             backgroundColor="#1E254C"
             p={space.xxxs}
-            borderRadius={radii.xxs}
+            borderRadius={4}
             border="2px solid #202F79"
           >
             <Flex
@@ -232,7 +235,7 @@ export default function ChatActionItem({
               gridGap={space.xxxs}
               alignItems="center"
             >
-              <Avatar size={32} image={stream?.host_profile_details?.image} />
+              <Avatar size={32} image={stream?.host_detail?.photo} />
               <Text color="#EDEDED" variant="title">
                 {stream?.host_detail.name}
               </Text>
@@ -287,7 +290,7 @@ export default function ChatActionItem({
             my={6}
             backgroundColor="#541D3E"
             p={space.xxxs}
-            borderRadius={radii.xxs}
+            borderRadius={4}
             border="2px solid #6F154B"
           >
             <Text pb={space.xxxs}>{message.message}</Text>
@@ -313,28 +316,30 @@ export default function ChatActionItem({
             my={6}
             backgroundColor="#272727"
             p={space.xxxs}
-            borderRadius={radii.xxs}
+            borderRadius={4}
             border="2px solid #7146AE"
           >
             <Text pb={space.xxxs} color="#D5BBFF">
               {message.message}
             </Text>
-            <Flex flexDirection="row" justifyContent="space-between">
-              <AppLink
-                height={47}
+            <Grid
+              gridAutoFlow="column"
+              gridTemplateColumns="1fr 1fr"
+              gridGap={space.xxxs}
+            >
+              <AppLinkButton
                 buttonType={AppLinkType.android}
                 analyticsEventName={
                   AnalyticsEvents.chat_action_google_play_badge_clicked
                 }
               />
-              <AppLink
-                height={48}
+              <AppLinkButton
                 buttonType={AppLinkType.apple}
                 analyticsEventName={
                   AnalyticsEvents.chat_action_appstore_badge_clicked
                 }
               />
-            </Flex>
+            </Grid>
           </Box>
         ),
       },
@@ -346,7 +351,7 @@ export default function ChatActionItem({
             my={6}
             backgroundColor="#401E67"
             p={space.xxxs}
-            borderRadius={radii.xxs}
+            borderRadius={4}
             border="2px solid #7146AE"
           >
             <Text pb={space.xxxs}>{message.message}</Text>
@@ -421,7 +426,7 @@ export default function ChatActionItem({
 
       {actions.map(({ action, display }, index) => {
         const chatAction = parseInt(message.action.toString());
-        if (action === chatAction && !profile?.is_creator) {
+        if (action === chatAction && profile && !profile?.is_creator) {
           return <Box key={index}>{display}</Box>;
         }
       })}
