@@ -196,7 +196,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       router.query?.newUser === "true" &&
       user &&
       webinar &&
-      !user.name &&
       !user.email &&
       localStorage.getItem(UTM_SOURCE_STORAGE_KEY) == "Facebook"
     ) {
