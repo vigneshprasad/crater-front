@@ -57,9 +57,15 @@ export default function PostStreamCreationModal({
   const { user } = useAuth();
 
   const onCloseModal = useCallback(() => {
-    setCurrentModalPage(0);
-    onClose();
-  }, [onClose]);
+    if (streamId) {
+      setCurrentModalPage(0);
+      onClose();
+      router.push(PageRoutes.session(streamId?.toString()));
+    } else {
+      setCurrentModalPage(0);
+      onClose();
+    }
+  }, [streamId, onClose, router]);
 
   const nextScreen = useCallback(() => {
     const lastIndex = MODAL_PAGES.length - 1;
