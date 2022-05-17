@@ -71,7 +71,11 @@ export function Modal({
   return createPortal(
     <AnimatePresence exitBeforeEnter>
       {showModal && (
-        <Overlay bg={colors.modalOverlay} onClick={onClose}>
+        <Overlay
+          bg={colors.modalOverlay}
+          onClick={onClose}
+          visibility={modalVisibility}
+        >
           <Box
             maxWidth={["calc(100% - 32px)", maxWidth]}
             onClick={(e) => e.stopPropagation()}
@@ -86,6 +90,7 @@ export function Modal({
             maxHeight={["calc(100vh - 72px)", maxHeight]}
             borderRadius={radii.s}
             overflowY="auto"
+            overflowX="hidden"
             visibility={modalVisibility}
           >
             <Box w="100%" overflowY="auto" maxHeight="100%" h="100%" {...rest}>

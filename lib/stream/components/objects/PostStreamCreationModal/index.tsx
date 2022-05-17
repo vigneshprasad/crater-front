@@ -144,7 +144,7 @@ export default function PostStreamCreationModal({
       gridTemplateColumns="1fr 1fr"
       gridTemplateRows="max-content 1fr max-content"
       gridGap={space.xxxxs}
-      overflow="hidden"
+      overflowY="hidden"
       backgroundColor="#272727"
       iconButtonProps={{ variant: "flatNoBg", iconProps: { size: 28 } }}
       modalVisibility={["hidden", "visible"]}
