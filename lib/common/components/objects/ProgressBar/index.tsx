@@ -1,12 +1,17 @@
 import { useTheme } from "styled-components";
 
-import { Box } from "../../atoms";
+import { Box, BoxProps } from "../../atoms";
 
-type IProps = {
+interface IProps extends BoxProps {
   percent: number;
-};
+  barProps?: BoxProps;
+}
 
-export default function ProgressBar({ percent }: IProps): JSX.Element {
+export default function ProgressBar({
+  percent,
+  barProps,
+  ...rest
+}: IProps): JSX.Element {
   const { colors } = useTheme();
 
   return (
@@ -16,6 +21,7 @@ export default function ProgressBar({ percent }: IProps): JSX.Element {
       margin="auto 0"
       backgroundColor={colors.black[4]}
       borderRadius={3}
+      {...rest}
     >
       <Box
         h="100%"
@@ -24,6 +30,7 @@ export default function ProgressBar({ percent }: IProps): JSX.Element {
         left={0}
         top={0}
         borderRadius={3}
+        {...barProps}
       />
     </Box>
   );

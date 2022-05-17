@@ -446,8 +446,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
               {authLoading ? (
                 <Shimmer w="100%" h={80} borderRadius={radii.xxs} />
-              ) : profile?.is_creator ? (
-                <UrlShare />
+              ) : profile && profile?.is_creator ? (
+                <UrlShare referrer={user?.pk} />
               ) : (
                 <>
                   <Flex alignItems="center" gridGap={space.xxxs}>

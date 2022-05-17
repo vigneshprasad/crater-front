@@ -1,6 +1,5 @@
+import { useState } from "react";
 import { useTheme } from "styled-components";
-
-import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import { Text, Grid, Box } from "@/common/components/atoms";
@@ -9,6 +8,7 @@ import { PageRoutes } from "@/common/constants/route.constants";
 import { StreamSlider } from "@/community/components/objects/StreamSlider";
 import { Webinar } from "@/community/types/community";
 import PastStreamCard from "@/stream/components/objects/PastStreamCard";
+import PostStreamCreationModal from "@/stream/components/objects/PostStreamCreationModal";
 import usePastStreams from "@/stream/context/PastStreamContext";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
@@ -20,14 +20,19 @@ export default function CreatorHubStreamTab(): JSX.Element {
     upcoming,
     mutateUpcomingStreams,
   } = useUpcomingStreams();
-  const router = useRouter();
   const { streams: past } = usePastStreams();
   const { space } = useTheme();
   const { permission } = useAuth();
+  const [showModal, setShowModal] = useState(false);
+  const [latestStream, setLatestStream] = useState<number | undefined>(
+    undefined
+  );
 
   const handleFormSubmit = (stream: Webinar): void => {
+    setLatestStream(stream.id);
     mutateUpcomingStreams();
-    router.push(PageRoutes.session(stream.id));
+
+    setShowModal(true);
   };
 
   if (loadingUpcomingStream || !upcoming) {
@@ -35,56 +40,63 @@ export default function CreatorHubStreamTab(): JSX.Element {
   }
 
   return (
-    <Grid gridAutoFlow="row" px={[space.xs, space.s]} py={space.xs}>
-      {(() => {
-        if (!upcoming.length) {
-          return null;
-        }
+    <>
+      <PostStreamCreationModal
+        streamId={latestStream}
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+      />
+      <Grid gridAutoFlow="row" px={[space.xs, space.s]} py={space.xs}>
+        {(() => {
+          if (!upcoming.length) {
+            return null;
+          }
 
-        return (
-          <Box>
-            <Text textStyle="title">Upcoming</Text>
-            <Box px={[space.xs, space.s]} py={[space.xs, space.s]}>
-              <StreamSlider liveStreams={upcoming} />
+          return (
+            <Box>
+              <Text textStyle="title">Upcoming</Text>
+              <Box px={[space.xs, space.s]} py={[space.xs, space.s]}>
+                <StreamSlider liveStreams={upcoming} />
+              </Box>
             </Box>
-          </Box>
-        );
-      })()}
+          );
+        })()}
 
-      <Box>
-        <Text textStyle="title">Schedule New Stream</Text>
-        <ScheduleStreamForm
-          onSubmitComplete={handleFormSubmit}
-          permission={permission?.allow_create_stream}
-        />
-      </Box>
-
-      {past && past.length > 0 && (
         <Box>
-          <Text textStyle="title">Past Streams</Text>
-          <Grid
-            py={space.xs}
-            gridTemplateColumns={[
-              "1fr",
-              "repeat(auto-fill, minmax(280px, 1fr))",
-            ]}
-            gridGap={space.s}
-          >
-            {past.map((stream) => (
-              <PastStreamCard
-                key={stream.id}
-                title={stream.topic_detail.name}
-                href={PageRoutes.streamVideo(stream.id)}
-                image={stream.topic_detail.image}
-                hostImage={stream.host_detail?.photo}
-                hostName={stream.host_detail?.name}
-                time={stream.start}
-                hostSlug={stream.host_detail?.slug}
-              />
-            ))}
-          </Grid>
+          <Text textStyle="title">Schedule New Stream</Text>
+          <ScheduleStreamForm
+            onSubmitComplete={handleFormSubmit}
+            permission={permission?.allow_create_stream}
+          />
         </Box>
-      )}
-    </Grid>
+
+        {past && past.length > 0 && (
+          <Box>
+            <Text textStyle="title">Past Streams</Text>
+            <Grid
+              py={space.xs}
+              gridTemplateColumns={[
+                "1fr",
+                "repeat(auto-fill, minmax(280px, 1fr))",
+              ]}
+              gridGap={space.s}
+            >
+              {past.map((stream) => (
+                <PastStreamCard
+                  key={stream.id}
+                  title={stream.topic_detail.name}
+                  href={PageRoutes.streamVideo(stream.id)}
+                  image={stream.topic_detail.image}
+                  hostImage={stream.host_detail?.photo}
+                  hostName={stream.host_detail?.name}
+                  time={stream.start}
+                  hostSlug={stream.host_detail?.slug}
+                />
+              ))}
+            </Grid>
+          </Box>
+        )}
+      </Grid>
+    </>
   );
 }
