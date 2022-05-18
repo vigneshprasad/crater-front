@@ -12,8 +12,8 @@ export default function StreamCreationModalTrackData(): JSX.Element {
       </Text>
 
       <Text gridColumn={1} lineHeight="180%">
-        Before you start streaming awesome content on Crater, we&apos;d like to
-        help you prepare with a small walkthrough of what to expect.
+        You have a unique share link that can be found on the session page.
+        Share your stream using this link and know where your viewers come from.
       </Text>
 
       <Box gridColumn={2} w={271} h={192} justifySelf="center">

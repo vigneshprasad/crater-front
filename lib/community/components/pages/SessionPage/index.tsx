@@ -112,6 +112,24 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 ...webinar.host_detail,
               },
             });
+
+            // First time RSVP analytics event tracking
+            if (
+              router.query?.join === "true" &&
+              router.query?.newUser === "true" &&
+              user &&
+              !user.email &&
+              localStorage.getItem(UTM_SOURCE_STORAGE_KEY) == "Facebook"
+            ) {
+              track(AnalyticsEvents.first_time_rsvp, {
+                stream: webinar.id,
+                stream_name: webinar.topic_detail?.name,
+                host: {
+                  ...webinar.host_detail,
+                },
+              });
+            }
+
             mutateRequest(request);
           }
         }
@@ -132,7 +150,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
         setShowSuccess(true);
       }
     },
-    [webinar, id, mutateRequest, router, track, webinarRequest]
+    [webinar, id, mutateRequest, router, track, webinarRequest, user]
   );
 
   const { data: seriesData } = useSWR<Series>(
@@ -188,24 +206,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       postSeriesRequest
     ) {
       action();
-    }
-
-    // First time RSVP analytics event tracking
-    if (
-      router.query?.join === "true" &&
-      router.query?.newUser === "true" &&
-      user &&
-      webinar &&
-      !user.email &&
-      localStorage.getItem(UTM_SOURCE_STORAGE_KEY) == "Facebook"
-    ) {
-      track(AnalyticsEvents.first_time_rsvp, {
-        stream: webinar.id,
-        stream_name: webinar.topic_detail?.name,
-        host: {
-          ...webinar.host_detail,
-        },
-      });
     }
   }, [
     router,
