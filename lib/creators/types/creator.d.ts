@@ -2,6 +2,13 @@ import { Profile } from "next-auth";
 
 import { Community } from "../../community/types/community";
 
+export type PointOfContact = {
+  photo?: string;
+  name: string;
+  email: string;
+  phone_number: string;
+};
+
 export type Creator = {
   certified: boolean;
   cover_file?: string;
@@ -18,6 +25,8 @@ export type Creator = {
   video?: string;
   show_analytics: boolean;
   is_subscriber: boolean;
+  point_of_contact: string;
+  point_of_contact_detail: PointOfContact;
 };
 
 export type ClubMembersCount = {

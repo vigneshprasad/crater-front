@@ -21,6 +21,7 @@ import { Button } from "@/common/components/atoms/Button";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";
+import { UTM_SOURCE_STORAGE_KEY } from "@/common/constants/global.constants";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
@@ -111,6 +112,24 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                 ...webinar.host_detail,
               },
             });
+
+            // First time RSVP analytics event tracking
+            if (
+              router.query?.join === "true" &&
+              router.query?.newUser === "true" &&
+              user &&
+              !user.email &&
+              localStorage.getItem(UTM_SOURCE_STORAGE_KEY) == "Facebook"
+            ) {
+              track(AnalyticsEvents.first_time_rsvp, {
+                stream: webinar.id,
+                stream_name: webinar.topic_detail?.name,
+                host: {
+                  ...webinar.host_detail,
+                },
+              });
+            }
+
             mutateRequest(request);
           }
         }
@@ -131,7 +150,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
         setShowSuccess(true);
       }
     },
-    [webinar, id, mutateRequest, router, track, webinarRequest]
+    [webinar, id, mutateRequest, router, track, webinarRequest, user]
   );
 
   const { data: seriesData } = useSWR<Series>(
@@ -188,7 +207,15 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     ) {
       action();
     }
-  }, [router, user, webinar, postGroupRequest, postSeriesRequest]);
+  }, [
+    router,
+    user,
+    webinar,
+    profile,
+    postGroupRequest,
+    postSeriesRequest,
+    track,
+  ]);
 
   const shareUrl = useCallback(
     (utmSource: string): string => {
@@ -418,8 +445,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
               {authLoading ? (
                 <Shimmer w="100%" h={80} borderRadius={radii.xxs} />
-              ) : profile?.is_creator ? (
-                <UrlShare />
+              ) : profile && profile?.is_creator ? (
+                <UrlShare referrer={user?.pk} />
               ) : (
                 <>
                   <Flex alignItems="center" gridGap={space.xxxs}>
