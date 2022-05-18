@@ -46,7 +46,7 @@ export default function StreamChat({
   showPopup = true,
   ...rest
 }: IProps): JSX.Element {
-  const { user, profile, permission } = useAuth();
+  const { profile, permission } = useAuth();
   const { rewards } = useRewardsList();
   const { space, gradients, radii, colors } = useTheme();
   const { colorMode, toggleColorMode } = useChatColorMode();
@@ -160,9 +160,10 @@ export default function StreamChat({
 
               {permission?.allow_chat && (
                 <Form
+                  bg={colors.primaryLight}
                   display="grid"
-                  mx={space.xxxs}
-                  my={space.xxxs}
+                  px={space.xxxs}
+                  py={space.xxxs}
                   gridAutoFlow="row"
                   gridGap={space.xxxs}
                   onSubmit={(event) => {
@@ -230,19 +231,36 @@ export default function StreamChat({
                               alignItems="center"
                             >
                               <Text textStyle="tabLabel">Chat Theme</Text>
-                              <Toggle />
+                              <Toggle
+                                value={colorMode === "dark"}
+                                onChange={() => {
+                                  toggleColorMode();
+                                }}
+                              >
+                                {colorMode === "dark" ? (
+                                  <Icon m="auto auto" icon="Moon" size={8} />
+                                ) : (
+                                  <Icon m="auto auto" icon="Sun" size={8} />
+                                )}
+                              </Toggle>
                             </Flex>
                           </MenuItem>,
-                          <MenuItem
-                            key="popout"
-                            label="Popout Chat"
-                            suffixElement={<Icon size={18} icon="PopOut" />}
-                          />,
+                          showPopup && (
+                            <MenuItem
+                              onClick={() => {
+                                openChatPopOut();
+                              }}
+                              key="popout"
+                              label="Popout Chat"
+                              suffixElement={<Icon size={18} icon="PopOut" />}
+                            />
+                          ),
                         ]}
                       />
                       <IconButton
                         type="submit"
                         icon="Send"
+                        iconProps={{ color: "white.0" }}
                         buttonStyle="flat-accent"
                       />
                     </Flex>

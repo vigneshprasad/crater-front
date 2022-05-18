@@ -20,7 +20,7 @@ const StyledText = styled(Text)`
     right: 8px;
     border-radius: 4px;
     border: 1px solid ${({ theme }) => theme.colors.accentLight};
-    background-color: ${({ theme }) => theme.colors.primaryLight};
+    background-color: ${({ theme }) => theme.colors.accentLight};
   }
 `;
 

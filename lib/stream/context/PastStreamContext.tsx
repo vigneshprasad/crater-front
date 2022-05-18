@@ -1,8 +1,15 @@
-import { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { SWRInfiniteResponse, useSWRInfinite } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
+import fetcher from "@/common/utils/fetcher";
 import { Webinar } from "@/community/types/community";
 
 export interface IPastStreamState {
@@ -13,6 +20,7 @@ export interface IPastStreamState {
     PageResponse<Webinar>,
     unknown
   >["setSize"];
+  nextPage?: boolean;
 }
 
 export const PastStreamContext = createContext({} as IPastStreamState);
@@ -31,6 +39,7 @@ export function PastStreamProvider({
   categoryFilter,
   ...rest
 }: IProviderProps): JSX.Element {
+  const [nextPage, setNextPage] = useState(false);
   const {
     data: streams,
     error,
@@ -50,6 +59,11 @@ export function PastStreamProvider({
 
       return `${API_URL_CONSTANTS.groups.getPastWebinars}?page=${page}&page_size=${pageSize}`;
     },
+    async (key: string) => {
+      const response = await fetcher<PageResponse<Webinar>>(key);
+      !response.next ? setNextPage(false) : setNextPage(true);
+      return response;
+    },
     {
       initialData: initial ? [initial] : undefined,
     }
@@ -61,8 +75,9 @@ export function PastStreamProvider({
       error,
       loading: !streams && !error,
       setPastStreamsPage,
+      nextPage,
     }),
-    [streams, error, setPastStreamsPage]
+    [streams, error, setPastStreamsPage, nextPage]
   );
 
   return <PastStreamContext.Provider value={value} {...rest} />;

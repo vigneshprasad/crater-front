@@ -3,14 +3,13 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
-import { Box, Grid, Link } from "@/common/components/atoms";
+import { Grid, Link } from "@/common/components/atoms";
 import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { ChallengeListProvider } from "@/leaderboard/context/ChallegeListContext";
 import { LeaderboardListProvider } from "@/leaderboard/context/LeaderboardListContext";
 import { UserLeaderboardListProvider } from "@/leaderboard/context/UserLeaderboardListContext";
-import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 
 import LiveStreamPanelTabItem from "../LiveStreamPanelTabItem";
 import StreamChat from "../StreamChat";
@@ -43,7 +42,7 @@ interface IProps {
 
 export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
   const [activeTab, setActiveTab] = useState(initial);
-  const { space, borders, colors } = useTheme();
+  const { space, colors } = useTheme();
   const { webinar } = useWebinar();
   const router = useRouter();
 
@@ -59,8 +58,8 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
   }, [router, setActiveTab]);
 
   return (
-    <Grid gridTemplateRows={["min-content 1fr"]} bg={["black.5", "black.5"]}>
-      {webinar ? (
+    <Grid gridTemplateRows={["min-content 1fr"]}>
+      {webinar && (
         <BaseTabBar
           bg={colors.primaryLight}
           px={space.xxxs}
@@ -68,14 +67,10 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
           tabs={TABS(webinar.id)}
           borderLeft={`1px solid ${colors.black[0]}`}
         />
-      ) : (
-        <Box />
       )}
 
       {activeTab === "chat" && webinar && !webinar.closed && (
-        <ChatColorModeProvider host={webinar.host}>
-          <StreamChat stream={webinar} />
-        </ChatColorModeProvider>
+        <StreamChat stream={webinar} />
       )}
       {activeTab === "auction" && webinar && (
         <StreamRewardsPanel stream={webinar} />

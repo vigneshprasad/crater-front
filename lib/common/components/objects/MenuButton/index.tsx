@@ -20,6 +20,7 @@ export default function MenuButton({ icon, items }: IProps): JSX.Element {
     <Box position="relative">
       <IconButton
         type="button"
+        iconProps={{ color: colors.iconColor }}
         icon={icon}
         onClick={() => {
           const updated = !opened;

@@ -5,6 +5,7 @@ import { Box, Grid, Image } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
+import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 
 import LiveStreamPanel from "../../objects/LiveStreamPanel";
 
@@ -27,16 +28,24 @@ export default function LiveStreamPageLayout({
 }: IProps): JSX.Element {
   const { space } = useTheme();
   return (
-    <BaseLayout aside={<AsideNav />} overflowY="auto">
+    <BaseLayout aside={<AsideNav />} overflowY={["hidden", "auto"]}>
       {modal}
       <Grid
+        minHeight="100%"
         gridTemplateColumns={["1fr", "3fr 1fr"]}
-        gridTemplateRows="max-content"
-        gridTemplateAreas={`
-          "stream panel"
-          "about share"
-          "pageContent pageContent"
-        `}
+        gridTemplateRows={["max-content max-content 1fr ", "max-content"]}
+        gridTemplateAreas={[
+          `
+            "stream"
+            "about"
+            "panel"
+          `,
+          `
+            "stream panel"
+            "about share"
+            "pageContent pageContent"
+          `,
+        ]}
       >
         <Grid gridArea="stream">
           <Box pt="56.25%" position="relative">
@@ -44,16 +53,23 @@ export default function LiveStreamPageLayout({
           </Box>
         </Grid>
         <Grid gridArea="panel">
-          <LiveStreamPanel />
+          <ChatColorModeProvider>
+            <LiveStreamPanel />
+          </ChatColorModeProvider>
         </Grid>
-        <Grid gridArea="about" p={space.xxs}>
+        <Grid gridArea="about" p={[0, space.xxs]}>
           {streamDetail}
         </Grid>
-        <Grid gridArea="share" py={space.xxs} pr={space.xxs}>
+        <Grid
+          display={["none", "grid"]}
+          gridArea="share"
+          py={space.xxs}
+          pr={space.xxs}
+        >
           {shareSection}
         </Grid>
 
-        <Box gridArea="pageContent">
+        <Box display={["none", "grid"]} gridArea="pageContent">
           <Box my={space.xxs}>
             <Image
               src={STATIC_IMAGES.ImageAppBannerStream}
@@ -62,14 +78,19 @@ export default function LiveStreamPageLayout({
           </Box>
           <StyledHeadingDivider label="Explore Streams" />
           {upcomingsStreams}
-          <Box my={space.xxs}>
+
+          <Box h={space.s} />
+
+          <Box>
             <Image
               src={STATIC_IMAGES.ImageCraterStream}
               alt="Get the crater app."
             />
           </Box>
-          <StyledHeadingDivider label="Previously Streamed" />
+
           {pastStreams}
+
+          <Box h={space.l} />
         </Box>
       </Grid>
     </BaseLayout>

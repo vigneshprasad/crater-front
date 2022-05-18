@@ -1,22 +1,27 @@
 import { useTheme } from "styled-components";
 
-import { Grid, Box, Text } from "../../atoms";
+import { Grid, Box, Text, GridProps } from "../../atoms";
 
-interface IProps {
+interface IProps extends GridProps {
   label: string;
 }
 
-export default function HeadingDivider({ label }: IProps): JSX.Element {
+export default function HeadingDivider({
+  label,
+  ...rest
+}: IProps): JSX.Element {
   const { colors, space } = useTheme();
 
   return (
     <Grid
       py={space.xxxs}
-      gridTemplateColumns="max-content 1fr"
+      gridTemplateColumns={["1fr ", "max-content 1fr"]}
       alignItems="center"
       gridGap={space.xxs}
+      {...rest}
     >
       <Text
+        display={["none", "block"]}
         color={colors.textSecondary}
         textStyle="caption"
         textTransform="uppercase"

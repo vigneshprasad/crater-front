@@ -246,5 +246,5 @@ Text.defaultProps = {
   as: "p",
   textStyle: "bodyLarge",
   singleLine: false,
-  color: "inherit",
+  color: "textPrimary",
 };

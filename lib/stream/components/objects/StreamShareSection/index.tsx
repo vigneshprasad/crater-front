@@ -1,11 +1,75 @@
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 
+import useAuth from "@/auth/context/AuthContext";
 import { Box, Flex, Text } from "@/common/components/atoms";
 import { IconButton } from "@/common/components/atoms/v2";
 import SocialShareButtons from "@/common/components/objects/SocialShareButtons";
+import SocialShareUtils from "@/common/utils/social/SocialShareUtils";
+import { Webinar } from "@/community/types/community";
 
-export default function StreamShareSection(): JSX.Element {
+interface IProps {
+  stream?: Webinar;
+}
+
+export default function StreamShareSection({ stream }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
+  const [shareUrl, setShareUrl] = useState<string | undefined>();
+  const { user, profile } = useAuth();
+
+  useEffect(() => {
+    const urlObj = new URL(window.location.href);
+
+    if (user) {
+      setShareUrl(`${urlObj.origin}${urlObj.pathname}?referrer_id=${user.pk}`);
+    }
+
+    console.log(window.location.href);
+  }, [user]);
+
+  const socialButtons = useMemo(() => {
+    if (typeof window === "undefined") return null;
+
+    return (
+      <>
+        <a
+          href={SocialShareUtils({
+            user,
+            webinar: stream,
+            profile,
+          }).getLinkedInShareLink()}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <SocialShareButtons w="100%" label="LinkedIn" icon="Linkedin" />
+        </a>
+
+        <a
+          href={SocialShareUtils({
+            user,
+            webinar: stream,
+            profile,
+          }).getTwitterShareLink()}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <SocialShareButtons w="100%" label="Twitter" icon="Twitter" />
+        </a>
+        <a
+          href={SocialShareUtils({
+            user,
+            webinar: stream,
+            profile,
+          }).getWhatsappShareLink()}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <SocialShareButtons w="100%" label="Whatsapp" icon="Whatsapp" />
+        </a>
+      </>
+    );
+  }, [user, stream, profile]);
+
   return (
     <Box as="section" bg={colors.primaryDark} borderRadius={radii.xxxxs}>
       <Box p={space.xxs} background={colors.primaryLight}>
@@ -26,8 +90,8 @@ export default function StreamShareSection(): JSX.Element {
           px={space.xxxs}
           alignItems="center"
         >
-          <Text textStyle="body" flex="1">
-            crater.com/stream/12003...
+          <Text textStyle="body" flex="1" maxLines={1}>
+            {shareUrl}
           </Text>
           <IconButton icon="ContentCopy" />
         </Flex>
@@ -38,9 +102,7 @@ export default function StreamShareSection(): JSX.Element {
           Share on social media
         </Text>
         <Flex flexDirection="column" gridGap={space.xxxs}>
-          <SocialShareButtons w="100%" label="LinkedIn" icon="Linkedin" />
-          <SocialShareButtons w="100%" label="Twitter" icon="Twitter" />
-          <SocialShareButtons w="100%" label="Whatsapp" icon="Whatsapp" />
+          {socialButtons}
         </Flex>
       </Box>
     </Box>

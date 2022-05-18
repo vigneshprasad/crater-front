@@ -8,7 +8,7 @@ import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 export default function UpcomingStreamsList(): JSX.Element {
   const [initialClick, setInitialClick] = useState(true);
-  const { space, radii, colors } = useTheme();
+  const { space, colors } = useTheme();
   const { upcoming, nextPage, setUpcomingStreamsPage, isValidating } =
     useUpcomingStreams();
   return (
@@ -17,7 +17,6 @@ export default function UpcomingStreamsList(): JSX.Element {
         px={space.xxs}
         gridTemplateColumns="repeat(auto-fill, minmax(280px, 1fr))"
         gridGap={space.xs}
-        borderRadius={radii.xxxs}
         mb={space.xs}
       >
         {(() => {
@@ -54,6 +53,7 @@ export default function UpcomingStreamsList(): JSX.Element {
         <Flex mx={space.xxs} gridGap={space.xxs} alignItems="center">
           <Flex flex="1" h={1} bg={colors.black[0]} />
           <Button
+            variant="dark-flat"
             label="Show More"
             onClick={() => {
               if (initialClick) {

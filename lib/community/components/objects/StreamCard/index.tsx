@@ -50,8 +50,6 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
       <Link key={stream.id} href={link ?? `/session/${stream.id}`}>
         <Container gridGap={space.xxs} ref={ref}>
           <ImageContainer
-            className="image-container"
-            h={180}
             position="relative"
             pt="56.25%"
             borderRadius={radii.xxs}

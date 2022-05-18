@@ -1,8 +1,8 @@
 import styled, { useTheme } from "styled-components";
 
-import { AnimatedBox, Box, Text } from "../../atoms";
+import { AnimatedBox, AnimatedBoxProps, Box, Text } from "../../atoms";
 
-interface IProps {
+interface IProps extends AnimatedBoxProps {
   label?: string;
   suffixElement?: JSX.Element;
   prefixElement?: JSX.Element;
@@ -22,6 +22,7 @@ export function MenuItem({
   suffixElement,
   prefixElement,
   children,
+  ...rest
 }: IProps): JSX.Element {
   const { space } = useTheme();
   return (
@@ -45,6 +46,7 @@ export function MenuItem({
           },
         },
       }}
+      {...rest}
     >
       <Box gridArea="menu-item-prefix">{prefixElement}</Box>
 
@@ -52,7 +54,7 @@ export function MenuItem({
         {children && <>{children}</>}
         {label && <Text textStyle="tabLabel">{label}</Text>}
       </Box>
-      <Box gridArea="menu">{suffixElement}</Box>
+      <Box gridArea="menu-item-suffix">{suffixElement}</Box>
     </Container>
   );
 }

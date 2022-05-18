@@ -1,30 +1,51 @@
+import * as CSS from "csstype";
 import { Variants, useAnimation } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { AnimatedBox } from "../Animated";
 
-export function Toggle(): JSX.Element {
-  const [active, setActive] = useState<boolean>(true);
+interface IProps {
+  onChange?: (value: boolean) => void;
+  activeColor?: CSS.Property.Color;
+  inactiveColor?: CSS.Property.Color;
+  children?: React.ReactNode | React.ReactNode[];
+  value?: boolean;
+}
+
+export function Toggle({
+  onChange,
+  activeColor,
+  inactiveColor,
+  children,
+  value,
+}: IProps): JSX.Element {
+  const [active, setActive] = useState<boolean>(value ?? true);
   const controls = useAnimation();
   const { colors } = useTheme();
   const containerVariants: Variants = {
     active: {
-      background: colors.accent,
+      background: activeColor ?? colors.accent,
     },
     inactive: {
-      background: colors.primaryBackground,
+      background: inactiveColor ?? colors.primaryBackground,
     },
   };
 
+  useEffect(() => {
+    if (value !== undefined) {
+      setActive(value);
+    }
+  }, [value]);
+
   const indicatorVariants: Variants = {
     active: {
-      left: "2px",
+      left: "1px",
       right: "auto",
     },
     inactive: {
       left: "auto",
-      right: "2px",
+      right: "1px",
     },
   };
 
@@ -35,8 +56,9 @@ export function Toggle(): JSX.Element {
       onClick={() => {
         const updated = !active;
         setActive(updated);
-        console.log(updated);
+
         controls.start(updated ? "active" : "inactive");
+        onChange && onChange(updated);
       }}
       position="relative"
       animate={controls}
@@ -46,6 +68,7 @@ export function Toggle(): JSX.Element {
       w={36}
     >
       <AnimatedBox
+        display="grid"
         animate={controls}
         variants={indicatorVariants}
         position="absolute"
@@ -55,7 +78,9 @@ export function Toggle(): JSX.Element {
         w={18}
         borderRadius="50%"
         bg={colors.white[0]}
-      />
+      >
+        {children}
+      </AnimatedBox>
     </AnimatedBox>
   );
 }

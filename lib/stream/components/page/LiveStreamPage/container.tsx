@@ -4,6 +4,7 @@ import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
+import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import { BidListProvider } from "@/tokens/context/BidListContext";
@@ -43,11 +44,15 @@ export default function Container({
               filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
             >
               <UpcomingStreamsProvider pageSize={4}>
-                <StreamsToRsvpProvider>
-                  <ReferralSummaryProvider>
-                    <LiveStreamPageProvider>{children}</LiveStreamPageProvider>
-                  </ReferralSummaryProvider>
-                </StreamsToRsvpProvider>
+                <PastStreamProvider pageSize={8}>
+                  <StreamsToRsvpProvider>
+                    <ReferralSummaryProvider>
+                      <LiveStreamPageProvider>
+                        {children}
+                      </LiveStreamPageProvider>
+                    </ReferralSummaryProvider>
+                  </StreamsToRsvpProvider>
+                </PastStreamProvider>
               </UpcomingStreamsProvider>
             </RewardsListProvider>
           </BidListProvider>

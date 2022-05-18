@@ -29,7 +29,7 @@ const colors = {
   errorDeep: "#CC5D2F",
   twitter: "#1DA1F2",
   linkedin: "#2867B2",
-  modalOverlay: "rgba(0,0,0,0.8)",
+  modalOverlay: "rgba(0,0,0,0.6)",
   drawerOverlay: "rgba(0,0,0,0.8)",
   slate: "#808191",
   muted: {
@@ -57,12 +57,15 @@ const colors = {
     "#F4A8B0",
     "#BDFC97",
   ],
-  primaryBackground: "#121212",
-  primaryLight: "#272727",
-  primaryDark: "#1B1B1B",
+  primaryBackground: "#010101",
+  primaryLight: "#1C1C1E",
+  primaryDark: "#121212",
   primaryDarkSecondary: "#2B2B2B",
+  textPrimary: "#FFFFFF",
   textSecondary: "rgba(255, 255, 255, 0.6)",
   outline: "rgba(237, 237, 237, 0.6)",
+  textPlaceholder: "#787878",
+  iconColor: "#FFFFFF",
 };
 
 export default colors;

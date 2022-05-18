@@ -12946,6 +12946,18 @@ react-lottie@^1.2.3:
     babel-runtime "^6.26.0"
     lottie-web "^5.1.3"
 
+react-merge-refs@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz#73d88b892c6c68cbb7a66e0800faa374f4c38b06"
+  integrity sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==
+
+react-modal-sheet@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/react-modal-sheet/-/react-modal-sheet-1.5.1.tgz#e254a06a404b4dcf73fbebdcafcbe2eb5e83e3e6"
+  integrity sha512-3StI5MoYH/LZTK6ozUrYMfEtHJGd/niuNLAH44ihXqxNSihceANfEFB8ZpSxHKkuMXIBwrtMf9xPd1oROhZzuQ==
+  dependencies:
+    react-merge-refs "1.1.0"
+
 react-new-window@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/react-new-window/-/react-new-window-0.2.1.tgz#510aa91ba0334f0d42ba499c617a37f46c4d84ba"

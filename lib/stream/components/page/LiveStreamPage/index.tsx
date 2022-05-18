@@ -17,6 +17,7 @@ import RewardBidModal from "@/tokens/components/objects/RewardBidModal";
 import { Reward } from "@/tokens/types/token";
 
 import LiveStreamPageLayout from "../../layouts/LiveStreamPageLayout";
+import PastStreamsList from "../../objects/PastStreamsList/v2";
 import StreamAboutSection from "../../objects/StreamAboutSection";
 import StreamShareSection from "../../objects/StreamShareSection";
 import Container from "./container";
@@ -103,9 +104,11 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
         <StreamAboutSection
           followers={followers}
           stream={cachedWebinar ?? webinar}
+          followersLoading={followersLoading || loading}
+          onFollow={() => followCreator()}
         />
       }
-      shareSection={<StreamShareSection />}
+      shareSection={<StreamShareSection stream={cachedWebinar} />}
       modal={
         tokenModalVisible &&
         activeReward &&
@@ -119,6 +122,7 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
         )
       }
       upcomingsStreams={<UpcomingStreamsList />}
+      pastStreams={<PastStreamsList />}
     />
   );
 }

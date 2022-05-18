@@ -66,7 +66,8 @@ export const StyledInput = styled.input<
     font-family: ${({ theme }) => theme.fonts.body};
     font-size: 1.2rem;
     font-weight: 600;
-    color: ${({ placeholderColor }) => placeholderColor};
+    color: ${({ placeholderColor, theme }) =>
+      placeholderColor ? placeholderColor : theme.colors.textPlaceholder};
   }
 
   ${background}
@@ -106,7 +107,7 @@ function InputWithRef({
 
   const border = useMemo(() => {
     return `1px solid ${error ? colors.error : borders.input}`;
-  }, [error, colors]);
+  }, [error, colors, borders]);
   return (
     <Box {...boxProps}>
       <InputContainer bg={bg ?? colors.primaryBackground} border={border}>
