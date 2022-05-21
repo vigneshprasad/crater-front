@@ -2,7 +2,6 @@ import { GetStaticProps, InferGetStaticPropsType } from "next";
 
 import dynamic from "next/dynamic";
 
-import { Box, Text } from "@/common/components/atoms";
 import HomePageLayout from "@/common/components/layouts/v2/HomePageLayout";
 import { PageResponse } from "@/common/types/api";
 import WebinarApiClient from "@/community/api";
