@@ -22,7 +22,7 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(({ stream }, ref) => {
     DateTime.DEFAULT_FORMAT
   );
   return (
-    <Container flexDirection="column" gridGap={space.xxs} ref={ref}>
+    <Container flexDirection="column" gridGap={space.xxxxs} ref={ref}>
       <Box
         position="relative"
         pt="56.25%"
@@ -54,7 +54,9 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(({ stream }, ref) => {
         <Text textStyle="body">{stream.host_detail?.name}</Text>
       </Flex>
 
-      <Text maxLines={3}>{stream.topic_detail?.name}</Text>
+      <Text color="#FCFCFC" maxLines={3}>
+        {stream.topic_detail?.name}
+      </Text>
 
       <Flex
         color={colors.textSecondary}

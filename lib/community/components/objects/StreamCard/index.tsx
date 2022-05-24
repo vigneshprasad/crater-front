@@ -48,7 +48,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
     );
     return (
       <Link key={stream.id} href={link ?? `/session/${stream.id}`}>
-        <Container gridGap={space.xxs} ref={ref}>
+        <Container gridGap={space.xxxxs} ref={ref}>
           <ImageContainer
             position="relative"
             pt="56.25%"
@@ -89,7 +89,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
               <Button m="auto auto" label="RSVP" />
             </Overlay>
           </ImageContainer>
-          <Flex alignItems="center" gridGap={space.xxxs}>
+          <Flex alignItems="center" gridGap={6}>
             {hostSlug && (
               <Link href={PageRoutes.creatorProfile(hostSlug)}>
                 <Avatar
@@ -102,15 +102,17 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
 
             <Text textStyle="body">{stream.host_detail?.name}</Text>
           </Flex>
-          <Text maxLines={3}>{stream.topic_detail?.name}</Text>
+          <Text color="#FCFCFC" maxLines={3}>
+            {stream.topic_detail?.name}
+          </Text>
 
           <Flex
             color={colors.textSecondary}
             alignItems="center"
-            gridGap={space.xxxs}
+            gridGap={space.xxxxxs}
           >
             <Icon size={16} color="inherit" icon="Calendar" />
-            <Text textStyle="body" color="inherit">
+            <Text textStyle="small" color="inherit">
               {startTime}
             </Text>
           </Flex>
