@@ -78,8 +78,6 @@ export default function CoinHoldingsBox({ holdings }: IProps): JSX.Element {
     }
   }, [holdings, activeHolding, setActiveHolding, fetchPriceLogs]);
 
-  console.log(holdings);
-
   if (holdings && holdings.length === 0) {
     return (
       <Flex

@@ -3,6 +3,7 @@ import NewWindow from "react-new-window";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
+import useSystemSocket from "@/auth/context/SystemSocketContext";
 import {
   Box,
   Input,
@@ -46,7 +47,8 @@ export default function StreamChat({
   showPopup = true,
   ...rest
 }: IProps): JSX.Element {
-  const { profile, permission } = useAuth();
+  const { profile, user, permission: apiPermission } = useAuth();
+  const { permission: socketPermission } = useSystemSocket();
   const { rewards } = useRewardsList();
   const { space, gradients, radii, colors } = useTheme();
   const { colorMode, toggleColorMode } = useChatColorMode();
@@ -72,6 +74,11 @@ export default function StreamChat({
       },
     }
   );
+
+  const permission = useMemo(() => {
+    if (socketPermission) return socketPermission;
+    return apiPermission;
+  }, [apiPermission, socketPermission]);
 
   const hasActiveReward = useMemo(() => {
     if (!rewards) {

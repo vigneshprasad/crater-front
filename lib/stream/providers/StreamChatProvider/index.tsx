@@ -1,129 +1,81 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from "react";
+import { createContext, useEffect, useMemo, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
 import useAuth from "@/auth/context/AuthContext";
-import { WEBSOCKET_BASE_URL } from "@/common/constants/global.constants";
-import { ChatMessage } from "@/stream/types/streamChat";
+import { SOCKET_IO_BASE_URL } from "@/common/constants/global.constants";
 
-import StreamChatReducer from "./reducer";
-import { StreamChatState } from "./types";
+import { IChatRoomJoinResponse, IChatRoomUserJoinedResponse } from "./types";
 
 export interface StreamChatContextState {
-  messages: ChatMessage[];
-  connected: boolean;
-  sendGroupMessage: (message: string, displayName?: string) => void;
-  sendChatReaction: (reaction: number) => void;
+  room?: string;
+  viewerCount?: number;
 }
 
 export const StreamChatContext = createContext({} as StreamChatContextState);
 
-type ProviderProps = PropsWithChildren<{
-  groupId: string | number;
-}>;
-
-const intialState: StreamChatState = {
-  connected: false,
-  messages: [],
+type ProviderProps = {
+  id: string;
+  children?: React.ReactNode | React.ReactNode[];
 };
 
 export default function StreamChatProvider({
-  groupId,
-  ...rest
+  id,
+  children,
 }: ProviderProps): JSX.Element {
-  const { session } = useAuth();
-  const _socket = useRef<WebSocket>();
-  const [state, dispatch] = useReducer(StreamChatReducer, intialState);
-
-  const onInit = useCallback(() => {
-    if (_socket.current) {
-      dispatch({
-        type: "connect",
-      });
-    }
-  }, []);
-
-  const messageHandler = useCallback(
-    (event: MessageEvent<string>) => {
-      if (event.data) {
-        const data = JSON.parse(event.data);
-        dispatch(data);
-      }
-    },
-    [dispatch]
-  );
-
-  const sendGroupMessage = useCallback(
-    (message: string, displayName?: string) => {
-      if (_socket.current) {
-        const data = {
-          type: "send_group_message",
-          payload: {
-            message,
-            display_name: displayName,
-          },
-        };
-
-        if (!displayName) {
-          delete data.payload.display_name;
-        }
-
-        _socket.current.send(JSON.stringify(data));
-      }
-    },
-    [_socket]
-  );
-
-  const sendChatReaction = useCallback(
-    (reaction: number) => {
-      if (_socket.current) {
-        const data = {
-          type: "send_group_reaction",
-          payload: {
-            reaction: reaction,
-          },
-        };
-        _socket.current.send(JSON.stringify(data));
-      }
-    },
-    [_socket]
-  );
+  const { user } = useAuth();
+  const socket = useRef<Socket | null>(null);
+  const [room, setRoom] = useState<string | undefined>(undefined);
+  const [viewerCount, setViewerCount] = useState<number | undefined>(undefined);
 
   useEffect(() => {
-    if (session && session.user) {
-      const token = session.user.apiToken;
-      _socket.current = new WebSocket(
-        `${WEBSOCKET_BASE_URL}/group/${groupId}/?token=${token}`
-      );
-      _socket.current.addEventListener("open", onInit);
-      _socket.current.addEventListener("message", messageHandler);
-    }
+    if (socket.current === null && id && user) {
+      socket.current = io(`${SOCKET_IO_BASE_URL}/chat`, {
+        transports: ["websocket"],
+        query: {
+          token: user.apiToken,
+        },
+      });
 
-    return () => {
-      if (_socket.current) {
-        _socket.current.removeEventListener("open", onInit);
-        _socket.current.removeEventListener("message", messageHandler);
-        _socket.current.close();
-        _socket.current = undefined;
-      }
-    };
-  }, [groupId, messageHandler, onInit, session]);
+      socket.current.on("connect", () => {
+        socket.current?.emit(
+          "chat:join-room",
+          {
+            group: id,
+          },
+          ({ room, viewerCount }: IChatRoomJoinResponse) => {
+            setRoom(room);
+            setViewerCount(viewerCount);
+          }
+        );
+      });
+
+      socket.current.on(
+        "chat:room-joined",
+        (payload: IChatRoomUserJoinedResponse) => {
+          setViewerCount(payload.viewerCount);
+        }
+      );
+
+      socket.current.on(
+        "chat:room-left",
+        (payload: IChatRoomUserJoinedResponse) => {
+          setViewerCount(payload.viewerCount);
+        }
+      );
+    }
+  }, [id, socket, user]);
 
   const value = useMemo(
     () => ({
-      messages: state.messages,
-      connected: state.connected,
-      sendGroupMessage,
-      sendChatReaction,
+      room,
+      viewerCount,
     }),
-    [state, sendGroupMessage, sendChatReaction]
+    [room, viewerCount]
   );
 
-  return <StreamChatContext.Provider value={value} {...rest} />;
+  return (
+    <StreamChatContext.Provider value={value}>
+      {children}
+    </StreamChatContext.Provider>
+  );
 }
