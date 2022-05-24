@@ -49,7 +49,7 @@ export function ChatColorModeProvider({
             primaryLight: "#FFFFFF",
             primaryBackground: "#EDEDED",
             textPlaceholder: "#969696",
-            primaryDarkSecondary: "#FFFFFF",
+            primaryDarkSecondary: "#C4C4C4",
             iconColor: "#333333",
             textPrimary: "#333333",
           },

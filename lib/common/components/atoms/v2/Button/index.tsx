@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { variant } from "styled-system";
 
 import { Grid, GridProps } from "../../System/Grid";
@@ -9,20 +9,22 @@ type Variants =
   | "flat"
   | "outline"
   | "outline-condensed"
-  | "dark-flat";
+  | "dark-flat"
+  | "transparent"
+  | "displayLarge";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     as?: "button" | "div";
     label?: string;
     variant?: Variants;
+    suffixElement?: React.ReactNode;
+    prefixElement?: React.ReactNode;
   };
 
 const StyledButton = styled(Grid)<ButtonProps>`
   cursor: pointer;
   border: none;
-  font-size: 1.4rem;
-  font-weight: 500;
   color: ${({ theme }) => theme.colors.white[0]};
 
   ${variant({
@@ -57,7 +59,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
         },
       },
       outline: {
-        fontSize: "1.4rem",
+        fontSize: "1.3rem",
         bg: "transparent",
         border: "2px solid rgba(237, 237, 237, 0.6)",
         px: "1.2em",
@@ -70,7 +72,6 @@ const StyledButton = styled(Grid)<ButtonProps>`
         },
       },
       "outline-condensed": {
-        fontSize: "1.3rem",
         bg: "transparent",
         border: "2px solid rgba(237, 237, 237, 0.6)",
         px: "1.2em",
@@ -92,19 +93,66 @@ const StyledButton = styled(Grid)<ButtonProps>`
           bg: "primaryLight",
         },
       },
+      transparent: {
+        px: "0.8em",
+        py: "0.4em",
+        bg: "transparent",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "primaryLight",
+        },
+      },
+      displayLarge: {
+        px: "0.8em",
+        py: "0.6em",
+        fontWeight: "500",
+        fontSize: "1.8rem",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        bg: "secondaryDark",
+        border: "2px solid #C1ABE8",
+        ":hover": {
+          bg: "secondaryLight",
+        },
+      },
     },
   })}
 `;
 
-export function Button({ label, children, ...rest }: ButtonProps): JSX.Element {
+export function Button({
+  label,
+  children,
+  suffixElement,
+  prefixElement,
+  ...rest
+}: ButtonProps): JSX.Element {
+  const { space } = useTheme();
   return (
-    <StyledButton display="inline-block" as="button" {...rest}>
-      {label && (
-        <Text fontSize="inherit" color="inherit" fontWeight="500">
-          {label}
-        </Text>
-      )}
-      {children}
+    <StyledButton
+      fontSize="1.3rem"
+      display="inline-block"
+      as="button"
+      fontWeight="700"
+      {...rest}
+    >
+      <Grid
+        alignItems="center"
+        gridGap={space.xxxxs}
+        gridTemplateAreas={`"prefix content suffix"`}
+        gridTemplateColumns="max-content 1fr max-content"
+      >
+        {prefixElement && <Grid gridArea="prefix">{prefixElement}</Grid>}
+        <Grid gridArea="content">
+          {label && (
+            <Text fontSize="inherit" color="inherit" fontWeight="inherit">
+              {label}
+            </Text>
+          )}
+          {children}
+        </Grid>
+        {suffixElement && <Grid gridArea="suffix">{suffixElement}</Grid>}
+      </Grid>
     </StyledButton>
   );
 }

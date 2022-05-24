@@ -5,7 +5,6 @@ import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
-import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import { BidListProvider } from "@/tokens/context/BidListContext";
 import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
@@ -45,13 +44,9 @@ export default function Container({
             >
               <UpcomingStreamsProvider pageSize={4}>
                 <PastStreamProvider pageSize={8}>
-                  <StreamsToRsvpProvider>
-                    <ReferralSummaryProvider>
-                      <LiveStreamPageProvider>
-                        {children}
-                      </LiveStreamPageProvider>
-                    </ReferralSummaryProvider>
-                  </StreamsToRsvpProvider>
+                  <ReferralSummaryProvider>
+                    <LiveStreamPageProvider>{children}</LiveStreamPageProvider>
+                  </ReferralSummaryProvider>
                 </PastStreamProvider>
               </UpcomingStreamsProvider>
             </RewardsListProvider>

@@ -1,8 +1,9 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
+import useAuth from "@/auth/context/AuthContext";
 import {
   Avatar,
   Box,
@@ -12,11 +13,18 @@ import {
   Flex,
   Icon,
 } from "@/common/components/atoms";
+import Spinner from "@/common/components/atoms/Spiner";
 import { Button } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
 import colors from "@/common/theme/colors";
 import DateTime from "@/common/utils/datetime/DateTime";
-import { Webinar } from "@/community/types/community";
+import WebinarApiClient from "@/community/api";
+import {
+  ParticpantType,
+  PostGroupRequest,
+  RequestStatus,
+  Webinar,
+} from "@/community/types/community";
 
 interface IProps {
   stream: Webinar;
@@ -46,14 +54,44 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
     const startTime = DateTime.parse(stream.start).toFormat(
       DateTime.DEFAULT_FORMAT
     );
+
+    const [loadingRequest, setLoadingRequest] = useState(false);
+
+    const { user } = useAuth();
+
+    const postStreamRsvp = async (): Promise<void> => {
+      if (user) {
+        setLoadingRequest(true);
+        const data: PostGroupRequest = {
+          group: stream.id,
+          status: RequestStatus.accepted,
+          participant_type:
+            stream.host === user.pk
+              ? ParticpantType.speaker
+              : ParticpantType.attendee,
+        };
+        const [req, err] = await WebinarApiClient().postWebinarRequest(data);
+        if (err) {
+          console.log(err);
+        }
+
+        setLoadingRequest(false);
+
+        console.log(req);
+      }
+    };
     return (
-      <Link key={stream.id} href={link ?? `/session/${stream.id}`}>
+      <Link
+        href={link ?? `/session/${stream.id}`}
+        boxProps={{ target: "_blank" }}
+      >
         <Container gridGap={space.xxs} ref={ref}>
           <ImageContainer
             position="relative"
             pt="56.25%"
             borderRadius={radii.xxs}
             overflow="hidden"
+            onClick={(event) => event.stopPropagation()}
           >
             {stream.topic_detail?.image && (
               <Image
@@ -86,9 +124,35 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
               bottom={0}
               bg="transparent"
             >
-              <Button m="auto auto" label="RSVP" />
+              {user?.pk !== stream.host && stream.has_rsvp ? (
+                <Button
+                  m="auto auto"
+                  disabled
+                  label="RSVP"
+                  suffixElement={
+                    <Icon
+                      size={20}
+                      icon="CheckCircle"
+                      color={colors.greenSuccess}
+                    />
+                  }
+                />
+              ) : (
+                <Button
+                  disabled={loadingRequest}
+                  m="auto auto"
+                  label="RSVP"
+                  onClick={() => {
+                    postStreamRsvp();
+                  }}
+                  suffixElement={
+                    loadingRequest ? <Spinner size={28} /> : undefined
+                  }
+                />
+              )}
             </Overlay>
           </ImageContainer>
+
           <Flex alignItems="center" gridGap={space.xxxs}>
             {hostSlug && (
               <Link href={PageRoutes.creatorProfile(hostSlug)}>

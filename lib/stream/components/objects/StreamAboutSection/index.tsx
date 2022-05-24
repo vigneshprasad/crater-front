@@ -120,14 +120,26 @@ export default function StreamAboutSection({
                   </>
                 );
               })()}
-              <Button variant="outline-condensed">
-                <Flex gridGap={space.xxxs} alignItems="center">
-                  <Icon icon="Linktree" size={16} />
-                  <Text fontSize="inherit" color="inherit" fontWeight="500">
-                    LinkTree
-                  </Text>
-                </Flex>
-              </Button>
+              {stream.host_detail.creator_detail?.profile_detail
+                .primary_url && (
+                <a
+                  href={
+                    stream.host_detail.creator_detail?.profile_detail
+                      .primary_url
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Button variant="outline-condensed">
+                    <Flex gridGap={space.xxxs} alignItems="center">
+                      <Icon icon="Linktree" size={16} />
+                      <Text fontSize="inherit" color="inherit" fontWeight="500">
+                        LinkTree
+                      </Text>
+                    </Flex>
+                  </Button>
+                </a>
+              )}
             </Flex>
 
             <IconButton

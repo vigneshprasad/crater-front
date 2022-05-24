@@ -108,6 +108,7 @@ export type Room = Group;
 
 export type Webinar = Group & {
   host_profile_details?: Profile;
+  has_rsvp?: boolean;
 };
 
 export interface UserProperties {

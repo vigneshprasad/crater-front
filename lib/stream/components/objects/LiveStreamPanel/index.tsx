@@ -3,7 +3,7 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
-import { Grid, Link } from "@/common/components/atoms";
+import { Grid, Link, Shimmer } from "@/common/components/atoms";
 import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useWebinar } from "@/community/context/WebinarContext";
@@ -57,17 +57,19 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
     }
   }, [router, setActiveTab]);
 
+  if (!webinar) {
+    return <Shimmer h="100%" w="100%" />;
+  }
+
   return (
-    <Grid gridTemplateRows={["min-content 1fr"]}>
-      {webinar && (
-        <BaseTabBar
-          bg={colors.primaryLight}
-          px={space.xxxs}
-          activeTab={activeTab}
-          tabs={TABS(webinar.id)}
-          borderLeft={`1px solid ${colors.black[0]}`}
-        />
-      )}
+    <Grid gridTemplateRows={["max-content 1fr"]} bg={colors.primaryBackground}>
+      <BaseTabBar
+        bg={colors.primaryLight}
+        px={space.xxxs}
+        activeTab={activeTab}
+        tabs={TABS(webinar.id)}
+        borderLeft={`1px solid ${colors.black[0]}`}
+      />
 
       {activeTab === "chat" && webinar && !webinar.closed && (
         <StreamChat stream={webinar} />

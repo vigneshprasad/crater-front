@@ -124,6 +124,7 @@ export default function StreamChat({
         {({ messages, postMessage }) => {
           return (
             <Grid
+              minHeight="100%"
               gridTemplateRows={
                 hasActiveReward
                   ? ["1fr max-content", "max-content 1fr max-content"]

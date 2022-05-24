@@ -20,20 +20,20 @@ export type SelectProps<T> = {
 
 const Container = styled(Box)`
   position: relative;
-  background: ${({ theme: { colors } }) => colors.black[2]};
-  padding: 12px 16px;
+  background: ${({ theme: { colors } }) => colors.primaryLight};
+  padding: 0.6em 1em;
   border-radius: ${({ theme: { radii } }) => radii.xxs}px;
-  border: 2px solid transparent;
+  border: 1px solid ${({ theme: { colors } }) => colors.primaryDark};
   cursor: pointer;
   outline: none;
 
   &:hover {
-    background: ${({ theme: { colors } }) => colors.black[2]};
+    background: ${({ theme: { colors } }) => colors.primaryDarkSecondary};
   }
 
   &:focus {
-    background: ${({ theme: { colors } }) => colors.black[2]};
-    border: 2px solid ${({ theme: { colors } }) => colors.accent};
+    background: ${({ theme: { colors } }) => colors.primaryDarkSecondary};
+    border: 1px solid ${({ theme: { colors } }) => colors.accent};
   }
 `;
 
@@ -125,7 +125,7 @@ export function Select<T>({
             {label}
           </Text>
         )}
-        <Icon icon="ExpandMore" color={colors.white[0]} fill />
+        <Icon icon="ExpandMore" color={colors.textPrimary} fill />
       </Grid>
       <AnimatedBox
         animate={animate}
@@ -147,7 +147,7 @@ export function Select<T>({
         borderRadius={radii.xxs}
         right={4}
         left={4}
-        bg={colors.black[2]}
+        bg={colors.primaryLight}
         maxHeight={200}
         overflowY="auto"
       >

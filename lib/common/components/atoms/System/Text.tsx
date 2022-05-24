@@ -21,6 +21,18 @@ const variants = {
     fontWeight: "700",
     lineHeight: ["5.2rem"],
   },
+  headline1: {
+    fontFamily: fonts.body,
+    fontSize: "4.2rem",
+    fontWeight: "200",
+    lineHeight: ["5.6rem"],
+  },
+  headline2: {
+    fontFamily: fonts.body,
+    fontSize: "3.4rem",
+    fontWeight: "200",
+    lineHeight: ["4.8rem"],
+  },
   headline3: {
     fontFamily: fonts.heading,
     fontSize: ["3.2rem", "4rem"],

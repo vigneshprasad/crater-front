@@ -54,7 +54,7 @@ export default function StreamChatPage({
       <ThemeProvider theme={theme}>
         <WebinarProvider initial={webinar} id={id}>
           <ChatColorModeProvider>
-            <StreamChat minHeight="100%" showPopup={false} stream={webinar} />
+            <StreamChat minHeight="100vh" showPopup={false} stream={webinar} />
           </ChatColorModeProvider>
         </WebinarProvider>
       </ThemeProvider>
