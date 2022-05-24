@@ -9,7 +9,11 @@ type Variants =
   | "flat"
   | "outline"
   | "outline-condensed"
-  | "dark-flat";
+  | "dark-flat"
+  | "dark-flat-no-bg"
+  | "round"
+  | "filter-selected"
+  | "pagination";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -90,6 +94,52 @@ const StyledButton = styled(Grid)<ButtonProps>`
         borderRadius: 4,
         ":hover": {
           bg: "primaryLight",
+        },
+      },
+      "dark-flat-no-bg": {
+        bg: "primaryDark",
+        color: "accentLight",
+        transition: "all 0.1s ease-in",
+      },
+      round: {
+        fontSize: "1.6rem",
+        lineHeight: "2.2rem",
+        px: "1.25em",
+        py: "0.625em",
+        bg: "primaryDark",
+        border: "2px solid #1C1C1E",
+        borderRadius: "36px",
+        transition: "all 0.1s ease-in",
+        ":hover": {
+          bg: "accent",
+        },
+      },
+      "filter-selected": {
+        fontSize: "1.6rem",
+        lineHeight: "2.2rem",
+        px: "1.25em",
+        py: "0.625em",
+        bg: "accent",
+        border: "2px solid #9146FF",
+        borderRadius: "36px",
+        transition: "all 0.1s ease-in",
+        boxShadow: "0px 0px 28px #0E849F",
+        ":hover": {
+          bg: "accentHover",
+        },
+      },
+      pagination: {
+        fontSize: "1.2rem",
+        lineHeight: "1.8rem",
+        fontWeight: 600,
+        bg: "primaryDark",
+        p: "0.625em",
+        borderRadius: "4px",
+        transition: "all 0.1s ease-in",
+        color: "#C4C4C4",
+        ":hover": {
+          bg: "primaryLight",
+          color: "accentLight",
         },
       },
     },
