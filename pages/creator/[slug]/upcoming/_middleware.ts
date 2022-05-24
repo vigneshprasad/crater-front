@@ -1,4 +1,3 @@
-import { INTERNALS } from "next/dist/server/web/spec-extension/request";
 import { NextMiddleware, NextResponse } from "next/server";
 
 import { API_BASE_URL } from "@/common/constants/global.constants";
