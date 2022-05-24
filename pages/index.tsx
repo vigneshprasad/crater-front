@@ -6,8 +6,9 @@ import HomePageLayout from "@/common/components/layouts/v2/HomePageLayout";
 import { PageResponse } from "@/common/types/api";
 import WebinarApiClient from "@/community/api";
 import { LiveStreamsProvider } from "@/community/context/LiveStreamsContext";
-import { SeriesListProvider } from "@/community/context/SeriesListContext";
-import { Series, Webinar } from "@/community/types/community";
+import { Webinar } from "@/community/types/community";
+import StreamApiClient from "@/stream/api";
+import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamCategoryProvider } from "@/stream/context/StreamCategoryContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 
@@ -17,20 +18,20 @@ const StreamsPage = dynamic(
 
 interface ServerProps {
   liveStreams: Webinar[];
-  upcoming: PageResponse<Webinar>;
-  series: Series[];
+  upcomingStreams: PageResponse<Webinar>;
+  pastStreams: PageResponse<Webinar>;
 }
 
 export const getStaticProps: GetStaticProps<ServerProps> = async () => {
   const [liveStreams] = await WebinarApiClient().getAllLiveWebinars();
-  const [upcoming] = await WebinarApiClient().getAllUpcominWebinars();
-  const [series] = await WebinarApiClient().getAllSeries();
+  const [upcomingStreams] = await WebinarApiClient().getAllUpcominWebinars();
+  const [pastStreams] = await StreamApiClient().getPastStreams();
 
   return {
     props: {
       liveStreams: liveStreams ?? [],
-      upcoming: upcoming ?? ({} as PageResponse<Webinar>),
-      series: series ?? [],
+      upcomingStreams: upcomingStreams ?? ({} as PageResponse<Webinar>),
+      pastStreams: pastStreams ?? ({} as PageResponse<Webinar>),
     },
     revalidate: 10,
   };
@@ -40,8 +41,8 @@ export type IProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Home({
   liveStreams,
-  upcoming,
-  series,
+  upcomingStreams,
+  pastStreams,
 }: IProps): JSX.Element {
   return (
     <HomePageLayout
@@ -56,12 +57,12 @@ export default function Home({
       content"
     >
       <LiveStreamsProvider initial={liveStreams}>
-        <UpcomingStreamsProvider initial={upcoming}>
-          <SeriesListProvider initial={series}>
+        <UpcomingStreamsProvider initial={upcomingStreams}>
+          <PastStreamProvider initial={pastStreams}>
             <StreamCategoryProvider>
               <StreamsPage />
             </StreamCategoryProvider>
-          </SeriesListProvider>
+          </PastStreamProvider>
         </UpcomingStreamsProvider>
       </LiveStreamsProvider>
     </HomePageLayout>
