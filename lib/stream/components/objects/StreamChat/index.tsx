@@ -30,6 +30,7 @@ import { FirebaseChatContext } from "@/stream/providers/FirebaseChatProvider/con
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
 import ChatMessagesList from "../ChatMessagesList";
+import StreamViewerCount from "../StreamViewerCount";
 
 interface IProps extends GridProps {
   stream: Webinar;
@@ -47,7 +48,7 @@ export default function StreamChat({
   showPopup = true,
   ...rest
 }: IProps): JSX.Element {
-  const { profile, user, permission: apiPermission } = useAuth();
+  const { profile, permission: apiPermission } = useAuth();
   const { permission: socketPermission } = useSystemSocket();
   const { rewards } = useRewardsList();
   const { space, gradients, radii, colors } = useTheme();
@@ -227,7 +228,22 @@ export default function StreamChat({
                     }
                   })()}
                   <Flex justifyContent="space-between">
-                    <Text>1232</Text>
+                    {(() => {
+                      if (!profile) return <Box />;
+
+                      const isAdmin = profile.groups.filter(
+                        (group) => group.name === "livestream_chat_admin"
+                      )[0]
+                        ? true
+                        : false;
+
+                      if (isAdmin) {
+                        return <StreamViewerCount />;
+                      }
+
+                      return <Box />;
+                    })()}
+
                     <Flex gridGap={space.xxxxs}>
                       <MenuButton
                         icon="Settings"

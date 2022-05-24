@@ -1,6 +1,5 @@
 import { useTheme } from "styled-components";
 
-import useAuth from "@/auth/context/AuthContext";
 import { Box, Grid } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
@@ -9,8 +8,7 @@ import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider"
 
 import BANNER from "../../objects/Banner";
 import LiveStreamPanel from "../../objects/LiveStreamPanel";
-import StreamViewerCount from "../../objects/StreamViewerCount";
-import UpcomingStreamsWidget from "../../objects/UpcomingStreamsWidget";
+import SimilarStreamsOverlay from "../../objects/SimilarStreamsOverlay";
 
 interface IProps {
   videoPlayer: React.ReactNode;
@@ -30,7 +28,6 @@ export default function LiveStreamPageLayout({
   pastStreams,
 }: IProps): JSX.Element {
   const { space } = useTheme();
-  const { profile } = useAuth();
   return (
     <BaseLayout aside={<AsideNav />} overflowY={["hidden", "auto"]}>
       {modal}
@@ -54,19 +51,7 @@ export default function LiveStreamPageLayout({
         <Grid gridArea="stream">
           <Box pt="56.25%" position="relative">
             {videoPlayer}
-            <UpcomingStreamsWidget />
-            {(() => {
-              if (!profile) return null;
-
-              const isAdmin = profile.groups.filter(
-                (group) => group.name === "livestream_chat_admin"
-              )[0];
-
-              if (isAdmin) {
-                return <StreamViewerCount />;
-              }
-              return null;
-            })()}
+            <SimilarStreamsOverlay />
           </Box>
         </Grid>
         <Grid gridArea="panel">
