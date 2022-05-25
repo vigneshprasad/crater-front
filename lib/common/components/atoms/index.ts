@@ -6,7 +6,6 @@ export * from "./Avatar";
 export * from "./Input";
 export * from "./TextArea";
 export * from "./Select";
-export * from "./Compose";
 export * from "./Modal";
 export * from "./Card";
 export { default as Spiner } from "./Spiner";
