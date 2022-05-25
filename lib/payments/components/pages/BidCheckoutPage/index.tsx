@@ -57,7 +57,6 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
         bid: bid?.id,
         reward: reward?.id,
       });
-      console.log(result.error.message);
     } else {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate

@@ -22,9 +22,10 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
 
     if (user) {
       setShareUrl(`${urlObj.origin}${urlObj.pathname}?referrer_id=${user.pk}`);
+      return;
     }
 
-    console.log(window.location.href);
+    setShareUrl(`${urlObj.origin}${urlObj.pathname}`);
   }, [user]);
 
   const socialButtons = useMemo(() => {
