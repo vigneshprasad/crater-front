@@ -21,23 +21,6 @@ const StreamSlider = dynamic<IStreamSliderProps>(() =>
   import("../../objects/StreamSlider").then(({ StreamSlider }) => StreamSlider)
 );
 
-// const Span = styled.span`
-//   color: ${({ theme }) => theme.colors.accent};
-// `;
-
-// const StyledBox = styled(Box)<BoxProps>`
-//   margin: 0 auto;
-//   width: 943px;
-//   height: 25px;
-//   background: linear-gradient(
-//     104.66deg,
-//     rgba(136, 46, 232, 0.6) 21.6%,
-//     rgba(89, 174, 211, 0.6) 81.04%
-//   );
-//   filter: blur(60px);
-//   transform: matrix(1, 0, 0, -1, 0, 0);
-// `;
-
 export default function StreamsPage(): JSX.Element {
   const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
   const { space, colors } = useTheme();
@@ -55,7 +38,6 @@ export default function StreamsPage(): JSX.Element {
     <>
       <Box mx={[space.xxs, space.xs]}>
         <StreamSlider liveStreams={liveStreams} />
-        {/* <StyledBox /> */}
       </Box>
 
       <StyledHeadingDivider label="Upcoming Streams" />
@@ -82,7 +64,7 @@ export default function StreamsPage(): JSX.Element {
 
       <Box
         mt={space.xs}
-        px={space.s}
+        px={[space.xxs, space.s]}
         py={[space.xxs, space.s]}
         backgroundColor={colors.primaryDark}
         position="relative"
