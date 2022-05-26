@@ -51,7 +51,7 @@ export default function ChatMessageItem({
       as="div"
       py={2}
       px={space.xxxxs}
-      bg={colors.primaryDarkSecondary}
+      bg={colors.primaryLight}
       textStyle="chatText"
       mx={space.xxxs}
       key={message.message}

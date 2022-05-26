@@ -1,8 +1,7 @@
 import { Profile } from "next-auth";
 import { useTheme } from "styled-components";
 
-import { Avatar, Box, Grid, Text } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
+import { Avatar, Box, Grid, Text, Spinner } from "@/common/components/atoms";
 import { Webinar } from "@/community/types/community";
 
 export interface IProps {

@@ -6,9 +6,16 @@ import {
 import { SyntheticEvent, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { Flex, Card, Form, Grid, Text, Hr } from "@/common/components/atoms";
+import {
+  Flex,
+  Card,
+  Form,
+  Grid,
+  Text,
+  Hr,
+  Spinner,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
@@ -57,7 +64,6 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
         bid: bid?.id,
         reward: reward?.id,
       });
-      console.log(result.error.message);
     } else {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate

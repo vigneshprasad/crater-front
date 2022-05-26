@@ -10,6 +10,7 @@ export type IconProps = Omit<BoxProps, "width" | "height"> & {
   color?: CSS.Property.Color;
   size?: number | number[];
   fill?: boolean;
+  rotate?: number;
 };
 
 const StyledIconWrapper = styled(Box)<BoxProps & { rotate?: number }>`

@@ -1,13 +1,14 @@
-import STATIC_IMAGES from "public/images";
 import { useTheme } from "styled-components";
 
-import { Box, Grid, Image } from "@/common/components/atoms";
+import { Box, Grid } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
 import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 
+import BANNER from "../../objects/Banner";
 import LiveStreamPanel from "../../objects/LiveStreamPanel";
+import SimilarStreamsOverlay from "../../objects/SimilarStreamsOverlay";
 
 interface IProps {
   videoPlayer: React.ReactNode;
@@ -50,6 +51,7 @@ export default function LiveStreamPageLayout({
         <Grid gridArea="stream">
           <Box pt="56.25%" position="relative">
             {videoPlayer}
+            <SimilarStreamsOverlay />
           </Box>
         </Grid>
         <Grid gridArea="panel">
@@ -70,23 +72,13 @@ export default function LiveStreamPageLayout({
         </Grid>
 
         <Box display={["none", "grid"]} gridArea="pageContent">
-          <Box my={space.xxs}>
-            <Image
-              src={STATIC_IMAGES.ImageAppBannerStream}
-              alt="Get the crater app."
-            />
-          </Box>
+          <BANNER.DownloadApp />
           <StyledHeadingDivider label="Explore Streams" />
           {upcomingsStreams}
 
           <Box h={space.s} />
 
-          <Box>
-            <Image
-              src={STATIC_IMAGES.ImageCraterStream}
-              alt="Get the crater app."
-            />
-          </Box>
+          <BANNER.StartStreaming />
 
           {pastStreams}
 

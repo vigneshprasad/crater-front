@@ -14,6 +14,7 @@ type IProps = AnimatedBoxProps &
     visible: boolean;
     onClose: () => void;
     heading?: string;
+    rootBoxProps?: AnimatedBoxProps;
   }>;
 
 export function BottomSheet({
@@ -21,6 +22,7 @@ export function BottomSheet({
   children,
   onClose,
   heading,
+  rootBoxProps,
   ...rest
 }: IProps): JSX.Element | null {
   const [showSheet, setShowSheet] = useState(visible ?? false);
@@ -57,10 +59,10 @@ export function BottomSheet({
           animate={{ opacity: 1, transition: { when: "beforeChildren" } }}
           transition={{ duration: 0.5 }}
           exit={{ opacity: 1, transition: { when: "afterChildren" } }}
+          {...rootBoxProps}
         >
           <AnimatedBox
             px={space.xxxs}
-            py={space.xxxs}
             borderRadius={`${radii.s}px ${radii.s}px 0 0`}
             w="100%"
             bottom={0}
@@ -70,6 +72,7 @@ export function BottomSheet({
             overflow="hidden"
             borderTopRightRadius={radii.xxs}
             borderTopLeftRadius={radii.xxs}
+            maxHeight="80vh"
             initial={{
               y: "50%",
             }}
@@ -82,11 +85,20 @@ export function BottomSheet({
             transition={{ duration: 0.2 }}
             {...rest}
           >
-            <Box h={2} bg={colors.black[0]} w={28} m="0 auto" />
-            <Flex justifyContent="space-between" alignItems="center">
-              <Text>{heading}</Text>
-              <IconButton icon="Close" onClick={onClose} />
-            </Flex>
+            <Box
+              py={space.xxxs}
+              position="sticky"
+              top={0}
+              bg={colors.primaryLight}
+              zIndex={zIndices.modalHeader}
+            >
+              <Box h={2} bg={colors.black[0]} w={28} m="0 auto" />
+              <Flex justifyContent="space-between" alignItems="center">
+                <Text>{heading}</Text>
+                <IconButton icon="Close" onClick={onClose} />
+              </Flex>
+            </Box>
+
             <Box>{children}</Box>
           </AnimatedBox>
         </AnimatedBox>

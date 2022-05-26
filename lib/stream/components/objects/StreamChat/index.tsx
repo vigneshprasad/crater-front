@@ -3,6 +3,7 @@ import NewWindow from "react-new-window";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
+import useSystemSocket from "@/auth/context/SystemSocketContext";
 import {
   Box,
   Input,
@@ -29,6 +30,7 @@ import { FirebaseChatContext } from "@/stream/providers/FirebaseChatProvider/con
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
 import ChatMessagesList from "../ChatMessagesList";
+import StreamViewerCount from "../StreamViewerCount";
 
 interface IProps extends GridProps {
   stream: Webinar;
@@ -46,7 +48,8 @@ export default function StreamChat({
   showPopup = true,
   ...rest
 }: IProps): JSX.Element {
-  const { profile, permission } = useAuth();
+  const { profile, permission: apiPermission } = useAuth();
+  const { permission: socketPermission } = useSystemSocket();
   const { rewards } = useRewardsList();
   const { space, gradients, radii, colors } = useTheme();
   const { colorMode, toggleColorMode } = useChatColorMode();
@@ -72,6 +75,11 @@ export default function StreamChat({
       },
     }
   );
+
+  const permission = useMemo(() => {
+    if (socketPermission) return socketPermission;
+    return apiPermission;
+  }, [apiPermission, socketPermission]);
 
   const hasActiveReward = useMemo(() => {
     if (!rewards) {
@@ -124,6 +132,7 @@ export default function StreamChat({
         {({ messages, postMessage }) => {
           return (
             <Grid
+              minHeight="100%"
               gridTemplateRows={
                 hasActiveReward
                   ? ["1fr max-content", "max-content 1fr max-content"]
@@ -218,8 +227,23 @@ export default function StreamChat({
                       );
                     }
                   })()}
-                  <Flex justifyContent="space-between">
-                    <Text>1232</Text>
+                  <Flex justifyContent="space-between" alignItems="center">
+                    {(() => {
+                      if (!profile) return <Box />;
+
+                      const isAdmin = profile.groups.filter(
+                        (group) => group.name === "livestream_chat_admin"
+                      )[0]
+                        ? true
+                        : false;
+
+                      if (isAdmin) {
+                        return <StreamViewerCount />;
+                      }
+
+                      return <Box />;
+                    })()}
+
                     <Flex gridGap={space.xxxxs}>
                       <MenuButton
                         icon="Settings"

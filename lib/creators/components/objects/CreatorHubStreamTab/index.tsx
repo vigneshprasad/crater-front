@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import { Text, Grid, Box } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
+import { Text, Grid, Box, Spinner } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { StreamSlider } from "@/community/components/objects/StreamSlider";
 import { Webinar } from "@/community/types/community";

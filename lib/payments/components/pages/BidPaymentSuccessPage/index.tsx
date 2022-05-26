@@ -2,9 +2,8 @@ import * as animData from "public/anims/success-check.json";
 import Lottie from "react-lottie";
 import { useTheme } from "styled-components";
 
-import { Box, Grid, Text, Flex } from "@/common/components/atoms";
+import { Box, Grid, Text, Flex, Spinner } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import RewardsList from "@/tokens/components/objects/RewardsList";
 import useBid from "@/tokens/context/BidContext";
 import useRewardsList from "@/tokens/context/RewardsListContext";

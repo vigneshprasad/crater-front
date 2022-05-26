@@ -15,7 +15,7 @@ const Circle = styled(motion.circle)``;
 
 export default function Spinner({
   size = 44,
-  strokeWidth = 4,
+  strokeWidth = 2,
   strokeColor,
   ...rest
 }: IProps): JSX.Element {

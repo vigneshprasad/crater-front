@@ -18,6 +18,7 @@ import { Reward } from "@/tokens/types/token";
 
 import LiveStreamPageLayout from "../../layouts/LiveStreamPageLayout";
 import PastStreamsList from "../../objects/PastStreamsList/v2";
+import SimilarStreamsOverlay from "../../objects/SimilarStreamsOverlay";
 import StreamAboutSection from "../../objects/StreamAboutSection";
 import StreamShareSection from "../../objects/StreamShareSection";
 import Container from "./container";
@@ -84,21 +85,24 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
   return (
     <LiveStreamPageLayout
       videoPlayer={
-        dyteParticipant && (
-          <DyteMeeting
-            webinar={webinar}
-            orgId={orgId}
-            token={dyteParticipant.auth_token}
-            roomName={dyteParticipant.dyte_meeting_detail.room_name}
-            position="absolute"
-            top={0}
-            left={0}
-            right={0}
-            bottom={0}
-            overflow="hidden"
-            borderBottom={`2px solid ${borders.main}`}
-          />
-        )
+        <>
+          {dyteParticipant && (
+            <DyteMeeting
+              webinar={webinar}
+              orgId={orgId}
+              token={dyteParticipant.auth_token}
+              roomName={dyteParticipant.dyte_meeting_detail.room_name}
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              overflow="hidden"
+              borderBottom={`2px solid ${borders.main}`}
+            />
+          )}
+          <SimilarStreamsOverlay />
+        </>
       }
       streamDetail={
         <StreamAboutSection

@@ -20,8 +20,8 @@ const ButtonContainer = styled(Button)<ButtonProps>`
       flat: {
         w: 28,
         h: 28,
+        px: "0.2em",
         borderRadius: 4,
-        display: "flex",
         alignItems: "center",
         justifyContent: "center",
         bg: "transparent",
@@ -32,8 +32,8 @@ const ButtonContainer = styled(Button)<ButtonProps>`
       "flat-accent": {
         w: 28,
         h: 28,
+        px: "0.2em",
         borderRadius: 4,
-        display: "flex",
         alignItems: "center",
         justifyContent: "center",
         ":hover": {
@@ -44,7 +44,6 @@ const ButtonContainer = styled(Button)<ButtonProps>`
         w: 40,
         h: 40,
         borderRadius: "50%",
-        display: "flex",
         alignItems: "center",
         justifyContent: "center",
         bg: "black.0",
@@ -72,7 +71,7 @@ export function IconButton({ icon, iconProps, ...rest }: IProps): JSX.Element {
   }, [rest, iconProps]);
 
   return (
-    <ButtonContainer variant="iconButton" {...rest}>
+    <ButtonContainer display="flex" variant="iconButton" {...rest}>
       <Icon icon={icon} {...restIconProps} />
     </ButtonContainer>
   );

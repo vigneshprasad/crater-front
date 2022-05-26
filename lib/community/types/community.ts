@@ -108,6 +108,7 @@ export type Room = Group;
 
 export type Webinar = Group & {
   host_profile_details?: Profile;
+  has_rsvp?: boolean;
 };
 
 export interface UserProperties {
@@ -161,4 +162,26 @@ export interface Series {
   host: string;
   host_detail: Speaker;
   start: string;
+}
+
+export interface PastStreamListItem {
+  id: number;
+  topic_detail: {
+    name: string;
+    image: string;
+    description: string;
+  };
+  host_detail: {
+    pk: string;
+    email: string;
+    name: string;
+    photo: string;
+    introduction: string;
+    slug: string;
+  };
+  start: string;
+  is_live: boolean;
+  is_past: boolean;
+  has_rsvp: boolean;
+  recording?: number;
 }

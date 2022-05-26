@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useTheme } from "styled-components";
 
 import { Box, Flex } from "@/common/components/atoms";
@@ -24,19 +24,26 @@ export default function ChatMessagesList({
   const { borders, space, colors } = useTheme();
   const { webinar, mutateWebinar } = useWebinar();
 
-  useEffect(() => {
-    if (messages.length && messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight;
-      messagesContainerRef.current.children[
-        messagesContainerRef.current.children.length - 1
-      ].scrollIntoView();
+  const observerHandler = useCallback(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo(0, 0);
     }
-  }, [messages, messagesContainerRef]);
+  }, [messagesContainerRef]);
+
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      const observer = new MutationObserver(observerHandler);
+
+      observer.observe(messagesContainerRef.current, {
+        childList: true,
+      });
+    }
+  }, [messagesContainerRef, observerHandler]);
 
   return (
     <Box position="relative" borderBottom={`1px solid ${borders.main}`}>
       <Flex
+        scrollBehavior="smooth"
         position="absolute"
         top={0}
         right={0}

@@ -43,6 +43,7 @@ export default class AppDocument extends Document {
       <Html>
         <Head>
           <meta charSet="utf-8" />
+          <link rel="stylesheet" href="https://use.typekit.net/vga3pew.css" />
         </Head>
         <body>
           <Main />

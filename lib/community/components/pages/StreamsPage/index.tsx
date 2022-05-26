@@ -4,7 +4,7 @@ import { useTheme } from "styled-components";
 import dynamic from "next/dynamic";
 
 import { Box } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
+import Spinner from "@/common/components/atoms/Spinner";
 import Footer from "@/common/components/objects/Footer";
 import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";

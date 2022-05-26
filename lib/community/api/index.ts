@@ -10,6 +10,7 @@ import {
   Series,
   Webinar,
 } from "@/community/types/community";
+import { StreamRecording } from "@/stream/types/stream";
 
 interface IApiClientResult {
   getWebinar: (id: string) => Promise<ApiResult<Webinar, AxiosError>>;
@@ -32,6 +33,9 @@ interface IApiClientResult {
   postSeriesRequest: (
     series: number
   ) => Promise<ApiResult<GroupRequest[], AxiosError>>;
+  getWebinarRecording: (
+    id: string | number
+  ) => Promise<ApiResult<StreamRecording, AxiosError>>;
 }
 
 export default function WebinarApiClient(
@@ -150,6 +154,19 @@ export default function WebinarApiClient(
     }
   }
 
+  async function getWebinarRecording(
+    id: string | number
+  ): Promise<ApiResult<StreamRecording, AxiosError>> {
+    try {
+      const { data } = await client.get<StreamRecording>(
+        API_URL_CONSTANTS.groups.retrieveStreamRecording(id)
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getWebinar,
     getAllWebinar,
@@ -159,5 +176,6 @@ export default function WebinarApiClient(
     getAllLiveWebinars,
     getAllSeries,
     postSeriesRequest,
+    getWebinarRecording,
   };
 }

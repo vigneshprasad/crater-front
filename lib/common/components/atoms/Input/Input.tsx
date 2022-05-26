@@ -84,7 +84,7 @@ export const StyledInput = styled.input<
 `;
 
 export const InputContainer = styled(Flex)<FlexProps>`
-  padding: 6px 8px;
+  padding: 10px 8px;
   border-radius: ${({ theme }) => theme.radii.xxxxs}px;
   align-items: center;
 

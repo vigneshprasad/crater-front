@@ -11,10 +11,10 @@ import {
   Grid,
   Text,
   Box,
+  Spinner,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { MultiSelect } from "@/common/components/atoms/MultiSelect";
-import Spinner from "@/common/components/atoms/Spiner";
 import DateTimeInput from "@/common/components/objects/DateTimeInput";
 import FormField from "@/common/components/objects/FormField";
 import {
