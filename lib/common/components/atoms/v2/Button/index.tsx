@@ -102,7 +102,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
         transition: "all 0.1s ease-in",
       },
       round: {
-        fontSize: "1.6rem",
+        fontSize: ["1.4rem", "1.6rem"],
         lineHeight: "2.2rem",
         p: "0.6em 1.2em",
         bg: "primaryDark",
@@ -110,17 +110,18 @@ const StyledButton = styled(Grid)<ButtonProps>`
         borderRadius: "2em",
         transition: "all 0.1s ease-in",
         ":hover": {
-          bg: "accent",
+          bg: "primaryLight",
         },
       },
       "filter-selected": {
-        fontSize: "1.6rem",
+        fontSize: ["1.4rem", "1.6rem"],
         lineHeight: "2.2rem",
+        p: "0.6em 1.2em",
         bg: "accent",
         border: "2px solid #9146FF",
-        borderRadius: "36px",
+        borderRadius: "2em",
         transition: "all 0.1s ease-in",
-        boxShadow: "0px 0px 28px #0E849F",
+        boxShadow: ["none", "0px 0px 28px #0E849F"],
         ":hover": {
           bg: "accentHover",
         },
