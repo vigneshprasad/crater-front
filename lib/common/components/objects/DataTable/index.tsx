@@ -3,13 +3,14 @@ import styled from "styled-components";
 
 import { Box } from "@/common/components/atoms";
 
-import { Text } from "../../atoms/System/Text";
+import { Text, TextProps } from "../../atoms/System/Text";
 import { Column, Row } from "./types";
 
 interface IDataTableProps<P> {
   data?: P[];
   columns: Column<P>[];
   onClickRow?: (row: P) => void;
+  headerProps?: TextProps;
 }
 
 const TableStyles = styled(Box)`
@@ -80,6 +81,7 @@ const TableStyles = styled(Box)`
 export default function DataTable<T>({
   data,
   columns,
+  headerProps,
   onClickRow,
 }: IDataTableProps<T>): JSX.Element {
   const headers: { heading: string; id: string }[] = useMemo(() => {
@@ -109,7 +111,9 @@ export default function DataTable<T>({
           <tr>
             {headers.map(({ heading, id }) => (
               <th key={id}>
-                <Text textStyle="tableHeader">{heading}</Text>
+                <Text textStyle="tableHeader" {...headerProps}>
+                  {heading}
+                </Text>
               </th>
             ))}
           </tr>
