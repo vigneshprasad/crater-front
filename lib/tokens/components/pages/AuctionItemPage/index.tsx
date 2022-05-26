@@ -11,7 +11,7 @@ import {
   Flex,
   Link,
   Icon,
-  Spiner,
+  Spinner,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -235,7 +235,7 @@ function Content(): JSX.Element {
                   disabled={postBidLoading}
                   text="Place bid"
                   suffixElement={
-                    postBidLoading ? <Spiner size={32} /> : undefined
+                    postBidLoading ? <Spinner size={32} /> : undefined
                   }
                 />
               </Flex>

@@ -44,6 +44,8 @@ const PastStreamsList = forwardRef<HTMLDivElement>((_, ref) => {
     [numColumns]
   );
 
+  console.log(numColumns);
+
   return (
     <Box ref={ref}>
       <StyledHeadingDivider label="Previously Streamed" />

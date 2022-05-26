@@ -10,7 +10,7 @@ import {
   Form,
   AnimatedBox,
   Span,
-  Spiner,
+  Spinner,
   Shimmer,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
@@ -325,7 +325,7 @@ export function Content({ visible, onClose }: IProps): JSX.Element {
                 text="Place bid"
                 disabled={postBidLoading}
                 suffixElement={
-                  postBidLoading ? <Spiner size={32} /> : undefined
+                  postBidLoading ? <Spinner size={32} /> : undefined
                 }
               />
             </Flex>
