@@ -35,12 +35,19 @@ export default function HomePageUpcomingStreams({
                   ? Array(4)
                       .fill("")
                       .map((_, index) => (
-                        <Shimmer
-                          w="100%"
-                          h={180}
-                          borderRadius={radii.xxs}
+                        <Flex
                           key={index}
-                        />
+                          flexDirection="column"
+                          gridGap={space.xs}
+                        >
+                          <Shimmer
+                            w="100%"
+                            h={172}
+                            borderRadius={radii.xxs}
+                            key={index}
+                          />
+                          <Shimmer h={18} w="60%" />
+                        </Flex>
                       ))
                   : upcoming.map((stream) => (
                       <StreamCard

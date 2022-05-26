@@ -64,7 +64,7 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(({ stream }, ref) => {
         gridGap={space.xxxs}
       >
         <Icon size={16} color="inherit" icon="Calendar" />
-        <Text textStyle="body" color="inherit">
+        <Text textStyle="small" color="inherit">
           {startTime}
         </Text>
       </Flex>

@@ -1,6 +1,6 @@
 import { useTheme } from "styled-components";
 
-import { Grid, Shimmer } from "@/common/components/atoms";
+import { Flex, Grid, Shimmer } from "@/common/components/atoms";
 import { Webinar } from "@/community/types/community";
 
 import PastStreamCard from "../PastStreamCard/v2";
@@ -26,7 +26,15 @@ export default function PastStreamListHome({
         ? Array(4)
             .fill("")
             .map((_, index) => (
-              <Shimmer w="100%" h={180} borderRadius={radii.xxs} key={index} />
+              <Flex key={index} flexDirection="column" gridGap={space.xs}>
+                <Shimmer
+                  w="100%"
+                  h={172}
+                  borderRadius={radii.xxs}
+                  key={index}
+                />
+                <Shimmer h={18} w="60%" />
+              </Flex>
             ))
         : pastStreams.map((stream) => (
             <PastStreamCard key={stream.id} stream={stream} />
