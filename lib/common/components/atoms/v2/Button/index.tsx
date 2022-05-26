@@ -104,11 +104,10 @@ const StyledButton = styled(Grid)<ButtonProps>`
       round: {
         fontSize: "1.6rem",
         lineHeight: "2.2rem",
-        px: "1.25em",
-        py: "0.625em",
+        p: "0.6em 1.2em",
         bg: "primaryDark",
         border: "2px solid #1C1C1E",
-        borderRadius: "36px",
+        borderRadius: "2em",
         transition: "all 0.1s ease-in",
         ":hover": {
           bg: "accent",
@@ -117,8 +116,6 @@ const StyledButton = styled(Grid)<ButtonProps>`
       "filter-selected": {
         fontSize: "1.6rem",
         lineHeight: "2.2rem",
-        px: "1.25em",
-        py: "0.625em",
         bg: "accent",
         border: "2px solid #9146FF",
         borderRadius: "36px",
