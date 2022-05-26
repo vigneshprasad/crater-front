@@ -6,14 +6,19 @@ import {
   Grid,
   Icon,
   Link,
+  Shimmer,
   Span,
   Text,
 } from "@/common/components/atoms";
+import { PageRoutes } from "@/common/constants/route.constants";
+import useAuctionsList from "@/tokens/context/AuctionListContext";
 
 import ActiveAuctionsTable from "../ActiveAuctionsTable";
 
 export default function HomePageAuctions(): JSX.Element {
   const { space, colors, radii } = useTheme();
+  const { auctions, loading: auctionsLoading } = useAuctionsList();
+
   const auctionSteps = [
     {
       title: "Place your bid",
@@ -76,7 +81,7 @@ export default function HomePageAuctions(): JSX.Element {
         </Text>
 
         <Link
-          href="#"
+          href={PageRoutes.auctions}
           boxProps={{
             gridArea: "heading",
             paddingTop: [space.xxs, 0],
@@ -90,7 +95,11 @@ export default function HomePageAuctions(): JSX.Element {
         </Link>
 
         <Box gridArea="table">
-          <ActiveAuctionsTable />
+          {auctionsLoading ? (
+            <Shimmer w="100%" h="100%" borderRadius={radii.xxs} />
+          ) : (
+            <ActiveAuctionsTable auctions={auctions} />
+          )}
         </Box>
 
         <Flex
