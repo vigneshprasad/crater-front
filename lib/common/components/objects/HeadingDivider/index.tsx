@@ -25,7 +25,6 @@ export default function HeadingDivider({
         color={colors.textSecondary}
         textStyle="caption"
         textTransform="uppercase"
-        bg={colors.primaryLight}
       >
         {label}
       </Text>
