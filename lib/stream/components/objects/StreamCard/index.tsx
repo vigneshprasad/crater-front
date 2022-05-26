@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { forwardRef, useState, useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -18,14 +18,21 @@ import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
 
+export enum CardPosistion {
+  right,
+  left,
+  center,
+}
+
 interface IProps {
   stream: Webinar;
   link?: string;
   onClickRsvp?: (stream: Webinar) => Promise<void>;
+  cardPosition?: CardPosistion;
 }
 
 const StreamCard = forwardRef<HTMLDivElement, IProps>(
-  ({ stream, link, onClickRsvp }, ref) => {
+  ({ stream, link, onClickRsvp, cardPosition }, ref) => {
     const { space, radii, colors } = useTheme();
     const [loading, setLoading] = useState(false);
     const startTime = DateTime.parse(stream.start).toFormat(
@@ -45,6 +52,24 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
           layout="fill"
           alt={stream.topic_detail.name}
         />
+        {stream.has_rsvp && (
+          <Flex
+            border={`1px solid ${colors.accentLight}`}
+            bg={colors.primaryBackground}
+            position="absolute"
+            top={8}
+            right={8}
+            borderRadius={28}
+            gridGap={space.xxxxxs}
+            alignItems="center"
+            py={4}
+            pl={8}
+            pr={4}
+          >
+            <Text textStyle="caption">RSVP</Text>
+            <Icon size={18} icon="CheckCircle" color={colors.greenSuccess} />
+          </Flex>
+        )}
       </Box>
     );
 
@@ -57,7 +82,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
           alignItems="center"
         >
           <Avatar size={28} image={stream.host_detail.photo} />
-          <Text>{stream.host_detail.name}</Text>
+          <Text textStyle="body">{stream.host_detail.name}</Text>
         </Flex>
         <Text pb={space.xxxxs} textStyle="title">
           {stream.topic_detail.name}
@@ -70,6 +95,62 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
         </Flex>
       </>
     );
+
+    const hoverCardAnim = useMemo(() => {
+      const base = {
+        initial: {
+          opacity: 0,
+          top: 0,
+          right: 0,
+          left: 0,
+          bottom: 0,
+          transitionEnd: {
+            display: "none",
+          },
+        },
+        hovered: {
+          display: "block",
+          opacity: 1,
+          boxShadow: "0px 0px 16px 0px #000000",
+        },
+      };
+      switch (cardPosition) {
+        case CardPosistion.center:
+          return {
+            ...base,
+            hovered: {
+              ...base.hovered,
+              top: -36,
+              bottom: -36,
+              right: -36,
+              left: -36,
+            },
+          };
+        case CardPosistion.right:
+          return {
+            ...base,
+            hovered: {
+              ...base.hovered,
+              top: -36,
+              bottom: -36,
+              right: 0,
+              left: -72,
+            },
+          };
+        case CardPosistion.left:
+          return {
+            ...base,
+            hovered: {
+              ...base.hovered,
+              top: -36,
+              bottom: -36,
+              right: -72,
+              left: 0,
+            },
+          };
+      }
+    }, [cardPosition]);
+
     return (
       <AnimatedBox
         cursor="pointer"
@@ -107,27 +188,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
         <AnimatedBox
           position="absolute"
           borderRadius={radii.xxxxs}
-          variants={{
-            initial: {
-              opacity: 0,
-              top: 0,
-              right: 0,
-              left: 0,
-              bottom: 0,
-              transitionEnd: {
-                display: "none",
-              },
-            },
-            hovered: {
-              display: "block",
-              opacity: 1,
-              top: -36,
-              bottom: -36,
-              right: -36,
-              left: -36,
-              boxShadow: "0px 0px 16px 0px #000000",
-            },
-          }}
+          variants={hoverCardAnim}
         >
           {image}
           <Box bg={colors.primaryDark} p={space.xxxs}>
@@ -145,28 +206,21 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
               w="100%"
               label="GO TO STREAM PAGE"
             />
-            <Button
-              disabled={loading || stream.has_rsvp}
-              prefixElement={
-                stream.has_rsvp && (
-                  <Icon
-                    icon="CheckCircle"
-                    size={20}
-                    color={colors.greenSuccess}
-                  />
-                )
-              }
-              onClick={async (event) => {
-                event.stopPropagation();
-                setLoading(true);
-                onClickRsvp && (await onClickRsvp(stream));
-                setLoading(false);
-              }}
-              display="block"
-              w="100%"
-              label="RSVP"
-              suffixElement={loading ? <Spinner size={20} /> : undefined}
-            />
+            {!stream.has_rsvp && (
+              <Button
+                disabled={loading || stream.has_rsvp}
+                onClick={async (event) => {
+                  event.stopPropagation();
+                  setLoading(true);
+                  onClickRsvp && (await onClickRsvp(stream));
+                  setLoading(false);
+                }}
+                display="block"
+                w="100%"
+                label="RSVP"
+                suffixElement={loading ? <Spinner size={20} /> : undefined}
+              />
+            )}
           </Box>
         </AnimatedBox>
       </AnimatedBox>
@@ -179,6 +233,7 @@ StreamCard.displayName = "StreamCard";
 StreamCard.defaultProps = {
   link: undefined,
   onClickRsvp: undefined,
+  cardPosition: CardPosistion.center,
 };
 
 export default StreamCard;

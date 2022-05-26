@@ -14,7 +14,6 @@ import {
 import { Button } from "@/common/components/atoms/v2";
 import { IconButton } from "@/common/components/atoms/v2";
 import HeadingDivider from "@/common/components/objects/HeadingDivider";
-import DateTime from "@/common/utils/datetime/DateTime";
 import { Follower, Webinar } from "@/community/types/community";
 
 interface IProps {
@@ -38,11 +37,7 @@ export default function StreamAboutSection({
     return <Box>Loading...</Box>;
   }
 
-  const { topic_detail, host_detail, start } = stream;
-
-  const timeDisplay = DateTime.parse_with_milliseconds(start).toFormat(
-    DateTime.DEFAULT_FORMAT
-  );
+  const { topic_detail, host_detail } = stream;
 
   return (
     <>
@@ -56,13 +51,6 @@ export default function StreamAboutSection({
           <Text textStyle="cardHeader" color={colors.textSecondary}>
             About the stream
           </Text>
-
-          <Flex gridGap={space.xxxxs}>
-            <Icon icon="Calendar" size={16} />
-            <Text textStyle="small" fontWeight="600">
-              {timeDisplay}
-            </Text>
-          </Flex>
         </Flex>
 
         <Box px={[space.xxxs, space.xxs]} py={[space.xxxxs, space.xxs]}>

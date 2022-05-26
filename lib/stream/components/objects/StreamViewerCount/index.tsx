@@ -12,7 +12,7 @@ export default function StreamViewerCount(): JSX.Element | null {
   }
 
   return (
-    <Flex gridGap={space.xxxs}>
+    <Flex gridGap={space.xxxxs} alignItems="center">
       <Icon icon="Users" size={16} />
       <Text>{viewerCount}</Text>
     </Flex>

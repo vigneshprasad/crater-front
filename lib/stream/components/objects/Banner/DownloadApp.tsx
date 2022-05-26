@@ -5,7 +5,7 @@ import { Box, Flex, Image, Text } from "@/common/components/atoms";
 import AppLink, { AppLinkType } from "@/common/components/objects/AppLink/v2";
 
 export default function DownloadApp(): JSX.Element {
-  const { colors, space } = useTheme();
+  const { colors, space, fonts } = useTheme();
   return (
     <Box position="relative">
       <Image src={STATIC_IMAGES.ImageAppBannerStream} alt="" />
@@ -17,7 +17,11 @@ export default function DownloadApp(): JSX.Element {
         alignItems="center"
         flexDirection="column"
       >
-        <Text color={colors.textSecondaryLight} textStyle="headline1">
+        <Text
+          fontFamily={fonts.heading}
+          color={colors.textSecondaryLight}
+          textStyle="headline1"
+        >
           Download the Crater App
         </Text>
 

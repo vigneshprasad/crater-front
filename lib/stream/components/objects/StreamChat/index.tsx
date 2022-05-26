@@ -227,7 +227,7 @@ export default function StreamChat({
                       );
                     }
                   })()}
-                  <Flex justifyContent="space-between">
+                  <Flex justifyContent="space-between" alignItems="center">
                     {(() => {
                       if (!profile) return <Box />;
 

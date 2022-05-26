@@ -25,7 +25,7 @@ const StyledText = styled(Text)`
 `;
 
 export default function StyledHeadingDivider({ label }: IProps): JSX.Element {
-  const { colors, space, radii } = useTheme();
+  const { colors, space, radii, fonts } = useTheme();
   return (
     <Grid
       my={space.s}
@@ -41,6 +41,8 @@ export default function StyledHeadingDivider({ label }: IProps): JSX.Element {
           border={`1px solid ${colors.accentLight}`}
           borderRadius={radii.xxxxs}
           textStyle="title"
+          fontFamily={fonts.heading}
+          fontWeight="500"
         >
           {label}
         </StyledText>
