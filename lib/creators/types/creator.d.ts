@@ -10,6 +10,8 @@ export type PointOfContact = {
 };
 
 export type Creator = {
+  name?: string;
+  photo?: string;
   certified: boolean;
   cover_file?: string;
   default_community: Community;
