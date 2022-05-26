@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { useTheme } from "styled-components";
 
-import { Flex, Shimmer } from "@/common/components/atoms";
+import { Grid, Shimmer } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { StreamCategory } from "@/creators/types/stream";
 
@@ -19,7 +19,12 @@ export default function CategoriesList({
   const { space } = useTheme();
 
   return (
-    <Flex gridGap={space.xxs}>
+    <Grid
+      gridAutoFlow="column"
+      gridAutoColumns="max-content"
+      gridGap={space.xxs}
+      overflowX="auto"
+    >
       {(() => {
         if (!categories) {
           return Array(5)
@@ -51,6 +56,6 @@ export default function CategoriesList({
           );
         });
       })()}
-    </Flex>
+    </Grid>
   );
 }
