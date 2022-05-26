@@ -2,7 +2,6 @@ import { useTheme } from "styled-components";
 
 import {
   Box,
-  Flex,
   Grid,
   Icon,
   Image,
@@ -23,19 +22,6 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
       design, Web 3, marketing & other professional fields.
       Consequently, if you are a budding creator in these fields it
       helps you get discovered by the right audience.`,
-      column: "2",
-      row: "1",
-    },
-    {
-      image: "/images/img_journey_step_4.png",
-      title: "Analyse Data",
-      text: `Our analytics dashboard helps you create better content &
-      engage your audience. From suggesting what topics to create
-      content on to what is the completion rate & emails of your
-      followers, everything is made available to you.`,
-      column: "2",
-      row: "2",
-      button: true,
     },
     {
       image: "/images/img_journey_step_3.png",
@@ -44,8 +30,15 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
       media platforms as well. Thereby, engaging your current
       community while also building a new community of viewers on
       CraterClub.`,
-      column: "3",
-      row: "1",
+    },
+    {
+      image: "/images/img_journey_step_4.png",
+      title: "Analyse Data",
+      text: `Our analytics dashboard helps you create better content &
+      engage your audience. From suggesting what topics to create
+      content on to what is the completion rate & emails of your
+      followers, everything is made available to you.`,
+      button: true,
     },
     {
       image: "/images/img_journey_step_8.png",
@@ -54,14 +47,12 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
       communities. With Crater you can host private auctions & get
       the price for everything from the art you create on a stream
       to the discord community that you are building up.`,
-      column: "3",
-      row: "2",
     },
   ];
 
   return (
     <>
-      <Box pb={space.s}>
+      <Box>
         <Text textStyle="mainHeading" textAlign="center">
           Become a Creator
         </Text>
@@ -71,34 +62,49 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
         </Text>
       </Box>
 
-      <Box w={462} position="absolute" left={24} top={25}>
-        <Image src="/images/img_become_a_creator.png" alt="Become a creator" />
-      </Box>
+      <Grid gridTemplateColumns={["1fr", "min-content 2fr"]}>
+        <Box w={400} position="relative" display={["none", "grid"]}>
+          <Image
+            src="/images/img_become_a_creator.png"
+            alt="Become a creator"
+          />
 
-      <Box w={40} position="absolute" left="13%" top="27.5%">
-        <Link
-          href="https://www.youtube.com/watch?v=nWqxG9srgqE&t=1s"
-          boxProps={{ target: "_blank" }}
+          <Box w={40} position="absolute" left={130} top={170}>
+            <Link
+              href="https://www.youtube.com/watch?v=nWqxG9srgqE&t=1s"
+              boxProps={{ target: "_blank" }}
+            >
+              <Image src="/images/img_play_button.png" alt="Play" />
+            </Link>
+          </Box>
+        </Box>
+
+        <Grid
+          py={[space.xs, space.s]}
+          gridTemplateColumns={["1fr", "1fr 1fr"]}
+          gridGap={[space.xs, space.m]}
         >
-          <Image src="/images/img_play_button.png" alt="Play" />
-        </Link>
-      </Box>
-
-      <Grid gridTemplateColumns="1fr 1fr 1fr" gridGap={space.s}>
-        {data.map(({ image, title, text, column, row, button }, index) => {
-          return (
-            <Box key={index} gridColumn={column} gridRow={row}>
-              <Flex gridGap={space.xxxxs}>
-                <Image src={image} alt={title} boxProps={{ w: "50%" }} />
+          {data.map(({ image, title, text, button }, index) => {
+            return (
+              <Grid
+                gridTemplateColumns="min-content 1fr"
+                gridGap={space.xxs}
+                justifyItems="start"
+                key={index}
+              >
+                <Box w={64}>
+                  <Image src={image} alt={title} />
+                </Box>
                 <Box>
                   <Text pb={space.xxxxxs}>{title}</Text>
                   <Text textStyle="small" lineHeight="2.1rem" color="#C4C4C4">
                     {text}
                   </Text>
+                </Box>
 
-                  {button && (
+                {button && (
+                  <Box pt={space.xs} display={["none", "grid"]} gridColumn={2}>
                     <Button
-                      mt={space.s}
                       label="Start your journey"
                       display="flex"
                       alignItems="center"
@@ -106,12 +112,23 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
                     >
                       <Icon icon="ChevronRight" size={20} />
                     </Button>
-                  )}
-                </Box>
-              </Flex>
-            </Box>
-          );
-        })}
+                  </Box>
+                )}
+              </Grid>
+            );
+          })}
+
+          <Box display={["grid", "none"]}>
+            <Button
+              label="Start your journey"
+              display="flex"
+              alignItems="center"
+              gridGap={space.xxxxxs}
+            >
+              <Icon icon="ChevronRight" size={20} />
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
     </>
   );
