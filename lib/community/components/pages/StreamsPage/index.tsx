@@ -13,6 +13,7 @@ import CategoriesList from "@/stream/components/objects/CategoriesList";
 import HomePagePastStreams from "@/stream/components/objects/HomePagePastStreams";
 import HomePageUpcomingStreams from "@/stream/components/objects/HomePageUpcomingStreams";
 import useStreamCategories from "@/stream/context/StreamCategoryContext";
+import HomePageAuctions from "@/tokens/components/objects/HomePageAuctions";
 
 import { IStreamSliderProps } from "../../objects/StreamSlider";
 
@@ -66,6 +67,8 @@ export default function StreamsPage(): JSX.Element {
         />
       </Box>
       <HomePageUpcomingStreams category={upcomingStreamFilter} />
+
+      <HomePageAuctions />
 
       <StyledHeadingDivider label="Streams you may like" />
       <Box mx={space.xxs} pb={space.s}>
