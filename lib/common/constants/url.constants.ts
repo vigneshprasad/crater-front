@@ -106,6 +106,7 @@ export const API_URL_CONSTANTS = {
       `/crater/bid/${coin}/summary/`,
     auctionSummaryForCoin: (coin: number | string): string =>
       `/crater/auction/${coin}/summary/`,
+    getAllAuctions: "/crater/auction/all/",
   },
   coins: {
     getAuctions: "/crater/auction/",
