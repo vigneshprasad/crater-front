@@ -64,6 +64,7 @@ export default function HomePageAuctions(): JSX.Element {
         gridGap={space.xxs}
       >
         <Text
+          pt={[space.xxs, 0]}
           color="#C4C4C4"
           fontSize="1.4rem"
           fontWeight={700}
@@ -74,8 +75,15 @@ export default function HomePageAuctions(): JSX.Element {
           Active Auctions
         </Text>
 
-        <Link href="#" boxProps={{ gridArea: "heading" }}>
-          <Flex alignItems="center" justifyContent="end">
+        <Link
+          href="#"
+          boxProps={{
+            gridArea: "heading",
+            paddingTop: [space.xxs, 0],
+            justifySelf: "end",
+          }}
+        >
+          <Flex alignItems="center">
             <Text textStyle="small">View All</Text>
             <Icon icon="ChevronRight" size={14} />
           </Flex>
