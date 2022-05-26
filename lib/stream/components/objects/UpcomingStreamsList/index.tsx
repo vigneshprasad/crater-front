@@ -1,16 +1,50 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
+import useAuth from "@/auth/context/AuthContext";
 import { Box, Grid, Shimmer, Flex } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
-import StreamCard from "@/community/components/objects/StreamCard";
+import WebinarApiClient from "@/community/api";
+import {
+  ParticpantType,
+  PostGroupRequest,
+  RequestStatus,
+  Webinar,
+} from "@/community/types/community";
+import StreamCard from "@/stream/components/objects/StreamCard";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 export default function UpcomingStreamsList(): JSX.Element {
   const [initialClick, setInitialClick] = useState(true);
   const { space, colors } = useTheme();
-  const { upcoming, nextPage, setUpcomingStreamsPage, isValidating } =
-    useUpcomingStreams();
+  const {
+    upcoming,
+    nextPage,
+    setUpcomingStreamsPage,
+    isValidating,
+    mutateUpcomingStreams,
+  } = useUpcomingStreams();
+  const { user } = useAuth();
+
+  const postStreamRsvp = async (stream: Webinar): Promise<void> => {
+    if (user) {
+      const data: PostGroupRequest = {
+        group: stream.id,
+        status: RequestStatus.accepted,
+        participant_type:
+          stream.host === user.pk
+            ? ParticpantType.speaker
+            : ParticpantType.attendee,
+      };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [_, err] = await WebinarApiClient().postWebinarRequest(data);
+      if (err) {
+        console.log(err);
+      }
+      await mutateUpcomingStreams();
+    }
+  };
+
   return (
     <Box>
       <Grid
@@ -34,7 +68,13 @@ export default function UpcomingStreamsList(): JSX.Element {
           return (
             <>
               {upcoming.map((stream) => {
-                return <StreamCard key={stream.id} stream={stream} />;
+                return (
+                  <StreamCard
+                    key={stream.id}
+                    stream={stream}
+                    onClickRsvp={postStreamRsvp}
+                  />
+                );
               })}
               {isValidating &&
                 Array(4)

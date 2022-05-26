@@ -36,7 +36,7 @@ const borders = {
 };
 
 const fonts = {
-  heading: "Inter, sans-serif",
+  heading: "owners-xwide, sans-serif",
   body: "Inter, sans-serif",
 };
 

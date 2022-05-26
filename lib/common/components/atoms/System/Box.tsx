@@ -73,6 +73,7 @@ export type BaseBoxProps = BackgroundProps &
     float?: ResponsiveValue<CSS.Property.Float, CustomTheme>;
     clear?: ResponsiveValue<CSS.Property.Clear, CustomTheme>;
     scrollBehavior?: ResponsiveValue<CSS.Property.ScrollBehavior, CustomTheme>;
+    contain?: ResponsiveValue<CSS.Property.Contain, CustomTheme>;
   };
 
 export type BoxProps = BaseBoxProps & React.HTMLAttributes<HTMLDivElement>;
@@ -142,6 +143,11 @@ const clear = style({
   cssProperty: "clear",
 });
 
+const contain = style({
+  prop: "contain",
+  cssProperty: "contain",
+});
+
 export const Box = styled.div<BoxProps>`
   display: block;
   box-sizing: border-box;
@@ -172,6 +178,7 @@ export const Box = styled.div<BoxProps>`
     wordBreak,
     float,
     clear,
-    scrollBehavior
+    scrollBehavior,
+    contain
   )}
 `;

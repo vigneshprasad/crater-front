@@ -1,0 +1,184 @@
+import { forwardRef, useState } from "react";
+import { useTheme } from "styled-components";
+
+import Image from "next/image";
+
+import {
+  AnimatedBox,
+  Text,
+  Box,
+  Link,
+  Flex,
+  Avatar,
+  Icon,
+} from "@/common/components/atoms";
+import Spinner from "@/common/components/atoms/Spiner";
+import { Button } from "@/common/components/atoms/v2";
+import { PageRoutes } from "@/common/constants/route.constants";
+import DateTime from "@/common/utils/datetime/DateTime";
+import { Webinar } from "@/community/types/community";
+
+interface IProps {
+  stream: Webinar;
+  link?: string;
+  onClickRsvp?: (stream: Webinar) => Promise<void>;
+}
+
+const StreamCard = forwardRef<HTMLDivElement, IProps>(
+  ({ stream, link, onClickRsvp }, ref) => {
+    const { space, radii, colors } = useTheme();
+    const [loading, setLoading] = useState(false);
+    const startTime = DateTime.parse(stream.start).toFormat(
+      DateTime.DEFAULT_FORMAT
+    );
+
+    const image = (
+      <Box
+        w="100%"
+        position="relative"
+        pt="56.25%"
+        borderRadius={radii.xxxxs}
+        overflow="hidden"
+      >
+        <Image
+          src={stream.topic_detail.image}
+          layout="fill"
+          alt={stream.topic_detail.name}
+        />
+      </Box>
+    );
+
+    const streamDetails = (
+      <>
+        <Flex
+          pt={space.xxxxs}
+          pb={space.xxxxxs}
+          gridGap={space.xxxxs}
+          alignItems="center"
+        >
+          <Avatar size={28} image={stream.host_detail.photo} />
+          <Text>{stream.host_detail.name}</Text>
+        </Flex>
+        <Text pb={space.xxxxs} textStyle="title">
+          {stream.topic_detail.name}
+        </Text>
+        <Flex alignItems="center" gridGap={space.xxxxs}>
+          <Icon icon="Calendar" size={16} color={colors.textSecondary} />
+          <Text color={colors.textSecondary} textStyle="caption">
+            {startTime}
+          </Text>
+        </Flex>
+      </>
+    );
+    return (
+      <AnimatedBox
+        cursor="pointer"
+        ref={ref}
+        initial="initial"
+        position="relative"
+        whileHover="hovered"
+        variants={{
+          initial: {
+            zIndex: 1,
+          },
+          hovered: {
+            zIndex: 25,
+          },
+        }}
+      >
+        <AnimatedBox
+          variants={{
+            initial: {
+              display: "block",
+              opacity: 1,
+            },
+            hovered: {
+              opacity: 0,
+              transitionEnd: {
+                display: "none",
+              },
+            },
+          }}
+        >
+          {image}
+          {streamDetails}
+        </AnimatedBox>
+
+        <AnimatedBox
+          position="absolute"
+          borderRadius={radii.xxxxs}
+          variants={{
+            initial: {
+              opacity: 0,
+              top: 0,
+              right: 0,
+              left: 0,
+              bottom: 0,
+              transitionEnd: {
+                display: "none",
+              },
+            },
+            hovered: {
+              display: "block",
+              opacity: 1,
+              top: -36,
+              bottom: -36,
+              right: -36,
+              left: -36,
+              boxShadow: "0px 0px 16px 0px #000000",
+            },
+          }}
+        >
+          {image}
+          <Box bg={colors.primaryDark} p={space.xxxs}>
+            <Link
+              href={link ?? PageRoutes.session(stream.id)}
+              boxProps={{ target: "_blank" }}
+            >
+              {streamDetails}
+            </Link>
+
+            <Button
+              variant="secondary-dark-flat"
+              my={space.xxxxs}
+              display="block"
+              w="100%"
+              label="GO TO STREAM PAGE"
+            />
+            <Button
+              disabled={loading || stream.has_rsvp}
+              prefixElement={
+                stream.has_rsvp && (
+                  <Icon
+                    icon="CheckCircle"
+                    size={20}
+                    color={colors.greenSuccess}
+                  />
+                )
+              }
+              onClick={async (event) => {
+                event.stopPropagation();
+                setLoading(true);
+                onClickRsvp && (await onClickRsvp(stream));
+                setLoading(false);
+              }}
+              display="block"
+              w="100%"
+              label="RSVP"
+              suffixElement={loading ? <Spinner size={20} /> : undefined}
+            />
+          </Box>
+        </AnimatedBox>
+      </AnimatedBox>
+    );
+  }
+);
+
+StreamCard.displayName = "StreamCard";
+
+StreamCard.defaultProps = {
+  link: undefined,
+  onClickRsvp: undefined,
+};
+
+export default StreamCard;

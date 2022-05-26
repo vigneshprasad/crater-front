@@ -158,7 +158,7 @@ export default function SimilarStreamsOverlay(): JSX.Element {
                   gridGap={space.xxxs}
                 >
                   <Flex justifyContent="space-between">
-                    <Flex gridGap={space.xxxs} alignItems="center">
+                    <Flex alignItems="center">
                       <Text fontWeight="500" textStyle="body">
                         Similar Streams
                       </Text>

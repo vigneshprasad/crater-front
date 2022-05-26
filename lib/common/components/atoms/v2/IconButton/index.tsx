@@ -20,6 +20,7 @@ const ButtonContainer = styled(Button)<ButtonProps>`
       flat: {
         w: 28,
         h: 28,
+        px: "0.2em",
         borderRadius: 4,
         alignItems: "center",
         justifyContent: "center",
@@ -31,6 +32,7 @@ const ButtonContainer = styled(Button)<ButtonProps>`
       "flat-accent": {
         w: 28,
         h: 28,
+        px: "0.2em",
         borderRadius: 4,
         alignItems: "center",
         justifyContent: "center",

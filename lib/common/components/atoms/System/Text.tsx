@@ -75,13 +75,13 @@ const variants = {
   title: {
     fontFamily: fonts.body,
     fontSize: ["1.6rem"],
-    fontWeight: "600",
-    lineHeight: ["1.8rem"],
+    fontWeight: "500",
+    lineHeight: ["2.2rem"],
   },
   caption: {
     fontFamily: fonts.body,
     fontSize: ["1.2rem"],
-    fontWeight: "600",
+    fontWeight: "500",
     lineHeight: ["2.2rem"],
   },
   captionLarge: {

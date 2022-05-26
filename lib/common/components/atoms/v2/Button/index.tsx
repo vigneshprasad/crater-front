@@ -11,7 +11,8 @@ type Variants =
   | "outline-condensed"
   | "dark-flat"
   | "transparent"
-  | "displayLarge";
+  | "displayLarge"
+  | "secondary-dark-flat";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -46,7 +47,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
       },
       flat: {
         bg: "accent",
-        px: "1.2em",
+        px: "0.6em",
         py: "calc(0.4em + 2px)",
         transition: "all 0.1s ease-in",
         borderRadius: 4,
@@ -91,6 +92,16 @@ const StyledButton = styled(Grid)<ButtonProps>`
         borderRadius: 4,
         ":hover": {
           bg: "primaryLight",
+        },
+      },
+      "secondary-dark-flat": {
+        px: "1.2em",
+        py: "calc(0.4em + 2px)",
+        bg: "secondaryLight",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "secondaryDark",
         },
       },
       transparent: {
