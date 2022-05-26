@@ -31,7 +31,7 @@ const PastStreamsList = forwardRef<HTMLDivElement>((_, ref) => {
 
       const count = index + 1;
 
-      if (count % (numColumns + 1) === 1) {
+      if (count % numColumns === 1) {
         return CardPosition.left;
       }
 
