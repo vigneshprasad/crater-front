@@ -13,9 +13,9 @@ import {
   Text,
   Flex,
   TabBar,
+  Spinner,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import CreatorApiClient from "@/creators/api";
 import { useCreator } from "@/creators/context/CreatorContext";
 import { useFollower } from "@/creators/context/FollowerContext";

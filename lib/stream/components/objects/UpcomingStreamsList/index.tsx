@@ -12,7 +12,7 @@ import {
   Webinar,
 } from "@/community/types/community";
 import StreamCard, {
-  CardPosistion,
+  CardPosition,
 } from "@/stream/components/objects/StreamCard";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
@@ -62,20 +62,20 @@ export default function UpcomingStreamsList(): JSX.Element {
   const cardPosition = useCallback(
     (index: number) => {
       if (numColumns === 0) {
-        return CardPosistion.center;
+        return CardPosition.center;
       }
 
       const count = index + 1;
 
       if (count % (numColumns + 1) === 1) {
-        return CardPosistion.left;
+        return CardPosition.left;
       }
 
       if (count % numColumns === 0) {
-        return CardPosistion.right;
+        return CardPosition.right;
       }
 
-      return CardPosistion.center;
+      return CardPosition.center;
     },
     [numColumns]
   );

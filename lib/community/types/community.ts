@@ -163,3 +163,25 @@ export interface Series {
   host_detail: Speaker;
   start: string;
 }
+
+export interface PastStreamListItem {
+  id: number;
+  topic_detail: {
+    name: string;
+    image: string;
+    description: string;
+  };
+  host_detail: {
+    pk: string;
+    email: string;
+    name: string;
+    photo: string;
+    introduction: string;
+    slug: string;
+  };
+  start: string;
+  is_live: boolean;
+  is_past: boolean;
+  has_rsvp: boolean;
+  recording?: number;
+}

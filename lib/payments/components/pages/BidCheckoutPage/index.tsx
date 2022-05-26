@@ -6,9 +6,16 @@ import {
 import { SyntheticEvent, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { Flex, Card, Form, Grid, Text, Hr } from "@/common/components/atoms";
+import {
+  Flex,
+  Card,
+  Form,
+  Grid,
+  Text,
+  Hr,
+  Spinner,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";

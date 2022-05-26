@@ -11,14 +11,14 @@ import {
   Flex,
   Avatar,
   Icon,
+  Spinner,
 } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
 import { Button } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
 
-export enum CardPosistion {
+export enum CardPosition {
   right,
   left,
   center,
@@ -28,7 +28,7 @@ interface IProps {
   stream: Webinar;
   link?: string;
   onClickRsvp?: (stream: Webinar) => Promise<void>;
-  cardPosition?: CardPosistion;
+  cardPosition?: CardPosition;
 }
 
 const StreamCard = forwardRef<HTMLDivElement, IProps>(
@@ -87,7 +87,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
         <Text pb={space.xxxxs} textStyle="title">
           {stream.topic_detail.name}
         </Text>
-        <Flex alignItems="center" gridGap={space.xxxxs}>
+        <Flex opacity={0.8} alignItems="center" gridGap={space.xxxxs}>
           <Icon icon="Calendar" size={16} color={colors.textSecondary} />
           <Text color={colors.textSecondary} textStyle="caption">
             {startTime}
@@ -115,7 +115,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
         },
       };
       switch (cardPosition) {
-        case CardPosistion.center:
+        case CardPosition.center:
           return {
             ...base,
             hovered: {
@@ -126,7 +126,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
               left: -36,
             },
           };
-        case CardPosistion.right:
+        case CardPosition.right:
           return {
             ...base,
             hovered: {
@@ -137,7 +137,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
               left: -72,
             },
           };
-        case CardPosistion.left:
+        case CardPosition.left:
           return {
             ...base,
             hovered: {
@@ -233,7 +233,7 @@ StreamCard.displayName = "StreamCard";
 StreamCard.defaultProps = {
   link: undefined,
   onClickRsvp: undefined,
-  cardPosition: CardPosistion.center,
+  cardPosition: CardPosition.center,
 };
 
 export default StreamCard;

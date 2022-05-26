@@ -12,8 +12,8 @@ import {
   Text,
   Flex,
   Icon,
+  Spinner,
 } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
 import { Button } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
 import colors from "@/common/theme/colors";

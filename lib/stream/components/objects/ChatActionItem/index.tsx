@@ -14,8 +14,8 @@ import {
   Avatar,
   ButtonProps,
   Grid,
+  Spinner,
 } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
 import { AppLinkType } from "@/common/components/objects/AppLink";
 import AppLinkButton from "@/common/components/objects/AppLinkButton";
 import { PageRoutes } from "@/common/constants/route.constants";

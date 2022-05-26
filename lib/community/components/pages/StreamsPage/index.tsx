@@ -11,9 +11,9 @@ import {
   Link,
   Shimmer,
   Text,
+  Spinner,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import Footer from "@/common/components/objects/Footer";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";

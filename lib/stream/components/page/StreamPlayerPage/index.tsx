@@ -11,8 +11,8 @@ import {
   Link,
   Flex,
   Button,
+  Spinner,
 } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
 import BaseLayout from "@/common/components/layouts/BaseLayout";
 import AsideNav from "@/common/components/objects/AsideNav";
 import ExpandingText from "@/common/components/objects/ExpandingText";

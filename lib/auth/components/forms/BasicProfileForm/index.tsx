@@ -16,9 +16,9 @@ import {
   Input,
   TextArea,
   Select,
+  Spinner,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import FormField from "@/common/components/objects/FormField";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useForm from "@/common/hooks/form/useForm";

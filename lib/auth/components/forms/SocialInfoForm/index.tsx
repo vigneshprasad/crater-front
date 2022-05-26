@@ -10,9 +10,9 @@ import {
   Text,
   Grid,
   Flex,
+  Spinner,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import FormField from "@/common/components/objects/FormField";
 import useForm from "@/common/hooks/form/useForm";
 
