@@ -67,7 +67,6 @@ export default function StreamsPage(): JSX.Element {
         px={[space.xxs, space.s]}
         py={[space.xxs, space.s]}
         backgroundColor={colors.primaryDark}
-        position="relative"
       >
         <HomePageCreatorStaticContent />
         <Footer />
