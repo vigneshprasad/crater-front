@@ -108,10 +108,8 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
                       label="Start your journey"
                       display="flex"
                       alignItems="center"
-                      gridGap={space.xxxxxs}
-                    >
-                      <Icon icon="ChevronRight" size={20} />
-                    </Button>
+                      suffixElement={<Icon icon="ChevronRight" size={20} />}
+                    />
                   </Box>
                 )}
               </Grid>
@@ -123,10 +121,8 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
               label="Start your journey"
               display="flex"
               alignItems="center"
-              gridGap={space.xxxxxs}
-            >
-              <Icon icon="ChevronRight" size={20} />
-            </Button>
+              suffixElement={<Icon icon="ChevronRight" size={20} />}
+            />
           </Box>
         </Grid>
       </Grid>
