@@ -27,7 +27,7 @@ export default function Footer(): JSX.Element {
       gridTemplateColumns={["1fr", "1fr 1fr 1fr 1fr"]}
       borderTop="1px solid #545454"
     >
-      <Box w={229}>
+      <Box w={229} justifySelf={["center", "start"]}>
         <Image src="/images/crater_logo_dark_mode.png" alt="Crater" />
       </Box>
 
