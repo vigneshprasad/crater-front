@@ -209,14 +209,9 @@ export function StreamSlide({
                 />
               </Link>
             )}
-            <Box>
-              <Text textStyle="body" fontWeight={600}>
-                {stream.host_detail?.name}
-              </Text>
-              <Text textStyle="small" pt={4}>
-                20 streams
-              </Text>
-            </Box>
+            <Text textStyle="body" fontWeight={600}>
+              {stream.host_detail?.name}
+            </Text>
           </Grid>
           {stream.host_detail?.introduction ? (
             <ExpandingText textStyle="small" color={colors.slate} maxLines={3}>
