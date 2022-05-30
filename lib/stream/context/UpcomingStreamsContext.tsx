@@ -29,6 +29,7 @@ interface IUpcomingStreamsState {
   >["mutate"];
   setPageSize: Dispatch<SetStateAction<number>>;
   isValidating: boolean;
+  category?: number;
 }
 
 export const UpcomingStreamsContext = createContext(
@@ -91,6 +92,7 @@ export function UpcomingStreamsProvider({
       mutateUpcomingStreams,
       setPageSize,
       isValidating,
+      category,
     }),
     [
       streams,
@@ -100,6 +102,7 @@ export function UpcomingStreamsProvider({
       mutateUpcomingStreams,
       setPageSize,
       isValidating,
+      category,
     ]
   );
 

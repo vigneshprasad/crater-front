@@ -3,7 +3,6 @@ import { useTheme } from "styled-components";
 
 import { Grid, Flex, Shimmer, Box } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
-import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
 import usePastStreams from "@/stream/context/PastStreamContext";
 
 import PastStreamCard, { CardPosition } from "../../PastStreamCard/v2";
@@ -44,11 +43,8 @@ const PastStreamsList = forwardRef<HTMLDivElement>((_, ref) => {
     [numColumns]
   );
 
-  console.log(numColumns);
-
   return (
     <Box ref={ref}>
-      <StyledHeadingDivider label="Previously Streamed" />
       <Grid
         mx={space.xxs}
         ref={gridRef}

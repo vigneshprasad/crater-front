@@ -15,7 +15,7 @@ import IconButton from "../../atoms/IconButton";
 import LinkText from "../LinkText";
 
 export default function Footer(): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, fonts } = useTheme();
   const { user } = useAuth();
 
   return (
@@ -33,6 +33,7 @@ export default function Footer(): JSX.Element {
 
       <Flex flexDirection="column" gridGap={space.xxxs}>
         <Text
+          fontFamily={fonts.heading}
           pb={space.xxxxs}
           textStyle="small"
           borderBottom="1px solid #C4C4C4"
@@ -49,6 +50,7 @@ export default function Footer(): JSX.Element {
       </Flex>
       <Flex flexDirection="column" gridGap={space.xxxs}>
         <Text
+          fontFamily={fonts.heading}
           pb={space.xxxxs}
           textStyle="small"
           borderBottom="1px solid #C4C4C4"
@@ -72,6 +74,7 @@ export default function Footer(): JSX.Element {
 
       <Flex flexDirection="column" gridGap={space.xxxs}>
         <Text
+          fontFamily={fonts.heading}
           pb={space.xxxxs}
           textStyle="small"
           borderBottom="1px solid #C4C4C4"

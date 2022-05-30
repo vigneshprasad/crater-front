@@ -12,7 +12,7 @@ import {
 import { Button } from "@/common/components/atoms/v2";
 
 export default function HomePageCreatorStaticContent(): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, fonts } = useTheme();
 
   const data = [
     {
@@ -53,10 +53,14 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
   return (
     <>
       <Box>
-        <Text textStyle="mainHeading" textAlign="center">
+        <Text
+          fontFamily={fonts.heading}
+          textStyle="mainHeading"
+          textAlign="center"
+        >
           Become a Creator
         </Text>
-        <Text textStyle="small" textAlign="center">
+        <Text fontFamily={fonts.heading} textStyle="small" textAlign="center">
           Start streaming on <Span color={colors.accentLight}>Crater</Span>,
           here&apos;s why
         </Text>
@@ -96,7 +100,9 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
                   <Image src={image} alt={title} />
                 </Box>
                 <Box>
-                  <Text pb={space.xxxxxs}>{title}</Text>
+                  <Text fontFamily={fonts.heading} pb={space.xxxxxs}>
+                    {title}
+                  </Text>
                   <Text textStyle="small" lineHeight="2.1rem" color="#C4C4C4">
                     {text}
                   </Text>

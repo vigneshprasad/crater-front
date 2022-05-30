@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
@@ -9,10 +8,8 @@ import Footer from "@/common/components/objects/Footer";
 import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import HomePageCreatorStaticContent from "@/creators/components/objects/HomePageCreatorStaticContent";
-import CategoriesList from "@/stream/components/objects/CategoriesList";
-import HomePagePastStreams from "@/stream/components/objects/HomePagePastStreams";
-import HomePageUpcomingStreams from "@/stream/components/objects/HomePageUpcomingStreams";
-import useStreamCategories from "@/stream/context/StreamCategoryContext";
+import CategoryFilteredPastList from "@/stream/components/objects/CategoryFilteredPastList";
+import CategoryFilteredUpcomingList from "@/stream/components/objects/CategoryFilteredUpcomingList";
 import HomePageAuctions from "@/tokens/components/objects/HomePageAuctions";
 
 import { IStreamSliderProps } from "../../objects/StreamSlider";
@@ -24,13 +21,6 @@ const StreamSlider = dynamic<IStreamSliderProps>(() =>
 export default function StreamsPage(): JSX.Element {
   const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
   const { space, colors } = useTheme();
-  const { streamCategories } = useStreamCategories();
-  const [upcomingStreamFilter, setUpcomingStreamFilter] = useState<
-    number | undefined
-  >(undefined);
-  const [pastStreamFilter, setPastStreamFilter] = useState<number | undefined>(
-    undefined
-  );
 
   if (liveStreamsLoading || !liveStreams) return <Spinner />;
 
@@ -41,26 +31,13 @@ export default function StreamsPage(): JSX.Element {
       </Box>
 
       <StyledHeadingDivider label="Upcoming Streams" />
-      <Box mx={space.xxs} pb={space.s}>
-        <CategoriesList
-          categories={streamCategories}
-          selectedCategory={upcomingStreamFilter}
-          setCategory={setUpcomingStreamFilter}
-        />
-      </Box>
-      <HomePageUpcomingStreams category={upcomingStreamFilter} />
+      <CategoryFilteredUpcomingList />
 
       <HomePageAuctions />
 
       <StyledHeadingDivider label="Streams you may like" />
-      <Box mx={space.xxs} pb={space.s}>
-        <CategoriesList
-          categories={streamCategories}
-          selectedCategory={pastStreamFilter}
-          setCategory={setPastStreamFilter}
-        />
-      </Box>
-      <HomePagePastStreams category={pastStreamFilter} />
+
+      <CategoryFilteredPastList />
 
       <Box
         mt={space.xs}

@@ -16,7 +16,7 @@ import useAuctionsList from "@/tokens/context/AuctionListContext";
 import ActiveAuctionsTable from "../ActiveAuctionsTable";
 
 export default function HomePageAuctions(): JSX.Element {
-  const { space, colors, radii } = useTheme();
+  const { space, colors, radii, fonts } = useTheme();
   const { auctions, loading: auctionsLoading } = useAuctionsList();
 
   const auctionSteps = [
@@ -43,10 +43,19 @@ export default function HomePageAuctions(): JSX.Element {
 
   return (
     <Box mx={space.xxs} pt={space.l}>
-      <Text textStyle="mainHeading" textAlign="center">
+      <Text
+        fontFamily={fonts.heading}
+        textStyle="mainHeading"
+        textAlign="center"
+      >
         Auctions
       </Text>
-      <Text textStyle="small" textAlign="center" maxLines={2}>
+      <Text
+        fontFamily={fonts.heading}
+        textStyle="small"
+        textAlign="center"
+        maxLines={2}
+      >
         Get access to{" "}
         <Span color={colors.accentLight}>exclusive content by Creators.</Span>{" "}
         Think of it like eBay, but for content and communities.

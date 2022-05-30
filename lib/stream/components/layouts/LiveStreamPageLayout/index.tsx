@@ -80,6 +80,8 @@ export default function LiveStreamPageLayout({
 
           <BANNER.StartStreaming />
 
+          <StyledHeadingDivider label="Previously Streamed" />
+
           {pastStreams}
 
           <Box h={space.l} />

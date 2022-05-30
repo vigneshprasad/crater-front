@@ -21,6 +21,7 @@ export interface IPastStreamState {
     unknown
   >["setSize"];
   nextPage?: boolean;
+  category?: number;
 }
 
 export const PastStreamContext = createContext({} as IPastStreamState);
@@ -76,8 +77,9 @@ export function PastStreamProvider({
       loading: !streams && !error,
       setPastStreamsPage,
       nextPage,
+      category: categoryFilter,
     }),
-    [streams, error, setPastStreamsPage, nextPage]
+    [streams, error, setPastStreamsPage, nextPage, categoryFilter]
   );
 
   return <PastStreamContext.Provider value={value} {...rest} />;

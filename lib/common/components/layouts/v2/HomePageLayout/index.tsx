@@ -30,17 +30,27 @@ export default function HomePageLayout({
   heading,
   subHeading,
 }: IProps): JSX.Element {
-  const { space } = useTheme();
+  const { space, fonts } = useTheme();
 
   return (
     <Page seo={seo}>
       <BaseLayout aside={<AsideNav activeTab={activeTab} />} overflowY="auto">
         <Box px={space.xs} py={32}>
-          <Text textStyle="mainHeading" maxLines={2} textAlign="center">
+          <Text
+            fontFamily={fonts.heading}
+            textStyle="mainHeading"
+            maxLines={2}
+            textAlign="center"
+          >
             {heading}
           </Text>
           {subHeading && (
-            <Text textStyle="body" textAlign="center" maxLines={2}>
+            <Text
+              fontFamily={fonts.heading}
+              textStyle="body"
+              textAlign="center"
+              maxLines={2}
+            >
               {subHeading}
             </Text>
           )}

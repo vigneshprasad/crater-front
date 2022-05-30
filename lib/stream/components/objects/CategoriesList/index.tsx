@@ -1,29 +1,28 @@
-import { Dispatch, SetStateAction } from "react";
 import { useTheme } from "styled-components";
 
-import { Grid, Shimmer } from "@/common/components/atoms";
+import { Shimmer } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
+import HorizontalScroll from "@/common/components/objects/HorizontalScroll";
 import { StreamCategory } from "@/creators/types/stream";
 
 interface IProps {
   categories?: StreamCategory[];
   selectedCategory?: number;
-  setCategory?: Dispatch<SetStateAction<number | undefined>>;
+  onClickCategory?: (category: StreamCategory) => void;
 }
 
 export default function CategoriesList({
   categories,
   selectedCategory,
-  setCategory,
+  onClickCategory,
 }: IProps): JSX.Element {
-  const { space } = useTheme();
+  const { space, fonts } = useTheme();
 
   return (
-    <Grid
+    <HorizontalScroll
       gridAutoFlow="column"
       gridAutoColumns="max-content"
       gridGap={space.xxs}
-      overflowX="auto"
     >
       {(() => {
         if (!categories) {
@@ -35,27 +34,19 @@ export default function CategoriesList({
         }
 
         return categories.map((category) => {
-          if (category.pk === selectedCategory) {
-            return (
-              <Button
-                key={category.pk}
-                variant="filter-selected"
-                label={category.name}
-                onClick={() => setCategory && setCategory(undefined)}
-              />
-            );
-          }
-
           return (
             <Button
+              fontFamily={fonts.heading}
               key={category.pk}
-              variant="round"
+              variant={
+                selectedCategory === category.pk ? "filter-selected" : "round"
+              }
               label={category.name}
-              onClick={() => setCategory && setCategory(category.pk)}
+              onClick={() => onClickCategory && onClickCategory(category)}
             />
           );
         });
       })()}
-    </Grid>
+    </HorizontalScroll>
   );
 }

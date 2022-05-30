@@ -67,7 +67,7 @@ export default function UpcomingStreamsList(): JSX.Element {
 
       const count = index + 1;
 
-      if (count % (numColumns + 1) === 1) {
+      if (count % numColumns === 1) {
         return CardPosition.left;
       }
 

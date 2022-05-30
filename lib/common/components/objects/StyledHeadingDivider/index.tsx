@@ -28,7 +28,7 @@ export default function StyledHeadingDivider({ label }: IProps): JSX.Element {
   const { colors, space, radii, fonts } = useTheme();
   return (
     <Grid
-      my={space.s}
+      my={space.xxs}
       mx={space.xs}
       gridTemplateColumns="max-content 1fr"
       alignItems="center"

@@ -1,12 +1,13 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 import HomePageLayout from "@/common/components/layouts/v2/HomePageLayout";
 import { PageResponse } from "@/common/types/api";
 import WebinarApiClient from "@/community/api";
 import { LiveStreamsProvider } from "@/community/context/LiveStreamsContext";
-import { Webinar } from "@/community/types/community";
+import { Webinar, PastStreamListItem } from "@/community/types/community";
 import StreamApiClient from "@/stream/api";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamCategoryProvider } from "@/stream/context/StreamCategoryContext";
@@ -20,7 +21,7 @@ const StreamsPage = dynamic(
 interface ServerProps {
   liveStreams: Webinar[];
   upcomingStreams: PageResponse<Webinar>;
-  pastStreams: PageResponse<Webinar>;
+  pastStreams: PageResponse<PastStreamListItem>;
 }
 
 export const getStaticProps: GetStaticProps<ServerProps> = async () => {
@@ -32,7 +33,7 @@ export const getStaticProps: GetStaticProps<ServerProps> = async () => {
     props: {
       liveStreams: liveStreams ?? [],
       upcomingStreams: upcomingStreams ?? ({} as PageResponse<Webinar>),
-      pastStreams: pastStreams ?? ({} as PageResponse<Webinar>),
+      pastStreams: pastStreams ?? ({} as PageResponse<PastStreamListItem>),
     },
     revalidate: 10,
   };
@@ -45,6 +46,9 @@ export default function Home({
   upcomingStreams,
   pastStreams,
 }: IProps): JSX.Element {
+  const router = useRouter();
+  const upcomingCategory = router.query.upcomigCategory as string | undefined;
+  const pastCategory = router.query.pastCategory as string | undefined;
   return (
     <HomePageLayout
       seo={{
@@ -58,13 +62,19 @@ export default function Home({
       content"
     >
       <LiveStreamsProvider initial={liveStreams}>
-        <UpcomingStreamsProvider initial={upcomingStreams}>
-          <PastStreamProvider initial={pastStreams}>
-            <StreamCategoryProvider>
-              <AuctionListProvider rewardDetail={true}>
+        <UpcomingStreamsProvider
+          initial={upcomingStreams}
+          category={upcomingCategory ? parseInt(upcomingCategory) : undefined}
+        >
+          <PastStreamProvider
+            initial={pastStreams}
+            categoryFilter={pastCategory ? parseInt(pastCategory) : undefined}
+          >
+            <AuctionListProvider rewardDetail={true}>
+              <StreamCategoryProvider>
                 <StreamsPage />
-              </AuctionListProvider>
-            </StreamCategoryProvider>
+              </StreamCategoryProvider>
+            </AuctionListProvider>
           </PastStreamProvider>
         </UpcomingStreamsProvider>
       </LiveStreamsProvider>

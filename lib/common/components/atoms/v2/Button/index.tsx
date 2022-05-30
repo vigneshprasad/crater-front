@@ -106,7 +106,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
       round: {
         fontSize: ["1.4rem", "1.6rem"],
         lineHeight: "2.2rem",
-        p: "0.6em 1.2em",
+        p: "0.4em 0.8em",
         bg: "primaryDark",
         border: "2px solid #1C1C1E",
         borderRadius: "2em",
@@ -118,7 +118,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
       "filter-selected": {
         fontSize: ["1.4rem", "1.6rem"],
         lineHeight: "2.2rem",
-        p: "0.6em 1.2em",
+        p: "0.4em 0.8em",
         bg: "accent",
         border: "2px solid #9146FF",
         borderRadius: "2em",
@@ -192,7 +192,7 @@ export function Button({
       fontSize="1.3rem"
       display="inline-block"
       as="button"
-      fontWeight="700"
+      fontWeight="500"
       {...rest}
     >
       <Grid
@@ -204,7 +204,12 @@ export function Button({
         {prefixElement && <Grid gridArea="prefix">{prefixElement}</Grid>}
         <Grid gridArea="content">
           {label && (
-            <Text fontSize="inherit" color="inherit" fontWeight="inherit">
+            <Text
+              fontFamily="inherit"
+              fontSize="inherit"
+              color="inherit"
+              fontWeight="inherit"
+            >
               {label}
             </Text>
           )}

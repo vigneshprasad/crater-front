@@ -155,11 +155,12 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
               initial: {
                 display: "block",
                 opacity: 1,
+                visibility: "visible",
               },
               hovered: {
                 opacity: 0,
                 transitionEnd: {
-                  display: "none",
+                  visibility: "hidden",
                 },
               },
             }}
