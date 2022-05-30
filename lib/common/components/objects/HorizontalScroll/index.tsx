@@ -1,6 +1,5 @@
 import { useRef, useCallback } from "react";
 import styled, { useTheme } from "styled-components";
-import { colorStyle } from "styled-system";
 
 import { Grid, GridProps, Icon, Box } from "../../atoms";
 

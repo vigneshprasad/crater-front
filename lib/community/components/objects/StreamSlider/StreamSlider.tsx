@@ -2,7 +2,7 @@ import { AnimateSharedLayout } from "framer-motion";
 import { useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { Grid, AnimatedBox, Box } from "@/common/components/atoms";
+import { Grid, AnimatedBox } from "@/common/components/atoms";
 import { IconButton } from "@/common/components/atoms/v2/IconButton";
 import { Webinar } from "@/community/types/community";
 
