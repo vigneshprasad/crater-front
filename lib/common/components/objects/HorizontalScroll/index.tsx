@@ -1,9 +1,11 @@
 import { useRef, useCallback } from "react";
 import styled, { useTheme } from "styled-components";
 
-import { Grid, GridProps, Icon, Box } from "../../atoms";
+import { Grid, GridProps, Icon, Box, BoxProps } from "../../atoms";
 
-type IProps = GridProps;
+type IProps = GridProps & {
+  containerProps?: BoxProps;
+};
 
 const Container = styled(Grid)`
   scroll-behavior: smooth;
@@ -21,6 +23,7 @@ const ActionContainer = styled(Grid)`
 
 export default function HorizontalScroll({
   children,
+  containerProps,
   ...rest
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
@@ -39,7 +42,7 @@ export default function HorizontalScroll({
   }, [gridRef]);
 
   return (
-    <Box position="relative">
+    <Box position="relative" {...containerProps}>
       <Container ref={gridRef} py={space.xxxs} overflowX="auto" {...rest}>
         {children}
         <Box w={96} />
@@ -48,8 +51,8 @@ export default function HorizontalScroll({
         cursor="pointer"
         position="absolute"
         right={0}
-        top={12}
-        bottom={12}
+        top={0}
+        bottom={0}
         w={56}
         background={`linear-gradient(to left, ${colors.primaryBackground}, rgba(1, 1, 1, 0.2))`}
         onClick={onClickScroll}

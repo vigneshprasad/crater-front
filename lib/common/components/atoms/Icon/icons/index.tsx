@@ -56,6 +56,7 @@ export { default as Settings } from "./Settings";
 export { default as Share } from "./Share";
 export { default as Shuffle } from "./Shuffle";
 export { default as Sun } from "./Sun";
+export { default as Trophy } from "./Trophy";
 export { default as Tv } from "./Tv";
 export { default as Twitter } from "./Twitter";
 export { default as User } from "./User";

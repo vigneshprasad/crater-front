@@ -16,7 +16,8 @@ type Variants =
   | "pagination"
   | "transparent"
   | "displayLarge"
-  | "secondary-dark-flat";
+  | "secondary-dark-flat"
+  | "transparent-slider";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -160,6 +161,18 @@ const StyledButton = styled(Grid)<ButtonProps>`
         borderRadius: 4,
         ":hover": {
           bg: "primaryLight",
+        },
+      },
+      "transparent-slider": {
+        py: "0.4em",
+        px: "0.6em",
+        bg: "transparent",
+        color: "accentLight",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "rgba(255,255,255,0.1)",
+          color: "white.0",
         },
       },
       displayLarge: {

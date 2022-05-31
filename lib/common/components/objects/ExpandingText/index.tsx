@@ -29,7 +29,7 @@ export default function ExpandingText({
         <Text
           cursor="pointer"
           onClick={onClickButton}
-          color={colors.accent}
+          color={colors.accentLight}
           textStyle="caption"
         >
           {expanded ? "View Less" : "View More"}

@@ -12,6 +12,7 @@ import ImageLeaderboardStep1 from "public/images/img_leaderboard_step1.png";
 import ImageLeaderboardStep2 from "public/images/img_leaderboard_step2.png";
 import ImageLeaderboardStep3 from "public/images/img_leaderboard_step3.png";
 import ImagePlaceBidIcon from "public/images/img_place_bid.png";
+import ImageRank1 from "public/images/img_rank_1.png";
 import ImageRewardBlob from "public/images/img_reward_blob.png";
 import ImageRewardCard from "public/images/img_reward_card.png";
 import ImageStarryBg from "public/images/img_starry_bg.png";
@@ -38,6 +39,7 @@ const STATIC_IMAGES = {
   ImageStarryBg,
   ImageAppBannerStream,
   ImageCraterStream,
+  ImageRank1,
 };
 
 export default STATIC_IMAGES;
