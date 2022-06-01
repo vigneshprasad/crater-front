@@ -63,7 +63,7 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
           <Avatar size={28} image={stream.host_detail.photo} />
           <Text textStyle="body">{stream.host_detail.name}</Text>
         </Flex>
-        <Text pb={space.xxxxs} textStyle="title">
+        <Text pb={space.xxxxs} textStyle="title" minHeight={52}>
           {stream.topic_detail.name}
         </Text>
         <Flex opacity={0.8} alignItems="center" gridGap={space.xxxxs}>

@@ -4,13 +4,10 @@ import {
   Box,
   Flex,
   Grid,
-  Icon,
-  Link,
   Shimmer,
   Span,
   Text,
 } from "@/common/components/atoms";
-import { PageRoutes } from "@/common/constants/route.constants";
 import useAuctionsList from "@/tokens/context/AuctionListContext";
 
 import ActiveAuctionsTable from "../ActiveAuctionsTable";
@@ -22,22 +19,22 @@ export default function HomePageAuctions(): JSX.Element {
   const auctionSteps = [
     {
       title: "Place your bid",
-      color: "#882EE8",
+      color: "linear-gradient(90deg, #7A36B0 0%, #3B0581 100%)",
       verticalLine: true,
     },
     {
       title: "Creator accepts your bid",
-      color: "#1F6891",
+      color: "linear-gradient(90deg, #4A67B0 0%, #2448A5 100%)",
       verticalLine: true,
     },
     {
       title: "You get access to the token",
-      color: "#2C9124",
+      color: "linear-gradient(90deg, #4092B6 1.19%, #026894 100%)",
       verticalLine: true,
     },
     {
       title: "If bid is denied, you get a refund",
-      color: "#A14141",
+      color: "#010101",
     },
   ];
 
@@ -67,42 +64,14 @@ export default function HomePageAuctions(): JSX.Element {
         gridTemplateAreas={[
           `
             "actions"
-            "heading"
             "table"
           `,
           `
-            "heading heading"
             "table actions"
           `,
         ]}
         gridGap={space.xxs}
       >
-        <Text
-          pt={[space.xxs, 0]}
-          color="#C4C4C4"
-          fontSize="1.4rem"
-          fontWeight={700}
-          lineHeight="1.7rem"
-          textTransform="uppercase"
-          gridArea="heading"
-        >
-          Active Auctions
-        </Text>
-
-        <Link
-          href={PageRoutes.auctions}
-          boxProps={{
-            gridArea: "heading",
-            paddingTop: [space.xxs, 0],
-            justifySelf: "end",
-          }}
-        >
-          <Flex alignItems="center">
-            <Text textStyle="small">View All</Text>
-            <Icon icon="ChevronRight" size={14} />
-          </Flex>
-        </Link>
-
         <Box gridArea="table">
           {auctionsLoading ? (
             <Shimmer w="100%" h="100%" borderRadius={radii.xxs} />
@@ -121,14 +90,16 @@ export default function HomePageAuctions(): JSX.Element {
               w={[250, 336]}
               height={[40, 60]}
               p={["0.4em 0.8em", "1em 1.2em"]}
-              bg={color}
+              background={color}
               borderRadius={radii.xxxxs}
               justifyContent="space-between"
               alignItems="center"
               position={["static", "relative"]}
               key={index}
             >
-              <Text textStyle="button">{title}</Text>
+              <Text fontFamily={fonts.heading} textStyle="button">
+                {title}
+              </Text>
               <Box
                 w={[0, 20]}
                 h={[0, 20]}

@@ -19,6 +19,7 @@ const colors = {
   white: ["#FFFFFF", "#b9b9b9"],
   lightGrey: "#8C8C8C",
   greenSuccess: "#35AF27",
+  yellow: ["#FFD231"],
   green: ["#6AD361"],
   whiteAlpha: [
     "rgba(288,288,288,0.05)",

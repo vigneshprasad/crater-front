@@ -15,6 +15,7 @@ export default function HomeLeaderboardScroller(): JSX.Element {
       px={space.xs}
       mb={space.s}
       pb={space.xs}
+      gridGap={space.xs}
     >
       <Box
         position="absolute"
@@ -25,7 +26,11 @@ export default function HomeLeaderboardScroller(): JSX.Element {
         bottom={0}
         zIndex={0}
       />
-      <LeaderCard rank={1} />
+      {Array(10)
+        .fill("")
+        .map((_, index) => (
+          <LeaderCard rank={index + 1} key={index} />
+        ))}
     </HorizontalScroll>
   );
 }

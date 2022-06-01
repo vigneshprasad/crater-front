@@ -48,6 +48,7 @@ export default function HorizontalScroll({
         <Box w={96} />
       </Container>
       <ActionContainer
+        zIndex={20}
         cursor="pointer"
         position="absolute"
         right={0}

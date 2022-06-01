@@ -82,12 +82,28 @@ export function StreamSlider({ streams }: IProps): JSX.Element {
             );
 
           return streams.map((stream, index) => {
+            const variant = getVariant(index);
             return (
               <StreamSlide
                 initial="hidden"
-                animate={getVariant(index)}
+                animate={variant}
                 stream={stream}
                 key={stream.id}
+                whileHover={
+                  variant === "active" ? { scale: 1.05 } : { scale: 0.8 }
+                }
+                linkProps={{
+                  boxProps: {
+                    onClick: (event) => {
+                      console.log(event);
+                      console.log(variant);
+                      if (variant !== "active") {
+                        event.preventDefault();
+                      }
+                      setActiveItem(index);
+                    },
+                  },
+                }}
               />
             );
           });

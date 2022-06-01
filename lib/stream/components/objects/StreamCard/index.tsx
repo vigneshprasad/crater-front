@@ -3,6 +3,7 @@ import { useTheme } from "styled-components";
 
 import Image from "next/image";
 
+import useAuth from "@/auth/context/AuthContext";
 import {
   AnimatedBox,
   Text,
@@ -35,6 +36,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
   ({ stream, link, onClickRsvp, cardPosition }, ref) => {
     const { space, radii, colors } = useTheme();
     const [loading, setLoading] = useState(false);
+    const { user } = useAuth();
     const startTime = DateTime.parse(stream.start).toFormat(
       DateTime.DEFAULT_FORMAT
     );
@@ -84,7 +86,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
           <Avatar size={28} image={stream.host_detail.photo} />
           <Text textStyle="body">{stream.host_detail.name}</Text>
         </Flex>
-        <Text pb={space.xxxxs} textStyle="title">
+        <Text pb={space.xxxxs} textStyle="title" minHeight={52}>
           {stream.topic_detail.name}
         </Text>
         <Flex opacity={0.8} alignItems="center" gridGap={space.xxxxs}>
@@ -198,30 +200,45 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
               boxProps={{ target: "_blank" }}
             >
               {streamDetails}
-            </Link>
 
-            <Button
-              variant="secondary-dark-flat"
-              my={space.xxxxs}
-              display="block"
-              w="100%"
-              label="GO TO STREAM PAGE"
-            />
-            {!stream.has_rsvp && (
               <Button
-                disabled={loading || stream.has_rsvp}
-                onClick={async (event) => {
-                  event.stopPropagation();
-                  setLoading(true);
-                  onClickRsvp && (await onClickRsvp(stream));
-                  setLoading(false);
-                }}
+                variant="secondary-dark-flat"
+                my={space.xxxxs}
                 display="block"
                 w="100%"
-                label="RSVP"
-                suffixElement={loading ? <Spinner size={20} /> : undefined}
+                label="GO TO STREAM PAGE"
               />
-            )}
+            </Link>
+
+            {(() => {
+              if (!user) {
+                return null;
+              }
+
+              if (user.pk === stream.host) {
+                return null;
+              }
+
+              if (stream.has_rsvp) {
+                return null;
+              }
+
+              return (
+                <Button
+                  disabled={loading || stream.has_rsvp}
+                  onClick={async (event) => {
+                    event.stopPropagation();
+                    setLoading(true);
+                    onClickRsvp && (await onClickRsvp(stream));
+                    setLoading(false);
+                  }}
+                  display="block"
+                  w="100%"
+                  label="RSVP"
+                  suffixElement={loading ? <Spinner size={20} /> : undefined}
+                />
+              );
+            })()}
           </Box>
         </AnimatedBox>
       </AnimatedBox>

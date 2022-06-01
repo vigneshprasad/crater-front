@@ -26,7 +26,10 @@ interface ServerProps {
 
 export const getStaticProps: GetStaticProps<ServerProps> = async () => {
   const [liveStreams] = await WebinarApiClient().getAllLiveWebinars();
-  const [upcomingStreams] = await WebinarApiClient().getAllUpcominWebinars();
+  const [upcomingStreams] = await WebinarApiClient().getAllUpcominWebinars(
+    1,
+    8
+  );
   const [pastStreams] = await StreamApiClient().getPastStreams();
 
   return {
@@ -63,6 +66,7 @@ export default function Home({
     >
       <LiveStreamsProvider initial={liveStreams}>
         <UpcomingStreamsProvider
+          pageSize={8}
           initial={upcomingStreams}
           category={upcomingCategory ? parseInt(upcomingCategory) : undefined}
         >

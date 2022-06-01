@@ -5,7 +5,7 @@ import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, Text } from "@/common/components/atoms";
+import { Box, Text, Grid } from "@/common/components/atoms";
 
 interface IProps {
   rank: number;
@@ -37,7 +37,58 @@ export function LeaderCard({ rank }: IProps): JSX.Element {
         </Box>
       );
     }
-  }, [rank]);
+
+    if (rank === 2) {
+      return (
+        <Box position="relative" w={56} h={62}>
+          <Image
+            layout="fill"
+            src={STATIC_IMAGES.ImageRank2}
+            alt=""
+            objectFit="contain"
+          />
+        </Box>
+      );
+    }
+
+    if (rank === 3) {
+      return (
+        <Box position="relative" w={56} h={62}>
+          <Image
+            layout="fill"
+            src={STATIC_IMAGES.ImageRank3}
+            alt=""
+            objectFit="contain"
+          />
+        </Box>
+      );
+    }
+
+    return (
+      <Grid
+        size={36}
+        border={`2px solid ${colors.accentLight}`}
+        borderRadius="50%"
+      >
+        <Text
+          color={colors.accentLight}
+          fontSize="2rem"
+          fontFamily={fonts.heading}
+          m="auto auto"
+        >
+          {rank}
+        </Text>
+      </Grid>
+    );
+  }, [rank, colors, fonts]);
+
+  const border = useMemo(() => {
+    if (rank === 1) {
+      return `2px solid ${colors.yellow[0]}`;
+    }
+    return `2px solid ${colors.accentHover}`;
+  }, [rank, colors]);
+
   return (
     <Container
       zIndex={2}
@@ -46,7 +97,7 @@ export function LeaderCard({ rank }: IProps): JSX.Element {
       borderRadius={radii.xxxxs}
       position="relative"
     >
-      <Box position="absolute" top={-12} left={-12}>
+      <Box position="absolute" top={-8} left={-8}>
         {rankLabel}
       </Box>
 
@@ -63,6 +114,7 @@ export function LeaderCard({ rank }: IProps): JSX.Element {
             borderRadius="50%"
             size={72}
             overflow="hidden"
+            border={border}
           >
             <Image layout="fill" src={IMAGE} alt="image" />
           </Box>
