@@ -183,7 +183,10 @@ export function StreamSlide({
             </Box>
           </Box>
           <Flex pb={space.xxxxs} px={space.xxxxs} justifyContent="flex-end">
-            <Button variant="transparent-slider" label="JOIN STREAM" />
+            <Button
+              variant="transparent-slider"
+              label={stream.is_past ? "WATCH STREAM" : "JOIN STREAM"}
+            />
           </Flex>
         </Box>
       </Link>
@@ -331,7 +334,10 @@ export function StreamSlide({
             </Box>
 
             <Grid p={space.xxxxs} justifyContent="end" alignItems="center">
-              <Button variant="transparent-slider" label="JOIN STREAM" />
+              <Button
+                variant="transparent-slider"
+                label={stream.is_past ? "WATCH STREAM" : "JOIN STREAM"}
+              />
             </Grid>
           </Grid>
         </Grid>
