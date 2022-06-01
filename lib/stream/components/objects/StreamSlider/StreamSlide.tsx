@@ -17,6 +17,7 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import ExpandingText from "@/common/components/objects/ExpandingText";
+import VideoPlayer from "@/common/components/objects/VideoPlayer";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import DateTime from "@/common/utils/datetime/DateTime";
@@ -118,6 +119,8 @@ export function StreamSlide({
   }, [isMobile]);
 
   const link = useMemo(() => {
+    if (stream.is_past && stream.recording_details?.recording)
+      return PageRoutes.streamVideo(stream.id);
     if (stream.is_live) return PageRoutes.stream(stream.id);
     return PageRoutes.session(stream.id);
   }, [stream]);
@@ -125,7 +128,66 @@ export function StreamSlide({
   if (isMobile === undefined) return null;
 
   if (isMobile) {
-    return <Box>Mobile Card</Box>;
+    return (
+      <Link href={link}>
+        <Box
+          bg={colors.primaryDark}
+          overflow="hidden"
+          borderRadius={radii.xxxxs}
+        >
+          <Box position="relative" pt="56.25%">
+            <Image
+              layout="fill"
+              src={stream.topic_detail.image}
+              alt={stream.topic_detail.name}
+            />
+
+            {stream.is_live && (
+              <Text
+                textStyle="caption"
+                bg={colors.red[0]}
+                px={8}
+                py={2}
+                borderRadius={4}
+                position="absolute"
+                top={16}
+                left={16}
+                fontWeight="600"
+              >
+                LIVE
+              </Text>
+            )}
+          </Box>
+          <Box px={space.xxxs} pt={space.xxxxs}>
+            <Text maxLines={2} overflow="hidden">
+              {stream.topic_detail.name}
+            </Text>
+            <Box py={space.xxxxs}>
+              {stream.is_live && (
+                <Text textStyle="caption" color={colors.accentLight}>
+                  Streaming Now
+                </Text>
+              )}
+              {!stream.is_live && (
+                <Flex gridGap={4} alignItems="center">
+                  <Icon
+                    color={colors.textSecondary}
+                    icon="Calendar"
+                    size={16}
+                  />
+                  <Text color={colors.textSecondary} textStyle="caption">
+                    {startTime}
+                  </Text>
+                </Flex>
+              )}
+            </Box>
+          </Box>
+          <Flex pb={space.xxxxs} px={space.xxxxs} justifyContent="flex-end">
+            <Button variant="transparent-slider" label="JOIN STREAM" />
+          </Flex>
+        </Box>
+      </Link>
+    );
   }
 
   return (
@@ -147,11 +209,30 @@ export function StreamSlide({
       >
         <Grid gridTemplateColumns={["max-content 180px"]}>
           <Box h={HEIGHT} position="relative" w={ACTIVE_SLIDE_IMAGE_WIDTH}>
-            <Image
-              layout="fill"
-              src={stream.topic_detail.image}
-              alt={stream.topic_detail.name}
-            />
+            {(() => {
+              if (stream.is_past && stream.recording_details?.recording) {
+                return (
+                  <VideoPlayer
+                    position="absolute"
+                    top={0}
+                    right={0}
+                    left={0}
+                    bottom={0}
+                    autoPlay
+                    muted
+                    src={stream.recording_details?.recording}
+                  />
+                );
+              }
+              return (
+                <Image
+                  layout="fill"
+                  src={stream.topic_detail.image}
+                  alt={stream.topic_detail.name}
+                />
+              );
+            })()}
+
             {stream.is_live && (
               <Text
                 textStyle="caption"
@@ -204,26 +285,49 @@ export function StreamSlide({
           >
             <Box>
               <Text>{stream.topic_detail.name}</Text>
-              {stream.is_live && (
-                <Text textStyle="caption" color={colors.accentLight}>
-                  Streaming Now
-                </Text>
-              )}
-              {!stream.is_live && (
-                <Flex gridGap={4} alignItems="center">
-                  <Text textStyle="caption" color={colors.accentLight}>
-                    Streaming
-                  </Text>
-                  <Icon
-                    color={colors.textSecondary}
-                    icon="Calendar"
-                    size={16}
-                  />
-                  <Text color={colors.textSecondary} textStyle="caption">
-                    {startTime}
-                  </Text>
-                </Flex>
-              )}
+              {(() => {
+                if (stream.is_live) {
+                  return (
+                    <Text textStyle="caption" color={colors.accentLight}>
+                      Streaming Now
+                    </Text>
+                  );
+                }
+
+                if (stream.is_past) {
+                  return (
+                    <Flex gridGap={4} alignItems="center">
+                      <Text textStyle="caption" color={colors.accentLight}>
+                        Streamed
+                      </Text>
+                      <Icon
+                        color={colors.textSecondary}
+                        icon="Calendar"
+                        size={16}
+                      />
+                      <Text color={colors.textSecondary} textStyle="caption">
+                        {startTime}
+                      </Text>
+                    </Flex>
+                  );
+                }
+
+                return (
+                  <Flex gridGap={4} alignItems="center">
+                    <Text textStyle="caption" color={colors.accentLight}>
+                      Streaming
+                    </Text>
+                    <Icon
+                      color={colors.textSecondary}
+                      icon="Calendar"
+                      size={16}
+                    />
+                    <Text color={colors.textSecondary} textStyle="caption">
+                      {startTime}
+                    </Text>
+                  </Flex>
+                );
+              })()}
             </Box>
 
             <Grid p={space.xxxxs} justifyContent="end" alignItems="center">

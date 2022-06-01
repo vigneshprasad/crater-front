@@ -86,6 +86,14 @@ export function LeaderCard({ rank }: IProps): JSX.Element {
     if (rank === 1) {
       return `2px solid ${colors.yellow[0]}`;
     }
+
+    if (rank === 2) {
+      return `2px solid ${colors.muted.silver}`;
+    }
+
+    if (rank === 3) {
+      return `2px solid ${colors.muted.bronze}`;
+    }
     return `2px solid ${colors.accentHover}`;
   }, [rank, colors]);
 

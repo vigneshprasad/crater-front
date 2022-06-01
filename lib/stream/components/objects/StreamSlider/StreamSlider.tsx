@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react";
 import styled from "styled-components";
+import { useTheme } from "styled-components";
 
-import { Box, Grid } from "@/common/components/atoms";
+import { Box, Grid, Shimmer } from "@/common/components/atoms";
 import { IconButton } from "@/common/components/atoms/v2";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { Webinar } from "@/community/types/community";
 
 import { SliderShimmer } from "./SliderShimmer";
@@ -24,18 +26,22 @@ const GradientBackDrop = styled(Box)`
   transform: translate(50%, -50%);
 `;
 
-export function StreamSlider({ streams }: IProps): JSX.Element {
+export function StreamSlider({ streams }: IProps): JSX.Element | null {
   const [activeItem, setActiveItem] = useState(0);
+  const { breakpoints, space } = useTheme();
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   const getVariant = useCallback(
     (index: number) => {
       if (streams) {
-        if (activeItem === 0) {
-          if (index === streams.length - 1) return "prev";
-        }
+        if (streams.length > 3) {
+          if (activeItem === 0) {
+            if (index === streams.length - 1) return "prev";
+          }
 
-        if (activeItem === streams.length - 1) {
-          if (index === 0) return "next";
+          if (activeItem === streams.length - 1) {
+            if (index === 0) return "next";
+          }
         }
       }
 
@@ -48,6 +54,36 @@ export function StreamSlider({ streams }: IProps): JSX.Element {
     },
     [activeItem, streams]
   );
+
+  if (isMobile === undefined) return null;
+
+  if (isMobile) {
+    return (
+      <>
+        <Grid
+          py={space.xxs}
+          gridAutoColumns="240px"
+          overflowX="auto"
+          gridAutoFlow="column"
+          gridGap={space.xxs}
+        >
+          {(() => {
+            if (!streams) {
+              return Array(3)
+                .fill("")
+                .map((_, index) => {
+                  return <Shimmer h={300} key={index} />;
+                });
+            }
+
+            return streams.map((stream) => (
+              <StreamSlide key={stream.id} stream={stream} />
+            ));
+          })()}
+        </Grid>
+      </>
+    );
+  }
 
   return (
     <Grid

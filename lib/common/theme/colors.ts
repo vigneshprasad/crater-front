@@ -39,6 +39,8 @@ const colors = {
     widow: "#BFABFF",
     felicia: "#57BEE6",
     sonic: "#0014A5",
+    silver: "#C6D1FF",
+    bronze: "#8C5521",
   },
   linkColor: "#865EEA",
   redTranslucent: "rgba(255, 102, 40, 0.6)",
