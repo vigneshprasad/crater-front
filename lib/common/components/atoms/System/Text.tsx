@@ -186,23 +186,19 @@ const variants = {
     lineHeight: ["2.2rem"],
     textTransform: "uppercase",
   },
-  mainHeading: css`
-    font-family: ${fonts.body};
-    font-size: 2.4rem;
-    font-weight: 500;
-    line-height: 3.3rem;
-    background: linear-gradient(
-      90.47deg,
-      #d5bbff 17.58%,
-      #9db3ff 60.39%,
-      #0d849e 85.38%
-    );
-    text-shadow: 0px 0px 28px rgba(136, 46, 232, 0.8);
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    text-fill-color: transparent;
-  `,
+  mainHeading: {
+    fontFamily: fonts.heading,
+    fontSize: "2.4rem",
+    fontWeight: "500",
+    lineHeight: "3.3rem",
+    background:
+      "linear-gradient(90.47deg, #d5bbff 17.58%, #9db3ff 60.39%, #0d849e 85.38%)",
+    backgroundClip: "text",
+    "-webkit-background-clip": "text",
+    "-webkit-text-fill-color": "transparent",
+    textFillColor: "transparent",
+    textShadow: "0px 0px 28px rgba(136, 46, 232, 0.8)",
+  },
 };
 
 export type TextVariants = keyof typeof variants;

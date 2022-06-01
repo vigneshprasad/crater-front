@@ -112,6 +112,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
         border: "2px solid #1C1C1E",
         borderRadius: "2em",
         transition: "all 0.1s ease-in",
+        fontWeight: "500",
         ":hover": {
           bg: "primaryLight",
         },
@@ -120,6 +121,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
         fontSize: ["1.4rem", "1.6rem"],
         lineHeight: "2.2rem",
         p: "0.4em 0.8em",
+        fontWeight: "500",
         bg: "accent",
         border: "2px solid #9146FF",
         borderRadius: "2em",
@@ -205,7 +207,7 @@ export function Button({
       fontSize="1.3rem"
       display="inline-block"
       as="button"
-      fontWeight="500"
+      fontWeight="600"
       {...rest}
     >
       <Grid

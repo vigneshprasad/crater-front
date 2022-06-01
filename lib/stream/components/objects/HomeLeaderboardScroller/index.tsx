@@ -9,7 +9,7 @@ export default function HomeLeaderboardScroller(): JSX.Element {
   const { space, colors } = useTheme();
   return (
     <HorizontalScroll
-      pt={space.s}
+      pt={space.xxs}
       gridAutoColumns="144px"
       gridAutoFlow="column"
       px={space.xs}

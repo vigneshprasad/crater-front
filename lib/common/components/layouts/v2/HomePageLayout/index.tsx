@@ -35,13 +35,8 @@ export default function HomePageLayout({
   return (
     <Page seo={seo}>
       <BaseLayout aside={<AsideNav activeTab={activeTab} />} overflowY="auto">
-        <Box px={space.xs} py={32}>
-          <Text
-            fontFamily={fonts.heading}
-            textStyle="mainHeading"
-            maxLines={2}
-            textAlign="center"
-          >
+        <Box px={space.xs} py={space.xxxs}>
+          <Text textStyle="mainHeading" maxLines={2} textAlign="center">
             {heading}
           </Text>
           {subHeading && (
