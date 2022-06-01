@@ -223,7 +223,8 @@ export function StreamSlide({
                     bottom={0}
                     autoPlay
                     muted
-                    src={stream.recording_details?.recording}
+                    loop
+                    src={`${stream.recording_details?.recording}#t=600`}
                   />
                 );
               }

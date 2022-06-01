@@ -11,9 +11,11 @@ import {
   Flex,
   Avatar,
   Icon,
+  Grid,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { PastStreamListItem } from "@/community/types/community";
 
@@ -31,9 +33,13 @@ interface IProps {
 
 const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
   ({ stream, link, cardPosition }, ref) => {
-    const { space, radii, colors } = useTheme();
+    const { space, radii, colors, breakpoints } = useTheme();
     const startTime = DateTime.parse(stream.start).toFormat(
       DateTime.DEFAULT_FORMAT
+    );
+
+    const { matches: isMobile } = useMediaQuery(
+      `(max-width: ${breakpoints[0]})`
     );
 
     const image = (
@@ -130,9 +136,68 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
       }
     }, [cardPosition]);
 
+    if (isMobile === undefined) return null;
+
+    if (isMobile) {
+      return (
+        <Link
+          href={link ?? PageRoutes.streamVideo(stream.id)}
+          boxProps={{ target: "_blank" }}
+        >
+          <Grid
+            gridGap={space.xxxxs}
+            gridTemplateColumns="1fr 2fr"
+            borderBottom="1px solid #333333"
+          >
+            <Box
+              position="relative"
+              pt="56.25%"
+              borderRadius={radii.xxxxs}
+              overflow="hidden"
+            >
+              <Image
+                src={stream.topic_detail.image}
+                layout="fill"
+                alt={stream.topic_detail.name}
+              />
+            </Box>
+            <Box>
+              <Text maxLines={2}>{stream.topic_detail.name}</Text>
+              <Flex alignItems="center" gridGap={space.xxxxs}>
+                <Avatar size={16} image={stream.host_detail.photo} />
+                <Text fontSize="1rem">{stream.host_detail.name}</Text>
+              </Flex>
+            </Box>
+
+            <Flex
+              gridColumn="1 / span 2"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Flex alignItems="center">
+                <Icon color={colors.textSecondary} size={16} icon="Calendar" />
+                <Text textStyle="caption" color={colors.textSecondary}>
+                  {startTime}
+                </Text>
+              </Flex>
+
+              <Text
+                px={space.xxxxs}
+                py={space.xxxxs}
+                cursor="pointer"
+                color={colors.accentLight}
+              >
+                WATCH
+              </Text>
+            </Flex>
+          </Grid>
+        </Link>
+      );
+    }
+
     return (
       <Link
-        href={link ?? PageRoutes.session(stream.id)}
+        href={link ?? PageRoutes.streamVideo(stream.id)}
         boxProps={{ target: "_blank" }}
       >
         <AnimatedBox

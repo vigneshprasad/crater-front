@@ -60,7 +60,7 @@ export default function CategoryFilteredUpcomingList(): JSX.Element {
                 </>
               }
             />
-
+            <Box h={space.xxs} />
             <PastStreamsList />
           </Box>
         </PastStreamProvider>

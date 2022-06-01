@@ -20,22 +20,17 @@ const StreamsPage = dynamic(
 
 interface ServerProps {
   liveStreams: Webinar[];
-  upcomingStreams: PageResponse<Webinar>;
   pastStreams: PageResponse<PastStreamListItem>;
 }
 
 export const getStaticProps: GetStaticProps<ServerProps> = async () => {
   const [liveStreams] = await WebinarApiClient().getAllLiveWebinars();
-  const [upcomingStreams] = await WebinarApiClient().getAllUpcominWebinars(
-    1,
-    8
-  );
+
   const [pastStreams] = await StreamApiClient().getPastStreams();
 
   return {
     props: {
       liveStreams: liveStreams ?? [],
-      upcomingStreams: upcomingStreams ?? ({} as PageResponse<Webinar>),
       pastStreams: pastStreams ?? ({} as PageResponse<PastStreamListItem>),
     },
     revalidate: 10,
@@ -46,7 +41,6 @@ export type IProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Home({
   liveStreams,
-  upcomingStreams,
   pastStreams,
 }: IProps): JSX.Element {
   const router = useRouter();
@@ -61,13 +55,11 @@ export default function Home({
       }}
       activeTab="streams"
       heading="Livestream and Monetise with Crater"
-      subHeading="Go live with Crater and host a private auction to monetise your
-      content"
+      subHeading="Go live with Crater and host a private auction to monetise your content"
     >
       <LiveStreamsProvider initial={liveStreams}>
         <UpcomingStreamsProvider
           pageSize={8}
-          initial={upcomingStreams}
           category={upcomingCategory ? parseInt(upcomingCategory) : undefined}
         >
           <PastStreamProvider
