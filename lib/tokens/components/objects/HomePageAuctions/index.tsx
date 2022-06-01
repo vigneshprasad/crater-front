@@ -80,19 +80,22 @@ export default function HomePageAuctions(): JSX.Element {
           )}
         </Box>
 
-        <Flex
-          flexDirection={["row", "column"]}
+        <Grid
+          overflowY="hidden"
+          overflowX={["auto", "hidden"]}
+          gridAutoFlow={["column", "row"]}
+          gridAutoColumns="max-content"
           gridGap={space.xxs}
           gridArea="actions"
         >
           {auctionSteps.map(({ title, color, verticalLine }, index) => (
             <Flex
-              w={[250, 336]}
+              w={["auto", 336]}
               height={[40, 60]}
               p={["0.4em 0.8em", "1em 1.2em"]}
               background={color}
               borderRadius={radii.xxxxs}
-              justifyContent="space-between"
+              justifyContent={["start", "space-between"]}
               alignItems="center"
               position={["static", "relative"]}
               key={index}
@@ -122,7 +125,7 @@ export default function HomePageAuctions(): JSX.Element {
               )}
             </Flex>
           ))}
-        </Flex>
+        </Grid>
       </Grid>
     </Box>
   );
