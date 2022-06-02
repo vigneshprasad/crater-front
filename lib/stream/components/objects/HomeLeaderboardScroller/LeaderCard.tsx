@@ -1,5 +1,4 @@
 import STATIC_IMAGES from "public/images";
-import IMAGE from "public/images/img_default_avatar.png";
 import { useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 
@@ -143,7 +142,11 @@ export function LeaderCard({
             overflow="hidden"
             border={border}
           >
-            <Image layout="fill" src={IMAGE} alt="image" />
+            <Image
+              layout="fill"
+              src={creator.profile_detail.photo}
+              alt="image"
+            />
           </Box>
         </Box>
 
