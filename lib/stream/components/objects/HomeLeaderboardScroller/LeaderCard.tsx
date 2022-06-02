@@ -5,10 +5,15 @@ import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, Text, Grid } from "@/common/components/atoms";
+import { Box, Text, Grid, Flex, Icon } from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/v2";
+import CreatorApiClient from "@/creators/api";
+import { CreatorRank } from "@/creators/types/creator";
 
 interface IProps {
   rank: number;
+  creator: CreatorRank;
+  updatedList: () => void;
 }
 
 const Container = styled(Box)`
@@ -21,7 +26,11 @@ const Container = styled(Box)`
   }
 `;
 
-export function LeaderCard({ rank }: IProps): JSX.Element {
+export function LeaderCard({
+  rank,
+  creator,
+  updatedList,
+}: IProps): JSX.Element {
   const { space, colors, radii, fonts } = useTheme();
 
   const rankLabel = useMemo(() => {
@@ -97,6 +106,16 @@ export function LeaderCard({ rank }: IProps): JSX.Element {
     return `2px solid ${colors.accentHover}`;
   }, [rank, colors]);
 
+  const followCreator = async (): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, err] = await CreatorApiClient().subscribeCreator(creator.id);
+    if (err) {
+      console.log(err);
+      return;
+    }
+    updatedList();
+  };
+
   return (
     <Container
       zIndex={2}
@@ -134,16 +153,62 @@ export function LeaderCard({ rank }: IProps): JSX.Element {
             fontSize="1.2rem"
             fontFamily={fonts.heading}
           >
-            Fig Nelson
+            {creator.profile_detail.name}
           </Text>
 
-          <Text mt={space.xxs} fontSize="1rem">
-            WATCH TIME
-          </Text>
+          <Box mt={space.xxs}>
+            {(() => {
+              if (creator.watch_time < 5000) {
+                if (creator.is_follower) {
+                  return (
+                    <Flex
+                      position="absolute"
+                      bottom={16}
+                      left={12}
+                      alignItems="center"
+                      gridGap={space.xxxxs}
+                    >
+                      <Icon
+                        icon="CheckCircle"
+                        color={colors.green[0]}
+                        size={16}
+                      />
+                      <Text
+                        textStyle="caption"
+                        fontWeight="600"
+                        color={colors.accentLight}
+                      >
+                        FOLLOWED
+                      </Text>
+                    </Flex>
+                  );
+                }
+                return (
+                  <Button
+                    position="absolute"
+                    bottom={16}
+                    left={12}
+                    variant="text"
+                    label="FOLLOW"
+                    disabled={creator.is_follower}
+                    onClick={followCreator}
+                  />
+                );
+              }
 
-          <Text fontFamily={fonts.heading} color={colors.accentLight}>
-            112.32 mins
-          </Text>
+              return (
+                <>
+                  <Text mt={space.xxs} fontSize="1rem">
+                    WATCH TIME
+                  </Text>
+
+                  <Text fontFamily={fonts.heading} color={colors.accentLight}>
+                    {creator.watch_time}
+                  </Text>
+                </>
+              );
+            })()}
+          </Box>
         </Box>
       </Box>
     </Container>

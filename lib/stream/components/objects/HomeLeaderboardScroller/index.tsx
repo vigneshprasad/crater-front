@@ -1,12 +1,14 @@
 import { useTheme } from "styled-components";
 
-import { Box } from "@/common/components/atoms";
+import { Box, Shimmer } from "@/common/components/atoms";
 import HorizontalScroll from "@/common/components/objects/HorizontalScroll";
+import useCreatorRankList from "@/creators/context/CreatorRankListContext";
 
 import { LeaderCard } from "./LeaderCard";
 
 export default function HomeLeaderboardScroller(): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, radii } = useTheme();
+  const { creators, revalidate } = useCreatorRankList();
   return (
     <HorizontalScroll
       pt={space.xxs}
@@ -26,11 +28,31 @@ export default function HomeLeaderboardScroller(): JSX.Element {
         bottom={0}
         zIndex={0}
       />
-      {Array(10)
-        .fill("")
-        .map((_, index) => (
-          <LeaderCard rank={index + 1} key={index} />
-        ))}
+
+      {(() => {
+        if (!creators) {
+          return Array(4)
+            .fill("")
+            .map((_, index) => (
+              <Shimmer
+                h={172}
+                zIndex={2}
+                key={index}
+                borderRadius={radii.xxxxs}
+              />
+            ));
+        }
+        return creators.map((creator, index) => {
+          return (
+            <LeaderCard
+              rank={index + 1}
+              key={creator.id}
+              creator={creator}
+              updatedList={() => revalidate()}
+            />
+          );
+        });
+      })()}
     </HorizontalScroll>
   );
 }

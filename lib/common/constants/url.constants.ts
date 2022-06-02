@@ -37,6 +37,7 @@ export const API_URL_CONSTANTS = {
   creator: {
     getCreatorList: "/crater/creator/",
     getMembersList: "/crater/community/members/",
+    getCreatorRankList: "/crater/creator/ranking/",
     retrieveCreator: (id: number): string => `/crater/creator/${id}/`,
     retrieveCreatorSlug: (slug: string): string => `/crater/creator/s/${slug}/`,
     postFollowCreator: "/crater/followers/follow/",

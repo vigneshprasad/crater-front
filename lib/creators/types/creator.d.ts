@@ -81,3 +81,16 @@ export type ConversionFunnel = {
   name: ConversionFunnelKey;
   value: number;
 };
+
+export type CreatorRank = {
+  id: number;
+  user: string;
+  subscriber_count: number;
+  is_follower: boolean;
+  profile_detail: {
+    id: number;
+    name: string;
+    photo: string;
+  };
+  watch_time: number;
+};

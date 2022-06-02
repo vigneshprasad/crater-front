@@ -8,6 +8,7 @@ import { PageResponse } from "@/common/types/api";
 import WebinarApiClient from "@/community/api";
 import { LiveStreamsProvider } from "@/community/context/LiveStreamsContext";
 import { Webinar, PastStreamListItem } from "@/community/types/community";
+import { CreatorRankListProvider } from "@/creators/context/CreatorRankListContext";
 import StreamApiClient from "@/stream/api";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamCategoryProvider } from "@/stream/context/StreamCategoryContext";
@@ -68,7 +69,9 @@ export default function Home({
           >
             <AuctionListProvider rewardDetail={true}>
               <StreamCategoryProvider>
-                <StreamsPage />
+                <CreatorRankListProvider>
+                  <StreamsPage />
+                </CreatorRankListProvider>
               </StreamCategoryProvider>
             </AuctionListProvider>
           </PastStreamProvider>

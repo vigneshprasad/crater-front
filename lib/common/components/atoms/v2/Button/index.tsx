@@ -17,7 +17,8 @@ type Variants =
   | "transparent"
   | "displayLarge"
   | "secondary-dark-flat"
-  | "transparent-slider";
+  | "transparent-slider"
+  | "text";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -36,6 +37,22 @@ const StyledButton = styled(Grid)<ButtonProps>`
   ${variant({
     prop: "variant",
     variants: {
+      text: {
+        px: "0.2em",
+        py: "0.2em",
+        borderRadius: 4,
+        fontSize: "1.2rem",
+        bg: "transparent",
+        color: "accentLight",
+        transition: "all 0.1s ease-in",
+        ":hover": {
+          bg: "primaryLight",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+        },
+      },
       iconButton: {
         bg: "accent",
         px: "0.6em",
