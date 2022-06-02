@@ -34,7 +34,7 @@ export function StreamSlider({ streams }: IProps): JSX.Element | null {
   const getVariant = useCallback(
     (index: number) => {
       if (streams) {
-        if (streams.length > 3) {
+        if (streams.length > 2) {
           if (activeItem === 0) {
             if (index === streams.length - 1) return "prev";
           }
@@ -47,9 +47,7 @@ export function StreamSlider({ streams }: IProps): JSX.Element | null {
 
       if (index === activeItem) return "active";
       if (index === activeItem - 1) return "prev";
-      if (index === activeItem - 2) return "prevHidden";
       if (index === activeItem + 1) return "next";
-      if (index === activeItem + 2) return "nextHidden";
       return "hidden";
     },
     [activeItem, streams]
