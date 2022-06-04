@@ -111,12 +111,18 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
 
                 {button && (
                   <Box pt={space.xs} display={["none", "grid"]} gridColumn={2}>
-                    <Button
-                      label="Start your journey"
-                      display="flex"
-                      alignItems="center"
-                      suffixElement={<Icon icon="ChevronRight" size={20} />}
-                    />
+                    <a
+                      href={START_CREATOR_JOURNET_CALENDLY}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Button
+                        label="Start your journey"
+                        display="flex"
+                        alignItems="center"
+                        suffixElement={<Icon icon="ChevronRight" size={20} />}
+                      />
+                    </a>
                   </Box>
                 )}
               </Grid>
