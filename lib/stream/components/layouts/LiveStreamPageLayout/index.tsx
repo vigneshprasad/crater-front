@@ -34,7 +34,7 @@ export default function LiveStreamPageLayout({
       <Grid
         minHeight="100%"
         gridTemplateColumns={["1fr", "3fr 1fr"]}
-        gridTemplateRows={["max-content max-content 1fr ", "max-content"]}
+        gridTemplateRows={["max-content max-content 1fr ", "min-content"]}
         gridTemplateAreas={[
           `
             "stream"
