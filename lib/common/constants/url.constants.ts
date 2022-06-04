@@ -178,3 +178,6 @@ export const BECOME_CREATOR_CALENDLY = "https://bit.ly/3rDsnaL";
 
 export const LEADERBOARD_URL =
   "https://worknetwork.typeform.com/to/wMqdEEn3?utm_source=website";
+
+export const START_CREATOR_JOURNET_CALENDLY =
+  "https://calendly.com/craterclub/apply-to-create-on-crater";

@@ -28,7 +28,7 @@ export default function HomePageAuctions(): JSX.Element {
       verticalLine: true,
     },
     {
-      title: "You get access to the token",
+      title: "You get access to the item",
       color: "linear-gradient(90deg, #4092B6 1.19%, #026894 100%)",
       verticalLine: true,
     },
@@ -45,7 +45,7 @@ export default function HomePageAuctions(): JSX.Element {
         textStyle="mainHeading"
         textAlign="center"
       >
-        Auctions
+        Live Auctions
       </Text>
       <Text
         fontFamily={fonts.heading}
@@ -53,9 +53,9 @@ export default function HomePageAuctions(): JSX.Element {
         textAlign="center"
         maxLines={2}
       >
-        Get access to{" "}
-        <Span color={colors.accentLight}>exclusive content by Creators.</Span>{" "}
-        Think of it like eBay, but for content and communities.
+        Place a bid &amp; buy{" "}
+        <Span color={colors.accentLight}>access to exclusive content</Span>{" "}
+        communities &amp; art by creators.
       </Text>
 
       <Grid

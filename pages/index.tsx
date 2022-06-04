@@ -50,13 +50,13 @@ export default function Home({
   return (
     <HomePageLayout
       seo={{
-        title: "Crater Club: Streams",
+        title: "Watch, Chat & Place Bids",
         description:
-          "Crater is where you join live streams with the mentors & creators you follow, get to network with like-minds, and can claim exclusive access to mentors & creator by buying their tokens at the live auction",
+          "You can watch live streams, interact with creators & take part in auctions",
       }}
       activeTab="streams"
-      heading="Livestream and Monetise with Crater"
-      subHeading="Go live with Crater and host a private auction to monetise your content"
+      heading="Watch, Chat &amp; Place Bids"
+      subHeading="You can watch live streams, interact with creators &amp; take part in auctions"
     >
       <LiveStreamsProvider initial={liveStreams}>
         <UpcomingStreamsProvider

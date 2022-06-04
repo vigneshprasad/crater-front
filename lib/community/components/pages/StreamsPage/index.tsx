@@ -1,9 +1,10 @@
 import { useTheme } from "styled-components";
 
-import { Box, Text, Icon, Flex } from "@/common/components/atoms";
+import { Box, Text, Icon, Flex, Link } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spinner";
 import Footer from "@/common/components/objects/Footer";
 import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import HomePageCreatorStaticContent from "@/creators/components/objects/HomePageCreatorStaticContent";
 import CategoryFilteredPastList from "@/stream/components/objects/CategoryFilteredPastList";
@@ -24,11 +25,13 @@ export default function StreamsPage(): JSX.Element {
         <StreamSlider streams={liveStreams} />
       </Box>
 
-      <Flex my={space.xxs} px={[space.xxs, space.xs]} alignItems="center">
-        <Text fontFamily={fonts.heading}>Leaderboard</Text>
-        <Icon mx={space.xxxxs} icon="Trophy" color="#FFAA00" />
-        <Icon icon="ChevronRight" />
-      </Flex>
+      <Link href={PageRoutes.leaderboard}>
+        <Flex my={space.xxs} px={[space.xxs, space.xs]} alignItems="center">
+          <Text fontFamily={fonts.heading}>Trending</Text>
+          <Icon mx={space.xxxxs} icon="Trophy" color="#FFAA00" />
+          <Icon icon="ChevronRight" />
+        </Flex>
+      </Link>
 
       <HomeLeaderboardScroller />
 
@@ -37,7 +40,7 @@ export default function StreamsPage(): JSX.Element {
 
       <HomePageAuctions />
 
-      <StyledHeadingDivider label="Streams you may like" />
+      <StyledHeadingDivider label="Previously Live" />
 
       <CategoryFilteredPastList />
 

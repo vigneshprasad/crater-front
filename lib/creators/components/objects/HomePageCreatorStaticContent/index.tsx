@@ -10,6 +10,7 @@ import {
   Text,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
+import { START_CREATOR_JOURNET_CALENDLY } from "@/common/constants/url.constants";
 
 export default function HomePageCreatorStaticContent(): JSX.Element {
   const { space, colors, fonts } = useTheme();
@@ -123,12 +124,18 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
           })}
 
           <Box display={["grid", "none"]}>
-            <Button
-              label="Start your journey"
-              display="flex"
-              alignItems="center"
-              suffixElement={<Icon icon="ChevronRight" size={20} />}
-            />
+            <a
+              href={START_CREATOR_JOURNET_CALENDLY}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Button
+                label="Start your journey"
+                display="flex"
+                alignItems="center"
+                suffixElement={<Icon icon="ChevronRight" size={20} />}
+              />
+            </a>
           </Box>
         </Grid>
       </Grid>
