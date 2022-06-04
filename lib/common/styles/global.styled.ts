@@ -151,8 +151,6 @@ const GlobalStyle = createGlobalStyle`
         color: ${theme.colors.white[0]} !important;
         line-height: 1.8;
         overflow: hidden;
-        min-height: 100vh;
-        min-height: -webkit-fill-available;
     }
 
     * {

@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, useMemo } from "react";
+import { forwardRef, ReactNode, useMemo, useEffect } from "react";
 import styled, { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
@@ -29,13 +29,15 @@ const BaseLayout = forwardRef<HTMLDivElement, Props>(
     const { colors } = useTheme();
     const { toggleNavBar, animate } = useAsideNavState();
 
+    useEffect(() => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    }, []);
+
     const content = useMemo(() => {
       if (aside) {
         return (
-          <Grid
-            gridTemplateColumns="min-content 1fr"
-            gridTemplateRows="calc(100vh - 56px)"
-          >
+          <Grid gridTemplateColumns="min-content 1fr">
             {aside}
             <Box position="relative">
               <Box
@@ -97,11 +99,11 @@ const BaseLayout = forwardRef<HTMLDivElement, Props>(
     return (
       <Grid
         as="main"
-        gridTemplateColumns="100vw"
-        gridTemplateRows="100vh"
+        gridTemplateColumns="1fr"
+        gridTemplateRows="1fr"
         overflow="hidden"
       >
-        <Grid gridTemplateRows="56px 1fr">
+        <Grid gridTemplateRows="56px 1fr" h="calc(var(--vh, 1vh) * 100)">
           <AppNavBar />
           {content}
         </Grid>
