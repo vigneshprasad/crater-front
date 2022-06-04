@@ -228,7 +228,7 @@ export default function SimilarStreamsOverlay(): JSX.Element {
                     </Flex>
                   </Button>
 
-                  <IconButton
+                  {/* <IconButton
                     position="absolute"
                     left={16}
                     bottom={16}
@@ -242,7 +242,7 @@ export default function SimilarStreamsOverlay(): JSX.Element {
                         return !val;
                       });
                     }}
-                  />
+                  /> */}
                 </>
               )}
             </>

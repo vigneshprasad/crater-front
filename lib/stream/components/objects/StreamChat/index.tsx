@@ -193,7 +193,7 @@ export default function StreamChat({
                   }}
                 >
                   <Input
-                    placeholder="Ask a Question"
+                    placeholder="Start chatting..."
                     value={fields.message.value}
                     onChange={(e) =>
                       fieldValueSetter("message", e.currentTarget.value)

@@ -144,7 +144,7 @@ export default function StreamAboutSection({
             alignItems="center"
             justifyContent="center"
             p={space.xxxxs}
-            display={["flex", "none"]}
+            display={["none"]}
           >
             <Text color={colors.accentLight}>
               Refer a friend and earn ₹100 🎉

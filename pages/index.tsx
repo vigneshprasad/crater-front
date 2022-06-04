@@ -55,7 +55,7 @@ export default function Home({
           "You can watch live streams, interact with creators & take part in auctions",
       }}
       activeTab="streams"
-      heading="Watch, Chat &amp; Place Bids"
+      heading="Watch, Chat and Place Bids"
       subHeading="You can watch live streams, interact with creators &amp; take part in auctions"
     >
       <LiveStreamsProvider initial={liveStreams}>
