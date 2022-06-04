@@ -144,7 +144,9 @@ export function LeaderCard({
           >
             <Image
               layout="fill"
-              src={creator.profile_detail.photo}
+              src={
+                creator.profile_detail.photo ?? STATIC_IMAGES.ImgDefaultAvatar
+              }
               alt="image"
             />
           </Box>
