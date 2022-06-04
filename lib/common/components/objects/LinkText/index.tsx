@@ -12,6 +12,10 @@ const StyledText = styled(Text)<
     hoverColor?: string;
   }
 >`
+  font: ${({ theme }) => theme.fonts.body};
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 2.1rem;
   &:hover {
     color: ${({ theme, hoverColor }) =>
       hoverColor ? hoverColor : theme.colors.accent};
@@ -22,7 +26,7 @@ export default function LinkText({ children, ...rest }: IProps): JSX.Element {
   const { colors } = useTheme();
   return (
     <a target="_blank" rel="noreferrer" {...rest}>
-      <StyledText color={colors.slate} fontSize="1.4rem">
+      <StyledText color={colors.accentLight} fontSize="1.4rem">
         {children}
       </StyledText>
     </a>

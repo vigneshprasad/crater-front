@@ -4,7 +4,8 @@ import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
-import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
+import { PastStreamProvider } from "@/stream/context/PastStreamContext";
+import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import StreamChatProvider from "@/stream/providers/StreamChatProvider";
 import { BidListProvider } from "@/tokens/context/BidListContext";
 import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
@@ -42,13 +43,17 @@ export default function Container({
               initial={rewards}
               filterCreatorSlug={webinar.host_detail.creator_detail?.slug}
             >
-              <StreamsToRsvpProvider>
-                <ReferralSummaryProvider>
-                  <LiveStreamPageProvider>
-                    <StreamChatProvider id={id}>{children}</StreamChatProvider>
-                  </LiveStreamPageProvider>
-                </ReferralSummaryProvider>
-              </StreamsToRsvpProvider>
+              <UpcomingStreamsProvider pageSize={4}>
+                <PastStreamProvider pageSize={8}>
+                  <ReferralSummaryProvider>
+                    <LiveStreamPageProvider>
+                      <StreamChatProvider id={id}>
+                        {children}
+                      </StreamChatProvider>
+                    </LiveStreamPageProvider>
+                  </ReferralSummaryProvider>
+                </PastStreamProvider>
+              </UpcomingStreamsProvider>
             </RewardsListProvider>
           </BidListProvider>
         </DyteWebinarProvider>

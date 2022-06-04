@@ -3,19 +3,15 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
-import { Box, Grid, Link, Icon } from "@/common/components/atoms";
-import {
-  BaseTabBar,
-  BaseTabItem,
-} from "@/common/components/objects/BaseTabBar";
+import { Grid, Link, Shimmer } from "@/common/components/atoms";
+import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
 import { PageRoutes } from "@/common/constants/route.constants";
-import { theme } from "@/common/theme";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { ChallengeListProvider } from "@/leaderboard/context/ChallegeListContext";
 import { LeaderboardListProvider } from "@/leaderboard/context/LeaderboardListContext";
 import { UserLeaderboardListProvider } from "@/leaderboard/context/UserLeaderboardListContext";
-import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 
+import LiveStreamPanelTabItem from "../LiveStreamPanelTabItem";
 import StreamChat from "../StreamChat";
 import StreamLeaderboardPanel from "../StreamLeaderboardPanel";
 import StreamRewardsPanel from "../StreamRewardsPanel";
@@ -25,23 +21,17 @@ type TabKeys = "chat" | "auction" | "leaderboard";
 const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
   chat: (
     <Link href={PageRoutes.stream(id, "chat")} shallow>
-      <BaseTabItem label="Chat" />
+      <LiveStreamPanelTabItem icon="Chat" label="Chat" />
     </Link>
   ),
   auction: (
     <Link href={PageRoutes.stream(id, "auction")} shallow>
-      <BaseTabItem
-        title="Exclusive time, content, goods or communities that you can bid on to access."
-        label="Auction"
-        suffixElement={
-          <Icon size={12} color={theme.colors.slate} fill icon="Info" />
-        }
-      />
+      <LiveStreamPanelTabItem icon="Auction" label="Auction" />
     </Link>
   ),
   leaderboard: (
     <Link href={PageRoutes.stream(id, "leaderboard")} shallow>
-      <BaseTabItem label="Leaderboard" />
+      <LiveStreamPanelTabItem icon="Leaderboard" label="Leaderboard" />
     </Link>
   ),
 });
@@ -52,7 +42,7 @@ interface IProps {
 
 export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
   const [activeTab, setActiveTab] = useState(initial);
-  const { borders } = useTheme();
+  const { space, colors } = useTheme();
   const { webinar } = useWebinar();
   const router = useRouter();
 
@@ -67,22 +57,22 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
     }
   }, [router, setActiveTab]);
 
+  if (!webinar) {
+    return <Shimmer h="100%" w="100%" />;
+  }
+
   return (
-    <Grid
-      gridTemplateRows={["max-content 1fr"]}
-      bg={["black.5", "black.5"]}
-      borderLeft={["none", `2px solid ${borders.main}`]}
-    >
-      {webinar ? (
-        <BaseTabBar activeTab={activeTab} tabs={TABS(webinar.id)} />
-      ) : (
-        <Box />
-      )}
+    <Grid gridTemplateRows={["max-content 1fr"]} bg={colors.primaryBackground}>
+      <BaseTabBar
+        bg={colors.primaryLight}
+        px={space.xxxs}
+        activeTab={activeTab}
+        tabs={TABS(webinar.id)}
+        borderLeft={`1px solid ${colors.black[0]}`}
+      />
 
       {activeTab === "chat" && webinar && !webinar.closed && (
-        <ChatColorModeProvider host={webinar.host}>
-          <StreamChat stream={webinar} />
-        </ChatColorModeProvider>
+        <StreamChat stream={webinar} />
       )}
       {activeTab === "auction" && webinar && (
         <StreamRewardsPanel stream={webinar} />

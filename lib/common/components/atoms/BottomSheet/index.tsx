@@ -3,18 +3,26 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
 
-import { AnimatedBox, AnimatedBoxProps } from "..";
+import { AnimatedBox, AnimatedBoxProps } from "../Animated";
+import { Box } from "../System/Box";
+import { Flex } from "../System/Flex";
+import { Text } from "../System/Text";
+import { IconButton } from "../v2";
 
 type IProps = AnimatedBoxProps &
   PropsWithChildren<{
     visible: boolean;
     onClose: () => void;
+    heading?: string;
+    rootBoxProps?: AnimatedBoxProps;
   }>;
 
-export default function BottomSheet({
+export function BottomSheet({
   visible,
   children,
   onClose,
+  heading,
+  rootBoxProps,
   ...rest
 }: IProps): JSX.Element | null {
   const [showSheet, setShowSheet] = useState(visible ?? false);
@@ -51,20 +59,20 @@ export default function BottomSheet({
           animate={{ opacity: 1, transition: { when: "beforeChildren" } }}
           transition={{ duration: 0.5 }}
           exit={{ opacity: 1, transition: { when: "afterChildren" } }}
+          {...rootBoxProps}
         >
           <AnimatedBox
-            m="0 auto"
-            px={space.xs}
-            py={space.s}
+            px={space.xxxs}
             borderRadius={`${radii.s}px ${radii.s}px 0 0`}
             w="100%"
             bottom={0}
-            maxWidth={720}
-            minHeight={340}
-            bg={colors.black[5]}
+            bg={colors.primaryLight}
             position="absolute"
             zIndex={zIndices.modal}
             overflow="hidden"
+            borderTopRightRadius={radii.xxs}
+            borderTopLeftRadius={radii.xxs}
+            maxHeight="80vh"
             initial={{
               y: "50%",
             }}
@@ -77,7 +85,21 @@ export default function BottomSheet({
             transition={{ duration: 0.2 }}
             {...rest}
           >
-            {children}
+            <Box
+              py={space.xxxs}
+              position="sticky"
+              top={0}
+              bg={colors.primaryLight}
+              zIndex={zIndices.modalHeader}
+            >
+              <Box h={2} bg={colors.black[0]} w={28} m="0 auto" />
+              <Flex justifyContent="space-between" alignItems="center">
+                <Text>{heading}</Text>
+                <IconButton icon="Close" onClick={onClose} />
+              </Flex>
+            </Box>
+
+            <Box>{children}</Box>
           </AnimatedBox>
         </AnimatedBox>
       )}

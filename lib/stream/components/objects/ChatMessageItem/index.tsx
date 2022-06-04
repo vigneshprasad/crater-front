@@ -26,7 +26,7 @@ export default function ChatMessageItem({
   message,
   textColor,
 }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, radii } = useTheme();
   const name = useMemo(() => {
     if (message.display_name) {
       return message.display_name;
@@ -48,13 +48,19 @@ export default function ChatMessageItem({
 
   return (
     <Text
+      as="div"
+      py={2}
+      px={space.xxxxs}
+      bg={colors.primaryLight}
       textStyle="chatText"
-      mx={space.xxs}
+      mx={space.xxxs}
       key={message.message}
       wordBreak="break-word"
       color={textColor}
+      borderRadius={radii.xxxs}
     >
       <Span
+        fontWeight="600"
         color={colors.chatColors[hashString(toHash) % colors.chatColors.length]}
       >
         {name}:

@@ -43,6 +43,7 @@ export interface Auction {
   minimum_bid: number;
   last_bid?: Bid;
   reward: number;
+  reward_detail?: Reward;
 }
 
 export interface CoinPriceLog {

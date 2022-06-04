@@ -11,14 +11,17 @@ import {
   Text,
   Avatar,
   Link,
+  Flex,
+  Icon,
 } from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/v2/Button";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
 
-const SLIDE_WIDTH = 840;
+const SLIDE_WIDTH = 711;
 
 type SlideVariants = "main" | "previous" | "next" | "hidden";
 
@@ -95,7 +98,7 @@ export function StreamSlide({
   initial,
   animate,
 }: IStreamSlideProps): JSX.Element | null {
-  const { space, colors, radii } = useTheme();
+  const { space, colors } = useTheme();
   const startTime = DateTime.parse(stream.start);
 
   const { breakpoints } = useTheme();
@@ -110,7 +113,6 @@ export function StreamSlide({
       position={["static", "absolute"]}
       animate={isMobile ? "main" : animate}
       overflow="hidden"
-      borderRadius={radii.xxs}
       bg={colors.black[2]}
       h="100%"
       w={["100%", "calc(100% - 48px)"]}
@@ -174,7 +176,7 @@ export function StreamSlide({
           display="grid"
           variants={{
             main: {
-              width: 280,
+              width: 181,
             },
             next: {
               width: 0,
@@ -187,12 +189,11 @@ export function StreamSlide({
           }}
           overflowY={["auto"]}
           alignItems="start"
-          bg={colors.black[2]}
-          px={space.xxs}
-          py={space.xs}
+          bg={colors.primaryDark}
+          p={space.xxs}
           gridAutoFlow="row"
           gridGap={space.xxxs}
-          gridAutoRows="min-content"
+          gridAutoRows="min-content 1fr"
         >
           <Grid
             gridGap={space.xxs}
@@ -202,18 +203,54 @@ export function StreamSlide({
             {stream.host_detail?.slug && (
               <Link href={PageRoutes.creatorProfile(stream.host_detail?.slug)}>
                 <Avatar
-                  size={56}
+                  size={40}
                   alt={stream.host_detail?.name || ""}
                   image={stream.host_detail?.photo}
                 />
               </Link>
             )}
-            <Text textStyle="title">{stream.host_detail?.name}</Text>
+            <Text textStyle="body" fontWeight={600}>
+              {stream.host_detail?.name}
+            </Text>
           </Grid>
-          <ExpandingText textStyle="body" color={colors.slate} maxLines={3}>
-            {stream.host_detail?.introduction}
-          </ExpandingText>
+          {stream.host_detail?.introduction ? (
+            <ExpandingText textStyle="small" color={colors.slate} maxLines={3}>
+              {stream.host_detail?.introduction}
+            </ExpandingText>
+          ) : (
+            <Box />
+          )}
         </AnimatedBox>
+
+        <Box
+          px={space.xxs}
+          py={space.xxxxs}
+          gridColumn="1 / span 2"
+          backgroundColor={colors.primaryLight}
+        >
+          <Flex alignItems="center" justifyContent="space-between">
+            <Box>
+              <Text>{stream.topic_detail.name}</Text>
+              <Flex
+                color={colors.textSecondary}
+                alignItems="center"
+                gridGap={space.xxxxxs}
+              >
+                <Icon size={16} color="inherit" icon="Calendar" />
+                <Text textStyle="small" color="inherit">
+                  {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
+                </Text>
+              </Flex>
+            </Box>
+
+            <Button
+              label="JOIN STREAM"
+              variant="dark-flat-no-bg"
+              color={colors.accentLight}
+              justifySelf="end"
+            />
+          </Flex>
+        </Box>
 
         <Box
           borderRadius={4}

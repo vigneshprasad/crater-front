@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { Grid, AnimatedBox } from "@/common/components/atoms";
-import IconButton from "@/common/components/atoms/IconButton";
+import { IconButton } from "@/common/components/atoms/v2/IconButton";
 import { Webinar } from "@/community/types/community";
 
 import { StreamSlide } from "./StreamSlide";
@@ -66,11 +66,14 @@ export function StreamSlider({ liveStreams }: IStreamSliderProps): JSX.Element {
   }, [liveStreams, activeSlide]);
 
   return (
-    <Grid gridTemplateColumns={["1fr", "72px 1fr 72px"]} alignItems="center">
+    <Grid
+      gridTemplateColumns={["1fr", "min-content 1fr min-content"]}
+      alignItems="center"
+    >
       <IconButton
         display={["none", "block"]}
         zIndex={zIndices.sliderControls}
-        variant="roundSmall"
+        variant="flat"
         icon="ChevronLeft"
         onClick={onPrevClick}
       />
@@ -81,7 +84,7 @@ export function StreamSlider({ liveStreams }: IStreamSliderProps): JSX.Element {
           gridAutoFlow={["column", "none"]}
           gridAutoColumns={["minmax(280px, 1fr)", "none"]}
           position="relative"
-          minHeight={350}
+          minHeight={298}
           overflowX={["auto", "hidden"]}
           py={[space.xs, 0]}
           gridGap={[space.xs, 0]}
@@ -101,7 +104,7 @@ export function StreamSlider({ liveStreams }: IStreamSliderProps): JSX.Element {
       <IconButton
         display={["none", "block"]}
         zIndex={zIndices.sliderControls}
-        variant="roundSmall"
+        variant="flat"
         icon="ChevronRight"
         onClick={onNextClick}
       />

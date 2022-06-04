@@ -42,6 +42,7 @@ export function FollowerProvider({
     data: followers,
     error,
     mutate: mutateFollowers,
+    isValidating,
   } = useSWR<PageResponse<Follower>>(
     creator && user
       ? `${API_URL_CONSTANTS.follower.getFollowersList}?creator=${creator}&user=${user}`
@@ -58,7 +59,7 @@ export function FollowerProvider({
         return;
       }
 
-      mutateFollowers();
+      await mutateFollowers();
 
       track(AnalyticsEvents.subscribe_creator, {
         ...follower,
@@ -91,7 +92,7 @@ export function FollowerProvider({
     () => ({
       followers: user ? followers?.results : [],
       error,
-      loading: !!user && !followers && !error,
+      loading: isValidating,
       mutateFollowers,
       subscribeCreator,
       unsubscribeCreator,
@@ -103,6 +104,7 @@ export function FollowerProvider({
       subscribeCreator,
       unsubscribeCreator,
       user,
+      isValidating,
     ]
   );
 
