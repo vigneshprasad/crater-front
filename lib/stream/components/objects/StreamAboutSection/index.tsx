@@ -78,7 +78,9 @@ export default function StreamAboutSection({
               <Text textStyle="body" fontWeight="700">
                 {host_detail.name}
               </Text>
-              <Text textStyle="body">{followers?.length} Followers</Text>
+              <Text textStyle="body">
+                {stream?.host_detail.creator_detail?.subscriber_count} Followers
+              </Text>
               <Text
                 display={["none", "block"]}
                 py={space.xxxs}
