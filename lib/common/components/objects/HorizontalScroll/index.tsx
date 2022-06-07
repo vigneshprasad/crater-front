@@ -31,13 +31,7 @@ export default function HorizontalScroll({
 
   const onClickScroll = useCallback((): void => {
     if (!gridRef.current) return;
-
-    console.log("lol");
-
     const { width } = gridRef.current.getBoundingClientRect();
-
-    console.log(gridRef.current.getBoundingClientRect());
-
     gridRef.current.scroll(width, 0);
   }, [gridRef]);
 

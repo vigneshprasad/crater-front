@@ -1,8 +1,8 @@
 import styled, { useTheme } from "styled-components";
 
-import { Box, Grid, Text, TextProps } from "../../atoms";
+import { Box, Grid, GridProps, Text, TextProps } from "../../atoms";
 
-interface IProps {
+interface IProps extends GridProps {
   label: string;
 }
 
@@ -24,7 +24,10 @@ const StyledText = styled(Text)<TextProps>`
   }
 `;
 
-export default function StyledHeadingDivider({ label }: IProps): JSX.Element {
+export default function StyledHeadingDivider({
+  label,
+  ...rest
+}: IProps): JSX.Element {
   const { colors, space, radii, fonts } = useTheme();
   return (
     <Grid
@@ -33,6 +36,7 @@ export default function StyledHeadingDivider({ label }: IProps): JSX.Element {
       gridTemplateColumns="max-content 1fr"
       alignItems="center"
       gridGap={space.xxs}
+      {...rest}
     >
       <Box position="relative">
         <StyledText

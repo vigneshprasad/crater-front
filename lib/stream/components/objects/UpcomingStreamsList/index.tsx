@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import { Box, Grid, Shimmer, Flex } from "@/common/components/atoms";
+import { Box, Grid, Shimmer, Flex, Icon } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import WebinarApiClient from "@/community/api";
 import {
@@ -130,6 +130,7 @@ export default function UpcomingStreamsList(): JSX.Element {
         <Flex mx={space.xxs} gridGap={space.xxs} alignItems="center">
           <Flex flex="1" h={1} bg={colors.black[0]} />
           <Button
+            suffixElement={<Icon icon="ChevronDown" size={20} />}
             variant="dark-flat"
             label="Show More"
             onClick={() => {

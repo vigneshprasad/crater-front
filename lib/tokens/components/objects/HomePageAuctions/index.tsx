@@ -47,12 +47,7 @@ export default function HomePageAuctions(): JSX.Element {
       >
         Live Auctions
       </Text>
-      <Text
-        fontFamily={fonts.heading}
-        textStyle="small"
-        textAlign="center"
-        maxLines={2}
-      >
+      <Text textStyle="body" textAlign="center" maxLines={2}>
         Place a bid &amp; buy{" "}
         <Span color={colors.accentLight}>access to exclusive content</Span>{" "}
         communities &amp; art by creators.

@@ -62,6 +62,7 @@ const colors = {
     "#F4A8B0",
     "#BDFC97",
   ],
+  inputDefaultBg: "#010101",
   textSecondary: "rgba(255, 255, 255, 0.64)",
   textSecondaryLight: "#D7D7EA",
   primaryBackground: "#010101",
