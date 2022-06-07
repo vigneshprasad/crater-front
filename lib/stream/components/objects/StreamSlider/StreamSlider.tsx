@@ -129,8 +129,6 @@ export function StreamSlider({ streams }: IProps): JSX.Element | null {
                 linkProps={{
                   boxProps: {
                     onClick: (event) => {
-                      console.log(event);
-                      console.log(variant);
                       if (variant !== "active") {
                         event.preventDefault();
                       }
