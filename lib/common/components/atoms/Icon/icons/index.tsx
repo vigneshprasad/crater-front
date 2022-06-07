@@ -62,5 +62,6 @@ export { default as Twitter } from "./Twitter";
 export { default as User } from "./User";
 export { default as Users } from "./Users";
 export { default as ViewStream } from "./ViewStream";
+export { default as ViewerCount } from "./ViewerCount";
 export { default as Wallet } from "./Wallet";
 export { default as Whatsapp } from "./Whatsapp";

@@ -170,7 +170,7 @@ const variants = {
   },
   chatText: {
     fontFamily: fonts.body,
-    fontSize: ["1.3rem"],
+    fontSize: ["1.3rem", "1.4rem"],
     fontWeight: "500",
     lineHeight: ["2.4rem"],
   },

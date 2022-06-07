@@ -46,10 +46,11 @@ export function ChatColorModeProvider({
           colors: {
             ...theme.colors,
             primaryDark: "#EDEDED",
+            inputDefaultBg: "#EDEDED",
             primaryLight: "#FFFFFF",
-            primaryBackground: "#EDEDED",
+            primaryBackground: "#FFFFFF",
             textPlaceholder: "#969696",
-            primaryDarkSecondary: "#C4C4C4",
+            primaryDarkSecondary: "#F5F5F5",
             iconColor: "#333333",
             textPrimary: "#333333",
           },

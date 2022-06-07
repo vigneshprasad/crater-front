@@ -69,6 +69,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
         activeTab={activeTab}
         tabs={TABS(webinar.id)}
         borderLeft={`1px solid ${colors.black[0]}`}
+        gridAutoColumns="1fr"
       />
 
       {activeTab === "chat" && webinar && !webinar.closed && (
