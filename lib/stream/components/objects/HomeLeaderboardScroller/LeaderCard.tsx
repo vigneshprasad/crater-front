@@ -118,7 +118,6 @@ export function LeaderCard({
   return (
     <Container
       zIndex={2}
-      h={172}
       bg={colors.primaryBackground}
       borderRadius={radii.xxxxs}
       position="relative"
@@ -152,8 +151,9 @@ export function LeaderCard({
           </Box>
         </Box>
 
-        <Box mt={52}>
+        <Box mt={56}>
           <Text
+            minHeight={48}
             color={colors.green[0]}
             fontSize="1.2rem"
             fontFamily={fonts.heading}
@@ -161,18 +161,12 @@ export function LeaderCard({
             {creator.profile_detail.name}
           </Text>
 
-          <Box mt={space.xxs}>
+          <Box mt={space.xxxs}>
             {(() => {
               if (creator.watch_time < 5000) {
                 if (creator.is_follower) {
                   return (
-                    <Flex
-                      position="absolute"
-                      bottom={16}
-                      left={12}
-                      alignItems="center"
-                      gridGap={space.xxxxs}
-                    >
+                    <Flex alignItems="center" gridGap={space.xxxxs}>
                       <Icon
                         icon="CheckCircle"
                         color={colors.green[0]}
@@ -190,9 +184,6 @@ export function LeaderCard({
                 }
                 return (
                   <Button
-                    position="absolute"
-                    bottom={16}
-                    left={12}
                     variant="text"
                     label="FOLLOW"
                     disabled={creator.is_follower}

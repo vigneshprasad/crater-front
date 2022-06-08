@@ -113,6 +113,8 @@ export default function MenuButton({
         {...positionProps}
         border={`1px solid ${borders.primary}`}
         borderRadius={radii.xxxs}
+        border={`1px solid ${colors.primaryLight}`}
+        boxShadow="0px 0px 13px 0px rgba(0,0,0,0.16)"
         variants={{
           opened: {
             display: "block",

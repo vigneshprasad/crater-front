@@ -110,7 +110,7 @@ function InputWithRef({
   }, [error, colors, borders]);
   return (
     <Box {...boxProps}>
-      <InputContainer bg={bg ?? colors.primaryBackground} border={border}>
+      <InputContainer bg={bg ?? colors.inputDefaultBg} border={border}>
         {prefixElement && prefixElement}
         <StyledInput ref={inputRef} {...rest} />
       </InputContainer>

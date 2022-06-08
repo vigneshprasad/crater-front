@@ -73,14 +73,14 @@ export default function LiveStreamPageLayout({
 
         <Box display={["none", "grid"]} gridArea="pageContent">
           <BANNER.DownloadApp />
-          <StyledHeadingDivider label="Explore Streams" />
+          <StyledHeadingDivider label="Explore Streams" my={36} />
           {upcomingsStreams}
 
           <Box h={space.s} />
 
           <BANNER.StartStreaming />
 
-          <StyledHeadingDivider label="Previously Streamed" />
+          <StyledHeadingDivider label="Previously Streamed" my={36} />
 
           {pastStreams}
 
