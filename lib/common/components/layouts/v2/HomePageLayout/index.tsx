@@ -8,7 +8,7 @@ import AsideNav from "@/common/components/objects/AsideNav";
 import Page from "@/common/components/objects/Page";
 import { INavKeys } from "@/common/constants/ui.constants";
 
-import BaseLayout from "../../BaseLayout";
+import BaseLayout from "../../BaseLayout/v2";
 
 type IProps = PropsWithChildren<{
   seo: NextSeoProps;

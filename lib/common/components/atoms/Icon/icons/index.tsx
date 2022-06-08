@@ -10,6 +10,7 @@ export { default as Auction } from "./Auction";
 export { default as Calendar } from "./Calendar";
 export { default as CalendarDays } from "./CalendarDays";
 export { default as CallEnd } from "./CallEnd";
+export { default as CameraLive } from "./CameraLive";
 export { default as Chart } from "./Chart";
 export { default as Chat } from "./Chat";
 export { default as CheckCircle } from "./CheckCircle";

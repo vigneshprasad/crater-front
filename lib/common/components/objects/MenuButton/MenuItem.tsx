@@ -29,6 +29,7 @@ export function MenuItem({
     <Container
       display="grid"
       w="100%"
+      gridGap={space.xxxs}
       gridTemplateAreas={`"menu-item-prefix menu-item-content menu-item-suffix"`}
       gridTemplateColumns="min-content 1fr min-content"
       px={space.xxxs}

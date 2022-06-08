@@ -33,6 +33,7 @@ const space = {
 const borders = {
   main: "rgba(228, 228, 228, 0.1)",
   input: "#353535",
+  primary: "#1C1C1E",
 };
 
 const fonts = {
