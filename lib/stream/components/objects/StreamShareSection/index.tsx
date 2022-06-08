@@ -72,8 +72,8 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
   }, [user, stream, profile]);
 
   return (
-    <Box as="section" bg={colors.primaryDark} borderRadius={radii.xxxxs}>
-      <Box p={space.xxs} background={colors.primaryLight}>
+    <Box as="section" bg={colors.primaryLight} borderRadius={radii.xxxxs}>
+      <Box p={space.xxs} background={colors.primaryDark}>
         <Text color={colors.textSecondary} textStyle="cardHeader">
           Share this stream
         </Text>
@@ -86,7 +86,7 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
         <Flex
           borderRadius={radii.xxxxs}
           my={space.xxxs}
-          bg={colors.primaryBackground}
+          bg={colors.primaryLight}
           py={space.xxxxs}
           px={space.xxxs}
           alignItems="center"
