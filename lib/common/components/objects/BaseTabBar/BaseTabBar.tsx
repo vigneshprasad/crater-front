@@ -10,6 +10,7 @@ export interface BaseTabBarProps extends GridProps {
     [key: string]: JSX.Element | undefined;
   };
   activeTab?: string;
+  selectedTabColor?: string;
 }
 
 type SliderPosProps = {
@@ -20,6 +21,7 @@ type SliderPosProps = {
 export function BaseTabBar({
   tabs,
   activeTab,
+  selectedTabColor,
   ...rest
 }: BaseTabBarProps): JSX.Element {
   const { space, colors } = useTheme();
@@ -95,8 +97,8 @@ export function BaseTabBar({
         <AnimatedBox
           bottom={0}
           position="absolute"
-          bg={colors.accent}
-          h={4}
+          bg={selectedTabColor ?? colors.accent}
+          h={2}
           initial={false}
           transition={{ type: "linear" }}
           animate={sliderPos}
