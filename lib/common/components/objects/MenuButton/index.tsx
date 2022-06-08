@@ -52,6 +52,8 @@ export default function MenuButton({ icon, items }: IProps): JSX.Element {
         right={0}
         transform="translate(0, -100%)"
         borderRadius={radii.xxxs}
+        border={`1px solid ${colors.primaryLight}`}
+        boxShadow="0px 0px 13px 0px rgba(0,0,0,0.16)"
         variants={{
           opened: {
             display: "block",

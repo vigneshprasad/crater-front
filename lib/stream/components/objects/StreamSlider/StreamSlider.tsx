@@ -22,7 +22,7 @@ const GradientBackDrop = styled(Box)`
     rgba(136, 46, 232, 0.6) 21.6%,
     rgba(89, 174, 211, 0.6) 81.04%
   );
-  filter: blur(40px);
+  filter: blur(36px);
   transform: translate(50%, -50%);
 `;
 
@@ -129,8 +129,6 @@ export function StreamSlider({ streams }: IProps): JSX.Element | null {
                 linkProps={{
                   boxProps: {
                     onClick: (event) => {
-                      console.log(event);
-                      console.log(variant);
                       if (variant !== "active") {
                         event.preventDefault();
                       }
@@ -147,7 +145,7 @@ export function StreamSlider({ streams }: IProps): JSX.Element | null {
           right="50%"
           bottom={-20}
           borderRadius="50%"
-          w={540}
+          w="70%"
           h={25}
         />
       </Box>

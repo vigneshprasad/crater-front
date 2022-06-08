@@ -66,7 +66,7 @@ export function BaseTabBar({
     const keys = Object.keys(tabs);
 
     return keys.map((key) => {
-      const color = activeTab === key ? colors.white[0] : colors.slate;
+      const color = activeTab === key ? colors.textPrimary : colors.slate;
       return (
         <Box
           cursor="pointer"

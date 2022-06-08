@@ -2,7 +2,7 @@ import { DateTime as LuxonDatetime } from "luxon";
 
 export default class DateTime extends LuxonDatetime {
   static DEFAULT_DATETIME_INPUT_FORMAT = "yyyy-MM-dd'T'HH:mm";
-  static DEFAULT_FORMAT = "d LLLL, yyyy HH:mm a";
+  static DEFAULT_FORMAT = "d LLLL, yyyy h:mm a";
 
   static parse(input: string): DateTime {
     const formatted = input.replace("T", " ").replace(".000000", "");

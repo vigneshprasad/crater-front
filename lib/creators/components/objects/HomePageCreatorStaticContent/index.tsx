@@ -61,7 +61,7 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
         >
           Become a Creator
         </Text>
-        <Text fontFamily={fonts.heading} textStyle="small" textAlign="center">
+        <Text textStyle="body" textAlign="center">
           Start streaming on <Span color={colors.accentLight}>Crater</Span>,
           here&apos;s why
         </Text>

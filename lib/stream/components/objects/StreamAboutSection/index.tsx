@@ -14,6 +14,7 @@ import {
 import { Button } from "@/common/components/atoms/v2";
 import { IconButton } from "@/common/components/atoms/v2";
 import HeadingDivider from "@/common/components/objects/HeadingDivider";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { Follower, Webinar } from "@/community/types/community";
 
 interface IProps {
@@ -29,9 +30,10 @@ export default function StreamAboutSection({
   followersLoading,
   onFollow,
 }: IProps): JSX.Element {
-  const { colors, space, radii } = useTheme();
+  const { colors, space, radii, breakpoints } = useTheme();
   const [showAboutSheet, setShowAboutSheet] = useState(false);
   const [showShareSheet, setShowShareSheet] = useState(false);
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   if (!stream) {
     return <Box>Loading...</Box>;
@@ -72,13 +74,25 @@ export default function StreamAboutSection({
             <Avatar
               image={host_detail.photo}
               size={40}
-              onClick={() => setShowAboutSheet(true)}
+              onClick={() => {
+                if (isMobile) {
+                  setShowAboutSheet(true);
+                }
+              }}
             />
-            <Box onClick={() => setShowAboutSheet(true)}>
+            <Box
+              onClick={() => {
+                if (isMobile) {
+                  setShowAboutSheet(true);
+                }
+              }}
+            >
               <Text textStyle="body" fontWeight="700">
                 {host_detail.name}
               </Text>
-              <Text textStyle="body">{followers?.length} Followers</Text>
+              <Text textStyle="body">
+                {stream?.host_detail.creator_detail?.subscriber_count} Followers
+              </Text>
               <Text
                 display={["none", "block"]}
                 py={space.xxxs}

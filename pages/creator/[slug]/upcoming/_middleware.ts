@@ -31,6 +31,7 @@ async function fetchUpcomingStreamByCreator(host: string): Promise<Webinar> {
 
 export const middleware: NextMiddleware = async (req) => {
   const slug = req.page.params?.slug;
+  const searchParams = req.nextUrl.search;
 
   if (!slug) {
     return NextResponse.next();
@@ -43,8 +44,8 @@ export const middleware: NextMiddleware = async (req) => {
 
   const upcomingStream = await fetchUpcomingStreamByCreator(creator.user);
   if (!upcomingStream) {
-    return NextResponse.redirect(`/creator/${slug}`);
+    return NextResponse.redirect(`/creator/${slug}${searchParams}`);
   }
 
-  return NextResponse.redirect(`/session/${upcomingStream.id}`);
+  return NextResponse.redirect(`/session/${upcomingStream.id}${searchParams}`);
 };

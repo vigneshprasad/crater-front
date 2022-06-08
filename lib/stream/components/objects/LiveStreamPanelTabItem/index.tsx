@@ -15,13 +15,16 @@ export default function LiveStreamPanelTabItem({
   const { space } = useTheme();
   return (
     <Grid
-      gridTemplateColumns="max-content 1fr"
-      gridGap={space.xxxxxs}
+      gridTemplateColumns="max-content max-content"
+      gridGap={space.xxxxs}
       alignItems="center"
       px={2}
+      justifyContent="center"
     >
-      <Icon size={16} icon={icon} />
-      <Text textStyle="tabLabel">{label}</Text>
+      <Icon color="inherit" size={16} icon={icon} />
+      <Text color="inherit" textStyle="tabLabel">
+        {label}
+      </Text>
     </Grid>
   );
 }

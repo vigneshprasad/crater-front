@@ -1,7 +1,7 @@
 import { forwardRef, useRef, useEffect, useState, useCallback } from "react";
 import { useTheme } from "styled-components";
 
-import { Grid, Flex, Shimmer, Box } from "@/common/components/atoms";
+import { Grid, Flex, Shimmer, Box, Icon } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import usePastStreams from "@/stream/context/PastStreamContext";
 
@@ -82,6 +82,7 @@ const PastStreamsList = forwardRef<HTMLDivElement>((_, ref) => {
         <Flex mx={space.xxs} gridGap={space.xxs} alignItems="center">
           <Flex flex="1" h={1} bg={colors.black[0]} />
           <Button
+            suffixElement={<Icon icon="ChevronDown" size={20} />}
             variant="dark-flat"
             label="Show More"
             onClick={() => {

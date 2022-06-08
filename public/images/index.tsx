@@ -5,6 +5,7 @@ import ImageBidRejectedIcon from "public/images/img_bid_rejected.png";
 import ImageBlobBlue from "public/images/img_blob_blue.png";
 import ImageCash from "public/images/img_cash.png";
 import ImageCreatorAcceptedIcon from "public/images/img_creator_accepted.png";
+import ImgDefaultAvatar from "public/images/img_default_avatar.png";
 import ImageDiscordIcon from "public/images/img_discord_icon.png";
 import ImageEmptyWallet from "public/images/img_empty_wallet.png";
 import ImageHand from "public/images/img_hand.png";
@@ -22,6 +23,7 @@ import ImageCraterStream from "public/images/img_stream_crater.png";
 import ImageTv from "public/images/img_tv.png";
 
 const STATIC_IMAGES = {
+  ImgDefaultAvatar,
   ImageEmptyWallet,
   ImageRewardBlob,
   ImageRewardCard,
