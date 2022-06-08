@@ -46,6 +46,7 @@ export { default as Moon } from "./Moon";
 export { default as MoreVertical } from "./MoreVertical";
 export { default as Phone } from "./Phone";
 export { default as PlayStore } from "./PlayStore";
+export { default as Pin } from "./Pin";
 export { default as PopOut } from "./PopOut";
 export { default as Rank1 } from "./Rank1";
 export { default as Rank2 } from "./Rank2";
