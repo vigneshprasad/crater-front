@@ -5,6 +5,7 @@ import { Grid, GridProps, Icon, Box, BoxProps } from "../../atoms";
 
 type IProps = GridProps & {
   containerProps?: BoxProps;
+  actionContainerProps?: GridProps;
 };
 
 const Container = styled(Grid)`
@@ -24,6 +25,7 @@ const ActionContainer = styled(Grid)`
 export default function HorizontalScroll({
   children,
   containerProps,
+  actionContainerProps,
   ...rest
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
@@ -57,6 +59,7 @@ export default function HorizontalScroll({
         w={56}
         background={`linear-gradient(to left, ${colors.primaryBackground}, rgba(1, 1, 1, 0.2))`}
         onClick={onClickScroll}
+        {...actionContainerProps}
       >
         <Icon className="icon" m="auto auto" icon="ChevronRight" />
       </ActionContainer>
