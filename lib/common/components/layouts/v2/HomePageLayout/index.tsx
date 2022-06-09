@@ -34,7 +34,7 @@ export default function HomePageLayout({
   return (
     <Page seo={seo}>
       <BaseLayout aside={<AsideNav activeTab={activeTab} />} overflowY="auto">
-        <Box px={space.xs} py={space.xxxs}>
+        <Box px={space.xs} pt={space.s} pb={space.xxs}>
           <Text textStyle="mainHeading" maxLines={2} textAlign="center">
             {heading}
           </Text>
