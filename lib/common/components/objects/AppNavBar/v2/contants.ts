@@ -1,4 +1,8 @@
-import { ABOUT_URL, LEARN_MORE_URL } from "@/common/constants/url.constants";
+import {
+  ABOUT_URL,
+  LEARN_MORE_URL,
+  HELP_CENTER,
+} from "@/common/constants/url.constants";
 
 export const NAV_ABOUT_LINKS = [
   {
@@ -9,7 +13,7 @@ export const NAV_ABOUT_LINKS = [
   {
     key: "help",
     label: "Help Center",
-    route: LEARN_MORE_URL,
+    route: HELP_CENTER,
   },
   {
     key: "whitepaper",
