@@ -112,11 +112,13 @@ export default function StreamAboutSection({
                   );
                 }
 
+                const isFollower = followers?.[0]?.notify === true;
+
                 return (
                   <>
                     <Button
-                      disabled={followers.length ? true : false}
-                      label={followers.length ? "Following" : "Follow"}
+                      disabled={isFollower ? true : false}
+                      label={isFollower ? "Following" : "Follow"}
                       onClick={() => onFollow()}
                     />
                   </>
