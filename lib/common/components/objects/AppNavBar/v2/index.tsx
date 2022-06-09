@@ -58,9 +58,9 @@ export default function AppNavbar(): JSX.Element {
         <MenuButton
           containerProps={{ display: ["none", "block"] }}
           position="bottom-left"
-          items={NAV_ABOUT_LINKS.map(({ key, route, label }) => (
-            <a href={route} key={key}>
-              <MenuItem label={label} />
+          items={NAV_ABOUT_LINKS.map(({ key, route, label, suffixElement }) => (
+            <a href={route} key={key} target="_blank" rel="noreferrer">
+              <MenuItem label={label} suffixElement={suffixElement} />
             </a>
           ))}
         >
@@ -110,7 +110,7 @@ export default function AppNavbar(): JSX.Element {
                   }}
                   label="Logout"
                   key="logout"
-                  suffixElement={<Icon icon="LogOut" />}
+                  suffixElement={<Icon icon="LogOut" size={20} />}
                 />,
               ]}
               position="bottom-right"

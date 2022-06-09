@@ -1,3 +1,4 @@
+import { Icon } from "@/common/components/atoms";
 import {
   ABOUT_URL,
   LEARN_MORE_URL,
@@ -19,5 +20,6 @@ export const NAV_ABOUT_LINKS = [
     key: "whitepaper",
     label: "Whitepaper",
     route: LEARN_MORE_URL,
+    suffixElement: <Icon icon="PopOut" size={20} />,
   },
 ];
