@@ -4,7 +4,7 @@ import { useTheme } from "styled-components";
 
 import { IconOptions } from "@/common/theme";
 
-import { Box, Flex, AnimatedBox } from "../../atoms";
+import { Box, Flex, AnimatedBox, FlexProps } from "../../atoms";
 import { IconButton } from "../../atoms/v2";
 
 interface IProps {
@@ -12,12 +12,14 @@ interface IProps {
   items: React.ReactNode[];
   children?: React.ReactNode | React.ReactNode[];
   position?: "top" | "bottom-left" | "bottom-right";
+  containerProps?: FlexProps;
 }
 
 export default function MenuButton({
   icon,
   items,
   children,
+  containerProps,
   position = "top",
 }: IProps): JSX.Element {
   const controls = useAnimation();
@@ -50,7 +52,12 @@ export default function MenuButton({
     }
   }, [position]);
   return (
-    <Flex position="relative" alignItems="center" justifyContent="center">
+    <Flex
+      position="relative"
+      alignItems="center"
+      justifyContent="center"
+      {...containerProps}
+    >
       {children && (
         <Flex
           cursor="pointer"
@@ -113,7 +120,6 @@ export default function MenuButton({
         {...positionProps}
         border={`1px solid ${borders.primary}`}
         borderRadius={radii.xxxs}
-        border={`1px solid ${colors.primaryLight}`}
         boxShadow="0px 0px 13px 0px rgba(0,0,0,0.16)"
         variants={{
           opened: {

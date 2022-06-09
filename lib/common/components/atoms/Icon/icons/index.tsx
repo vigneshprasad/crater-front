@@ -30,6 +30,8 @@ export { default as Film } from "./Film";
 export { default as Globe } from "./Globe";
 export { default as GooglePlay } from "./GooglePlay";
 export { default as Grid } from "./Grid";
+export { default as Hamburger } from "./Hamburger";
+export { default as Hub } from "./Hub";
 export { default as IcNotficationFill } from "./IcNotficationFill";
 export { default as IcNotification } from "./IcNotification";
 export { default as Info } from "./Info";

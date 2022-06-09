@@ -18,8 +18,8 @@ import {
   Text,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import BaseLayout from "@/common/components/layouts/BaseLayout";
-import AsideNav from "@/common/components/objects/AsideNav";
+import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
+import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { UTM_SOURCE_STORAGE_KEY } from "@/common/constants/global.constants";
 import { PageRoutes } from "@/common/constants/route.constants";

@@ -13,11 +13,13 @@ import {
   Shimmer,
   Text,
 } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/v2";
+import { Button, IconButton } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
+import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 
 import MenuButton from "../../MenuButton";
 import { MenuItem } from "../../MenuButton/MenuItem";
+import { NAV_ABOUT_LINKS } from "./contants";
 
 const MenuContainer = styled(Flex)`
   transition: all 0.3s ease-in-out;
@@ -30,6 +32,7 @@ export default function AppNavbar(): JSX.Element {
   const { user, profile, loading } = useAuth();
   const { colors, space, borders, fonts, radii } = useTheme();
   const { openModal } = useAuthModal();
+  const { setOpened } = useAsideNavState();
   const router = useRouter();
 
   return (
@@ -42,38 +45,24 @@ export default function AppNavbar(): JSX.Element {
       bg={colors.primaryBackground}
       borderBottom={`1px solid ${borders.primary}`}
     >
-      <Flex gridGap={space.xxs}>
-        <Icon icon="Logo" w={108} h={46} />
+      <Flex gridGap={[space.xxxxs, space.xxs]} alignItems="center">
+        <IconButton
+          display={["inline-block", "none"]}
+          icon="Hamburger"
+          onClick={() => setOpened(true)}
+        />
+        <Link href={PageRoutes.home}>
+          <Icon icon="Logo" w={108} h={46} />
+        </Link>
+
         <MenuButton
+          containerProps={{ display: ["none", "block"] }}
           position="bottom-left"
-          items={[
-            <MenuItem key="about">
-              <a>
-                <Text textStyle="body">About Crater</Text>
-              </a>
-            </MenuItem>,
-            <MenuItem key="help">
-              <a>
-                <Text textStyle="body">Help Center</Text>
-              </a>
-            </MenuItem>,
-            <MenuItem key="whitepaper">
-              <a>
-                <Flex gridGap={space.xxxxs} alignItems="center">
-                  <Text textStyle="body">White Paper</Text>
-                  <Icon icon="PopOut" size={20} />
-                </Flex>
-              </a>
-            </MenuItem>,
-            <MenuItem key="discord">
-              <a>
-                <Button
-                  label="Community"
-                  prefixElement={<Icon icon="Discord" size={20} />}
-                />
-              </a>
-            </MenuItem>,
-          ]}
+          items={NAV_ABOUT_LINKS.map(({ key, route, label }) => (
+            <a href={route} key={key}>
+              <MenuItem label={label} />
+            </a>
+          ))}
         >
           <MenuContainer
             p="4px 4px 4px 12px"

@@ -75,6 +75,7 @@ const colors = {
   outline: "rgba(237, 237, 237, 0.6)",
   textPlaceholder: "#787878",
   iconColor: "#FFFFFF",
+  overlay: "rgba(0,0,0,0.7)",
 };
 
 export default colors;

@@ -3,8 +3,6 @@ import styled, { useTheme } from "styled-components";
 
 import dynamic from "next/dynamic";
 
-import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
-
 import { BoxProps, Box, Grid, AnimatedBox } from "../../atoms";
 
 const AppNavBar = dynamic(() => import("../../objects/AppNavBar"));
@@ -27,7 +25,6 @@ const Overlay = styled(AnimatedBox)`
 const BaseLayout = forwardRef<HTMLDivElement, Props>(
   ({ children, aside, ...rest }, ref) => {
     const { colors } = useTheme();
-    const { toggleNavBar, animate } = useAsideNavState();
 
     useEffect(() => {
       const vh = window.innerHeight * 0.01;
@@ -51,8 +48,6 @@ const BaseLayout = forwardRef<HTMLDivElement, Props>(
               >
                 <Overlay
                   initial="hidden"
-                  animate={animate}
-                  onClick={() => toggleNavBar()}
                   variants={{
                     hidden: {
                       background: "transparent",
@@ -94,7 +89,7 @@ const BaseLayout = forwardRef<HTMLDivElement, Props>(
           </Box>
         </Box>
       );
-    }, [aside, children, rest, toggleNavBar, animate, colors, ref]);
+    }, [aside, children, rest, colors, ref]);
 
     return (
       <Grid

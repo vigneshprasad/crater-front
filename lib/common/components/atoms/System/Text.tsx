@@ -36,7 +36,7 @@ const variants = {
   headline3: {
     fontFamily: fonts.heading,
     fontSize: ["3.2rem", "4rem"],
-    fontWeight: "600",
+    fontWeight: "500",
     lineHeight: ["5.2rem"],
   },
   headline4: {
@@ -198,6 +198,12 @@ const variants = {
     "-webkit-text-fill-color": "transparent",
     textFillColor: "transparent",
     textShadow: "0px 0px 28px rgba(136, 46, 232, 0.8)",
+  },
+  navbarLabel: {
+    fontFamily: fonts.body,
+    fontSize: ["1rem"],
+    fontWeight: "600",
+    lineHeight: ["1.3rem"],
   },
 };
 

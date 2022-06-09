@@ -4,9 +4,8 @@ import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
 import { AnimatedBox, Box, Text } from "@/common/components/atoms";
-import AsideNav from "@/common/components/objects/AsideNav";
+import { AsideNav, INavKeys } from "@/common/components/objects/AsideNav/v2";
 import Page from "@/common/components/objects/Page";
-import { INavKeys } from "@/common/constants/ui.constants";
 
 import BaseLayout from "../../BaseLayout/v2";
 
@@ -35,7 +34,7 @@ export default function HomePageLayout({
   return (
     <Page seo={seo}>
       <BaseLayout aside={<AsideNav activeTab={activeTab} />} overflowY="auto">
-        <Box px={space.xs} pb={space.xs} pt={space.s}>
+        <Box px={space.xs} py={space.xxxs}>
           <Text textStyle="mainHeading" maxLines={2} textAlign="center">
             {heading}
           </Text>
