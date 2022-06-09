@@ -160,7 +160,7 @@ export default function SimilarStreamsOverlay(): JSX.Element {
                   <Flex justifyContent="space-between">
                     <Flex alignItems="center">
                       <Text fontWeight="500" textStyle="body">
-                        Similar Streams
+                        Upcoming Streams
                       </Text>
 
                       <Box>
