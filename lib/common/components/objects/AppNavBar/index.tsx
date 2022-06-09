@@ -6,11 +6,9 @@ import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { DISCORD_URL, LEARN_MORE_URL } from "@/common/constants/url.constants";
-import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 
 import { AnimatedBox, Flex, Box, Grid, Text, Icon, Link } from "../../atoms";
 import { Button } from "../../atoms/Button";
-import IconButton from "../../atoms/IconButton";
 import { Logo } from "../Logo";
 import UserDropdown from "../UserDropdown";
 
@@ -29,7 +27,6 @@ export default function AppNavBar(): JSX.Element {
   const { space, borders, colors } = useTheme();
   const { profile, loading, user } = useAuth();
   const { openModal } = useAuthModal();
-  const { isMobile, toggleNavBar } = useAsideNavState();
 
   const handleLogoClick = (): void => {
     router.push(PageRoutes.home);
@@ -45,14 +42,6 @@ export default function AppNavBar(): JSX.Element {
       alignItems="center"
     >
       <Flex>
-        {isMobile && (
-          <IconButton
-            variant="flatNoBg"
-            icon="Menu"
-            iconProps={{ color: colors.white[0], fill: true }}
-            onClick={toggleNavBar}
-          />
-        )}
         <Logo onClick={handleLogoClick} />
 
         <Flex
