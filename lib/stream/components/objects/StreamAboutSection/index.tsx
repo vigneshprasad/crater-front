@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
+import useAuth from "@/auth/context/AuthContext";
 import {
   Box,
   Flex,
@@ -10,6 +11,7 @@ import {
   Icon,
   BottomSheet,
   Shimmer,
+  Span,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { IconButton } from "@/common/components/atoms/v2";
@@ -34,6 +36,7 @@ export default function StreamAboutSection({
   const [showAboutSheet, setShowAboutSheet] = useState(false);
   const [showShareSheet, setShowShareSheet] = useState(false);
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+  const { user } = useAuth();
 
   if (!stream) {
     return <Box>Loading...</Box>;
@@ -87,12 +90,36 @@ export default function StreamAboutSection({
                 }
               }}
             >
-              <Text textStyle="body" fontWeight="700">
-                {host_detail.name}
-              </Text>
-              <Text textStyle="body">
-                {stream?.host_detail.creator_detail?.subscriber_count} Followers
-              </Text>
+              <Flex>
+                <Text textStyle="body" fontWeight="700">
+                  {host_detail.name}{" "}
+                  {(() => {
+                    return (
+                      <Span
+                        display={["inline-block", "none"]}
+                        color={colors.accentLight}
+                      >
+                        <Flex alignItems="center">
+                          Follow
+                          <Icon
+                            display="inline-block"
+                            color="inherit"
+                            icon="ChevronDown"
+                            size={20}
+                          />
+                        </Flex>
+                      </Span>
+                    );
+                  })()}
+                </Text>
+              </Flex>
+              {user?.pk === stream.host_detail.pk && (
+                <Text textStyle="body">
+                  {stream?.host_detail.creator_detail?.subscriber_count}{" "}
+                  Followers
+                </Text>
+              )}
+
               <Text
                 display={["none", "block"]}
                 py={space.xxxs}
@@ -112,11 +139,13 @@ export default function StreamAboutSection({
                   );
                 }
 
+                const isFollower = followers?.[0]?.notify === true;
+
                 return (
                   <>
                     <Button
-                      disabled={followers.length ? true : false}
-                      label={followers.length ? "Following" : "Follow"}
+                      disabled={isFollower ? true : false}
+                      label={isFollower ? "Following" : "Follow"}
                       onClick={() => onFollow()}
                     />
                   </>
@@ -182,7 +211,11 @@ export default function StreamAboutSection({
             <Text textStyle="body" fontWeight="700">
               {host_detail.name}
             </Text>
-            <Text textStyle="body">{followers?.length} Followers</Text>
+            {user?.pk === stream.host_detail.pk && (
+              <Text textStyle="body">
+                {stream.host_detail.creator_detail?.subscriber_count} Followers
+              </Text>
+            )}
           </Box>
         </Flex>
         <Text py={space.xxxs} color={colors.textSecondary}>
@@ -194,30 +227,45 @@ export default function StreamAboutSection({
             if (followersLoading || !followers) {
               return (
                 <>
-                  <Shimmer h={39} w={72} borderRadius={4} />
+                  <Shimmer flex="1" h={39} w={72} borderRadius={4} />
                 </>
               );
             }
 
+            const isFollower = followers?.[0]?.notify === true;
+
             return (
               <>
                 <Button
-                  disabled={followers.length ? true : false}
-                  label={followers.length ? "Following" : "Follow"}
+                  flex="1"
+                  w="100%"
+                  textAlign="center"
+                  disabled={isFollower ? true : false}
+                  label={isFollower ? "Following" : "Follow"}
                   onClick={() => onFollow()}
                 />
               </>
             );
           })()}
-          <Button variant="outline-condensed">
-            <Flex gridGap={space.xxxs} alignItems="center">
-              <Icon icon="Linktree" size={16} />
-              <Text fontSize="inherit" color="inherit" fontWeight="500">
-                LinkTree
-              </Text>
-            </Flex>
-          </Button>
+          {stream.host_profile_details?.primary_url && (
+            <a style={{ flex: 1, display: "flex" }} target="_blank">
+              <Button variant="outline-condensed" flex="1">
+                <Flex gridGap={space.xxxs} alignItems="center">
+                  <Icon icon="Linktree" size={16} />
+                  <Text
+                    textAlign="center"
+                    fontSize="inherit"
+                    color="inherit"
+                    fontWeight="inherit"
+                  >
+                    LinkTree
+                  </Text>
+                </Flex>
+              </Button>
+            </a>
+          )}
         </Flex>
+        <Box h={space.xs} />
       </BottomSheet>
 
       <BottomSheet

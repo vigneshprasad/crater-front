@@ -33,6 +33,7 @@ const space = {
 const borders = {
   main: "rgba(228, 228, 228, 0.1)",
   input: "#353535",
+  primary: "#1C1C1E",
 };
 
 const fonts = {
@@ -58,6 +59,7 @@ const zIndices = {
   navHeader: 100,
   sliderControls: 5,
   asideNav: 950,
+  mobileAsideNav: 1200,
 };
 
 export const icons = iconComponents;

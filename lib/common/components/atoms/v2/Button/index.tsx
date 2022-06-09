@@ -7,6 +7,8 @@ import { Text } from "../../System/Text";
 type Variants =
   | "iconButton"
   | "flat"
+  | "condensed"
+  | "condensed-dark"
   | "outline"
   | "outline-condensed"
   | "dark-flat"
@@ -69,12 +71,40 @@ const StyledButton = styled(Grid)<ButtonProps>`
       },
       flat: {
         bg: "accent",
-        px: "0.6em",
-        py: "calc(0.4em + 2px)",
+        px: "0.8em",
+        py: "0.4em",
         transition: "all 0.1s ease-in",
         borderRadius: 4,
         ":hover": {
           bg: "accentHover",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+        },
+      },
+      condensed: {
+        bg: "accent",
+        px: "0.8em",
+        py: "0.3em",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "accentHover",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+        },
+      },
+      "condensed-dark": {
+        bg: "secondaryLight",
+        px: "0.8em",
+        py: "0.3em",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "primaryLight",
         },
         ":disabled": {
           bg: "primaryLight",
