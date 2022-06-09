@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
+import useAuth from "@/auth/context/AuthContext";
 import {
   Box,
   Flex,
@@ -35,6 +36,7 @@ export default function StreamAboutSection({
   const [showAboutSheet, setShowAboutSheet] = useState(false);
   const [showShareSheet, setShowShareSheet] = useState(false);
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+  const { user } = useAuth();
 
   if (!stream) {
     return <Box>Loading...</Box>;
@@ -111,10 +113,13 @@ export default function StreamAboutSection({
                   })()}
                 </Text>
               </Flex>
+              {user?.pk === stream.host_detail.pk && (
+                <Text textStyle="body">
+                  {stream?.host_detail.creator_detail?.subscriber_count}{" "}
+                  Followers
+                </Text>
+              )}
 
-              <Text textStyle="body">
-                {stream?.host_detail.creator_detail?.subscriber_count} Followers
-              </Text>
               <Text
                 display={["none", "block"]}
                 py={space.xxxs}
@@ -206,7 +211,11 @@ export default function StreamAboutSection({
             <Text textStyle="body" fontWeight="700">
               {host_detail.name}
             </Text>
-            <Text textStyle="body">{followers?.length} Followers</Text>
+            {user?.pk === stream.host_detail.pk && (
+              <Text textStyle="body">
+                {stream.host_detail.creator_detail?.subscriber_count} Followers
+              </Text>
+            )}
           </Box>
         </Flex>
         <Text py={space.xxxs} color={colors.textSecondary}>
