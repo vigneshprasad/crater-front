@@ -239,7 +239,7 @@ export default function StreamAboutSection({
             );
           })()}
           {stream.host_profile_details?.primary_url && (
-            <a style={{ flex: 1, display: "flex" }}>
+            <a style={{ flex: 1, display: "flex" }} target="_blank">
               <Button variant="outline-condensed" flex="1">
                 <Flex gridGap={space.xxxs} alignItems="center">
                   <Icon icon="Linktree" size={16} />
