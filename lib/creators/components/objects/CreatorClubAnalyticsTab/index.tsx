@@ -6,7 +6,7 @@ import API from "@/common/api";
 import { Box, Card, Flex, Grid, Text } from "@/common/components/atoms";
 import IconButton from "@/common/components/atoms/IconButton";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
-import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { useAverageEngagement } from "@/creators/context/AverageEngagement";
 import { useClubMembersCount } from "@/creators/context/ClubMembersCount";
 import { useClubMembersGrowth } from "@/creators/context/ClubMembersGrowth";
@@ -36,7 +36,7 @@ export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
   const ref = useRef<HTMLAnchorElement>(null);
   const { followers, setPage, loading, currentPage, pageCount } =
     useCreatorFollowers();
-  const { space } = useTheme();
+  const { space, breakpoints } = useTheme();
   const { clubMembersCount } = useClubMembersCount();
   const { followerGrowth } = useFollowerGrowth();
   const { averageEngagement } = useAverageEngagement();
@@ -47,7 +47,7 @@ export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
   const { trafficSourceTypes } = useTrafficSourceTypes();
   const { conversionFunnelData } = useConversionFunnel();
   const { usersByCrater: percentageUsersFromCrater } = useUsersByCrater();
-  const { isMobile } = useAsideNavState();
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   function triggerFileDownload(response: string): void {
     if (ref.current) {
