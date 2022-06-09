@@ -105,7 +105,7 @@ export default function SimilarStreamsOverlay(): JSX.Element {
               <BottomSheet
                 rootBoxProps={{ display: ["grid", "none"] }}
                 visible={opened}
-                heading="Similar Streams"
+                heading="Upcoming Streams"
                 overflowY="auto"
                 onClose={() => {
                   controller.start("closed");
@@ -222,7 +222,7 @@ export default function SimilarStreamsOverlay(): JSX.Element {
                       }}
                     >
                       <Text fontSize="inherit" fontWeight="inherit">
-                        Similar Streams
+                        Upcoming Streams
                       </Text>
                       <Icon icon="ChevronDown" rotate={opened ? 0 : 180} />
                     </Flex>
