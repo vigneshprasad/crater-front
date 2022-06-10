@@ -14,6 +14,7 @@ import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamCreatorProvider } from "@/stream/context/StreamCreatorContext";
+import { StreamQuestionProvider } from "@/stream/context/StreamQuestionContext";
 import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
@@ -100,7 +101,9 @@ export default function Session({ webinar, id }: Props): JSX.Element {
                 <StreamsToRsvpProvider>
                   <ReferralSummaryProvider>
                     <PastStreamProvider>
-                      <SessionPage id={id} />
+                      <StreamQuestionProvider group={webinar.id}>
+                        <SessionPage id={id} />
+                      </StreamQuestionProvider>
                     </PastStreamProvider>
                   </ReferralSummaryProvider>
                 </StreamsToRsvpProvider>
