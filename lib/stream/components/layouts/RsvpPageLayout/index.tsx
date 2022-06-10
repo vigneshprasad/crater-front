@@ -27,7 +27,7 @@ export default function RsvpPageLayout({
   return (
     <BaseLayout aside={<AsideNav />} overflowY={["hidden", "auto"]}>
       <Grid
-        // padding={`${space.xxs}px ${space.xs}px ${space.xxs}px ${space.xxs}px`}
+        padding={`${space.xxs}px ${space.xs}px ${space.xxs}px ${space.xxs}px`}
         minHeight="100%"
         maxWidth="100%"
         gridTemplateColumns={["1fr", "3fr 1fr"]}
