@@ -2,7 +2,7 @@ import styled, { useTheme } from "styled-components";
 import { variant } from "styled-system";
 
 import { Grid, GridProps } from "../../System/Grid";
-import { Text } from "../../System/Text";
+import { Text, TextProps } from "../../System/Text";
 
 type Variants =
   | "iconButton"
@@ -27,6 +27,7 @@ export type ButtonProps = GridProps &
     variant?: Variants;
     suffixElement?: React.ReactNode;
     prefixElement?: React.ReactNode;
+    textProps?: TextProps;
   };
 
 const StyledButton = styled(Grid)<ButtonProps>`
@@ -216,6 +217,7 @@ export function Button({
   children,
   suffixElement,
   prefixElement,
+  textProps,
   ...rest
 }: ButtonProps): JSX.Element {
   const { space } = useTheme();
@@ -241,6 +243,7 @@ export function Button({
               fontSize="inherit"
               color="inherit"
               fontWeight="inherit"
+              {...textProps}
             >
               {label}
             </Text>
