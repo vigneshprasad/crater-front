@@ -85,7 +85,7 @@ export default function RsvpAboutSection({
 
   return (
     <Grid
-      gridTemplateColumns="1fr"
+      gridTemplateColumns="minmax(0, 1fr)"
       gridTemplateRows="min-content 1fr"
       bg={colors.primaryLight}
       borderRadius={radii.xxxxs}
@@ -150,30 +150,6 @@ export default function RsvpAboutSection({
                       </>
                     );
                   })()}
-                  {stream.host_detail.creator_detail?.profile_detail
-                    .primary_url && (
-                    <a
-                      href={
-                        stream.host_detail.creator_detail?.profile_detail
-                          .primary_url
-                      }
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Button variant="outline-condensed">
-                        <Flex gridGap={space.xxxs} alignItems="center">
-                          <Icon icon="Linktree" size={16} />
-                          <Text
-                            fontSize="inherit"
-                            color="inherit"
-                            fontWeight="500"
-                          >
-                            LinkTree
-                          </Text>
-                        </Flex>
-                      </Button>
-                    </a>
-                  )}
                 </Flex>
               )}
             </Grid>
