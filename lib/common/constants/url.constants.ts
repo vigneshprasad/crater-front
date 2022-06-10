@@ -59,6 +59,9 @@ export const API_URL_CONSTANTS = {
     getPastWebinars: "/groups/public/conversations/webinars/past/",
     retrieveStreamRecording: (id: string | number): string =>
       `/groups/recordings/${id}/`,
+    getGroupQuestions: "/groups/conversations/stream/questions/",
+    postGroupQuestion: "/groups/conversations/stream/questions/",
+    postGroupQuestionUpvote: "/groups/conversations/stream/questions/upvote/",
   },
   community: {
     getCommunityList: "/crater/community/",
