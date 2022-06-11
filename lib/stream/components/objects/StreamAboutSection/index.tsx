@@ -17,6 +17,8 @@ import HeadingDivider from "@/common/components/objects/HeadingDivider";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { Follower, Webinar } from "@/community/types/community";
 
+import ShareStreamBottomSheet from "../ShareStreamBottomSheet";
+
 interface IProps {
   stream?: Webinar;
   followers?: Follower[];
@@ -220,71 +222,11 @@ export default function StreamAboutSection({
         </Flex>
       </BottomSheet>
 
-      <BottomSheet
-        heading="Share this stream"
+      <ShareStreamBottomSheet
+        stream={stream}
         visible={showShareSheet}
-        onClose={() => {
-          setShowShareSheet(false);
-        }}
-      >
-        <Grid
-          gridTemplateColumns="repeat(3, 1fr)"
-          py={space.xxs}
-          gridGap={space.xxs}
-        >
-          <Flex
-            flexDirection="column"
-            gridGap={space.xxxs}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <IconButton buttonStyle="round-large" icon="ContentCopy" />
-            <Text textStyle="body">Copy link</Text>
-          </Flex>
-
-          <Flex
-            flexDirection="column"
-            gridGap={space.xxxs}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <IconButton
-              buttonStyle="round-large"
-              icon="Linkedin"
-              iconProps={{ fill: true }}
-            />
-            <Text textStyle="body">LinkedIn</Text>
-          </Flex>
-
-          <Flex
-            flexDirection="column"
-            gridGap={space.xxxs}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <IconButton
-              buttonStyle="round-large"
-              iconProps={{ fill: true }}
-              icon="Twitter"
-            />
-            <Text textStyle="body">Twitter</Text>
-          </Flex>
-
-          <Flex
-            flexDirection="column"
-            gridGap={space.xxxs}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <IconButton
-              buttonStyle="round-large"
-              iconProps={{ fill: true }}
-              icon="Whatsapp"
-            />
-            <Text textStyle="body">Whatsapp</Text>
-          </Flex>
-        </Grid>
-      </BottomSheet>
+        onClose={() => setShowShareSheet(false)}
+      />
     </>
   );
 }
