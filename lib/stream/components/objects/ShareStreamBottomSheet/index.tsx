@@ -17,7 +17,7 @@ export default function ShareStreamBottomSheet({
   stream,
   visible,
   onClose,
-}: IProps): JSX.Element {
+}: IProps): JSX.Element | null {
   const { space, colors } = useTheme();
   const { user, profile } = useAuth();
   const [shareUrl, setShareUrl] = useState<string | undefined>();
@@ -38,6 +38,8 @@ export default function ShareStreamBottomSheet({
 
     setShareUrl(`${urlObj.origin}${urlObj.pathname}`);
   }, [user]);
+
+  if (typeof window === "undefined") return null;
 
   return (
     <BottomSheet
