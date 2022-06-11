@@ -52,7 +52,7 @@ export default function StyledHeadingDivider({
         </StyledText>
       </Box>
 
-      <Box h={2} bg={colors.primaryLight} />
+      <Box h={2} bg={colors.primaryLight} display={["none", "grid"]} />
     </Grid>
   );
 }
