@@ -227,12 +227,7 @@ export default function RsvpAboutSection({
                   <Grid gridAutoFlow="row" gridGap={space.xxxs}>
                     {pastStreams.map((stream) => (
                       <>
-                        <Box key={stream.id}>
-                          <RsvpPastStreamCard stream={stream} />
-                        </Box>
-                        <Box key={stream.id}>
-                          <RsvpPastStreamCard stream={stream} />
-                        </Box>
+                        <RsvpPastStreamCard stream={stream} key={stream.id} />
                       </>
                     ))}
                   </Grid>
@@ -272,13 +267,6 @@ export default function RsvpAboutSection({
                     <>
                       {pastStreams.map((stream) => (
                         <>
-                          <RsvpPastStreamCard key={stream.id} stream={stream} />
-                          <RsvpPastStreamCard key={stream.id} stream={stream} />
-                          <RsvpPastStreamCard key={stream.id} stream={stream} />
-                          <RsvpPastStreamCard key={stream.id} stream={stream} />
-                          <RsvpPastStreamCard key={stream.id} stream={stream} />
-                          <RsvpPastStreamCard key={stream.id} stream={stream} />
-                          <RsvpPastStreamCard key={stream.id} stream={stream} />
                           <RsvpPastStreamCard key={stream.id} stream={stream} />
                         </>
                       ))}
