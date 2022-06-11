@@ -79,72 +79,70 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
     );
   }, [user, stream, profile]);
 
-  return (
+  return user ? (
     <Box as="section" bg={colors.primaryLight} borderRadius={radii.xxxxs}>
       <Box p={space.xxs} background={colors.primaryDark}>
         <Text color={colors.textSecondary} textStyle="cardHeader">
           Share this stream
         </Text>
       </Box>
-      {user ? (
-        <Box p={space.xxs}>
-          <Text color={colors.textSecondary} textStyle="body">
-            Copy stream link
-          </Text>
+      <Box p={space.xxs}>
+        <Text color={colors.textSecondary} textStyle="body">
+          Copy stream link
+        </Text>
 
-          <Flex
-            borderRadius={radii.xxxxs}
-            my={space.xxxs}
-            bg={colors.primaryLight}
-            py={space.xxxxs}
-            px={space.xxxs}
-            alignItems="center"
-          >
-            <Text textStyle="body" flex="1" maxLines={1}>
-              {shareUrl}
-            </Text>
-            <IconButton icon="ContentCopy" onClick={performCopyClipboard} />
-          </Flex>
-
-          <Box h={1} bg={colors.black[0]} />
-
-          <Text my={space.xxxs} color={colors.textSecondary} textStyle="body">
-            Share on social media
-          </Text>
-          <Flex flexDirection="column" gridGap={space.xxxs}>
-            {socialButtons}
-          </Flex>
-        </Box>
-      ) : (
         <Flex
-          gridTemplateRows="1fr min-content min-content"
-          flexDirection="column"
+          borderRadius={radii.xxxxs}
+          my={space.xxxs}
           bg={colors.primaryLight}
+          py={space.xxxxs}
           px={space.xxxs}
-          py={space.xs}
-          gridGap={space.xxs}
           alignItems="center"
         >
-          <Box position="relative" w={120} h={120}>
-            <Image
-              src="/images/img_referral.png"
-              alt="share stream"
-              layout="fill"
-            />
-          </Box>
-          <Text textStyle="captionLarge" textAlign="center">
-            Login to share this stream with your friends and earn upto{" "}
-            <Span color={colors.accentLight}>₹100</Span> when you refer your
-            friends!
+          <Text textStyle="body" flex="1" maxLines={1}>
+            {shareUrl}
           </Text>
-          <Button
-            m="0 auto"
-            variant="outline-condensed"
-            label="Login"
-            onClick={() => openModal()}
-          />
+          <IconButton icon="ContentCopy" onClick={performCopyClipboard} />
         </Flex>
-      )}
+
+        <Box h={1} bg={colors.black[0]} />
+
+        <Text my={space.xxxs} color={colors.textSecondary} textStyle="body">
+          Share on social media
+        </Text>
+        <Flex flexDirection="column" gridGap={space.xxxs}>
+          {socialButtons}
+        </Flex>
+      </Box>
     </Box>
+  ) : (
+    <Flex
+      gridTemplateRows="1fr min-content min-content"
+      flexDirection="column"
+      bg={[colors.primaryDark, colors.primaryLight]}
+      px={space.xxxs}
+      py={space.xs}
+      gridGap={space.xxs}
+      alignItems="center"
+    >
+      <Box position="relative" w={120} h={120}>
+        <Image
+          src="/images/img_referral.png"
+          alt="share stream"
+          layout="fill"
+        />
+      </Box>
+      <Text textStyle="captionLarge" textAlign="center">
+        Login to share this stream with your friends and earn upto{" "}
+        <Span color={colors.accentLight}>₹100</Span> when you refer your
+        friends!
+      </Text>
+      <Button
+        m="0 auto"
+        variant="outline-condensed"
+        label="Login"
+        onClick={() => openModal()}
+      />
+    </Flex>
   );
 }
