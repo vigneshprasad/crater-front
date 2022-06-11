@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import { Box, Flex, Text } from "@/common/components/atoms";
-import { IconButton } from "@/common/components/atoms/v2";
+import useAuthModal from "@/auth/context/AuthModalContext";
+import { Box, Flex, Image, Span, Text } from "@/common/components/atoms";
+import { Button, IconButton } from "@/common/components/atoms/v2";
 import SocialShareButtons from "@/common/components/objects/SocialShareButtons";
 import SocialShareUtils from "@/common/utils/social/SocialShareUtils";
 import { Webinar } from "@/community/types/community";
@@ -16,6 +17,13 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   const [shareUrl, setShareUrl] = useState<string | undefined>();
   const { user, profile } = useAuth();
+  const { openModal } = useAuthModal();
+
+  const performCopyClipboard = useCallback(async () => {
+    if (shareUrl) {
+      await navigator.clipboard.writeText(shareUrl);
+    }
+  }, [shareUrl]);
 
   useEffect(() => {
     const urlObj = new URL(window.location.href);
@@ -78,34 +86,65 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
           Share this stream
         </Text>
       </Box>
-      <Box p={space.xxs}>
-        <Text color={colors.textSecondary} textStyle="body">
-          Copy stream link
-        </Text>
+      {user ? (
+        <Box p={space.xxs}>
+          <Text color={colors.textSecondary} textStyle="body">
+            Copy stream link
+          </Text>
 
+          <Flex
+            borderRadius={radii.xxxxs}
+            my={space.xxxs}
+            bg={colors.primaryLight}
+            py={space.xxxxs}
+            px={space.xxxs}
+            alignItems="center"
+          >
+            <Text textStyle="body" flex="1" maxLines={1}>
+              {shareUrl}
+            </Text>
+            <IconButton icon="ContentCopy" onClick={performCopyClipboard} />
+          </Flex>
+
+          <Box h={1} bg={colors.black[0]} />
+
+          <Text my={space.xxxs} color={colors.textSecondary} textStyle="body">
+            Share on social media
+          </Text>
+          <Flex flexDirection="column" gridGap={space.xxxs}>
+            {socialButtons}
+          </Flex>
+        </Box>
+      ) : (
         <Flex
-          borderRadius={radii.xxxxs}
-          my={space.xxxs}
+          gridTemplateRows="1fr min-content min-content"
+          flexDirection="column"
           bg={colors.primaryLight}
-          py={space.xxxxs}
           px={space.xxxs}
+          py={space.xs}
+          gridGap={space.xxs}
           alignItems="center"
         >
-          <Text textStyle="body" flex="1" maxLines={1}>
-            {shareUrl}
+          <Box position="relative" w={120} h={120}>
+            <Image
+              src="/images/img_referral.png"
+              alt="share stream"
+              layout="fill"
+            />
+          </Box>
+          <Text textStyle="captionLarge" textAlign="center">
+            Login to share this stream with your friends and earn upto{" "}
+            <Span color={colors.accentLight}>₹100</Span> when you refer your
+            friends!
           </Text>
-          <IconButton icon="ContentCopy" />
+          <Button
+            m="0 auto"
+            variant="outline-condensed"
+            label="Login"
+            onClick={() => openModal()}
+          />
         </Flex>
-
-        <Box h={1} bg={colors.black[0]} />
-
-        <Text my={space.xxxs} color={colors.textSecondary} textStyle="body">
-          Share on social media
-        </Text>
-        <Flex flexDirection="column" gridGap={space.xxxs}>
-          {socialButtons}
-        </Flex>
-      </Box>
+      )}
     </Box>
   );
 }
