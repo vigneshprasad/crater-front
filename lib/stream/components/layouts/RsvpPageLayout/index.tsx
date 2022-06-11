@@ -25,19 +25,24 @@ export default function RsvpPageLayout({
   const { space } = useTheme();
 
   return (
-    <BaseLayout aside={<AsideNav />} overflowY={["hidden", "auto"]}>
+    <BaseLayout aside={<AsideNav />} overflowY="auto">
       <Grid
-        padding={`${space.xxs}px ${space.xs}px ${space.xxs}px ${space.xxs}px`}
-        minHeight="100%"
-        maxWidth="100%"
-        gridTemplateColumns={["1fr", "3fr 1fr"]}
+        p={[0, `${space.xxs}px ${space.xs}px ${space.xxs}px ${space.xxs}px`]}
+        gridTemplateColumns={["1fr 1fr", "3fr 1fr"]}
         gridTemplateRows="min-content"
-        gridTemplateAreas={`
-          "stream panel"
-          "about share"
-          "pageContent pageContent"
-        `}
-        gridGap={space.xxs}
+        gridTemplateAreas={[
+          `
+            "stream stream"
+            "panel share"
+            "about about"
+          `,
+          `
+            "stream panel"
+            "about share"
+            "pageContent pageContent"
+          `,
+        ]}
+        gridGap={[0, space.xxs]}
       >
         <Grid gridArea="stream" gridTemplateRows="1fr min-content">
           <Box pt="56.25%" position="relative">
@@ -50,11 +55,9 @@ export default function RsvpPageLayout({
 
         <Grid gridArea="about">{streamDetail}</Grid>
 
-        <Grid display={["none", "grid"]} gridArea="share">
-          {shareSection}
-        </Grid>
+        <Grid gridArea="share">{shareSection}</Grid>
 
-        <Box display={["none", "grid"]} gridArea="pageContent">
+        <Box gridArea="pageContent" display={["none", "grid"]}>
           <StyledHeadingDivider label="Upcoming Streams" />
           {upcomingStreams}
         </Box>
