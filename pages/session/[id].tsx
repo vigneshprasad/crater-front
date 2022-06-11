@@ -100,7 +100,7 @@ export default function Session({ webinar, id }: Props): JSX.Element {
               <UpcomingStreamsProvider pageSize={4}>
                 <StreamsToRsvpProvider>
                   <ReferralSummaryProvider>
-                    <PastStreamProvider>
+                    <PastStreamProvider host={webinar.host}>
                       <StreamQuestionProvider group={webinar.id}>
                         <SessionPage id={id} />
                       </StreamQuestionProvider>
