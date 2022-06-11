@@ -50,7 +50,7 @@ export default function RsvpAboutSection({
   followersLoading,
   initial,
   onFollow,
-}: IProps): JSX.Element {
+}: IProps): JSX.Element | null {
   const { space, colors, radii, breakpoints } = useTheme();
   const [activeTab, setActiveTab] = useState(initial);
   const router = useRouter();
@@ -90,6 +90,8 @@ export default function RsvpAboutSection({
       ),
     };
   }, [id, host_detail]);
+
+  if (isMobile === undefined) return null;
 
   return (
     <Grid

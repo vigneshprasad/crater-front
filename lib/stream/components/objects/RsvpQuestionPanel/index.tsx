@@ -37,7 +37,7 @@ export default function RsvpQuestionPanel({
   loading,
   postQuestion,
   postQuestionUpvote,
-}: IProps): JSX.Element {
+}: IProps): JSX.Element | null {
   const { space, colors, breakpoints } = useTheme();
   const { openModal } = useAuthModal();
   const { user } = useAuth();
@@ -206,6 +206,8 @@ export default function RsvpQuestionPanel({
       {questionPanelForm}
     </Grid>
   );
+
+  if (isMobile === undefined) return null;
 
   if (isMobile) {
     return (

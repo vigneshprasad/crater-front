@@ -183,7 +183,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       router.replace({ query: { ...query } });
     };
 
-    if (router.query?.join === "true" && user && postGroupRequest && webinar) {
+    if (router.query?.join === "true" && user && webinar) {
       action();
     }
   }, [router, user, webinar, profile, postGroupRequest, track]);
@@ -198,7 +198,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     }
   };
 
-  if (!webinar) return <Box>Loading..</Box>;
+  if (!webinar || isMobile === undefined) return <Box>Loading..</Box>;
 
   const image = webinar.topic_detail?.image;
 
