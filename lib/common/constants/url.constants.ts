@@ -184,3 +184,5 @@ export const LEADERBOARD_URL =
 
 export const START_CREATOR_JOURNET_CALENDLY =
   "https://calendly.com/craterclub/apply-to-create-on-crater";
+
+export const HELP_CENTER = "https://crater.zendesk.com/hc/en-us";

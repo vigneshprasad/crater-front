@@ -163,46 +163,45 @@ export function LeaderCard({
 
           <Box mt={space.xxxs}>
             {(() => {
-              if (creator.watch_time < 5000) {
-                if (creator.is_follower) {
-                  return (
-                    <Flex alignItems="center" gridGap={space.xxxxs}>
-                      <Icon
-                        icon="CheckCircle"
-                        color={colors.green[0]}
-                        size={16}
-                      />
-                      <Text
-                        textStyle="caption"
-                        fontWeight="600"
-                        color={colors.accentLight}
-                      >
-                        FOLLOWED
-                      </Text>
-                    </Flex>
-                  );
-                }
+              if (creator.is_follower) {
                 return (
-                  <Button
-                    variant="text"
-                    label="FOLLOW"
-                    disabled={creator.is_follower}
-                    onClick={followCreator}
-                  />
+                  <Flex alignItems="center" gridGap={space.xxxxs}>
+                    <Icon
+                      icon="CheckCircle"
+                      color={colors.green[0]}
+                      size={16}
+                    />
+                    <Text
+                      textStyle="caption"
+                      fontWeight="600"
+                      color={colors.accentLight}
+                    >
+                      FOLLOWED
+                    </Text>
+                  </Flex>
                 );
               }
 
               return (
-                <>
-                  <Text mt={space.xxs} fontSize="1rem">
-                    WATCH TIME
-                  </Text>
-
-                  <Text fontFamily={fonts.heading} color={colors.accentLight}>
-                    {creator.watch_time}
-                  </Text>
-                </>
+                <Button
+                  variant="text"
+                  label="FOLLOW"
+                  disabled={creator.is_follower}
+                  onClick={followCreator}
+                />
               );
+
+              // return (
+              //   <>
+              //     <Text mt={space.xxs} fontSize="1rem">
+              //       WATCH TIME
+              //     </Text>
+
+              //     <Text fontFamily={fonts.heading} color={colors.accentLight}>
+              //       {creator.watch_time}
+              //     </Text>
+              //   </>
+              // );
             })()}
           </Box>
         </Box>

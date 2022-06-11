@@ -1,8 +1,8 @@
 import { useTheme } from "styled-components";
 
 import { Box, Grid } from "@/common/components/atoms";
-import BaseLayout from "@/common/components/layouts/BaseLayout";
-import AsideNav from "@/common/components/objects/AsideNav";
+import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
+import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
 import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 
@@ -27,7 +27,7 @@ export default function LiveStreamPageLayout({
   upcomingsStreams,
   pastStreams,
 }: IProps): JSX.Element {
-  const { space } = useTheme();
+  const { space, borders } = useTheme();
   return (
     <BaseLayout aside={<AsideNav />} overflowY={["hidden", "auto"]}>
       {modal}
@@ -48,7 +48,10 @@ export default function LiveStreamPageLayout({
           `,
         ]}
       >
-        <Grid gridArea="stream">
+        <Grid
+          gridArea="stream"
+          borderRight={["none", `1px solid ${borders.primary}`]}
+        >
           <Box pt="56.25%" position="relative">
             {videoPlayer}
             <SimilarStreamsOverlay />

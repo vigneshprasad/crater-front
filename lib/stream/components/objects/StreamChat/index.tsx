@@ -228,21 +228,19 @@ export default function StreamChat({
                     }
                   })()}
                   <Flex justifyContent="space-between" alignItems="center">
-                    {(() => {
-                      if (!profile) return <Box />;
+                    <Box>
+                      {(() => {
+                        const isAdmin = profile?.groups.filter(
+                          (group) => group.name === "livestream_chat_admin"
+                        )[0]
+                          ? true
+                          : false;
 
-                      const isAdmin = profile.groups.filter(
-                        (group) => group.name === "livestream_chat_admin"
-                      )[0]
-                        ? true
-                        : false;
-
-                      if (isAdmin) {
-                        return <StreamViewerCount />;
-                      }
-
-                      return <Box />;
-                    })()}
+                        if (isAdmin) {
+                          return <StreamViewerCount />;
+                        }
+                      })()}
+                    </Box>
 
                     <Flex gridGap={space.xxxxs}>
                       <MenuButton
