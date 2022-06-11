@@ -15,13 +15,12 @@ export default function HeadingDivider({
   return (
     <Grid
       py={space.xxxs}
-      gridTemplateColumns={["1fr ", "max-content 1fr"]}
+      gridTemplateColumns="max-content 1fr"
       alignItems="center"
       gridGap={space.xxs}
       {...rest}
     >
       <Text
-        display={["none", "block"]}
         color={colors.textSecondary}
         textStyle="caption"
         textTransform="uppercase"
