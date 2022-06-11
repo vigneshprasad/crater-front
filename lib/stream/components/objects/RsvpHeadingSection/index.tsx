@@ -16,7 +16,10 @@ export default function RsvpHeadingSection({ stream }: IProps): JSX.Element {
   );
 
   return (
-    <Box p={`${space.xxs}px ${space.xxs}px ${space.xs}px`} bg="#1B1B1B">
+    <Box
+      p={[space.xxxs, `${space.xxs}px ${space.xxs}px ${space.xs}px`]}
+      bg={["", colors.primaryLight]}
+    >
       <Grid
         gridTemplateColumns="4fr 1fr"
         alignItems="start"
@@ -34,7 +37,7 @@ export default function RsvpHeadingSection({ stream }: IProps): JSX.Element {
             </Text>
           </Flex>
         </Box>
-        <Button label="Join Stream" />
+        <Button label="Join Stream" display={["none", "grid"]} />
       </Grid>
     </Box>
   );
