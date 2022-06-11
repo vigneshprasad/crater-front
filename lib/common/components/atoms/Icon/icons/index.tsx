@@ -48,6 +48,7 @@ export { default as Phone } from "./Phone";
 export { default as Pin } from "./Pin";
 export { default as PlayStore } from "./PlayStore";
 export { default as PopOut } from "./PopOut";
+export { default as QuestionMark } from "./QuestionMark";
 export { default as Rank1 } from "./Rank1";
 export { default as Rank2 } from "./Rank2";
 export { default as Rank3 } from "./Rank3";
