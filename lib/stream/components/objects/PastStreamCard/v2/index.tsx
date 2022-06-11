@@ -31,7 +31,7 @@ interface IProps {
   cardPosition?: CardPosition;
 }
 
-const RsvpPastStreamCard = forwardRef<HTMLDivElement, IProps>(
+const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
   ({ stream, link, cardPosition }, ref) => {
     const { space, radii, colors, breakpoints } = useTheme();
     const startTime = DateTime.parse(stream.start).toFormat(
@@ -256,11 +256,11 @@ const RsvpPastStreamCard = forwardRef<HTMLDivElement, IProps>(
   }
 );
 
-RsvpPastStreamCard.displayName = "RsvpPastStreamCard";
+PastStreamCard.displayName = "PastStreamCard";
 
-RsvpPastStreamCard.defaultProps = {
+PastStreamCard.defaultProps = {
   link: undefined,
   cardPosition: CardPosition.center,
 };
 
-export default RsvpPastStreamCard;
+export default PastStreamCard;
