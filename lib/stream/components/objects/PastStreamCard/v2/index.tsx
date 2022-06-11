@@ -31,7 +31,7 @@ interface IProps {
   cardPosition?: CardPosition;
 }
 
-const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
+const RsvpPastStreamCard = forwardRef<HTMLDivElement, IProps>(
   ({ stream, link, cardPosition }, ref) => {
     const { space, radii, colors, breakpoints } = useTheme();
     const startTime = DateTime.parse(stream.start).toFormat(
@@ -174,7 +174,7 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
               justifyContent="space-between"
               alignItems="center"
             >
-              <Flex alignItems="center">
+              <Flex alignItems="center" gridGap={space.xxxxxs}>
                 <Icon color={colors.textSecondary} size={16} icon="Calendar" />
                 <Text textStyle="caption" color={colors.textSecondary}>
                   {startTime}
@@ -256,11 +256,11 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
   }
 );
 
-PastStreamCard.displayName = "PastStreamCard";
+RsvpPastStreamCard.displayName = "RsvpPastStreamCard";
 
-PastStreamCard.defaultProps = {
+RsvpPastStreamCard.defaultProps = {
   link: undefined,
   cardPosition: CardPosition.center,
 };
 
-export default PastStreamCard;
+export default RsvpPastStreamCard;
