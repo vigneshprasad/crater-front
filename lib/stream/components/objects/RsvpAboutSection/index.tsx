@@ -14,7 +14,7 @@ import {
   Shimmer,
   Text,
 } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/v2";
+import { Button, IconButton } from "@/common/components/atoms/v2";
 import {
   BaseTabBar,
   BaseTabItem,
@@ -23,13 +23,14 @@ import ExpandingText from "@/common/components/objects/ExpandingText";
 import HeadingDivider from "@/common/components/objects/HeadingDivider";
 import HorizontalScroll from "@/common/components/objects/HorizontalScroll";
 import { PageRoutes } from "@/common/constants/route.constants";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import {
   Follower,
   PastStreamListItem,
   Webinar,
 } from "@/community/types/community";
 
-import PastStreamCard from "../PastStreamCard/v2";
+import RsvpPastStreamCard from "../RsvpPastStreamCard";
 
 type TabKeys = "about" | "more";
 
@@ -50,12 +51,16 @@ export default function RsvpAboutSection({
   initial,
   onFollow,
 }: IProps): JSX.Element {
-  const { space, colors, radii } = useTheme();
+  const { space, colors, radii, breakpoints } = useTheme();
   const [activeTab, setActiveTab] = useState(initial);
   const router = useRouter();
   const { user } = useAuth();
 
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
   const { id, topic_detail, host_detail } = stream;
+
+  const isFollower = followers?.length && followers[0].notify === true;
 
   useEffect(() => {
     if (router) {
@@ -72,12 +77,15 @@ export default function RsvpAboutSection({
     return {
       about: (
         <Link href={PageRoutes.session(id, "about")} shallow>
-          <BaseTabItem label="About Stream" />
+          <BaseTabItem label="About this stream" justifyItems="center" />
         </Link>
       ),
       more: (
         <Link href={PageRoutes.session(id, "more")} shallow>
-          <BaseTabItem label={`More from ${host_detail.name.split(" ")[0]}`} />
+          <BaseTabItem
+            label={`More from ${host_detail.name.split(" ")[0]}`}
+            justifyItems="center"
+          />
         </Link>
       ),
     };
@@ -85,34 +93,34 @@ export default function RsvpAboutSection({
 
   return (
     <Grid
-      gridTemplateColumns="minmax(0, 1fr)"
+      gridTemplateColumns={["1fr", "minmax(0, 1fr)"]}
       gridTemplateRows="min-content 1fr"
-      bg={colors.primaryLight}
+      bg={[colors.primaryBackground, colors.primaryLight]}
       borderRadius={radii.xxxxs}
     >
       <BaseTabBar
         py={14}
-        bg={colors.primaryDark}
+        bg={[colors.primaryBackground, colors.primaryDark]}
         tabs={TABS}
         activeTab={activeTab}
         selectedTabColor={colors.accentLight}
+        gridAutoColumns={["1fr", "max-content"]}
       />
 
-      <Box p={space.xxs} bg={colors.primaryLight}>
+      <Box p={space.xxs} bg={[colors.primaryBackground, colors.primaryLight]}>
         {activeTab === "about" && (
           <>
             {topic_detail.description && (
-              <ExpandingText
-                display={["none", "block"]}
-                color={colors.textSecondary}
-                maxLines={2}
-              >
+              <ExpandingText color={colors.textSecondary} maxLines={2}>
                 {topic_detail.description}
               </ExpandingText>
             )}
             <HeadingDivider label="Speaker" />
             <Grid
-              gridTemplateColumns="max-content 2fr 1fr"
+              gridTemplateColumns={[
+                "max-content max-content 1fr",
+                "max-content 2fr 1fr",
+              ]}
               gridGap={space.xxs}
               alignItems="start"
             >
@@ -121,21 +129,28 @@ export default function RsvpAboutSection({
                 <Text textStyle="body" fontWeight="700">
                   {host_detail.name}
                 </Text>
-                <ExpandingText
-                  display={["none", "block"]}
-                  color={colors.textSecondary}
-                  maxLines={3}
-                >
-                  {host_detail.introduction}
-                </ExpandingText>
+                <Text textStyle="caption" color="#C4C4C4">
+                  100 Followers
+                </Text>
+                <Box pt={space.xxxxxs} display={["none", "grid"]}>
+                  <ExpandingText color={colors.textSecondary} maxLines={3}>
+                    {host_detail.introduction}
+                  </ExpandingText>
+                </Box>
               </Box>
-              {user && user.pk !== host_detail.pk && (
-                <Flex gridGap={space.xxxs} justifyContent="flex-end">
-                  {(() => {
+              <Flex justifySelf={["start", "end"]}>
+                {user &&
+                  user.pk !== host_detail.pk &&
+                  (() => {
                     if (followersLoading || !followers) {
                       return (
                         <>
-                          <Shimmer h={39} w={72} borderRadius={4} />
+                          <Shimmer
+                            justifySelf={["start", "end"]}
+                            h={[24, 38]}
+                            w={[38, 72]}
+                            borderRadius={4}
+                          />
                         </>
                       );
                     }
@@ -143,15 +158,25 @@ export default function RsvpAboutSection({
                     return (
                       <>
                         <Button
-                          disabled={followers.length ? true : false}
-                          label={followers.length ? "Following" : "Follow"}
+                          variant={isMobile ? "text" : "flat"}
+                          label={isFollower ? "Following" : "Follow"}
+                          disabled={isFollower ? true : false}
                           onClick={() => onFollow()}
+                        />
+                        <IconButton
+                          display={["flex", "none"]}
+                          w={12}
+                          h={30}
+                          icon="ChevronDown"
+                          iconProps={{
+                            color: "accentLight",
+                            size: 20,
+                          }}
                         />
                       </>
                     );
                   })()}
-                </Flex>
-              )}
+              </Flex>
             </Grid>
           </>
         )}
@@ -159,6 +184,7 @@ export default function RsvpAboutSection({
         {activeTab === "more" && (
           <>
             <Flex
+              pb={space.xxxs}
               flexDirection="row"
               justifyContent="space-between"
               alignItems="center"
@@ -180,19 +206,8 @@ export default function RsvpAboutSection({
               )}
             </Flex>
 
-            <HorizontalScroll
-              maxWidth="100%"
-              gridAutoFlow="column"
-              gridAutoColumns="max-content"
-              gridGap={space.xxs}
-              actionContainerProps={{
-                w: 30,
-                background: colors.primaryDark,
-                opacity: 0.72,
-                borderRadius: "0 4px 4px 0",
-              }}
-            >
-              {(() => {
+            {isMobile ? (
+              (() => {
                 if (!pastStreams) {
                   return Array(4)
                     .fill("")
@@ -209,23 +224,69 @@ export default function RsvpAboutSection({
                 }
 
                 return (
-                  <>
+                  <Grid gridAutoFlow="row" gridGap={space.xxxs}>
                     {pastStreams.map((stream) => (
                       <>
-                        <PastStreamCard key={stream.id} stream={stream} />
-                        <PastStreamCard key={stream.id} stream={stream} />
-                        <PastStreamCard key={stream.id} stream={stream} />
-                        <PastStreamCard key={stream.id} stream={stream} />
-                        <PastStreamCard key={stream.id} stream={stream} />
-                        <PastStreamCard key={stream.id} stream={stream} />
-                        <PastStreamCard key={stream.id} stream={stream} />
-                        <PastStreamCard key={stream.id} stream={stream} />
+                        <Box key={stream.id}>
+                          <RsvpPastStreamCard stream={stream} />
+                        </Box>
+                        <Box key={stream.id}>
+                          <RsvpPastStreamCard stream={stream} />
+                        </Box>
                       </>
                     ))}
-                  </>
+                  </Grid>
                 );
-              })()}
-            </HorizontalScroll>
+              })()
+            ) : (
+              <HorizontalScroll
+                pb={0}
+                maxWidth="100%"
+                gridAutoFlow="column"
+                gridAutoColumns="260px"
+                gridGap={space.xs}
+                actionContainerProps={{
+                  w: 30,
+                  background: colors.primaryDark,
+                  opacity: 0.72,
+                  borderRadius: "0 4px 4px 0",
+                }}
+              >
+                {(() => {
+                  if (!pastStreams) {
+                    return Array(4)
+                      .fill("")
+                      .map((_, index) => (
+                        <Flex
+                          key={index}
+                          flexDirection="column"
+                          gridGap={space.xs}
+                        >
+                          <Shimmer h={172} />
+                          <Shimmer h={18} w="60%" />
+                        </Flex>
+                      ));
+                  }
+
+                  return (
+                    <>
+                      {pastStreams.map((stream) => (
+                        <>
+                          <RsvpPastStreamCard key={stream.id} stream={stream} />
+                          <RsvpPastStreamCard key={stream.id} stream={stream} />
+                          <RsvpPastStreamCard key={stream.id} stream={stream} />
+                          <RsvpPastStreamCard key={stream.id} stream={stream} />
+                          <RsvpPastStreamCard key={stream.id} stream={stream} />
+                          <RsvpPastStreamCard key={stream.id} stream={stream} />
+                          <RsvpPastStreamCard key={stream.id} stream={stream} />
+                          <RsvpPastStreamCard key={stream.id} stream={stream} />
+                        </>
+                      ))}
+                    </>
+                  );
+                })()}
+              </HorizontalScroll>
+            )}
           </>
         )}
       </Box>
