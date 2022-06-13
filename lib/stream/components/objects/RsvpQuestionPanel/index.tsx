@@ -122,7 +122,7 @@ export default function RsvpQuestionPanel({
             >
               <Text textStyle="small">{question.question}</Text>
               <Flex flexDirection="row" gridGap={space.xxxxs}>
-                {user?.pk === question.sender ? (
+                {!user || user?.pk === question.sender ? (
                   <Icon
                     w={10}
                     h={18}
@@ -130,19 +130,6 @@ export default function RsvpQuestionPanel({
                     icon="Upvote"
                     color="#C4C4C4"
                     size={10}
-                  />
-                ) : question.upvote ? (
-                  <IconButton
-                    w={10}
-                    h={18}
-                    icon="Upvote"
-                    alignSelf="start"
-                    iconProps={{
-                      py: 0,
-                      size: 10,
-                      color: "accentLight",
-                    }}
-                    onClick={() => postQuestionUpvote(question.id)}
                   />
                 ) : (
                   <IconButton
@@ -153,7 +140,8 @@ export default function RsvpQuestionPanel({
                     iconProps={{
                       py: 0,
                       size: 10,
-                      color: "#C4C4C4",
+                      color: question.upvote ? colors.accentLight : "#C4C4C4",
+                      fill: true,
                     }}
                     onClick={() => postQuestionUpvote(question.id)}
                   />
