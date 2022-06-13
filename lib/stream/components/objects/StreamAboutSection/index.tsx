@@ -9,7 +9,6 @@ import {
   Grid,
   Avatar,
   Icon,
-  BottomSheet,
   Shimmer,
   Span,
 } from "@/common/components/atoms";
@@ -19,6 +18,7 @@ import HeadingDivider from "@/common/components/objects/HeadingDivider";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { Follower, Webinar } from "@/community/types/community";
 
+import AboutCreatorBottomSheet from "../AboutCreatorBottomSheet";
 import ShareStreamBottomSheet from "../ShareStreamBottomSheet";
 
 interface IProps {
@@ -199,76 +199,14 @@ export default function StreamAboutSection({
         </Box>
       </Box>
 
-      <BottomSheet
-        heading="About the creator"
+      <AboutCreatorBottomSheet
+        stream={stream}
         visible={showAboutSheet}
-        onClose={() => {
-          setShowAboutSheet(false);
-        }}
-      >
-        <Box my={space.xxxs} h={1} bg={colors.black[0]} />
-        <Flex gridGap={space.xxs}>
-          <Avatar image={host_detail.photo} size={40} />
-          <Box>
-            <Text textStyle="body" fontWeight="700">
-              {host_detail.name}
-            </Text>
-            {user?.pk === stream.host_detail.pk && (
-              <Text textStyle="body">
-                {stream.host_detail.creator_detail?.subscriber_count} Followers
-              </Text>
-            )}
-          </Box>
-        </Flex>
-        <Text py={space.xxxs} color={colors.textSecondary}>
-          {host_detail.introduction}
-        </Text>
-
-        <Flex gridGap={space.xxxs}>
-          {(() => {
-            if (followersLoading || !followers) {
-              return (
-                <>
-                  <Shimmer flex="1" h={39} w={72} borderRadius={4} />
-                </>
-              );
-            }
-
-            const isFollower = followers?.[0]?.notify === true;
-
-            return (
-              <>
-                <Button
-                  flex="1"
-                  w="100%"
-                  textAlign="center"
-                  disabled={isFollower ? true : false}
-                  label={isFollower ? "Following" : "Follow"}
-                  onClick={() => onFollow()}
-                />
-              </>
-            );
-          })()}
-          {stream.host_profile_details?.primary_url && (
-            <a style={{ flex: 1, display: "flex" }} target="_blank">
-              <Button variant="outline-condensed" flex="1">
-                <Flex gridGap={space.xxxs} alignItems="center">
-                  <Icon icon="Linktree" size={16} />
-                  <Text
-                    textAlign="center"
-                    fontSize="inherit"
-                    color="inherit"
-                    fontWeight="inherit"
-                  >
-                    LinkTree
-                  </Text>
-                </Flex>
-              </Button>
-            </a>
-          )}
-        </Flex>
-        <Box h={space.xs} />
-      </BottomSheet>
+        onClose={() => setShowAboutSheet(false)}
+        followers={followers}
+        followersLoading={followersLoading}
+        onFollow={onFollow}
+      />
 
       <ShareStreamBottomSheet
         stream={stream}

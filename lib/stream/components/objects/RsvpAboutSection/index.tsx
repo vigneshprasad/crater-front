@@ -30,6 +30,7 @@ import {
   Webinar,
 } from "@/community/types/community";
 
+import AboutCreatorBottomSheet from "../AboutCreatorBottomSheet";
 import RsvpPastStreamCard from "../RsvpPastStreamCard";
 
 type TabKeys = "about" | "more";
@@ -55,6 +56,7 @@ export default function RsvpAboutSection({
   const [activeTab, setActiveTab] = useState(initial);
   const router = useRouter();
   const { user } = useAuth();
+  const [showAboutSheet, setShowAboutSheet] = useState(false);
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
@@ -107,6 +109,15 @@ export default function RsvpAboutSection({
         activeTab={activeTab}
         selectedTabColor={colors.accentLight}
         gridAutoColumns={["1fr", "max-content"]}
+      />
+
+      <AboutCreatorBottomSheet
+        stream={stream}
+        visible={showAboutSheet}
+        onClose={() => setShowAboutSheet(false)}
+        followers={followers}
+        followersLoading={followersLoading}
+        onFollow={onFollow}
       />
 
       <Box p={space.xxs} bg={[colors.primaryBackground, colors.primaryLight]}>
@@ -162,19 +173,25 @@ export default function RsvpAboutSection({
                           disabled={isFollower ? true : false}
                           onClick={() => onFollow()}
                         />
-                        <IconButton
-                          display={["flex", "none"]}
-                          w={12}
-                          h={30}
-                          icon="ChevronDown"
-                          iconProps={{
-                            color: "accentLight",
-                            size: 20,
-                          }}
-                        />
                       </>
                     );
                   })()}
+
+                <IconButton
+                  display={["flex", "none"]}
+                  w={12}
+                  h={30}
+                  icon="ChevronDown"
+                  iconProps={{
+                    color: "accentLight",
+                    size: 20,
+                  }}
+                  onClick={() => {
+                    if (isMobile) {
+                      setShowAboutSheet(true);
+                    }
+                  }}
+                />
               </Flex>
             </Grid>
           </>
