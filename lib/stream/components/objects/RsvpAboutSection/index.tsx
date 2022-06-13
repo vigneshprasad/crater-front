@@ -124,15 +124,12 @@ export default function RsvpAboutSection({
                 "max-content 2fr 1fr",
               ]}
               gridGap={space.xxs}
-              alignItems="start"
+              alignItems={["center", "start"]}
             >
               <Avatar image={host_detail.photo} size={40} />
               <Box>
                 <Text textStyle="body" fontWeight="700">
                   {host_detail.name}
-                </Text>
-                <Text textStyle="caption" color="#C4C4C4">
-                  100 Followers
                 </Text>
                 <Box pt={space.xxxxxs} display={["none", "grid"]}>
                   <ExpandingText color={colors.textSecondary} maxLines={3}>
@@ -140,7 +137,7 @@ export default function RsvpAboutSection({
                   </ExpandingText>
                 </Box>
               </Box>
-              <Flex justifySelf={["start", "end"]}>
+              <Flex justifySelf={["start", "end"]} gridGap={space.xxxxxs}>
                 {user &&
                   user.pk !== host_detail.pk &&
                   (() => {
