@@ -6,6 +6,7 @@ import useAuthModal from "@/auth/context/AuthModalContext";
 import {
   BottomSheet,
   Box,
+  BoxProps,
   Flex,
   Grid,
   Icon,
@@ -31,6 +32,25 @@ interface IProps {
   postQuestion: (question: string) => Promise<void>;
   postQuestionUpvote: (question: number) => void;
 }
+
+const QuestionBox = styled(Box)<BoxProps>`
+  overflow-y: auto;
+  padding: ${({ theme }) => theme.space.xxs}px;
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: ${({ theme }) => theme.colors.primaryLight};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.colors.primaryDark};
+    border-radius: 4px;
+  }
+`;
 
 export default function RsvpQuestionPanel({
   questions,
@@ -107,7 +127,7 @@ export default function RsvpQuestionPanel({
   const questionPanelMain = loading ? (
     <Shimmer w="100%" h="100%" />
   ) : (
-    <Box p={space.xxs} overflowY="auto">
+    <QuestionBox maxHeight={[300, 450]} bg={colors.primaryLight}>
       {questions && questions.length > 0 ? (
         questions.map((question) => (
           <Box pb={space.xxs} key={question.id}>
@@ -167,15 +187,27 @@ export default function RsvpQuestionPanel({
           </Text>
         </Flex>
       )}
-    </Box>
+    </QuestionBox>
   );
 
   const questionPanelForm = user ? (
-    <Box px={space.xxxs} pt={space.xs} pb={space.xxxs} bg={colors.primaryDark}>
+    <Box
+      px={space.xxxs}
+      pt={space.xs}
+      pb={space.xxxs}
+      bg={colors.primaryDark}
+      position={["sticky", "initial"]}
+      bottom={0}
+    >
       <QuestionForm postQuestion={postQuestion} />
     </Box>
   ) : (
-    <Box p={space.xs} bg={colors.primaryDark}>
+    <Box
+      p={space.xs}
+      bg={[colors.primaryLight, colors.primaryDark]}
+      position={["sticky", "initial"]}
+      bottom={0}
+    >
       <Text textStyle="body">
         <SpanButton color={colors.accentLight} onClick={() => openModal()}>
           Login
