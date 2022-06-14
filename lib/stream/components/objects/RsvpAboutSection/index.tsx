@@ -213,6 +213,7 @@ export default function RsvpAboutSection({
                   href={PageRoutes.creatorProfile(
                     host_detail.creator_detail.slug
                   )}
+                  boxProps={{ target: "_blank" }}
                 >
                   <Flex flexDirection="row" alignItems="center" gridGap={2}>
                     <Text textStyle="body">View all</Text>
@@ -230,11 +231,12 @@ export default function RsvpAboutSection({
                     .map((_, index) => (
                       <Flex
                         key={index}
-                        flexDirection="column"
-                        gridGap={space.xs}
+                        flexDirection="row"
+                        gridGap={space.xxxs}
+                        pb={space.xxxs}
                       >
-                        <Shimmer h={172} />
-                        <Shimmer h={18} w="60%" />
+                        <Shimmer w={112} h={62} />
+                        <Shimmer h={24} w="50%" />
                       </Flex>
                     ));
                 }
