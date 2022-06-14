@@ -191,23 +191,11 @@ export default function RsvpQuestionPanel({
   );
 
   const questionPanelForm = user ? (
-    <Box
-      px={space.xxxs}
-      pt={space.xs}
-      pb={space.xxxs}
-      bg={colors.primaryDark}
-      position={["sticky", "initial"]}
-      bottom={0}
-    >
+    <Box px={space.xxxs} pt={space.xs} pb={space.xxxs} bg={colors.primaryDark}>
       <QuestionForm postQuestion={postQuestion} />
     </Box>
   ) : (
-    <Box
-      p={space.xs}
-      bg={[colors.primaryLight, colors.primaryDark]}
-      position={["sticky", "initial"]}
-      bottom={0}
-    >
+    <Box p={space.xs} bg={[colors.primaryLight, colors.primaryDark]}>
       <Text textStyle="body">
         <SpanButton color={colors.accentLight} onClick={() => openModal()}>
           Login
