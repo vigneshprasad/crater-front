@@ -228,7 +228,7 @@ export default function StreamChat({
                     }
                   })()}
                   <Flex justifyContent="space-between" alignItems="center">
-                    <Box>
+                    <Box flex="1">
                       {(() => {
                         const isAdmin = profile?.groups.filter(
                           (group) => group.name === "livestream_chat_admin"
