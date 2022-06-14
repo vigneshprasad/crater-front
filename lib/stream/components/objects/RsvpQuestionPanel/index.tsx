@@ -143,23 +143,16 @@ export default function RsvpQuestionPanel({
               <Text textStyle="small">{question.question}</Text>
               <Flex flexDirection="row" gridGap={space.xxxxs}>
                 {!user || user?.pk === question.sender ? (
-                  <Icon
-                    w={10}
-                    h={18}
-                    py={0}
-                    icon="Upvote"
-                    color="#C4C4C4"
-                    size={10}
-                  />
+                  <Icon py={0} icon="Upvote" color="#C4C4C4" size={16} />
                 ) : (
                   <IconButton
-                    w={10}
-                    h={18}
+                    w={16}
+                    h={16}
                     icon="Upvote"
                     alignSelf="start"
                     iconProps={{
                       py: 0,
-                      size: 10,
+                      size: 16,
                       color: question.upvote ? colors.accentLight : "#C4C4C4",
                       fill: true,
                     }}
