@@ -157,8 +157,8 @@ export default function RsvpAboutSection({
                         <>
                           <Shimmer
                             justifySelf={["start", "end"]}
-                            h={[24, 38]}
-                            w={[38, 72]}
+                            h={[30, 38]}
+                            w={72}
                             borderRadius={4}
                           />
                         </>
