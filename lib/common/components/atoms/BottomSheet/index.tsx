@@ -64,6 +64,7 @@ export function BottomSheet({
           {...rootBoxProps}
         >
           <AnimatedBox
+            onClick={(e) => e.stopPropagation()}
             px={space.xxxs}
             borderRadius={`${radii.s}px ${radii.s}px 0 0`}
             w="100%"
