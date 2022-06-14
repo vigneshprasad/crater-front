@@ -11,8 +11,7 @@ type IProps = GridProps & {
 const Container = styled(Grid)`
   scroll-behavior: smooth;
   ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    display: none;
   }
 `;
 
