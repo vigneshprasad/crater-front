@@ -143,6 +143,7 @@ export function LeaderCard({
           >
             <Image
               layout="fill"
+              objectFit="cover"
               src={
                 creator.profile_detail.photo ?? STATIC_IMAGES.ImgDefaultAvatar
               }
