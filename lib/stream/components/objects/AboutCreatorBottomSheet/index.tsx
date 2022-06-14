@@ -20,7 +20,7 @@ const TextBox = styled(Box)<BoxProps>`
   overflow-y: auto;
 
   ::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
     height: 4px;
   }
 
@@ -63,6 +63,7 @@ export default function AboutCreatorBottomSheet({
       bg={colors.primaryDark}
       visible={visible}
       onClose={onClose}
+      px={0}
       boxProps={{
         px: space.xxxs,
         pt: space.xxxs,
@@ -70,74 +71,72 @@ export default function AboutCreatorBottomSheet({
         bg: colors.primaryDark,
       }}
     >
-      <Box pl={space.xxxs}>
-        <Flex gridGap={space.xxs} alignItems="center">
-          <Avatar image={host_detail.photo} size={40} />
-          <Text textStyle="body" fontWeight="700">
-            {host_detail.name}
-          </Text>
-        </Flex>
-        <TextBox maxHeight={300} overflowY="auto">
-          <Text py={space.xxxs} color={colors.textSecondary}>
-            {host_detail.introduction}
-          </Text>
-        </TextBox>
+      <Flex gridGap={space.xxs} alignItems="center" px={space.xxxs}>
+        <Avatar image={host_detail.photo} size={40} />
+        <Text textStyle="body" fontWeight="700">
+          {host_detail.name}
+        </Text>
+      </Flex>
+      <TextBox px={space.xxxs} maxHeight={300} overflowY="auto">
+        <Text py={space.xxxs} color={colors.textSecondary}>
+          {host_detail.introduction}
+        </Text>
+      </TextBox>
 
-        <Flex mt={space.xxxxs} gridGap={space.xxxs}>
-          {(() => {
-            if (!user) {
-              return (
-                <Button
-                  flex="1"
-                  w="100%"
-                  textAlign="center"
-                  label="Login"
-                  onClick={openModal}
-                />
-              );
-            }
+      <Flex mt={space.xxxxs} px={space.xxxs} gridGap={space.xxxs}>
+        {(() => {
+          if (!user) {
+            return (
+              <Button
+                flex="1"
+                w="100%"
+                textAlign="center"
+                label="Login"
+                onClick={openModal}
+              />
+            );
+          }
 
-            if (followersLoading || !followers) {
-              return (
-                <>
-                  <Shimmer flex="1" h={39} w={72} borderRadius={4} />
-                </>
-              );
-            }
-
-            const isFollower = followers?.[0]?.notify === true;
-
+          if (followersLoading || !followers) {
             return (
               <>
-                <Button
-                  flex="1"
-                  w="100%"
-                  textAlign="center"
-                  disabled={isFollower ? true : false}
-                  label={isFollower ? "Following" : "Follow"}
-                  onClick={onFollow}
-                />
+                <Shimmer flex="1" h={39} w={72} borderRadius={4} />
               </>
             );
-          })()}
-          {stream.host_profile_details?.primary_url && (
-            <a
-              style={{
-                flex: 1,
-                display: "flex",
-              }}
-              target="_blank"
-            >
+          }
+
+          const isFollower = followers?.[0]?.notify === true;
+
+          return (
+            <>
               <Button
-                variant="outline-condensed"
-                label="LinkTree"
-                flex={1}
-                prefixElement={<Icon icon="Linktree" size={16} />}
+                flex="1"
+                w="100%"
+                textAlign="center"
+                disabled={isFollower ? true : false}
+                label={isFollower ? "Following" : "Follow"}
+                onClick={onFollow}
               />
-            </a>
-          )}
-        </Flex>
-      </Box>
+            </>
+          );
+        })()}
+        {stream.host_profile_details?.primary_url && (
+          <a
+            style={{
+              flex: 1,
+              display: "flex",
+            }}
+            target="_blank"
+          >
+            <Button
+              variant="outline-condensed"
+              label="LinkTree"
+              flex={1}
+              prefixElement={<Icon icon="Linktree" size={16} />}
+            />
+          </a>
+        )}
+      </Flex>
       <Box h={space.xs} />
     </BottomSheet>
   );
