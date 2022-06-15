@@ -125,7 +125,7 @@ export default function RsvpQuestionPanel({
   );
 
   const questionPanelMain = loading ? (
-    <Shimmer w="100%" h="100%" />
+    <Shimmer w="100%" h={[300, "100%"]} />
   ) : (
     <QuestionBox maxHeight={[300, 450]} bg={colors.primaryLight}>
       {questions && questions.length > 0 ? (
