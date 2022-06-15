@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
-import BaseLayout from "@/common/components/layouts/BaseLayout";
+import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 
 export default function AccountTabLayout({
   children,

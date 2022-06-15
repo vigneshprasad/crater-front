@@ -35,11 +35,12 @@ export default function HomePageAuctions(): JSX.Element {
     {
       title: "If bid is denied, you get a refund",
       color: "#010101",
+      border: "1px solid #F30808",
     },
   ];
 
   return (
-    <Box mx={space.xxs} pt={space.l}>
+    <Box px={space.xxs} pt={space.l}>
       <Text
         fontFamily={fonts.heading}
         textStyle="mainHeading"
@@ -55,7 +56,7 @@ export default function HomePageAuctions(): JSX.Element {
 
       <Grid
         pt={space.xs}
-        gridTemplateColumns={["1fr", "3fr 1fr"]}
+        gridTemplateColumns={["1fr", "3fr minmax(max-content, 1fr)"]}
         gridTemplateAreas={[
           `
             "actions"
@@ -83,9 +84,8 @@ export default function HomePageAuctions(): JSX.Element {
           gridGap={space.xxs}
           gridArea="actions"
         >
-          {auctionSteps.map(({ title, color, verticalLine }, index) => (
+          {auctionSteps.map(({ title, color, verticalLine, border }, index) => (
             <Flex
-              w={["auto", 336]}
               height={[40, 60]}
               p={["0.4em 0.8em", "1em 1.2em"]}
               background={color}
@@ -94,6 +94,8 @@ export default function HomePageAuctions(): JSX.Element {
               alignItems="center"
               position={["static", "relative"]}
               key={index}
+              border={border}
+              gridGap={space.xxxs}
             >
               <Text fontFamily={fonts.heading} textStyle="button">
                 {title}
@@ -112,7 +114,7 @@ export default function HomePageAuctions(): JSX.Element {
                   border="1px solid rgba(255, 255, 255, 0.24)"
                   transform="rotate(90deg)"
                   position="absolute"
-                  left={286}
+                  right={-6}
                   top={66}
                   zIndex={1}
                   visibility={["hidden", "visible"]}

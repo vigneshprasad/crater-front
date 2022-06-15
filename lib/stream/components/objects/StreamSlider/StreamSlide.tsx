@@ -188,7 +188,7 @@ export function StreamSlide({
         animate={animate}
         {...rest}
       >
-        <Grid gridTemplateColumns={["max-content 180px"]}>
+        <Grid gridTemplateColumns={["min-content 180px"]}>
           <Box h={HEIGHT} position="relative" w={ACTIVE_SLIDE_IMAGE_WIDTH}>
             {(() => {
               if (stream.is_past && stream.recording_details?.recording) {
@@ -266,7 +266,7 @@ export function StreamSlide({
             gridTemplateColumns="1fr 180px"
           >
             <Box>
-              <Text>{stream.topic_detail.name}</Text>
+              <Text maxLines={1}>{stream.topic_detail.name}</Text>
               {(() => {
                 if (stream.is_live) {
                   return (
