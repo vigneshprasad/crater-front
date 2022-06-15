@@ -26,7 +26,7 @@ export default function RsvpHeadingSection({
   stream,
   ctaButton,
 }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, zIndices } = useTheme();
   const startTime = DateTime.parse_with_milliseconds(stream.start).toFormat(
     DateTime.DEFAULT_FORMAT
   );
@@ -59,13 +59,23 @@ export default function RsvpHeadingSection({
         {disabled ? (
           <Button
             label={buttonText}
+            position={["fixed", "static"]}
+            bottom={[0, "auto"]}
+            right={[0, "auto"]}
+            w={["100%", "auto"]}
+            h={["44px", "auto"]}
+            zIndex={[zIndices.overlay - 10, "auto"]}
             disabled={true}
-            display={["none", "grid"]}
           />
         ) : (
           <Button
             label={buttonText}
-            display={["none", "grid"]}
+            position={["fixed", "static"]}
+            bottom={[0, "auto"]}
+            right={[0, "auto"]}
+            w={["100%", "auto"]}
+            h={["44px", "auto"]}
+            zIndex={[zIndices.overlay - 10, "auto"]}
             onClick={onClick}
             suffixElement={
               loading && <Spinner size={24} strokeColor={colors.white[0]} />
