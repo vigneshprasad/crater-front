@@ -1,16 +1,18 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
+import useAuthModal from "@/auth/context/AuthModalContext";
 import { BottomSheet, Box, Flex, Icon, Text } from "@/common/components/atoms";
 import { UTM_SOURCE_STORAGE_KEY } from "@/common/constants/global.constants";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
+import DateTime from "@/common/utils/datetime/DateTime";
 import WebinarApiClient from "@/community/api";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { useWebinarRequest } from "@/community/context/WebinarRequestContext";
@@ -46,6 +48,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const { space, colors, breakpoints } = useTheme();
   const [showSuccess, setShowSuccess] = useState(false);
   const { user, profile } = useAuth();
+  const { openModal } = useAuthModal();
   const { track } = useAnalytics();
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -54,7 +57,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     loading: followersLoading,
     subscribeCreator,
   } = useFollower();
-  const [loading, setLoading] = useState(false);
+  const [followBtnLoading, setFollowBtnLoading] = useState(false);
   const { streams: pastStreams } = usePastStreams();
   const {
     streamQuestions,
@@ -63,6 +66,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   } = useStreamQuestions();
   const { referralSummary } = useReferralSummary();
   const [showShareSheet, setShowShareSheet] = useState(false);
+  const [rsvpBtnLoading, setRsvpBtnLoading] = useState(false);
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
@@ -81,10 +85,17 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     }
   }, [router, scrollToTop, sessionId, setSessionId]);
 
+  const isHost = useMemo(() => {
+    if (!user || !webinar) return false;
+
+    return user.pk == webinar.host || webinar.speakers?.includes(user.pk);
+  }, [user, webinar]);
+
   const postGroupRequest = useCallback(
     async (redirect = false): Promise<void> => {
       if (webinar) {
         if (webinarRequest?.status !== RequestStatus.accepted) {
+          setRsvpBtnLoading(true);
           const data: PostGroupRequest = {
             group: parseInt(id, 10),
             participant_type: ParticpantType.attendee,
@@ -136,11 +147,95 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           return;
         }
 
+        setRsvpBtnLoading(false);
         setShowSuccess(true);
       }
     },
     [webinar, id, mutateRequest, router, track, webinarRequest, user]
   );
+
+  const ctaButton = useMemo<{
+    buttonText: string;
+    loading?: boolean;
+    disabled?: boolean;
+    onClick?: () => void;
+  } | null>(() => {
+    if (webinar) {
+      const startTime = DateTime.parse(webinar.start);
+      const now = DateTime.now();
+
+      if (user) {
+        if (isHost) {
+          if (now < startTime.minus({ minutes: 30 })) {
+            return {
+              buttonText: "Test livestream",
+              onClick: () => router.push(PageRoutes.stream(webinar.id)),
+            };
+          }
+
+          return {
+            buttonText: "Go live",
+            onClick: () => router.push(PageRoutes.stream(webinar.id)),
+          };
+        } else {
+          if (webinar.is_live || now >= startTime.minus({ minutes: 10 })) {
+            return {
+              buttonText: "Join livestream",
+              onClick: () => postGroupRequest(true),
+            };
+          }
+
+          if (
+            webinarRequest &&
+            webinarRequest.status === RequestStatus.accepted
+          ) {
+            return {
+              buttonText: "You'll be notified when the stream starts.",
+              disabled: true,
+            };
+          }
+
+          return {
+            buttonText: "RSVP to livestream",
+            loading: rsvpBtnLoading,
+            onClick: () => {
+              postGroupRequest();
+            },
+          };
+        }
+      } else {
+        return {
+          buttonText: "RSVP to livestream",
+          onClick: () => {
+            track(AnalyticsEvents.rsvp_button_clicked, {
+              new_user: true,
+              session: webinar.id,
+            });
+            router.replace({
+              query: {
+                ...router.query,
+                join: true,
+                newUser: true,
+              },
+            });
+            openModal();
+          },
+        };
+      }
+    }
+
+    return null;
+  }, [
+    user,
+    webinar,
+    router,
+    openModal,
+    track,
+    isHost,
+    postGroupRequest,
+    webinarRequest,
+    rsvpBtnLoading,
+  ]);
 
   const postGroupQuestion = useCallback(
     async (question: string) => {
@@ -194,7 +289,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     if (creator) {
       await subscribeCreator(creator.id);
       await mutateWebinar();
-      setLoading(false);
+      setFollowBtnLoading(false);
     }
   };
 
@@ -220,13 +315,15 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             alt={webinar.topic_detail?.name}
           />
         }
-        streamMain={<RsvpHeadingSection stream={webinar} />}
+        streamMain={
+          <RsvpHeadingSection stream={webinar} ctaButton={ctaButton} />
+        }
         streamDetail={
           <RsvpAboutSection
             stream={webinar}
             followers={followers}
             pastStreams={pastStreams}
-            followersLoading={followersLoading || loading}
+            followersLoading={followersLoading || followBtnLoading}
             onFollow={followCreator}
           />
         }

@@ -1,19 +1,37 @@
 import { useTheme } from "styled-components";
 
-import { Box, Flex, Grid, Icon, Text } from "@/common/components/atoms";
+import {
+  Box,
+  Flex,
+  Grid,
+  Icon,
+  Spinner,
+  Text,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
 
 interface IProps {
   stream: Webinar;
+  ctaButton: {
+    buttonText: string;
+    loading?: boolean;
+    disabled?: boolean;
+    onClick?: () => void;
+  } | null;
 }
 
-export default function RsvpHeadingSection({ stream }: IProps): JSX.Element {
+export default function RsvpHeadingSection({
+  stream,
+  ctaButton,
+}: IProps): JSX.Element {
   const { space, colors } = useTheme();
   const startTime = DateTime.parse_with_milliseconds(stream.start).toFormat(
     DateTime.DEFAULT_FORMAT
   );
+
+  const { buttonText, loading, disabled, onClick } = ctaButton || {};
 
   return (
     <Box
@@ -37,7 +55,24 @@ export default function RsvpHeadingSection({ stream }: IProps): JSX.Element {
             </Text>
           </Flex>
         </Box>
-        <Button label="Join Stream" display={["none", "grid"]} />
+
+        {disabled ? (
+          <Button
+            label={buttonText}
+            disabled={true}
+            display={["none", "grid"]}
+          />
+        ) : (
+          <Button
+            label={buttonText}
+            display={["none", "grid"]}
+            onClick={onClick}
+            suffixElement={
+              loading && <Spinner size={24} strokeColor={colors.white[0]} />
+            }
+            disabled={loading}
+          />
+        )}
       </Grid>
     </Box>
   );
