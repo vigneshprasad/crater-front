@@ -9,10 +9,12 @@ import {
   BoxProps,
   Flex,
   Icon,
+  Link,
   Shimmer,
   Text,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { Follower, Webinar } from "@/community/types/community";
 
 const TextBox = styled(Box)<BoxProps>`
@@ -72,7 +74,14 @@ export default function AboutCreatorBottomSheet({
       }}
     >
       <Flex gridGap={space.xxs} alignItems="center" px={space.xxxs}>
-        <Avatar image={host_detail.photo} size={40} />
+        {host_detail.creator_detail?.slug && (
+          <Link
+            href={PageRoutes.creatorProfile(host_detail.creator_detail.slug)}
+            boxProps={{ target: "_blank" }}
+          >
+            <Avatar image={host_detail.photo} size={40} />
+          </Link>
+        )}
         <Text textStyle="body" fontWeight="700">
           {host_detail.name}
         </Text>
@@ -122,11 +131,13 @@ export default function AboutCreatorBottomSheet({
         })()}
         {stream.host_profile_details?.primary_url && (
           <a
+            href={stream.host_profile_details.primary_url}
             style={{
               flex: 1,
               display: "flex",
             }}
             target="_blank"
+            rel="noreferrer"
           >
             <Button
               variant="outline-condensed"

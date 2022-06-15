@@ -137,7 +137,17 @@ export default function RsvpAboutSection({
               gridGap={space.xxs}
               alignItems={["center", "start"]}
             >
-              <Avatar image={host_detail.photo} size={40} />
+              {host_detail.creator_detail?.slug && (
+                <Link
+                  href={PageRoutes.creatorProfile(
+                    host_detail.creator_detail.slug
+                  )}
+                  boxProps={{ target: "_blank" }}
+                >
+                  <Avatar image={host_detail.photo} size={40} />
+                </Link>
+              )}
+
               <Box>
                 <Text textStyle="body" fontWeight="700">
                   {host_detail.name}
