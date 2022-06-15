@@ -3,7 +3,7 @@ import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
-import { Box, Flex, Image, Span, Text } from "@/common/components/atoms";
+import { Box, Flex, Image, Text } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
 import SocialShareButtons from "@/common/components/objects/SocialShareButtons";
 import SocialShareUtils from "@/common/utils/social/SocialShareUtils";
@@ -116,33 +116,38 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
       </Box>
     </Box>
   ) : (
-    <Flex
-      gridTemplateRows="1fr min-content min-content"
-      flexDirection="column"
-      bg={[colors.primaryDark, colors.primaryLight]}
-      px={space.xxxs}
-      py={space.xs}
-      gridGap={space.xxs}
-      alignItems="center"
-    >
-      <Box position="relative" w={120} h={120}>
-        <Image
-          src="/images/img_referral.png"
-          alt="share stream"
-          layout="fill"
-        />
+    <>
+      <Box p={space.xxs} background={colors.primaryDark}>
+        <Text color={colors.textSecondary} textStyle="cardHeader">
+          Share this stream
+        </Text>
       </Box>
-      <Text textStyle="captionLarge" textAlign="center">
-        Login to share this stream with your friends and earn upto{" "}
-        <Span color={colors.accentLight}>₹100</Span> when you refer your
-        friends!
-      </Text>
-      <Button
-        m="0 auto"
-        variant="outline-condensed"
-        label="Login"
-        onClick={() => openModal()}
-      />
-    </Flex>
+      <Flex
+        gridTemplateRows="1fr min-content min-content"
+        flexDirection="column"
+        bg={[colors.primaryDark, colors.primaryLight]}
+        px={space.xxxs}
+        py={space.xs}
+        gridGap={space.xxs}
+        alignItems="center"
+      >
+        <Box position="relative" w={120} h={120}>
+          <Image
+            src="/images/img_referral.png"
+            alt="share stream"
+            layout="fill"
+          />
+        </Box>
+        <Text textStyle="captionLarge" textAlign="center">
+          Login to share this stream with your friends!
+        </Text>
+        <Button
+          m="0 auto"
+          variant="outline-condensed"
+          label="Login"
+          onClick={() => openModal()}
+        />
+      </Flex>
+    </>
   );
 }
