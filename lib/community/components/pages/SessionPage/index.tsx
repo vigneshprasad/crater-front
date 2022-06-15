@@ -388,6 +388,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           <RsvpQuestionPanel
             questions={streamQuestions}
             loading={StreamQuestionsLoading}
+            isHost={isHost}
             postQuestion={postGroupQuestion}
             postQuestionUpvote={postGroupQuestionUpvote}
           />
