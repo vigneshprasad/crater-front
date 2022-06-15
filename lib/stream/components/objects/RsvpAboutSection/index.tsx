@@ -136,6 +136,7 @@ export default function RsvpAboutSection({
               ]}
               gridGap={space.xxs}
               alignItems={["center", "start"]}
+              pb={[space.s, 0]}
             >
               {host_detail.creator_detail?.slug && (
                 <Link
