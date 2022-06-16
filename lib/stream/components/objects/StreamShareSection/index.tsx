@@ -117,7 +117,11 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
     </Box>
   ) : (
     <>
-      <Box p={space.xxs} background={colors.primaryDark}>
+      <Box
+        p={space.xxs}
+        background={colors.primaryDark}
+        display={["none", "block"]}
+      >
         <Text color={colors.textSecondary} textStyle="cardHeader">
           Share this stream
         </Text>
