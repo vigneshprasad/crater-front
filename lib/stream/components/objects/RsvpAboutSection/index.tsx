@@ -179,6 +179,7 @@ export default function RsvpAboutSection({
                     return (
                       <>
                         <Button
+                          h={["auto", 36]}
                           variant={isMobile ? "text" : "flat"}
                           label={isFollower ? "Following" : "Follow"}
                           disabled={isFollower ? true : false}
