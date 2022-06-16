@@ -63,7 +63,7 @@ export default function RsvpHeadingSection({
             bottom={[0, "auto"]}
             right={[0, "auto"]}
             w={["100%", "auto"]}
-            h={["44px", "auto"]}
+            h={44}
             zIndex={[zIndices.overlay - 10, "auto"]}
             disabled={true}
           />
@@ -74,7 +74,7 @@ export default function RsvpHeadingSection({
             bottom={[0, "auto"]}
             right={[0, "auto"]}
             w={["100%", "auto"]}
-            h={["44px", "auto"]}
+            h={44}
             zIndex={[zIndices.overlay - 10, "auto"]}
             onClick={onClick}
             suffixElement={
