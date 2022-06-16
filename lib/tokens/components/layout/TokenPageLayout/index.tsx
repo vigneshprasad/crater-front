@@ -5,8 +5,8 @@ import { useTheme } from "styled-components";
 import { useRouter } from "next/router";
 
 import { Link, Box } from "@/common/components/atoms";
-import BaseLayout from "@/common/components/layouts/BaseLayout";
-import AsideNav from "@/common/components/objects/AsideNav";
+import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
+import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import {
   BaseTabBar,
   BaseTabItem,
@@ -40,11 +40,7 @@ export default function TokenPageLayout({
 
   return (
     <Page seo={seo}>
-      <BaseLayout
-        pb={space.xl}
-        overflowY="auto"
-        aside={<AsideNav activeTab="auctions" />}
-      >
+      <BaseLayout pb={space.xl} overflowY="auto" aside={<AsideNav />}>
         <MeetingsTicker />
         <BaseTabBar
           mt={[space.xxxs, space.xxs]}

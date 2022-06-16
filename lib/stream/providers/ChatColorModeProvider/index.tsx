@@ -53,6 +53,7 @@ export function ChatColorModeProvider({
             primaryDarkSecondary: "#F5F5F5",
             iconColor: "#333333",
             textPrimary: "#333333",
+            chatColors: ["#1C91B5", "#D39409", "#15AF04", "#D34242", "#2752CC"],
           },
           borders: {
             ...theme.borders,

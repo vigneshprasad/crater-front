@@ -117,6 +117,7 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
                       rel="noreferrer"
                     >
                       <Button
+                        variant="flat-large"
                         label="Start your journey"
                         display="flex"
                         alignItems="center"

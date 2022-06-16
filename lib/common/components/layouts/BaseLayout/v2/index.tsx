@@ -40,8 +40,18 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
     }, [aside]);
 
     useEffect(() => {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty("--vh", `${vh}px`);
+      if (typeof window === "undefined") return;
+
+      function onResize(): void {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty("--vh", `${vh}px`);
+      }
+
+      window.addEventListener("resize", onResize);
+
+      return () => {
+        window.removeEventListener("resize", onResize);
+      };
     }, []);
 
     return (
