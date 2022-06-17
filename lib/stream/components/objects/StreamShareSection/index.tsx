@@ -10,7 +10,7 @@ import { Webinar } from "@/community/types/community";
 
 interface IProps {
   stream?: Webinar;
-  autoRsvp: () => void;
+  autoRsvp?: () => void;
 }
 
 export default function StreamShareSection({
@@ -151,7 +151,7 @@ export default function StreamShareSection({
           m="0 auto"
           variant="outline-condensed"
           label="Login"
-          onClick={() => autoRsvp()}
+          onClick={() => autoRsvp && autoRsvp()}
         />
       </Flex>
     </>

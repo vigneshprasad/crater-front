@@ -384,7 +384,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               )}
             </>
           ) : (
-            <StreamShareSection stream={webinar} autoRsvp={autoRsvp} />
+            <StreamShareSection stream={webinar} />
           )
         }
         upcomingStreams={<UpcomingStreamsList />}

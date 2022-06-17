@@ -31,7 +31,7 @@ interface IProps {
   isHost?: boolean;
   postQuestion: (question: string) => Promise<void>;
   postQuestionUpvote: (question: number) => void;
-  autoRsvp: () => void;
+  autoRsvp?: () => void;
 }
 
 const QuestionBox = styled(Box)<BoxProps>`
@@ -212,7 +212,10 @@ export default function RsvpQuestionPanel({
   ) : (
     <Box px={space.xs} py={space.s} bg={colors.primaryDark}>
       <Text textStyle="body">
-        <SpanButton color={colors.accentLight} onClick={() => autoRsvp()}>
+        <SpanButton
+          color={colors.accentLight}
+          onClick={() => autoRsvp && autoRsvp()}
+        >
           Login
         </SpanButton>{" "}
         to post questions on this stream.
