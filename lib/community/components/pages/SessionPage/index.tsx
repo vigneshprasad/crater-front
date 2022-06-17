@@ -329,7 +329,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             pastStreams={pastStreams}
             followersLoading={followersLoading || followBtnLoading}
             onFollow={followCreator}
-            autoRsvp={autoRsvp}
           />
         }
         shareSection={
