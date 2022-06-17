@@ -133,7 +133,7 @@ export default function StreamShareSection({
         flexDirection="column"
         bg={[colors.primaryDark, colors.primaryLight]}
         px={space.xxxs}
-        py={space.xs}
+        py={space.s}
         gridGap={space.xxs}
         alignItems="center"
       >
