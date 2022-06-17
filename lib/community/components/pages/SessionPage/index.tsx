@@ -154,6 +154,17 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     [webinar, id, mutateRequest, router, track, webinarRequest, user]
   );
 
+  const autoRsvp = useCallback(async () => {
+    await router.replace({
+      query: {
+        ...router.query,
+        join: true,
+        newUser: true,
+      },
+    });
+    openModal();
+  }, [router, openModal]);
+
   const ctaButton = useMemo<{
     buttonText: string;
     loading?: boolean;
@@ -211,14 +222,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
               new_user: true,
               session: webinar.id,
             });
-            router.replace({
-              query: {
-                ...router.query,
-                join: true,
-                newUser: true,
-              },
-            });
-            openModal();
+            autoRsvp();
           },
         };
       }
@@ -229,12 +233,12 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     user,
     webinar,
     router,
-    openModal,
     track,
     isHost,
     postGroupRequest,
     webinarRequest,
     rsvpBtnLoading,
+    autoRsvp,
   ]);
 
   const postGroupQuestion = useCallback(
@@ -325,6 +329,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             pastStreams={pastStreams}
             followersLoading={followersLoading || followBtnLoading}
             onFollow={followCreator}
+            autoRsvp={autoRsvp}
           />
         }
         shareSection={
@@ -375,12 +380,12 @@ export default function SessionPage({ id }: IProps): JSX.Element {
                     setShowShareSheet(false);
                   }}
                 >
-                  <StreamShareSection stream={webinar} />
+                  <StreamShareSection stream={webinar} autoRsvp={autoRsvp} />
                 </BottomSheet>
               )}
             </>
           ) : (
-            <StreamShareSection stream={webinar} />
+            <StreamShareSection stream={webinar} autoRsvp={autoRsvp} />
           )
         }
         upcomingStreams={<UpcomingStreamsList />}
@@ -391,6 +396,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             isHost={isHost}
             postQuestion={postGroupQuestion}
             postQuestionUpvote={postGroupQuestionUpvote}
+            autoRsvp={autoRsvp}
           />
         }
       />

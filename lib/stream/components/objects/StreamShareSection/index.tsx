@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import useAuthModal from "@/auth/context/AuthModalContext";
 import { Box, Flex, Image, Text } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
 import SocialShareButtons from "@/common/components/objects/SocialShareButtons";
@@ -11,13 +10,16 @@ import { Webinar } from "@/community/types/community";
 
 interface IProps {
   stream?: Webinar;
+  autoRsvp: () => void;
 }
 
-export default function StreamShareSection({ stream }: IProps): JSX.Element {
+export default function StreamShareSection({
+  stream,
+  autoRsvp,
+}: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   const [shareUrl, setShareUrl] = useState<string | undefined>();
   const { user, profile } = useAuth();
-  const { openModal } = useAuthModal();
 
   const performCopyClipboard = useCallback(async () => {
     if (shareUrl) {
@@ -149,7 +151,7 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
           m="0 auto"
           variant="outline-condensed"
           label="Login"
-          onClick={() => openModal()}
+          onClick={() => autoRsvp()}
         />
       </Flex>
     </>

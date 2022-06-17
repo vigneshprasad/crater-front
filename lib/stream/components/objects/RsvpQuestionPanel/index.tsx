@@ -2,7 +2,6 @@ import { useState } from "react";
 import styled, { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import useAuthModal from "@/auth/context/AuthModalContext";
 import {
   BottomSheet,
   Box,
@@ -32,6 +31,7 @@ interface IProps {
   isHost?: boolean;
   postQuestion: (question: string) => Promise<void>;
   postQuestionUpvote: (question: number) => void;
+  autoRsvp: () => void;
 }
 
 const QuestionBox = styled(Box)<BoxProps>`
@@ -59,9 +59,9 @@ export default function RsvpQuestionPanel({
   isHost,
   postQuestion,
   postQuestionUpvote,
+  autoRsvp,
 }: IProps): JSX.Element | null {
   const { space, colors, breakpoints } = useTheme();
-  const { openModal } = useAuthModal();
   const { user } = useAuth();
   const [showQuestionSheet, setShowQuestionSheet] = useState(false);
 
@@ -212,7 +212,7 @@ export default function RsvpQuestionPanel({
   ) : (
     <Box px={space.xs} py={space.s} bg={colors.primaryDark}>
       <Text textStyle="body">
-        <SpanButton color={colors.accentLight} onClick={() => openModal()}>
+        <SpanButton color={colors.accentLight} onClick={() => autoRsvp()}>
           Login
         </SpanButton>{" "}
         to post questions on this stream.
