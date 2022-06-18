@@ -148,10 +148,10 @@ export default function SessionPage({ id }: IProps): JSX.Element {
         }
 
         setRsvpBtnLoading(false);
-        if (!isHost) setShowSuccess(true);
+        setShowSuccess(true);
       }
     },
-    [webinar, id, mutateRequest, router, track, webinarRequest, user, isHost]
+    [webinar, id, mutateRequest, router, track, webinarRequest, user]
   );
 
   const autoRsvp = useCallback(async () => {
@@ -283,9 +283,9 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     };
 
     if (router.query?.join === "true" && user && webinar) {
-      action();
+      if (!isHost) action();
     }
-  }, [router, user, webinar, profile, postGroupRequest, track]);
+  }, [router, user, webinar, profile, postGroupRequest, track, isHost]);
 
   const followCreator = async (): Promise<void> => {
     const creator = webinar?.host_detail.creator_detail;
