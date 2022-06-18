@@ -41,6 +41,7 @@ interface IProps {
   pastStreams?: PastStreamListItem[];
   followersLoading: boolean;
   onFollow: () => void;
+  autoRsvp: () => void;
   initial?: TabKeys;
 }
 
@@ -51,6 +52,7 @@ export default function RsvpAboutSection({
   followersLoading,
   initial,
   onFollow,
+  autoRsvp,
 }: IProps): JSX.Element | null {
   const { space, colors, radii, breakpoints } = useTheme();
   const [activeTab, setActiveTab] = useState(initial);
@@ -87,11 +89,16 @@ export default function RsvpAboutSection({
           <BaseTabItem
             label={`More from ${host_detail.name.split(" ")[0]}`}
             justifyItems="center"
+            onClick={() => {
+              if (!user && autoRsvp) {
+                autoRsvp();
+              }
+            }}
           />
         </Link>
       ),
     };
-  }, [id, host_detail]);
+  }, [id, host_detail, autoRsvp, user]);
 
   if (isMobile === undefined) return null;
 
