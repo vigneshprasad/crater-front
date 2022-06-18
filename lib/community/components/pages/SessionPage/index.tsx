@@ -148,10 +148,10 @@ export default function SessionPage({ id }: IProps): JSX.Element {
         }
 
         setRsvpBtnLoading(false);
-        setShowSuccess(true);
+        if (!isHost) setShowSuccess(true);
       }
     },
-    [webinar, id, mutateRequest, router, track, webinarRequest, user]
+    [webinar, id, mutateRequest, router, track, webinarRequest, user, isHost]
   );
 
   const autoRsvp = useCallback(async () => {
@@ -393,7 +393,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           <RsvpQuestionPanel
             questions={streamQuestions}
             loading={StreamQuestionsLoading}
-            isHost={isHost}
+            host={webinar.host}
             postQuestion={postGroupQuestion}
             postQuestionUpvote={postGroupQuestionUpvote}
             autoRsvp={autoRsvp}

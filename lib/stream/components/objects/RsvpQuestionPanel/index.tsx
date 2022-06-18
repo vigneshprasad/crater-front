@@ -28,7 +28,7 @@ const SpanButton = styled(Span)<SpanProps>`
 interface IProps {
   questions?: StreamQuestion[];
   loading: boolean;
-  isHost?: boolean;
+  host: string;
   postQuestion: (question: string) => Promise<void>;
   postQuestionUpvote: (question: number) => void;
   autoRsvp?: () => void;
@@ -56,7 +56,7 @@ const QuestionBox = styled(Box)<BoxProps>`
 export default function RsvpQuestionPanel({
   questions,
   loading,
-  isHost,
+  host,
   postQuestion,
   postQuestionUpvote,
   autoRsvp,
@@ -127,27 +127,19 @@ export default function RsvpQuestionPanel({
   );
 
   const questionPanelMain = loading ? (
-    <Shimmer
-      w="100%"
-      h={
-        isHost
-          ? ["calc(100vh - 500px)", "calc(100vh - 300px)"]
-          : ["calc(100vh - 500px)", "calc(100vh - 400px)"]
-      }
-    />
+    <Shimmer w="100%" h={["calc(100vh - 500px)", "calc(100vh - 400px)"]} />
   ) : (
     <QuestionBox
-      maxHeight={
-        isHost
-          ? ["calc(100vh - 500px)", "calc(100vh - 300px)"]
-          : ["calc(100vh - 500px)", "calc(100vh - 400px)"]
-      }
+      maxHeight={["calc(100vh - 500px)", "calc(100vh - 400px)"]}
       bg={colors.primaryLight}
     >
       {questions && questions.length > 0 ? (
         questions.map((question) => (
           <Box pb={space.xxs} key={question.id}>
-            <Text textStyle="body" color="#C9F4C6">
+            <Text
+              textStyle="body"
+              color={question.sender === host ? colors.accent : "#C9F4C6"}
+            >
               {question.sender_detail.name}
             </Text>
             <Flex
@@ -200,13 +192,7 @@ export default function RsvpQuestionPanel({
   );
 
   const questionPanelForm = user ? (
-    <Box
-      px={space.xxxs}
-      pt={space.xs}
-      pb={space.xxxs}
-      bg={colors.primaryDark}
-      display={isHost ? "none" : "block"}
-    >
+    <Box px={space.xxxs} pt={space.xs} pb={space.xxxs} bg={colors.primaryDark}>
       <QuestionForm postQuestion={postQuestion} />
     </Box>
   ) : (
