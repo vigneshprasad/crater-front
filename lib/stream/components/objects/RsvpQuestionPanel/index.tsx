@@ -138,7 +138,7 @@ export default function RsvpQuestionPanel({
           <Box pb={space.xxs} key={question.id}>
             <Text
               textStyle="body"
-              color={question.sender === host ? colors.accent : "#C9F4C6"}
+              color={question.sender === host ? colors.accentLight : "#C9F4C6"}
             >
               {question.sender_detail.name}
             </Text>
@@ -161,7 +161,7 @@ export default function RsvpQuestionPanel({
                     iconProps={{
                       py: 0,
                       size: 16,
-                      color: question.upvote ? colors.accentLight : "#C4C4C4",
+                      color: question.upvote ? "#6AD361" : "#C4C4C4",
                       fill: true,
                     }}
                     onClick={() => postQuestionUpvote(question.id)}
