@@ -61,7 +61,7 @@ export default function RsvpQuestionPanel({
   postQuestionUpvote,
   autoRsvp,
 }: IProps): JSX.Element | null {
-  const { space, colors, breakpoints } = useTheme();
+  const { space, colors, breakpoints, fonts } = useTheme();
   const { user } = useAuth();
   const [showQuestionSheet, setShowQuestionSheet] = useState(false);
 
@@ -74,25 +74,16 @@ export default function RsvpQuestionPanel({
         py={[space.xxxxs, space.xxxs]}
         bg={colors.primaryDark}
       >
-        <Text pb={space.xxxxxs} textStyle="body" display={["none", "block"]}>
-          Ask a Question
-        </Text>
         <Text
-          textStyle="small"
-          fontWeight={500}
-          color={colors.accentLight}
+          pb={space.xxxxxs}
+          textStyle="body"
+          fontFamily={fonts.heading}
           display={["none", "block"]}
         >
-          Got a question for the creator? Post them here.
+          Ask a Question
         </Text>
-        <Text
-          textStyle="small"
-          fontWeight={500}
-          color="#C4C4C4"
-          display={["block", "none"]}
-        >
-          Our creators are always working on new content for you. You can send
-          them a question about their stream here.
+        <Text textStyle="small" fontWeight={500} color={colors.accentLight}>
+          A way to share whats on your mind prior to the stream starting.
         </Text>
       </Box>
 
@@ -102,8 +93,9 @@ export default function RsvpQuestionPanel({
           justifyContent="space-between"
           alignItems="center"
         >
-          <Text textStyle="body" w="80%">
-            Our creators will respond to all your questions on the stream.
+          <Text textStyle="body" w="90%">
+            The creator will address the comments during the livestream, which
+            you can join by clicking the button below.
           </Text>
           <Box
             w={24}
@@ -185,7 +177,8 @@ export default function RsvpQuestionPanel({
             />
           </Box>
           <Text textStyle="body" color="#C4C4C4" textAlign="center">
-            Start a conversation with the creator by asking a question here
+            Prior to the stream you can drop your comments, questions or share
+            your excitement here.
           </Text>
         </Flex>
       )}
