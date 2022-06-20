@@ -198,7 +198,7 @@ export default function RsvpQuestionPanel({
     </Box>
   ) : (
     <Box px={space.xs} py={space.s} bg={colors.primaryDark}>
-      <Text textStyle="body">
+      <Text textStyle="body" textAlign="center">
         <SpanButton
           color={colors.accentLight}
           onClick={() => autoRsvp && autoRsvp()}
