@@ -80,7 +80,7 @@ export default function RsvpQuestionPanel({
           fontFamily={fonts.heading}
           display={["none", "block"]}
         >
-          Ask a Question
+          Forum
         </Text>
         <Text textStyle="small" fontWeight={500} color={colors.accentLight}>
           A way to share whats on your mind prior to the stream starting.
@@ -95,7 +95,7 @@ export default function RsvpQuestionPanel({
         >
           <Text textStyle="body" w="90%">
             The creator will address the comments during the livestream, which
-            you can join by clicking the button below.
+            you can join by clicking the RSVP / Join button below.
           </Text>
           <Box
             w={24}
@@ -235,13 +235,13 @@ export default function RsvpQuestionPanel({
             fill={true}
           />
           <Text textStyle="small" fontWeight={500}>
-            Ask a question
+            Forum
           </Text>
         </Flex>
 
         <BottomSheet
           px={0}
-          heading="Ask a question"
+          heading="Forum"
           bg={colors.primaryDark}
           visible={showQuestionSheet}
           boxProps={{
