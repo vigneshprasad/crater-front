@@ -130,6 +130,7 @@ export default function RsvpQuestionPanel({
     <Shimmer w="100%" h={["calc(100vh - 500px)", "calc(100vh - 400px)"]} />
   ) : (
     <QuestionBox
+      minHeight="100%"
       maxHeight={["calc(100vh - 500px)", "calc(100vh - 400px)"]}
       bg={colors.primaryLight}
     >
