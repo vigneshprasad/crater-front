@@ -9,6 +9,7 @@ import {
   Text,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
 
@@ -26,10 +27,11 @@ export default function RsvpHeadingSection({
   stream,
   ctaButton,
 }: IProps): JSX.Element {
-  const { space, colors, zIndices } = useTheme();
+  const { space, colors, zIndices, breakpoints } = useTheme();
   const startTime = DateTime.parse_with_milliseconds(stream.start).toFormat(
     DateTime.DEFAULT_FORMAT
   );
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   const { buttonText, loading, disabled, onClick } = ctaButton || {};
 
@@ -57,17 +59,23 @@ export default function RsvpHeadingSection({
         </Box>
 
         {disabled ? (
-          <Button
-            label={buttonText}
-            position={["fixed", "static"]}
-            bottom={[0, "auto"]}
-            right={[0, "auto"]}
-            w={["100%", "auto"]}
-            minHeight={44}
-            h={[44, "auto"]}
-            zIndex={[zIndices.overlay - 10, "auto"]}
-            disabled={true}
-          />
+          isMobile ? (
+            <Button
+              label={buttonText}
+              position={["fixed", "static"]}
+              bottom={[0, "auto"]}
+              right={[0, "auto"]}
+              w={["100%", "auto"]}
+              minHeight={44}
+              h={[44, "auto"]}
+              zIndex={[zIndices.overlay - 10, "auto"]}
+              disabled={true}
+            />
+          ) : (
+            <Text textAlign="center" color="#C4C4C4">
+              {buttonText}
+            </Text>
+          )
         ) : (
           <Button
             label={buttonText}
@@ -83,6 +91,9 @@ export default function RsvpHeadingSection({
               loading && <Spinner size={24} strokeColor={colors.white[0]} />
             }
             disabled={loading}
+            textProps={{
+              fontSize: "1.6rem",
+            }}
           />
         )}
       </Grid>
