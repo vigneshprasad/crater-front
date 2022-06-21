@@ -133,7 +133,7 @@ export default function RsvpQuestionPanel({
               textStyle="body"
               color={question.sender === host ? colors.accentLight : "#C9F4C6"}
             >
-              {question.sender_detail.name}
+              {question.sender_detail.name.trim() || "Anonymous"}
             </Text>
             <Flex
               pt={space.xxxxxs}
