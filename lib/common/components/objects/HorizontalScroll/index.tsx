@@ -6,6 +6,7 @@ import { Grid, GridProps, Icon, Box, BoxProps, AnimatedBox } from "../../atoms";
 
 type IProps = GridProps & {
   containerProps?: BoxProps;
+  actionContainerProps?: GridProps;
 };
 
 const Container = styled(Grid)`
@@ -25,6 +26,7 @@ const ActionContainer = styled(AnimatedBox)`
 export default function HorizontalScroll({
   children,
   containerProps,
+  actionContainerProps,
   ...rest
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
@@ -92,6 +94,7 @@ export default function HorizontalScroll({
           //@ts-expect-error: motion value error
           opacity: opacityLeft,
         }}
+        {...actionContainerProps}
       >
         <Icon className="icon" m="auto auto" icon="ChevronRight" />
       </ActionContainer>
@@ -109,6 +112,7 @@ export default function HorizontalScroll({
           //@ts-expect-error: motion value error
           opacity: opacityRight,
         }}
+        {...actionContainerProps}
       >
         <Icon className="icon" m="auto auto" icon="ChevronLeft" />
       </ActionContainer>

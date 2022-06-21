@@ -1,21 +1,31 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import { Box, Flex, Text } from "@/common/components/atoms";
-import { IconButton } from "@/common/components/atoms/v2";
+import { Box, Flex, Image, Text } from "@/common/components/atoms";
+import { Button, IconButton } from "@/common/components/atoms/v2";
 import SocialShareButtons from "@/common/components/objects/SocialShareButtons";
 import SocialShareUtils from "@/common/utils/social/SocialShareUtils";
 import { Webinar } from "@/community/types/community";
 
 interface IProps {
   stream?: Webinar;
+  autoRsvp?: () => void;
 }
 
-export default function StreamShareSection({ stream }: IProps): JSX.Element {
+export default function StreamShareSection({
+  stream,
+  autoRsvp,
+}: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   const [shareUrl, setShareUrl] = useState<string | undefined>();
   const { user, profile } = useAuth();
+
+  const performCopyClipboard = useCallback(async () => {
+    if (shareUrl) {
+      await navigator.clipboard.writeText(shareUrl);
+    }
+  }, [shareUrl]);
 
   useEffect(() => {
     const urlObj = new URL(window.location.href);
@@ -71,9 +81,9 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
     );
   }, [user, stream, profile]);
 
-  return (
-    <Box as="section" bg={colors.primaryDark} borderRadius={radii.xxxxs}>
-      <Box p={space.xxs} background={colors.primaryLight}>
+  return user ? (
+    <Box as="section" bg={colors.primaryLight} borderRadius={radii.xxxxs}>
+      <Box p={space.xxs} background={colors.primaryDark}>
         <Text color={colors.textSecondary} textStyle="cardHeader">
           Share this stream
         </Text>
@@ -86,7 +96,7 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
         <Flex
           borderRadius={radii.xxxxs}
           my={space.xxxs}
-          bg={colors.primaryBackground}
+          bg={colors.primaryLight}
           py={space.xxxxs}
           px={space.xxxs}
           alignItems="center"
@@ -94,7 +104,7 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
           <Text textStyle="body" flex="1" maxLines={1}>
             {shareUrl}
           </Text>
-          <IconButton icon="ContentCopy" />
+          <IconButton icon="ContentCopy" onClick={performCopyClipboard} />
         </Flex>
 
         <Box h={1} bg={colors.black[0]} />
@@ -107,5 +117,43 @@ export default function StreamShareSection({ stream }: IProps): JSX.Element {
         </Flex>
       </Box>
     </Box>
+  ) : (
+    <>
+      <Box
+        p={space.xxs}
+        background={colors.primaryDark}
+        display={["none", "block"]}
+      >
+        <Text color={colors.textSecondary} textStyle="cardHeader">
+          Share this stream
+        </Text>
+      </Box>
+      <Flex
+        gridTemplateRows="1fr min-content min-content"
+        flexDirection="column"
+        bg={[colors.primaryDark, colors.primaryLight]}
+        px={space.xxxs}
+        py={space.s}
+        gridGap={space.xxs}
+        alignItems="center"
+      >
+        <Box position="relative" w={120} h={120}>
+          <Image
+            src="/images/img_referral.png"
+            alt="share stream"
+            layout="fill"
+          />
+        </Box>
+        <Text textStyle="captionLarge" textAlign="center">
+          Login to share this stream with your friends!
+        </Text>
+        <Button
+          m="0 auto"
+          variant="outline-condensed"
+          label="Login"
+          onClick={() => autoRsvp && autoRsvp()}
+        />
+      </Flex>
+    </>
   );
 }

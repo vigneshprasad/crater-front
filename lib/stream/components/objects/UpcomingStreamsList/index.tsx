@@ -83,6 +83,7 @@ export default function UpcomingStreamsList(): JSX.Element {
   return (
     <Box>
       <Grid
+        pt={space.xxs}
         ref={gridRef}
         px={space.xxs}
         gridTemplateColumns={`repeat(auto-fill, minmax(${ITEM_WIDTH}px, 1fr))`}

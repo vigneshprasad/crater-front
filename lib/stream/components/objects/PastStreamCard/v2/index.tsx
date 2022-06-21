@@ -174,7 +174,7 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
               justifyContent="space-between"
               alignItems="center"
             >
-              <Flex alignItems="center">
+              <Flex alignItems="center" gridGap={space.xxxxxs}>
                 <Icon color={colors.textSecondary} size={16} icon="Calendar" />
                 <Text textStyle="caption" color={colors.textSecondary}>
                   {startTime}

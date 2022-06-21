@@ -9,7 +9,6 @@ import {
   Grid,
   Avatar,
   Icon,
-  BottomSheet,
   Shimmer,
   Span,
 } from "@/common/components/atoms";
@@ -18,6 +17,9 @@ import { IconButton } from "@/common/components/atoms/v2";
 import HeadingDivider from "@/common/components/objects/HeadingDivider";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { Follower, Webinar } from "@/community/types/community";
+
+import AboutCreatorBottomSheet from "../AboutCreatorBottomSheet";
+import ShareStreamBottomSheet from "../ShareStreamBottomSheet";
 
 interface IProps {
   stream?: Webinar;
@@ -197,142 +199,20 @@ export default function StreamAboutSection({
         </Box>
       </Box>
 
-      <BottomSheet
-        heading="About the creator"
+      <AboutCreatorBottomSheet
+        stream={stream}
         visible={showAboutSheet}
-        onClose={() => {
-          setShowAboutSheet(false);
-        }}
-      >
-        <Box my={space.xxxs} h={1} bg={colors.black[0]} />
-        <Flex gridGap={space.xxs}>
-          <Avatar image={host_detail.photo} size={40} />
-          <Box>
-            <Text textStyle="body" fontWeight="700">
-              {host_detail.name}
-            </Text>
-            {user?.pk === stream.host_detail.pk && (
-              <Text textStyle="body">
-                {stream.host_detail.creator_detail?.subscriber_count} Followers
-              </Text>
-            )}
-          </Box>
-        </Flex>
-        <Text py={space.xxxs} color={colors.textSecondary}>
-          {host_detail.introduction}
-        </Text>
+        onClose={() => setShowAboutSheet(false)}
+        followers={followers}
+        followersLoading={followersLoading}
+        onFollow={onFollow}
+      />
 
-        <Flex gridGap={space.xxxs}>
-          {(() => {
-            if (followersLoading || !followers) {
-              return (
-                <>
-                  <Shimmer flex="1" h={39} w={72} borderRadius={4} />
-                </>
-              );
-            }
-
-            const isFollower = followers?.[0]?.notify === true;
-
-            return (
-              <>
-                <Button
-                  flex="1"
-                  w="100%"
-                  textAlign="center"
-                  disabled={isFollower ? true : false}
-                  label={isFollower ? "Following" : "Follow"}
-                  onClick={() => onFollow()}
-                />
-              </>
-            );
-          })()}
-          {stream.host_profile_details?.primary_url && (
-            <a style={{ flex: 1, display: "flex" }} target="_blank">
-              <Button variant="outline-condensed" flex="1">
-                <Flex gridGap={space.xxxs} alignItems="center">
-                  <Icon icon="Linktree" size={16} />
-                  <Text
-                    textAlign="center"
-                    fontSize="inherit"
-                    color="inherit"
-                    fontWeight="inherit"
-                  >
-                    LinkTree
-                  </Text>
-                </Flex>
-              </Button>
-            </a>
-          )}
-        </Flex>
-        <Box h={space.xs} />
-      </BottomSheet>
-
-      <BottomSheet
-        heading="Share this stream"
+      <ShareStreamBottomSheet
+        stream={stream}
         visible={showShareSheet}
-        onClose={() => {
-          setShowShareSheet(false);
-        }}
-      >
-        <Grid
-          gridTemplateColumns="repeat(3, 1fr)"
-          py={space.xxs}
-          gridGap={space.xxs}
-        >
-          <Flex
-            flexDirection="column"
-            gridGap={space.xxxs}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <IconButton buttonStyle="round-large" icon="ContentCopy" />
-            <Text textStyle="body">Copy link</Text>
-          </Flex>
-
-          <Flex
-            flexDirection="column"
-            gridGap={space.xxxs}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <IconButton
-              buttonStyle="round-large"
-              icon="Linkedin"
-              iconProps={{ fill: true }}
-            />
-            <Text textStyle="body">LinkedIn</Text>
-          </Flex>
-
-          <Flex
-            flexDirection="column"
-            gridGap={space.xxxs}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <IconButton
-              buttonStyle="round-large"
-              iconProps={{ fill: true }}
-              icon="Twitter"
-            />
-            <Text textStyle="body">Twitter</Text>
-          </Flex>
-
-          <Flex
-            flexDirection="column"
-            gridGap={space.xxxs}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <IconButton
-              buttonStyle="round-large"
-              iconProps={{ fill: true }}
-              icon="Whatsapp"
-            />
-            <Text textStyle="body">Whatsapp</Text>
-          </Flex>
-        </Grid>
-      </BottomSheet>
+        onClose={() => setShowShareSheet(false)}
+      />
     </>
   );
 }

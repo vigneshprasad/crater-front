@@ -7,6 +7,8 @@ import { ApiResult, PageResponse } from "@/common/types/api";
 import { PastStreamListItem } from "@/community/types/community";
 import { StreamCategory } from "@/creators/types/stream";
 
+import { StreamQuestion, StreamQuestionUpvote } from "../types/stream";
+
 interface IStreamApiClient {
   getPastStreams: (
     pageSize?: number
@@ -21,6 +23,12 @@ interface IStreamApiClient {
     topic: string,
     avatarUrl: string
   ) => Promise<ApiResult<string, AxiosError>>;
+  postGroupQuestion: (
+    request: Partial<StreamQuestion>
+  ) => Promise<ApiResult<StreamQuestion, AxiosError>>;
+  postGroupQuestionUpvote: (
+    request: Partial<StreamQuestionUpvote>
+  ) => Promise<ApiResult<StreamQuestionUpvote, AxiosError>>;
 }
 
 export default function StreamApiClient(
@@ -86,10 +94,40 @@ export default function StreamApiClient(
     }
   }
 
+  async function postGroupQuestion(
+    request: Partial<StreamQuestion>
+  ): Promise<ApiResult<StreamQuestion, AxiosError>> {
+    try {
+      const { data } = await API(context).post<StreamQuestion>(
+        API_URL_CONSTANTS.groups.postGroupQuestion,
+        request
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function postGroupQuestionUpvote(
+    request: Partial<StreamQuestionUpvote>
+  ): Promise<ApiResult<StreamQuestionUpvote, AxiosError>> {
+    try {
+      const { data } = await API(context).post<StreamQuestionUpvote>(
+        API_URL_CONSTANTS.groups.postGroupQuestionUpvote,
+        request
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getPastStreams,
     getAllStreamCategories,
     retrieveStreamCategory,
     generateCoverPhoto,
+    postGroupQuestion,
+    postGroupQuestionUpvote,
   };
 }

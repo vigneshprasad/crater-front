@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
 
 import { AnimatedBox, AnimatedBoxProps } from "../Animated";
-import { Box } from "../System/Box";
+import { Box, BoxProps } from "../System/Box";
 import { Flex } from "../System/Flex";
 import { Text } from "../System/Text";
 import { IconButton } from "../v2";
@@ -15,6 +15,7 @@ type IProps = AnimatedBoxProps &
     onClose: () => void;
     heading?: string;
     rootBoxProps?: AnimatedBoxProps;
+    boxProps?: BoxProps;
   }>;
 
 export function BottomSheet({
@@ -23,6 +24,7 @@ export function BottomSheet({
   onClose,
   heading,
   rootBoxProps,
+  boxProps,
   ...rest
 }: IProps): JSX.Element | null {
   const [showSheet, setShowSheet] = useState(visible ?? false);
@@ -62,6 +64,7 @@ export function BottomSheet({
           {...rootBoxProps}
         >
           <AnimatedBox
+            onClick={(e) => e.stopPropagation()}
             px={space.xxxs}
             borderRadius={`${radii.s}px ${radii.s}px 0 0`}
             w="100%"
@@ -91,6 +94,7 @@ export function BottomSheet({
               top={0}
               bg={colors.primaryLight}
               zIndex={zIndices.modalHeader}
+              {...boxProps}
             >
               <Box h={2} bg={colors.black[0]} w={28} m="0 auto" />
               <Flex justifyContent="space-between" alignItems="center">
