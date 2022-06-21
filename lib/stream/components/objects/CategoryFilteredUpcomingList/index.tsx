@@ -18,7 +18,7 @@ export default function CategoryFilteredUpcomingList(): JSX.Element {
   const router = useRouter();
   const { streamCategories } = useStreamCategories();
 
-  const filterQuery = router.query.upcomigCategory as string | undefined;
+  const filterQuery = router.query.upcomingCategory as string | undefined;
   return (
     <>
       <Box px={space.xxs} mb={space.xxs}>
@@ -35,7 +35,7 @@ export default function CategoryFilteredUpcomingList(): JSX.Element {
               {
                 pathname: "/",
                 query: {
-                  upcomigCategory: cat.pk,
+                  upcomingCategory: cat.pk,
                 },
               },
               undefined,

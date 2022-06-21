@@ -335,7 +335,7 @@ export default function RsvpSuccesModal({
                     trackModalAnalytics(
                       AnalyticsEvents.rsvp_modal_explore_clicked
                     );
-                    router.push(PageRoutes.pastStreams(9));
+                    router.push(`${PageRoutes.home}/?upcomingCategory=9`);
                   }}
                 />
               )}
