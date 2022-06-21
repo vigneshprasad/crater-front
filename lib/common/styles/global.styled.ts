@@ -1,4 +1,3 @@
-import Fonts from "lib/common/styles/fonts.styled";
 import { createGlobalStyle, css } from "styled-components";
 
 import { theme } from "../theme";
@@ -139,16 +138,16 @@ const resetCss = css`
 
 const GlobalStyle = createGlobalStyle`
     ${resetCss}
-    ${Fonts}
 
     html {
       font-size: 62.5%;
       scroll-behavior: smooth;
+      height: -webkit-fill-available;
     }
 
     body {
         font-family: ${theme.fonts.body};
-        background: ${theme.colors.black[5]} !important;
+        background: ${theme.colors.primaryBackground} !important;
         color: ${theme.colors.white[0]} !important;
         line-height: 1.8;
         overflow: hidden;
@@ -156,6 +155,19 @@ const GlobalStyle = createGlobalStyle`
 
     * {
       -webkit-overflow-scrolling: touch;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: ${theme.colors.primaryBackground};
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: ${theme.colors.primaryLight};
+      border-radius: 4px;
     }
 `;
 

@@ -2,8 +2,7 @@ import { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, Grid, Text, Link } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
+import { Box, Grid, Text, Link, Spinner } from "@/common/components/atoms";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
 

@@ -1,7 +1,7 @@
 import { NextSeoProps } from "next-seo";
 
 import AccountTab from "@/auth/components/objects/AccountTab";
-import HomePageLayout from "@/common/components/layouts/HomePageLayout";
+import HomePageLayout from "@/common/components/layouts/v2/HomePageLayout";
 
 export default function Account(): JSX.Element {
   const seo: NextSeoProps = {

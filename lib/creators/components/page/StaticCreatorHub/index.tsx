@@ -1,8 +1,8 @@
 import { NextSeoProps } from "next-seo";
 import { useTheme } from "styled-components";
 
-import BaseLayout from "@/common/components/layouts/BaseLayout";
-import AsideNav from "@/common/components/objects/AsideNav";
+import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
+import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import Page from "@/common/components/objects/Page";
 
 import CreatorHubJourneyTab from "../../objects/CreatorHubJourneyTab";
@@ -22,12 +22,11 @@ export default function StaticCreatorHub(): JSX.Element {
   return (
     <Page seo={seo}>
       <BaseLayout
-        m="0 auto"
         // maxWidth={1280}
         overflowY="auto"
         // px={[space.xxs, space.m]}
         pt={space.xs}
-        aside={<AsideNav activeTab="creatorhub" />}
+        aside={<AsideNav activeTab="hub" />}
         background="linear-gradient(#000000, #4f3099)"
       >
         {/* <Text textStyle="headline4" textAlign="center" mb={space.xs}>

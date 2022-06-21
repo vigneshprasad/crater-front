@@ -1,9 +1,8 @@
 import { useCallback } from "react";
 import styled, { useTheme } from "styled-components";
 
-import { Text } from "@/common/components/atoms";
+import { Text, Spinner } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import { Follower } from "@/community/types/community";
 
 interface IProps {

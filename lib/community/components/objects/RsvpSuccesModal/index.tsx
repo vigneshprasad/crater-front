@@ -51,7 +51,7 @@ const CREATOR_MODAL_PAGES = [
 const USER_MODAL_PAGES = [
   RsvpModalPage.LiveAndUpcomingStreams,
   RsvpModalPage.DiscoverFollowers,
-  RsvpModalPage.ShareAndEarn,
+  // RsvpModalPage.ShareAndEarn,
   RsvpModalPage.DownloadMobileApp,
 ];
 

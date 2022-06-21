@@ -3,13 +3,13 @@ import { NextSeoProps } from "next-seo";
 import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
-import { INavKeys } from "@/common/constants/ui.constants";
-
-import { AnimatedBox, Box } from "../../../../common/components/atoms";
-import BaseLayout from "../../../../common/components/layouts/BaseLayout";
-import AsideNav from "../../../../common/components/objects/AsideNav";
+import { AnimatedBox, Box, Text } from "../../../../common/components/atoms";
+import BaseLayout from "../../../../common/components/layouts/BaseLayout/v2";
+import {
+  AsideNav,
+  INavKeys,
+} from "../../../../common/components/objects/AsideNav/v2";
 import Page from "../../../../common/components/objects/Page";
-import TabHeading from "../../../../common/components/objects/TabHeading";
 
 type IProps = PropsWithChildren<{
   seo: NextSeoProps;
@@ -29,9 +29,11 @@ export default function LeaderboardPageLayout({
   const { space } = useTheme();
   return (
     <Page seo={seo}>
-      <BaseLayout aside={<AsideNav />} overflowY="auto">
+      <BaseLayout aside={<AsideNav activeTab="leaderboard" />} overflowY="auto">
         <Box p={[space.xs, space.s]}>
-          <TabHeading>Stream to win</TabHeading>
+          <Text textStyle="mainHeading" maxLines={2} textAlign="center">
+            Stream to win
+          </Text>
         </Box>
         <AnimatedBox
           initial="hidden"

@@ -13,10 +13,13 @@ import {
   GridProps,
   Text,
   Link,
-  IconButton,
+  Toggle,
+  Icon,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import { Checkbox } from "@/common/components/atoms/Checkbox";
+import { IconButton } from "@/common/components/atoms/v2";
+import MenuButton from "@/common/components/objects/MenuButton";
+import { MenuItem } from "@/common/components/objects/MenuButton/MenuItem";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
@@ -27,6 +30,7 @@ import { FirebaseChatContext } from "@/stream/providers/FirebaseChatProvider/con
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
 import ChatMessagesList from "../ChatMessagesList";
+import StreamViewerCount from "../StreamViewerCount";
 
 interface IProps extends GridProps {
   stream: Webinar;
@@ -44,10 +48,10 @@ export default function StreamChat({
   showPopup = true,
   ...rest
 }: IProps): JSX.Element {
-  const { profile, user, permission: apiPermission } = useAuth();
+  const { profile, permission: apiPermission } = useAuth();
   const { permission: socketPermission } = useSystemSocket();
   const { rewards } = useRewardsList();
-  const { space, borders, gradients, radii, colors } = useTheme();
+  const { space, gradients, radii, colors } = useTheme();
   const { colorMode, toggleColorMode } = useChatColorMode();
   const [popOutVisible, setPopOutVisible] = useState(false);
   const windowRef = useRef<NewWindow>(null);
@@ -128,15 +132,13 @@ export default function StreamChat({
         {({ messages, postMessage }) => {
           return (
             <Grid
-              h="100%"
+              minHeight="100%"
               gridTemplateRows={
                 hasActiveReward
                   ? ["1fr max-content", "max-content 1fr max-content"]
                   : ["1fr max-content", "1fr max-content"]
               }
-              borderTop={[`2px solid ${borders.main}`, "none"]}
-              borderLeft={`2px solid ${borders.main}`}
-              bg={colors.black[5]}
+              bg={colors.primaryDark}
               {...rest}
             >
               {hasActiveReward && (
@@ -167,11 +169,12 @@ export default function StreamChat({
 
               {permission?.allow_chat && (
                 <Form
+                  bg={colors.primaryLight}
                   display="grid"
-                  mx={space.xxxs}
-                  my={space.xxxs}
+                  px={space.xxxs}
+                  py={space.xxxs}
                   gridAutoFlow="row"
-                  gridGap={space.xxs}
+                  gridGap={space.xxxs}
                   onSubmit={(event) => {
                     event.preventDefault();
                     const data = getValidatedData();
@@ -190,7 +193,7 @@ export default function StreamChat({
                   }}
                 >
                   <Input
-                    placeholder="Ask a Question"
+                    placeholder="Start chatting..."
                     value={fields.message.value}
                     onChange={(e) =>
                       fieldValueSetter("message", e.currentTarget.value)
@@ -200,81 +203,89 @@ export default function StreamChat({
                     }
                     color={colorMode === "dark" ? undefined : colors.black[0]}
                   />
-                  <Flex
-                    justifyContent={
-                      user?.pk === stream.host ? "space-between" : "flex-end"
-                    }
-                    flexDirection="row"
-                  >
-                    <Flex
-                      justifySelf="flex-start"
-                      alignItems="center"
-                      gridGap={space.xxxxs}
-                    >
-                      {showPopup && (
-                        <IconButton
-                          display={["none", "grid"]}
-                          icon="PopOut"
-                          onClick={openChatPopOut}
-                          color={colors.white[0]}
+                  {(() => {
+                    if (!profile) return null;
+
+                    const isAdmin = profile.groups.filter(
+                      (group) => group.name === "livestream_chat_admin"
+                    )[0]
+                      ? true
+                      : false;
+
+                    if (isAdmin) {
+                      return (
+                        <Input
+                          value={fields.display_name.value}
+                          onChange={(e) =>
+                            fieldValueSetter(
+                              "display_name",
+                              e.currentTarget.value
+                            )
+                          }
+                          placeholder="Display Name"
                         />
-                      )}
+                      );
+                    }
+                  })()}
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Box flex="1">
+                      {(() => {
+                        const isAdmin = profile?.groups.filter(
+                          (group) => group.name === "livestream_chat_admin"
+                        )[0]
+                          ? true
+                          : false;
 
-                      {user?.pk === stream.host && (
-                        <Checkbox
-                          checked={colorMode === "dark"}
-                          labelProps={{
-                            color:
-                              colorMode === "light"
-                                ? colors.black[0]
-                                : undefined,
-                            textStyle: "button",
-                          }}
-                          onClick={() => {
-                            toggleColorMode();
-                          }}
-                        >
-                          Dark Mode
-                        </Checkbox>
-                      )}
+                        if (isAdmin) {
+                          return <StreamViewerCount />;
+                        }
+                      })()}
+                    </Box>
+
+                    <Flex gridGap={space.xxxxs}>
+                      <MenuButton
+                        icon="Settings"
+                        items={[
+                          <MenuItem key="colorMode">
+                            <Flex
+                              w="max-content"
+                              gridGap={space.xxxs}
+                              alignItems="center"
+                            >
+                              <Text textStyle="tabLabel">Chat Theme</Text>
+                              <Toggle
+                                value={colorMode === "dark"}
+                                onChange={() => {
+                                  toggleColorMode();
+                                }}
+                              >
+                                {colorMode === "dark" ? (
+                                  <Icon m="auto auto" icon="Moon" size={8} />
+                                ) : (
+                                  <Icon m="auto auto" icon="Sun" size={8} />
+                                )}
+                              </Toggle>
+                            </Flex>
+                          </MenuItem>,
+                          showPopup && (
+                            <MenuItem
+                              onClick={() => {
+                                openChatPopOut();
+                              }}
+                              key="popout"
+                              label="Popout Chat"
+                              suffixElement={<Icon size={18} icon="PopOut" />}
+                            />
+                          ),
+                        ]}
+                      />
+                      <IconButton
+                        type="submit"
+                        icon="Send"
+                        iconProps={{ color: "white.0" }}
+                        buttonStyle="flat-accent"
+                      />
                     </Flex>
-
-                    {(() => {
-                      if (!profile) return null;
-
-                      const isAdmin = profile.groups.filter(
-                        (group) => group.name === "livestream_chat_admin"
-                      )[0]
-                        ? true
-                        : false;
-
-                      if (isAdmin) {
-                        return (
-                          <Input
-                            value={fields.display_name.value}
-                            onChange={(e) =>
-                              fieldValueSetter(
-                                "display_name",
-                                e.currentTarget.value
-                              )
-                            }
-                            placeholder="Display Name"
-                          />
-                        );
-                      }
-
-                      return null;
-                    })()}
-
-                    <Button
-                      type="submit"
-                      variant="nav-button"
-                      px={space.xxxs}
-                      text="Ask"
-                      textProps={{
-                        color: colorMode === "dark" ? undefined : "#fff",
-                      }}
-                    />
                   </Flex>
                 </Form>
               )}

@@ -8,11 +8,11 @@ import CreatorApiClient from "@/creators/api";
 import { Creator } from "@/creators/types/creator";
 
 import { Box, Link } from "../../atoms";
-import AsideNav from "../../objects/AsideNav";
+import { AsideNav } from "../../objects/AsideNav/v2";
 import { BaseTabBar, BaseTabItem } from "../../objects/BaseTabBar";
 import Page from "../../objects/Page";
 import TabHeading from "../../objects/TabHeading";
-import BaseLayout from "../BaseLayout";
+import BaseLayout from "../BaseLayout/v2";
 
 const CREATOR_TABS = {
   stream: (
@@ -125,7 +125,7 @@ export default function HubPageLayout({
           "Crater is where you join live streams with the mentors & creators you follow, get to network with like-minds, and can claim exclusive access to mentors & creator by buying their tokens at the live auction",
       }}
     >
-      <BaseLayout aside={<AsideNav activeTab="creatorhub" />} overflowY="auto">
+      <BaseLayout aside={<AsideNav activeTab="hub" />} overflowY="auto">
         <Box p={[space.xs, space.s]}>
           <TabHeading>Hub</TabHeading>
         </Box>

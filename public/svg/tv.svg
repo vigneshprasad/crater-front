@@ -1,1 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tv"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.414 5.00078H21.008C21.556 5.00078 22 5.44578 22 6.00078V20.0008C22 20.5528 21.545 21.0008 21.008 21.0008H2.99202C2.86115 21.0005 2.73161 20.9744 2.61085 20.924C2.4901 20.8735 2.38049 20.7997 2.28832 20.7068C2.19615 20.6139 2.12324 20.5037 2.07376 20.3826C2.02429 20.2614 1.99923 20.1317 2.00002 20.0008V6.00078C2.00002 5.44878 2.45502 5.00078 2.99202 5.00078H8.58602L6.05002 2.46478L7.46402 1.05078L11.414 5.00078H12.586L16.536 1.05078L17.95 2.46478L15.414 5.00078Z" fill="currentColor"/>
+</svg>

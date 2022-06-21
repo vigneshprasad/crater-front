@@ -2,8 +2,8 @@ import { PropsWithChildren } from "react";
 
 import useAuth from "@/auth/context/AuthContext";
 import { BoxProps } from "@/common/components/atoms";
-import BaseLayout from "@/common/components/layouts/BaseLayout";
-import AsideNav from "@/common/components/objects/AsideNav";
+import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
+import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import Page from "@/common/components/objects/Page";
 import { CreatorProvider } from "@/creators/context/CreatorContext";
 import { FollowerProvider } from "@/creators/context/FollowerContext";

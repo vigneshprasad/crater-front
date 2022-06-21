@@ -72,6 +72,8 @@ export type BaseBoxProps = BackgroundProps &
     wordBreak?: ResponsiveValue<CSS.Property.WordBreak, CustomTheme>;
     float?: ResponsiveValue<CSS.Property.Float, CustomTheme>;
     clear?: ResponsiveValue<CSS.Property.Clear, CustomTheme>;
+    scrollBehavior?: ResponsiveValue<CSS.Property.ScrollBehavior, CustomTheme>;
+    contain?: ResponsiveValue<CSS.Property.Contain, CustomTheme>;
   };
 
 export type BoxProps = BaseBoxProps & React.HTMLAttributes<HTMLDivElement>;
@@ -84,6 +86,11 @@ const textDecoration = style({
 const textTransform = style({
   prop: "textTransform",
   cssProperty: "textTransform",
+});
+
+const scrollBehavior = style({
+  prop: "scrollBehavior",
+  cssProperty: "scrollBehavior",
 });
 
 const cursor = style({
@@ -136,6 +143,11 @@ const clear = style({
   cssProperty: "clear",
 });
 
+const contain = style({
+  prop: "contain",
+  cssProperty: "contain",
+});
+
 export const Box = styled.div<BoxProps>`
   display: block;
   box-sizing: border-box;
@@ -165,6 +177,8 @@ export const Box = styled.div<BoxProps>`
     visibility,
     wordBreak,
     float,
-    clear
+    clear,
+    scrollBehavior,
+    contain
   )}
 `;

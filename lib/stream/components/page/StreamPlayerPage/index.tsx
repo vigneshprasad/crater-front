@@ -11,10 +11,10 @@ import {
   Link,
   Flex,
   Button,
+  Spinner,
 } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
-import BaseLayout from "@/common/components/layouts/BaseLayout";
-import AsideNav from "@/common/components/objects/AsideNav";
+import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
+import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";

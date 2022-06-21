@@ -6,13 +6,14 @@ type Props = TextProps;
 
 const StyledText = styled(Text)<Props>`
   position: relative;
+  font-weight: 400;
 
   &::before {
     font-family: ${({ theme }) => theme.fonts.heading};
     position: absolute;
     content: "Crater";
     font-size: 10.8rem;
-    font-weight: 600;
+    font-weight: 400;
     color: ${({ theme }) => theme.colors.whiteAlpha[1]};
     top: 50%;
     transform: translateY(-60%);

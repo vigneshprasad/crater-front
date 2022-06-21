@@ -37,6 +37,7 @@ export const API_URL_CONSTANTS = {
   creator: {
     getCreatorList: "/crater/creator/",
     getMembersList: "/crater/community/members/",
+    getCreatorRankList: "/crater/creator/ranking/",
     retrieveCreator: (id: number): string => `/crater/creator/${id}/`,
     retrieveCreatorSlug: (slug: string): string => `/crater/creator/s/${slug}/`,
     postFollowCreator: "/crater/followers/follow/",
@@ -58,6 +59,9 @@ export const API_URL_CONSTANTS = {
     getPastWebinars: "/groups/public/conversations/webinars/past/",
     retrieveStreamRecording: (id: string | number): string =>
       `/groups/recordings/${id}/`,
+    getGroupQuestions: "/groups/conversations/stream/questions/",
+    postGroupQuestion: "/groups/conversations/stream/questions/",
+    postGroupQuestionUpvote: "/groups/conversations/stream/questions/upvote/",
   },
   community: {
     getCommunityList: "/crater/community/",
@@ -106,6 +110,7 @@ export const API_URL_CONSTANTS = {
       `/crater/bid/${coin}/summary/`,
     auctionSummaryForCoin: (coin: number | string): string =>
       `/crater/auction/${coin}/summary/`,
+    getAllAuctions: "/crater/auction/all/",
   },
   coins: {
     getAuctions: "/crater/auction/",
@@ -176,3 +181,8 @@ export const BECOME_CREATOR_CALENDLY = "https://bit.ly/3rDsnaL";
 
 export const LEADERBOARD_URL =
   "https://worknetwork.typeform.com/to/wMqdEEn3?utm_source=website";
+
+export const START_CREATOR_JOURNET_CALENDLY =
+  "https://calendly.com/craterclub/apply-to-create-on-crater";
+
+export const HELP_CENTER = "https://crater.zendesk.com/hc/en-us";

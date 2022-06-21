@@ -6,9 +6,8 @@ import { useRouter } from "next/router";
 
 import AuthApiClient from "@/auth/api";
 import { Login } from "@/auth/utils";
-import { Form, Text } from "@/common/components/atoms";
+import { Form, Text, Spinner } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
 import { OtpInput } from "@/common/components/objects/OtpInput";
 import { PhoneInput } from "@/common/components/objects/PhoneInput";
 import {

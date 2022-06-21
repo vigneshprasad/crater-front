@@ -1,13 +1,30 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Avatar, Box, Grid, Link, Text } from "@/common/components/atoms";
+import useAuth from "@/auth/context/AuthContext";
+import {
+  Avatar,
+  Box,
+  Grid,
+  Link,
+  Text,
+  Flex,
+  Icon,
+  Spinner,
+} from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
 import colors from "@/common/theme/colors";
 import DateTime from "@/common/utils/datetime/DateTime";
-import { Webinar } from "@/community/types/community";
+import WebinarApiClient from "@/community/api";
+import {
+  ParticpantType,
+  PostGroupRequest,
+  RequestStatus,
+  Webinar,
+} from "@/community/types/community";
 
 interface IProps {
   stream: Webinar;
@@ -15,23 +32,66 @@ interface IProps {
   hostSlug?: string;
 }
 
-const Span = styled.span`
-  color: ${({ theme }) => theme.colors.accent};
+const ImageContainer = styled(Box)``;
+
+const Overlay = styled(Grid)``;
+
+const Container = styled(Grid)`
+  &:hover > ${ImageContainer} > ${Overlay} {
+    display: grid;
+    opacity: 1;
+    background: rgba(145, 70, 255, 0.4);
+  }
+
+  .overlay {
+    transition: all 0.2s ease-in;
+  }
 `;
 
 const StreamCard = forwardRef<HTMLDivElement, IProps>(
   ({ stream, link, hostSlug }, ref) => {
     const { space, radii } = useTheme();
-    const startTime = DateTime.parse(stream.start);
+    const startTime = DateTime.parse(stream.start).toFormat(
+      DateTime.DEFAULT_FORMAT
+    );
+
+    const [loadingRequest, setLoadingRequest] = useState(false);
+
+    const { user } = useAuth();
+
+    const postStreamRsvp = async (): Promise<void> => {
+      if (user) {
+        setLoadingRequest(true);
+        const data: PostGroupRequest = {
+          group: stream.id,
+          status: RequestStatus.accepted,
+          participant_type:
+            stream.host === user.pk
+              ? ParticpantType.speaker
+              : ParticpantType.attendee,
+        };
+        const [req, err] = await WebinarApiClient().postWebinarRequest(data);
+        if (err) {
+          console.log(err);
+        }
+
+        setLoadingRequest(false);
+
+        console.log(req);
+      }
+    };
     return (
-      <Link key={stream.id} href={link ?? `/session/${stream.id}`}>
-        <Grid gridGap={space.xs} ref={ref}>
-          <Box
-            h={180}
+      <Link
+        href={link ?? `/session/${stream.id}`}
+        boxProps={{ target: "_blank" }}
+      >
+        <Container gridGap={space.xxs} ref={ref}>
+          <ImageContainer
             position="relative"
             pt="56.25%"
             borderRadius={radii.xxs}
             overflow="hidden"
+            onClick={(event) => event.stopPropagation()}
           >
             {stream.topic_detail?.image && (
               <Image
@@ -41,49 +101,86 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
                 alt={stream.topic_detail.name}
               />
             )}
-            <Box
-              borderRadius={4}
-              py={2}
-              px={space.xxxs}
-              bg={stream.is_live ? colors.red[0] : colors.black[0]}
+            {stream.is_live && (
+              <Box
+                borderRadius={4}
+                py={2}
+                px={space.xxxs}
+                bg={stream.is_live ? colors.red[0] : colors.black[0]}
+                position="absolute"
+                top={space.xxxs}
+                left={space.xxxs}
+              >
+                <Text textStyle="caption">LIVE</Text>
+              </Box>
+            )}
+            <Overlay
+              display="none"
+              opacity={0}
               position="absolute"
-              top={space.xxxs}
-              left={space.xxxs}
+              top={0}
+              right={0}
+              left={0}
+              bottom={0}
+              bg="transparent"
             >
-              <Text textStyle="caption">
-                {stream.is_live ? (
-                  "LIVE"
-                ) : (
-                  <>
-                    <Span>Live On</Span>{" "}
-                    {startTime.toFormat(DateTime.DEFAULT_FORMAT)}
-                  </>
-                )}
-              </Text>
-            </Box>
-          </Box>
-          <Grid
-            gridTemplateColumns="min-content 1fr"
-            gridGap={space.xxs}
-            alignItems="center"
-          >
+              {user?.pk !== stream.host && stream.has_rsvp ? (
+                <Button
+                  m="auto auto"
+                  disabled
+                  label="RSVP"
+                  suffixElement={
+                    <Icon
+                      size={20}
+                      icon="CheckCircle"
+                      color={colors.greenSuccess}
+                    />
+                  }
+                />
+              ) : (
+                <Button
+                  disabled={loadingRequest}
+                  m="auto auto"
+                  label="RSVP"
+                  onClick={() => {
+                    postStreamRsvp();
+                  }}
+                  suffixElement={
+                    loadingRequest ? <Spinner size={28} /> : undefined
+                  }
+                />
+              )}
+            </Overlay>
+          </ImageContainer>
+
+          <Flex alignItems="center" gridGap={space.xxxs}>
             {hostSlug && (
               <Link href={PageRoutes.creatorProfile(hostSlug)}>
                 <Avatar
-                  size={56}
+                  size={28}
                   alt={stream.host_detail?.name || ""}
                   image={stream.host_detail?.photo}
                 />
               </Link>
             )}
-            <Box>
-              <Text maxLines={3}>{stream.topic_detail?.name}</Text>
-              <Text color={colors.slate} textStyle="caption">
-                {stream.host_detail?.name}
-              </Text>
-            </Box>
-          </Grid>
-        </Grid>
+
+            <Text textStyle="body">{stream.host_detail?.name}</Text>
+          </Flex>
+          <Text color="#FCFCFC" maxLines={3}>
+            {stream.topic_detail?.name}
+          </Text>
+
+          <Flex
+            color={colors.textSecondary}
+            alignItems="center"
+            gridGap={space.xxxxxs}
+          >
+            <Icon size={16} color="inherit" icon="Calendar" />
+            <Text textStyle="small" color="inherit">
+              {startTime}
+            </Text>
+          </Flex>
+        </Container>
       </Link>
     );
   }

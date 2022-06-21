@@ -2,7 +2,7 @@ import { NextSeoProps } from "next-seo";
 import { useTheme } from "styled-components";
 
 import { BoxProps } from "@/common/components/atoms";
-import BaseLayout from "@/common/components/layouts/BaseLayout";
+import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 import Page from "@/common/components/objects/Page";
 
 interface Props {

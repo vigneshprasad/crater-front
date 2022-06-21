@@ -1,248 +1,58 @@
-import { useCallback } from "react";
-import styled, { useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 
-import dynamic from "next/dynamic";
-
-import {
-  Box,
-  Flex,
-  Grid,
-  Image,
-  Link,
-  Shimmer,
-  Text,
-} from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
+import { Box, Text, Icon, Flex, Link } from "@/common/components/atoms";
+import Spinner from "@/common/components/atoms/Spinner";
 import Footer from "@/common/components/objects/Footer";
+import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
-import useSeries from "@/community/context/SeriesListContext";
-import PastStreamListHome from "@/stream/components/objects/PastStreamListHome";
-import {
-  PastStreamContext,
-  PastStreamProvider,
-} from "@/stream/context/PastStreamContext";
-import useStreamCategories from "@/stream/context/StreamCategoryContext";
-import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
-
-import SeriesList from "../../objects/SeriesList";
-import StreamCard from "../../objects/StreamCard";
-import { IStreamSliderProps } from "../../objects/StreamSlider";
-
-const StreamSlider = dynamic<IStreamSliderProps>(() =>
-  import("../../objects/StreamSlider").then(({ StreamSlider }) => StreamSlider)
-);
-
-const Span = styled.span`
-  color: ${({ theme }) => theme.colors.accent};
-`;
+import HomePageCreatorStaticContent from "@/creators/components/objects/HomePageCreatorStaticContent";
+import CategoryFilteredPastList from "@/stream/components/objects/CategoryFilteredPastList";
+import CategoryFilteredUpcomingList from "@/stream/components/objects/CategoryFilteredUpcomingList";
+import HomeLeaderboardScroller from "@/stream/components/objects/HomeLeaderboardScroller";
+import { StreamSlider } from "@/stream/components/objects/StreamSlider";
+import HomePageAuctions from "@/tokens/components/objects/HomePageAuctions";
 
 export default function StreamsPage(): JSX.Element {
   const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
-  const {
-    upcoming,
-    setUpcomingStreamsPage,
-    nextPage: upcomingStreamsNextPage,
-  } = useUpcomingStreams();
-  const { space, colors, radii } = useTheme();
-  const { series: seriesList, loading: seriesLoading } = useSeries();
-  const { streamCategories, loading: streamCategoryLoading } =
-    useStreamCategories();
+  const { space, colors, fonts } = useTheme();
 
-  const showMoreUpcomingStreams = useCallback(() => {
-    setUpcomingStreamsPage((page) => page + 1);
-  }, [setUpcomingStreamsPage]);
-
-  if (
-    liveStreamsLoading ||
-    !liveStreams ||
-    !upcoming ||
-    seriesLoading ||
-    !seriesList
-  )
-    return <Spinner />;
+  if (liveStreamsLoading || !liveStreams) return <Spinner />;
 
   return (
     <>
-      <Box px={[space.xxs, space.xs]} py={[space.xxs, space.s]}>
-        <StreamSlider liveStreams={liveStreams} />
+      <Box px={[space.xxs, space.xs]}>
+        <StreamSlider streams={liveStreams} />
       </Box>
 
-      {seriesList.length > 0 ? (
-        <>
-          <Box px={[space.xxs, space.s]} py={space.xxs}>
-            <Text textStyle="headlineBold">
-              <Span>Series</Span> by our creators
-            </Text>
-          </Box>
+      <Link href={PageRoutes.leaderboard}>
+        <Flex my={space.xxs} px={[space.xxs, space.xs]} alignItems="center">
+          <Text fontFamily={fonts.heading}>Trending</Text>
+          <Icon mx={space.xxxxs} icon="Trophy" color="#FFAA00" />
+          <Icon icon="ChevronRight" />
+        </Flex>
+      </Link>
 
-          <SeriesList seriesList={seriesList} />
+      <HomeLeaderboardScroller />
 
-          <Box p="1rem 4rem">
-            <hr color={colors.black[4]} />
-          </Box>
-        </>
-      ) : null}
+      <StyledHeadingDivider label="Upcoming Streams" />
+      <CategoryFilteredUpcomingList />
 
-      <Box px={[space.xxs, space.s]} py={space.xxs}>
-        <Text textStyle="headlineBold">
-          Going <Span>live</Span> soon
-        </Text>
+      <HomePageAuctions />
+
+      <StyledHeadingDivider label="Previously Live" />
+
+      <CategoryFilteredPastList />
+
+      <Box
+        mt={space.xs}
+        px={[space.xxs, space.s]}
+        py={[space.xxs, space.s]}
+        backgroundColor={colors.primaryDark}
+      >
+        <HomePageCreatorStaticContent />
+        <Footer />
       </Box>
-
-      <Grid
-        px={space.s}
-        gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
-        gridGap={space.s}
-      >
-        {upcoming?.map((stream) => (
-          <StreamCard
-            stream={stream}
-            hostSlug={stream.host_detail?.slug}
-            key={stream.id}
-          />
-        ))}
-      </Grid>
-
-      <Flex
-        pt={space.xxxs}
-        px="4rem"
-        mb={space.xxxs}
-        flexDirection="row"
-        alignItems="center"
-      >
-        <Box flexGrow={1}>
-          <hr color={colors.black[4]} />
-        </Box>
-
-        {upcomingStreamsNextPage ? (
-          <Button
-            mx={space.s}
-            flexGrow={0}
-            variant="round"
-            text="Show more"
-            onClick={showMoreUpcomingStreams}
-          />
-        ) : null}
-
-        <Box flexGrow={1}>
-          <hr color={colors.black[4]} />
-        </Box>
-      </Flex>
-
-      <Box px={[space.xxs, space.s]} py={space.xxs}>
-        <Text textStyle="headlineBold">
-          <Span>Previous</Span> streams you may like
-        </Text>
-      </Box>
-
-      <Grid
-        px={[space.xs, space.s]}
-        gridTemplateColumns={[
-          "1fr 1fr",
-          "repeat(auto-fit, minmax(200px, 1fr))",
-        ]}
-        gridGap={space.xxs}
-      >
-        {streamCategoryLoading
-          ? Array(5)
-              .fill("")
-              .map((_, index) => (
-                <Shimmer
-                  w="100%"
-                  h={40}
-                  borderRadius={radii.xxxs}
-                  key={index}
-                />
-              ))
-          : streamCategories?.map((category) => {
-              return (
-                <Link
-                  href={PageRoutes.pastStreams(category.pk)}
-                  key={category.pk}
-                >
-                  {category.photo ? (
-                    <Button
-                      variant="filter-button"
-                      text={category.name}
-                      textProps={{ m: 0, textAlign: "start" }}
-                      position="relative"
-                      suffixElement={
-                        <Image
-                          src={category.photo}
-                          alt={category.name}
-                          boxProps={{
-                            display: "inline-flex",
-                            justifyContent: "right",
-                            width: "100%",
-                            height: "70px",
-                            position: "absolute",
-                            py: [space.xxxs, 0],
-                          }}
-                        />
-                      }
-                    />
-                  ) : (
-                    <Button
-                      variant="filter-button"
-                      text={category.name}
-                      textProps={{ m: 0, textAlign: "start" }}
-                    />
-                  )}
-                </Link>
-              );
-            })}
-      </Grid>
-
-      {!streamCategoryLoading &&
-        streamCategories?.map((category, index) => {
-          return (
-            <Box key={category.pk}>
-              <PastStreamProvider categoryFilter={category.pk}>
-                <PastStreamContext.Consumer>
-                  {(pastStreamsData) => {
-                    return (
-                      <Box px={[space.xxs, space.s]}>
-                        <Flex
-                          py={space.xxs}
-                          flexDirection="row"
-                          alignItems="center"
-                          justifyContent="space-between"
-                        >
-                          <Text textStyle="headline6" color={colors.slate}>
-                            {category.name}
-                          </Text>
-                          <Link
-                            href={PageRoutes.pastStreams(category.pk)}
-                            boxProps={{ mx: space.xxs }}
-                          >
-                            <Text textStyle="button" color={colors.accent}>
-                              View more
-                            </Text>
-                          </Link>
-                        </Flex>
-
-                        <PastStreamListHome
-                          {...pastStreamsData}
-                          streams={pastStreamsData.streams?.slice(0, 4)}
-                        />
-
-                        {index !== streamCategories.length - 1 && (
-                          <Box pt={space.xxxs} flexGrow={1}>
-                            <hr color={colors.black[4]} />
-                          </Box>
-                        )}
-                      </Box>
-                    );
-                  }}
-                </PastStreamContext.Consumer>
-              </PastStreamProvider>
-            </Box>
-          );
-        })}
-
-      <Footer />
     </>
   );
 }

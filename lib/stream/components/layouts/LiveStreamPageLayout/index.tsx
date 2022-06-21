@@ -1,53 +1,94 @@
-import useAuth from "@/auth/context/AuthContext";
-import { Box, Grid } from "@/common/components/atoms";
-import BaseLayout from "@/common/components/layouts/BaseLayout";
-import AsideNav from "@/common/components/objects/AsideNav";
+import { useTheme } from "styled-components";
 
+import { Box, Grid } from "@/common/components/atoms";
+import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
+import { AsideNav } from "@/common/components/objects/AsideNav/v2";
+import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
+import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
+
+import BANNER from "../../objects/Banner";
 import LiveStreamPanel from "../../objects/LiveStreamPanel";
-import StreamViewerCount from "../../objects/StreamViewerCount";
-import UpcomingStreamsWidget from "../../objects/UpcomingStreamsWidget";
+import SimilarStreamsOverlay from "../../objects/SimilarStreamsOverlay";
 
 interface IProps {
   videoPlayer: React.ReactNode;
   streamDetail: React.ReactNode;
   modal?: React.ReactNode;
+  shareSection: React.ReactNode;
+  upcomingsStreams: React.ReactNode;
+  pastStreams: React.ReactNode;
 }
 
 export default function LiveStreamPageLayout({
   videoPlayer,
   streamDetail,
   modal,
+  shareSection,
+  upcomingsStreams,
+  pastStreams,
 }: IProps): JSX.Element {
-  const { profile } = useAuth();
+  const { space, borders } = useTheme();
   return (
-    <BaseLayout aside={<AsideNav />} overflowY={["auto", "hidden"]}>
+    <BaseLayout aside={<AsideNav />} overflowY={["hidden", "auto"]}>
       {modal}
       <Grid
-        gridTemplateColumns={["1fr", "1fr 400px"]}
-        h="100%"
-        gridTemplateRows={["min-content 1fr", "1fr"]}
+        minHeight="100%"
+        gridTemplateColumns={["1fr", "3fr 1fr"]}
+        gridTemplateRows={["max-content max-content 1fr ", "min-content"]}
+        gridTemplateAreas={[
+          `
+            "stream"
+            "about"
+            "panel"
+          `,
+          `
+            "stream panel"
+            "about share"
+            "pageContent pageContent"
+          `,
+        ]}
       >
-        <Box overflowY={["hidden", "auto"]}>
-          <Box position="relative" pt="56.25%">
+        <Grid
+          gridArea="stream"
+          borderRight={["none", `1px solid ${borders.primary}`]}
+        >
+          <Box pt="56.25%" position="relative">
             {videoPlayer}
-            <UpcomingStreamsWidget />
-            {(() => {
-              if (!profile) return null;
-
-              const isAdmin = profile.groups.filter(
-                (group) => group.name === "livestream_chat_admin"
-              )[0];
-
-              if (isAdmin) {
-                return <StreamViewerCount />;
-              }
-              return null;
-            })()}
+            <SimilarStreamsOverlay />
           </Box>
+        </Grid>
+        <Grid gridArea="panel">
+          <ChatColorModeProvider>
+            <LiveStreamPanel />
+          </ChatColorModeProvider>
+        </Grid>
+        <Grid gridArea="about" p={[0, space.xxs]}>
           {streamDetail}
-        </Box>
+        </Grid>
+        <Grid
+          display={["none", "grid"]}
+          gridArea="share"
+          py={space.xxs}
+          pr={space.xxs}
+        >
+          {shareSection}
+        </Grid>
 
-        <LiveStreamPanel initial="chat" />
+        <Box display={["none", "grid"]} gridArea="pageContent">
+          <BANNER.DownloadApp />
+          <StyledHeadingDivider label="Explore Streams" my={36} />
+          {upcomingsStreams}
+
+          <Box h={space.s} />
+
+          <BANNER.StartStreaming />
+
+          <StyledHeadingDivider label="Previously Streamed" my={36} />
+
+          {pastStreams}
+
+          <Box h={space.l} />
+        </Box>
       </Grid>
     </BaseLayout>
   );

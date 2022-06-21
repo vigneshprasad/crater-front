@@ -26,6 +26,11 @@ export const middleware: NextMiddleware = async (req) => {
   const challengeId = url.searchParams.get("challenge");
   const leaderboardId = url.searchParams.get("leaderboard");
 
+  if (!tab) {
+    url.searchParams.set("tab", "chat");
+    return NextResponse.redirect(url);
+  }
+
   if (tab === "leaderboard") {
     const challenges = await fetchChallenges();
     if (!challengeId) {

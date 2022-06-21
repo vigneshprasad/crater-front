@@ -1,5 +1,5 @@
 import * as CSS from "csstype";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import { IconOptions, icons } from "@/common/theme";
 
@@ -10,6 +10,7 @@ export type IconProps = Omit<BoxProps, "width" | "height"> & {
   color?: CSS.Property.Color;
   size?: number | number[];
   fill?: boolean;
+  rotate?: number;
 };
 
 const StyledIconWrapper = styled(Box)<BoxProps & { rotate?: number }>`
@@ -28,12 +29,13 @@ export function Icon({
   fill,
   ...rest
 }: IconProps): JSX.Element {
+  const { colors } = useTheme();
   const IconComponent = icons[icon];
   return (
     <StyledIconWrapper
       width={size || 24}
       height={size || 24}
-      color={color}
+      color={color ?? colors.iconColor}
       {...rest}
     >
       <IconComponent

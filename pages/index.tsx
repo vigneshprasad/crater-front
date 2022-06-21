@@ -1,15 +1,19 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
-import HomePageLayout from "@/common/components/layouts/HomePageLayout";
+import HomePageLayout from "@/common/components/layouts/v2/HomePageLayout";
 import { PageResponse } from "@/common/types/api";
 import WebinarApiClient from "@/community/api";
 import { LiveStreamsProvider } from "@/community/context/LiveStreamsContext";
-import { SeriesListProvider } from "@/community/context/SeriesListContext";
-import { Series, Webinar } from "@/community/types/community";
+import { Webinar, PastStreamListItem } from "@/community/types/community";
+import { CreatorRankListProvider } from "@/creators/context/CreatorRankListContext";
+import StreamApiClient from "@/stream/api";
+import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamCategoryProvider } from "@/stream/context/StreamCategoryContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
+import { AuctionListProvider } from "@/tokens/context/AuctionListContext";
 
 const StreamsPage = dynamic(
   () => import("@/community/components/pages/StreamsPage")
@@ -17,20 +21,18 @@ const StreamsPage = dynamic(
 
 interface ServerProps {
   liveStreams: Webinar[];
-  upcoming: PageResponse<Webinar>;
-  series: Series[];
+  pastStreams: PageResponse<PastStreamListItem>;
 }
 
 export const getStaticProps: GetStaticProps<ServerProps> = async () => {
   const [liveStreams] = await WebinarApiClient().getAllLiveWebinars();
-  const [upcoming] = await WebinarApiClient().getAllUpcominWebinars();
-  const [series] = await WebinarApiClient().getAllSeries();
+
+  const [pastStreams] = await StreamApiClient().getPastStreams();
 
   return {
     props: {
       liveStreams: liveStreams ?? [],
-      upcoming: upcoming ?? ({} as PageResponse<Webinar>),
-      series: series ?? [],
+      pastStreams: pastStreams ?? ({} as PageResponse<PastStreamListItem>),
     },
     revalidate: 10,
   };
@@ -40,26 +42,39 @@ export type IProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Home({
   liveStreams,
-  upcoming,
-  series,
+  pastStreams,
 }: IProps): JSX.Element {
+  const router = useRouter();
+  const upcomingCategory = router.query.upcomigCategory as string | undefined;
+  const pastCategory = router.query.pastCategory as string | undefined;
   return (
     <HomePageLayout
       seo={{
-        title: "Crater Club: Streams",
+        title: "Watch, Chat & Place Bids",
         description:
-          "Crater is where you join live streams with the mentors & creators you follow, get to network with like-minds, and can claim exclusive access to mentors & creator by buying their tokens at the live auction",
+          "You can watch live streams, interact with creators & take part in auctions",
       }}
-      heading="Livestreams"
       activeTab="streams"
+      heading="Watch, Chat and Place Bids"
+      subHeading="You can watch live streams, interact with creators &amp; take part in auctions"
     >
       <LiveStreamsProvider initial={liveStreams}>
-        <UpcomingStreamsProvider initial={upcoming}>
-          <SeriesListProvider initial={series}>
-            <StreamCategoryProvider>
-              <StreamsPage />
-            </StreamCategoryProvider>
-          </SeriesListProvider>
+        <UpcomingStreamsProvider
+          pageSize={8}
+          category={upcomingCategory ? parseInt(upcomingCategory) : undefined}
+        >
+          <PastStreamProvider
+            initial={pastStreams}
+            categoryFilter={pastCategory ? parseInt(pastCategory) : undefined}
+          >
+            <AuctionListProvider rewardDetail={true}>
+              <StreamCategoryProvider>
+                <CreatorRankListProvider>
+                  <StreamsPage />
+                </CreatorRankListProvider>
+              </StreamCategoryProvider>
+            </AuctionListProvider>
+          </PastStreamProvider>
         </UpcomingStreamsProvider>
       </LiveStreamsProvider>
     </HomePageLayout>

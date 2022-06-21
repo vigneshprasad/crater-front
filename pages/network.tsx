@@ -1,7 +1,7 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { NextSeoProps } from "next-seo";
 
-import HomePageLayout from "@/common/components/layouts/HomePageLayout";
+import HomePageLayout from "@/common/components/layouts/v2/HomePageLayout";
 import { PageResponse } from "@/common/types/api";
 import CreatorApiClient from "@/creators/api";
 import CommunityPage from "@/creators/components/page/CommunityPage";
@@ -35,8 +35,8 @@ export default function ClubsTabPage({ creators }: PageProps): JSX.Element {
   return (
     <HomePageLayout
       seo={seo}
-      activeTab="community"
-      heading="Creators & Educators"
+      activeTab="creators"
+      heading="Creators &amp; Educators"
     >
       <CreatorListProvider pageSize={20} initial={creators}>
         <CommunityPage />

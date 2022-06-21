@@ -2,7 +2,6 @@ import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { ThemeProvider } from "styled-components";
 
-import { Box } from "@/common/components/atoms";
 import Page from "@/common/components/objects/Page";
 import { theme } from "@/common/theme";
 import WebinarApiClient from "@/community/api";
@@ -54,10 +53,8 @@ export default function StreamChatPage({
     >
       <ThemeProvider theme={theme}>
         <WebinarProvider initial={webinar} id={id}>
-          <ChatColorModeProvider host={webinar.host}>
-            <Box h="100vh">
-              <StreamChat showPopup={false} stream={webinar} />
-            </Box>
+          <ChatColorModeProvider>
+            <StreamChat minHeight="100vh" showPopup={false} stream={webinar} />
           </ChatColorModeProvider>
         </WebinarProvider>
       </ThemeProvider>
