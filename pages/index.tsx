@@ -45,7 +45,7 @@ export default function Home({
   pastStreams,
 }: IProps): JSX.Element {
   const router = useRouter();
-  const upcomingCategory = router.query.upcomigCategory as string | undefined;
+  const upcomingCategory = router.query.upcomingCategory as string | undefined;
   const pastCategory = router.query.pastCategory as string | undefined;
   return (
     <HomePageLayout
