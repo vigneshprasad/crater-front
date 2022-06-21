@@ -186,3 +186,5 @@ export const START_CREATOR_JOURNET_CALENDLY =
   "https://calendly.com/craterclub/apply-to-create-on-crater";
 
 export const HELP_CENTER = "https://crater.zendesk.com/hc/en-us";
+
+export const WEB3_CRATER_LANDING = "https://web3.crater.club/";

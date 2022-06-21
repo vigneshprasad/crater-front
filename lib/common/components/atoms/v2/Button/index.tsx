@@ -1,4 +1,4 @@
-import styled, { useTheme } from "styled-components";
+import styled, { useTheme, css } from "styled-components";
 import { variant } from "styled-system";
 
 import { Grid, GridProps } from "../../System/Grid";
@@ -21,6 +21,7 @@ type Variants =
   | "displayLarge"
   | "secondary-dark-flat"
   | "transparent-slider"
+  | "gradient-border"
   | "text";
 
 export type ButtonProps = GridProps &
@@ -253,6 +254,29 @@ const StyledButton = styled(Grid)<ButtonProps>`
           bg: "secondaryLight",
         },
       },
+      "gradient-border": css`
+        position: relative;
+        position: relative;
+        background: transparent;
+        padding: 0.5em 0.8em;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border-radius: 4px;
+          border: 2px solid transparent;
+          background: linear-gradient(45deg, #d5bbff, #9db3ff, #0d849e)
+            border-box;
+          -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0);
+          -webkit-mask-composite: destination-out;
+          mask-composite: exclude;
+        }
+      `,
     },
   })}
 `;

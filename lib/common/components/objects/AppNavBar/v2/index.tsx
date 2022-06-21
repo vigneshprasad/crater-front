@@ -1,5 +1,7 @@
+import STATIC_IMAGES from "public/images";
 import styled, { useTheme } from "styled-components";
 
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
@@ -15,7 +17,9 @@ import {
 } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
+import { WEB3_CRATER_LANDING } from "@/common/constants/url.constants";
 import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 import MenuButton from "../../MenuButton";
 import { MenuItem } from "../../MenuButton/MenuItem";
@@ -30,10 +34,11 @@ const MenuContainer = styled(Flex)`
 
 export default function AppNavbar(): JSX.Element {
   const { user, profile, loading } = useAuth();
-  const { colors, space, borders, fonts, radii } = useTheme();
+  const { colors, space, borders, fonts, radii, breakpoints } = useTheme();
   const { openModal } = useAuthModal();
   const { setOpened } = useAsideNavState();
   const router = useRouter();
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   return (
     <Flex
@@ -78,7 +83,7 @@ export default function AppNavbar(): JSX.Element {
         </MenuButton>
       </Flex>
 
-      <Flex gridGap={space.xxxs}>
+      <Flex gridGap={space.xxxs} alignItems="center">
         {(() => {
           if (loading) {
             return <Shimmer borderRadius="50%" size={36} />;
@@ -98,32 +103,49 @@ export default function AppNavbar(): JSX.Element {
           }
 
           return (
-            <MenuButton
-              items={[
-                <Link key="account" href={PageRoutes.account}>
-                  <MenuItem label="Account" />
-                </Link>,
-                <MenuItem
-                  onClick={async () => {
-                    await Logout();
-                    router.reload();
-                  }}
-                  label="Logout"
-                  key="logout"
-                  suffixElement={<Icon icon="LogOut" size={20} />}
-                />,
-              ]}
-              position="bottom-right"
-            >
-              <MenuContainer
-                borderRadius={radii.xxxxs}
-                p="4px 4px 4px 8px"
-                alignItems="center"
+            <>
+              <a href={WEB3_CRATER_LANDING} target="_blank" rel="noreferrer">
+                <Button
+                  prefixElement={
+                    <Image
+                      height={16}
+                      width={16}
+                      src={STATIC_IMAGES.ImageCoin}
+                      alt="coin icon"
+                    />
+                  }
+                  variant="gradient-border"
+                  label={isMobile ? "Earn" : "Learn and Earn"}
+                />
+              </a>
+
+              <MenuButton
+                items={[
+                  <Link key="account" href={PageRoutes.account}>
+                    <MenuItem label="Account" />
+                  </Link>,
+                  <MenuItem
+                    onClick={async () => {
+                      await Logout();
+                      router.reload();
+                    }}
+                    label="Logout"
+                    key="logout"
+                    suffixElement={<Icon icon="LogOut" size={20} />}
+                  />,
+                ]}
+                position="bottom-right"
               >
-                <Avatar size={36} image={profile.photo} />
-                <Icon size={20} icon="MoreVertical" />
-              </MenuContainer>
-            </MenuButton>
+                <MenuContainer
+                  borderRadius={radii.xxxxs}
+                  p="4px 4px 4px 8px"
+                  alignItems="center"
+                >
+                  <Avatar size={36} image={profile.photo} />
+                  <Icon size={20} icon="MoreVertical" />
+                </MenuContainer>
+              </MenuButton>
+            </>
           );
         })()}
       </Flex>

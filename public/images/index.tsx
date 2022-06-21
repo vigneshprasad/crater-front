@@ -4,6 +4,7 @@ import ImageBidAcceptedIcon from "public/images/img_bid_accepted.png";
 import ImageBidRejectedIcon from "public/images/img_bid_rejected.png";
 import ImageBlobBlue from "public/images/img_blob_blue.png";
 import ImageCash from "public/images/img_cash.png";
+import ImageCoin from "public/images/img_coin.png";
 import ImageCreatorAcceptedIcon from "public/images/img_creator_accepted.png";
 import ImgDefaultAvatar from "public/images/img_default_avatar.png";
 import ImageDiscordIcon from "public/images/img_discord_icon.png";
@@ -21,6 +22,7 @@ import ImageRewardCard from "public/images/img_reward_card.png";
 import ImageStarryBg from "public/images/img_starry_bg.png";
 import ImageCraterStream from "public/images/img_stream_crater.png";
 import ImageTv from "public/images/img_tv.png";
+import ImageVisorMonkey from "public/images/img_visor_monkey.png";
 
 const STATIC_IMAGES = {
   ImgDefaultAvatar,
@@ -46,6 +48,8 @@ const STATIC_IMAGES = {
   ImageRank1,
   ImageRank2,
   ImageRank3,
+  ImageCoin,
+  ImageVisorMonkey,
 };
 
 export default STATIC_IMAGES;
