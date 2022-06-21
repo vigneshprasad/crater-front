@@ -10,6 +10,8 @@ export type PointOfContact = {
 };
 
 export type Creator = {
+  name?: string;
+  photo?: string;
   certified: boolean;
   cover_file?: string;
   default_community: Community;
@@ -78,4 +80,17 @@ export enum ConversionFunnelKey {
 export type ConversionFunnel = {
   name: ConversionFunnelKey;
   value: number;
+};
+
+export type CreatorRank = {
+  id: number;
+  user: string;
+  subscriber_count: number;
+  is_follower: boolean;
+  profile_detail: {
+    id: number;
+    name: string;
+    photo: string;
+  };
+  watch_time: number;
 };

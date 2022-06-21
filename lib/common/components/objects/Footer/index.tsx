@@ -10,25 +10,35 @@ import {
   LINKEDIN_URL,
 } from "@/common/constants/url.constants";
 
-import { Box, Flex, Text, Grid } from "../../atoms";
+import { Box, Flex, Text, Grid, Image } from "../../atoms";
 import IconButton from "../../atoms/IconButton";
 import LinkText from "../LinkText";
 
 export default function Footer(): JSX.Element {
-  const { space, borders, colors } = useTheme();
+  const { space, colors, fonts } = useTheme();
   const { user } = useAuth();
 
   return (
     <Grid
       mt={space.xs}
-      px={[space.xxs, space.s]}
-      py={space.xs}
+      pt={space.s}
       gridRowGap={space.xs}
-      gridTemplateColumns={["1fr", "1fr 1fr 1fr"]}
-      borderTop={`2px solid ${borders.main}`}
+      gridColumnGap={space.m}
+      gridTemplateColumns={["1fr", "1fr 1fr 1fr 1fr"]}
+      borderTop="1px solid #545454"
     >
+      <Box w={229} justifySelf={["center", "start"]}>
+        <Image src="/images/crater_logo_dark_mode.png" alt="Crater" />
+      </Box>
+
       <Flex flexDirection="column" gridGap={space.xxxs}>
-        <Text mb={space.xxs} textStyle="title">
+        <Text
+          fontFamily={fonts.heading}
+          pb={space.xxxxs}
+          textStyle="small"
+          borderBottom="1px solid #C4C4C4"
+          textTransform="uppercase"
+        >
           Links
         </Text>
 
@@ -39,31 +49,37 @@ export default function Footer(): JSX.Element {
         <LinkText href={LEARN_MORE_URL}>FAQ</LinkText>
       </Flex>
       <Flex flexDirection="column" gridGap={space.xxxs}>
-        <Text mb={space.xxs} textStyle="title">
+        <Text
+          fontFamily={fonts.heading}
+          pb={space.xxxxs}
+          textStyle="small"
+          borderBottom="1px solid #C4C4C4"
+          textTransform="uppercase"
+        >
           Contact us
         </Text>
-        <Box>
-          <Text textStyle="small">Phone</Text>
-          <LinkText href="tel:+919930474469">+91 9930474469</LinkText>
-        </Box>
-
-        <Box>
-          <Text textStyle="small">Email</Text>
-          <LinkText href="mailto:vivan@crater.club">vivan@crater.club</LinkText>
-        </Box>
-
-        <Box>
-          <Text textStyle="small">Company Details</Text>
-          <Text color={colors.slate}>
-            Wurknet Private Limited <br />
-            Shalaka, 204, Juhu Rd, Santacruz West <br />
-            Mumbai, Maharashtra 400054
-          </Text>
-        </Box>
+        <LinkText href="tel:+919930474469">+91 9930474469</LinkText>
+        <LinkText href="mailto:vivan@crater.club">vivan@crater.club</LinkText>
+        <Text
+          textStyle="body"
+          color={colors.accentLight}
+          fontWeight={500}
+          lineHeight="2.1rem"
+        >
+          Wurknet Private Limited <br />
+          Shalaka, 204, Juhu Rd, Santacruz West <br />
+          Mumbai, Maharashtra 400054
+        </Text>
       </Flex>
 
-      <Box>
-        <Text mb={space.xxs} textStyle="title">
+      <Flex flexDirection="column" gridGap={space.xxxs}>
+        <Text
+          fontFamily={fonts.heading}
+          pb={space.xxxxs}
+          textStyle="small"
+          borderBottom="1px solid #C4C4C4"
+          textTransform="uppercase"
+        >
           Follow us
         </Text>
 
@@ -92,12 +108,12 @@ export default function Footer(): JSX.Element {
             />
           </a>
         </Flex>
-      </Box>
+      </Flex>
 
       <Box
-        gridColumn={["1", "1 / span 3"]}
-        py={space.xs}
-        borderTop={`2px solid ${borders.main}`}
+        gridColumn={["1", "1 / span 4"]}
+        pt={space.xs}
+        borderTop="1px solid #545454"
       >
         <Text color={colors.slate} textStyle="small" textAlign="center">
           Copyright 2019 CRATER, All rights reserved <br />

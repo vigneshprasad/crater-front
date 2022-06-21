@@ -8,15 +8,14 @@ import {
 } from "react";
 import { DefaultTheme, ThemeProvider } from "styled-components";
 
-import useAuth from "@/auth/context/AuthContext";
-
 interface ProviderProps {
   children: React.ReactNode | React.ReactNode[];
-  host?: string;
 }
 
+type ColorModes = "dark" | "light";
+
 interface IChatColorModeState {
-  colorMode: string;
+  colorMode: ColorModes;
   toggleColorMode: () => void;
 }
 
@@ -24,22 +23,20 @@ export const ChatColorModeContext = createContext({} as IChatColorModeState);
 
 export function ChatColorModeProvider({
   children,
-  host,
 }: ProviderProps): JSX.Element {
-  const [colorMode, setColorMode] = useState<string>("dark");
-  const { user } = useAuth();
+  const [colorMode, setColorMode] = useState<ColorModes>("dark");
 
   useEffect(() => {
-    const mode = localStorage.getItem("chatColorMode") || "dark";
+    const mode =
+      (localStorage.getItem("chatColorMode") as ColorModes) || "dark";
     setColorMode(mode);
   }, []);
 
   const toggleColorMode = useCallback(() => {
-    const newColorMode =
-      user?.pk === host && colorMode === "dark" ? "light" : "dark";
+    const newColorMode = colorMode === "dark" ? "light" : "dark";
     setColorMode(newColorMode);
     localStorage.setItem("chatColorMode", newColorMode);
-  }, [colorMode, user, host]);
+  }, [colorMode]);
 
   const setTheme = useCallback(
     (theme: DefaultTheme): DefaultTheme => {
@@ -48,26 +45,29 @@ export function ChatColorModeProvider({
           ...theme,
           colors: {
             ...theme.colors,
-            slate: "#868686",
-            white: ["#9146FF", "#b9b9b9"],
-            black: [
-              "#333333",
-              "#1B1D21",
-              "#E6E6E6",
-              "#242731",
-              "#191B20",
-              "#EDEDED",
-              "#18181A",
-              "#000000",
-            ],
+            primaryDark: "#EDEDED",
+            inputDefaultBg: "#EDEDED",
+            primaryLight: "#FFFFFF",
+            primaryBackground: "#FFFFFF",
+            textPlaceholder: "#969696",
+            primaryDarkSecondary: "#F5F5F5",
+            iconColor: "#333333",
+            textPrimary: "#333333",
+            chatPrimaryColor: "#6308BA",
             chatColors: [
-              "#6308BA",
-              "#1C91B5",
-              "#D39409",
-              "#15AF04",
-              "#D34242",
-              "#2752CC",
+              "#3D1DC8",
+              "#C51D59",
+              "#8B09AA",
+              "#058EAD",
+              "#0EA538",
+              "#C87F08",
+              "#71A805",
+              "#C8461E",
             ],
+          },
+          borders: {
+            ...theme.borders,
+            input: "#EDEDED",
           },
         };
       }

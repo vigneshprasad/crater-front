@@ -3,8 +3,7 @@ import { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Grid, Link, Text, Box } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spiner";
+import { Grid, Link, Text, Box, Spinner } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
 import usePastStreams from "@/stream/context/PastStreamContext";
 

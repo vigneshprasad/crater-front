@@ -2,6 +2,7 @@ import linkifyHtml from "linkify-html";
 import { useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 
+import useAuth from "@/auth/context/AuthContext";
 import { Text, Span } from "@/common/components/atoms";
 import hashString from "@/common/utils/hash/hash";
 import { ChatMessage } from "@/stream/providers/FirebaseChatProvider/types";
@@ -26,7 +27,8 @@ export default function ChatMessageItem({
   message,
   textColor,
 }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, radii } = useTheme();
+  const { user } = useAuth();
   const name = useMemo(() => {
     if (message.display_name) {
       return message.display_name;
@@ -48,14 +50,24 @@ export default function ChatMessageItem({
 
   return (
     <Text
+      as="div"
+      py={2}
+      px={space.xxxxs}
+      bg={colors.primaryLight}
       textStyle="chatText"
-      mx={space.xxs}
+      mx={space.xxxs}
       key={message.message}
       wordBreak="break-word"
       color={textColor}
+      borderRadius={radii.xxxs}
     >
       <Span
-        color={colors.chatColors[hashString(toHash) % colors.chatColors.length]}
+        fontWeight="600"
+        color={
+          message.sender === user?.pk
+            ? colors.chatPrimaryColor
+            : colors.chatColors[hashString(toHash) % colors.chatColors.length]
+        }
       >
         {name}:
       </Span>{" "}

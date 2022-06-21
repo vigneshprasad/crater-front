@@ -5,29 +5,22 @@ import { useTheme } from "styled-components";
 import dynamic from "next/dynamic";
 
 import useAuth from "@/auth/context/AuthContext";
-import {
-  Box,
-  Shimmer,
-  Text,
-  Grid,
-  Icon,
-  Flex,
-  Avatar,
-  Link,
-} from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
-import Spinner from "@/common/components/atoms/Spiner";
-import { PageRoutes } from "@/common/constants/route.constants";
+import { Shimmer } from "@/common/components/atoms";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import { Props as DyteMeetingProps } from "@/dyte/components/objects/DyteMeeting";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
+import UpcomingStreamsList from "@/stream/components//objects/UpcomingStreamsList";
 import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
 import RewardBidModal from "@/tokens/components/objects/RewardBidModal";
 import { Reward } from "@/tokens/types/token";
 
 import LiveStreamPageLayout from "../../layouts/LiveStreamPageLayout";
+import PastStreamsList from "../../objects/PastStreamsList/v2";
+import SimilarStreamsOverlay from "../../objects/SimilarStreamsOverlay";
+import StreamAboutSection from "../../objects/StreamAboutSection";
+import StreamShareSection from "../../objects/StreamShareSection";
 import Container from "./container";
 import useLiveStreamPageContext from "./context";
 
@@ -62,7 +55,7 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
   const { user } = useAuth();
   const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
   const { dyteParticipant } = useDyteWebinar();
-  const { space, borders, colors, radii } = useTheme();
+  const { borders } = useTheme();
   const { setTokenModalVisible, tokenModalVisible, activeReward } =
     useLiveStreamPageContext();
   const [loading, setLoading] = useState(false);
@@ -92,134 +85,34 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
   return (
     <LiveStreamPageLayout
       videoPlayer={
-        dyteParticipant && (
-          <DyteMeeting
-            webinar={webinar}
-            orgId={orgId}
-            token={dyteParticipant.auth_token}
-            roomName={dyteParticipant.dyte_meeting_detail.room_name}
-            position="absolute"
-            top={0}
-            left={0}
-            right={0}
-            bottom={0}
-            overflow="hidden"
-            borderBottom={`2px solid ${borders.main}`}
-          />
-        )
+        <>
+          {dyteParticipant && (
+            <DyteMeeting
+              webinar={webinar}
+              orgId={orgId}
+              token={dyteParticipant.auth_token}
+              roomName={dyteParticipant.dyte_meeting_detail.room_name}
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              overflow="hidden"
+              borderBottom={`2px solid ${borders.main}`}
+            />
+          )}
+          <SimilarStreamsOverlay />
+        </>
       }
       streamDetail={
-        <Box>
-          <Grid
-            p={space.xs}
-            gridTemplateColumns={["1fr", "1fr min-content"]}
-            alignItems="center"
-            gridRowGap={[space.xxs, 0]}
-          >
-            <Box>
-              <Text textStyle="headline5" maxLines={2}>
-                {cachedWebinar?.topic_detail.name}
-              </Text>
-            </Box>
-
-            <Flex>
-              {(() => {
-                // If the logged in user is the host, do not show `Follow` button
-                if (cachedWebinar?.host === user?.pk) return null;
-
-                return followersLoading ? (
-                  <Shimmer
-                    w={100}
-                    h={35}
-                    borderRadius={radii.xxxs}
-                    mr={space.xxs}
-                  />
-                ) : followers && followers.length > 0 && followers[0].notify ? (
-                  <Button
-                    mr={space.xxs}
-                    text="Following"
-                    variant="nav-button"
-                    bg={colors.black[5]}
-                    border="1px solid rgba(255, 255, 255, 0.1)"
-                    disabled={true}
-                  />
-                ) : (
-                  <Button
-                    mr={space.xxs}
-                    variant="nav-button"
-                    text="Follow"
-                    onClick={() => {
-                      setLoading(true);
-                      followCreator();
-                    }}
-                    suffixElement={
-                      loading ? (
-                        <Spinner
-                          size={24}
-                          strokeWidth={2}
-                          strokeColor={colors.white[0]}
-                        />
-                      ) : undefined
-                    }
-                    disabled={loading}
-                  />
-                );
-              })()}
-              {cachedWebinar?.host_profile_details?.primary_url && (
-                <Link
-                  href={cachedWebinar?.host_profile_details?.primary_url}
-                  boxProps={{ target: "_blank" }}
-                >
-                  <Button
-                    border={`2px solid ${colors.slate}`}
-                    bg="transparent"
-                    prefixElement={
-                      <Icon mx={space.xxxxs} size={18} icon="Linktree" />
-                    }
-                    variant="nav-button"
-                    text="LinkTree"
-                  />
-                </Link>
-              )}
-            </Flex>
-            <Flex
-              display={["none", "flex"]}
-              flexDirection="column"
-              gridColumn="1 / span 2"
-            >
-              <Text my={space.xxs} textStyle="title">
-                Speakers
-              </Text>
-              <Flex gridGap={space.xxs} alignItems="center">
-                {cachedWebinar?.speakers_detail_list.map((speaker) => {
-                  return (
-                    <Flex
-                      flexDirection="row"
-                      alignItems="center"
-                      gridGap={space.xxxs}
-                      key={speaker.pk}
-                    >
-                      {speaker.creator_detail?.slug ? (
-                        <Link
-                          href={PageRoutes.creatorProfile(
-                            speaker.creator_detail?.slug
-                          )}
-                        >
-                          <Avatar size={42} image={speaker.photo} />
-                        </Link>
-                      ) : (
-                        <Avatar size={42} image={speaker.photo} />
-                      )}
-
-                      <Text fontWeight="600">{speaker.name}</Text>
-                    </Flex>
-                  );
-                })}
-              </Flex>
-            </Flex>
-          </Grid>
-        </Box>
+        <StreamAboutSection
+          followers={followers}
+          stream={cachedWebinar ?? webinar}
+          followersLoading={followersLoading || loading}
+          onFollow={() => followCreator()}
+        />
       }
+      shareSection={<StreamShareSection stream={cachedWebinar} />}
       modal={
         tokenModalVisible &&
         activeReward &&
@@ -232,6 +125,8 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
           />
         )
       }
+      upcomingsStreams={<UpcomingStreamsList />}
+      pastStreams={<PastStreamsList />}
     />
   );
 }

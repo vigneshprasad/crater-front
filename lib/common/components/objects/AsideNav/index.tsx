@@ -1,12 +1,7 @@
 import { motion, AnimateSharedLayout } from "framer-motion";
 import styled, { useTheme } from "styled-components";
 
-import {
-  INavKeys,
-  SIDE_NAV_ITEMS,
-  SIDE_NAV_MOBILE_ITEMS,
-} from "@/common/constants/ui.constants";
-import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
+import { INavKeys, SIDE_NAV_ITEMS } from "@/common/constants/ui.constants";
 
 import { AnimatedBox, Grid, Icon, Link, Text } from "../../atoms";
 
@@ -50,7 +45,6 @@ AnimatedText.defaultProps = {
 
 export default function AsideNav({ activeTab }: IProps): JSX.Element {
   const { space, colors, borders, zIndices } = useTheme();
-  const { animate, isMobile } = useAsideNavState();
 
   return (
     <AnimateSharedLayout>
@@ -58,12 +52,10 @@ export default function AsideNav({ activeTab }: IProps): JSX.Element {
         layout
         role="nav"
         display="grid"
-        initial={isMobile === false ? "collapsed" : "hidden"}
         gridGap={space.xxs}
         gridAutoFlow="row"
         gridAutoRows="max-content"
         gridAutoColumns="1fr"
-        animate={animate}
         variants={{
           collapsed: {
             width: 56,
@@ -123,28 +115,6 @@ export default function AsideNav({ activeTab }: IProps): JSX.Element {
             </Link>
           );
         })}
-
-        {isMobile &&
-          SIDE_NAV_MOBILE_ITEMS.map(({ icon, key, url, label }) => {
-            const color = key === activeTab ? colors.accent : colors.white[1];
-            return (
-              <a href={url} key={key} target="_blank" rel="noreferrer">
-                <NavItemContainer
-                  px={[space.xxxs, 0]}
-                  w={["none", 40]}
-                  h={40}
-                  alignItems={["center"]}
-                  gridTemplateColumns={["40px 1fr", "1fr"]}
-                  gridGap={[space.xxxs, space.xxs]}
-                >
-                  <Icon color={color} size={20} m="auto auto" icon={icon} />
-                  <AnimatedText textStyle="menu" color={color}>
-                    {label}
-                  </AnimatedText>
-                </NavItemContainer>
-              </a>
-            );
-          })}
       </AnimatedBox>
     </AnimateSharedLayout>
   );

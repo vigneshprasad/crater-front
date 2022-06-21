@@ -1,25 +1,34 @@
-import { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { SWRInfiniteResponse, useSWRInfinite } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
-import { Webinar } from "@/community/types/community";
+import fetcher from "@/common/utils/fetcher";
+import { PastStreamListItem } from "@/community/types/community";
 
 export interface IPastStreamState {
-  streams?: Webinar[];
+  streams?: PastStreamListItem[];
   error?: unknown;
   loading: boolean;
   setPastStreamsPage: SWRInfiniteResponse<
-    PageResponse<Webinar>,
+    PageResponse<PastStreamListItem>,
     unknown
   >["setSize"];
+  nextPage?: boolean;
+  category?: number;
 }
 
 export const PastStreamContext = createContext({} as IPastStreamState);
 
 type IProviderProps = PropsWithChildren<{
   host?: string;
-  initial?: PageResponse<Webinar>;
+  initial?: PageResponse<PastStreamListItem>;
   pageSize?: number;
   categoryFilter?: number;
 }>;
@@ -31,11 +40,12 @@ export function PastStreamProvider({
   categoryFilter,
   ...rest
 }: IProviderProps): JSX.Element {
+  const [nextPage, setNextPage] = useState(false);
   const {
     data: streams,
     error,
     setSize: setPastStreamsPage,
-  } = useSWRInfinite<PageResponse<Webinar>>(
+  } = useSWRInfinite<PageResponse<PastStreamListItem>>(
     (index, previousData) => {
       const page = index + 1;
       if (previousData && !previousData.next) return null;
@@ -50,6 +60,11 @@ export function PastStreamProvider({
 
       return `${API_URL_CONSTANTS.groups.getPastWebinars}?page=${page}&page_size=${pageSize}`;
     },
+    async (key: string) => {
+      const response = await fetcher<PageResponse<PastStreamListItem>>(key);
+      !response.next ? setNextPage(false) : setNextPage(true);
+      return response;
+    },
     {
       initialData: initial ? [initial] : undefined,
     }
@@ -61,8 +76,10 @@ export function PastStreamProvider({
       error,
       loading: !streams && !error,
       setPastStreamsPage,
+      nextPage,
+      category: categoryFilter,
     }),
-    [streams, error, setPastStreamsPage]
+    [streams, error, setPastStreamsPage, nextPage, categoryFilter]
   );
 
   return <PastStreamContext.Provider value={value} {...rest} />;

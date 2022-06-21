@@ -29,13 +29,13 @@ export const SIDE_NAV_ITEMS: IMenuItem[] = [
     key: "streams",
     iconFill: false,
   },
-  {
-    label: "Auctions",
-    icon: "Wallet",
-    url: PageRoutes.auctions,
-    key: "auctions",
-    iconFill: false,
-  },
+  // {
+  //   label: "Auctions",
+  //   icon: "Wallet",
+  //   url: PageRoutes.auctions,
+  //   key: "auctions",
+  //   iconFill: false,
+  // },
   {
     label: "Network",
     icon: "Community",
