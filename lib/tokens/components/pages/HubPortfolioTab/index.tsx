@@ -14,7 +14,8 @@ import StaticAuctionInfo from "../../objects/StaticAuctionInfo";
 import TransactionDataTable from "../../objects/TransactionDataTable";
 import UserRewardItem from "../../objects/UserRewardItem";
 import UserRewardList from "../../objects/UserRewardList";
-import HubMyReferrals from "../HubMyReferrals";
+
+// import HubMyReferrals from "../HubMyReferrals";
 
 export default function HubPortfolioTab(): JSX.Element {
   const [showSuccess, setSuccess] = useState(false);
@@ -58,7 +59,7 @@ export default function HubPortfolioTab(): JSX.Element {
             <StaticAuctionInfo />
           </Flex>
 
-          <HubMyReferrals />
+          {/* <HubMyReferrals /> */}
         </>
       );
     }
@@ -83,7 +84,7 @@ export default function HubPortfolioTab(): JSX.Element {
         <Text textStyle="title">Transaction Log</Text>
         <TransactionDataTable bids={bids} />
       </Flex>
-      <HubMyReferrals />
+      {/* <HubMyReferrals /> */}
       <Box h={space.m} />
     </>
   );
