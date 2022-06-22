@@ -33,6 +33,7 @@ import {
   DD_APPLICATION_ID,
   DD_SITE,
   DD_SERVICE,
+  CLARITY_PID,
 } from "@/common/constants/global.constants";
 import { AsideNavProvider } from "@/common/hooks/ui/useAsideNavState";
 import { AnalyticsProvider } from "@/common/utils/analytics";
@@ -109,7 +110,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
                           c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
                           t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
                           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-                        })(window, document, "clarity", "script", "bmhdbl1977");
+                        })(window, document, "clarity", "script", "${CLARITY_PID}");
                       `}
                     </Script>
                     <Component {...pageProps} />
