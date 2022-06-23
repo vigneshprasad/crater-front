@@ -11,10 +11,11 @@ import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import StreamApiClient from "@/stream/api";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
+import { StreamQuestionProvider } from "@/stream/context/StreamQuestionContext";
 import { StreamRecordingProvider } from "@/stream/context/StreamRecordingContext";
 
 const StreamPlayerPage = dynamic(
-  () => import("@/stream/components/page/StreamPlayerPage")
+  () => import("@/stream/components/page/PastStreamPage")
 );
 
 interface IParams extends ParsedUrlQuery {
@@ -79,7 +80,9 @@ export default function StreamPage({
         <StreamRecordingProvider id={recordingId}>
           <PastStreamProvider>
             <FollowerProvider>
-              <StreamPlayerPage />
+              <StreamQuestionProvider group={webinar.id}>
+                <StreamPlayerPage />
+              </StreamQuestionProvider>
             </FollowerProvider>
           </PastStreamProvider>
         </StreamRecordingProvider>
