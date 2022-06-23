@@ -14,6 +14,7 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { IconButton } from "@/common/components/atoms/v2";
+import ExpandingText from "@/common/components/objects/ExpandingText";
 import HeadingDivider from "@/common/components/objects/HeadingDivider";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { Follower, Webinar } from "@/community/types/community";
@@ -25,6 +26,7 @@ interface IProps {
   stream?: Webinar;
   followers?: Follower[];
   followersLoading: boolean;
+  hideShareIcon?: boolean;
   onFollow: () => void;
 }
 
@@ -32,6 +34,7 @@ export default function StreamAboutSection({
   stream,
   followers,
   followersLoading,
+  hideShareIcon,
   onFollow,
 }: IProps): JSX.Element {
   const { colors, space, radii, breakpoints } = useTheme();
@@ -48,12 +51,12 @@ export default function StreamAboutSection({
 
   return (
     <>
-      <Box as="section" bg={colors.primaryDark} borderRadius={radii.xxxxs}>
+      <Box as="section" bg={colors.primaryLight} borderRadius={radii.xxxxs}>
         <Flex
           display={["none", "flex"]}
           justifyContent="space-between"
           p={[space.xxxs, space.xxs]}
-          background={colors.primaryLight}
+          background={colors.primaryDark}
         >
           <Text textStyle="cardHeader" color={colors.textSecondary}>
             About the stream
@@ -62,13 +65,11 @@ export default function StreamAboutSection({
 
         <Box px={[space.xxxs, space.xxs]} py={[space.xxxxs, space.xxs]}>
           <Text textStyle="headline5">{topic_detail.name}</Text>
-          <Text
-            display={["none", "block"]}
-            color={colors.textSecondary}
-            py={space.xxxs}
-          >
-            {topic_detail.description}
-          </Text>
+          {topic_detail.description && (
+            <ExpandingText color={colors.textSecondary} maxLines={2}>
+              {topic_detail.description}
+            </ExpandingText>
+          )}
           <HeadingDivider label="Speaker" />
           <Grid
             gridTemplateColumns="max-content 1fr max-content"
@@ -122,13 +123,11 @@ export default function StreamAboutSection({
                 </Text>
               )}
 
-              <Text
-                display={["none", "block"]}
-                py={space.xxxs}
-                color={colors.textSecondary}
-              >
-                {host_detail.introduction}
-              </Text>
+              <Box pt={space.xxxxxs} display={["none", "grid"]}>
+                <ExpandingText color={colors.textSecondary} maxLines={3}>
+                  {host_detail.introduction}
+                </ExpandingText>
+              </Box>
             </Box>
 
             <Flex display={["none", "flex"]} gridGap={space.xxxs}>
@@ -175,13 +174,15 @@ export default function StreamAboutSection({
               )}
             </Flex>
 
-            <IconButton
-              display={["grid", "none !important"]}
-              icon="Share"
-              onClick={() => {
-                setShowShareSheet(true);
-              }}
-            />
+            {hideShareIcon && (
+              <IconButton
+                display={["grid", "none !important"]}
+                icon="Share"
+                onClick={() => {
+                  setShowShareSheet(true);
+                }}
+              />
+            )}
           </Grid>
 
           <Flex
