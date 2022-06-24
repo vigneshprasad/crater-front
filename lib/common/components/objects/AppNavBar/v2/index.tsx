@@ -17,9 +17,9 @@ import {
 } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
-import { WEB3_CRATER_LANDING } from "@/common/constants/url.constants";
 import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
+import useLearnModalContext from "@/stream/components/objects/LearnNEarnModal/context";
 
 import MenuButton from "../../MenuButton";
 import { MenuItem } from "../../MenuButton/MenuItem";
@@ -39,6 +39,7 @@ export default function AppNavbar(): JSX.Element {
   const { setOpened } = useAsideNavState();
   const router = useRouter();
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+  const { setVisible } = useLearnModalContext();
 
   return (
     <Flex
@@ -104,20 +105,19 @@ export default function AppNavbar(): JSX.Element {
 
           return (
             <>
-              <a href={WEB3_CRATER_LANDING} target="_blank" rel="noreferrer">
-                <Button
-                  prefixElement={
-                    <Image
-                      height={16}
-                      width={16}
-                      src={STATIC_IMAGES.ImageCoin}
-                      alt="coin icon"
-                    />
-                  }
-                  variant="gradient-border"
-                  label={isMobile ? "Earn" : "Learn and Earn"}
-                />
-              </a>
+              <Button
+                prefixElement={
+                  <Image
+                    height={16}
+                    width={16}
+                    src={STATIC_IMAGES.ImageCoin}
+                    alt="coin icon"
+                  />
+                }
+                variant="gradient-border"
+                label={isMobile ? "Earn" : "Learn and Earn"}
+                onClick={() => setVisible(true)}
+              />
 
               <MenuButton
                 items={[
