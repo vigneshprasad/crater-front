@@ -184,7 +184,7 @@ export default function ShareStreamModal({
           borderRadius={radii.xxxxs}
         >
           <Text textStyle="body" maxLines={1} wordBreak="break-word">
-            {shareUrl}asnjfnanfgnasngajsnfjkas
+            {shareUrl}
           </Text>
           <IconButton icon="ContentCopy" onClick={performCopyClipboard} />
         </Flex>
