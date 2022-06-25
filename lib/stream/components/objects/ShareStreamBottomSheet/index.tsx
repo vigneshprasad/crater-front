@@ -142,7 +142,7 @@ export default function ShareStreamBottomSheet({
               icon="Whatsapp"
             />
           </a>
-          <Text textStyle="body">Whatsapp</Text>
+          <Text textStyle="body">WhatsApp</Text>
         </Flex>
       </Grid>
     </BottomSheet>
