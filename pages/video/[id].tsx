@@ -10,7 +10,7 @@ import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import StreamApiClient from "@/stream/api";
-import { PastStreamProvider } from "@/stream/context/PastStreamContext";
+import { StreamCategoryProvider } from "@/stream/context/StreamCategoryContext";
 import { StreamQuestionProvider } from "@/stream/context/StreamQuestionContext";
 import { StreamRecordingProvider } from "@/stream/context/StreamRecordingContext";
 
@@ -78,13 +78,13 @@ export default function StreamPage({
     <Page seo={seo}>
       <WebinarProvider id={id} initial={webinar}>
         <StreamRecordingProvider id={recordingId}>
-          <PastStreamProvider>
-            <FollowerProvider>
-              <StreamQuestionProvider group={webinar.id}>
+          <FollowerProvider>
+            <StreamQuestionProvider group={webinar.id}>
+              <StreamCategoryProvider>
                 <StreamPlayerPage />
-              </StreamQuestionProvider>
-            </FollowerProvider>
-          </PastStreamProvider>
+              </StreamCategoryProvider>
+            </StreamQuestionProvider>
+          </FollowerProvider>
         </StreamRecordingProvider>
       </WebinarProvider>
     </Page>
