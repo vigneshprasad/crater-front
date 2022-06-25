@@ -8,12 +8,14 @@ interface IProps {
   videoPlayer: React.ReactNode;
   aboutSection: React.ReactNode;
   forumSection: React.ReactNode;
+  streamsPanel: React.ReactNode;
 }
 
 export default function PastStreamPageLayout({
   videoPlayer,
   aboutSection,
   forumSection,
+  streamsPanel,
 }: IProps): JSX.Element {
   const { space } = useTheme();
 
@@ -21,7 +23,7 @@ export default function PastStreamPageLayout({
     <BaseLayout aside={<AsideNav />} overflowY="auto">
       <Grid
         p={[0, `${space.xxs}px ${space.xs}px ${space.xxs}px ${space.xxs}px`]}
-        gridTemplateColumns={["1fr 1fr", "3fr 1fr"]}
+        gridTemplateColumns={["1fr 1fr", "2.5fr minmax(0, 1fr)"]}
         gridTemplateRows="min-content"
         gridTemplateAreas={`
           "video streams"
@@ -36,7 +38,9 @@ export default function PastStreamPageLayout({
           </Box>
         </Box>
 
-        <Box gridArea="streams">STREAMS</Box>
+        <Box gridArea="streams" pt={space.xxxxs}>
+          {streamsPanel}
+        </Box>
 
         <Box gridArea="about">{aboutSection}</Box>
 
