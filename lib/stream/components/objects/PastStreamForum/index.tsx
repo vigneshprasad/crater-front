@@ -152,7 +152,7 @@ export default function PastStreamForum({ stream }: IProps): JSX.Element {
           variant="dark-flat"
           w="90%"
           h={40}
-          label="Load more interactions"
+          label="Load More Interactions"
           textProps={{ textStyle: "body", fontWeight: 500 }}
           display={["none", "flex"]}
           justifyContent="center"
@@ -199,7 +199,7 @@ export default function PastStreamForum({ stream }: IProps): JSX.Element {
             />
           </Box>
         ) : (
-          <Box py={space.xxxs} bg={colors.primaryDark}>
+          <Box w="75%" mt={space.xxs} py={space.xxxs} bg={colors.primaryDark}>
             <Text textStyle="body" textAlign="center">
               <SpanButton
                 color={colors.accentLight}
