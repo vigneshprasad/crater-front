@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
@@ -29,6 +29,7 @@ export default function StreamPlayerPage(): JSX.Element {
   const [followBtnLoading, setFollowBtnLoading] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
+  const forumRef = useRef<HTMLDivElement>(null);
   const {
     followers,
     loading: followersLoading,
@@ -36,6 +37,12 @@ export default function StreamPlayerPage(): JSX.Element {
   } = useFollower();
   const { user } = useAuth();
   const { openModal } = useAuthModal();
+
+  const scrollToForum = useCallback(() => {
+    if (forumRef.current) {
+      forumRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [forumRef]);
 
   if (!webinar || loading) return <Box>Loading...</Box>;
 
@@ -82,9 +89,10 @@ export default function StreamPlayerPage(): JSX.Element {
           followers={followers}
           followersLoading={followersLoading || followBtnLoading}
           onFollow={followCreator}
+          scrollToForum={scrollToForum}
         />
       }
-      forumSection={<PastStreamForum stream={webinar} />}
+      forumSection={<PastStreamForum stream={webinar} ref={forumRef} />}
       streamsPanel={<StreamsPanel stream={webinar} />}
     />
   );
