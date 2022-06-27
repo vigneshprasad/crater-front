@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { forwardRef } from "react";
 import styled, { useTheme } from "styled-components";
 
@@ -16,9 +15,7 @@ import {
 } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
 import { Webinar } from "@/community/types/community";
-import StreamApiClient from "@/stream/api";
-import useStreamQuestions from "@/stream/context/StreamQuestionContext";
-import { StreamQuestion, StreamQuestionUpvote } from "@/stream/types/stream";
+import { StreamQuestion } from "@/stream/types/stream";
 
 import QuestionForm from "../../forms/QuestionForm";
 
@@ -28,61 +25,34 @@ const SpanButton = styled(Span)<SpanProps>`
 
 interface IProps {
   stream: Webinar;
+  questions?: StreamQuestion[];
+  loading: boolean;
+  nextPage: boolean;
+  loadMoreQuestions: () => void;
+  postQuestion: (question: string) => Promise<void>;
+  postQuestionUpvote: (question: number) => void;
 }
 
 const PastStreamForum = forwardRef<HTMLDivElement, IProps>(
-  ({ stream }, ref) => {
+  (
+    {
+      stream,
+      questions,
+      loading,
+      nextPage,
+      loadMoreQuestions,
+      postQuestion,
+      postQuestionUpvote,
+    },
+    ref
+  ) => {
     const { space, colors, fonts } = useTheme();
     const { user } = useAuth();
     const { openModal } = useAuthModal();
-    const {
-      streamQuestions,
-      loading: streamQuestionsLoading,
-      nextPage,
-      mutateStreamQuestionsPage,
-      setStreamQuestionsPage,
-    } = useStreamQuestions();
 
     const { host } = stream;
 
-    const postQuestion = useCallback(
-      async (question: string) => {
-        if (stream) {
-          const data: Partial<StreamQuestion> = {
-            group: stream.id,
-            question: question,
-          };
-
-          const [request] = await StreamApiClient().postGroupQuestion(data);
-
-          if (request) {
-            mutateStreamQuestionsPage();
-          }
-        }
-      },
-      [stream, mutateStreamQuestionsPage]
-    );
-
-    const postQuestionUpvote = useCallback(
-      async (question: number) => {
-        const data: Partial<StreamQuestionUpvote> = {
-          question: question,
-        };
-
-        const [request] = await StreamApiClient().postGroupQuestionUpvote(data);
-
-        if (request) {
-          mutateStreamQuestionsPage();
-        }
-      },
-      [mutateStreamQuestionsPage]
-    );
-
-    const loadMoreQuestions = useCallback(() => {
-      setStreamQuestionsPage((page) => page + 1);
-    }, [setStreamQuestionsPage]);
-
-    const questionPanelMain = streamQuestionsLoading ? (
+    const questionPanelMain = loading ? (
       Array(2)
         .fill("")
         .map((_, index) => (
@@ -94,8 +64,8 @@ const PastStreamForum = forwardRef<HTMLDivElement, IProps>(
         ))
     ) : (
       <Box>
-        {streamQuestions && streamQuestions.length > 0 ? (
-          streamQuestions.map((question) => (
+        {questions && questions.length > 0 ? (
+          questions.map((question) => (
             <Box w="95%" pb={28} key={question.id}>
               <Text
                 textStyle="body"
@@ -230,5 +200,9 @@ const PastStreamForum = forwardRef<HTMLDivElement, IProps>(
 );
 
 PastStreamForum.displayName = "PastStreamForum";
+
+PastStreamForum.defaultProps = {
+  questions: undefined,
+};
 
 export default PastStreamForum;
