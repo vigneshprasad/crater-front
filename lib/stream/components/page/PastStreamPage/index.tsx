@@ -26,7 +26,7 @@ const Video = styled.video`
   border-radius: ${({ theme }) => theme.radii.xxxxs}px;
 `;
 
-export default function StreamPlayerPage(): JSX.Element {
+export default function PastStreamPage(): JSX.Element {
   const { webinar, loading, mutateWebinar } = useWebinar();
   const { recording } = useStreamRecording();
   const [followBtnLoading, setFollowBtnLoading] = useState(false);
