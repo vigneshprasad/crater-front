@@ -25,11 +25,18 @@ export default function PastStreamPageLayout({
         p={[0, `${space.xxs}px ${space.xs}px ${space.xxs}px ${space.xxs}px`]}
         gridTemplateColumns={["1fr 1fr", "2.5fr minmax(0, 1fr)"]}
         gridTemplateRows="min-content"
-        gridTemplateAreas={`
-          "video streams"
-          "about streams"
-          "pageContent streams"
-        `}
+        gridTemplateAreas={[
+          `
+              "video video"
+              "about about"
+              "streams streams"
+            `,
+          `
+              "video streams"
+              "about streams"
+              "pageContent streams"
+            `,
+        ]}
         gridGap={[0, space.xxs]}
       >
         <Box gridArea="video">
@@ -44,7 +51,9 @@ export default function PastStreamPageLayout({
 
         <Box gridArea="about">{aboutSection}</Box>
 
-        <Box gridArea="pageContent">{forumSection}</Box>
+        <Box gridArea="pageContent" display={["none", "grid"]}>
+          {forumSection}
+        </Box>
       </Grid>
     </BaseLayout>
   );
