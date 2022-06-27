@@ -80,19 +80,19 @@ export default function StreamsPanel({ stream, initial }: IProps): JSX.Element {
 
   const categoryClickHandler = useCallback(
     (selectedCategory: StreamCategory) => {
-      console.log(router);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { streamId, ...queryParams } = router.query;
+
       if (
         filteredCategory &&
         selectedCategory.pk === parseInt(filteredCategory)
       ) {
-        delete router.query.category;
+        delete queryParams.category;
 
         router.push(
           {
             pathname: `/video/${id}`,
-            query: {
-              ...router.query,
-            },
+            query: queryParams,
           },
           undefined,
           { shallow: true }
