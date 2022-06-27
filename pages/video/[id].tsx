@@ -4,6 +4,7 @@ import { ParsedUrlQuery } from "querystring";
 
 import dynamic from "next/dynamic";
 
+import useAuth from "@/auth/context/AuthContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
 import { WebinarProvider } from "@/community/context/WebinarContext";
@@ -70,6 +71,8 @@ export default function StreamPage({
   webinar,
   recordingId,
 }: Props): JSX.Element {
+  const { user } = useAuth();
+
   const seo: NextSeoProps = {
     title: `Crater - ${webinar.topic_detail?.name}`,
     description: webinar.topic_detail?.description,
@@ -78,7 +81,10 @@ export default function StreamPage({
     <Page seo={seo}>
       <WebinarProvider id={id} initial={webinar}>
         <StreamRecordingProvider id={recordingId}>
-          <FollowerProvider>
+          <FollowerProvider
+            creator={webinar.host_detail?.creator_detail?.id}
+            user={user?.pk}
+          >
             <StreamQuestionProvider group={webinar.id}>
               <StreamCategoryProvider>
                 <StreamPlayerPage />
