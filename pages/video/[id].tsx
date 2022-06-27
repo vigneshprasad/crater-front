@@ -11,12 +11,11 @@ import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import StreamApiClient from "@/stream/api";
-import PastStreamPage from "@/stream/components/page/PastStreamPage";
 import { StreamCategoryProvider } from "@/stream/context/StreamCategoryContext";
 import { StreamQuestionProvider } from "@/stream/context/StreamQuestionContext";
 import { StreamRecordingProvider } from "@/stream/context/StreamRecordingContext";
 
-const StreamPlayerPage = dynamic(
+const PastStreamPage = dynamic(
   () => import("@/stream/components/page/PastStreamPage")
 );
 
