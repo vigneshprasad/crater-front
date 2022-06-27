@@ -13,15 +13,19 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import DateTime from "@/common/utils/datetime/DateTime";
 import usePastStreams from "@/stream/context/PastStreamContext";
 
+import PastStreamCard from "../PastStreamCard/v2";
+
 const StreamsPanelPastStreamList = forwardRef<HTMLDivElement>((_, ref) => {
-  const { space, colors, radii } = useTheme();
+  const { space, colors, radii, breakpoints } = useTheme();
   const { streams, loading, nextPage, setPastStreamsPage } = usePastStreams();
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   return (
-    <Box ref={ref}>
+    <Box pb={[space.xxxs, 0]} ref={ref}>
       {loading ? (
         Array(5)
           .fill("")
@@ -48,6 +52,14 @@ const StreamsPanelPastStreamList = forwardRef<HTMLDivElement>((_, ref) => {
             const startTime = DateTime.parse_with_milliseconds(
               stream.start
             ).toFormat(DateTime.DEFAULT_FORMAT);
+
+            if (isMobile) {
+              return (
+                <Box pb={space.xxs} key={stream.id}>
+                  <PastStreamCard stream={stream} />
+                </Box>
+              );
+            }
 
             return (
               <Grid
