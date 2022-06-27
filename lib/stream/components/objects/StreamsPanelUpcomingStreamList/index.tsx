@@ -1,30 +1,52 @@
 import { forwardRef } from "react";
 import { useTheme } from "styled-components";
 
-import {
-  Box,
-  Flex,
-  Grid,
-  Icon,
-  Image,
-  Shimmer,
-  Text,
-} from "@/common/components/atoms";
+import useAuth from "@/auth/context/AuthContext";
+import { Box, Flex, Icon, Shimmer } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
-import DateTime from "@/common/utils/datetime/DateTime";
+import WebinarApiClient from "@/community/api";
+import {
+  ParticpantType,
+  PostGroupRequest,
+  RequestStatus,
+  Webinar,
+} from "@/community/types/community";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
+import StreamsPanelUpcomingStreamCard from "../StreamsPanelUpcomingStreamCard";
+
 const StreamsPanelUpcomingStreamList = forwardRef<HTMLDivElement>((_, ref) => {
-  const { space, colors, radii } = useTheme();
+  const { space } = useTheme();
+  const { user } = useAuth();
   const {
     upcoming: streams,
     loading,
     nextPage,
     setUpcomingStreamsPage,
+    mutateUpcomingStreams,
   } = useUpcomingStreams();
 
+  const postStreamRsvp = async (stream: Webinar): Promise<void> => {
+    if (user) {
+      const data: PostGroupRequest = {
+        group: stream.id,
+        status: RequestStatus.accepted,
+        participant_type:
+          stream.host === user.pk
+            ? ParticpantType.speaker
+            : ParticpantType.attendee,
+      };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [_, err] = await WebinarApiClient().postWebinarRequest(data);
+      if (err) {
+        console.log(err);
+      }
+      await mutateUpcomingStreams();
+    }
+  };
+
   return (
-    <Box ref={ref}>
+    <Box pb={[space.xxxs, 0]} ref={ref}>
       {loading ? (
         Array(5)
           .fill("")
@@ -48,63 +70,13 @@ const StreamsPanelUpcomingStreamList = forwardRef<HTMLDivElement>((_, ref) => {
       ) : (
         <>
           {streams?.map((stream) => {
-            const startTime = DateTime.parse_with_milliseconds(
-              stream.start
-            ).toFormat(DateTime.DEFAULT_FORMAT);
-
             return (
-              <Grid
-                pb={space.xs}
-                gridTemplateColumns="max-content 1fr"
-                gridGap={space.xxxs}
-                key={stream.id}
-              >
-                <Box
-                  h={100}
-                  w={185}
-                  position="relative"
-                  overflow="hidden"
-                  borderRadius={radii.xxxxs}
-                >
-                  {stream.topic_detail?.image && (
-                    <Image
-                      layout="fill"
-                      src={stream.topic_detail?.image}
-                      alt={stream.topic_detail?.name}
-                    />
-                  )}
-                </Box>
-                <Flex flexDirection="column" justifyContent="space-between">
-                  <Text textStyle="label" color="#FCFCFC">
-                    {stream.topic_detail.name}
-                  </Text>
-
-                  <Box>
-                    <Text
-                      pb={space.xxxxs}
-                      textStyle="caption"
-                      lineHeight="1.4rem"
-                      color={colors.textTertiary}
-                    >
-                      {stream.host_detail.name}
-                    </Text>
-                    <Flex gridGap={4} alignItems="center">
-                      <Icon
-                        color={colors.textSecondary}
-                        icon="Calendar"
-                        size={14}
-                      />
-                      <Text
-                        color={colors.textSecondary}
-                        textStyle="caption"
-                        lineHeight="1.8rem"
-                      >
-                        {startTime}
-                      </Text>
-                    </Flex>
-                  </Box>
-                </Flex>
-              </Grid>
+              <Box pb={space.xxs} key={stream.id}>
+                <StreamsPanelUpcomingStreamCard
+                  stream={stream}
+                  onClickRsvp={postStreamRsvp}
+                />
+              </Box>
             );
           })}
 
