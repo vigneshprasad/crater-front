@@ -6,7 +6,10 @@ import useAuthModal from "@/auth/context/AuthModalContext";
 import { Box } from "@/common/components/atoms";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { useFollower } from "@/creators/context/FollowerContext";
+import StreamApiClient from "@/stream/api";
+import useStreamQuestions from "@/stream/context/StreamQuestionContext";
 import useStreamRecording from "@/stream/context/StreamRecordingContext";
+import { StreamQuestion, StreamQuestionUpvote } from "@/stream/types/stream";
 
 import PastStreamPageLayout from "../../layouts/PastStreamPageLayout";
 import PastStreamAboutSection from "../../objects/PastStreamAboutSection";
@@ -27,6 +30,13 @@ export default function StreamPlayerPage(): JSX.Element {
   const { webinar, loading, mutateWebinar } = useWebinar();
   const { recording } = useStreamRecording();
   const [followBtnLoading, setFollowBtnLoading] = useState(false);
+  const {
+    streamQuestions,
+    loading: streamQuestionsLoading,
+    nextPage: streamQuestionsNextPage,
+    mutateStreamQuestionsPage,
+    setStreamQuestionsPage,
+  } = useStreamQuestions();
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const forumRef = useRef<HTMLDivElement>(null);
@@ -43,6 +53,43 @@ export default function StreamPlayerPage(): JSX.Element {
       forumRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [forumRef]);
+
+  const postGroupQuestion = useCallback(
+    async (question: string) => {
+      if (webinar) {
+        const data: Partial<StreamQuestion> = {
+          group: webinar.id,
+          question: question,
+        };
+
+        const [request] = await StreamApiClient().postGroupQuestion(data);
+
+        if (request) {
+          mutateStreamQuestionsPage();
+        }
+      }
+    },
+    [webinar, mutateStreamQuestionsPage]
+  );
+
+  const postGroupQuestionUpvote = useCallback(
+    async (question: number) => {
+      const data: Partial<StreamQuestionUpvote> = {
+        question: question,
+      };
+
+      const [request] = await StreamApiClient().postGroupQuestionUpvote(data);
+
+      if (request) {
+        mutateStreamQuestionsPage();
+      }
+    },
+    [mutateStreamQuestionsPage]
+  );
+
+  const loadMoreStreamQuestions = useCallback(() => {
+    setStreamQuestionsPage((page) => page + 1);
+  }, [setStreamQuestionsPage]);
 
   if (!webinar || loading) return <Box>Loading...</Box>;
 
@@ -88,11 +135,26 @@ export default function StreamPlayerPage(): JSX.Element {
           stream={webinar}
           followers={followers}
           followersLoading={followersLoading || followBtnLoading}
+          questions={streamQuestions}
+          questionsLoading={streamQuestionsLoading}
           onFollow={followCreator}
           scrollToForum={scrollToForum}
+          postQuestion={postGroupQuestion}
+          postQuestionUpvote={postGroupQuestionUpvote}
         />
       }
-      forumSection={<PastStreamForum stream={webinar} ref={forumRef} />}
+      forumSection={
+        <PastStreamForum
+          stream={webinar}
+          questions={streamQuestions}
+          loading={streamQuestionsLoading}
+          nextPage={streamQuestionsNextPage}
+          loadMoreQuestions={loadMoreStreamQuestions}
+          postQuestion={postGroupQuestion}
+          postQuestionUpvote={postGroupQuestionUpvote}
+          ref={forumRef}
+        />
+      }
       streamsPanel={<StreamsPanel stream={webinar} />}
     />
   );
