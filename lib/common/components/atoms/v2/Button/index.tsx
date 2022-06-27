@@ -220,6 +220,10 @@ const StyledButton = styled(Grid)<ButtonProps>`
         ":hover": {
           bg: "secondaryDark",
         },
+        ":disabled": {
+          bg: "secondaryDark",
+          cursor: "not-allowed",
+        },
       },
       transparent: {
         px: "0.8em",
