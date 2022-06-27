@@ -81,7 +81,7 @@ export default function StreamsPanel({ stream, initial }: IProps): JSX.Element {
   const categoryClickHandler = useCallback(
     (selectedCategory: StreamCategory) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { streamId, ...queryParams } = router.query;
+      const { id: streamId, ...queryParams } = router.query;
 
       if (
         filteredCategory &&
@@ -104,7 +104,7 @@ export default function StreamsPanel({ stream, initial }: IProps): JSX.Element {
         {
           pathname: `/video/${id}`,
           query: {
-            ...router.query,
+            ...queryParams,
             category: selectedCategory.pk,
           },
         },
