@@ -120,14 +120,14 @@ export default function StreamsPanel({ stream, initial }: IProps): JSX.Element {
       <BaseTabBar
         px={space.xxxxs}
         py={space.xxxs}
-        bg={colors.primaryDark}
+        bg={[colors.primaryBackground, colors.primaryDark]}
         tabs={TABS}
         activeTab={activeTab}
         selectedTabColor={colors.accent}
-        gridAutoColumns="max-content"
+        gridAutoColumns={["1fr", "max-content"]}
       />
 
-      <Box pt={space.xxxxs}>
+      <Box pt={space.xxxxs} px={[space.xxxs, 0]}>
         <HorizontalScroll
           gridAutoFlow="column"
           gridAutoColumns="max-content"
@@ -171,7 +171,12 @@ export default function StreamsPanel({ stream, initial }: IProps): JSX.Element {
         </HorizontalScroll>
       </Box>
 
-      <Box py={space.xxxs} maxHeight="100%" overflowY="auto">
+      <Box
+        pt={space.xxxs}
+        px={[space.xxxs, 0]}
+        maxHeight="100%"
+        overflowY="auto"
+      >
         {activeTab === "pastStreams" && (
           <PastStreamProvider
             categoryFilter={
