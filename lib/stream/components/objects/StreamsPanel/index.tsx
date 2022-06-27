@@ -171,12 +171,7 @@ export default function StreamsPanel({ stream, initial }: IProps): JSX.Element {
         </HorizontalScroll>
       </Box>
 
-      <Box
-        pt={space.xxxs}
-        px={[space.xxxs, 0]}
-        maxHeight="100%"
-        overflowY="auto"
-      >
+      <Box pt={space.xxxs} px={[space.xxxs, 0]} maxHeight="100%">
         {activeTab === "pastStreams" && (
           <PastStreamProvider
             categoryFilter={
