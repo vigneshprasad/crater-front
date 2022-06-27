@@ -174,6 +174,7 @@ export default function StreamsPanel({ stream, initial }: IProps): JSX.Element {
       <Box pt={space.xxxs} px={[space.xxxs, 0]} maxHeight="100%">
         {activeTab === "pastStreams" && (
           <PastStreamProvider
+            pageSize={6}
             categoryFilter={
               filteredCategory ? parseInt(filteredCategory) : undefined
             }
@@ -184,6 +185,7 @@ export default function StreamsPanel({ stream, initial }: IProps): JSX.Element {
 
         {activeTab === "upcomingStreams" && (
           <UpcomingStreamsProvider
+            pageSize={6}
             category={filteredCategory ? parseInt(filteredCategory) : undefined}
           >
             <StreamsPanelUpcomingStreamList />
