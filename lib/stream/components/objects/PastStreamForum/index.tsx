@@ -115,7 +115,7 @@ const PastStreamForum = forwardRef<HTMLDivElement, IProps>(
         ) : (
           <Text textStyle="body" color="#C4C4C4" textAlign="center">
             Be the first to drop your comments, questions or share your
-            excitement here.
+            excitement here!
           </Text>
         )}
 
