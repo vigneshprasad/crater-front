@@ -131,27 +131,28 @@ export default function StreamAboutSection({
             </Box>
 
             <Flex display={["none", "flex"]} gridGap={space.xxxs}>
-              {(() => {
-                if (followersLoading || !followers) {
+              {user &&
+                (() => {
+                  if (followersLoading || !followers) {
+                    return (
+                      <>
+                        <Shimmer h={39} w={72} borderRadius={4} />
+                      </>
+                    );
+                  }
+
+                  const isFollower = followers?.[0]?.notify === true;
+
                   return (
                     <>
-                      <Shimmer h={39} w={72} borderRadius={4} />
+                      <Button
+                        disabled={isFollower ? true : false}
+                        label={isFollower ? "Following" : "Follow"}
+                        onClick={() => onFollow()}
+                      />
                     </>
                   );
-                }
-
-                const isFollower = followers?.[0]?.notify === true;
-
-                return (
-                  <>
-                    <Button
-                      disabled={isFollower ? true : false}
-                      label={isFollower ? "Following" : "Follow"}
-                      onClick={() => onFollow()}
-                    />
-                  </>
-                );
-              })()}
+                })()}
               {stream.host_detail.creator_detail?.profile_detail
                 .primary_url && (
                 <a
