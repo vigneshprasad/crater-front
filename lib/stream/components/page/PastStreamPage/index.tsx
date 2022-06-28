@@ -116,7 +116,7 @@ export default function PastStreamPage(): JSX.Element {
             if (
               !user &&
               videoRef.current &&
-              videoRef.current.currentTime >= 900
+              videoRef.current.currentTime >= 720
             ) {
               videoRef.current.pause();
               openModal();
