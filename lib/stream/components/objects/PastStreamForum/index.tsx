@@ -7,7 +7,6 @@ import {
   Box,
   Flex,
   Icon,
-  Image,
   Shimmer,
   Span,
   SpanProps,
