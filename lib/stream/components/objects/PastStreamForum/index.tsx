@@ -114,15 +114,10 @@ const PastStreamForum = forwardRef<HTMLDivElement, IProps>(
             </Box>
           ))
         ) : (
-          <Flex flexDirection="column" alignItems="center">
-            <Box w={190} h={190}>
-              <Image
-                src="/images/img_empty_state_questions.png"
-                alt="Question"
-                layout="fill"
-              />
-            </Box>
-          </Flex>
+          <Text textStyle="body" color="#C4C4C4" textAlign="center">
+            Be the first to drop your comments, questions or share your
+            excitement here.
+          </Text>
         )}
 
         {nextPage && (
