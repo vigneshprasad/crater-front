@@ -22,6 +22,7 @@ import ImageRewardBlob from "public/images/img_reward_blob.png";
 import ImageRewardCard from "public/images/img_reward_card.png";
 import ImageStarryBg from "public/images/img_starry_bg.png";
 import ImageCraterStream from "public/images/img_stream_crater.png";
+import ImageLearnLoot from "public/images/img_total_loot.png";
 import ImageTv from "public/images/img_tv.png";
 import ImageVisorMonkey from "public/images/img_visor_monkey.png";
 
@@ -52,6 +53,7 @@ const STATIC_IMAGES = {
   ImageCoin,
   ImageVisorMonkey,
   ImageHyfiPlaceholder,
+  ImageLearnLoot,
 };
 
 export default STATIC_IMAGES;

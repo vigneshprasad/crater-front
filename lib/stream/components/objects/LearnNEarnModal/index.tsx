@@ -3,14 +3,15 @@ import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Flex, Grid, Modal, Text, Box, Span } from "@/common/components/atoms";
+import { Flex, Grid, Text, Box, Span } from "@/common/components/atoms";
+import { Modal } from "@/common/components/atoms/v2";
 import { Button } from "@/common/components/atoms/v2";
 import { WEB3_CRATER_LANDING } from "@/common/constants/url.constants";
 
 import DataItem from "./DataItem";
 import useLearnModalContext from "./context";
 
-const StyledText = styled(Text)`
+const StyledBox = styled(Flex)`
   position: relative;
   background: transparent;
   padding: 0.5em 0.8em;
@@ -38,76 +39,85 @@ export default function LearnNEarnModal(): JSX.Element {
   const { visible, setVisible } = useLearnModalContext();
 
   return (
-    <Modal visible={visible} maxWidth="80vw" onClose={() => setVisible(false)}>
+    <Modal
+      visible={visible}
+      maxWidth={["calc(100vw - 16px)", "80vw"]}
+      onClose={() => setVisible(false)}
+    >
       <Grid
         h="100%"
         px={[space.xxs, space.s]}
         py={space.xs}
-        gridAutoFlow="row"
+        gridTemplateColumns={["1fr", "2fr 1fr"]}
+        gridGap={space.xs}
         justifyContent="center"
         alignItems="center"
       >
-        <Flex
-          alignItems="center"
-          flexDirection={["column", "row"]}
-          gridGap={space.xxs}
-          justifyContent="center"
-        >
-          <Flex flex="1" flexDirection="column">
-            <Text textStyle="mainHeading">
-              Watch Web3 Content and earn tokens
-            </Text>
-            <Text w="80%" color={colors.textTertiary}>
-              Crater has partnered with HyFi to give you tokens while you learn
-              about Web3.
-            </Text>
-          </Flex>
-          <StyledText mr={space.xs}>Total Learn Minutes: --</StyledText>
+        <Flex flexDirection="column">
+          <Text textStyle="mainHeading">
+            Watch Web3 Content and earn tokens
+          </Text>
+          <Text w="80%" color={colors.textTertiary}>
+            Crater has partnered with HyFi to give you tokens while you learn
+            about Web3.
+          </Text>
         </Flex>
 
-        <Grid gridTemplateColumns="1fr max-content" gridGap={space.xs}>
-          <Grid
-            display={["none", "grid"]}
-            gridTemplateColumns="1fr 1fr"
-            alignItems="center"
-          >
-            <Box position="relative" pt="100%">
-              <Image
-                layout="fill"
-                src={STATIC_IMAGES.ImageVisorMonkey}
-                alt="Visor Monkey"
-              />
-            </Box>
-            <Flex gridGap={space.xs} flexDirection="column">
-              <DataItem
-                icon="StreamColor"
-                label="Your Stream Time:"
-                rotation={135}
-              />
-              <DataItem
-                icon="EyeColor"
-                label="Your Watch Time:"
-                rotation={155}
-              />
-              <DataItem
-                icon="TokenColor"
-                label="Learn Tokens Earned:"
-                rotation={205}
-              />
-              <DataItem
-                icon="BurnColor"
-                label="Learn Tokens Burned:"
-                rotation={225}
-              />
-            </Flex>
-          </Grid>
-
-          <Box m="0 auto" w={240}>
-            <Image src={STATIC_IMAGES.ImageHyfiPlaceholder} alt="Hyfi Share" />
+        <StyledBox
+          display={["none", "flex"]}
+          alignItems="center"
+          gridGap={space.xxxs}
+          flex="0"
+        >
+          <Box w={36} h={36} position="relative">
+            <Image
+              src={STATIC_IMAGES.ImageLearnLoot}
+              alt="Loot"
+              layout="fill"
+              objectFit="contain"
+            />
           </Box>
-        </Grid>
+          <Text mr={space.xs}>Total Loot: --</Text>
+        </StyledBox>
 
         <Grid
+          display={["none", "grid"]}
+          gridTemplateColumns="1fr 1fr"
+          alignItems="center"
+        >
+          <Box position="relative" pt="100%">
+            <Image
+              layout="fill"
+              src={STATIC_IMAGES.ImageVisorMonkey}
+              alt="Visor Monkey"
+            />
+          </Box>
+          <Flex gridGap={space.xs} flexDirection="column">
+            <DataItem
+              icon="StreamColor"
+              label="Your Stream Time:"
+              rotation={135}
+            />
+            <DataItem icon="EyeColor" label="Your Watch Time:" rotation={155} />
+            <DataItem
+              icon="TokenColor"
+              label="Learn Tokens Earned:"
+              rotation={205}
+            />
+            <DataItem
+              icon="BurnColor"
+              label="Learn Tokens Burned:"
+              rotation={225}
+            />
+          </Flex>
+        </Grid>
+
+        <Box m="0 auto" w={240}>
+          <Image src={STATIC_IMAGES.ImageHyfiPlaceholder} alt="Hyfi Share" />
+        </Box>
+
+        <Grid
+          gridColumn={["1 / span 1", "1 / span 2"]}
           gridTemplateColumns={["1fr", "max-content 1fr"]}
           gridGap={space.xs}
           alignItems="center"

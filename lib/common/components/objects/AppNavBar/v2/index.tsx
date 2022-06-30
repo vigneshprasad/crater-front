@@ -108,8 +108,8 @@ export default function AppNavbar(): JSX.Element {
               <Button
                 prefixElement={
                   <Image
-                    height={16}
-                    width={16}
+                    height={24}
+                    width={24}
                     src={STATIC_IMAGES.ImageCoin}
                     alt="coin icon"
                   />

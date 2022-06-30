@@ -5,7 +5,7 @@ import { variant } from "styled-system";
 import { Icon, IconProps } from "../../Icon";
 import { Button, ButtonProps } from "../Button";
 
-type Variants = "flat" | "flat-accent" | "round-large";
+type Variants = "flat" | "flat-accent" | "round-large" | "round";
 
 interface IProps extends ButtonProps {
   icon: IconProps["icon"];
@@ -49,6 +49,19 @@ const ButtonContainer = styled(Button)<ButtonProps>`
         bg: "black.0",
         ":hover": {
           bg: "primaryLight",
+        },
+      },
+      round: {
+        width: 36,
+        height: 36,
+        px: 0,
+        py: 0,
+        borderRadius: "50%",
+        alignItems: "center",
+        justifyContent: "center",
+        bg: "transparent",
+        ":hover": {
+          bg: "primaryBackground",
         },
       },
     },
