@@ -64,9 +64,11 @@ export default function LearnNEarnModal(): JSX.Element {
         </Flex>
 
         <StyledBox
+          w="max-content"
           display={["none", "flex"]}
           alignItems="center"
           gridGap={space.xxxs}
+          m="0 auto"
           flex="0"
         >
           <Box w={36} h={36} position="relative">
