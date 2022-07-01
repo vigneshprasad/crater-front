@@ -4,17 +4,19 @@ import { ParsedUrlQuery } from "querystring";
 
 import dynamic from "next/dynamic";
 
+import useAuth from "@/auth/context/AuthContext";
 import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import StreamApiClient from "@/stream/api";
-import { PastStreamProvider } from "@/stream/context/PastStreamContext";
+import { StreamCategoryProvider } from "@/stream/context/StreamCategoryContext";
+import { StreamQuestionProvider } from "@/stream/context/StreamQuestionContext";
 import { StreamRecordingProvider } from "@/stream/context/StreamRecordingContext";
 
-const StreamPlayerPage = dynamic(
-  () => import("@/stream/components/page/StreamPlayerPage")
+const PastStreamPage = dynamic(
+  () => import("@/stream/components/page/PastStreamPage")
 );
 
 interface IParams extends ParsedUrlQuery {
@@ -69,6 +71,8 @@ export default function StreamPage({
   webinar,
   recordingId,
 }: Props): JSX.Element {
+  const { user } = useAuth();
+
   const seo: NextSeoProps = {
     title: `Crater - ${webinar.topic_detail?.name}`,
     description: webinar.topic_detail?.description,
@@ -77,11 +81,16 @@ export default function StreamPage({
     <Page seo={seo}>
       <WebinarProvider id={id} initial={webinar}>
         <StreamRecordingProvider id={recordingId}>
-          <PastStreamProvider>
-            <FollowerProvider>
-              <StreamPlayerPage />
-            </FollowerProvider>
-          </PastStreamProvider>
+          <FollowerProvider
+            creator={webinar.host_detail?.creator_detail?.id}
+            user={user?.pk}
+          >
+            <StreamQuestionProvider group={webinar.id}>
+              <StreamCategoryProvider>
+                <PastStreamPage />
+              </StreamCategoryProvider>
+            </StreamQuestionProvider>
+          </FollowerProvider>
         </StreamRecordingProvider>
       </WebinarProvider>
     </Page>

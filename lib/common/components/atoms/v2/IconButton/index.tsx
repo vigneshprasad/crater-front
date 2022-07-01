@@ -46,9 +46,9 @@ const ButtonContainer = styled(Button)<ButtonProps>`
         borderRadius: "50%",
         alignItems: "center",
         justifyContent: "center",
-        bg: "black.0",
+        bg: "primaryLight",
         ":hover": {
-          bg: "primaryLight",
+          bg: "black.0",
         },
       },
       round: {

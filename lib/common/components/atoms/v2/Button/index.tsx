@@ -22,7 +22,9 @@ type Variants =
   | "secondary-dark-flat"
   | "transparent-slider"
   | "gradient-border"
-  | "text";
+  | "text"
+  | "filter-small"
+  | "filter-selected-small";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -218,6 +220,10 @@ const StyledButton = styled(Grid)<ButtonProps>`
         ":hover": {
           bg: "secondaryDark",
         },
+        ":disabled": {
+          bg: "secondaryDark",
+          cursor: "not-allowed",
+        },
       },
       transparent: {
         px: "0.8em",
@@ -277,6 +283,31 @@ const StyledButton = styled(Grid)<ButtonProps>`
           mask-composite: exclude;
         }
       `,
+      "filter-small": {
+        fontSize: ["1rem", "1.2rem"],
+        lineHeight: ["1.5rem", "1.8rem"],
+        fontWeight: "600",
+        p: "0.4em 0.8em",
+        bg: "primaryDark",
+        border: "1px solid #1C1C1E",
+        borderRadius: "1.6em",
+        transition: "all 0.1s ease-in",
+        ":hover": {
+          bg: "primaryLight",
+        },
+      },
+      "filter-selected-small": {
+        fontSize: ["1rem", "1.2rem"],
+        lineHeight: ["1.5rem", "1.8rem"],
+        fontWeight: "600",
+        p: "0.4em 0.8em",
+        bg: "#FCFCFC",
+        borderRadius: "1.6em",
+        transition: "all 0.1s ease-in",
+        ":hover": {
+          bg: "white.1",
+        },
+      },
     },
   })}
 `;
