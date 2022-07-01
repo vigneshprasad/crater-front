@@ -14,7 +14,6 @@ import useLearnModalContext from "./context";
 const StyledBox = styled(Flex)`
   position: relative;
   background: transparent;
-  padding: 0.5em 0.8em;
 
   &::before {
     content: "";
@@ -68,8 +67,10 @@ export default function LearnNEarnModal(): JSX.Element {
           gridGap={space.xxxs}
           m="0 auto"
           flex="0"
+          py={space.xxxs}
+          px={space.xxxs}
         >
-          <Box w={36} h={36} position="relative">
+          <Box w={24} h={24} position="relative">
             <Image
               src={STATIC_IMAGES.ImageLearnLoot}
               alt="Loot"
