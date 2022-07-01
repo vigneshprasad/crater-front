@@ -3,7 +3,7 @@ import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Flex, Grid, Text, Box, Span } from "@/common/components/atoms";
+import { Flex, Grid, Text, Box, Span, Icon } from "@/common/components/atoms";
 import { Modal } from "@/common/components/atoms/v2";
 import { Button } from "@/common/components/atoms/v2";
 import { WEB3_CRATER_LANDING } from "@/common/constants/url.constants";
@@ -78,7 +78,7 @@ export default function LearnNEarnModal(): JSX.Element {
               objectFit="contain"
             />
           </Box>
-          <Text mr={space.xs}>Total Loot: --</Text>
+          <Text mr={space.xs}>Todays LOOT: --</Text>
         </StyledBox>
 
         <Grid
@@ -103,6 +103,10 @@ export default function LearnNEarnModal(): JSX.Element {
 
         <Box m="0 auto" w={240}>
           <Image src={STATIC_IMAGES.ImageHyfiPlaceholder} alt="Hyfi Share" />
+          <Flex justifyContent="center">
+            <Icon icon="Share" />
+            <Text>Share</Text>
+          </Flex>
         </Box>
 
         <Grid
