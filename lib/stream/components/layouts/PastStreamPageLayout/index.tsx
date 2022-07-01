@@ -23,13 +23,13 @@ export default function PastStreamPageLayout({
     <BaseLayout aside={<AsideNav />} overflowY="auto">
       <Grid
         p={[0, `${space.xxs}px ${space.xs}px ${space.xxs}px ${space.xxs}px`]}
-        gridTemplateColumns={["1fr 1fr", "2.5fr minmax(0, 1fr)"]}
+        gridTemplateColumns={["minmax(0, 1fr)", "2.5fr minmax(0, 1fr)"]}
         gridTemplateRows="min-content"
         gridTemplateAreas={[
           `
-              "video video"
-              "about about"
-              "streams streams"
+              "video"
+              "about"
+              "streams"
             `,
           `
               "video streams"
