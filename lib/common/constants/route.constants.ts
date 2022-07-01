@@ -15,7 +15,8 @@ export const PageRoutes = {
   ): string => `/livestream/${id}?tab=${tab ?? "chat"}`,
   creatorProfile: (slug: string | number, tab?: string | number): string =>
     `/creator/${slug}/${tab ?? "streams"}`,
-  streamVideo: (id: string | number): string => `/video/${id}`,
+  streamVideo: (id: string | number, tab?: string | number): string =>
+    `/video/${id}?tab=${tab ?? "pastStreams"}`,
   rewardListing: (slug: string, id: string | number): string =>
     `/tickets/${slug}/${id}`,
   checkoutBid: (bid: number | string, intent: string | number): string =>

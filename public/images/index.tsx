@@ -10,6 +10,7 @@ import ImgDefaultAvatar from "public/images/img_default_avatar.png";
 import ImageDiscordIcon from "public/images/img_discord_icon.png";
 import ImageEmptyWallet from "public/images/img_empty_wallet.png";
 import ImageHand from "public/images/img_hand.png";
+import ImageHyfiPlaceholder from "public/images/img_hyfi_placeholder.png";
 import ImageLeaderboardStep1 from "public/images/img_leaderboard_step1.png";
 import ImageLeaderboardStep2 from "public/images/img_leaderboard_step2.png";
 import ImageLeaderboardStep3 from "public/images/img_leaderboard_step3.png";
@@ -21,6 +22,7 @@ import ImageRewardBlob from "public/images/img_reward_blob.png";
 import ImageRewardCard from "public/images/img_reward_card.png";
 import ImageStarryBg from "public/images/img_starry_bg.png";
 import ImageCraterStream from "public/images/img_stream_crater.png";
+import ImageLearnLoot from "public/images/img_total_loot.png";
 import ImageTv from "public/images/img_tv.png";
 import ImageVisorMonkey from "public/images/img_visor_monkey.png";
 
@@ -50,6 +52,8 @@ const STATIC_IMAGES = {
   ImageRank3,
   ImageCoin,
   ImageVisorMonkey,
+  ImageHyfiPlaceholder,
+  ImageLearnLoot,
 };
 
 export default STATIC_IMAGES;

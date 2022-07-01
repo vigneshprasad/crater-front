@@ -15,7 +15,6 @@ import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 
 const InputContainer = styled(Flex)<FlexProps>`
-  background-color: ${({ theme }) => theme.colors.primaryDark};
   border-bottom: 1px solid ${({ theme }) => theme.colors.primaryLight};
   padding: 8px 0px;
   align-items: center;
@@ -52,10 +51,14 @@ type QuestionFormArgs = {
 };
 
 interface IProps {
+  inputContainerProps?: FlexProps;
   postQuestion: (question: string) => Promise<void>;
 }
 
-export default function QuestionForm({ postQuestion }: IProps): JSX.Element {
+export default function QuestionForm({
+  inputContainerProps,
+  postQuestion,
+}: IProps): JSX.Element {
   const { colors, space } = useTheme();
   const [loading, setLoading] = useState(false);
   const { fields, fieldValueSetter, getValidatedData, clearForm } =
@@ -103,7 +106,7 @@ export default function QuestionForm({ postQuestion }: IProps): JSX.Element {
       onSubmit={handleFormSubmit}
     >
       <Box>
-        <InputContainer>
+        <InputContainer bg={colors.primaryDark} {...inputContainerProps}>
           <StyledInput
             placeholder="Post a question..."
             value={fields.question.value}
