@@ -16,6 +16,8 @@ export type IModalProps = GridProps & {
   maxHeight?: number;
   iconButtonProps?: GridProps | IconButtonProps;
   modalVisibility?: ResponsiveValue<CSS.Property.Visibility>;
+  borderRadius?: number | number[];
+  border?: string | string[];
 };
 
 const Overlay = styled(Box)`
@@ -36,6 +38,8 @@ export function Modal({
   maxHeight = 640,
   iconButtonProps,
   modalVisibility = "visible",
+  borderRadius,
+  border,
   ...rest
 }: IModalProps): JSX.Element | null {
   const [showModal, setShowModal] = useState(visible);
@@ -88,10 +92,11 @@ export function Modal({
             w="100%"
             h="100%"
             maxHeight={["calc(100vh - 72px)", maxHeight]}
-            borderRadius={radii.s}
+            borderRadius={borderRadius ?? radii.s}
             overflowY="auto"
             overflowX="hidden"
             visibility={modalVisibility}
+            border={border}
           >
             <Box w="100%" overflowY="auto" maxHeight="100%" h="100%" {...rest}>
               {children}
