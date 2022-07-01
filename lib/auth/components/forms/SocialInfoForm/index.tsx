@@ -20,6 +20,7 @@ export interface ISocialFormProps {
   instagram: string | null;
   linkedin_url: string | null;
   twitter: string | null;
+  metamask_id: string | null;
 }
 
 interface IProps {
@@ -47,6 +48,10 @@ export default function SocialInfoForm({
         },
         twitter: {
           intialValue: profile.twitter,
+          validators: [],
+        },
+        metamask_id: {
+          intialValue: profile.metamask_id,
           validators: [],
         },
       },
@@ -159,6 +164,29 @@ export default function SocialInfoForm({
               value={fields.twitter.value ?? ""}
               onChange={(e) =>
                 fieldValueSetter("twitter", e.currentTarget.value)
+              }
+            />
+          </FormField>
+
+          <FormField
+            gridTemplateColumns={["1fr", "1fr 2fr"]}
+            gridGap={space.xxxs}
+            alignItems="center"
+            label={
+              <Grid
+                gridAutoFlow="column"
+                gridAutoColumns="max-content"
+                gridGap={space.xxxs}
+              >
+                <Icon icon="MetamaskFox" fill color={colors.twitter} />
+                <Text>Metamask</Text>
+              </Grid>
+            }
+          >
+            <Input
+              value={fields.metamask_id.value ?? ""}
+              onChange={(e) =>
+                fieldValueSetter("metamask_id", e.currentTarget.value)
               }
             />
           </FormField>

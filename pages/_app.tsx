@@ -38,6 +38,8 @@ import {
 import { AsideNavProvider } from "@/common/hooks/ui/useAsideNavState";
 import { AnalyticsProvider } from "@/common/utils/analytics";
 import fetcher from "@/common/utils/fetcher";
+import LearnNEarnModal from "@/stream/components/objects/LearnNEarnModal";
+import { LearnModalProvider } from "@/stream/components/objects/LearnNEarnModal/context";
 
 import GlobalStyle from "../lib/common/styles/global.styled";
 
@@ -101,23 +103,26 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
           <AuthModalProvider>
             <AnalyticsProvider>
               <ThemeProvider theme={theme}>
-                <GlobalStyle />
-                <AsideNavProvider>
-                  <SystemSocketProvider>
-                    <Script strategy="afterInteractive">
-                      {`
+                <LearnModalProvider>
+                  <GlobalStyle />
+                  <AsideNavProvider>
+                    <SystemSocketProvider>
+                      <Script strategy="afterInteractive">
+                        {`
                         (function(c,l,a,r,i,t,y){
                           c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
                           t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
                           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
                         })(window, document, "clarity", "script", "${CLARITY_PID}");
                       `}
-                    </Script>
-                    <Component {...pageProps} />
-                  </SystemSocketProvider>
-                </AsideNavProvider>
-                <AuthModal />
-                <BasicSignupSheet />
+                      </Script>
+                      <Component {...pageProps} />
+                    </SystemSocketProvider>
+                  </AsideNavProvider>
+                  <LearnNEarnModal />
+                  <AuthModal />
+                  <BasicSignupSheet />
+                </LearnModalProvider>
               </ThemeProvider>
             </AnalyticsProvider>
           </AuthModalProvider>
