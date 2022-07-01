@@ -45,6 +45,7 @@ export { default as Linktree } from "./Linktree";
 export { default as LogOut } from "./LogOut";
 export { default as Logo } from "./Logo";
 export { default as Menu } from "./Menu";
+export { default as MetamaskFox } from "./MetamaskFox";
 export { default as MicOff } from "./MicOff";
 export { default as MicOn } from "./MicOn";
 export { default as Moon } from "./Moon";

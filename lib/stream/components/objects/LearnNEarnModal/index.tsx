@@ -54,12 +54,10 @@ export default function LearnNEarnModal(): JSX.Element {
         alignItems="center"
       >
         <Flex flexDirection="column">
-          <Text textStyle="mainHeading">
-            Watch Web3 Content and earn tokens
-          </Text>
+          <Text textStyle="mainHeading">Earn your share of the daily LOOT</Text>
           <Text w="80%" color={colors.textTertiary}>
-            Crater has partnered with HyFi to give you tokens while you learn
-            about Web3.
+            Watch streams, co-create content &amp; compete in bounties, to earn
+            loyalty tokens.
           </Text>
         </Flex>
 
@@ -95,22 +93,10 @@ export default function LearnNEarnModal(): JSX.Element {
             />
           </Box>
           <Flex gridGap={space.xs} flexDirection="column">
-            <DataItem
-              icon="StreamColor"
-              label="Your Stream Time:"
-              rotation={135}
-            />
-            <DataItem icon="EyeColor" label="Your Watch Time:" rotation={155} />
-            <DataItem
-              icon="TokenColor"
-              label="Learn Tokens Earned:"
-              rotation={205}
-            />
-            <DataItem
-              icon="BurnColor"
-              label="Learn Tokens Burned:"
-              rotation={225}
-            />
+            <DataItem icon="StreamColor" label="Time Spent:" rotation={135} />
+            <DataItem icon="EyeColor" label="Interactions:" rotation={155} />
+            <DataItem icon="TokenColor" label="LEARN Earned:" rotation={205} />
+            <DataItem icon="BurnColor" label="LEARN Burned:" rotation={225} />
           </Flex>
         </Grid>
 
@@ -131,19 +117,13 @@ export default function LearnNEarnModal(): JSX.Element {
           </Box>
 
           <Text textStyle="small" color={colors.textTertiary}>
-            LEARN Token is a BEP20 token on the{" "}
+            On Crater you earn CRT, an unlimited supply loyalty token for
+            creating content, watching streams or by competing in bounties.
             <Span fontWeight="600" color={colors.textPrimary}>
-              Binance Smart Chain by Rohas Nagpal
+              These are converted to LEARN, a limited supply BEP20 token on the
+              Binance Smart chain created by Rohas Nagpal.LEARN Token is a BEP20
+              token on the{" "}
             </Span>
-            . The tokens earned are transferred automatically{" "}
-            <Span fontWeight="600" color={colors.textPrimary}>
-              every Friday
-            </Span>{" "}
-            to your{" "}
-            <Span fontWeight="600" color={colors.textPrimary}>
-              meta mask wallet
-            </Span>
-            , which you can update in your account settings
           </Text>
         </Grid>
       </Grid>
