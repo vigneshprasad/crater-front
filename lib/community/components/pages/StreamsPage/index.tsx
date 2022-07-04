@@ -27,7 +27,7 @@ export default function StreamsPage(): JSX.Element {
 
       <Link href={PageRoutes.leaderboard}>
         <Flex my={space.xxs} px={[space.xxs, space.xs]} alignItems="center">
-          <Text fontFamily={fonts.heading}>Trending</Text>
+          <Text fontFamily={fonts.heading}>Top Creators</Text>
           <Icon mx={space.xxxxs} icon="Trophy" color="#FFAA00" />
           <Icon icon="ChevronRight" />
         </Flex>
