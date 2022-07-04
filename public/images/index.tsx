@@ -1,3 +1,4 @@
+import GifLearnToken3d from "public/images/gif_learn_token.gif";
 import ImageAppBannerStream from "public/images/img_app_banner_livestream.png";
 import ImageAuctionInactive from "public/images/img_auction_inactive.png";
 import ImageBidAcceptedIcon from "public/images/img_bid_accepted.png";
@@ -54,6 +55,7 @@ const STATIC_IMAGES = {
   ImageVisorMonkey,
   ImageHyfiPlaceholder,
   ImageLearnLoot,
+  GifLearnToken3d,
 };
 
 export default STATIC_IMAGES;

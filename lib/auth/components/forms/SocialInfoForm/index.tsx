@@ -169,6 +169,7 @@ export default function SocialInfoForm({
           </FormField>
 
           <FormField
+            subtext="Share Your Public Address"
             gridTemplateColumns={["1fr", "1fr 2fr"]}
             gridGap={space.xxxs}
             alignItems="center"
