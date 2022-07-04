@@ -3,7 +3,7 @@ import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Flex, Grid, Text, Box, Span, Icon } from "@/common/components/atoms";
+import { Flex, Grid, Text, Box, Icon } from "@/common/components/atoms";
 import { Modal } from "@/common/components/atoms/v2";
 import { Button } from "@/common/components/atoms/v2";
 import { WEB3_CRATER_LANDING } from "@/common/constants/url.constants";
@@ -89,11 +89,11 @@ export default function LearnNEarnModal(): JSX.Element {
           <Box position="relative" pt="100%">
             <Image
               layout="fill"
-              src={STATIC_IMAGES.ImageVisorMonkey}
+              src={STATIC_IMAGES.GifLearnToken3d}
               alt="Visor Monkey"
             />
           </Box>
-          <Flex gridGap={space.xs} flexDirection="column">
+          <Flex ml={space.s} gridGap={space.xs} flexDirection="column">
             <DataItem icon="StreamColor" label="Time Spent:" rotation={135} />
             <DataItem icon="EyeColor" label="Interactions:" rotation={155} />
             <DataItem icon="TokenColor" label="LEARN Earned:" rotation={205} />
@@ -124,11 +124,8 @@ export default function LearnNEarnModal(): JSX.Element {
           <Text textStyle="small" color={colors.textTertiary}>
             On Crater you earn CRT, an unlimited supply loyalty token for
             creating content, watching streams or by competing in bounties.
-            <Span fontWeight="600" color={colors.textPrimary}>
-              These are converted to LEARN, a limited supply BEP20 token on the
-              Binance Smart chain created by Rohas Nagpal.LEARN Token is a BEP20
-              token on the{" "}
-            </Span>
+            These are converted to LEARN, a limited supply BEP20 token on the
+            Binance Smart chain created by Rohas Nagpal.
           </Text>
         </Grid>
       </Grid>

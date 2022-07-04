@@ -47,7 +47,7 @@ export default function FormField({
         })()}
 
         {subtext && (
-          <Text color={colors.slate} textStyle="body">
+          <Text color={colors.slate} mt={space.xxxxxs} textStyle="small">
             {subtext}
           </Text>
         )}
