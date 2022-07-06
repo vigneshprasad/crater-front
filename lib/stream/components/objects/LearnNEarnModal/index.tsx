@@ -87,10 +87,10 @@ export default function LearnNEarnModal(): JSX.Element {
             />
           </Box>
           <Flex ml={space.s} gridGap={space.xs} flexDirection="column">
-            <DataItem icon="StreamColor" label="Time Spent:" rotation={135} />
-            <DataItem icon="EyeColor" label="Interactions:" rotation={155} />
-            <DataItem icon="TokenColor" label="LEARN Earned:" rotation={205} />
-            <DataItem icon="BurnColor" label="LEARN Burned:" rotation={225} />
+            <DataItem animation="Stream" label="Time Spent:" rotation={135} />
+            <DataItem animation="Watch" label="Interactions:" rotation={155} />
+            <DataItem animation="Earn" label="LEARN Earned:" rotation={205} />
+            <DataItem animation="Burn" label="LEARN Burned:" rotation={225} />
           </Flex>
         </Grid>
 
