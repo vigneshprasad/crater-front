@@ -207,7 +207,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           }
 
           return {
-            buttonText: "RSVP to livestream",
+            buttonText: "Remind Me",
             loading: rsvpBtnLoading,
             onClick: () => {
               postGroupRequest();
@@ -216,7 +216,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
         }
       } else {
         return {
-          buttonText: "RSVP to livestream",
+          buttonText: "Remind Me",
           onClick: () => {
             track(AnalyticsEvents.rsvp_button_clicked, {
               new_user: true,

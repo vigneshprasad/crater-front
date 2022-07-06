@@ -78,7 +78,7 @@ export default function LearnNEarnModal(): JSX.Element {
               objectFit="contain"
             />
           </Box>
-          <Text mr={space.xs}>Todays LOOT: --</Text>
+          <Text mr={space.xs}>Todays LOOT: 1,000</Text>
         </StyledBox>
 
         <Grid
