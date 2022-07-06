@@ -70,15 +70,8 @@ export default function LearnNEarnModal(): JSX.Element {
           py={space.xxxs}
           px={space.xxxs}
         >
-          <Box w={24} h={24} position="relative">
-            <Image
-              src={STATIC_IMAGES.ImageLearnLoot}
-              alt="Loot"
-              layout="fill"
-              objectFit="contain"
-            />
-          </Box>
-          <Text mr={space.xs}>Todays LOOT: 1,000</Text>
+          <Text>Todays LOOT: 1,000</Text>
+          <Icon icon="TokenColor" size={20} />
         </StyledBox>
 
         <Grid
