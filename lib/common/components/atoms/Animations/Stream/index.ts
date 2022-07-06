@@ -12,7 +12,7 @@ const Stream = {
       id: "image_0",
       w: 36,
       h: 36,
-      u: "images/anims/stream/",
+      u: "/images/anims/stream/",
       p: "img_0.png",
       e: 0,
     },

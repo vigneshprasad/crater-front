@@ -12,7 +12,7 @@ const Burn = {
       id: "image_0",
       w: 36,
       h: 36,
-      u: "images/anims/burn/",
+      u: "/images/anims/burn/",
       p: "img_0.png",
       e: 0,
     },

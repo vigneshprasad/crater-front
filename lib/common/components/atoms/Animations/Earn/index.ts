@@ -12,7 +12,7 @@ const Earn = {
       id: "image_0",
       w: 36,
       h: 36,
-      u: "images/anims/earn/",
+      u: "/images/anims/earn/",
       p: "img_0.png",
       e: 0,
     },

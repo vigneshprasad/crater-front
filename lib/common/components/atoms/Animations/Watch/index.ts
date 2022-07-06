@@ -12,7 +12,7 @@ const Watch = {
       id: "image_0",
       w: 36,
       h: 36,
-      u: "images/anims/watch/",
+      u: "/images/anims/watch/",
       p: "img_0.png",
       e: 0,
     },
