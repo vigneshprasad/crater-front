@@ -68,4 +68,5 @@ export interface UserPermission {
   user: string;
   allow_create_stream: boolean;
   allow_chat: boolean;
+  show_viewer_count: boolean;
 }
