@@ -64,7 +64,9 @@ export default function StreamAboutSection({
         </Flex>
 
         <Box px={[space.xxxs, space.xxs]} py={[space.xxxxs, space.xxs]}>
-          <Text textStyle="headline5">{topic_detail.name}</Text>
+          <Text textStyle="headline5" maxLines={2}>
+            {topic_detail.name}
+          </Text>
           {topic_detail.description && (
             <ExpandingText color={colors.textSecondary} maxLines={2}>
               {topic_detail.description}
@@ -116,12 +118,9 @@ export default function StreamAboutSection({
                   })()}
                 </Text>
               </Flex>
-              {user?.pk === stream.host_detail.pk && (
-                <Text textStyle="body">
-                  {stream?.host_detail.creator_detail?.subscriber_count}{" "}
-                  Followers
-                </Text>
-              )}
+              <Text textStyle="body">
+                {stream?.host_detail.creator_detail?.subscriber_count} Followers
+              </Text>
 
               <Box pt={space.xxxxxs} display={["none", "grid"]}>
                 <ExpandingText color={colors.textSecondary} maxLines={3}>

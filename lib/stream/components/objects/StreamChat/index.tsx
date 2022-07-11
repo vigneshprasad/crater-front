@@ -236,7 +236,10 @@ export default function StreamChat({
                           ? true
                           : false;
 
-                        if (isAdmin) {
+                        const showCount =
+                          isAdmin || permission.show_viewer_count;
+
+                        if (showCount) {
                           return <StreamViewerCount />;
                         }
                       })()}
