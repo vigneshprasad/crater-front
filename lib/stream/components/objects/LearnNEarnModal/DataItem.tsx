@@ -1,20 +1,23 @@
+import Lottie from "react-lottie";
 import styled, { useTheme } from "styled-components";
 
 import {
   Flex,
   Box,
-  Icon,
   Text,
   BoxProps,
   Span,
+  Grid,
 } from "@/common/components/atoms";
-import { IconOptions } from "@/common/theme";
+import Animations, {
+  ILottieAnimations,
+} from "@/common/components/atoms/Animations";
 
 interface IProps {
   label: string;
-  icon: IconOptions;
   rotation: number;
   value?: number;
+  animation: ILottieAnimations;
 }
 
 const Diagonal = styled(Box)<BoxProps & { rotation: number }>`
@@ -29,29 +32,37 @@ const Diagonal = styled(Box)<BoxProps & { rotation: number }>`
 export default function DataItem({
   label,
   rotation,
-  icon,
   value,
+  animation,
 }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   return (
     <Flex alignItems="center" gridGap={space.xxxxs}>
       <Diagonal rotation={rotation} />
       <Box w={20} bg={colors.accent} h={1} />
-      <Flex
+      <Grid
         flex={1}
         borderRadius={radii.xxxxs}
+        gridTemplateColumns="max-content 1fr"
         px={space.xxs}
         py={space.xxxs}
         bg={colors.primaryLight}
         gridGap={space.xxs}
+        alignItems="center"
       >
-        <Icon icon={icon} />
+        <Lottie
+          width={24}
+          height={24}
+          options={{
+            animationData: Animations[animation],
+          }}
+        />
         <Text>
           {label}
           {"  "}
           <Span>{value ?? "--"}</Span>
         </Text>
-      </Flex>
+      </Grid>
     </Flex>
   );
 }

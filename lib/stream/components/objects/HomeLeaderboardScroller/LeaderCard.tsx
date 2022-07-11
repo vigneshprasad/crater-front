@@ -4,8 +4,9 @@ import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
-import { Box, Text, Grid, Flex, Icon } from "@/common/components/atoms";
+import { Box, Text, Grid, Flex, Icon, Link } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
+import { PageRoutes } from "@/common/constants/route.constants";
 import CreatorApiClient from "@/creators/api";
 import { CreatorRank } from "@/creators/types/creator";
 
@@ -116,97 +117,102 @@ export function LeaderCard({
   };
 
   return (
-    <Container
-      zIndex={2}
-      bg={colors.primaryBackground}
-      borderRadius={radii.xxxxs}
-      position="relative"
-    >
-      <Box position="absolute" top={-8} left={-8}>
-        {rankLabel}
-      </Box>
-
-      <Box
+    <Link href={PageRoutes.creatorProfile(creator.slug)}>
+      <Container
+        zIndex={2}
+        bg={colors.primaryBackground}
+        borderRadius={radii.xxxxs}
         position="relative"
-        overflow="hidden"
-        h="100%"
-        w="100%"
-        p={space.xxs}
       >
-        <Box position="absolute" top={-12} right={-12}>
-          <Box
-            position="relative"
-            borderRadius="50%"
-            size={72}
-            overflow="hidden"
-            border={border}
-          >
-            <Image
-              layout="fill"
-              objectFit="cover"
-              src={
-                creator.profile_detail.photo ?? STATIC_IMAGES.ImgDefaultAvatar
-              }
-              alt="image"
-            />
-          </Box>
+        <Box position="absolute" top={-8} left={-8}>
+          {rankLabel}
         </Box>
 
-        <Box mt={56}>
-          <Text
-            minHeight={48}
-            color={colors.green[0]}
-            fontSize="1.2rem"
-            fontFamily={fonts.heading}
-          >
-            {creator.profile_detail.name}
-          </Text>
+        <Box
+          position="relative"
+          overflow="hidden"
+          h="100%"
+          w="100%"
+          p={space.xxs}
+        >
+          <Box position="absolute" top={-12} right={-12}>
+            <Box
+              position="relative"
+              borderRadius="50%"
+              size={72}
+              overflow="hidden"
+              border={border}
+            >
+              <Image
+                layout="fill"
+                objectFit="cover"
+                src={
+                  creator.profile_detail.photo ?? STATIC_IMAGES.ImgDefaultAvatar
+                }
+                alt="image"
+              />
+            </Box>
+          </Box>
 
-          <Box mt={space.xxxs}>
-            {(() => {
-              if (creator.is_follower) {
+          <Box mt={56}>
+            <Text
+              minHeight={48}
+              color={colors.green[0]}
+              fontSize="1.2rem"
+              fontFamily={fonts.heading}
+            >
+              {creator.profile_detail.name}
+            </Text>
+
+            <Box mt={space.xxxs}>
+              {(() => {
+                if (creator.is_follower) {
+                  return (
+                    <Flex alignItems="center" gridGap={space.xxxxs}>
+                      <Icon
+                        icon="CheckCircle"
+                        color={colors.green[0]}
+                        size={16}
+                      />
+                      <Text
+                        textStyle="caption"
+                        fontWeight="600"
+                        color={colors.accentLight}
+                      >
+                        FOLLOWED
+                      </Text>
+                    </Flex>
+                  );
+                }
+
                 return (
-                  <Flex alignItems="center" gridGap={space.xxxxs}>
-                    <Icon
-                      icon="CheckCircle"
-                      color={colors.green[0]}
-                      size={16}
-                    />
-                    <Text
-                      textStyle="caption"
-                      fontWeight="600"
-                      color={colors.accentLight}
-                    >
-                      FOLLOWED
-                    </Text>
-                  </Flex>
+                  <Button
+                    variant="text"
+                    label="FOLLOW"
+                    disabled={creator.is_follower}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      followCreator();
+                    }}
+                  />
                 );
-              }
 
-              return (
-                <Button
-                  variant="text"
-                  label="FOLLOW"
-                  disabled={creator.is_follower}
-                  onClick={followCreator}
-                />
-              );
+                // return (
+                //   <>
+                //     <Text mt={space.xxs} fontSize="1rem">
+                //       WATCH TIME
+                //     </Text>
 
-              // return (
-              //   <>
-              //     <Text mt={space.xxs} fontSize="1rem">
-              //       WATCH TIME
-              //     </Text>
-
-              //     <Text fontFamily={fonts.heading} color={colors.accentLight}>
-              //       {creator.watch_time}
-              //     </Text>
-              //   </>
-              // );
-            })()}
+                //     <Text fontFamily={fonts.heading} color={colors.accentLight}>
+                //       {creator.watch_time}
+                //     </Text>
+                //   </>
+                // );
+              })()}
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </Link>
   );
 }

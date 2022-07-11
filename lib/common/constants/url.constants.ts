@@ -188,3 +188,5 @@ export const START_CREATOR_JOURNET_CALENDLY =
 export const HELP_CENTER = "https://crater.zendesk.com/hc/en-us";
 
 export const WEB3_CRATER_LANDING = "https://web3.crater.club/";
+
+export const BLOG_URL = "https://blog.crater.club/";

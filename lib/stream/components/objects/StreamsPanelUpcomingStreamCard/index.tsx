@@ -76,7 +76,7 @@ const StreamsPanelUpcomingStreamCard = forwardRef<HTMLDivElement, IProps>(
             pl={8}
             pr={4}
           >
-            <Text textStyle="small">RSVP</Text>
+            <Text textStyle="small">Remind Me</Text>
             <Icon size={14} icon="CheckCircle" color={colors.greenSuccess} />
           </Flex>
         )}
