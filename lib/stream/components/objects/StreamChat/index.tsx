@@ -239,7 +239,7 @@ export default function StreamChat({
                         const showCount =
                           isAdmin ||
                           (permission.show_viewer_count &&
-                            user?.pk == stream.host);
+                            user?.pk === stream.host);
 
                         if (showCount) {
                           return <StreamViewerCount />;
