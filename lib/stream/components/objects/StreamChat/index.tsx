@@ -48,7 +48,7 @@ export default function StreamChat({
   showPopup = true,
   ...rest
 }: IProps): JSX.Element {
-  const { profile, permission: apiPermission } = useAuth();
+  const { profile, permission: apiPermission, user } = useAuth();
   const { permission: socketPermission } = useSystemSocket();
   const { rewards } = useRewardsList();
   const { space, gradients, radii, colors } = useTheme();
@@ -237,7 +237,9 @@ export default function StreamChat({
                           : false;
 
                         const showCount =
-                          isAdmin || permission.show_viewer_count;
+                          isAdmin ||
+                          (permission.show_viewer_count &&
+                            user?.pk === stream.host);
 
                         if (showCount) {
                           return <StreamViewerCount />;
