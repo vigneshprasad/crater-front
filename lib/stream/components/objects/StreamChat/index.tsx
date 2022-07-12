@@ -15,6 +15,7 @@ import {
   Link,
   Toggle,
   Icon,
+  Avatar,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { IconButton } from "@/common/components/atoms/v2";
@@ -30,6 +31,7 @@ import { FirebaseChatContext } from "@/stream/providers/FirebaseChatProvider/con
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
 import ChatMessagesList from "../ChatMessagesList";
+import ChatNotification from "../ChatNotification";
 import StreamViewerCount from "../StreamViewerCount";
 
 interface IProps extends GridProps {
@@ -169,6 +171,7 @@ export default function StreamChat({
 
               {permission?.allow_chat && (
                 <Form
+                  position="relative"
                   bg={colors.primaryLight}
                   display="grid"
                   px={space.xxxs}
@@ -192,6 +195,20 @@ export default function StreamChat({
                     }
                   }}
                 >
+                  <ChatNotification
+                    headingElement={
+                      <Flex gridGap={space.xxs} alignItems="center">
+                        <Avatar size={28} /> <Text flex={1}> Creator Name</Text>
+                      </Flex>
+                    }
+                    contentElement={
+                      <Text textStyle="body">
+                        Hey there! If you like this stream, follow me to never
+                        miss out on my upcoming streams.
+                      </Text>
+                    }
+                    buttonLabel="Follow"
+                  />
                   <Input
                     placeholder="Start chatting..."
                     value={fields.message.value}
