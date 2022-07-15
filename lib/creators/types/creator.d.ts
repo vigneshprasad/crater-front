@@ -86,6 +86,7 @@ export type CreatorRank = {
   id: number;
   user: string;
   subscriber_count: number;
+  slug: string;
   is_follower: boolean;
   profile_detail: {
     id: number;
