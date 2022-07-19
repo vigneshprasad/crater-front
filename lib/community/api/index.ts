@@ -98,7 +98,7 @@ export default function WebinarApiClient(
   async function getAllUpcomingWebinars(
     page = 1,
     pageSize = 20,
-    category?: string
+    category?: number
   ): Promise<ApiResult<PageResponse<Webinar>, AxiosError>> {
     try {
       const url = category
