@@ -11,7 +11,7 @@ import {
   Webinar,
 } from "../../community/types/community";
 import { Reward } from "../../tokens/types/token";
-import { Creator } from "../types/creator";
+import { Creator, CreatorRank } from "../types/creator";
 import { CreateWebinar, StreamFormArgs } from "../types/stream";
 
 interface ICreatorApiClient {
@@ -47,6 +47,9 @@ interface ICreatorApiClient {
     id: string | number
   ) => Promise<ApiResult<Reward, AxiosError>>;
   getCreatorsWithCoins: () => Promise<ApiResult<Creator[], AxiosError>>;
+  getCreatorRankList: () => Promise<
+    ApiResult<PageResponse<CreatorRank>, AxiosError>
+  >;
 }
 
 export default function CreatorApiClient(
@@ -241,6 +244,19 @@ export default function CreatorApiClient(
     }
   }
 
+  async function getCreatorRankList(): Promise<
+    ApiResult<PageResponse<CreatorRank>, AxiosError>
+  > {
+    try {
+      const { data } = await client.get<PageResponse<CreatorRank>>(
+        API_URL_CONSTANTS.creator.getCreatorRankList
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getCreatorsList,
     getCreator,
@@ -255,5 +271,6 @@ export default function CreatorApiClient(
     getAllRewards,
     retrieveReward,
     getCreatorsWithCoins,
+    getCreatorRankList,
   };
 }
