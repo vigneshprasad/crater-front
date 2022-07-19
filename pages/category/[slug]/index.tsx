@@ -65,7 +65,9 @@ export const getStaticProps: GetStaticProps<
     undefined,
     streamCategory.pk
   );
-  const [creators] = await CreatorApiClient().getCreatorRankList();
+  const [creators] = await CreatorApiClient().getCreatorRankList(
+    streamCategory.pk
+  );
 
   return {
     props: {

@@ -47,9 +47,9 @@ interface ICreatorApiClient {
     id: string | number
   ) => Promise<ApiResult<Reward, AxiosError>>;
   getCreatorsWithCoins: () => Promise<ApiResult<Creator[], AxiosError>>;
-  getCreatorRankList: () => Promise<
-    ApiResult<PageResponse<CreatorRank>, AxiosError>
-  >;
+  getCreatorRankList: (
+    category?: number
+  ) => Promise<ApiResult<PageResponse<CreatorRank>, AxiosError>>;
 }
 
 export default function CreatorApiClient(
@@ -244,13 +244,15 @@ export default function CreatorApiClient(
     }
   }
 
-  async function getCreatorRankList(): Promise<
-    ApiResult<PageResponse<CreatorRank>, AxiosError>
-  > {
+  async function getCreatorRankList(
+    category?: number
+  ): Promise<ApiResult<PageResponse<CreatorRank>, AxiosError>> {
     try {
-      const { data } = await client.get<PageResponse<CreatorRank>>(
-        API_URL_CONSTANTS.creator.getCreatorRankList
-      );
+      const url = category
+        ? `${API_URL_CONSTANTS.creator.getCreatorRankList}?category=${category}`
+        : API_URL_CONSTANTS.creator.getCreatorRankList;
+
+      const { data } = await client.get<PageResponse<CreatorRank>>(url);
       return [data, undefined];
     } catch (err) {
       return [undefined, err as AxiosError];

@@ -18,6 +18,7 @@ interface ICreatorRankListState {
   error?: unknown;
   isValidating: boolean;
   nextPage: boolean;
+  category?: number;
   revalidate: SWRResponse<PageResponse<CreatorRank>, unknown>["revalidate"];
   setCreatorsPage: SWRInfiniteResponse<
     PageResponse<CreatorRank>,
@@ -30,11 +31,13 @@ const CreatorRankListContext = createContext({} as ICreatorRankListState);
 type ProviderProps = PropsWithChildren<{
   initial?: PageResponse<CreatorRank>;
   page_size?: number;
+  category?: number;
 }>;
 
 export function CreatorRankListProvider({
   initial,
   page_size: initialPageSize = 10,
+  category,
   children,
 }: ProviderProps): JSX.Element {
   const [pageSize, setPageSize] = useState(initialPageSize);
@@ -50,6 +53,10 @@ export function CreatorRankListProvider({
     (index, previousData) => {
       const page = index + 1;
       if (previousData && !previousData.next) return null;
+
+      if (category) {
+        return `${API_URL_CONSTANTS.creator.getCreatorRankList}?page_size=${pageSize}&page=${page}&category=${category}`;
+      }
 
       return `${API_URL_CONSTANTS.creator.getCreatorRankList}?page_size=${pageSize}&page=${page}`;
     },
@@ -69,6 +76,7 @@ export function CreatorRankListProvider({
       error,
       isValidating,
       nextPage,
+      category,
       revalidate,
       setCreatorsPage,
       setPageSize,
@@ -78,6 +86,7 @@ export function CreatorRankListProvider({
       isValidating,
       error,
       nextPage,
+      category,
       revalidate,
       setCreatorsPage,
       setPageSize,
