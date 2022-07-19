@@ -1,17 +1,17 @@
 import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { useTheme } from "styled-components";
 
-import { Box, Grid, Shimmer } from "@/common/components/atoms";
-import { CreatorRank } from "@/creators/types/creator";
+import { Box, Flex, Grid, Icon, Shimmer } from "@/common/components/atoms";
+import { Button } from "@/common/components/atoms/v2";
+import useCreatorRankList from "@/creators/context/CreatorRankListContext";
 
 import CreatorCard from "../CreatorCard";
 
-interface IProps {
-  creators?: CreatorRank[];
-}
-
-export default function TopCreatorsList({ creators }: IProps): JSX.Element {
-  const { space } = useTheme();
+export default function TopCreatorsList(): JSX.Element {
+  const { space, colors } = useTheme();
+  const [initialClick, setInitialClick] = useState(true);
+  const { creators, nextPage, setCreatorsPage } = useCreatorRankList();
 
   return (
     <Box>
@@ -44,6 +44,31 @@ export default function TopCreatorsList({ creators }: IProps): JSX.Element {
           })()}
         </AnimatePresence>
       </Grid>
+      {nextPage && (
+        <Flex
+          mx={space.xxs}
+          gridGap={space.xxs}
+          alignItems="center"
+          display={["none", "flex"]}
+        >
+          <Flex flex="1" h={1} bg={colors.black[0]} />
+          <Button
+            suffixElement={<Icon icon="ChevronDown" size={20} />}
+            variant="dark-flat"
+            label="Show More"
+            onClick={() => {
+              if (initialClick) {
+                setCreatorsPage((page) => page + 1);
+                setInitialClick(false);
+                return;
+              }
+
+              setCreatorsPage((page) => page + 2);
+            }}
+          />
+          <Flex flex="1" h={1} bg={colors.black[0]} />
+        </Flex>
+      )}
     </Box>
   );
 }
