@@ -25,7 +25,6 @@ const Video = styled.video`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  max-height: [100%, 20vh];
 
   @media (min-width: ${({ theme }) => theme.breakpoints[0]}) {
     max-height: 100%;
