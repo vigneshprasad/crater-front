@@ -9,6 +9,7 @@ import {
   Flex,
   Grid,
   Icon,
+  Shimmer,
   Spinner,
   Text,
 } from "@/common/components/atoms";
@@ -194,36 +195,38 @@ export default function CategoryVideoSection({
           )}
         </Box>
 
-        {pastStreams && (
-          <AnimatedBox
-            gridArea="video"
-            justifySelf="end"
-            w={["100%", 530]}
-            h={["auto", 298]}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.3 }}
-            cursor="pointer"
-            onClick={() =>
-              router.push(
-                PageRoutes.streamVideo(pastStreams[activePastStreamIndex].id)
-              )
-            }
-          >
-            <Video
-              src={`${pastStreams[activePastStreamIndex].recording_details.recording}#t=600`}
-              autoPlay
-              muted
-              loop
-              ref={videoRef}
-              onTimeUpdate={() => {
-                if (videoRef.current && videoRef.current.currentTime >= 625) {
-                  switchPastStreamVideo();
-                }
-              }}
-            />
-          </AnimatedBox>
-        )}
+        <Box gridArea="video" justifySelf="end">
+          {!pastStreams ? (
+            <Shimmer w={["100%", 530]} h={["auto", 298]} />
+          ) : (
+            <AnimatedBox
+              w={["100%", 530]}
+              h={["auto", 298]}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              transition={{ duration: 0.3 }}
+              cursor="pointer"
+              onClick={() =>
+                router.push(
+                  PageRoutes.streamVideo(pastStreams[activePastStreamIndex].id)
+                )
+              }
+            >
+              <Video
+                src={`${pastStreams[activePastStreamIndex].recording_details.recording}#t=600`}
+                autoPlay
+                muted
+                loop
+                ref={videoRef}
+                onTimeUpdate={() => {
+                  if (videoRef.current && videoRef.current.currentTime >= 625) {
+                    switchPastStreamVideo();
+                  }
+                }}
+              />
+            </AnimatedBox>
+          )}
+        </Box>
       </Grid>
     </Box>
   );
