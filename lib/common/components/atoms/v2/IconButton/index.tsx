@@ -5,7 +5,7 @@ import { variant } from "styled-system";
 import { Icon, IconProps } from "../../Icon";
 import { Button, ButtonProps } from "../Button";
 
-type Variants = "flat" | "flat-accent" | "round-large" | "round";
+type Variants = "flat" | "flat-icon" | "flat-accent" | "round-large" | "round";
 
 interface IProps extends ButtonProps {
   icon: IconProps["icon"];
@@ -17,6 +17,16 @@ const ButtonContainer = styled(Button)<ButtonProps>`
   ${variant({
     prop: "buttonStyle",
     variants: {
+      "flat-icon": {
+        px: 0,
+        py: 0,
+        bg: "transparent",
+        color: "#9191AA",
+        ":hover": {
+          color: "accentLight",
+          bg: "transparent",
+        },
+      },
       flat: {
         w: 28,
         h: 28,
@@ -85,7 +95,7 @@ export function IconButton({ icon, iconProps, ...rest }: IProps): JSX.Element {
 
   return (
     <ButtonContainer display="flex" variant="iconButton" {...rest}>
-      <Icon icon={icon} {...restIconProps} />
+      <Icon color="inherit" icon={icon} {...restIconProps} />
     </ButtonContainer>
   );
 }
