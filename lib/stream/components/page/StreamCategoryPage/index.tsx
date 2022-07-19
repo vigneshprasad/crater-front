@@ -82,7 +82,7 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
   };
 
   return (
-    <BaseLayout aside={<AsideNav />} overflowY="auto">
+    <BaseLayout aside={<AsideNav />} overflowY="scroll">
       <Box px={[0, space.xxs]}>
         <CategoryVideoSection
           streamCategory={cachedStreamCategory ?? streamCategory}
