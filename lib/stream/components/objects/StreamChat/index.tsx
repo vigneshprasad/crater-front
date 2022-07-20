@@ -29,6 +29,7 @@ import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
 import { FirebaseChatContext } from "@/stream/providers/FirebaseChatProvider/context";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
+import ChatEmojiSheet from "../ChatEmojiSheet";
 import ChatMessagesList from "../ChatMessagesList";
 import StreamViewerCount from "../StreamViewerCount";
 
@@ -55,6 +56,7 @@ export default function StreamChat({
   const { colorMode, toggleColorMode } = useChatColorMode();
   const [popOutVisible, setPopOutVisible] = useState(false);
   const windowRef = useRef<NewWindow>(null);
+  const [showSheet, setShowSheet] = useState(false);
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
     {
@@ -129,7 +131,7 @@ export default function StreamChat({
   return (
     <FirebaseChatProvider groupId={stream.id}>
       <FirebaseChatContext.Consumer>
-        {({ messages, postMessage }) => {
+        {({ messages, postMessage, postSticker }) => {
           return (
             <Grid
               minHeight="100%"
@@ -192,17 +194,45 @@ export default function StreamChat({
                     }
                   }}
                 >
-                  <Input
-                    placeholder="Start chatting..."
-                    value={fields.message.value}
-                    onChange={(e) =>
-                      fieldValueSetter("message", e.currentTarget.value)
-                    }
-                    placeholderColor={
-                      colorMode === "dark" ? undefined : "#969696"
-                    }
-                    color={colorMode === "dark" ? undefined : colors.black[0]}
-                  />
+                  <Box position="relative">
+                    <Input
+                      placeholder="Start chatting..."
+                      value={fields.message.value}
+                      onChange={(e) =>
+                        fieldValueSetter("message", e.currentTarget.value)
+                      }
+                      placeholderColor={
+                        colorMode === "dark" ? undefined : "#969696"
+                      }
+                      color={colorMode === "dark" ? undefined : colors.black[0]}
+                      suffixElement={
+                        <IconButton
+                          icon="Emoji"
+                          buttonStyle="flat-icon"
+                          onClick={() => {
+                            setShowSheet((val) => !val);
+                          }}
+                        />
+                      }
+                    />
+                    <ChatEmojiSheet
+                      visible={showSheet}
+                      onClose={() => {
+                        setShowSheet(false);
+                      }}
+                      onClickItem={(item) => {
+                        const data = {
+                          display_name: fields.display_name.value,
+                          data: {
+                            sticker: item,
+                          },
+                        };
+                        postSticker(data);
+                        setShowSheet(false);
+                      }}
+                    />
+                  </Box>
+
                   {(() => {
                     if (!profile) return null;
 

@@ -10,6 +10,7 @@ import {
 
 import ChatActionItem from "../ChatActionItem";
 import ChatMessageItem from "../ChatMessageItem";
+import ChatStickerItem from "../ChatStickerItem";
 
 interface IProps {
   messages: ChatMessage[];
@@ -73,6 +74,13 @@ export default function ChatMessagesList({
                 mutateStream={mutateWebinar}
                 message={message}
                 key={message.created_at.toString()}
+              />
+            );
+          } else if (messageType === ChatMessageType.STICKER) {
+            return (
+              <ChatStickerItem
+                message={message}
+                textColor={colorMode === "light" ? colors.black[0] : undefined}
               />
             );
           }
