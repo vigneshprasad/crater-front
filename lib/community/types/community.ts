@@ -205,5 +205,5 @@ export interface PastStreamListItemWithRecording {
   start: string;
   is_live: boolean;
   is_past: boolean;
-  recording_details: StreamRecording;
+  recording_details?: StreamRecording;
 }
