@@ -4,14 +4,55 @@ import { useTheme } from "styled-components";
 
 import { Box, Flex, Grid, Icon, Shimmer } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
+import HorizontalScroll from "@/common/components/objects/HorizontalScroll";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import useCreatorRankList from "@/creators/context/CreatorRankListContext";
 
 import CreatorCard from "../CreatorCard";
 
-export default function TopCreatorsList(): JSX.Element {
-  const { space, colors } = useTheme();
+export default function TopCreatorsList(): JSX.Element | null {
+  const { space, colors, breakpoints } = useTheme();
   const [initialClick, setInitialClick] = useState(true);
   const { creators, nextPage, setCreatorsPage } = useCreatorRankList();
+
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  if (isMobile === undefined) return null;
+
+  const creatorCard = (
+    <AnimatePresence>
+      {(() => {
+        if (!creators) {
+          return Array(4)
+            .fill("")
+            .map((_, index) => <Shimmer h={[200, 220]} key={index} />);
+        }
+
+        return creators?.map((creator) => (
+          <CreatorCard
+            slug={creator.slug}
+            name={creator.profile_detail?.name}
+            key={creator.user}
+            image={creator.profile_detail?.photo}
+            followers={creator.subscriber_count}
+          />
+        ));
+      })()}
+    </AnimatePresence>
+  );
+
+  if (isMobile) {
+    return (
+      <HorizontalScroll
+        px={space.xxxs}
+        gridAutoFlow="column"
+        gridAutoColumns="140px"
+        gridGap={space.xxxs}
+      >
+        {creatorCard}
+      </HorizontalScroll>
+    );
+  }
 
   return (
     <Box>
@@ -24,25 +65,7 @@ export default function TopCreatorsList(): JSX.Element {
           "repeat(auto-fill, minmax(160px, 1fr))",
         ]}
       >
-        <AnimatePresence>
-          {(() => {
-            if (!creators) {
-              return Array(4)
-                .fill("")
-                .map((_, index) => <Shimmer h={[200, 220]} key={index} />);
-            }
-
-            return creators?.map((creator) => (
-              <CreatorCard
-                slug={creator.slug}
-                name={creator.profile_detail?.name}
-                key={creator.user}
-                image={creator.profile_detail?.photo}
-                followers={creator.subscriber_count}
-              />
-            ));
-          })()}
-        </AnimatePresence>
+        {creatorCard}
       </Grid>
       {nextPage && (
         <Flex
