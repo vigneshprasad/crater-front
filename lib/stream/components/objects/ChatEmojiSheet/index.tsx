@@ -3,7 +3,7 @@ import EMOJI_IMAGE_LIST, { EmojiKeys } from "public/images/emoji";
 import { useState, useEffect } from "react";
 import { useTheme } from "styled-components";
 
-import { AnimatedBox, Flex, Box, Image } from "@/common/components/atoms";
+import { AnimatedBox, Grid, Box, Image } from "@/common/components/atoms";
 
 interface IProps {
   visible?: boolean;
@@ -65,6 +65,7 @@ export default function ChatEmojiSheet({
               for (const item in EMOJI_IMAGE_LIST) {
                 children.push(
                   <Box
+                    title={item}
                     cursor="pointer"
                     w={36}
                     h={36}
@@ -85,9 +86,13 @@ export default function ChatEmojiSheet({
               }
 
               return (
-                <Flex p={space.xxxs} gridGap={space.xxxs}>
+                <Grid
+                  p={space.xxxs}
+                  gridGap={space.xxxs}
+                  gridTemplateColumns="repeat(6, 1fr)"
+                >
                   {children}
-                </Flex>
+                </Grid>
               );
             })()}
           </AnimatedBox>
