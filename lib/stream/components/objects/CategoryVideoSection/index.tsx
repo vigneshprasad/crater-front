@@ -4,7 +4,6 @@ import styled, { useTheme } from "styled-components";
 import { useRouter } from "next/router";
 
 import {
-  AnimatedBox,
   Box,
   Flex,
   Grid,
