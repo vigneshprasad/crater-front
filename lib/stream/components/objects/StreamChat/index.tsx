@@ -221,7 +221,6 @@ export default function StreamChat({
                         setShowSheet(false);
                       }}
                       onClickItem={(item) => {
-                        console.log(item);
                         const data = {
                           display_name: fields.display_name.value,
                           data: {
