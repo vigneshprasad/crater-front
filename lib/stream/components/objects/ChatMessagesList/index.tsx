@@ -2,13 +2,11 @@ import { useCallback, useEffect, useRef } from "react";
 import { useTheme } from "styled-components";
 
 import { Box, Flex } from "@/common/components/atoms";
-import { useWebinar } from "@/community/context/WebinarContext";
 import {
   ChatMessage,
   ChatMessageType,
 } from "@/stream/providers/FirebaseChatProvider/types";
 
-import ChatActionItem from "../ChatActionItem";
 import ChatMessageItem from "../ChatMessageItem";
 
 interface IProps {
@@ -22,7 +20,6 @@ export default function ChatMessagesList({
 }: IProps): JSX.Element {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const { borders, space, colors } = useTheme();
-  const { webinar, mutateWebinar } = useWebinar();
 
   const observerHandler = useCallback(() => {
     if (messagesContainerRef.current) {
@@ -64,15 +61,6 @@ export default function ChatMessagesList({
                 message={message}
                 key={message.created_at.toString()}
                 textColor={colorMode === "light" ? colors.black[0] : undefined}
-              />
-            );
-          } else if (messageType === ChatMessageType.ACTION) {
-            return (
-              <ChatActionItem
-                stream={webinar}
-                mutateStream={mutateWebinar}
-                message={message}
-                key={message.created_at.toString()}
               />
             );
           }

@@ -9,18 +9,18 @@ import {
   Text,
   Button,
   Modal,
-  Shimmer,
   Flex,
   Avatar,
   ButtonProps,
   Grid,
-  Spinner,
+  Icon,
 } from "@/common/components/atoms";
 import { AppLinkType } from "@/common/components/objects/AppLink";
 import AppLinkButton from "@/common/components/objects/AppLinkButton";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
+import DateTime from "@/common/utils/datetime/DateTime";
 import WebinarApiClient from "@/community/api";
 import ShareAndEarnModalPage from "@/community/components/objects/ShareAndEarnModalPage";
 import StreamsModalPage from "@/community/components/objects/StreamsModalPage";
@@ -37,29 +37,13 @@ import { ChatMessage } from "@/stream/providers/FirebaseChatProvider/types";
 import { ChatActionType } from "@/stream/types/streamChat";
 import { useReferralSummary } from "@/tokens/context/ReferralSummaryContext";
 
+import ChatNotification from "../ChatNotification";
+
 interface IProps {
   stream?: Webinar;
   message: ChatMessage;
   mutateStream: () => void;
 }
-
-const FollowActionButton = styled(Button)<ButtonProps>`
-  width: 100%;
-  background: #223596;
-  border-color: #223596;
-  border-radius: 4px;
-
-  &:hover {
-    background: #1f2d76;
-    border-color: #1f2d76;
-  }
-
-  &:disabled {
-    background: #1f2d76;
-    border-color: #1f2d76;
-    color: #fff;
-  }
-`;
 
 const ReferralActionButton = styled(Button)<ButtonProps>`
   background: #820f54;
@@ -72,33 +56,17 @@ const ReferralActionButton = styled(Button)<ButtonProps>`
   }
 `;
 
-const StreamsActionButton = styled(Button)<ButtonProps>`
-  background: #8822ee;
-  border-color: #8822ee;
-  border-radius: 4px;
-
-  &:hover {
-    background: #7320c6;
-    border-color: #7320c6;
-  }
-`;
-
 export default function ChatActionItem({
   stream,
   message,
   mutateStream,
 }: IProps): JSX.Element {
-  const { space, colors, radii } = useTheme();
+  const { space, colors } = useTheme();
   const [showReferralModal, setShowReferralModal] = useState(false);
   const [showStreamsModal, setShowStreamsModal] = useState(false);
   const { referralSummary } = useReferralSummary();
-  const {
-    followers,
-    loading: followersLoading,
-    subscribeCreator,
-  } = useFollower();
+  const { followers, subscribeCreator } = useFollower();
   const { user, profile } = useAuth();
-  const [loading, setLoading] = useState(false);
   const { track } = useAnalytics();
   const { postMessage } = useFirebaseChat();
   const {
@@ -141,7 +109,6 @@ export default function ChatActionItem({
     if (creator) {
       await subscribeCreator(creator.id);
       await mutateStream();
-      setLoading(false);
 
       trackModalAnalytics(AnalyticsEvents.chat_action_follow_clicked);
 
@@ -221,65 +188,29 @@ export default function ChatActionItem({
       {
         action: ChatActionType.FOLLOW,
         display: (
-          <Box
-            mx={space.xxs}
-            my={6}
-            backgroundColor="#1E254C"
-            p={space.xxxs}
-            borderRadius={4}
-            border="2px solid #202F79"
-          >
-            <Flex
-              pb={space.xxxs}
-              flexDirection="row"
-              gridGap={space.xxxs}
-              alignItems="center"
-            >
-              <Avatar size={32} image={stream?.host_detail?.photo} />
-              <Text color="#EDEDED" variant="title">
-                {stream?.host_detail.name}
-              </Text>
-            </Flex>
-            <Text pb={space.xxxs} color={colors.white[0]}>
-              {message.message}
-            </Text>
-            {(() => {
-              return followersLoading ? (
-                <Shimmer
-                  w="100%"
-                  h={35}
-                  borderRadius={radii.xxxs}
-                  mr={space.xxs}
-                />
-              ) : followers && followers.length > 0 && followers[0].notify ? (
-                <FollowActionButton
-                  variant="full-width-outline-small"
-                  text="Following"
-                  disabled={true}
-                />
-              ) : (
-                <FollowActionButton
-                  variant="full-width-outline-small"
-                  text="Follow"
-                  onClick={() => {
-                    setLoading(true);
-                    followCreator();
-                  }}
-                  suffixElement={
-                    loading ? (
-                      <Spinner
-                        size={24}
-                        strokeWidth={2}
-                        strokeColor={colors.white[0]}
-                      />
-                    ) : undefined
-                  }
-                  disabled={loading}
-                  textProps={{ p: 0 }}
-                />
-              );
-            })()}
-          </Box>
+          <ChatNotification
+            headingElement={
+              <Flex gridGap={space.xxs} alignItems="center">
+                <Avatar size={28} image={stream?.host_profile_details?.photo} />{" "}
+                <Text flex={1}> {stream?.host_detail.name}</Text>
+              </Flex>
+            }
+            contentElement={<Text textStyle="body">{message.message}</Text>}
+            buttonLabel={
+              followers && followers.length > 0 && followers[0].notify
+                ? "Following"
+                : "Follow"
+            }
+            onClickButton={async () => {
+              await followCreator();
+            }}
+            buttonProps={{
+              disabled:
+                followers && followers.length > 0 && followers[0].notify
+                  ? true
+                  : false,
+            }}
+          />
         ),
       },
       {
@@ -346,41 +277,58 @@ export default function ChatActionItem({
       {
         action: ChatActionType.STREAMS,
         display: (
-          <Box
-            mx={space.xxs}
-            my={6}
-            backgroundColor="#401E67"
-            p={space.xxxs}
-            borderRadius={4}
-            border="2px solid #7146AE"
-          >
-            <Text pb={space.xxxs}>{message.message}</Text>
-            <StreamsActionButton
-              variant="full-width-outline-small"
-              text="Explore Streams"
-              textProps={{ p: 0 }}
-              onClick={() => {
-                setShowStreamsModal(true);
-                trackModalAnalytics(
-                  AnalyticsEvents.chat_action_streams_modal_opened
-                );
-              }}
-            />
-          </Box>
+          <ChatNotification
+            headingElement={
+              <Text textStyle="caption" color={colors.textQuartenary}>
+                SIMILAR STREAM
+              </Text>
+            }
+            contentElement={
+              <Box>
+                <Text maxLines={2}>
+                  {message.data?.stream?.topic_detail.name}
+                </Text>
+
+                <Flex py={space.xxxs} gridGap={space.xxxxs} alignItems="center">
+                  <Text textStyle="small" color={colors.accentLight}>
+                    Streaming:
+                  </Text>
+                  <Icon icon="Calendar" size={16} color={colors.textTertiary} />
+                  {message.data?.stream?.start && (
+                    <Text textStyle="small" color={colors.textTertiary}>
+                      {DateTime.parse_with_milliseconds(
+                        message.data?.stream?.start
+                      ).toFormat(DateTime.DEFAULT_FORMAT)}
+                    </Text>
+                  )}
+                </Flex>
+              </Box>
+            }
+            buttonLabel="REMIND ME"
+            onClickButton={async () => {
+              if (message.data?.stream) {
+                await postGroupRequest(message.data?.stream);
+              }
+            }}
+          />
         ),
       },
     ];
   }, [
-    stream,
-    space,
-    colors,
-    message,
-    loading,
-    radii,
-    followersLoading,
+    space.xxs,
+    space.xxxs,
+    space.xxxxs,
+    stream?.host_profile_details?.photo,
+    stream?.host_detail.name,
+    message.message,
+    message.data?.stream,
     followers,
+    colors.textQuartenary,
+    colors.accentLight,
+    colors.textTertiary,
     followCreator,
     trackModalAnalytics,
+    postGroupRequest,
   ]);
 
   return (

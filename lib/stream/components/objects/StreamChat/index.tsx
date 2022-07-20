@@ -15,7 +15,6 @@ import {
   Link,
   Toggle,
   Icon,
-  Avatar,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/Button";
 import { IconButton } from "@/common/components/atoms/v2";
@@ -24,14 +23,17 @@ import { MenuItem } from "@/common/components/objects/MenuButton/MenuItem";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import DateTime from "@/common/utils/datetime/DateTime";
+import { useWebinar } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import useChatColorMode from "@/stream/providers/ChatColorModeProvider";
 import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
 import { FirebaseChatContext } from "@/stream/providers/FirebaseChatProvider/context";
+import { ChatMessageType } from "@/stream/providers/FirebaseChatProvider/types";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
+import ChatActionItem from "../ChatActionItem";
 import ChatMessagesList from "../ChatMessagesList";
-import ChatNotification from "../ChatNotification";
 import StreamViewerCount from "../StreamViewerCount";
 
 interface IProps extends GridProps {
@@ -57,6 +59,7 @@ export default function StreamChat({
   const { colorMode, toggleColorMode } = useChatColorMode();
   const [popOutVisible, setPopOutVisible] = useState(false);
   const windowRef = useRef<NewWindow>(null);
+  const { mutateWebinar } = useWebinar();
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
     {
@@ -131,7 +134,17 @@ export default function StreamChat({
   return (
     <FirebaseChatProvider groupId={stream.id}>
       <FirebaseChatContext.Consumer>
-        {({ messages, postMessage }) => {
+        {({ messages: allMessages, postMessage }) => {
+          const messages = allMessages.filter(
+            (val) => val.type === ChatMessageType.TEXT
+          );
+
+          const actions = allMessages.filter((val) => {
+            const creation = DateTime.fromJSDate(val.created_at.toDate());
+            const diff = DateTime.now().diff(creation, "seconds");
+            console.log(diff);
+            return val.type === ChatMessageType.ACTION && diff.seconds < 30;
+          });
           return (
             <Grid
               minHeight="100%"
@@ -195,20 +208,15 @@ export default function StreamChat({
                     }
                   }}
                 >
-                  <ChatNotification
-                    headingElement={
-                      <Flex gridGap={space.xxs} alignItems="center">
-                        <Avatar size={28} /> <Text flex={1}> Creator Name</Text>
-                      </Flex>
-                    }
-                    contentElement={
-                      <Text textStyle="body">
-                        Hey there! If you like this stream, follow me to never
-                        miss out on my upcoming streams.
-                      </Text>
-                    }
-                    buttonLabel="Follow"
-                  />
+                  {actions.map((action) => (
+                    <ChatActionItem
+                      stream={stream}
+                      mutateStream={mutateWebinar}
+                      message={action}
+                      key={action.created_at.toString()}
+                    />
+                  ))}
+
                   <Input
                     placeholder="Start chatting..."
                     value={fields.message.value}

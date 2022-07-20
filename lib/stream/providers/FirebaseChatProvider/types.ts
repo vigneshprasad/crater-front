@@ -1,5 +1,6 @@
 import { QueryDocumentSnapshot, Timestamp } from "firebase/firestore";
 
+import { Webinar } from "@/community/types/community";
 import { ChatActionType } from "@/stream/types/streamChat";
 
 export enum ChatMessageType {
@@ -25,6 +26,7 @@ export interface ChatMessage {
     name: string;
     file: string;
     image: string;
+    stream?: Webinar;
   };
   display_name?: string;
   sender_details?: ChatUserDetails;

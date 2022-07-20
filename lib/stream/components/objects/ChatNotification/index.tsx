@@ -3,22 +3,26 @@ import { useEffect, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
 import { AnimatedBox, Box, Flex } from "@/common/components/atoms";
-import { Button, IconButton } from "@/common/components/atoms/v2";
+import { Button, ButtonProps, IconButton } from "@/common/components/atoms/v2";
 
 interface IProps {
   headingElement: JSX.Element;
   contentElement: JSX.Element;
   buttonLabel?: string;
+  onClickButton: () => Promise<void>;
+  buttonProps?: ButtonProps;
 }
 
 const ProgressBar = styled(Box)`
-  transition: all 5s ease-in-out;
+  transition: all 20s ease-in-out;
 `;
 
 export default function ChatNotification({
   headingElement,
   contentElement,
   buttonLabel = "Click here",
+  onClickButton,
+  buttonProps,
 }: IProps): JSX.Element {
   const [visible, setVisible] = useState(true);
   const { colors, space, radii } = useTheme();
@@ -26,6 +30,9 @@ export default function ChatNotification({
 
   useEffect(() => {
     setWidth("100%");
+    setTimeout(() => {
+      setVisible(false);
+    }, 20000);
   }, [setWidth]);
 
   return (
@@ -72,7 +79,15 @@ export default function ChatNotification({
             />
           </Flex>
           <Box mb={space.xxxs}>{contentElement}</Box>
-          <Button w="100%" label={buttonLabel} />
+          <Button
+            w="100%"
+            label={buttonLabel}
+            onClick={() => {
+              onClickButton && onClickButton();
+              setVisible(false);
+            }}
+            {...buttonProps}
+          />
           <Box
             my={space.xs}
             h={6}
