@@ -4,6 +4,8 @@ import useSWR from "swr";
 
 import { useRouter } from "next/router";
 
+import useAuth from "@/auth/context/AuthContext";
+import useAuthModal from "@/auth/context/AuthModalContext";
 import { Box } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 import { AsideNav } from "@/common/components/objects/AsideNav/v2";
@@ -37,6 +39,8 @@ type IProps = {
 
 export function Content({ slug, streamCategory }: IProps): JSX.Element {
   const router = useRouter();
+  const { user } = useAuth();
+  const { openModal } = useAuthModal();
   const { space } = useTheme();
   const { streamCategories } = useStreamCategories();
   const { category: currentCategory } = useUpcomingStreams();
@@ -47,6 +51,10 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
     useSWR<StreamCategory>(API_URL_CONSTANTS.stream.retrieveCategory(slug));
 
   const followCategory = async (): Promise<void> => {
+    if (!user) {
+      openModal();
+    }
+
     const categorySlug = cachedStreamCategory?.slug;
 
     if (categorySlug) {

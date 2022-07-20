@@ -210,12 +210,9 @@ export default function CategoryVideoSection({
           {!pastStreams ? (
             <Shimmer w={["100%", 530]} h={["auto", 298]} />
           ) : (
-            <AnimatedBox
+            <Box
               w={["100%", 530]}
               h={["auto", 298]}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ duration: 0.3 }}
               cursor="pointer"
               onClick={() =>
                 router.push(
@@ -235,7 +232,7 @@ export default function CategoryVideoSection({
                   }
                 }}
               />
-            </AnimatedBox>
+            </Box>
           )}
         </Box>
       </Grid>
