@@ -2,6 +2,7 @@ import { Profile } from "next-auth";
 
 import { Creator } from "@/creators/types/creator";
 import { StreamCategory } from "@/creators/types/stream";
+import { StreamRecording } from "@/stream/types/stream";
 
 export type Community = {
   creator: number;
@@ -184,4 +185,25 @@ export interface PastStreamListItem {
   is_past: boolean;
   has_rsvp: boolean;
   recording?: number;
+}
+
+export interface PastStreamListItemWithRecording {
+  id: number;
+  topic_detail: {
+    name: string;
+    image: string;
+    description: string;
+  };
+  host_detail: {
+    pk: string;
+    email: string;
+    name: string;
+    photo: string;
+    introduction: string;
+    slug: string;
+  };
+  start: string;
+  is_live: boolean;
+  is_past: boolean;
+  recording_details: StreamRecording;
 }

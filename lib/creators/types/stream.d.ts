@@ -3,9 +3,11 @@ import DateTime from "@/common/utils/datetime/DateTime";
 export type StreamCategory = {
   pk: number;
   name: string;
+  slug: string;
   photo?: string;
   tagline?: string;
   show_on_home_page: boolean;
+  is_follower: boolean;
 };
 
 export type StreamFormArgs = {

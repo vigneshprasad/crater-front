@@ -46,6 +46,7 @@ const PastStreamsList = forwardRef<HTMLDivElement>((_, ref) => {
   return (
     <Box ref={ref}>
       <Grid
+        pt={space.xxs}
         mx={space.xxs}
         ref={gridRef}
         gridTemplateColumns={`repeat(auto-fill, minmax(${ITEM_WIDTH}px, 1fr))`}
