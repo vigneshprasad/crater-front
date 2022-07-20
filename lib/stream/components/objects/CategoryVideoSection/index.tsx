@@ -194,7 +194,19 @@ export default function CategoryVideoSection({
           )}
         </Box>
 
-        <Box gridArea="video" justifySelf="end">
+        <Box gridArea="video" justifySelf="end" position="relative">
+          {!isMobile && (
+            <Box
+              position="absolute"
+              background="linear-gradient(
+                  0.14deg, #010101 43.73%, rgba(1, 1, 1, 0.88) 56.67%, rgba(18, 18, 18, 0) 81.86%
+                )"
+              transform="rotate(90deg)"
+              w={530}
+              h={298}
+              right={250}
+            />
+          )}
           {!pastStreams ? (
             <Shimmer w={["100%", 530]} h={["auto", 298]} />
           ) : (
