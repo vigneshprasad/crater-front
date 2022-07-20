@@ -45,6 +45,7 @@ export type InputProps = BackgroundProps &
     error?: string;
     boxProps?: BoxProps;
     placeholderColor?: string;
+    suffixElement?: React.ReactNode;
   };
 
 export const StyledInput = styled.input<
@@ -96,6 +97,7 @@ export const InputContainer = styled(Flex)<FlexProps>`
 function InputWithRef({
   inputRef,
   prefixElement,
+  suffixElement,
   boxProps,
   error,
   bg,
@@ -113,6 +115,7 @@ function InputWithRef({
       <InputContainer bg={bg ?? colors.inputDefaultBg} border={border}>
         {prefixElement && prefixElement}
         <StyledInput ref={inputRef} {...rest} />
+        {suffixElement && suffixElement}
       </InputContainer>
       {error && (
         <Text
