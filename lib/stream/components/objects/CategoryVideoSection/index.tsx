@@ -219,18 +219,23 @@ export default function CategoryVideoSection({
                 )
               }
             >
-              <Video
-                src={`${pastStreams[activePastStreamIndex].recording_details.recording}#t=600`}
-                autoPlay
-                muted
-                loop
-                ref={videoRef}
-                onTimeUpdate={() => {
-                  if (videoRef.current && videoRef.current.currentTime >= 625) {
-                    switchPastStreamVideo();
-                  }
-                }}
-              />
+              {pastStreams.length > 0 && (
+                <Video
+                  src={`${pastStreams[activePastStreamIndex].recording_details?.recording}#t=600`}
+                  autoPlay
+                  muted
+                  loop
+                  ref={videoRef}
+                  onTimeUpdate={() => {
+                    if (
+                      videoRef.current &&
+                      videoRef.current.currentTime >= 625
+                    ) {
+                      switchPastStreamVideo();
+                    }
+                  }}
+                />
+              )}
             </Box>
           )}
         </Box>
