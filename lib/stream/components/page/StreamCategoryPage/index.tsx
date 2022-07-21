@@ -91,7 +91,7 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
 
   return (
     <BaseLayout aside={<AsideNav />} overflowY="scroll">
-      <Box px={[0, space.xxs]}>
+      <Box px={[0, space.xxs]} pb={32}>
         <CategoryVideoSection
           streamCategory={cachedStreamCategory ?? streamCategory}
           pastStreams={pastStreamsWithRecording}
@@ -117,21 +117,21 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
         <StyledHeadingDivider
           label="Upcoming Streams"
           mx={[space.xs, space.xxs]}
-          mt={[space.xxs, space.s]}
+          mt={[28, space.s]}
         />
         <UpcomingStreamsList />
 
         <StyledHeadingDivider
           label="Top Creators"
           mx={[space.xs, space.xxs]}
-          mt={[space.xxxs, space.s]}
+          mt={[32, space.s]}
         />
         <TopCreatorsList />
 
         <StyledHeadingDivider
           label="Past Streams"
           mx={[space.xs, space.xxs]}
-          mt={[space.xxxs, space.s]}
+          mt={[32, space.s]}
         />
         <PastStreamsList />
       </Box>
