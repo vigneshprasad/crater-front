@@ -193,7 +193,11 @@ export default function CategoryVideoSection({
           )}
         </Box>
 
-        <Box gridArea="video" justifySelf="end" position="relative">
+        <Box
+          gridArea="video"
+          justifySelf={["start", "end"]}
+          position={["static", "relative"]}
+        >
           {!isMobile && (
             <Box
               position="absolute"
@@ -225,6 +229,7 @@ export default function CategoryVideoSection({
                   autoPlay
                   muted
                   loop
+                  playsInline
                   ref={videoRef}
                   onTimeUpdate={() => {
                     if (
