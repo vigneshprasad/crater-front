@@ -65,6 +65,26 @@ export default function CategoryVideoSection({
 
   if (isMobile === undefined) return null;
 
+  const videoGradient = isMobile ? (
+    <Box
+      position="absolute"
+      background="linear-gradient(0.14deg, #010101 25.26%, rgba(1, 1, 1, 0.88) 29.64%, rgba(1, 1, 1, 0) 43.2%, rgba(18, 18, 18, 0) 81.86%)"
+      w="100%"
+      h="100%"
+      left={0}
+      top={60}
+    />
+  ) : (
+    <Box
+      position="absolute"
+      background="linear-gradient(0.14deg, #010101 43.73%, rgba(1, 1, 1, 0.88) 56.67%, rgba(18, 18, 18, 0) 81.86%)"
+      transform="rotate(90deg)"
+      w={530}
+      h={298}
+      right={250}
+    />
+  );
+
   return (
     <Box px={[0, space.xs]} py={[0, 28]}>
       <Grid
@@ -193,27 +213,12 @@ export default function CategoryVideoSection({
           )}
         </Box>
 
-        <Box
-          gridArea="video"
-          justifySelf={["start", "end"]}
-          position={["static", "relative"]}
-        >
-          {!isMobile && (
-            <Box
-              position="absolute"
-              background="linear-gradient(
-                  0.14deg, #010101 43.73%, rgba(1, 1, 1, 0.88) 56.67%, rgba(18, 18, 18, 0) 81.86%
-                )"
-              transform="rotate(90deg)"
-              w={530}
-              h={298}
-              right={250}
-            />
-          )}
+        <Box gridArea="video" justifySelf={["start", "end"]}>
           {!pastStreams ? (
             <Shimmer w={["100%", 530]} h={["auto", 298]} />
           ) : (
             <Box
+              position="relative"
               w={["100%", 530]}
               h={["auto", 298]}
               cursor="pointer"
@@ -223,6 +228,7 @@ export default function CategoryVideoSection({
                 )
               }
             >
+              {videoGradient}
               {pastStreams.length > 0 && (
                 <Video
                   src={`${pastStreams[activePastStreamIndex].recording_details?.recording}#t=600`}
