@@ -48,6 +48,7 @@ interface ICreatorApiClient {
   ) => Promise<ApiResult<Reward, AxiosError>>;
   getCreatorsWithCoins: () => Promise<ApiResult<Creator[], AxiosError>>;
   getCreatorRankList: (
+    pageSize?: number,
     category?: number
   ) => Promise<ApiResult<PageResponse<CreatorRank>, AxiosError>>;
 }
@@ -245,12 +246,13 @@ export default function CreatorApiClient(
   }
 
   async function getCreatorRankList(
+    pageSize?: number,
     category?: number
   ): Promise<ApiResult<PageResponse<CreatorRank>, AxiosError>> {
     try {
       const url = category
-        ? `${API_URL_CONSTANTS.creator.getCreatorRankList}?category=${category}`
-        : API_URL_CONSTANTS.creator.getCreatorRankList;
+        ? `${API_URL_CONSTANTS.creator.getCreatorRankList}?page_size=${pageSize}&category=${category}`
+        : `${API_URL_CONSTANTS.creator.getCreatorRankList}?page_size=${pageSize}`;
 
       const { data } = await client.get<PageResponse<CreatorRank>>(url);
       return [data, undefined];
