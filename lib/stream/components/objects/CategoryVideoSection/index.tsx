@@ -72,7 +72,7 @@ export default function CategoryVideoSection({
       w="100%"
       h="100%"
       left={0}
-      top={60}
+      top={50}
     />
   ) : (
     <Box
@@ -98,7 +98,7 @@ export default function CategoryVideoSection({
           "pageTitle video"
         `,
         ]}
-        gridGap={[space.xxs, space.s]}
+        gridGap={[space.xxxxs, space.s]}
       >
         <Box px={[space.xxxs, 0]} py={[0, space.xs]} gridArea="pageTitle">
           <Flex
@@ -222,6 +222,7 @@ export default function CategoryVideoSection({
               w={["100%", 530]}
               h={["auto", 298]}
               cursor="pointer"
+              zIndex={-1}
               onClick={() =>
                 router.push(
                   PageRoutes.streamVideo(pastStreams[activePastStreamIndex].id)
