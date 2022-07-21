@@ -9,6 +9,7 @@ import useAuthModal from "@/auth/context/AuthModalContext";
 import { Box } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 import { AsideNav } from "@/common/components/objects/AsideNav/v2";
+import Footer from "@/common/components/objects/Footer";
 import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
@@ -41,7 +42,7 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
   const router = useRouter();
   const { user } = useAuth();
   const { openModal } = useAuthModal();
-  const { space } = useTheme();
+  const { space, colors } = useTheme();
   const { streamCategories } = useStreamCategories();
   const { category: currentCategory } = useUpcomingStreams();
   const [loading, setLoading] = useState(false);
@@ -134,6 +135,14 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
           mt={[32, space.s]}
         />
         <PastStreamsList />
+      </Box>
+
+      <Box
+        px={[space.xxs, space.s]}
+        py={[space.xxs, space.s]}
+        backgroundColor={colors.primaryDark}
+      >
+        <Footer />
       </Box>
     </BaseLayout>
   );
