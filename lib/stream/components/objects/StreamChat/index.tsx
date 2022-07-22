@@ -29,7 +29,10 @@ import { Webinar } from "@/community/types/community";
 import useChatColorMode from "@/stream/providers/ChatColorModeProvider";
 import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
 import { FirebaseChatContext } from "@/stream/providers/FirebaseChatProvider/context";
-import { ChatMessageType } from "@/stream/providers/FirebaseChatProvider/types";
+import {
+  ChatMessage,
+  ChatMessageType,
+} from "@/stream/providers/FirebaseChatProvider/types";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
 import ChatActionItem from "../ChatActionItem";
@@ -245,7 +248,7 @@ export default function StreamChat({
                         setShowSheet(false);
                       }}
                       onClickItem={(item) => {
-                        const data = {
+                        const data: Partial<ChatMessage> = {
                           display_name: fields.display_name.value,
                           data: {
                             sticker: item,
