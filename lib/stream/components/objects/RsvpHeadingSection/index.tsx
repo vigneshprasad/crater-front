@@ -19,6 +19,7 @@ interface IProps {
     buttonText: string;
     loading?: boolean;
     disabled?: boolean;
+    icon?: JSX.Element;
     onClick?: () => void;
   } | null;
 }
@@ -27,13 +28,13 @@ export default function RsvpHeadingSection({
   stream,
   ctaButton,
 }: IProps): JSX.Element {
-  const { space, colors, zIndices, breakpoints } = useTheme();
+  const { space, colors, radii, zIndices, breakpoints } = useTheme();
   const startTime = DateTime.parse_with_milliseconds(stream.start).toFormat(
     DateTime.DEFAULT_FORMAT
   );
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
-  const { buttonText, loading, disabled, onClick } = ctaButton || {};
+  const { buttonText, loading, disabled, icon, onClick } = ctaButton || {};
 
   return (
     <Box
@@ -61,38 +62,67 @@ export default function RsvpHeadingSection({
         {disabled ? (
           isMobile ? (
             <Button
+              variant="flat-with-disabled-dark"
               label={buttonText}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
               position={["fixed", "static"]}
               bottom={[0, "auto"]}
               right={[0, "auto"]}
               w={["100%", "auto"]}
               minHeight={44}
               h={[44, "auto"]}
+              // borderRadius={0}
               zIndex={[zIndices.overlay - 10, "auto"]}
+              suffixElement={icon}
               disabled={true}
+              textProps={{
+                textStyle: "label",
+              }}
             />
           ) : (
-            <Text textAlign="center" color="#C4C4C4">
-              {buttonText}
-            </Text>
+            <Button
+              variant="flat-with-disabled-dark"
+              label={buttonText}
+              minHeight={44}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              // borderRadius={radii.xxxxs}
+              suffixElement={icon}
+              disabled={true}
+              textProps={{
+                textStyle: "label",
+              }}
+            />
           )
         ) : (
           <Button
+            variant="flat-with-disabled-dark"
             label={buttonText}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
             position={["fixed", "static"]}
             bottom={[0, "auto"]}
             right={[0, "auto"]}
             w={["100%", "auto"]}
             minHeight={44}
             h={[44, "auto"]}
+            // borderRadius={[0, radii.xxxxs]}
             zIndex={[zIndices.overlay - 10, "auto"]}
             onClick={onClick}
             suffixElement={
-              loading && <Spinner size={24} strokeColor={colors.white[0]} />
+              loading ? (
+                <Spinner size={24} strokeColor={colors.white[0]} />
+              ) : (
+                icon
+              )
             }
             disabled={loading}
             textProps={{
-              fontSize: "1.6rem",
+              textStyle: "label",
             }}
           />
         )}
