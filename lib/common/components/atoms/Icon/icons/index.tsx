@@ -24,6 +24,7 @@ export { default as Community } from "./Community";
 export { default as ContentCopy } from "./ContentCopy";
 export { default as Discord } from "./Discord";
 export { default as Email } from "./Email";
+export { default as Emoji } from "./Emoji";
 export { default as ExpandMore } from "./ExpandMore";
 export { default as Eye } from "./Eye";
 export { default as EyeColor } from "./EyeColor";

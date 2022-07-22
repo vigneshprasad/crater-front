@@ -1,4 +1,5 @@
 import { QueryDocumentSnapshot, Timestamp } from "firebase/firestore";
+import { EmojiKeys } from "public/images/emoji";
 
 import { Webinar } from "@/community/types/community";
 import { ChatActionType } from "@/stream/types/streamChat";
@@ -7,6 +8,7 @@ export enum ChatMessageType {
   TEXT = 1,
   REACTION = 2,
   ACTION = 3,
+  STICKER = 4,
 }
 
 export interface ChatUserDetails {
@@ -23,9 +25,10 @@ export interface ChatMessage {
   sender: string;
   type: ChatMessageType;
   data?: {
-    name: string;
-    file: string;
-    image: string;
+    name?: string;
+    file?: string;
+    image?: string;
+    sticker?: EmojiKeys;
     stream?: Webinar;
   };
   display_name?: string;

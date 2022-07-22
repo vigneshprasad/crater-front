@@ -25,3 +25,12 @@ export interface StreamQuestionUpvote {
   user: string;
   upvote: boolean;
 }
+
+export interface UserCategory {
+  id: number;
+  user: string;
+  category: number;
+  followed: boolean;
+  followed_at: string;
+  unfollowed_at: string;
+}

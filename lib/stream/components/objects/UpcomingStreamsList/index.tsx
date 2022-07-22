@@ -24,13 +24,8 @@ export default function UpcomingStreamsList(): JSX.Element {
   const [numColumns, setNumColumn] = useState(0);
   const [initialClick, setInitialClick] = useState(true);
   const { space, colors } = useTheme();
-  const {
-    upcoming,
-    nextPage,
-    setUpcomingStreamsPage,
-    isValidating,
-    mutateUpcomingStreams,
-  } = useUpcomingStreams();
+  const { upcoming, nextPage, setUpcomingStreamsPage, mutateUpcomingStreams } =
+    useUpcomingStreams();
   const { user } = useAuth();
 
   const postStreamRsvp = async (stream: Webinar): Promise<void> => {
@@ -114,15 +109,6 @@ export default function UpcomingStreamsList(): JSX.Element {
                   />
                 );
               })}
-              {isValidating &&
-                Array(4)
-                  .fill("")
-                  .map((_, index) => (
-                    <Flex key={index} flexDirection="column" gridGap={space.xs}>
-                      <Shimmer h={172} />
-                      <Shimmer h={18} w="60%" />
-                    </Flex>
-                  ))}
             </>
           );
         })()}

@@ -8,6 +8,7 @@ import {
 } from "@/stream/providers/FirebaseChatProvider/types";
 
 import ChatMessageItem from "../ChatMessageItem";
+import ChatStickerItem from "../ChatStickerItem";
 
 interface IProps {
   messages: ChatMessage[];
@@ -60,6 +61,13 @@ export default function ChatMessagesList({
               <ChatMessageItem
                 message={message}
                 key={message.created_at.toString()}
+                textColor={colorMode === "light" ? colors.black[0] : undefined}
+              />
+            );
+          } else if (messageType === ChatMessageType.STICKER) {
+            return (
+              <ChatStickerItem
+                message={message}
                 textColor={colorMode === "light" ? colors.black[0] : undefined}
               />
             );

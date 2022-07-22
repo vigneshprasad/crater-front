@@ -16,6 +16,8 @@ export const API_URL_CONSTANTS = {
     user_count: "/user/auth/users/count/",
     getAllReferrals: "/user/auth/referrals/",
     getReferralSummary: "/user/auth/referrals/summary/",
+    followStreamCategory: "/user/auth/category/follow/",
+    unfollowStreamCategory: "/user/auth/category/unfollow/",
   },
   integrations: {
     dyte: {
@@ -62,6 +64,7 @@ export const API_URL_CONSTANTS = {
     getGroupQuestions: "/groups/conversations/stream/questions/",
     postGroupQuestion: "/groups/conversations/stream/questions/",
     postGroupQuestionUpvote: "/groups/conversations/stream/questions/upvote/",
+    getAllVideos: "/groups/public/conversations/webinars/videos/",
   },
   community: {
     getCommunityList: "/crater/community/",
@@ -87,8 +90,8 @@ export const API_URL_CONSTANTS = {
   stream: {
     createStream: "/groups/conversations/webinars/",
     getCategories: "/groups/conversations/categories/",
-    retrieveCategory: (id: number | string): string =>
-      `/groups/conversations/categories/${id}/`,
+    retrieveCategory: (slug: string): string =>
+      `/groups/conversations/categories/s/${slug}/`,
     streamsToRsvp: "/groups/conversations/webinars/suggested/",
     generateCoverPhoto:
       "https://84wp6p3fi7.execute-api.ap-south-1.amazonaws.com/test",
