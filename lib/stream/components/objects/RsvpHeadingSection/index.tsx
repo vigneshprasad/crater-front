@@ -28,7 +28,7 @@ export default function RsvpHeadingSection({
   stream,
   ctaButton,
 }: IProps): JSX.Element {
-  const { space, colors, radii, zIndices, breakpoints } = useTheme();
+  const { space, colors, zIndices, breakpoints } = useTheme();
   const startTime = DateTime.parse_with_milliseconds(stream.start).toFormat(
     DateTime.DEFAULT_FORMAT
   );
@@ -73,7 +73,6 @@ export default function RsvpHeadingSection({
               w={["100%", "auto"]}
               minHeight={44}
               h={[44, "auto"]}
-              // borderRadius={0}
               zIndex={[zIndices.overlay - 10, "auto"]}
               suffixElement={icon}
               disabled={true}
@@ -89,7 +88,6 @@ export default function RsvpHeadingSection({
               display="flex"
               justifyContent="center"
               alignItems="center"
-              // borderRadius={radii.xxxxs}
               suffixElement={icon}
               disabled={true}
               textProps={{
@@ -110,7 +108,6 @@ export default function RsvpHeadingSection({
             w={["100%", "auto"]}
             minHeight={44}
             h={[44, "auto"]}
-            // borderRadius={[0, radii.xxxxs]}
             zIndex={[zIndices.overlay - 10, "auto"]}
             onClick={onClick}
             suffixElement={
