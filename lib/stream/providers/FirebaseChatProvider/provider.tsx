@@ -79,6 +79,28 @@ export function FirebaseChatProvider({
     [firebaseUser, groupCollectionId]
   );
 
+  const postSticker = useCallback(
+    async (message: Partial<ChatMessage>) => {
+      if (firebaseUser) {
+        const data: Partial<ChatMessage> = {
+          ...message,
+          group: groupCollectionId,
+          sender: firebaseUser.uid,
+          type: ChatMessageType.STICKER,
+        };
+
+        try {
+          await axios.post(API_URL_CONSTANTS.firebase.postChatMessage, {
+            ...data,
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    },
+    [firebaseUser, groupCollectionId]
+  );
+
   useEffect(() => {
     const token = tokenResponse?.token;
 
@@ -99,8 +121,9 @@ export function FirebaseChatProvider({
           return y.created_at.seconds - x.created_at.seconds;
         }) ?? [],
       postMessage,
+      postSticker,
     }),
-    [readyState, messages, postMessage]
+    [readyState, messages, postMessage, postSticker]
   );
 
   return <FirebaseChatContext.Provider value={value} {...rest} />;
