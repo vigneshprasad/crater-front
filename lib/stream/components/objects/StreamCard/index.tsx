@@ -74,7 +74,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
             pl={8}
             pr={4}
           >
-            <Text textStyle="caption">RSVP</Text>
+            <Text textStyle="caption">Attending</Text>
             <Icon size={18} icon="CheckCircle" color={colors.greenSuccess} />
           </Flex>
         )}
@@ -209,30 +209,34 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
                   return <Box />;
                 if (stream.has_rsvp) {
                   return (
-                    <Flex
-                      px={space.xxxxs}
-                      py={space.xxxxs}
-                      alignItems="center"
-                      gridGap={space.xxxxs}
-                    >
-                      <Text color={colors.accentLight} opacity={0.8}>
-                        RSVP
+                    <Flex py={space.xxxxs} alignItems="center" gridGap={5}>
+                      <Text
+                        textStyle="body"
+                        fontWeight={600}
+                        color={colors.accentLight}
+                        textTransform="uppercase"
+                      >
+                        Attending
                       </Text>
-                      <Icon icon="CheckCircle" color={colors.green[0]} />
+                      <Icon
+                        icon="CheckCircle"
+                        size={16}
+                        color={colors.green[0]}
+                      />
                     </Flex>
                   );
                 }
 
                 if (loading) {
                   return (
-                    <Flex
-                      px={space.xxxxs}
-                      py={space.xxxxs}
-                      alignItems="center"
-                      gridGap={space.xxxxs}
-                    >
-                      <Text color={colors.accentLight} opacity={0.8}>
-                        RSVP
+                    <Flex py={5} alignItems="center" gridGap={space.xxxxs}>
+                      <Text
+                        textStyle="body"
+                        fontWeight={600}
+                        color={colors.accentLight}
+                        textTransform="uppercase"
+                      >
+                        Remind Me
                       </Text>
                       <Spinner size={16} />
                     </Flex>
@@ -240,21 +244,29 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
                 }
 
                 return (
-                  <Text
-                    px={space.xxxxs}
-                    py={space.xxxxs}
-                    cursor="pointer"
-                    color={colors.accentLight}
-                    onClick={async (event) => {
-                      event.preventDefault();
-                      event.stopPropagation();
-                      setLoading(true);
-                      onClickRsvp && (await onClickRsvp(stream));
-                      setLoading(false);
-                    }}
-                  >
-                    RSVP
-                  </Text>
+                  <Flex py={space.xxxxs} alignItems="center" gridGap={5}>
+                    <Text
+                      textStyle="body"
+                      fontWeight={600}
+                      cursor="pointer"
+                      color={colors.accentLight}
+                      textTransform="uppercase"
+                      onClick={async (event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        setLoading(true);
+                        onClickRsvp && (await onClickRsvp(stream));
+                        setLoading(false);
+                      }}
+                    >
+                      Remind Me
+                    </Text>
+                    <Icon
+                      icon="IcNotficationFill"
+                      size={20}
+                      color={colors.accentLight}
+                    />
+                  </Flex>
                 );
               })()}
             </Flex>
@@ -342,10 +354,21 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
                       onClickRsvp && (await onClickRsvp(stream));
                       setLoading(false);
                     }}
-                    display="block"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
                     w="100%"
-                    label="RSVP"
-                    suffixElement={loading ? <Spinner size={20} /> : undefined}
+                    label="Remind Me"
+                    suffixElement={
+                      loading ? (
+                        <Spinner size={20} />
+                      ) : (
+                        <Icon
+                          icon="IcNotficationFill"
+                          color={colors.white[0]}
+                        />
+                      )
+                    }
                   />
                 );
               })()}
