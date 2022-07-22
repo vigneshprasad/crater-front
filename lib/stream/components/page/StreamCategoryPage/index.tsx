@@ -48,25 +48,22 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
   const [loading, setLoading] = useState(false);
   const { streams: pastStreamsWithRecording } = usePastStreamsWithRecording();
 
-  const { data: cachedStreamCategory, mutate: streamCategoryMutate } =
-    useSWR<StreamCategory>(API_URL_CONSTANTS.stream.retrieveCategory(slug));
+  const { data: categoryFollower, mutate: categoryFollowerMutate } = useSWR<
+    Partial<StreamCategory>
+  >(user ? API_URL_CONSTANTS.user.isCategoryFollower(slug) : null);
 
   const followCategory = async (): Promise<void> => {
     if (!user) {
       openModal();
     }
 
-    const categorySlug = cachedStreamCategory?.slug;
-
-    if (categorySlug) {
+    if (slug) {
       setLoading(true);
 
-      const [response] = await StreamApiClient().followStreamCategory(
-        categorySlug
-      );
+      const [response] = await StreamApiClient().followStreamCategory(slug);
 
       if (response && response.followed) {
-        await streamCategoryMutate();
+        categoryFollowerMutate({ is_follower: true });
       }
 
       setLoading(false);
@@ -74,28 +71,27 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
   };
 
   const unfollowCategory = async (): Promise<void> => {
-    const categorySlug = cachedStreamCategory?.slug;
-
-    if (categorySlug) {
+    if (slug) {
       setLoading(true);
-      const [response] = await StreamApiClient().unfollowStreamCategory(
-        categorySlug
-      );
+      const [response] = await StreamApiClient().unfollowStreamCategory(slug);
 
       if (response && !response.followed) {
-        await streamCategoryMutate();
+        categoryFollowerMutate({ is_follower: false });
       }
 
       setLoading(false);
     }
   };
 
+  console.log(categoryFollower);
+
   return (
     <BaseLayout aside={<AsideNav />} overflowY="scroll">
       <Box px={[0, space.xxs]} pb={32}>
         <CategoryVideoSection
-          streamCategory={cachedStreamCategory ?? streamCategory}
+          streamCategory={streamCategory}
           pastStreams={pastStreamsWithRecording}
+          categoryFollower={categoryFollower}
           loading={loading}
           followCategory={followCategory}
           unfollowCategory={unfollowCategory}

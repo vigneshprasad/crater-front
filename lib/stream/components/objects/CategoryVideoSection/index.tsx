@@ -3,6 +3,7 @@ import styled, { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
+import useAuth from "@/auth/context/AuthContext";
 import {
   Box,
   Flex,
@@ -33,6 +34,7 @@ const Video = styled.video`
 type IProps = {
   streamCategory: StreamCategory;
   pastStreams?: PastStreamListItemWithRecording[];
+  categoryFollower?: Partial<StreamCategory>;
   loading: boolean;
   followCategory: () => void;
   unfollowCategory: () => void;
@@ -41,11 +43,13 @@ type IProps = {
 export default function CategoryVideoSection({
   streamCategory,
   pastStreams,
+  categoryFollower,
   loading,
   followCategory,
   unfollowCategory,
 }: IProps): JSX.Element | null {
   const router = useRouter();
+  const { user } = useAuth();
   const { space, colors, radii, breakpoints } = useTheme();
   const [activePastStreamIndex, setActivePastStreamIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -150,7 +154,61 @@ export default function CategoryVideoSection({
             />
           )}
 
-          {streamCategory.is_follower ? (
+          {(() => {
+            if (!user || !categoryFollower) {
+              return (
+                <Shimmer
+                  mt={[space.xxxs, 40]}
+                  w={["100%", 102]}
+                  h={44}
+                  borderRadius={radii.xxxxs}
+                />
+              );
+            }
+
+            const { is_follower } = categoryFollower;
+
+            return (
+              <Button
+                w={["100%", "auto"]}
+                variant={is_follower ? "dark-flat" : "flat"}
+                mt={[space.xxxs, 40]}
+                h={44}
+                label={is_follower ? "Following" : "Follow"}
+                borderRadius={radii.xxxxs}
+                display={["flex", "block"]}
+                alignItems="center"
+                justifyContent="center"
+                prefixElement={
+                  loading ? (
+                    <Spinner size={24} />
+                  ) : is_follower ? (
+                    <Icon
+                      size={20}
+                      icon="CheckCircle"
+                      color={colors.greenSuccess}
+                    />
+                  ) : (
+                    <Icon
+                      icon="Add"
+                      size={20}
+                      color={colors.white[0]}
+                      fill={true}
+                    />
+                  )
+                }
+                textProps={{
+                  fontSize: "1.6rem",
+                  fontWeight: 600,
+                  lineHeight: "2.0rem",
+                }}
+                disabled={loading}
+                onClick={is_follower ? unfollowCategory : followCategory}
+              />
+            );
+          })()}
+
+          {/* {isCategoryFollowed ? (
             <Button
               w={["100%", "auto"]}
               variant="dark-flat"
@@ -210,7 +268,7 @@ export default function CategoryVideoSection({
               disabled={loading}
               onClick={followCategory}
             />
-          )}
+          )} */}
         </Box>
 
         <Box gridArea="video" justifySelf={["start", "end"]}>
