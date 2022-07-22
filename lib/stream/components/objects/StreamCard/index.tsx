@@ -215,6 +215,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
                         fontWeight={600}
                         color={colors.accentLight}
                         textTransform="uppercase"
+                        opacity={0.8}
                       >
                         Attending
                       </Text>
@@ -235,6 +236,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
                         fontWeight={600}
                         color={colors.accentLight}
                         textTransform="uppercase"
+                        opacity={0.8}
                       >
                         Remind Me
                       </Text>

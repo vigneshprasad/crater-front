@@ -77,10 +77,10 @@ export default function AnimatedCard({
             <Button
               m="auto auto"
               disabled
-              label="RSVP"
+              label="ATTENDING"
               suffixElement={
                 <Icon
-                  size={20}
+                  size={16}
                   icon="CheckCircle"
                   color={colors.greenSuccess}
                 />
@@ -90,11 +90,21 @@ export default function AnimatedCard({
             <Button
               disabled={loadingRequest}
               m="auto auto"
-              label="RSVP"
+              label="REMIND ME"
               onClick={() => {
                 handleClick();
               }}
-              suffixElement={loadingRequest ? <Spinner size={28} /> : undefined}
+              suffixElement={
+                loadingRequest ? (
+                  <Spinner size={28} />
+                ) : (
+                  <Icon
+                    icon="IcNotficationFill"
+                    size={18}
+                    color={colors.white[0]}
+                  />
+                )
+              }
             />
           )}
         </Overlay>
