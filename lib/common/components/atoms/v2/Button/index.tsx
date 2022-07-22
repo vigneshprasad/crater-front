@@ -24,7 +24,8 @@ type Variants =
   | "gradient-border"
   | "text"
   | "filter-small"
-  | "filter-selected-small";
+  | "filter-selected-small"
+  | "flat-with-disabled-dark";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -163,6 +164,9 @@ const StyledButton = styled(Grid)<ButtonProps>`
         borderRadius: 4,
         ":hover": {
           bg: "primaryLight",
+        },
+        ":disabled": {
+          bg: "primaryDark",
         },
       },
       "dark-flat-no-bg": {
@@ -306,6 +310,20 @@ const StyledButton = styled(Grid)<ButtonProps>`
         transition: "all 0.1s ease-in",
         ":hover": {
           bg: "white.1",
+        },
+      },
+      "flat-with-disabled-dark": {
+        bg: "accent",
+        px: "0.8em",
+        py: "0.4em",
+        transition: "all 0.1s ease-in",
+        borderRadius: [0, 4],
+        ":hover": {
+          bg: "accentHover",
+        },
+        ":disabled": {
+          bg: "primaryDark",
+          color: "#828282",
         },
       },
     },
