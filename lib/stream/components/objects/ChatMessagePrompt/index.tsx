@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const ProgressBox = styled(Box)`
-  transition: all 5s ease-in-out;
+  transition: all 15s ease-in-out;
 `;
 
 export default function ChatMessagePrompt({
@@ -26,14 +26,17 @@ export default function ChatMessagePrompt({
     setWidth("100%");
     setTimeout(() => {
       setVisible(false);
-    }, 5000);
+    }, 15000);
   }, []);
   return (
     <AnimatePresence>
       {visible && (
         <AnimatedBox
           onClick={() => {
-            onClick && onClick(message);
+            if (onClick) {
+              onClick(message);
+              setVisible(false);
+            }
           }}
           position="absolute"
           top={0}
@@ -76,7 +79,7 @@ export default function ChatMessagePrompt({
                 />
               </Flex>
 
-              <Text>{message}</Text>
+              <Text>{message}...</Text>
             </Box>
           </Box>
         </AnimatedBox>

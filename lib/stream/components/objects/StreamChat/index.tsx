@@ -37,6 +37,7 @@ import useRewardsList from "@/tokens/context/RewardsListContext";
 
 import ChatActionItem from "../ChatActionItem";
 import ChatEmojiSheet from "../ChatEmojiSheet";
+import ChatMessagePrompt from "../ChatMessagePrompt";
 import ChatMessagesList from "../ChatMessagesList";
 import StreamViewerCount from "../StreamViewerCount";
 
@@ -150,6 +151,13 @@ export default function StreamChat({
 
             return val.type === ChatMessageType.ACTION && diff.seconds < 30;
           });
+
+          const prompts = allMessages.filter((val) => {
+            const creation = DateTime.fromJSDate(val.created_at.toDate());
+            const diff = DateTime.now().diff(creation, "seconds");
+
+            return val.type === ChatMessageType.PROMPT && diff.seconds < 30;
+          });
           return (
             <Grid
               minHeight="100%"
@@ -258,6 +266,13 @@ export default function StreamChat({
                         setShowSheet(false);
                       }}
                     />
+                    {prompts.map((prompt) => (
+                      <ChatMessagePrompt
+                        key={prompt.group}
+                        message={prompt.message}
+                        onClick={(val) => fieldValueSetter("message", val)}
+                      />
+                    ))}
                   </Box>
 
                   {(() => {

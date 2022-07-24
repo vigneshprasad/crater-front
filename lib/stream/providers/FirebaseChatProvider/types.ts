@@ -9,6 +9,7 @@ export enum ChatMessageType {
   REACTION = 2,
   ACTION = 3,
   STICKER = 4,
+  PROMPT = 5,
 }
 
 export interface ChatUserDetails {
