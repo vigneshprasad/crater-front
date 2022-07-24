@@ -23,13 +23,21 @@ import { MenuItem } from "@/common/components/objects/MenuButton/MenuItem";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
+import DateTime from "@/common/utils/datetime/DateTime";
+import { useWebinar } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import useChatColorMode from "@/stream/providers/ChatColorModeProvider";
 import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
 import { FirebaseChatContext } from "@/stream/providers/FirebaseChatProvider/context";
+import {
+  ChatMessage,
+  ChatMessageType,
+} from "@/stream/providers/FirebaseChatProvider/types";
 import useRewardsList from "@/tokens/context/RewardsListContext";
 
+import ChatActionItem from "../ChatActionItem";
 import ChatEmojiSheet from "../ChatEmojiSheet";
+import ChatMessagePrompt from "../ChatMessagePrompt";
 import ChatMessagesList from "../ChatMessagesList";
 import StreamViewerCount from "../StreamViewerCount";
 
@@ -56,6 +64,7 @@ export default function StreamChat({
   const { colorMode, toggleColorMode } = useChatColorMode();
   const [popOutVisible, setPopOutVisible] = useState(false);
   const windowRef = useRef<NewWindow>(null);
+  const { mutateWebinar } = useWebinar();
   const [showSheet, setShowSheet] = useState(false);
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
@@ -131,7 +140,24 @@ export default function StreamChat({
   return (
     <FirebaseChatProvider groupId={stream.id}>
       <FirebaseChatContext.Consumer>
-        {({ messages, postMessage, postSticker }) => {
+        {({ messages: allMessages, postMessage, postSticker }) => {
+          const messages = allMessages.filter(
+            (val) => val.type === ChatMessageType.TEXT
+          );
+
+          const actions = allMessages.filter((val) => {
+            const creation = DateTime.fromJSDate(val.created_at.toDate());
+            const diff = DateTime.now().diff(creation, "seconds");
+
+            return val.type === ChatMessageType.ACTION && diff.seconds < 30;
+          });
+
+          const prompts = allMessages.filter((val) => {
+            const creation = DateTime.fromJSDate(val.created_at.toDate());
+            const diff = DateTime.now().diff(creation, "seconds");
+
+            return val.type === ChatMessageType.PROMPT && diff.seconds < 30;
+          });
           return (
             <Grid
               minHeight="100%"
@@ -171,6 +197,7 @@ export default function StreamChat({
 
               {permission?.allow_chat && (
                 <Form
+                  position="relative"
                   bg={colors.primaryLight}
                   display="grid"
                   px={space.xxxs}
@@ -194,6 +221,14 @@ export default function StreamChat({
                     }
                   }}
                 >
+                  {actions.map((action) => (
+                    <ChatActionItem
+                      stream={stream}
+                      mutateStream={mutateWebinar}
+                      message={action}
+                      key={action.created_at.toString()}
+                    />
+                  ))}
                   <Box position="relative">
                     <Input
                       placeholder="Start chatting..."
@@ -221,7 +256,7 @@ export default function StreamChat({
                         setShowSheet(false);
                       }}
                       onClickItem={(item) => {
-                        const data = {
+                        const data: Partial<ChatMessage> = {
                           display_name: fields.display_name.value,
                           data: {
                             sticker: item,
@@ -231,6 +266,13 @@ export default function StreamChat({
                         setShowSheet(false);
                       }}
                     />
+                    {prompts.map((prompt) => (
+                      <ChatMessagePrompt
+                        key={prompt.group}
+                        message={prompt.message}
+                        onClick={(val) => fieldValueSetter("message", val)}
+                      />
+                    ))}
                   </Box>
 
                   {(() => {
