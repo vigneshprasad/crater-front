@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 import HubPageLayout, {
   getHubServerSideProps,
-} from "@/common/components/layouts/HubPageLayout";
+} from "@/common/components/layouts/HubPageLayout/v2";
 import { Creator } from "@/creators/types/creator";
 import { BidListProvider } from "@/tokens/context/BidListContext";
 import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";

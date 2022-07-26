@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 import HubPageLayout, {
   getHubServerSideProps,
-} from "@/common/components/layouts/HubPageLayout";
+} from "@/common/components/layouts/HubPageLayout/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { AverageEngagementProvider } from "@/creators/context/AverageEngagement";
 import { ClubMembersCountProvider } from "@/creators/context/ClubMembersCount";

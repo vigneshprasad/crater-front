@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 import HubPageLayout, {
   getHubServerSideProps,
-} from "@/common/components/layouts/HubPageLayout";
+} from "@/common/components/layouts/HubPageLayout/v2";
 import { CreatorStreamProvider } from "@/creators/context/CreatorStreamsContext";
 import { Creator } from "@/creators/types/creator";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";

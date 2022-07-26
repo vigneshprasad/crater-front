@@ -45,7 +45,7 @@ export default function CreatorHubStreamTab(): JSX.Element {
         visible={showModal}
         onClose={() => setShowModal(false)}
       />
-      <Grid gridAutoFlow="row" px={[space.xs, space.s]} py={space.xs}>
+      <Grid gridAutoFlow="row">
         {(() => {
           if (!upcoming.length) {
             return null;

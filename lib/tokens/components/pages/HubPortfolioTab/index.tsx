@@ -37,7 +37,6 @@ export default function HubPortfolioTab(): JSX.Element {
           <Flex
             alignItems="center"
             justifyContent="center"
-            height="65%"
             flexDirection="column"
             gridGap={space.xxs}
           >
@@ -68,7 +67,7 @@ export default function HubPortfolioTab(): JSX.Element {
   return (
     <>
       {showSuccess && <BidPaymentSuccessCard />}
-      <Flex px={space.s} py={space.xs} gridGap={space.s} flexDirection="column">
+      <Flex py={space.xxs} gridGap={space.s} flexDirection="column">
         <Text textStyle="title">Your Tickets</Text>
         <UserRewardList
           loading={loadingUserRewards}
