@@ -19,6 +19,10 @@ export default function HubNav({ creator, activeTab }: IProps): JSX.Element {
       return HUB_NAV_ITEMS.filter((item) => item.user !== false);
     }
 
+    if (!creator.show_club_members && !creator.show_analytics) {
+      return HUB_NAV_ITEMS.filter((item) => item.heading !== "Streams");
+    }
+
     return HUB_NAV_ITEMS;
   }, [creator]);
 
