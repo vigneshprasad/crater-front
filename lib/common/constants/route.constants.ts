@@ -1,4 +1,5 @@
-import { HubTabKeys } from "../components/layouts/HubPageLayout";
+// import { HubTabKeys } from "../components/layouts/HubPageLayout";
+import { HubNavKeys } from "../components/objects/AsideNav/v2";
 
 export const PageRoutes = {
   home: "/",
@@ -23,7 +24,7 @@ export const PageRoutes = {
     `/checkout/bid/${bid}/${intent}`,
   bidPaymentSuccess: (bid: number | string): string =>
     `/checkout/bid/success/${bid}`,
-  hub: (tab: HubTabKeys = "stream"): string => `/hub/${tab}`,
+  hub: (tab: HubNavKeys = "stream"): string => `/hub/${tab}`,
   join: "/join",
   pastStreams: (id: string | number): string => `/categories/${id}/streams/`,
   leaderboard: "/leaderboard",
