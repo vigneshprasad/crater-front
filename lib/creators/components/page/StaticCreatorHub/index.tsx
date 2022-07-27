@@ -5,7 +5,7 @@ import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import Page from "@/common/components/objects/Page";
 
-import CreatorHubJourneyTab from "../../objects/CreatorHubJourneyTab";
+import CreatorJourneyStatic from "../../objects/CreatorJourneyStatic";
 
 // import StaticHubCard from "../../objects/StaticHubCard";
 
@@ -115,7 +115,7 @@ export default function StaticCreatorHub(): JSX.Element {
         {/* <Card>Card one</Card> */}
         {/* </Grid> */}
 
-        <CreatorHubJourneyTab />
+        <CreatorJourneyStatic />
         {/* <Box h={space.s} /> */}
       </BaseLayout>
     </Page>
