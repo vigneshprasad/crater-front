@@ -20,7 +20,7 @@ export default function HubNav({ creator, activeTab }: IProps): JSX.Element {
     }
 
     if (!creator.show_club_members && !creator.show_analytics) {
-      return HUB_NAV_ITEMS.filter((item) => item.heading !== "Streams");
+      return HUB_NAV_ITEMS.filter((item) => item.heading !== "Analytics");
     }
 
     return HUB_NAV_ITEMS;
