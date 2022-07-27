@@ -53,10 +53,11 @@ export default function LearnNEarnModal(): JSX.Element {
         alignItems="center"
       >
         <Flex flexDirection="column">
-          <Text textStyle="mainHeading">Earn your share of the daily LOOT</Text>
+          <Text textStyle="mainHeading">Watch &amp; Earn, loyalty tokens</Text>
           <Text w="80%" color={colors.textTertiary}>
-            Watch streams, co-create content &amp; compete in bounties, to earn
-            loyalty tokens.
+            On Crater you earn LEARN, a limited supply loyalty token, for
+            watching streams, streaming or by competing in bounties. This can be
+            either used on the platform or withdrawn into your Metamask.
           </Text>
         </Flex>
 
@@ -70,7 +71,7 @@ export default function LearnNEarnModal(): JSX.Element {
           py={space.xxxs}
           px={space.xxxs}
         >
-          <Text>Todays LOOT: 1,000</Text>
+          <Text>Todays Earning: ---</Text>
           <Icon icon="TokenColor" size={20} />
         </StyledBox>
 
