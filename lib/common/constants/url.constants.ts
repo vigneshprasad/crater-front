@@ -161,6 +161,9 @@ export const API_URL_CONSTANTS = {
     getLeaderboardList: "/leaderboard/leaderboards/",
     getUserLeaderboardList: "/leaderboard/user/leaderboards/",
   },
+  tokens: {
+    getLearnUserMeta: "/tokens/learn/meta/",
+  },
 };
 
 export const LEARN_MORE_URL =
