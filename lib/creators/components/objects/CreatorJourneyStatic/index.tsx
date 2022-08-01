@@ -92,7 +92,7 @@ export default function CreatorJourneyStatic(): JSX.Element {
               justifyContent="center"
               alignItems="center"
               gridGap={6}
-              suffixElement={<Icon icon="Phone" size={16} />}
+              suffixElement={<Icon icon="Phone" size={14} fill={true} />}
             />
           </a>
         </>
