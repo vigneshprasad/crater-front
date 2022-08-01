@@ -18,6 +18,7 @@ export const API_URL_CONSTANTS = {
     getReferralSummary: "/user/auth/referrals/summary/",
     followStreamCategory: "/user/auth/category/follow/",
     unfollowStreamCategory: "/user/auth/category/unfollow/",
+    getProfileStatus: "/user/auth/profile/status/",
   },
   integrations: {
     dyte: {
