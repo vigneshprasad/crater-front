@@ -1,14 +1,36 @@
 import { useTheme } from "styled-components";
+import useSWR from "swr";
 
 import { Box, Flex, Icon, Span, Text } from "@/common/components/atoms";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { Creator } from "@/creators/types/creator";
+import usePastStreams from "@/stream/context/PastStreamContext";
 
 import CreatorJourneyStatic from "../CreatorJourneyStatic";
+import CreatorProfileStatusBox from "../CreatorProfileStatusBox";
 
-export default function CreatorHubJourneyTab(): JSX.Element {
+type IProps = {
+  creator: Creator | null;
+};
+
+export default function CreatorHubJourneyTab({ creator }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
+  const { streams: creatorPastStreams } = usePastStreams();
+
+  const { data: creatorProfileStatus } = useSWR<{ percent: number }>(
+    creator ? API_URL_CONSTANTS.user.getProfileStatus : null
+  );
 
   return (
-    <Box overflowY="auto">
+    <Box overflow="auto" minWidth={1000}>
+      {creator && (
+        <CreatorProfileStatusBox
+          creator={creator}
+          profileCompletedPercent={creatorProfileStatus?.percent ?? 0}
+          pastStreams={creatorPastStreams}
+        />
+      )}
+
       <Box
         py={32}
         pl={32}
@@ -45,7 +67,7 @@ export default function CreatorHubJourneyTab(): JSX.Element {
               borderRadius={radii.xxxxs}
             >
               <Flex flexDirection="row" gridGap={space.xxxs} alignItems="start">
-                <Icon icon="Tv" size={20} color="#FFE29B" />
+                <Icon icon="Tip" size={20} color="#FFE29B" />
                 <Box>
                   <Text textStyle="body" color="#FFE29B">
                     Pro Tip:
