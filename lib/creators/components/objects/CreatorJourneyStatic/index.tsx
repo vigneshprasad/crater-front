@@ -339,7 +339,7 @@ export default function CreatorJourneyStatic(): JSX.Element {
 
   return (
     <Box px={space.xxxs}>
-      <Box pt={[0, space.s]} pb={[0, space.xs]}>
+      <Box pt={[space.xs, space.s]} pb={[space.xxxs, space.xs]}>
         <Text textStyle="mainHeading" textAlign="center">
           Start your creator journey on Crater.Club
         </Text>
