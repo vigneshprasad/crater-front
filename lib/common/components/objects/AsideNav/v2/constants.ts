@@ -60,7 +60,7 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
     items: [
       {
         key: "journey",
-        icon: "Tv",
+        icon: "Journey",
         route: PageRoutes.hub("journey"),
         label: "My Creator Journey",
       },
@@ -71,7 +71,7 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
     items: [
       {
         key: "stream",
-        icon: "Tv",
+        icon: "Video",
         route: PageRoutes.hub("stream"),
         label: "My Streams",
       },
@@ -83,7 +83,7 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
     items: [
       {
         key: "analytics",
-        icon: "Tv",
+        icon: "Statistics",
         route: PageRoutes.hub("analytics"),
         label: "Channel Statistics",
       },
@@ -95,7 +95,7 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
     items: [
       {
         key: "auction",
-        icon: "Tv",
+        icon: "Auction",
         route: PageRoutes.hub("auction"),
         label: "Auction Bids",
       },
@@ -106,7 +106,7 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
     items: [
       {
         key: "wallet",
-        icon: "Tv",
+        icon: "Wallet",
         route: PageRoutes.hub("wallet"),
         label: "My Wallet",
       },
