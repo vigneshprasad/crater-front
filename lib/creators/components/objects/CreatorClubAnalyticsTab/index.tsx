@@ -167,7 +167,6 @@ export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
               </Card>
             )}
           </Grid>
-          )
         </>
       )}
     </>
