@@ -39,7 +39,7 @@ export default function CreatorProfileStatusBox({
   const FIELDS_TO_SHOW = {
     name: {
       title: "Add a name",
-      text: "Your viewers can recognize you with a name",
+      text: "Your viewers will identify you with this name on Crater",
     },
     photo: {
       title: "Add a profile picture",
@@ -47,15 +47,15 @@ export default function CreatorProfileStatusBox({
     },
     introduction: {
       title: "Add a brief description",
-      text: "Let your viewers know your what you are upto. Let's see how creative you are!",
+      text: "Let your viewers more about you and your field of expertise",
     },
     primary_url: {
       title: "Add a LinkTree url",
-      text: "Your discoverability increases with a LinkTree url",
+      text: "A one-stop place for your viewers to get access to all your content",
     },
     linkedin_url: {
       title: "Add LinkedIn handle",
-      text: "You can make yourself more discoverable online",
+      text: "Your viewers can follow or reach out to you on other social media platforms",
     },
     twitter: {
       title: "Add Twitter handle",
