@@ -22,7 +22,11 @@ export default function CreatorHubJourneyTab({ creator }: IProps): JSX.Element {
   );
 
   return (
-    <Box overflow="auto" minWidth={1000}>
+    <Box pt={space.xxs} overflow="auto" minWidth={1000}>
+      <Text pb={space.xs} textStyle="headline5" fontWeight={600}>
+        My Creator Journey
+      </Text>
+
       {creator && (
         <CreatorProfileStatusBox
           creator={creator}
