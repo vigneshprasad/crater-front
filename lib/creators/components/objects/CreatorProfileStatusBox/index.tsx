@@ -115,7 +115,9 @@ export default function CreatorProfileStatusBox({
   );
 
   if (!profile || !pastStreams) {
-    return <Shimmer w="100%" h={182} borderRadius={radii.xxxxs} />;
+    return (
+      <Shimmer w="100%" h={182} mb={space.xxs} borderRadius={radii.xxxxs} />
+    );
   }
 
   return (
