@@ -78,3 +78,8 @@ export { default as ViewStream } from "./ViewStream";
 export { default as ViewerCount } from "./ViewerCount";
 export { default as Wallet } from "./Wallet";
 export { default as Whatsapp } from "./Whatsapp";
+export { default as Statistics } from "./Statistics";
+export { default as Tip } from "./Tip";
+export { default as Edit } from "./Edit";
+export { default as Journey } from "./Journey";
+export { default as Video } from "./Video";
