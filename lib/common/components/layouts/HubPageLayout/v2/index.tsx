@@ -7,7 +7,9 @@ import { Grid } from "@/common/components/atoms";
 import { AsideNav, HubNavKeys } from "@/common/components/objects/AsideNav/v2";
 import HubNav from "@/common/components/objects/AsideNav/v2/HubNav";
 import Page from "@/common/components/objects/Page";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import CreatorApiClient from "@/creators/api";
+import CreatorJourneyStatic from "@/creators/components/objects/CreatorJourneyStatic";
 import { Creator } from "@/creators/types/creator";
 
 import BaseLayout from "../../BaseLayout/v2";
@@ -40,8 +42,12 @@ export default function HubPageLayout({
   creator,
   activeTab,
   children,
-}: PageProps): JSX.Element {
-  const { space } = useTheme();
+}: PageProps): JSX.Element | null {
+  const { space, breakpoints } = useTheme();
+
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  if (isMobile === undefined) return null;
 
   return (
     <Page
@@ -52,16 +58,20 @@ export default function HubPageLayout({
       }}
     >
       <BaseLayout aside={<AsideNav activeTab="hub" />} overflowY="auto">
-        <Grid
-          py={space.xxs}
-          pl={space.xxs}
-          pr={24}
-          gridTemplateColumns="max-content 1fr"
-          gridGap={24}
-        >
-          <HubNav creator={creator} activeTab={activeTab} />
-          {children}
-        </Grid>
+        {isMobile ? (
+          <CreatorJourneyStatic />
+        ) : (
+          <Grid
+            py={space.xxs}
+            pl={space.xxs}
+            pr={24}
+            gridTemplateColumns="max-content 1fr"
+            gridGap={24}
+          >
+            <HubNav creator={creator} activeTab={activeTab} />
+            {children}
+          </Grid>
+        )}
       </BaseLayout>
     </Page>
   );
