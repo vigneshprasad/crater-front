@@ -28,7 +28,7 @@ export default function HubNav({ creator, activeTab }: IProps): JSX.Element {
 
   return (
     <Box
-      w={210}
+      w={220}
       px={space.xxxs}
       h="max-content"
       bg={colors.primaryBackground}
@@ -77,7 +77,11 @@ export default function HubNav({ creator, activeTab }: IProps): JSX.Element {
                       bg={active ? colors.primaryLight : "inherit"}
                       borderRadius={radii.xxxxs}
                     >
-                      <Icon icon={icon} color="#EDEDED" size={14} />
+                      <Icon
+                        icon={icon}
+                        size={15}
+                        color={active ? colors.accentLight : "#EDEDED"}
+                      />
                       <Text
                         textStyle="menu"
                         color={active ? colors.accentLight : "#EDEDED"}
