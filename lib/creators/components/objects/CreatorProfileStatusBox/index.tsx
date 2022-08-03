@@ -47,7 +47,7 @@ export default function CreatorProfileStatusBox({
     },
     introduction: {
       title: "Add a brief description",
-      text: "Let your viewers more about you and your field of expertise",
+      text: "Let your viewers know more about you and your field of expertise",
     },
     primary_url: {
       title: "Add a LinkTree url",
