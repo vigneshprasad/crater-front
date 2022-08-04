@@ -83,3 +83,8 @@ export { default as Tip } from "./Tip";
 export { default as Edit } from "./Edit";
 export { default as Journey } from "./Journey";
 export { default as Video } from "./Video";
+export { default as Profile } from "./Profile";
+export { default as LinkedinAlt } from "./LinkedinAlt";
+export { default as LinkTreeAlt } from "./LinkTreeAlt";
+export { default as InstagramAlt } from "./InstagramAlt";
+export { default as Sort } from "./Sort";
