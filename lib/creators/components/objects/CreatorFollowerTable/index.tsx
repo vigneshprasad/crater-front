@@ -1,42 +1,40 @@
 import { useCallback } from "react";
 import styled, { useTheme } from "styled-components";
 
-import { Text, Spinner } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/Button";
+import { Text } from "@/common/components/atoms";
 import { Follower } from "@/community/types/community";
 
 interface IProps {
-  data?: Follower[];
-  loading: boolean;
+  data: Follower[];
   error?: unknown;
-  onPressDownloadCSV: () => void;
 }
 
 const Table = styled.table`
   width: 100%;
 `;
 const Thead = styled.thead`
-  background: ${({ theme }) => theme.colors.black[1]};
+  background: ${({ theme }) => theme.colors.primaryLight};
 `;
 const Tbody = styled.tbody``;
-const Tr = styled.tr``;
+const Tr = styled.tr`
+  background: ${({ theme }) => theme.colors.primaryDark};
+
+  :nth-child(even) {
+    background: ${({ theme }) => theme.colors.primaryBackground};
+  }
+`;
 const Th = styled.th`
-  padding: ${({ theme }) => theme.space.xxs}px;
+  padding: 14px 24px;
   text-align: left;
 `;
 
 const Td = styled.td`
-  padding: ${({ theme }) => theme.space.xxs}px;
+  padding: 18px 24px;
   text-align: left;
 `;
 
-export default function CreatorFollowerTable({
-  data,
-  loading,
-  onPressDownloadCSV,
-}: IProps): JSX.Element {
-  const { space } = useTheme();
-
+export default function CreatorFollowerTable({ data }: IProps): JSX.Element {
+  const { colors } = useTheme();
   const columns = [
     {
       Header: "Name",
@@ -65,44 +63,36 @@ export default function CreatorFollowerTable({
   }, []);
 
   return (
-    <>
-      <Table>
-        <Thead>
-          <Tr>
-            {columns.map((column) => (
-              <Th key={column.id}>
-                <Text textStyle="placeholder">{column.Header}</Text>
-              </Th>
-            ))}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {(() => {
-            if (!data || loading) {
-              return <Spinner />;
-            }
-
-            return data.map((row) => {
-              return (
-                <Tr key={row.id}>
-                  {columns.map((column) => (
-                    <Td key={column.id}>
-                      <Text>{getValue(column.accessor, row)}</Text>
-                    </Td>
-                  ))}
-                </Tr>
-              );
-            });
-          })()}
-        </Tbody>
-      </Table>
-      <Button
-        ml="auto"
-        mr={0}
-        my={space.xxxs}
-        text="Download CSV"
-        onClick={onPressDownloadCSV}
-      />
-    </>
+    <Table>
+      <Thead>
+        {columns.map((column) => (
+          <Th key={column.id}>
+            <Text
+              textStyle="small"
+              fontWeight={600}
+              color={colors.textTertiary}
+              textTransform="uppercase"
+            >
+              {column.Header}
+            </Text>
+          </Th>
+        ))}
+      </Thead>
+      <Tbody>
+        {data.map((row) => {
+          return (
+            <Tr key={row.id}>
+              {columns.map((column) => (
+                <Td key={column.id}>
+                  <Text textStyle="body" fontWeight={600}>
+                    {getValue(column.accessor, row)}
+                  </Text>
+                </Td>
+              ))}
+            </Tr>
+          );
+        })}
+      </Tbody>
+    </Table>
   );
 }
