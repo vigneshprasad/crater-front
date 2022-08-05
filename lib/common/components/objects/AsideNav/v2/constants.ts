@@ -7,6 +7,7 @@ export type HubNavItemKeys =
   | "journey"
   | "create"
   | "upcoming"
+  | "past"
   | "auction"
   | "wallet"
   | "analytics"
@@ -97,6 +98,12 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
         icon: "Video",
         route: PageRoutes.hub("streams", "upcoming"),
         label: "Upcoming Streams",
+      },
+      {
+        key: "past",
+        icon: "Clock",
+        route: PageRoutes.hub("streams", "past"),
+        label: "Past Streams",
       },
     ],
   },
