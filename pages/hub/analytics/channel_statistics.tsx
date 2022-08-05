@@ -11,7 +11,6 @@ import { ClubMembersCountProvider } from "@/creators/context/ClubMembersCount";
 import { ClubMembersGrowthProvider } from "@/creators/context/ClubMembersGrowth";
 import { ComparativeEngagementProvider } from "@/creators/context/ComparativeEngagement";
 import { ConversionFunnelProvider } from "@/creators/context/ConversionFunnel";
-import { CreatorFollowerProvider } from "@/creators/context/CreatorFollowerContext";
 import { TopStreamsProvider } from "@/creators/context/CreatorTopStreams";
 import { FollowerGrowthProvider } from "@/creators/context/FollowerGrowth";
 import { TopCreatorsProvider } from "@/creators/context/TopCreators";
@@ -61,34 +60,34 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 
 type IProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function HubAnalytics({ creator, userId }: IProps): JSX.Element {
+export default function HubAnalytics({ creator }: IProps): JSX.Element {
   return (
     <HubPageLayout activeTab="channel_statistics" creator={creator}>
-      <CreatorFollowerProvider userId={userId}>
-        <ClubMembersCountProvider>
-          <FollowerGrowthProvider>
-            <AverageEngagementProvider>
-              <ComparativeEngagementProvider>
-                <TopStreamsProvider>
-                  <TopCreatorsProvider>
-                    <ClubMembersGrowthProvider>
-                      <TrafficSourceTypesProvider>
-                        <ConversionFunnelProvider>
-                          <UsersByCraterProvider>
-                            {creator && (
-                              <CreatorClubAnalyticsTab creator={creator} />
-                            )}
-                          </UsersByCraterProvider>
-                        </ConversionFunnelProvider>
-                      </TrafficSourceTypesProvider>
-                    </ClubMembersGrowthProvider>
-                  </TopCreatorsProvider>
-                </TopStreamsProvider>
-              </ComparativeEngagementProvider>
-            </AverageEngagementProvider>
-          </FollowerGrowthProvider>
-        </ClubMembersCountProvider>
-      </CreatorFollowerProvider>
+      {/* <CreatorFollowerProvider userId={userId}> */}
+      <ClubMembersCountProvider>
+        <FollowerGrowthProvider>
+          <AverageEngagementProvider>
+            <ComparativeEngagementProvider>
+              <TopStreamsProvider>
+                <TopCreatorsProvider>
+                  <ClubMembersGrowthProvider>
+                    <TrafficSourceTypesProvider>
+                      <ConversionFunnelProvider>
+                        <UsersByCraterProvider>
+                          {creator && (
+                            <CreatorClubAnalyticsTab creator={creator} />
+                          )}
+                        </UsersByCraterProvider>
+                      </ConversionFunnelProvider>
+                    </TrafficSourceTypesProvider>
+                  </ClubMembersGrowthProvider>
+                </TopCreatorsProvider>
+              </TopStreamsProvider>
+            </ComparativeEngagementProvider>
+          </AverageEngagementProvider>
+        </FollowerGrowthProvider>
+      </ClubMembersCountProvider>
+      {/* </CreatorFollowerProvider> */}
     </HubPageLayout>
   );
 }
