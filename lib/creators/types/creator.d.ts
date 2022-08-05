@@ -95,3 +95,8 @@ export type CreatorRank = {
   };
   watch_time: number;
 };
+
+export type CreatorStats = {
+  name: string;
+  value: number;
+};
