@@ -201,7 +201,7 @@ export default function CreatorProfileStatusBox({
             textProps={{
               fontSize: "1.4rem",
             }}
-            onClick={() => router.push(PageRoutes.account)}
+            onClick={() => router.push(PageRoutes.hub("settings", "profile"))}
           />
         </Box>
 
