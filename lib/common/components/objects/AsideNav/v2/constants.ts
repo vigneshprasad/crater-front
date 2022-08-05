@@ -2,7 +2,7 @@ import { PageRoutes } from "@/common/constants/route.constants";
 import { IconOptions } from "@/common/theme";
 
 export type INavKeys = "streams" | "creators" | "leaderboard" | "hub";
-export type HubNavHeadingKeys = "settings" | "streams";
+export type HubNavHeadingKeys = "settings" | "streams" | "analytics";
 export type HubNavItemKeys =
   | "journey"
   | "create"
@@ -10,7 +10,8 @@ export type HubNavItemKeys =
   | "past"
   | "auction"
   | "wallet"
-  | "analytics"
+  | "channel_statistics"
+  | "club_members"
   | "profile";
 
 export type INavItem = {
@@ -112,9 +113,15 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
     user: false,
     items: [
       {
-        key: "analytics",
+        key: "club_members",
+        icon: "UsersFill",
+        route: PageRoutes.hub("analytics", "club_members"),
+        label: "Club Members",
+      },
+      {
+        key: "channel_statistics",
         icon: "Statistics",
-        route: PageRoutes.hub(undefined, "analytics"),
+        route: PageRoutes.hub("analytics", "channel_statistics"),
         label: "Channel Statistics",
       },
     ],
