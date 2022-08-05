@@ -128,6 +128,7 @@ export function PhoneInput({
         <CountriesList
           animate={animate}
           active={countryCode}
+          backgroundColor={colors.primaryBackground}
           onChange={onChangeCountryCode}
         />
         <Container
