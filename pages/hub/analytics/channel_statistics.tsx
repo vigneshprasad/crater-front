@@ -63,7 +63,7 @@ type IProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function HubAnalytics({ creator, userId }: IProps): JSX.Element {
   return (
-    <HubPageLayout activeTab="analytics" creator={creator}>
+    <HubPageLayout activeTab="channel_statistics" creator={creator}>
       <CreatorFollowerProvider userId={userId}>
         <ClubMembersCountProvider>
           <FollowerGrowthProvider>
