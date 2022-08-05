@@ -1,7 +1,9 @@
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/client";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { useTheme } from "styled-components";
+
+import { useRouter } from "next/router";
 
 import { Grid } from "@/common/components/atoms";
 import {
@@ -10,6 +12,7 @@ import {
 } from "@/common/components/objects/AsideNav/v2";
 import HubNav from "@/common/components/objects/AsideNav/v2/HubNav";
 import Page from "@/common/components/objects/Page";
+import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import CreatorApiClient from "@/creators/api";
 import CreatorJourneyStatic from "@/creators/components/objects/CreatorJourneyStatic";
@@ -35,6 +38,7 @@ export const getHubServerSideProps = async ({
   }
 
   const [creator] = await CreatorApiClient({ req }).getMyCreator();
+
   return {
     creator: creator ?? null,
     userId: session.user.pk,
@@ -47,8 +51,13 @@ export default function HubPageLayout({
   children,
 }: PageProps): JSX.Element | null {
   const { space, breakpoints } = useTheme();
+  const router = useRouter();
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  useEffect(() => {
+    if (!creator && router) router.push(PageRoutes.join);
+  }, [creator, router]);
 
   if (isMobile === undefined) return null;
 
