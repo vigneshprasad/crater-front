@@ -32,7 +32,7 @@ export default function ChatNotification({
     setWidth("100%");
     setTimeout(() => {
       setVisible(false);
-    }, 20000);
+    }, 30000);
   }, [setWidth]);
 
   return (
