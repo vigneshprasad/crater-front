@@ -7,8 +7,6 @@ import HubPageLayout, {
 } from "@/common/components/layouts/HubPageLayout/v2";
 import { CreatorStreamProvider } from "@/creators/context/CreatorStreamsContext";
 import { Creator } from "@/creators/types/creator";
-import { PastStreamProvider } from "@/stream/context/PastStreamContext";
-import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 
 const CreatorHubStreamTab = dynamic(
   () => import("@/creators/components/objects/CreatorHubStreamTab")
@@ -46,13 +44,13 @@ export default function CreatorHubStream({
   userId,
 }: IProps): JSX.Element {
   return (
-    <HubPageLayout creator={creator} activeTab="stream">
+    <HubPageLayout creator={creator} activeTab="create">
       <CreatorStreamProvider creatorId={userId}>
-        <UpcomingStreamsProvider host={userId}>
-          <PastStreamProvider host={userId}>
-            <CreatorHubStreamTab />
-          </PastStreamProvider>
-        </UpcomingStreamsProvider>
+        {/* <UpcomingStreamsProvider host={userId}> */}
+        {/* <PastStreamProvider host={userId}> */}
+        <CreatorHubStreamTab />
+        {/* </PastStreamProvider> */}
+        {/* </UpcomingStreamsProvider> */}
       </CreatorStreamProvider>
     </HubPageLayout>
   );
