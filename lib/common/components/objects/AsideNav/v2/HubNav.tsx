@@ -4,11 +4,11 @@ import { useTheme } from "styled-components";
 import { Box, Grid, Flex, Link, Text, Icon } from "@/common/components/atoms";
 import { Creator } from "@/creators/types/creator";
 
-import { HubNavItem, HubNavKeys, HUB_NAV_ITEMS } from ".";
+import { HubNavItem, HubNavItemKeys, HUB_NAV_ITEMS } from ".";
 
 interface IProps {
   creator: Creator | null;
-  activeTab?: HubNavKeys;
+  activeTab?: HubNavItemKeys;
 }
 
 export default function HubNav({ creator, activeTab }: IProps): JSX.Element {

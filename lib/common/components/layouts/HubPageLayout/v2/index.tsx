@@ -4,7 +4,10 @@ import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
 import { Grid } from "@/common/components/atoms";
-import { AsideNav, HubNavKeys } from "@/common/components/objects/AsideNav/v2";
+import {
+  AsideNav,
+  HubNavItemKeys,
+} from "@/common/components/objects/AsideNav/v2";
 import HubNav from "@/common/components/objects/AsideNav/v2/HubNav";
 import Page from "@/common/components/objects/Page";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
@@ -16,7 +19,7 @@ import BaseLayout from "../../BaseLayout/v2";
 
 type PageProps = PropsWithChildren<{
   creator: Creator | null;
-  activeTab?: HubNavKeys;
+  activeTab?: HubNavItemKeys;
 }>;
 
 export const getHubServerSideProps = async ({
