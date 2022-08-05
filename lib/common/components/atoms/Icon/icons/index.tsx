@@ -90,3 +90,5 @@ export { default as InstagramAlt } from "./InstagramAlt";
 export { default as Sort } from "./Sort";
 export { default as Clock } from "./Clock";
 export { default as ShareAlt } from "./ShareAlt";
+export { default as UsersFill } from "./UsersFill";
+export { default as Download } from "./Download";
