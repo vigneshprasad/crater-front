@@ -52,6 +52,7 @@ export default function CreatorStatsBox({
                 ? stat.name !== "Upcoming Streams" && (
                     <Flex
                       m={`${space.xxs}px 0px`}
+                      pb={space.xxs}
                       flexDirection="row"
                       justifyContent="space-between"
                       alignItems="center"
