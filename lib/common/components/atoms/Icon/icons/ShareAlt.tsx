@@ -1,0 +1,19 @@
+export default function ShareAlt(
+  props: React.SVGProps<SVGSVGElement>
+): JSX.Element {
+  return (
+    <svg
+      width="16"
+      height="15"
+      viewBox="0 0 16 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M10 0.5V4.5C2 4.5 0 8.6 0 14.5C1.04 10.54 4 8.5 8 8.5H10V12.5L16 6.18L10 0.5Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
