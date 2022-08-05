@@ -1,0 +1,164 @@
+import { useMemo } from "react";
+import { useTheme } from "styled-components";
+import useSWR from "swr";
+
+import { useRouter } from "next/router";
+
+import { Box, Flex, Grid, Icon, Text } from "@/common/components/atoms";
+import Select from "@/common/components/atoms/Select/v2";
+import { PageRoutes } from "@/common/constants/route.constants";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { Creator, CreatorStats } from "@/creators/types/creator";
+import {
+  UpcomingStreamsContext,
+  UpcomingStreamsProvider,
+} from "@/stream/context/UpcomingStreamsContext";
+
+import CreatorStatsBox from "../CreatorStatsBox";
+import HubUpcomingStreamsList from "../HubUpcomingStreamsList.tsx";
+
+type IProps = {
+  creator: Creator | null;
+};
+
+const sortByFields: {
+  key: string;
+  label: string;
+}[] = [
+  {
+    key: "today",
+    label: "Today",
+  },
+  {
+    key: "this_week",
+    label: "This Week",
+  },
+  {
+    key: "next_week",
+    label: "Next Week",
+  },
+  {
+    key: "this_month",
+    label: "This Month",
+  },
+  {
+    key: "recently_added",
+    label: "Recently Added",
+  },
+];
+
+export default function HubUpcomingStreamsTab({
+  creator,
+}: IProps): JSX.Element {
+  const { space, colors, radii } = useTheme();
+  const router = useRouter();
+
+  const { data: creatorStats } = useSWR<CreatorStats[]>(
+    creator ? API_URL_CONSTANTS.creator.getStats : null
+  );
+
+  const sortBy = router.query.sortBy as string | undefined;
+  const sortByField = useMemo<string>(() => {
+    const sortByField = sortByFields.filter((item) => item.key === sortBy)[0];
+
+    if (!sortByField) {
+      const defaultSortByField = sortByFields[0];
+      router.push(
+        {
+          pathname: PageRoutes.hub("streams", "upcoming"),
+          query: {
+            sortBy: defaultSortByField.key,
+          },
+        },
+        undefined,
+        { shallow: true }
+      );
+
+      return defaultSortByField.label;
+    }
+
+    return sortByField.label;
+  }, [router, sortBy]);
+
+  const handleSortFieldChange = (key: string): void => {
+    router.push(
+      {
+        pathname: PageRoutes.hub("streams", "upcoming"),
+        query: {
+          sortBy: key,
+        },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  return (
+    <Box pt={space.xxs} overflow="auto" minWidth={1000}>
+      <UpcomingStreamsProvider host={creator?.user} sortBy={sortBy}>
+        <Grid
+          gridAutoFlow="column"
+          gridTemplateColumns="minmax(800px, 1fr) 250px"
+          gridGap={36}
+        >
+          <Box>
+            <Flex
+              pb={space.xxs}
+              flexDirection="row"
+              alignItems="center"
+              gridGap={space.xxs}
+            >
+              <Text textStyle="headline5" fontWeight={600} flexGrow={1}>
+                Upcoming Streams
+              </Text>
+
+              <Flex
+                flexDirection="row"
+                alignItems="center"
+                gridGap={space.xxxxxs}
+              >
+                <Icon icon="Sort" color={colors.textTertiary} />
+                <Text
+                  textStyle="label"
+                  color={colors.textTertiary}
+                  textTransform="uppercase"
+                >
+                  Sort
+                </Text>
+              </Flex>
+
+              <Box w={164}>
+                <Select
+                  label={sortByField}
+                  items={sortByFields}
+                  itemLabelGetter={(item) => item.label}
+                  dataTransform={(item) => item.key}
+                  onChange={(val) => handleSortFieldChange(val as string)}
+                />
+              </Box>
+            </Flex>
+
+            <Box
+              p={24}
+              bg={colors.primaryDark}
+              borderRadius={radii.xxxxs}
+              border={`1px solid ${colors.secondaryLight}`}
+            >
+              <HubUpcomingStreamsList />
+            </Box>
+          </Box>
+
+          <UpcomingStreamsContext.Consumer>
+            {({ upcoming }) => (
+              <CreatorStatsBox
+                creator={creator}
+                creatorStats={creatorStats}
+                showButton={upcoming && upcoming?.length > 0}
+              />
+            )}
+          </UpcomingStreamsContext.Consumer>
+        </Grid>
+      </UpcomingStreamsProvider>
+    </Box>
+  );
+}
