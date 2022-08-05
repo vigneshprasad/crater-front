@@ -1,5 +1,8 @@
 // import { HubTabKeys } from "../components/layouts/HubPageLayout";
-import { HubNavKeys } from "../components/objects/AsideNav/v2";
+import {
+  HubNavHeadingKeys,
+  HubNavItemKeys,
+} from "../components/objects/AsideNav/v2";
 
 export const PageRoutes = {
   home: "/",
@@ -24,7 +27,11 @@ export const PageRoutes = {
     `/checkout/bid/${bid}/${intent}`,
   bidPaymentSuccess: (bid: number | string): string =>
     `/checkout/bid/success/${bid}`,
-  hub: (tab: HubNavKeys = "stream"): string => `/hub/${tab}`,
+  hub: (
+    tabHeading?: HubNavHeadingKeys,
+    tabItem: HubNavItemKeys = "journey"
+  ): string =>
+    tabHeading ? `/hub/${tabHeading}/${tabItem}` : `/hub/${tabItem}`,
   join: "/join",
   pastStreams: (id: string | number): string => `/categories/${id}/streams/`,
   leaderboard: "/leaderboard",

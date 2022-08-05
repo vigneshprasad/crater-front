@@ -2,12 +2,15 @@ import { PageRoutes } from "@/common/constants/route.constants";
 import { IconOptions } from "@/common/theme";
 
 export type INavKeys = "streams" | "creators" | "leaderboard" | "hub";
-export type HubNavKeys =
+export type HubNavHeadingKeys = "settings" | "streams";
+export type HubNavItemKeys =
   | "journey"
-  | "stream"
+  | "create"
+  | "upcoming"
   | "auction"
   | "wallet"
-  | "analytics";
+  | "analytics"
+  | "profile";
 
 export type INavItem = {
   key: INavKeys;
@@ -17,10 +20,11 @@ export type INavItem = {
 };
 
 export type HubNavItem = {
+  key?: HubNavHeadingKeys;
   heading: string;
   user?: boolean;
   items: {
-    key: HubNavKeys;
+    key: HubNavItemKeys;
     icon: IconOptions;
     route: string;
     label: string;
@@ -61,19 +65,38 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
       {
         key: "journey",
         icon: "Journey",
-        route: PageRoutes.hub("journey"),
+        route: PageRoutes.hub(undefined, "journey"),
         label: "My Creator Journey",
       },
     ],
   },
   {
+    key: "settings",
+    heading: "Account Settings",
+    items: [
+      {
+        key: "profile",
+        icon: "Profile",
+        route: PageRoutes.hub("settings", "profile"),
+        label: "Profile Details",
+      },
+    ],
+  },
+  {
+    key: "settings",
     heading: "Streams",
     items: [
       {
-        key: "stream",
+        key: "create",
+        icon: "CameraLive",
+        route: PageRoutes.hub("streams", "create"),
+        label: "Create Stream",
+      },
+      {
+        key: "upcoming",
         icon: "Video",
-        route: PageRoutes.hub("stream"),
-        label: "My Streams",
+        route: PageRoutes.hub("streams", "upcoming"),
+        label: "Upcoming Streams",
       },
     ],
   },
@@ -84,7 +107,7 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
       {
         key: "analytics",
         icon: "Statistics",
-        route: PageRoutes.hub("analytics"),
+        route: PageRoutes.hub(undefined, "analytics"),
         label: "Channel Statistics",
       },
     ],
@@ -96,7 +119,7 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
       {
         key: "auction",
         icon: "Auction",
-        route: PageRoutes.hub("auction"),
+        route: PageRoutes.hub(undefined, "auction"),
         label: "Auction Bids",
       },
     ],
@@ -107,7 +130,7 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
       {
         key: "wallet",
         icon: "Wallet",
-        route: PageRoutes.hub("wallet"),
+        route: PageRoutes.hub(undefined, "wallet"),
         label: "My Wallet",
       },
     ],
