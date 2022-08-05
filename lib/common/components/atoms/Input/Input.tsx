@@ -46,14 +46,15 @@ export type InputProps = BackgroundProps &
     boxProps?: BoxProps;
     placeholderColor?: string;
     suffixElement?: React.ReactNode;
+    containerProps?: InputProps;
   };
 
 export const StyledInput = styled.input<
   InputProps & { placeholderColor?: string }
 >`
   font-family: ${({ theme }) => theme.fonts.body};
-  font-size: 1.2rem;
-  font-weight: 400;
+  font-size: 1.4rem;
+  font-weight: 600;
   line-height: 1.8rem;
   box-sizing: border-box;
   color: ${({ theme }) => theme.colors.white[0]};
@@ -65,7 +66,7 @@ export const StyledInput = styled.input<
 
   &::placeholder {
     font-family: ${({ theme }) => theme.fonts.body};
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 600;
     color: ${({ placeholderColor, theme }) =>
       placeholderColor ? placeholderColor : theme.colors.textPlaceholder};
@@ -99,6 +100,7 @@ function InputWithRef({
   prefixElement,
   suffixElement,
   boxProps,
+  containerProps,
   error,
   bg,
   ...rest
@@ -112,7 +114,11 @@ function InputWithRef({
   }, [error, colors, borders]);
   return (
     <Box {...boxProps}>
-      <InputContainer bg={bg ?? colors.inputDefaultBg} border={border}>
+      <InputContainer
+        bg={bg ?? colors.inputDefaultBg}
+        border={border}
+        {...containerProps}
+      >
         {prefixElement && prefixElement}
         <StyledInput ref={inputRef} {...rest} />
         {suffixElement && suffixElement}
