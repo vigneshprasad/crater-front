@@ -49,11 +49,21 @@ const AuthApiClient = {
       throw new Error(err as string);
     }
   },
-  async postProfilePicture(photo: File): Promise<AxiosResponse<Profile>> {
+  async postProfilePicture(photo?: File): Promise<AxiosResponse<Profile>> {
     try {
-      const base64Image = await toBase64(photo);
+      const base64Image = photo ? await toBase64(photo) : null;
       const res = await API().post<Profile>(API_URL_CONSTANTS.user.profile, {
         photo: base64Image,
+      });
+      return res;
+    } catch (err) {
+      throw new Error(err as string);
+    }
+  },
+  async deleteCoverPicture(): Promise<AxiosResponse<Profile>> {
+    try {
+      const res = await API().post<Profile>(API_URL_CONSTANTS.user.profile, {
+        cover: null,
       });
       return res;
     } catch (err) {
