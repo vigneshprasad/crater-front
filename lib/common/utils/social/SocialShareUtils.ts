@@ -1,11 +1,12 @@
 import { Profile, User } from "next-auth";
 
-import { Webinar } from "@/community/types/community";
+import { PastStreamListItem, Webinar } from "@/community/types/community";
 
 interface ISocialShareUtilsProps {
   user?: User;
-  webinar?: Webinar;
+  webinar?: Webinar | PastStreamListItem;
   profile?: Profile;
+  customUrl?: string;
 }
 
 interface ISocialShareUtils {
@@ -18,6 +19,7 @@ export default function SocialShareUtils({
   webinar,
   user,
   profile,
+  customUrl,
 }: ISocialShareUtilsProps): ISocialShareUtils {
   const url = new URL(window.location.href);
   url.searchParams.delete("tab");
@@ -28,9 +30,10 @@ export default function SocialShareUtils({
     const utmSource = "LinkedIn";
     url.searchParams.set("utm_source", utmSource);
     user && url.searchParams.set("referrer_id", user.pk);
+    const shareUrl = customUrl ?? url.toString();
 
     return `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
-      url.toString()
+      shareUrl
     )}&title=${webinar?.topic_detail?.name}`;
   }
 
@@ -38,20 +41,24 @@ export default function SocialShareUtils({
     const utmSource = "Twitter";
     url.searchParams.set("utm_source", utmSource);
     user && url.searchParams.set("referrer_id", user.pk);
+    const shareUrl = customUrl ?? url.toString();
+
     return `https://twitter.com/share?text=${encodeURIComponent(
       shareText
-    )}&url=${encodeURIComponent(url.toString())}`;
+    )}&url=${encodeURIComponent(shareUrl)}`;
   }
 
   function getWhatsappShareLink(): string {
     const utmSource = "WhatsApp";
     url.searchParams.set("utm_source", utmSource);
     user && url.searchParams.set("referrer_id", user.pk);
+    const shareUrl = customUrl ?? url.toString();
+
     return `https://api.whatsapp.com/send?text=${
       user && !profile?.is_creator
         ? encodeURIComponent(`${shareText}\n\n`)
         : encodeURIComponent(`${shareText}\n\n`)
-    }${encodeURIComponent(url.toString())}`;
+    }${encodeURIComponent(shareUrl)}`;
   }
 
   return {
