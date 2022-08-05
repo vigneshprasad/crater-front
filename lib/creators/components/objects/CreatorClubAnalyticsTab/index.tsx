@@ -1,18 +1,12 @@
-import { AxiosError } from "axios";
-import { useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
-import API from "@/common/api";
-import { Box, Card, Flex, Grid, Text } from "@/common/components/atoms";
-import IconButton from "@/common/components/atoms/IconButton";
-import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { Box, Grid, Text } from "@/common/components/atoms";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { useAverageEngagement } from "@/creators/context/AverageEngagement";
 import { useClubMembersCount } from "@/creators/context/ClubMembersCount";
 import { useClubMembersGrowth } from "@/creators/context/ClubMembersGrowth";
 import { useComparativeEngagement } from "@/creators/context/ComparativeEngagement";
 import { useConversionFunnel } from "@/creators/context/ConversionFunnel";
-import useCreatorFollowers from "@/creators/context/CreatorFollowerContext";
 import { useTopStreams } from "@/creators/context/CreatorTopStreams";
 import { useFollowerGrowth } from "@/creators/context/FollowerGrowth";
 import { useTopCreators } from "@/creators/context/TopCreators";
@@ -22,7 +16,6 @@ import { Creator } from "@/creators/types/creator";
 
 import AnalyticsSummaryBox from "../AnalyticsSummaryBox";
 import ConversionFunnelBox from "../ConversionFunnelBox";
-import CreatorFollowerTable from "../CreatorFollowerTable";
 import TopCreatorsTable from "../TopCreatorsTable";
 import TopPerformingStreamsTable from "../TopPerformingStreamsTable";
 import TrafficSourceTypeBox from "../TrafficSourceTypeBox";
@@ -32,10 +25,10 @@ type IProps = {
 };
 
 export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
-  const [href, setHref] = useState<string | undefined>(undefined);
-  const ref = useRef<HTMLAnchorElement>(null);
-  const { followers, setPage, loading, currentPage, pageCount } =
-    useCreatorFollowers();
+  // const [href, setHref] = useState<string | undefined>(undefined);
+  // const ref = useRef<HTMLAnchorElement>(null);
+  // const { followers, setPage, loading, currentPage, pageCount } =
+  //   useCreatorFollowers();
   const { space, breakpoints } = useTheme();
   const { clubMembersCount } = useClubMembersCount();
   const { followerGrowth } = useFollowerGrowth();
@@ -49,38 +42,17 @@ export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
   const { usersByCrater: percentageUsersFromCrater } = useUsersByCrater();
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
-  function triggerFileDownload(response: string): void {
-    if (ref.current) {
-      const blob = new Blob([response], { type: "text/csv" });
-      const url = window.URL.createObjectURL(blob);
-      setHref(url);
-      ref.current.click();
-      window.URL.revokeObjectURL(url);
-    }
-  }
+  // function onClickNextPage(): void {
+  //   if (currentPage < pageCount) {
+  //     setPage((page) => page + 1);
+  //   }
+  // }
 
-  async function handleExportCsvBtnClick(): Promise<undefined | unknown> {
-    try {
-      const { data } = await API().get<string>(
-        API_URL_CONSTANTS.creator.downloadCreatorFollowersCsv
-      );
-      triggerFileDownload(data);
-    } catch (err) {
-      return [undefined, err as AxiosError];
-    }
-  }
-
-  function onClickNextPage(): void {
-    if (currentPage < pageCount) {
-      setPage((page) => page + 1);
-    }
-  }
-
-  function onClickPrevPage(): void {
-    if (currentPage > 1) {
-      setPage((page) => page - 1);
-    }
-  }
+  // function onClickPrevPage(): void {
+  //   if (currentPage > 1) {
+  //     setPage((page) => page - 1);
+  //   }
+  // }
 
   return (
     <>
@@ -124,7 +96,7 @@ export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
               </>
             )}
 
-            {creator?.show_club_members && (
+            {/* {creator?.show_club_members && (
               <Card containerProps={{ px: 0, py: 0 }} gridColumn="1 / span 2">
                 <Box p={space.xs}>
                   <Flex justifyContent="space-between">
@@ -158,14 +130,10 @@ export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
                     style={{ display: "none" }}
                     download="followers.csv"
                   />
-                  <CreatorFollowerTable
-                    loading={loading}
-                    data={followers}
-                    onPressDownloadCSV={handleExportCsvBtnClick}
-                  />
+                  <CreatorFollowerTable loading={loading} data={followers} />
                 </Box>
               </Card>
-            )}
+            )} */}
           </Grid>
         </>
       )}
