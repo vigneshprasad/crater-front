@@ -88,3 +88,4 @@ export { default as LinkedinAlt } from "./LinkedinAlt";
 export { default as LinkTreeAlt } from "./LinkTreeAlt";
 export { default as InstagramAlt } from "./InstagramAlt";
 export { default as Sort } from "./Sort";
+export { default as Clock } from "./Clock";
