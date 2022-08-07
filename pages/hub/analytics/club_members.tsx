@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import HubPageLayout, {
   getHubServerSideProps,
 } from "@/common/components/layouts/HubPageLayout/v2";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { CreatorFollowerProvider } from "@/creators/context/CreatorFollowerContext";
 import { Creator } from "@/creators/types/creator";
 
@@ -22,6 +23,17 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 ) => {
   try {
     const data = await getHubServerSideProps(context);
+    const { creator } = data;
+
+    if (!creator?.show_analytics && !creator?.show_club_members) {
+      return {
+        redirect: {
+          destination: PageRoutes.hub(),
+        },
+        props: {} as PageProps,
+      };
+    }
+
     return {
       props: {
         ...data,
