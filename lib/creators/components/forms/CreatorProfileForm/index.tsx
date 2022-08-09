@@ -304,51 +304,24 @@ export default function CreatorProfileForm({
               gridTemplateColumns="1fr"
               gridGap={space.xxxs}
               border={false}
-              label="Instagram"
+              label="LinkTree"
             >
               <Input
-                placeholder="instagram.com/username"
+                placeholder="linktr.ee/username"
                 placeholderColor={colors.secondaryLight}
                 containerProps={{ width: 556 }}
                 prefixElement={
                   <Icon
                     m="1px 10px 2px 2px"
-                    icon="InstagramAlt"
+                    icon="LinkTreeAlt"
                     size={18}
                     color="#EDEDED"
                     fill={true}
                   />
                 }
-                value={fields.instagram.value ?? ""}
+                value={fields.primary_url.value}
                 onChange={(e) =>
-                  fieldValueSetter("instagram", e.currentTarget.value)
-                }
-              />
-            </FormField>
-            <FormField
-              py={0}
-              gridAutoFlow="row"
-              gridTemplateColumns="1fr"
-              gridGap={space.xxxs}
-              border={false}
-              label="Twitter"
-            >
-              <Input
-                placeholder="twitter.com/username"
-                placeholderColor={colors.secondaryLight}
-                containerProps={{ width: 556 }}
-                prefixElement={
-                  <Icon
-                    m="1px 10px 2px 2px"
-                    icon="Twitter"
-                    size={18}
-                    color="#EDEDED"
-                    fill={true}
-                  />
-                }
-                value={fields.twitter.value ?? ""}
-                onChange={(e) =>
-                  fieldValueSetter("twitter", e.currentTarget.value)
+                  fieldValueSetter("primary_url", e.currentTarget.value)
                 }
               />
             </FormField>
@@ -385,24 +358,51 @@ export default function CreatorProfileForm({
               gridTemplateColumns="1fr"
               gridGap={space.xxxs}
               border={false}
-              label="LinkTree"
+              label="Twitter"
             >
               <Input
-                placeholder="linktr.ee/username"
+                placeholder="twitter.com/username"
                 placeholderColor={colors.secondaryLight}
                 containerProps={{ width: 556 }}
                 prefixElement={
                   <Icon
                     m="1px 10px 2px 2px"
-                    icon="LinkTreeAlt"
+                    icon="Twitter"
                     size={18}
                     color="#EDEDED"
                     fill={true}
                   />
                 }
-                value={fields.primary_url.value}
+                value={fields.twitter.value ?? ""}
                 onChange={(e) =>
-                  fieldValueSetter("primary_url", e.currentTarget.value)
+                  fieldValueSetter("twitter", e.currentTarget.value)
+                }
+              />
+            </FormField>
+            <FormField
+              py={0}
+              gridAutoFlow="row"
+              gridTemplateColumns="1fr"
+              gridGap={space.xxxs}
+              border={false}
+              label="Instagram"
+            >
+              <Input
+                placeholder="instagram.com/username"
+                placeholderColor={colors.secondaryLight}
+                containerProps={{ width: 556 }}
+                prefixElement={
+                  <Icon
+                    m="1px 10px 2px 2px"
+                    icon="InstagramAlt"
+                    size={18}
+                    color="#EDEDED"
+                    fill={true}
+                  />
+                }
+                value={fields.instagram.value ?? ""}
+                onChange={(e) =>
+                  fieldValueSetter("instagram", e.currentTarget.value)
                 }
               />
             </FormField>
