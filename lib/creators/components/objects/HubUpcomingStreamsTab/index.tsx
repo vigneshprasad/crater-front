@@ -13,6 +13,7 @@ import {
   UpcomingStreamsContext,
   UpcomingStreamsProvider,
 } from "@/stream/context/UpcomingStreamsContext";
+import { SortByField } from "@/stream/types/stream";
 
 import CreatorStatsBox from "../CreatorStatsBox";
 import HubUpcomingStreamsList from "../HubUpcomingStreamsList.tsx";
@@ -22,28 +23,24 @@ type IProps = {
 };
 
 const sortByFields: {
-  key: string;
+  key: SortByField;
   label: string;
 }[] = [
   {
-    key: "today",
+    key: SortByField.TODAY,
     label: "Today",
   },
   {
-    key: "this_week",
+    key: SortByField.THIS_WEEK,
     label: "This Week",
   },
   {
-    key: "next_week",
+    key: SortByField.NEXT_WEEK,
     label: "Next Week",
   },
   {
-    key: "this_month",
+    key: SortByField.THIS_MONTH,
     label: "This Month",
-  },
-  {
-    key: "recently_added",
-    label: "Recently Added",
   },
 ];
 
@@ -62,7 +59,9 @@ export default function HubUpcomingStreamsTab({
     const sortByField = sortByFields.filter((item) => item.key === sortBy)[0];
 
     if (!sortByField) {
-      const defaultSortByField = sortByFields[0];
+      const defaultSortByField = sortByFields.filter(
+        (item) => item.key === SortByField.THIS_WEEK
+      )[0];
       router.push(
         {
           pathname: PageRoutes.hub("streams", "upcoming"),
@@ -130,6 +129,7 @@ export default function HubUpcomingStreamsTab({
               <Box w={164}>
                 <Select
                   label={sortByField}
+                  defaultValue={sortByField}
                   items={sortByFields}
                   itemLabelGetter={(item) => item.label}
                   dataTransform={(item) => item.key}
