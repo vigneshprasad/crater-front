@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Text, AnimatedBox, Flex } from "@/common/components/atoms";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
-export default function SimilarStreamsOverlay(): JSX.Element {
+export default function SimilarStreamsOverlay(): JSX.Element | null {
   const time = useTime();
   const opacity = useTransform(
     time,
@@ -20,6 +20,9 @@ export default function SimilarStreamsOverlay(): JSX.Element {
 
   const { space, breakpoints } = useTheme();
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  if (isMobile === undefined) return null;
+
   const learnText = isMobile
     ? "You’re earning LEARN tokens"
     : "You're earning LEARN tokens while watching this stream";
