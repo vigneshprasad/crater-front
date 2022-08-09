@@ -25,7 +25,7 @@
     "csstype": "^3.0.8",
     "dyte-client": "^0.30.0",
     "firebase": "^9.6.6",
-    "framer-motion": "^4.1.17",
+    "framer-motion": "^7.0.0",
     "immer": "^9.0.6",
     "libphonenumber-js": "^1.9.22",
     "linkify-html": "^3.0.5",

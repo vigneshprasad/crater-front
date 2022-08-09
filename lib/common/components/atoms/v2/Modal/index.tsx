@@ -64,7 +64,9 @@ export function Modal({
         >
           <AnimatedBox
             position="relative"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e: React.ChangeEvent<HTMLInputElement>) =>
+              e.stopPropagation()
+            }
             m="auto auto"
             bg={colors.primaryDark}
             {...rest}
