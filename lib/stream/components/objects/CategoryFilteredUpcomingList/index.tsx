@@ -2,8 +2,9 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
-import { Box, Span } from "@/common/components/atoms";
+import { Box, Button, Flex, Span } from "@/common/components/atoms";
 import StyledSubHeading from "@/common/components/objects/StyledSubHeading";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import useStreamCategories from "@/stream/context/StreamCategoryContext";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
@@ -21,7 +22,7 @@ export default function CategoryFilteredUpcomingList(): JSX.Element {
   const filterQuery = router.query.upcomingCategory as string | undefined;
   return (
     <>
-      <Box px={space.xxs} mb={space.xxs}>
+      <Box px={space.xxs} mb={space.xxxs}>
         <CategoriesList
           categories={streamCategories}
           selectedCategory={category}
@@ -45,7 +46,25 @@ export default function CategoryFilteredUpcomingList(): JSX.Element {
         />
       </Box>
 
-      <UpcomingStreamsList />
+      <Flex flexDirection="column">
+        {filterQuery && (
+          <Button
+            textAlign="right"
+            paddingRight={space.xs}
+            text="View All"
+            variant="text-button"
+            color="white"
+            onClick={() => {
+              const slug =
+                category && streamCategories
+                  ? streamCategories[category - 1].slug
+                  : "";
+              router.push(PageRoutes.category(slug));
+            }}
+          />
+        )}
+        <UpcomingStreamsList />
+      </Flex>
 
       {filterQuery && (
         <PastStreamProvider

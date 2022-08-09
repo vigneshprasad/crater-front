@@ -29,6 +29,7 @@ export type Creator = {
   is_subscriber: boolean;
   point_of_contact: string;
   point_of_contact_detail: PointOfContact;
+  tokens_enabled: boolean;
 };
 
 export type ClubMembersCount = {
