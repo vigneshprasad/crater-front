@@ -12,6 +12,7 @@ export type SelectProps<T> = {
   items?: T[];
   dataUrl?: string;
   value?: unknown;
+  defaultValue?: unknown;
   label: string;
   itemLabelGetter: (val: T) => string;
   onChange?: (val: unknown) => void;
@@ -38,6 +39,7 @@ const Container = styled(Box)`
 
 export default function Select<T>({
   value: controlledValue,
+  defaultValue,
   async = false,
   dataUrl,
   itemLabelGetter,
@@ -149,23 +151,28 @@ export default function Select<T>({
         right={0}
         boxShadow="0px 0px 16px #000000"
       >
-        {items.map((item) => (
-          <Box
-            my={space.xxxxxs}
-            cursor="pointer"
-            key={itemLabelGetter(item)}
-            px={space.xxxs}
-            py={space.xxxxs}
-            bg={item === value ? colors.secondaryLight : undefined}
-            borderRadius={2}
-            onClick={(event) => {
-              event.stopPropagation();
-              handleItemClick(item);
-            }}
-          >
-            <Text textStyle="body">{itemLabelGetter(item)}</Text>
-          </Box>
-        ))}
+        {items.map((item) => {
+          const selectedValue = value ? itemLabelGetter(value) : defaultValue;
+          const selected = selectedValue === itemLabelGetter(item);
+
+          return (
+            <Box
+              my={space.xxxxxs}
+              cursor="pointer"
+              key={itemLabelGetter(item)}
+              px={space.xxxs}
+              py={space.xxxxs}
+              bg={selected ? colors.secondaryLight : undefined}
+              borderRadius={2}
+              onClick={(event) => {
+                event.stopPropagation();
+                handleItemClick(item);
+              }}
+            >
+              <Text textStyle="body">{itemLabelGetter(item)}</Text>
+            </Box>
+          );
+        })}
       </AnimatedBox>
     </Container>
   );
