@@ -86,7 +86,7 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
     ],
   },
   {
-    key: "settings",
+    key: "streams",
     heading: "Streams",
     items: [
       {
