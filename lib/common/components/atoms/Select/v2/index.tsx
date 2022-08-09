@@ -37,6 +37,12 @@ const Container = styled(Box)`
   }
 `;
 
+const ContainerItem = styled(Box)`
+  &:hover {
+    background: ${({ theme: { colors } }) => colors.secondaryLight};
+  }
+`;
+
 export default function Select<T>({
   value: controlledValue,
   defaultValue,
@@ -156,7 +162,7 @@ export default function Select<T>({
           const selected = selectedValue === itemLabelGetter(item);
 
           return (
-            <Box
+            <ContainerItem
               my={space.xxxxxs}
               cursor="pointer"
               key={itemLabelGetter(item)}
@@ -170,7 +176,7 @@ export default function Select<T>({
               }}
             >
               <Text textStyle="body">{itemLabelGetter(item)}</Text>
-            </Box>
+            </ContainerItem>
           );
         })}
       </AnimatedBox>
