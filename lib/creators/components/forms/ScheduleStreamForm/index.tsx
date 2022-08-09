@@ -44,7 +44,7 @@ export default function ScheduleStreamForm({
   permission,
   onSubmitComplete,
 }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, borders } = useTheme();
   const [loading, setLoading] = useState(false);
   const { profile } = useAuth();
 
@@ -153,8 +153,8 @@ export default function ScheduleStreamForm({
   return (
     <Card
       position="relative"
-      my={space.s}
-      containerProps={{ py: space.xxs }}
+      my={space.xxs}
+      containerProps={{ py: space.xs }}
       maxWidth={960}
       footer={
         <Flex
@@ -275,6 +275,10 @@ export default function ScheduleStreamForm({
           <TextArea
             rows={9}
             value={fields.description.value}
+            inputProps={{
+              backgroundColor: colors.primaryBackground,
+              border: `1px solid ${borders.input}`,
+            }}
             onChange={(e) => {
               fieldValueSetter("description", e.currentTarget.value);
             }}

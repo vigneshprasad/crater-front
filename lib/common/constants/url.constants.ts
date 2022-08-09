@@ -18,6 +18,7 @@ export const API_URL_CONSTANTS = {
     getReferralSummary: "/user/auth/referrals/summary/",
     followStreamCategory: "/user/auth/category/follow/",
     unfollowStreamCategory: "/user/auth/category/unfollow/",
+    getProfileStatus: "/user/auth/profile/status/",
   },
   integrations: {
     dyte: {
@@ -50,6 +51,7 @@ export const API_URL_CONSTANTS = {
     downloadCreatorFollowersCsv: "/crater/followers/download_csv/",
     subscribeCreator: "/crater/followers/notify/",
     unsubscribeCreator: (id: number): string => `/crater/followers/${id}/`,
+    getStats: "/crater/creator/stats/",
   },
   groups: {
     retrieveGroupRequest: (id: string): string => `/groups/requests/${id}/`,

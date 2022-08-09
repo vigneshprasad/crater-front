@@ -1,80 +1,78 @@
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/client";
-import { PropsWithChildren, useMemo } from "react";
+import { PropsWithChildren } from "react";
 import { useTheme } from "styled-components";
 
-import { PageRoutes } from "@/common/constants/route.constants";
 import CreatorApiClient from "@/creators/api";
 import { Creator } from "@/creators/types/creator";
 
-import { Box, Link } from "../../atoms";
+import { Box } from "../../atoms";
 import { AsideNav } from "../../objects/AsideNav/v2";
-import { BaseTabBar, BaseTabItem } from "../../objects/BaseTabBar";
 import Page from "../../objects/Page";
 import TabHeading from "../../objects/TabHeading";
 import BaseLayout from "../BaseLayout/v2";
 
-const CREATOR_TABS = {
-  stream: (
-    <Link href={PageRoutes.hub("stream")} shallow>
-      <BaseTabItem textStyle="title" label="Stream" />
-    </Link>
-  ),
-  analytics: (
-    <Link href={PageRoutes.hub("analytics")} shallow>
-      <BaseTabItem textStyle="title" label="Analyse" />
-    </Link>
-  ),
-  auction: (
-    <Link href={PageRoutes.hub("auction")} shallow>
-      <BaseTabItem textStyle="title" label="Auction" />
-    </Link>
-  ),
-  wallet: (
-    <Link href={PageRoutes.hub("wallet")} shallow>
-      <BaseTabItem textStyle="title" label="Wallet" />
-    </Link>
-  ),
-  // faq: (
-  //   <Link href={PageRoutes.hub("faq")} shallow>
-  //     <BaseTabItem textStyle="title" label="FAQ" />
-  //   </Link>
-  // ),
-  journey: (
-    <Link href={PageRoutes.hub("journey")} shallow>
-      <BaseTabItem textStyle="title" label="Journey" />
-    </Link>
-  ),
-};
+// const CREATOR_TABS = {
+//   stream: (
+//     <Link href={PageRoutes.hub("stream")} shallow>
+//       <BaseTabItem textStyle="title" label="Stream" />
+//     </Link>
+//   ),
+//   analytics: (
+//     <Link href={PageRoutes.hub("analytics")} shallow>
+//       <BaseTabItem textStyle="title" label="Analyse" />
+//     </Link>
+//   ),
+//   auction: (
+//     <Link href={PageRoutes.hub("auction")} shallow>
+//       <BaseTabItem textStyle="title" label="Auction" />
+//     </Link>
+//   ),
+//   wallet: (
+//     <Link href={PageRoutes.hub("wallet")} shallow>
+//       <BaseTabItem textStyle="title" label="Wallet" />
+//     </Link>
+//   ),
+//   // faq: (
+//   //   <Link href={PageRoutes.hub("faq")} shallow>
+//   //     <BaseTabItem textStyle="title" label="FAQ" />
+//   //   </Link>
+//   // ),
+//   journey: (
+//     <Link href={PageRoutes.hub("journey")} shallow>
+//       <BaseTabItem textStyle="title" label="Journey" />
+//     </Link>
+//   ),
+// };
 
-const USER_TABS = {
-  stream: (
-    <Link href={PageRoutes.hub("stream")} shallow>
-      <BaseTabItem textStyle="title" label="Streams" />
-    </Link>
-  ),
-  wallet: (
-    <Link href={PageRoutes.hub("wallet")} shallow>
-      <BaseTabItem textStyle="title" label="Wallet" />
-    </Link>
-  ),
-  // faq: (
-  //   <Link href={PageRoutes.hub("faq")} shallow>
-  //     <BaseTabItem textStyle="title" label="FAQ" />
-  //   </Link>
-  // ),
-  journey: (
-    <Link href={PageRoutes.hub("journey")} shallow>
-      <BaseTabItem textStyle="title" label="Journey" />
-    </Link>
-  ),
-};
+// const USER_TABS = {
+//   stream: (
+//     <Link href={PageRoutes.hub("stream")} shallow>
+//       <BaseTabItem textStyle="title" label="Streams" />
+//     </Link>
+//   ),
+//   wallet: (
+//     <Link href={PageRoutes.hub("wallet")} shallow>
+//       <BaseTabItem textStyle="title" label="Wallet" />
+//     </Link>
+//   ),
+//   // faq: (
+//   //   <Link href={PageRoutes.hub("faq")} shallow>
+//   //     <BaseTabItem textStyle="title" label="FAQ" />
+//   //   </Link>
+//   // ),
+//   journey: (
+//     <Link href={PageRoutes.hub("journey")} shallow>
+//       <BaseTabItem textStyle="title" label="Journey" />
+//     </Link>
+//   ),
+// };
 
-export type HubTabKeys = keyof typeof CREATOR_TABS | keyof typeof USER_TABS;
+// export type HubTabKeys = keyof typeof CREATOR_TABS | keyof typeof USER_TABS;
 
 type PageProps = PropsWithChildren<{
   creator: Creator | null;
-  activeTab?: HubTabKeys;
+  // activeTab?: HubTabKeys;
 }>;
 
 export const getHubServerSideProps = async ({
@@ -98,24 +96,24 @@ export const getHubServerSideProps = async ({
 
 export default function HubPageLayout({
   children,
-  activeTab,
-  creator,
-}: PageProps): JSX.Element {
+}: // activeTab,
+// creator,
+PageProps): JSX.Element {
   const { space } = useTheme();
 
-  const tabs = useMemo(() => {
-    if (!creator) {
-      return USER_TABS;
-    }
+  // const tabs = useMemo(() => {
+  //   if (!creator) {
+  //     return USER_TABS;
+  //   }
 
-    if (!creator.show_club_members && !creator.show_analytics) {
-      // @ts-expect-error: delete error
-      delete CREATOR_TABS.analytics;
-      return CREATOR_TABS;
-    }
+  //   if (!creator.show_club_members && !creator.show_analytics) {
+  //     // @ts-expect-error: delete error
+  //     delete CREATOR_TABS.analytics;
+  //     return CREATOR_TABS;
+  //   }
 
-    return CREATOR_TABS;
-  }, [creator]);
+  //   return CREATOR_TABS;
+  // }, [creator]);
 
   return (
     <Page
@@ -130,7 +128,7 @@ export default function HubPageLayout({
           <TabHeading>Hub</TabHeading>
         </Box>
 
-        <BaseTabBar
+        {/* <BaseTabBar
           top={0}
           overflowX="auto"
           mt={[space.xxxs, space.xxs]}
@@ -138,7 +136,7 @@ export default function HubPageLayout({
           py={space.xxs}
           tabs={tabs}
           activeTab={activeTab}
-        />
+        /> */}
         {children}
       </BaseLayout>
     </Page>

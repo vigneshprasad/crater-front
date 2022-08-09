@@ -9,6 +9,7 @@ import { PhoneLib } from "@/common/utils/phone_lib";
 interface ICountrListProps {
   active: CountryCode;
   animate: AnimationControls;
+  backgroundColor?: string;
   onChange?: (code: CountryCode) => void;
 }
 
@@ -22,6 +23,7 @@ const ItemWrapper = styled(Grid)`
 export default function CountriesList({
   active,
   animate,
+  backgroundColor,
   onChange,
 }: ICountrListProps): JSX.Element {
   const listContainerRef = useRef<HTMLDivElement>(null);
@@ -74,8 +76,8 @@ export default function CountriesList({
       animate={animate}
       left={0}
       right={0}
-      bg={colors.black[1]}
-      border={`2px solid ${borders.main}`}
+      bg={backgroundColor ?? colors.black[1]}
+      border={`1px solid ${borders.input}`}
       borderRadius={radii.xxs}
       transition={{ duration: 0.2 }}
       variants={{

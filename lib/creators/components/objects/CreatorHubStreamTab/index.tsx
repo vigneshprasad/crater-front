@@ -2,24 +2,19 @@ import { useState } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import { Text, Grid, Box, Spinner } from "@/common/components/atoms";
-import { PageRoutes } from "@/common/constants/route.constants";
-import { StreamSlider } from "@/community/components/objects/StreamSlider";
+import { Text, Box } from "@/common/components/atoms";
 import { Webinar } from "@/community/types/community";
-import PastStreamCard from "@/stream/components/objects/PastStreamCard";
 import PostStreamCreationModal from "@/stream/components/objects/PostStreamCreationModal";
-import usePastStreams from "@/stream/context/PastStreamContext";
-import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 import ScheduleStreamForm from "../../forms/ScheduleStreamForm";
 
 export default function CreatorHubStreamTab(): JSX.Element {
-  const {
-    loading: loadingUpcomingStream,
-    upcoming,
-    mutateUpcomingStreams,
-  } = useUpcomingStreams();
-  const { streams: past } = usePastStreams();
+  // const {
+  //   loading: loadingUpcomingStream,
+  //   upcoming,
+  //   mutateUpcomingStreams,
+  // } = useUpcomingStreams();
+  // const { streams: past } = usePastStreams();
   const { space } = useTheme();
   const { permission } = useAuth();
   const [showModal, setShowModal] = useState(false);
@@ -29,23 +24,30 @@ export default function CreatorHubStreamTab(): JSX.Element {
 
   const handleFormSubmit = (stream: Webinar): void => {
     setLatestStream(stream.id);
-    mutateUpcomingStreams();
+    // mutateUpcomingStreams();
 
     setShowModal(true);
   };
 
-  if (loadingUpcomingStream || !upcoming) {
-    return <Spinner />;
-  }
+  // if (loadingUpcomingStream || !upcoming) {
+  //   return <Spinner />;
+  // }
 
   return (
-    <>
+    <Box pt={space.xxs} overflow="auto" minWidth={1000}>
       <PostStreamCreationModal
         streamId={latestStream}
         visible={showModal}
         onClose={() => setShowModal(false)}
       />
-      <Grid gridAutoFlow="row" px={[space.xs, space.s]} py={space.xs}>
+      <Text textStyle="headline5" fontWeight={600}>
+        Schedule New Stream
+      </Text>
+      <ScheduleStreamForm
+        onSubmitComplete={handleFormSubmit}
+        permission={permission?.allow_create_stream}
+      />
+      {/* <Grid gridAutoFlow="row">
         {(() => {
           if (!upcoming.length) {
             return null;
@@ -95,7 +97,7 @@ export default function CreatorHubStreamTab(): JSX.Element {
             </Grid>
           </Box>
         )}
-      </Grid>
-    </>
+      </Grid> */}
+    </Box>
   );
 }

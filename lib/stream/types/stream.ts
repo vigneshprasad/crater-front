@@ -34,3 +34,11 @@ export interface UserCategory {
   followed_at: string;
   unfollowed_at: string;
 }
+
+export enum SortByField {
+  TODAY = "today",
+  THIS_WEEK = "this_week",
+  NEXT_WEEK = "next_week",
+  THIS_MONTH = "this_month",
+  RECENTLY_ADDED = "recently_added",
+}
