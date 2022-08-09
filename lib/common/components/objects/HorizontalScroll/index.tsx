@@ -91,7 +91,6 @@ export default function HorizontalScroll({
         background={`linear-gradient(to left, ${colors.primaryBackground}, rgba(1, 1, 1, 0.2))`}
         onClick={onClickScrollEnd}
         style={{
-          //@ts-expect-error: motion value error
           opacity: opacityLeft,
         }}
         {...actionContainerProps}
@@ -109,7 +108,6 @@ export default function HorizontalScroll({
         background={`linear-gradient(to right, ${colors.primaryBackground}, rgba(1, 1, 1, 0.2))`}
         onClick={onClickScrollStart}
         style={{
-          //@ts-expect-error: motion value error
           opacity: opacityRight,
         }}
         {...actionContainerProps}

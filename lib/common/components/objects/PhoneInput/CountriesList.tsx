@@ -57,13 +57,15 @@ export default function CountriesList({
 
   return (
     <AnimatedBox
-      onAnimationComplete={(anim) => {
+      onAnimationComplete={(anim: string) => {
         if (anim === "visible") {
           scrollIntoView();
         }
       }}
       ref={listContainerRef}
-      onMouseDown={(e) => e.preventDefault()}
+      onMouseDown={(e: React.ChangeEvent<HTMLInputElement>) =>
+        e.preventDefault()
+      }
       position="absolute"
       pt={space.xxs}
       role="list"

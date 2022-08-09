@@ -1,5 +1,4 @@
 import { User } from "next-auth";
-import CreatorAbout from "pages/creator/[slug]/about";
 import { useState } from "react";
 import { useTheme } from "styled-components";
 

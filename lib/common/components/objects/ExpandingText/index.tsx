@@ -1,4 +1,4 @@
-import { AnimateSharedLayout, motion, MotionProps } from "framer-motion";
+import { motion, MotionProps } from "framer-motion";
 import { SyntheticEvent, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
@@ -26,20 +26,18 @@ export default function ExpandingText({
   };
 
   return (
-    <AnimateSharedLayout type="crossfade">
-      <AnimatedBox layout transition={{ duration: 0.1 }}>
-        <AnimatedText maxLines={expanded ? undefined : maxLines} {...rest} />
-        {showMore && (
-          <Text
-            cursor="pointer"
-            onClick={onClickButton}
-            color={colors.accentLight}
-            textStyle="caption"
-          >
-            {expanded ? "View Less" : "View More"}
-          </Text>
-        )}
-      </AnimatedBox>
-    </AnimateSharedLayout>
+    <AnimatedBox layout transition={{ duration: 0.1 }}>
+      <AnimatedText maxLines={expanded ? undefined : maxLines} {...rest} />
+      {showMore && (
+        <Text
+          cursor="pointer"
+          onClick={onClickButton}
+          color={colors.accentLight}
+          textStyle="caption"
+        >
+          {expanded ? "View Less" : "View More"}
+        </Text>
+      )}
+    </AnimatedBox>
   );
 }
