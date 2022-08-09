@@ -75,6 +75,7 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
   {
     key: "settings",
     heading: "Account Settings",
+    user: false,
     items: [
       {
         key: "profile",
