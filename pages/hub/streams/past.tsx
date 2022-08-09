@@ -46,7 +46,7 @@ export default function CreatorHubPastStreams({
   return (
     <HubPageLayout creator={creator} activeTab="past">
       <PastStreamProvider host={userId}>
-        <HubPastStreamsTab creator={creator} />
+        <HubPastStreamsTab creator={creator} userId={userId} />
       </PastStreamProvider>
     </HubPageLayout>
   );

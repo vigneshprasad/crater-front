@@ -148,7 +148,7 @@ export default function HubUpcomingStreamsTab({
               borderRadius={radii.xxxxs}
               border={`1px solid ${colors.secondaryLight}`}
             >
-              <HubUpcomingStreamsList />
+              <HubUpcomingStreamsList creator={creator} />
             </Box>
           </Box>
 

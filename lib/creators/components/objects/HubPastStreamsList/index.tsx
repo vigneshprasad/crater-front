@@ -16,10 +16,15 @@ import { Button } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { PastStreamListItem } from "@/community/types/community";
+import { Creator } from "@/creators/types/creator";
 import ShareStreamModal from "@/stream/components/objects/ShareStreamModal";
 import usePastStreams from "@/stream/context/PastStreamContext";
 
-export default function HubPastStreamsList(): JSX.Element {
+type IProps = {
+  creator: Creator | null;
+};
+
+export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   const router = useRouter();
   const [initialClick, setInitialClick] = useState(true);
@@ -91,18 +96,36 @@ export default function HubPastStreamsList(): JSX.Element {
                     setting up a stream 24 hours before you plan to go live.
                   </Text>
                 </Box>
-                <Button
-                  label="Create New Stream"
-                  w={200}
-                  minHeight={40}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  prefixElement={<Icon icon="CameraLive" size={18} />}
-                  onClick={() =>
-                    router.push(PageRoutes.hub("streams", "create"))
-                  }
-                />
+                {creator ? (
+                  <Button
+                    label="Create New Stream"
+                    w={200}
+                    minHeight={40}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    prefixElement={<Icon icon="CameraLive" size={18} />}
+                    onClick={() =>
+                      router.push(PageRoutes.hub("streams", "create"))
+                    }
+                  />
+                ) : (
+                  <a
+                    href="https://calendly.com/craterclub/go_live_on_crater?utm_source=website&utm_medium=navbar"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Button
+                      label="Talk to us"
+                      w={150}
+                      minHeight={40}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      prefixElement={<Icon icon="Phone" size={16} />}
+                    />
+                  </a>
+                )}
               </Flex>
             </Grid>
           );

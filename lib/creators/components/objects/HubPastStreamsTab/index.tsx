@@ -14,18 +14,22 @@ import HubPastStreamsList from "../HubPastStreamsList";
 
 type IProps = {
   creator: Creator | null;
+  userId?: string;
 };
 
-export default function HubPastStreamsTab({ creator }: IProps): JSX.Element {
+export default function HubPastStreamsTab({
+  creator,
+  userId,
+}: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
 
   const { data: creatorStats } = useSWR<CreatorStats[]>(
-    creator ? API_URL_CONSTANTS.creator.getStats : null
+    API_URL_CONSTANTS.creator.getStats
   );
 
   return (
     <Box pt={space.xxs} overflow="auto" minWidth={1000}>
-      <PastStreamProvider host={creator?.user}>
+      <PastStreamProvider host={userId}>
         <Grid
           gridAutoFlow="column"
           gridTemplateColumns="minmax(800px, 1fr) 250px"
@@ -64,7 +68,7 @@ export default function HubPastStreamsTab({ creator }: IProps): JSX.Element {
               borderRadius={radii.xxxxs}
               border={`1px solid ${colors.secondaryLight}`}
             >
-              <HubPastStreamsList />
+              <HubPastStreamsList creator={creator} />
             </Box>
           </Box>
 
