@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import API from "@/common/api";
@@ -14,6 +14,8 @@ import {
 } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { PageResponse } from "@/common/types/api";
+import { Follower } from "@/community/types/community";
 import useCreatorFollowers from "@/creators/context/CreatorFollowerContext";
 
 import CreatorFollowerTable from "../CreatorFollowerTable";
@@ -22,8 +24,14 @@ export default function HubClubMembersTab(): JSX.Element {
   const { space, colors, radii, borders } = useTheme();
   const [href, setHref] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const ref = useRef<HTMLAnchorElement>(null);
-  const { followers, loading: followersLoading } = useCreatorFollowers();
+  const {
+    followerPages,
+    loading: followersLoading,
+    pageSize,
+    setCreatorFollowersPage,
+  } = useCreatorFollowers();
 
   function triggerFileDownload(response: string): void {
     if (ref.current) {
@@ -45,6 +53,42 @@ export default function HubClubMembersTab(): JSX.Element {
       triggerFileDownload(data);
     } catch (err) {
       return [undefined, err as AxiosError];
+    }
+  }
+
+  const currentFollowerPage = useMemo<
+    PageResponse<Follower> | undefined
+  >(() => {
+    if (followerPages) {
+      return followerPages[currentPage - 1];
+    }
+
+    return undefined;
+  }, [followerPages, currentPage]);
+
+  const countRange = useMemo<string>(() => {
+    if (currentFollowerPage) {
+      const { count } = currentFollowerPage;
+      const maxCount =
+        pageSize * currentPage > count ? count : pageSize * currentPage;
+
+      return `${(currentPage - 1) * pageSize + 1} - ${maxCount}`;
+    }
+
+    return "";
+  }, [currentPage, pageSize, currentFollowerPage]);
+
+  async function onClickNextPage(): Promise<void> {
+    if (currentFollowerPage?.next) {
+      await setCreatorFollowersPage((page) => page + 1);
+      setCurrentPage((page) => page + 1);
+    }
+  }
+
+  async function onClickPrevPage(): Promise<void> {
+    if (currentPage > 1) {
+      await setCreatorFollowersPage((page) => page - 1);
+      setCurrentPage((page) => page - 1);
     }
   }
 
@@ -79,18 +123,18 @@ export default function HubClubMembersTab(): JSX.Element {
           prefixElement={
             loading ? <Spinner size={24} /> : <Icon icon="Download" size={16} />
           }
-          disabled={loading || followers?.length === 0}
+          disabled={loading || currentFollowerPage?.results.length === 0}
           onClick={handleDownloadClick}
         />
       </Flex>
 
       <Box border={`1px solid ${borders.primary}`} borderRadius={radii.xxxxs}>
         {(() => {
-          if (!followers || followersLoading) {
+          if (!followerPages || !currentFollowerPage || followersLoading) {
             return <Shimmer w="100%" h={300} />;
           }
 
-          if (followers.length === 0) {
+          if (currentFollowerPage.results.length === 0) {
             return (
               <Box p={space.s} bg={colors.primaryDark}>
                 <Flex
@@ -124,7 +168,7 @@ export default function HubClubMembersTab(): JSX.Element {
 
           return (
             <>
-              <CreatorFollowerTable data={followers} />
+              <CreatorFollowerTable data={currentFollowerPage.results} />
               <Flex
                 px={space.xxs}
                 h={40}
@@ -141,22 +185,33 @@ export default function HubClubMembersTab(): JSX.Element {
                     borderRadius={radii.xxxxs}
                   >
                     <Text textStyle="body" fontWeight={600}>
-                      1-15
+                      {countRange}
                     </Text>
                   </Box>
                   <Text textStyle="body" color={colors.textTertiary}>
-                    of 20
+                    of {currentFollowerPage.count}
                   </Text>
-                  {/* Hide buttons if no next page: {opacity: 0} */}
                   <IconButton
                     buttonStyle="round"
                     icon="ChevronLeft"
-                    iconProps={{ color: colors.textTertiary }}
+                    iconProps={{
+                      color: colors.textTertiary,
+                      opacity:
+                        currentFollowerPage.results.length > pageSize ? 1 : 0,
+                    }}
+                    disabled={currentFollowerPage.previous ? false : true}
+                    onClick={onClickPrevPage}
                   />
                   <IconButton
                     buttonStyle="round"
                     icon="ChevronRight"
-                    iconProps={{ color: colors.textTertiary }}
+                    iconProps={{
+                      color: colors.textTertiary,
+                      opacity:
+                        currentFollowerPage.results.length > pageSize ? 1 : 0,
+                    }}
+                    disabled={currentFollowerPage.next ? false : true}
+                    onClick={onClickNextPage}
                   />
                 </Flex>
               </Flex>
