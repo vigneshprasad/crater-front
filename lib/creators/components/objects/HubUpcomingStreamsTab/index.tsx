@@ -51,7 +51,7 @@ export default function HubUpcomingStreamsTab({
   const router = useRouter();
 
   const { data: creatorStats } = useSWR<CreatorStats[]>(
-    creator ? API_URL_CONSTANTS.creator.getStats : null
+    API_URL_CONSTANTS.creator.getStats
   );
 
   const sortBy = router.query.sortBy as string | undefined;
@@ -116,10 +116,13 @@ export default function HubUpcomingStreamsTab({
                 alignItems="center"
                 gridGap={space.xxxxxs}
               >
-                <Icon icon="Sort" color={colors.textTertiary} />
+                <Icon
+                  icon="Sort"
+                  color={creator ? colors.textTertiary : colors.textQuartenary}
+                />
                 <Text
                   textStyle="label"
-                  color={colors.textTertiary}
+                  color={creator ? colors.textTertiary : colors.textQuartenary}
                   textTransform="uppercase"
                 >
                   Sort
@@ -134,6 +137,7 @@ export default function HubUpcomingStreamsTab({
                   itemLabelGetter={(item) => item.label}
                   dataTransform={(item) => item.key}
                   onChange={(val) => handleSortFieldChange(val as string)}
+                  disabled={creator ? false : true}
                 />
               </Box>
             </Flex>

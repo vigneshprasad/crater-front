@@ -14,6 +14,7 @@ export type SelectProps<T> = {
   value?: unknown;
   defaultValue?: unknown;
   label: string;
+  disabled: boolean;
   itemLabelGetter: (val: T) => string;
   onChange?: (val: unknown) => void;
   dataTransform?: (val: T) => unknown;
@@ -24,7 +25,7 @@ const Container = styled(Box)`
   background: ${({ theme: { colors } }) => colors.primaryBackground};
   padding: 0.6em 1em;
   border-radius: ${({ theme: { radii } }) => radii.xxxxs}px;
-  border: 1px solid ${({ theme: { colors } }) => colors.secondaryLight};
+  border: 1px solid ${({ theme: { colors } }) => colors.primaryLight};
   cursor: pointer;
   outline: none;
 
@@ -34,6 +35,11 @@ const Container = styled(Box)`
 
   &:focus {
     background: ${({ theme: { colors } }) => colors.primaryBackground};
+  }
+
+  &:disabled {
+    border: 1px solid ${({ theme: { colors } }) => colors.secondaryLight};
+    cursor: "not-allowed";
   }
 `;
 
@@ -53,6 +59,7 @@ export default function Select<T>({
   items: intialItems,
   onChange,
   dataTransform,
+  disabled = false,
 }: SelectProps<T>): JSX.Element {
   const [items, setItems] = useState<T[]>(intialItems ?? []);
   const [value, setValue] = useState<T>();
@@ -119,7 +126,12 @@ export default function Select<T>({
   }
 
   return (
-    <Container tabIndex={0} onBlur={() => setOpened(false)}>
+    <Container
+      tabIndex={0}
+      onBlur={() => setOpened(false)}
+      border={disabled ? `1px solid ${colors.secondaryLight}` : "none"}
+      style={{ pointerEvents: disabled ? "none" : "auto" }}
+    >
       <Grid
         zIndex={50}
         gridTemplateColumns="1fr min-content"
@@ -127,11 +139,25 @@ export default function Select<T>({
         onClick={handleContainerClick}
       >
         {value ? (
-          <Text textStyle="body">{itemLabelGetter(value)}</Text>
+          <Text
+            textStyle="body"
+            color={disabled ? colors.secondaryLight : colors.textPrimary}
+          >
+            {itemLabelGetter(value)}
+          </Text>
         ) : (
-          <Text textStyle="body">{label}</Text>
+          <Text
+            textStyle="body"
+            color={disabled ? colors.secondaryLight : colors.textPrimary}
+          >
+            {label}
+          </Text>
         )}
-        <Icon icon="ExpandMore" color={colors.textPrimary} fill />
+        <Icon
+          icon="ExpandMore"
+          color={disabled ? colors.secondaryLight : colors.textPrimary}
+          fill
+        />
       </Grid>
       <AnimatedBox
         p={space.xxxxs}
