@@ -196,8 +196,7 @@ export default function HubClubMembersTab(): JSX.Element {
                     icon="ChevronLeft"
                     iconProps={{
                       color: colors.textTertiary,
-                      opacity:
-                        currentFollowerPage.results.length > pageSize ? 1 : 0,
+                      opacity: currentFollowerPage.count > pageSize ? 1 : 0,
                     }}
                     disabled={currentFollowerPage.previous ? false : true}
                     onClick={onClickPrevPage}
@@ -207,8 +206,7 @@ export default function HubClubMembersTab(): JSX.Element {
                     icon="ChevronRight"
                     iconProps={{
                       color: colors.textTertiary,
-                      opacity:
-                        currentFollowerPage.results.length > pageSize ? 1 : 0,
+                      opacity: currentFollowerPage.count > pageSize ? 1 : 0,
                     }}
                     disabled={currentFollowerPage.next ? false : true}
                     onClick={onClickNextPage}

@@ -47,7 +47,7 @@ export default function CreatorHubUpcomingStreams({
   return (
     <HubPageLayout creator={creator} activeTab="upcoming">
       <UpcomingStreamsProvider host={userId} sortBy={SortByField.THIS_WEEK}>
-        <HubUpcomingStreamsTab creator={creator} />
+        <HubUpcomingStreamsTab creator={creator} userId={userId} />
       </UpcomingStreamsProvider>
     </HubPageLayout>
   );
