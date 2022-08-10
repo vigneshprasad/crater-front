@@ -5,17 +5,19 @@ import useAuth from "@/auth/context/AuthContext";
 import { Box, Flex, Modal, Text } from "@/common/components/atoms";
 import { IconButton } from "@/common/components/atoms/v2";
 import SocialShareUtils from "@/common/utils/social/SocialShareUtils";
-import { Webinar } from "@/community/types/community";
+import { PastStreamListItem, Webinar } from "@/community/types/community";
 
 interface IProps {
-  stream: Webinar;
+  stream?: Webinar | PastStreamListItem;
   visible: boolean;
+  url?: string;
   onClose: () => void;
 }
 
 export default function ShareStreamModal({
   stream,
   visible,
+  url,
   onClose,
 }: IProps): JSX.Element | null {
   const { space, colors, radii } = useTheme();
@@ -29,15 +31,18 @@ export default function ShareStreamModal({
   }, [shareUrl]);
 
   useEffect(() => {
-    const urlObj = new URL(window.location.href);
+    const pathname = url ? url : window.location.pathname;
+    const urlObj = new URL(`${pathname}`, `${window.location.origin}`);
+    urlObj.searchParams.delete("tab");
 
     if (user) {
-      setShareUrl(`${urlObj.origin}${urlObj.pathname}?referrer_id=${user.pk}`);
+      urlObj.searchParams.append("referrer_id", user.pk);
+      setShareUrl(urlObj.href);
       return;
     }
 
     setShareUrl(`${urlObj.origin}${urlObj.pathname}`);
-  }, [user]);
+  }, [user, url]);
 
   if (typeof window === "undefined") return null;
 
@@ -95,6 +100,7 @@ export default function ShareStreamModal({
                 user,
                 webinar: stream,
                 profile,
+                customUrl: shareUrl,
               }).getTwitterShareLink()}
               target="_blank"
               rel="noreferrer"
@@ -123,6 +129,7 @@ export default function ShareStreamModal({
                 user,
                 webinar: stream,
                 profile,
+                customUrl: shareUrl,
               }).getLinkedInShareLink()}
               target="_blank"
               rel="noreferrer"
@@ -151,6 +158,7 @@ export default function ShareStreamModal({
                 user,
                 webinar: stream,
                 profile,
+                customUrl: shareUrl,
               }).getWhatsappShareLink()}
               target="_blank"
               rel="noreferrer"

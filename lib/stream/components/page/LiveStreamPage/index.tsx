@@ -21,6 +21,7 @@ import PastStreamsList from "../../objects/PastStreamsList/v2";
 import SimilarStreamsOverlay from "../../objects/SimilarStreamsOverlay";
 import StreamAboutSection from "../../objects/StreamAboutSection";
 import StreamShareSection from "../../objects/StreamShareSection";
+import TokenBannerOverlay from "../../objects/TokenBannerOverlay";
 import Container from "./container";
 import useLiveStreamPageContext from "./context";
 
@@ -66,9 +67,8 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
   } = useFollower();
   const { postMessage } = useFirebaseChat();
 
+  const creator = cachedWebinar?.host_detail.creator_detail;
   const followCreator = async (): Promise<void> => {
-    const creator = cachedWebinar?.host_detail.creator_detail;
-
     if (creator) {
       await subscribeCreator(creator.id);
       await mutateWebinar();
@@ -101,6 +101,7 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
               borderBottom={`2px solid ${borders.main}`}
             />
           )}
+          {creator?.tokens_enabled && webinar.is_live && <TokenBannerOverlay />}
           <SimilarStreamsOverlay />
         </>
       }

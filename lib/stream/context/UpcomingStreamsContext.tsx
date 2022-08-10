@@ -19,6 +19,7 @@ interface IUpcomingStreamsState {
   error?: unknown;
   loading: boolean;
   nextPage: boolean;
+  sortBy?: string;
   setUpcomingStreamsPage: SWRInfiniteResponse<
     PageResponse<Webinar>,
     unknown
@@ -41,6 +42,7 @@ type IProviderProps = PropsWithChildren<{
   initial?: PageResponse<Webinar>;
   pageSize?: number;
   category?: number;
+  sortBy?: string;
 }>;
 
 export function UpcomingStreamsProvider({
@@ -48,6 +50,7 @@ export function UpcomingStreamsProvider({
   initial,
   pageSize: intialPageSize = 20,
   category,
+  sortBy,
   ...rest
 }: IProviderProps): JSX.Element {
   const [pageSize, setPageSize] = useState(intialPageSize);
@@ -63,14 +66,22 @@ export function UpcomingStreamsProvider({
       const page = index + 1;
       if (previousData && !previousData.next) return null;
 
+      let url = `${API_URL_CONSTANTS.groups.getUpcominWebinars}?page=${page}&page_size=${pageSize}`;
       if (category) {
-        return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?categories=${category}&page=${page}&page_size=${pageSize}`;
+        url += `&categories=${category}`;
+        // return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?categories=${category}&page=${page}&page_size=${pageSize}`;
       }
       if (host) {
-        return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?host=${host}&page=${page}&page_size=${pageSize}`;
+        url += `&host=${host}`;
+        // return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?host=${host}&page=${page}&page_size=${pageSize}`;
+      }
+      if (sortBy) {
+        url += `&sort_by=${sortBy}`;
       }
 
-      return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?page=${page}&page_size=${pageSize}`;
+      return url;
+
+      // return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?page=${page}&page_size=${pageSize}`;
     },
     async (key: string) => {
       const response = await fetcher<PageResponse<Webinar>>(key);
@@ -93,6 +104,7 @@ export function UpcomingStreamsProvider({
       setPageSize,
       isValidating,
       category,
+      sortBy,
     }),
     [
       streams,
@@ -103,6 +115,7 @@ export function UpcomingStreamsProvider({
       setPageSize,
       isValidating,
       category,
+      sortBy,
     ]
   );
 

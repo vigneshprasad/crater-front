@@ -2,7 +2,8 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
-import { Box } from "@/common/components/atoms";
+import { Box, Flex, Button } from "@/common/components/atoms";
+import { PageRoutes } from "@/common/constants/route.constants";
 import usePastStreams from "@/stream/context/PastStreamContext";
 import useStreamCategories from "@/stream/context/StreamCategoryContext";
 
@@ -14,6 +15,8 @@ export default function CategoryFilteredPastList(): JSX.Element {
   const { category } = usePastStreams();
   const { space } = useTheme();
   const router = useRouter();
+
+  const filterQuery = router.query.pastCategory as string | undefined;
 
   return (
     <>
@@ -40,8 +43,25 @@ export default function CategoryFilteredPastList(): JSX.Element {
           }}
         />
       </Box>
-
-      <PastStreamsList />
+      <Flex flexDirection="column">
+        {filterQuery && (
+          <Button
+            textAlign="right"
+            paddingRight={space.xs}
+            text="View All"
+            variant="text-button"
+            color="white"
+            onClick={() => {
+              const slug =
+                category && streamCategories
+                  ? streamCategories[category - 1].slug
+                  : "";
+              router.push(PageRoutes.category(slug));
+            }}
+          />
+        )}
+        <PastStreamsList />
+      </Flex>
     </>
   );
 }

@@ -32,7 +32,7 @@ const space = {
 
 const borders = {
   main: "rgba(228, 228, 228, 0.1)",
-  input: "#353535",
+  input: "#1C1C1E",
   primary: "#1C1C1E",
 };
 

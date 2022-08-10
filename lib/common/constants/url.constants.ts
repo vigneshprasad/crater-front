@@ -18,6 +18,7 @@ export const API_URL_CONSTANTS = {
     getReferralSummary: "/user/auth/referrals/summary/",
     followStreamCategory: "/user/auth/category/follow/",
     unfollowStreamCategory: "/user/auth/category/unfollow/",
+    getProfileStatus: "/user/auth/profile/status/",
     isCategoryFollower: (slug: string): string =>
       `/user/auth/category/follower/?category=${slug}`,
   },
@@ -52,6 +53,7 @@ export const API_URL_CONSTANTS = {
     downloadCreatorFollowersCsv: "/crater/followers/download_csv/",
     subscribeCreator: "/crater/followers/notify/",
     unsubscribeCreator: (id: number): string => `/crater/followers/${id}/`,
+    getStats: "/crater/creator/stats/",
   },
   groups: {
     retrieveGroupRequest: (id: string): string => `/groups/requests/${id}/`,
@@ -162,6 +164,9 @@ export const API_URL_CONSTANTS = {
       `/leaderboard/challenges/${id}/`,
     getLeaderboardList: "/leaderboard/leaderboards/",
     getUserLeaderboardList: "/leaderboard/user/leaderboards/",
+  },
+  tokens: {
+    getLearnUserMeta: "/tokens/learn/meta/",
   },
 };
 

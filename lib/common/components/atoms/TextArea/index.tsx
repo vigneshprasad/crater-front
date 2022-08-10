@@ -4,6 +4,7 @@ import { StyledInput, InputContainer, InputProps } from "../Input";
 
 export type TextAreaProps = InputProps &
   React.HTMLAttributes<HTMLTextAreaElement> & {
+    inputProps?: InputProps;
     rows?: number;
   };
 
@@ -17,10 +18,14 @@ const StyledTextArea = styled(StyledInput)<TextAreaProps>`
   }
 `;
 
-export function TextArea({ ...rest }: TextAreaProps): JSX.Element {
+export function TextArea({
+  inputProps,
+  rows,
+  ...rest
+}: TextAreaProps): JSX.Element {
   return (
-    <InputContainer>
-      <StyledTextArea as="textarea" rows={5} {...rest} />
+    <InputContainer {...inputProps}>
+      <StyledTextArea as="textarea" rows={rows ?? 5} {...rest} />
     </InputContainer>
   );
 }

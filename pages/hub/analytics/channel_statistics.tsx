@@ -4,14 +4,13 @@ import dynamic from "next/dynamic";
 
 import HubPageLayout, {
   getHubServerSideProps,
-} from "@/common/components/layouts/HubPageLayout";
+} from "@/common/components/layouts/HubPageLayout/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { AverageEngagementProvider } from "@/creators/context/AverageEngagement";
 import { ClubMembersCountProvider } from "@/creators/context/ClubMembersCount";
 import { ClubMembersGrowthProvider } from "@/creators/context/ClubMembersGrowth";
 import { ComparativeEngagementProvider } from "@/creators/context/ComparativeEngagement";
 import { ConversionFunnelProvider } from "@/creators/context/ConversionFunnel";
-import { CreatorFollowerProvider } from "@/creators/context/CreatorFollowerContext";
 import { TopStreamsProvider } from "@/creators/context/CreatorTopStreams";
 import { FollowerGrowthProvider } from "@/creators/context/FollowerGrowth";
 import { TopCreatorsProvider } from "@/creators/context/TopCreators";
@@ -61,34 +60,34 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 
 type IProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function HubAnalytics({ creator, userId }: IProps): JSX.Element {
+export default function HubAnalytics({ creator }: IProps): JSX.Element {
   return (
-    <HubPageLayout activeTab="analytics" creator={creator}>
-      <CreatorFollowerProvider userId={userId}>
-        <ClubMembersCountProvider>
-          <FollowerGrowthProvider>
-            <AverageEngagementProvider>
-              <ComparativeEngagementProvider>
-                <TopStreamsProvider>
-                  <TopCreatorsProvider>
-                    <ClubMembersGrowthProvider>
-                      <TrafficSourceTypesProvider>
-                        <ConversionFunnelProvider>
-                          <UsersByCraterProvider>
-                            {creator && (
-                              <CreatorClubAnalyticsTab creator={creator} />
-                            )}
-                          </UsersByCraterProvider>
-                        </ConversionFunnelProvider>
-                      </TrafficSourceTypesProvider>
-                    </ClubMembersGrowthProvider>
-                  </TopCreatorsProvider>
-                </TopStreamsProvider>
-              </ComparativeEngagementProvider>
-            </AverageEngagementProvider>
-          </FollowerGrowthProvider>
-        </ClubMembersCountProvider>
-      </CreatorFollowerProvider>
+    <HubPageLayout activeTab="channel_statistics" creator={creator}>
+      {/* <CreatorFollowerProvider userId={userId}> */}
+      <ClubMembersCountProvider>
+        <FollowerGrowthProvider>
+          <AverageEngagementProvider>
+            <ComparativeEngagementProvider>
+              <TopStreamsProvider>
+                <TopCreatorsProvider>
+                  <ClubMembersGrowthProvider>
+                    <TrafficSourceTypesProvider>
+                      <ConversionFunnelProvider>
+                        <UsersByCraterProvider>
+                          {creator && (
+                            <CreatorClubAnalyticsTab creator={creator} />
+                          )}
+                        </UsersByCraterProvider>
+                      </ConversionFunnelProvider>
+                    </TrafficSourceTypesProvider>
+                  </ClubMembersGrowthProvider>
+                </TopCreatorsProvider>
+              </TopStreamsProvider>
+            </ComparativeEngagementProvider>
+          </AverageEngagementProvider>
+        </FollowerGrowthProvider>
+      </ClubMembersCountProvider>
+      {/* </CreatorFollowerProvider> */}
     </HubPageLayout>
   );
 }
