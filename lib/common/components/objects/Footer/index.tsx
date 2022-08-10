@@ -42,7 +42,9 @@ export default function Footer(): JSX.Element {
           Links
         </Text>
 
-        <LinkText href={user ? PageRoutes.hub("journey") : PageRoutes.join}>
+        <LinkText
+          href={user ? PageRoutes.hub(undefined, "journey") : PageRoutes.join}
+        >
           Become a creator
         </LinkText>
         <LinkText href={HIRING_URL}>Work @ Crater</LinkText>

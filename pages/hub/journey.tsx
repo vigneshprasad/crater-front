@@ -4,8 +4,9 @@ import dynamic from "next/dynamic";
 
 import HubPageLayout, {
   getHubServerSideProps,
-} from "@/common/components/layouts/HubPageLayout";
+} from "@/common/components/layouts/HubPageLayout/v2";
 import { Creator } from "@/creators/types/creator";
+import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 
 const CreatorHubJourneyTab = dynamic(
   () => import("@/creators/components/objects/CreatorHubJourneyTab")
@@ -41,7 +42,9 @@ type IProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 export default function CreatorHubJourney({ creator }: IProps): JSX.Element {
   return (
     <HubPageLayout creator={creator} activeTab="journey">
-      <CreatorHubJourneyTab />
+      <PastStreamProvider host={creator?.user} pageSize={5}>
+        <CreatorHubJourneyTab creator={creator} />
+      </PastStreamProvider>
     </HubPageLayout>
   );
 }

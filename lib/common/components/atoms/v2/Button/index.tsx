@@ -86,6 +86,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
         ":disabled": {
           bg: "primaryLight",
           color: "textSecondary",
+          cursor: "not-allowed",
         },
       },
       "flat-large": {
@@ -128,6 +129,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
         ":disabled": {
           bg: "primaryLight",
           color: "textSecondary",
+          cursor: "not-allowed",
         },
       },
       outline: {
@@ -323,7 +325,7 @@ export function Button({
   const { space } = useTheme();
   return (
     <StyledButton
-      fontSize="1.3rem"
+      fontSize="1.4rem"
       display="inline-block"
       as="button"
       fontWeight="600"

@@ -52,6 +52,7 @@ export default function BidCheckoutPage({ hostUrl }: IProps): JSX.Element {
       elements,
       confirmParams: {
         return_url: `${hostUrl}${PageRoutes.hub(
+          undefined,
           "wallet"
         )}?bid_payment_success=${bid?.id}`,
       },

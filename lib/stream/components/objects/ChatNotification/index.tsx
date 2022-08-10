@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const ProgressBar = styled(Box)`
-  transition: all 20s ease-in-out;
+  transition: all 30s ease-in-out;
 `;
 
 export default function ChatNotification({
@@ -32,7 +32,7 @@ export default function ChatNotification({
     setWidth("100%");
     setTimeout(() => {
       setVisible(false);
-    }, 20000);
+    }, 30000);
   }, [setWidth]);
 
   return (

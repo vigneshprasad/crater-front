@@ -3,15 +3,13 @@ import { useTheme } from "styled-components";
 import { Box, Grid, Text } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
 import StreamCard from "@/community/components/objects/StreamCard";
-import PastStreamCard from "@/stream/components/objects/PastStreamCard";
-import usePastStreams from "@/stream/context/PastStreamContext";
+import PastStreamsList from "@/stream/components/objects/PastStreamsList/v2";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 export default function CreatorStreamsTab(): JSX.Element {
   const { upcoming } = useUpcomingStreams();
 
   const { space } = useTheme();
-  const { streams: pastStreams } = usePastStreams();
 
   if (!upcoming) {
     return <Box>Loading</Box>;
@@ -47,24 +45,7 @@ export default function CreatorStreamsTab(): JSX.Element {
       <Text textStyle="label" mx={space.xxs}>
         Past Streams:
       </Text>
-      <Grid
-        py={space.xxs}
-        gridTemplateColumns={["1fr", "repeat(auto-fill, minmax(280px, 1fr))"]}
-        gridGap={space.xxs}
-      >
-        {pastStreams?.map((stream) => (
-          <PastStreamCard
-            key={stream.id}
-            title={stream.topic_detail.name}
-            href={PageRoutes.streamVideo(stream.id)}
-            image={stream.topic_detail.image}
-            hostImage={stream.host_detail.photo}
-            hostName={stream.host_detail.name}
-            time={stream.start}
-            hostSlug={stream.host_detail?.slug}
-          />
-        ))}
-      </Grid>
+      <PastStreamsList />
     </Box>
   );
 }

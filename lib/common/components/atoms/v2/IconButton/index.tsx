@@ -73,6 +73,10 @@ const ButtonContainer = styled(Button)<ButtonProps>`
         ":hover": {
           bg: "primaryBackground",
         },
+        ":disabled": {
+          bg: "transparent",
+          cursor: "not-allowed",
+        },
       },
     },
   })}

@@ -36,7 +36,11 @@ export default function FormField({
                 <Text textStyle="menu">
                   {label}
                   {required ? (
-                    <Span color={colors.accent} mx={3} fontSize="1.5rem">
+                    <Span
+                      color={colors.accent}
+                      mx={space.xxxxxs}
+                      fontSize="1.4rem"
+                    >
                       *
                     </Span>
                   ) : undefined}
@@ -47,7 +51,7 @@ export default function FormField({
         })()}
 
         {subtext && (
-          <Text color={colors.slate} mt={space.xxxxxs} textStyle="small">
+          <Text color={colors.textTertiary} mt={space.xxxxxs} textStyle="small">
             {subtext}
           </Text>
         )}

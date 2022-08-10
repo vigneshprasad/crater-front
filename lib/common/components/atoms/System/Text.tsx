@@ -205,6 +205,12 @@ const variants = {
     fontWeight: "600",
     lineHeight: ["1.3rem"],
   },
+  formLabel: {
+    fontFamily: fonts.body,
+    fontSize: "2.0rem",
+    fontWeight: "600",
+    lineHeight: "2.4rem",
+  },
 };
 
 export type TextVariants = keyof typeof variants;
