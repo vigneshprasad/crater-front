@@ -142,7 +142,8 @@ export default function StreamChat({
       <FirebaseChatContext.Consumer>
         {({ messages: allMessages, postMessage, postSticker }) => {
           const messages = allMessages.filter(
-            (val) => val.type === ChatMessageType.TEXT
+            (val) =>
+              val.type === ChatMessageType.TEXT || ChatMessageType.STICKER
           );
 
           const actions = allMessages.filter((val) => {
