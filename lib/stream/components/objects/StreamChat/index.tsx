@@ -244,6 +244,7 @@ export default function StreamChat({
                       suffixElement={
                         <IconButton
                           icon="Emoji"
+                          type="button"
                           buttonStyle="flat-icon"
                           onClick={() => {
                             setShowSheet((val) => !val);
