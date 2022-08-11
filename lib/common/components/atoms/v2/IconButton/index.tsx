@@ -106,4 +106,5 @@ export function IconButton({ icon, iconProps, ...rest }: IProps): JSX.Element {
 
 IconButton.defaultProps = {
   buttonStyle: "flat",
+  type: "button",
 };
