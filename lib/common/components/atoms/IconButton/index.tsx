@@ -81,4 +81,5 @@ export default function IconButton({
 
 IconButton.defaultProps = {
   variant: "flat",
+  type: "button",
 };
