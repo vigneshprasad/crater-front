@@ -72,6 +72,7 @@ export default function ChatNotification({
             <Box flex="1">{headingElement}</Box>
             <IconButton
               icon="Close"
+              type="button"
               onClick={() => {
                 setVisible(false);
               }}
