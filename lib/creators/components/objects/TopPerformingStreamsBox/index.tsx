@@ -8,6 +8,7 @@ import {
   Grid,
   Icon,
   Image,
+  Link,
   Shimmer,
   Text,
 } from "@/common/components/atoms";
@@ -107,16 +108,21 @@ export default function TopPerformingStreamsBox({
                 }
               >
                 <Text textStyle="label">{index + 1}</Text>
-                <Box>
-                  {stream.topic_image && (
-                    <Image
-                      objectFit="cover"
-                      layout="fill"
-                      src={stream.topic_image}
-                      alt={stream.topic_title}
-                    />
-                  )}
-                </Box>
+                <Link
+                  href={PageRoutes.streamVideo(stream.id)}
+                  boxProps={{ target: "_blank" }}
+                >
+                  <Box>
+                    {stream.topic_image && (
+                      <Image
+                        objectFit="cover"
+                        layout="fill"
+                        src={stream.topic_image}
+                        alt={stream.topic_title}
+                      />
+                    )}
+                  </Box>
+                </Link>
                 <Box>
                   <Text>{stream.topic_title}</Text>
                   <Flex
