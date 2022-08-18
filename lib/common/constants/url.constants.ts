@@ -150,6 +150,11 @@ export const API_URL_CONSTANTS = {
     getTrafficSourceTypes: "/crater/analytics/traffic_source_types/",
     getConversionFunnel: "/crater/analytics/conversion_funnel/",
     getUsersByCrater: "/crater/analytics/users_by_crater/",
+    getChannelStats: "/crater/analytics/channel_stats/",
+    getPlatformStats: "/crater/analytics/platform_stats/",
+    getStreamCategoryDistribution:
+      "/crater/analytics/stream_category_distribution/",
+    getStreamTime: "/crater/analytics/stream_time",
   },
   firebase: {
     getFirebaseToken: "/integrations/firebase/token/",
