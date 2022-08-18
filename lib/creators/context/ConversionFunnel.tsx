@@ -6,7 +6,7 @@ import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ConversionFunnel } from "../types/creator";
 
 interface IConversionFunnelState {
-  conversionFunnelData?: ConversionFunnel[];
+  conversionFunnelData?: ConversionFunnel;
   error?: unknown;
   loading: boolean;
 }
@@ -16,14 +16,14 @@ export const ConversionFunnelContext = createContext(
 );
 
 type IProviderProps = PropsWithChildren<{
-  initial?: ConversionFunnel[];
+  initial?: ConversionFunnel;
 }>;
 
 export function ConversionFunnelProvider({
   initial,
   ...rest
 }: IProviderProps): JSX.Element {
-  const { data: conversionFunnelData, error } = useSWR<ConversionFunnel[]>(
+  const { data: conversionFunnelData, error } = useSWR<ConversionFunnel>(
     API_URL_CONSTANTS.analytics.getConversionFunnel,
     {
       initialData: initial,
