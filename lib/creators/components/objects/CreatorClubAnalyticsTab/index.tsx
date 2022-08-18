@@ -6,7 +6,6 @@ import { useAverageEngagement } from "@/creators/context/AverageEngagement";
 import { useClubMembersCount } from "@/creators/context/ClubMembersCount";
 import { useClubMembersGrowth } from "@/creators/context/ClubMembersGrowth";
 import { useComparativeEngagement } from "@/creators/context/ComparativeEngagement";
-import { useConversionFunnel } from "@/creators/context/ConversionFunnel";
 import { useTopStreams } from "@/creators/context/CreatorTopStreams";
 import { useFollowerGrowth } from "@/creators/context/FollowerGrowth";
 import { useTopCreators } from "@/creators/context/TopCreators";
@@ -15,7 +14,6 @@ import { useUsersByCrater } from "@/creators/context/UsersByCrater";
 import { Creator } from "@/creators/types/creator";
 
 import AnalyticsSummaryBox from "../AnalyticsSummaryBox";
-import ConversionFunnelBox from "../ConversionFunnelBox";
 import TopCreatorsTable from "../TopCreatorsTable";
 import TopPerformingStreamsTable from "../TopPerformingStreamsTable";
 import TrafficSourceTypeBox from "../TrafficSourceTypeBox";
@@ -38,7 +36,7 @@ export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
   const { comparativeRankingData } = useTopCreators();
   const { clubMembersGrowth } = useClubMembersGrowth();
   const { trafficSourceTypes } = useTrafficSourceTypes();
-  const { conversionFunnelData } = useConversionFunnel();
+  // const { conversionFunnelData } = useConversionFunnel();
   const { usersByCrater: percentageUsersFromCrater } = useUsersByCrater();
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
@@ -84,9 +82,9 @@ export default function CreatorClubAnalytics({ creator }: IProps): JSX.Element {
 
                 <TrafficSourceTypeBox trafficSourceTypes={trafficSourceTypes} />
 
-                <ConversionFunnelBox
+                {/* <ConversionFunnelBox
                   conversionFunnelData={conversionFunnelData}
-                />
+                /> */}
 
                 <TopPerformingStreamsTable topStreams={topStreams} />
 

@@ -12,8 +12,6 @@ import {
 } from "@/common/components/atoms";
 import { ClubMembersGrowth } from "@/creators/types/creator";
 
-import ClubMembersGrowthChart from "../ClubMembersGrowthChart";
-
 interface IProps extends CardProps {
   clubMembersCount?: number;
   followerGrowth?: number;
@@ -121,10 +119,6 @@ export default function AnalyticsSummaryBox(props: IProps): JSX.Element {
             </Flex>
           );
         })}
-
-        <Box gridColumn="1 / span 5" h={240}>
-          <ClubMembersGrowthChart clubMembersGrowth={clubMembersGrowth} />
-        </Box>
       </Grid>
     </Card>
   );
