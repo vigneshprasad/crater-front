@@ -3,6 +3,7 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
+import LiveStreamAuctions from "@/auction/components/objects/LiveStreamAuctions";
 import { Grid, Link, Shimmer } from "@/common/components/atoms";
 import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
 import { PageRoutes } from "@/common/constants/route.constants";
@@ -14,7 +15,6 @@ import { UserLeaderboardListProvider } from "@/leaderboard/context/UserLeaderboa
 import LiveStreamPanelTabItem from "../LiveStreamPanelTabItem";
 import StreamChat from "../StreamChat";
 import StreamLeaderboardPanel from "../StreamLeaderboardPanel";
-import StreamRewardsPanel from "../StreamRewardsPanel";
 
 type TabKeys = "chat" | "auction" | "leaderboard";
 
@@ -75,9 +75,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       {activeTab === "chat" && webinar && !webinar.closed && (
         <StreamChat stream={webinar} />
       )}
-      {activeTab === "auction" && webinar && (
-        <StreamRewardsPanel stream={webinar} />
-      )}
+      {activeTab === "auction" && webinar && <LiveStreamAuctions />}
       {activeTab === "leaderboard" && (
         <ChallengeListProvider>
           <LeaderboardListProvider

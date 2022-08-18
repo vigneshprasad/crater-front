@@ -5,7 +5,13 @@ import { variant } from "styled-system";
 import { Icon, IconProps } from "../../Icon";
 import { Button, ButtonProps } from "../Button";
 
-type Variants = "flat" | "flat-icon" | "flat-accent" | "round-large" | "round";
+type Variants =
+  | "flat"
+  | "flat-icon"
+  | "flat-accent"
+  | "round-large"
+  | "round"
+  | "rounded-sqaure-med";
 
 interface IProps extends ButtonProps {
   icon: IconProps["icon"];
@@ -78,6 +84,17 @@ const ButtonContainer = styled(Button)<ButtonProps>`
           cursor: "not-allowed",
         },
       },
+      "rounded-sqaure-med": {
+        width: 28,
+        height: 28,
+        borderRadius: 4,
+        alignItems: "center",
+        justifyContent: "center",
+        bg: "#1C1C1E",
+        ":hover": {
+          bg: "primaryLight",
+        },
+      },
     },
   })}
 `;
@@ -87,6 +104,14 @@ export function IconButton({ icon, iconProps, ...rest }: IProps): JSX.Element {
     if (rest.buttonStyle === "flat" || rest.buttonStyle === "flat-accent") {
       return {
         size: 20,
+        iconProps,
+        ...iconProps,
+      };
+    }
+
+    if (rest.buttonStyle === "rounded-sqaure-med") {
+      return {
+        size: 16,
         iconProps,
         ...iconProps,
       };

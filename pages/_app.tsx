@@ -23,6 +23,7 @@ import BasicSignupSheet from "@/auth/components/objects/BasicSignupSheet";
 import { AuthProvider } from "@/auth/context/AuthContext";
 import { AuthModalProvider } from "@/auth/context/AuthModalContext";
 import { SystemSocketProvider } from "@/auth/context/SystemSocketContext";
+import { NotificationStack } from "@/common/components/objects/NotificationStack";
 import {
   UTM_SOURCE_STORAGE_KEY,
   UTM_CAMPAIGN_STORAGE_KEY,
@@ -119,6 +120,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
                       <Component {...pageProps} />
                     </SystemSocketProvider>
                   </AsideNavProvider>
+                  <NotificationStack />
                   <LearnNEarnModal />
                   <AuthModal />
                   <BasicSignupSheet />
