@@ -155,6 +155,7 @@ export const API_URL_CONSTANTS = {
     getStreamCategoryDistribution:
       "/crater/analytics/stream_category_distribution/",
     getStreamTime: "/crater/analytics/stream_time",
+    getStreamCompletionRate: "/crater/analytics/stream_completion",
   },
   firebase: {
     getFirebaseToken: "/integrations/firebase/token/",
