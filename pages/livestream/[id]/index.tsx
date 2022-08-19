@@ -9,8 +9,12 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 import Page from "@/common/components/objects/Page";
+import { PageRoutes } from "@/common/constants/route.constants";
 import WebinarApiClient from "@/community/api";
-import { Webinar as WebinarType } from "@/community/types/community";
+import {
+  PrivacyType,
+  Webinar as WebinarType,
+} from "@/community/types/community";
 import { Webinar } from "@/community/types/community";
 import CreatorApiClient from "@/creators/api";
 import { Reward } from "@/tokens/types/token";
@@ -36,7 +40,6 @@ export const getStaticPaths: GetStaticPaths<IParams> = async () => {
   const paths = (webinars as Webinar[]).map(({ id }) => ({
     params: { id: id.toString() },
   }));
-
   return { paths, fallback: "blocking" };
 };
 
@@ -93,6 +96,19 @@ export default function WebinarPage({
       checkAuth();
     }
   }, [router, id, openModal]);
+
+  useEffect(() => {
+    if (user) {
+      if (
+        webinar.privacy == PrivacyType.private &&
+        webinar.attendees?.indexOf(user.pk) === -1 &&
+        webinar.speakers?.indexOf(user.pk) === -1 &&
+        webinar.host !== user.pk
+      ) {
+        router.push(PageRoutes.session(webinar.id.toString()));
+      }
+    }
+  }, [webinar, user, router]);
 
   return (
     <Page

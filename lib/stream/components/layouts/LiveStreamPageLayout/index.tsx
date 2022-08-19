@@ -1,9 +1,11 @@
 import { useTheme } from "styled-components";
 
+import useAuth from "@/auth/context/AuthContext";
 import { Box, Grid } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
+import { useWebinar } from "@/community/context/WebinarContext";
 import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 
 import BANNER from "../../objects/Banner";
@@ -28,6 +30,9 @@ export default function LiveStreamPageLayout({
   pastStreams,
 }: IProps): JSX.Element {
   const { space, borders } = useTheme();
+  const { user } = useAuth();
+  const { webinar } = useWebinar();
+
   return (
     <BaseLayout aside={<AsideNav />} overflowY={["hidden", "auto"]}>
       {modal}
@@ -54,7 +59,7 @@ export default function LiveStreamPageLayout({
         >
           <Box pt="56.25%" position="relative">
             {videoPlayer}
-            <SimilarStreamsOverlay />
+            {user?.pk !== webinar?.host && <SimilarStreamsOverlay />}
           </Box>
         </Grid>
         <Grid gridArea="panel">
