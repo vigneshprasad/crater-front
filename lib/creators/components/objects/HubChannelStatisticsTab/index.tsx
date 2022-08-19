@@ -63,8 +63,6 @@ export default function HubChannelStatisticsTab({
     API_URL_CONSTANTS.analytics.getStreamCompletionRate
   );
 
-  console.log(streamCompletionData);
-
   return (
     <Box pt={space.xxs} pb={space.s} minWidth={1000}>
       <Grid
