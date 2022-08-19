@@ -14,7 +14,7 @@ import { useClubMembersGrowth } from "@/creators/context/ClubMembersGrowth";
 import { useConversionFunnel } from "@/creators/context/ConversionFunnel";
 import { useTopStreams } from "@/creators/context/CreatorTopStreams";
 import { useTrafficSourceTypes } from "@/creators/context/TrafficSourceTypes";
-import { Creator } from "@/creators/types/creator";
+import { Creator, StreamCompletionRate } from "@/creators/types/creator";
 import {
   ChannelStats,
   PlatformStats,
@@ -58,6 +58,12 @@ export default function HubChannelStatisticsTab({
   const { data: streamTimeData } = useSWR<{ time: string }>(
     API_URL_CONSTANTS.analytics.getStreamTime
   );
+
+  const { data: streamCompletionData } = useSWR<StreamCompletionRate[]>(
+    API_URL_CONSTANTS.analytics.getStreamCompletionRate
+  );
+
+  console.log(streamCompletionData);
 
   return (
     <Box pt={space.xxs} pb={space.s} minWidth={1000}>
@@ -130,7 +136,9 @@ export default function HubChannelStatisticsTab({
         </Box>
 
         <Box gridArea="stream_completion">
-          <StreamCompletionRateBox />
+          <StreamCompletionRateBox
+            streamCompletionData={streamCompletionData}
+          />
         </Box>
 
         <Box gridArea="follower_trend">

@@ -1,35 +1,43 @@
 import { useTheme } from "styled-components";
 
-import { Box, Flex, Text } from "@/common/components/atoms";
+import { Box, Flex, Shimmer, Text } from "@/common/components/atoms";
+import { StreamCompletionRate } from "@/creators/types/creator";
 
 import StreamCompletionRateChart from "../StreamCompletionRateChart";
 
-export default function StreamCompletionRateBox(): JSX.Element {
+type IProps = {
+  streamCompletionData?: StreamCompletionRate[];
+};
+
+export default function StreamCompletionRateBox({
+  streamCompletionData,
+}: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
 
   return (
     <Box bg={colors.primaryDark} borderRadius={radii.xxxxs}>
-      <Flex
+      <Text
+        p={`${space.xs}px 24px ${space.xs}px ${space.xxs}px`}
+        textStyle="label"
+        color={colors.accentLight}
+        textTransform="uppercase"
         bg={colors.primaryLight}
-        flexDirection="row"
-        alignItems="center"
         borderRadius={`${radii.xxxxs}px ${radii.xxxxs}px 0px 0px`}
       >
-        <Text
-          p={`${space.xs}px 24px ${space.xs}px ${space.xxs}px`}
-          textStyle="label"
-          color={colors.accentLight}
-          textTransform="uppercase"
-        >
-          Stream Completion Rate
-        </Text>
-        <Box p="4px 8px" bg="#FFD700" borderRadius={2}>
-          <Text textStyle="small" fontWeight={700} color="#A80808">
-            Coming Soon
-          </Text>
-        </Box>
-      </Flex>
-      <StreamCompletionRateChart />
+        Stream Completion Rate
+      </Text>
+
+      {(() => {
+        if (streamCompletionData === undefined) {
+          return <Shimmer w="100%" h={300} />;
+        }
+
+        return (
+          <StreamCompletionRateChart
+            streamCompletionData={streamCompletionData}
+          />
+        );
+      })()}
     </Box>
   );
 }

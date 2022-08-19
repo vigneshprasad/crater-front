@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Bar,
   BarChart,
@@ -20,23 +21,45 @@ const SAMPLE_DATA: StreamCompletionRate[] = [
   { key: "21/06/22", value: 57 },
 ];
 
-export default function StreamCompletionRateChart(): JSX.Element {
+type IProps = {
+  streamCompletionData: StreamCompletionRate[];
+};
+
+export default function StreamCompletionRateChart({
+  streamCompletionData,
+}: IProps): JSX.Element {
   const { space, colors } = useTheme();
+
+  const data = useMemo(() => {
+    if (!streamCompletionData) {
+      return null;
+    }
+
+    // Filter all values
+    const values = streamCompletionData.map((obj) => obj.value);
+    if (values.every((value) => value === 0)) {
+      return null;
+    }
+
+    return streamCompletionData;
+  }, [streamCompletionData]);
 
   return (
     <Box position="relative">
-      <Text
-        textStyle="menu"
-        position="absolute"
-        top="34%"
-        left="40%"
-        zIndex={1}
-      >
-        No data to show yet
-      </Text>
+      {!data && (
+        <Text
+          textStyle="menu"
+          position="absolute"
+          top="34%"
+          left="40%"
+          zIndex={1}
+        >
+          No data to show yet
+        </Text>
+      )}
       <ResponsiveContainer aspect={16 / 9}>
         <BarChart
-          data={SAMPLE_DATA}
+          data={data ?? SAMPLE_DATA}
           margin={{
             top: 24,
             right: 30,
@@ -54,12 +77,12 @@ export default function StreamCompletionRateChart(): JSX.Element {
             tick={{
               fontSize: "1.2rem",
               fontWeight: 600,
-              fill: colors.secondaryLight,
+              fill: data ? colors.textPrimary : colors.secondaryLight,
             }}
             label={{
               value: "Streamed On",
               position: "bottom",
-              fill: colors.secondaryLight,
+              fill: data ? colors.textTertiary : colors.secondaryLight,
               fontSize: "1.4rem",
               fontWeight: 600,
               textAnchor: "middle",
@@ -75,24 +98,26 @@ export default function StreamCompletionRateChart(): JSX.Element {
             tick={{
               fontSize: "1.2rem",
               fontWeight: 600,
-              fill: colors.secondaryLight,
+              fill: data ? colors.textPrimary : colors.secondaryLight,
             }}
           />
           <Bar
             dataKey="value"
             barSize={8}
-            fill={colors.primaryLight}
             label={{
               formatter: (value: number) => `${value}`,
               position: "top",
-              fill: colors.secondaryLight,
+              fill: data ? "#02C7AC" : colors.primaryLight,
               fontSize: "1.2rem",
               fontWeight: 600,
               textAnchor: "middle",
             }}
           >
             {SAMPLE_DATA.map((obj, index) => (
-              <Cell key={`cell-${index}`} fill={colors.primaryLight} />
+              <Cell
+                key={`cell-${index}`}
+                fill={data ? "#02C7AC" : colors.primaryLight}
+              />
             ))}
           </Bar>
         </BarChart>
