@@ -6,20 +6,14 @@ import HubPageLayout, {
   getHubServerSideProps,
 } from "@/common/components/layouts/HubPageLayout/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
-import { AverageEngagementProvider } from "@/creators/context/AverageEngagement";
-import { ClubMembersCountProvider } from "@/creators/context/ClubMembersCount";
 import { ClubMembersGrowthProvider } from "@/creators/context/ClubMembersGrowth";
-import { ComparativeEngagementProvider } from "@/creators/context/ComparativeEngagement";
 import { ConversionFunnelProvider } from "@/creators/context/ConversionFunnel";
 import { TopStreamsProvider } from "@/creators/context/CreatorTopStreams";
-import { FollowerGrowthProvider } from "@/creators/context/FollowerGrowth";
-import { TopCreatorsProvider } from "@/creators/context/TopCreators";
 import { TrafficSourceTypesProvider } from "@/creators/context/TrafficSourceTypes";
-import { UsersByCraterProvider } from "@/creators/context/UsersByCrater";
 import { Creator } from "@/creators/types/creator";
 
-const CreatorClubAnalyticsTab = dynamic(
-  () => import("@/creators/components/objects/CreatorClubAnalyticsTab")
+const HubChannelStatisticsTab = dynamic(
+  () => import("@/creators/components/objects/HubChannelStatisticsTab")
 );
 
 interface PageProps {
@@ -63,31 +57,15 @@ type IProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 export default function HubAnalytics({ creator }: IProps): JSX.Element {
   return (
     <HubPageLayout activeTab="channel_statistics" creator={creator}>
-      {/* <CreatorFollowerProvider userId={userId}> */}
-      <ClubMembersCountProvider>
-        <FollowerGrowthProvider>
-          <AverageEngagementProvider>
-            <ComparativeEngagementProvider>
-              <TopStreamsProvider>
-                <TopCreatorsProvider>
-                  <ClubMembersGrowthProvider>
-                    <TrafficSourceTypesProvider>
-                      <ConversionFunnelProvider>
-                        <UsersByCraterProvider>
-                          {creator && (
-                            <CreatorClubAnalyticsTab creator={creator} />
-                          )}
-                        </UsersByCraterProvider>
-                      </ConversionFunnelProvider>
-                    </TrafficSourceTypesProvider>
-                  </ClubMembersGrowthProvider>
-                </TopCreatorsProvider>
-              </TopStreamsProvider>
-            </ComparativeEngagementProvider>
-          </AverageEngagementProvider>
-        </FollowerGrowthProvider>
-      </ClubMembersCountProvider>
-      {/* </CreatorFollowerProvider> */}
+      <TopStreamsProvider>
+        <ConversionFunnelProvider>
+          <TrafficSourceTypesProvider>
+            <ClubMembersGrowthProvider>
+              <HubChannelStatisticsTab creator={creator} />
+            </ClubMembersGrowthProvider>
+          </TrafficSourceTypesProvider>
+        </ConversionFunnelProvider>
+      </TopStreamsProvider>
     </HubPageLayout>
   );
 }
