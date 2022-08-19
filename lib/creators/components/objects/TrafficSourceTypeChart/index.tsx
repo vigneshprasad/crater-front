@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
 
-import { Box } from "@/common/components/atoms";
 import colors from "@/common/theme/colors";
 import { TrafficSourceType } from "@/creators/types/creator";
 
@@ -11,42 +10,48 @@ interface IProps {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderActiveShape = (props: any): JSX.Element => {
-  const RADIAN = Math.PI / 180;
   const {
     cx,
     cy,
-    midAngle,
     innerRadius,
     outerRadius,
     startAngle,
     endAngle,
     fill,
-    payload,
     percent,
     value,
+    payload,
   } = props;
 
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-  const sx = cx + (outerRadius + 10) * cos;
-  const sy = cy + (outerRadius + 10) * sin;
-  const mx = cx + (outerRadius + 30) * cos;
-  const my = cy + (outerRadius + 30) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-  const ey = my;
-  const textAnchor = cos >= 0 ? "start" : "end";
+  const valueColor =
+    payload.source_name !== null ? colors.textPrimary : colors.secondaryLight;
+  const percentageColor =
+    payload.source_name !== null ? colors.textTertiary : colors.secondaryLight;
+  const strokeWidth = payload.source_name !== null ? 2 : 0;
 
   return (
     <g>
       <text
         x={cx}
         y={cy}
-        dy={8}
+        dy={0}
         textAnchor="middle"
-        fill={fill}
-        fontSize="1.4rem"
+        fill={valueColor}
+        fontSize="2.0rem"
+        fontWeight={600}
       >
-        {payload.source_name}
+        {payload.source_name !== null ? value : 0}
+      </text>
+      <text
+        x={cx}
+        y={cy}
+        dy={22}
+        textAnchor="middle"
+        fill={percentageColor}
+        fontSize="1.2rem"
+        fontWeight={600}
+      >
+        {payload.source_name !== null ? percent * 100 : 0}%
       </text>
       <Sector
         cx={cx}
@@ -56,39 +61,9 @@ const renderActiveShape = (props: any): JSX.Element => {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
+        stroke={colors.white[0]}
+        strokeWidth={strokeWidth}
       />
-      <Sector
-        cx={cx}
-        cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={outerRadius + 6}
-        outerRadius={outerRadius + 10}
-        fill={fill}
-      />
-      <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={fill}
-        fill="none"
-      />
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        textAnchor={textAnchor}
-        fill={colors.white[0]}
-        fontSize="1.4rem"
-      >{`Count: ${value}`}</text>
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        dy={18}
-        textAnchor={textAnchor}
-        fill={colors.white[1]}
-        fontSize="1.2rem"
-      >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
-      </text>
     </g>
   );
 };
@@ -103,23 +78,47 @@ export default function TrafficSourceTypeChart({
   };
 
   return (
-    <Box w="100%">
-      <ResponsiveContainer aspect={16 / 9}>
-        <PieChart>
+    <ResponsiveContainer height={300} width={300}>
+      <PieChart>
+        {trafficSourceTypes.length > 0 ? (
           <Pie
             activeIndex={activeIndex}
             activeShape={renderActiveShape}
             data={trafficSourceTypes}
             cx="50%"
             cy="50%"
-            innerRadius="50%"
-            outerRadius="60%"
-            fill="#8884d8"
+            innerRadius={95}
+            outerRadius={110}
+            fill={colors.accentLight}
             dataKey="count"
-            onMouseEnter={onPieEnter}
+            onClick={onPieEnter}
+            cursor="pointer"
+            stroke="none"
+            paddingAngle={3}
+          >
+            {trafficSourceTypes.map((obj, index) => (
+              <Cell key={`cell-${index}`} fill={obj.color} />
+            ))}
+          </Pie>
+        ) : (
+          <Pie
+            activeIndex={activeIndex}
+            activeShape={renderActiveShape}
+            data={[
+              { source_name: null, count: 100, color: colors.secondaryLight },
+            ]}
+            cx="50%"
+            cy="50%"
+            innerRadius={95}
+            outerRadius={110}
+            fill={colors.secondaryLight}
+            dataKey="count"
+            onClick={onPieEnter}
+            cursor="pointer"
+            stroke="none"
           />
-        </PieChart>
-      </ResponsiveContainer>
-    </Box>
+        )}
+      </PieChart>
+    </ResponsiveContainer>
   );
 }
