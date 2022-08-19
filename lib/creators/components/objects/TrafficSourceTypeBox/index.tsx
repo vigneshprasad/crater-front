@@ -1,71 +1,94 @@
 import { useMemo } from "react";
 import { useTheme } from "styled-components";
 
-import {
-  Box,
-  Card,
-  CardProps,
-  Flex,
-  Grid,
-  Shimmer,
-  Text,
-} from "@/common/components/atoms";
-import ProgressBar from "@/common/components/objects/ProgressBar";
+import { Box, Flex, Grid, Shimmer, Text } from "@/common/components/atoms";
 import { TrafficSourceType } from "@/creators/types/creator";
 
 import TrafficSourceTypeChart from "../TrafficSourceTypeChart";
 
-interface IProps extends CardProps {
+interface IProps {
   trafficSourceTypes?: TrafficSourceType[];
 }
 
+const COLORS = ["#D5BBFF", "#B2FF8E", "#FA8C8C", "#8CF1FF"];
+
 export default function TrafficSourceTypeBox({
   trafficSourceTypes,
-  ...rest
 }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, radii } = useTheme();
 
-  const total = useMemo(() => {
-    if (trafficSourceTypes !== undefined && trafficSourceTypes.length > 0) {
-      return trafficSourceTypes.reduce((n, { count }) => n + count, 0);
+  // const total = useMemo(() => {
+  //   if (trafficSourceTypes && trafficSourceTypes.length > 0) {
+  //     return trafficSourceTypes.reduce((n, { count }) => n + count, 0);
+  //   }
+  // }, [trafficSourceTypes]);
+
+  const sources = useMemo(() => {
+    if (trafficSourceTypes && trafficSourceTypes.length > 0) {
+      return trafficSourceTypes.map((obj, index) => {
+        obj.color = COLORS[index % COLORS.length];
+        return obj;
+      });
     }
+
+    return [];
   }, [trafficSourceTypes]);
 
-  if (trafficSourceTypes === undefined || total === undefined) {
-    return <Shimmer w="100%" h="100%" />;
-  }
-
   return (
-    <Card containerProps={{ px: space.xs, py: space.xs }} {...rest}>
-      <Text pb={space.xs} textStyle="headline5">
-        Traffic Source Types
+    <Box bg={colors.primaryDark} borderRadius={radii.xxxxs}>
+      <Text
+        p={`${space.xs}px 24px ${space.xs}px ${space.xxs}px`}
+        textStyle="label"
+        color={colors.accentLight}
+        bg={colors.primaryLight}
+        textTransform="uppercase"
+        borderRadius={`${radii.xxxxs}px ${radii.xxxxs}px 0px 0px`}
+      >
+        Traffic Sources
       </Text>
 
-      <TrafficSourceTypeChart trafficSourceTypes={trafficSourceTypes} />
+      {(() => {
+        if (!trafficSourceTypes) {
+          return <Shimmer w="100%" h={300} />;
+        }
 
-      <Box>
-        {trafficSourceTypes.slice(0, 3).map((obj) => {
-          const percent = parseFloat(((obj.count / total) * 100).toFixed(2));
-          return (
-            <Grid
-              my={space.xxs}
-              gridAutoFlow="column"
-              gridTemplateColumns="repeat(3, 1fr)"
-              gridGap={space.xxxs}
-              key={obj.source_name}
-            >
-              <Text justifySelf="center">{obj.source_name}</Text>
-              <Flex flexDirection="row" gridGap={space.xxxs}>
-                <Text textStyle="caption" color={colors.slate}>
-                  {percent}%
+        return (
+          <Grid
+            gridAutoFlow="column"
+            gridTemplateColumns="1fr 1fr"
+            gridGap={32}
+            alignItems="center"
+          >
+            <TrafficSourceTypeChart trafficSourceTypes={sources} />
+            <Box>
+              {sources.length > 0 ? (
+                sources.map((obj, index) => (
+                  <Flex
+                    pb={space.xxxs}
+                    flexDirection="row"
+                    gridGap={space.xxxs}
+                    key={index}
+                  >
+                    <Box
+                      w={15}
+                      h={15}
+                      borderRadius={radii.xxxxs}
+                      bg={obj.color}
+                    />
+                    <Text textStyle="body" fontWeight={600}>
+                      {obj.source_name}
+                    </Text>
+                  </Flex>
+                ))
+              ) : (
+                <Text textStyle="body" fontWeight={600}>
+                  No data to show yet
                 </Text>
-                <ProgressBar percent={percent} />
-              </Flex>
-              <Text justifySelf="center">{obj.count}</Text>
-            </Grid>
-          );
-        })}
-      </Box>
-    </Card>
+              )}
+            </Box>
+          </Grid>
+        );
+      })()}
+    </Box>
   );
 }
