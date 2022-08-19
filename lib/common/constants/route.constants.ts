@@ -36,4 +36,5 @@ export const PageRoutes = {
   pastStreams: (id: string | number): string => `/categories/${id}/streams/`,
   leaderboard: "/leaderboard",
   category: (slug: string): string => `/category/${slug}/`,
+  store: "/store",
 };
