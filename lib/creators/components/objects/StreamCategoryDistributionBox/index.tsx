@@ -18,7 +18,7 @@ type IProps = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomizedAxisTick = (props: any): JSX.Element => {
-  const { x, y, payload } = props;
+  const { x, y, fill, payload } = props;
 
   return (
     <g transform={`translate(${x},${y})`}>
@@ -29,7 +29,7 @@ const CustomizedAxisTick = (props: any): JSX.Element => {
         fontSize="1.4rem"
         fontWeight={600}
         textAnchor="end"
-        fill="#fff"
+        fill={fill}
       >
         {payload.value}
       </text>
@@ -94,7 +94,7 @@ export default function StreamCategoryDistributionBox({
               scale="band"
               stroke={colors.secondaryLight}
               tickLine={false}
-              tick={<CustomizedAxisTick />}
+              tick={<CustomizedAxisTick fill={colors.textPrimary} />}
               tickMargin={space.xxxs}
             />
             <Bar

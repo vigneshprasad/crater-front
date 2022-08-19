@@ -107,7 +107,9 @@ export default function FollowerTrendChart({
             tick={
               <CustomizedAxisTick
                 fill={data ? colors.textPrimary : colors.secondaryLight}
-                fillSecondary={data ? "#959595" : colors.secondaryLight}
+                fillSecondary={
+                  data ? colors.textQuartenary : colors.secondaryLight
+                }
               />
             }
           />
