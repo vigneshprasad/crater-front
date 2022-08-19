@@ -92,3 +92,4 @@ export { default as Clock } from "./Clock";
 export { default as ShareAlt } from "./ShareAlt";
 export { default as UsersFill } from "./UsersFill";
 export { default as Download } from "./Download";
+export { default as Store } from "./Store";
