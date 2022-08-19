@@ -84,6 +84,11 @@ export enum ParticpantType {
   attendee = 2,
 }
 
+export enum PrivacyType {
+  public = 0,
+  private = 1,
+}
+
 export enum RequestStatus {
   pending = 0,
   accepted = 1,
