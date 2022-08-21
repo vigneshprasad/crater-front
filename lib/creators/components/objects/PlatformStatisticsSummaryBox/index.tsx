@@ -5,7 +5,7 @@ import { Flex, Grid, Span, Text } from "@/common/components/atoms";
 
 interface IProps {
   totalCreators: number;
-  totalStreams: number;
+  totalStreamsThisWeek: number;
   chatEngagement: number;
   totalStreamTime: number;
 }
@@ -17,8 +17,12 @@ export default function PlatformStatisticsSummaryBox(
 ): JSX.Element {
   const { space, colors, radii } = useTheme();
 
-  const { totalCreators, totalStreams, chatEngagement, totalStreamTime } =
-    props;
+  const {
+    totalCreators,
+    totalStreamsThisWeek,
+    chatEngagement,
+    totalStreamTime,
+  } = props;
 
   const columns = useMemo<
     {
@@ -42,17 +46,17 @@ export default function PlatformStatisticsSummaryBox(
         textColor: "#EDEDED",
       },
       {
-        key: "totalStreams",
-        title: "Total Streams",
+        key: "totalStreamsThisWeek",
+        title: "Streams this week",
         display: (
           <Text fontSize="4.0rem" fontWeight={500}>
-            {totalStreams}
+            {totalStreamsThisWeek}
           </Text>
         ),
       },
       {
         key: "chatEngagement",
-        title: "Chat Engagement",
+        title: "Avg Stream Engagement",
         display: (
           <Text fontSize="2.0rem" fontWeight={500}>
             <Span fontSize="4.0rem">{chatEngagement}</Span> questions
@@ -69,7 +73,13 @@ export default function PlatformStatisticsSummaryBox(
         ),
       },
     ];
-  }, [colors, totalCreators, totalStreams, chatEngagement, totalStreamTime]);
+  }, [
+    colors,
+    totalCreators,
+    totalStreamsThisWeek,
+    chatEngagement,
+    totalStreamTime,
+  ]);
 
   return (
     <Grid gridTemplateColumns="repeat(4, 1fr)" gridGap={space.xxxs}>

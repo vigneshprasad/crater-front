@@ -229,7 +229,7 @@ export default function HubChannelStatisticsTab({
           return (
             <PlatformStatisticsSummaryBox
               totalCreators={platformStats.total_creators}
-              totalStreams={platformStats.total_streams}
+              totalStreamsThisWeek={platformStats.total_streams_this_week}
               chatEngagement={platformStats.chat_engagement}
               totalStreamTime={platformStats.total_stream_time}
             />

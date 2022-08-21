@@ -44,7 +44,7 @@ export type ChannelStats = {
 
 export type PlatformStats = {
   total_creators: number;
-  total_streams: number;
+  total_streams_this_week: number;
   chat_engagement: number;
   total_stream_time: number;
 };
