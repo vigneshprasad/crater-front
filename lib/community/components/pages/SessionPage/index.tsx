@@ -20,6 +20,7 @@ import {
   ParticpantType,
   PostGroupRequest,
   RequestStatus,
+  PrivacyType,
 } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import StreamApiClient from "@/stream/api";
@@ -189,6 +190,18 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             onClick: () => router.push(PageRoutes.stream(webinar.id)),
           };
         } else {
+          if (
+            webinar.privacy == PrivacyType.private &&
+            !(
+              webinarRequest && webinarRequest.status === RequestStatus.accepted
+            )
+          ) {
+            return {
+              buttonText: "Private Stream",
+              disabled: true,
+            };
+          }
+
           if (webinar.is_live || now >= startTime.minus({ minutes: 10 })) {
             return {
               buttonText: "Join livestream",

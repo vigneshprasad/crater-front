@@ -1,15 +1,13 @@
+import backgroundModule from "@dytesdk/background-changer-module";
 import { DyteMeeting as DyteComponent, Meeting } from "dyte-client";
 import { useCallback, useEffect, useRef } from "react";
 
-// import { useRouter } from "next/router";
-// import useAuth from "@/auth/context/AuthContext";
+import useAuth from "@/auth/context/AuthContext";
 import { Box, BoxProps } from "@/common/components/atoms";
 // import { PageRoutes } from "@/common/constants/route.constants";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
-import DateTime from "@/common/utils/datetime/DateTime";
 import { Webinar } from "@/community/types/community";
-import { ChatMessage, ChatMessageType } from "@/stream/types/streamChat";
 
 export type Props = BoxProps & {
   webinar: Webinar;
@@ -25,12 +23,8 @@ export default function DyteMeeting({
   roomName,
   ...rest
 }: Props): JSX.Element {
-  // const router = useRouter();
   const meeting = useRef<Meeting>();
-  // const { user } = useAuth();
   const { track } = useAnalytics();
-
-  const messages = [] as ChatMessage[];
 
   const meetendEndHandler = useCallback(() => {
     // router.push(PageRoutes.session(groupId.toString()));
@@ -46,6 +40,8 @@ export default function DyteMeeting({
     },
     []
   );
+
+  const { user } = useAuth();
 
   const participantJoinHandler = useCallback(() => {
     track(AnalyticsEvents.participant_joined_stream, {
@@ -87,33 +83,6 @@ export default function DyteMeeting({
     };
   }, []);
 
-  // const timerRef = useRef<NodeJS.Timeout | undefined>();
-
-  useEffect(() => {
-    if (messages.length > 0 && messages[0].type === ChatMessageType.REACTION) {
-      const lastMessage = messages[0];
-      if (meeting.current && lastMessage.data) {
-        const reactionTime = DateTime.parse_with_milliseconds(
-          lastMessage.created_at
-        );
-        const timeSinceReaction = Math.abs(reactionTime.diffNow().toMillis());
-        if (timeSinceReaction < 10000) {
-          meeting.current?.grid.setOverlay(
-            `<img src=${lastMessage.data.file} height="80px" width="80px" style="position:fixed; right: 20px; top: 10px"/>`,
-            10000
-          );
-        }
-        // if (timerRef.current) {
-        //   clearInterval(timerRef.current);
-        //   timerRef.current = undefined;
-        // }
-        // timerRef.current = setTimeout(() => {
-        //   meeting.current?.grid.setOverlay(null);
-        // }, 10000);
-      }
-    }
-  }, [messages]);
-
   return (
     <Box {...rest}>
       <DyteComponent
@@ -137,6 +106,8 @@ export default function DyteMeeting({
         }}
         onInit={(dyteMeeting) => {
           meeting.current = dyteMeeting;
+          user?.pk === webinar.host &&
+            meeting.current.modules.initAndAdd(backgroundModule);
           addEventListeners();
         }}
       />
