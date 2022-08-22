@@ -63,8 +63,6 @@ export default function HubChannelStatisticsTab({
     API_URL_CONSTANTS.analytics.getStreamCompletionRate
   );
 
-  console.log(streamCompletionData);
-
   return (
     <Box pt={space.xxs} pb={space.s} minWidth={1000}>
       <Grid
@@ -231,9 +229,9 @@ export default function HubChannelStatisticsTab({
           return (
             <PlatformStatisticsSummaryBox
               totalCreators={platformStats.total_creators}
-              totalStreams={platformStats.total_streams}
+              totalStreamsPastWeek={platformStats.total_streams_past_week}
               chatEngagement={platformStats.chat_engagement}
-              totalStreamTime={platformStats.total_stream_time}
+              avgStreamLength={platformStats.avg_stream_length}
             />
           );
         })()}

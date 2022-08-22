@@ -6,7 +6,6 @@ import HubPageLayout, {
   getHubServerSideProps,
 } from "@/common/components/layouts/HubPageLayout/v2";
 import { Creator } from "@/creators/types/creator";
-import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 
 const HubPastStreamsTab = dynamic(
   () => import("@/creators/components/objects/HubPastStreamsTab")
@@ -45,9 +44,7 @@ export default function CreatorHubPastStreams({
 }: IProps): JSX.Element {
   return (
     <HubPageLayout creator={creator} activeTab="past">
-      <PastStreamProvider host={userId}>
-        <HubPastStreamsTab creator={creator} userId={userId} />
-      </PastStreamProvider>
+      <HubPastStreamsTab creator={creator} userId={userId} />
     </HubPageLayout>
   );
 }

@@ -105,7 +105,7 @@ export default function StreamCompletionRateChart({
             dataKey="value"
             barSize={8}
             label={{
-              formatter: (value: number) => `${value}`,
+              formatter: (value: number) => `${value}%`,
               position: "top",
               fill: data ? "#02C7AC" : colors.primaryLight,
               fontSize: "1.2rem",
