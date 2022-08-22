@@ -5,9 +5,9 @@ import { Flex, Grid, Span, Text } from "@/common/components/atoms";
 
 interface IProps {
   totalCreators: number;
-  totalStreamsThisWeek: number;
+  totalStreamsPastWeek: number;
   chatEngagement: number;
-  totalStreamTime: number;
+  avgStreamLength: number;
 }
 
 type ValueKeys = keyof IProps;
@@ -19,9 +19,9 @@ export default function PlatformStatisticsSummaryBox(
 
   const {
     totalCreators,
-    totalStreamsThisWeek,
+    totalStreamsPastWeek,
     chatEngagement,
-    totalStreamTime,
+    avgStreamLength,
   } = props;
 
   const columns = useMemo<
@@ -46,11 +46,11 @@ export default function PlatformStatisticsSummaryBox(
         textColor: "#EDEDED",
       },
       {
-        key: "totalStreamsThisWeek",
-        title: "Streams this week",
+        key: "totalStreamsPastWeek",
+        title: "Streams past week",
         display: (
           <Text fontSize="4.0rem" fontWeight={500}>
-            {totalStreamsThisWeek}
+            {totalStreamsPastWeek}
           </Text>
         ),
       },
@@ -64,11 +64,11 @@ export default function PlatformStatisticsSummaryBox(
         ),
       },
       {
-        key: "totalStreamTime",
-        title: "Total Stream Time",
+        key: "avgStreamLength",
+        title: "Average Stream Length",
         display: (
           <Text fontSize="2.0rem" fontWeight={500}>
-            <Span fontSize="4.0rem">{totalStreamTime}</Span> mins
+            <Span fontSize="4.0rem">{avgStreamLength}</Span> mins
           </Text>
         ),
       },
@@ -76,9 +76,9 @@ export default function PlatformStatisticsSummaryBox(
   }, [
     colors,
     totalCreators,
-    totalStreamsThisWeek,
+    totalStreamsPastWeek,
     chatEngagement,
-    totalStreamTime,
+    avgStreamLength,
   ]);
 
   return (

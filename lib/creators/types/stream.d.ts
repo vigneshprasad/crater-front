@@ -44,9 +44,9 @@ export type ChannelStats = {
 
 export type PlatformStats = {
   total_creators: number;
-  total_streams_this_week: number;
+  total_streams_past_week: number;
   chat_engagement: number;
-  total_stream_time: number;
+  avg_stream_length: number;
 };
 
 export type StreamCategoryDistribution = {

@@ -229,9 +229,9 @@ export default function HubChannelStatisticsTab({
           return (
             <PlatformStatisticsSummaryBox
               totalCreators={platformStats.total_creators}
-              totalStreamsThisWeek={platformStats.total_streams_this_week}
+              totalStreamsPastWeek={platformStats.total_streams_past_week}
               chatEngagement={platformStats.chat_engagement}
-              totalStreamTime={platformStats.total_stream_time}
+              avgStreamLength={platformStats.avg_stream_length}
             />
           );
         })()}
