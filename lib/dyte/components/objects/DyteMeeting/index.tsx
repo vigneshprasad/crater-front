@@ -31,9 +31,8 @@ export default function DyteMeeting({
   }, []);
 
   const participantLeaveHandler = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
     (participant: any) => {
-      console.log("Participant left", participant);
       // if (participant.clientSpecificId === user?.pk) {
       //   router.push(PageRoutes.session(webinar.id.toString()));
       // }
