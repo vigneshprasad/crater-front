@@ -50,7 +50,6 @@ export default function LearnNEarnModal(): JSX.Element {
       <LearnTokenMetaProvider>
         <LearnTokenMetaContext.Consumer>
           {({ userMeta }) => {
-            console.log(userMeta);
             return (
               <Grid
                 h="100%"

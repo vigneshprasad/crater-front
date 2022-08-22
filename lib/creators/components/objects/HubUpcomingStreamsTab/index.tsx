@@ -96,7 +96,10 @@ export default function HubUpcomingStreamsTab({
 
   return (
     <Box pt={space.xxs} overflow="auto" minWidth={1000}>
-      <UpcomingStreamsProvider host={userId} sortBy={sortBy}>
+      <UpcomingStreamsProvider
+        host={userId}
+        sortBy={sortBy ?? SortByField.THIS_WEEK}
+      >
         <Grid
           gridAutoFlow="column"
           gridTemplateColumns="minmax(800px, 1fr) 250px"
