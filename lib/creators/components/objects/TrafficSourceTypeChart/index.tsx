@@ -29,6 +29,8 @@ const renderActiveShape = (props: any): JSX.Element => {
     payload.source_name !== null ? colors.textTertiary : colors.secondaryLight;
   const strokeWidth = payload.source_name !== null ? 2 : 0;
 
+  const roundedPercent = (percent * 100).toFixed(2);
+
   return (
     <g>
       <text
@@ -51,7 +53,7 @@ const renderActiveShape = (props: any): JSX.Element => {
         fontSize="1.2rem"
         fontWeight={600}
       >
-        {payload.source_name !== null ? percent * 100 : 0}%
+        {payload.source_name !== null ? roundedPercent : 0}%
       </text>
       <Sector
         cx={cx}
