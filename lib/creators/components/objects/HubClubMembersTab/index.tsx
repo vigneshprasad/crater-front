@@ -155,7 +155,7 @@ export default function HubClubMembersTab(): JSX.Element {
                     <Text
                       pt={space.xxxxs}
                       textStyle="body"
-                      color="#959595"
+                      color={colors.textQuartenary}
                       textAlign="center"
                     >
                       Stream regularly to build your own community on Crater.

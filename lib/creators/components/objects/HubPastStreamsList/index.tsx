@@ -9,6 +9,7 @@ import {
   Grid,
   Icon,
   Image,
+  Link,
   Shimmer,
   Text,
 } from "@/common/components/atoms";
@@ -73,7 +74,7 @@ export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
               <Box position="relative" w={190} h={190}>
                 <Image
                   src="/images/img_referral_alt.png"
-                  alt="share stream"
+                  alt="No Streams"
                   layout="fill"
                 />
               </Box>
@@ -147,16 +148,23 @@ export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
               borderBottom={`1px solid ${colors.secondaryLight}`}
               key={stream.id}
             >
-              <Box w={226} h={120} borderRadius={radii.xxxxs} overflow="hidden">
-                {stream.topic_detail?.image && (
-                  <Image
-                    objectFit="cover"
-                    layout="fill"
-                    src={stream.topic_detail?.image}
-                    alt={stream.topic_detail.name}
-                  />
-                )}
-              </Box>
+              <Link href={PageRoutes.streamVideo(stream.id)}>
+                <Box
+                  w={226}
+                  h={120}
+                  borderRadius={radii.xxxxs}
+                  overflow="hidden"
+                >
+                  {stream.topic_detail?.image && (
+                    <Image
+                      objectFit="cover"
+                      layout="fill"
+                      src={stream.topic_detail?.image}
+                      alt={stream.topic_detail.name}
+                    />
+                  )}
+                </Box>
+              </Link>
               <Box>
                 <Text>{stream.topic_detail.name}</Text>
                 <Flex

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@datadog/browser-rum": "^4.6.1",
+    "@dytesdk/background-changer-module": "^1.4.27",
     "@fontsource/inter": "^4.5.10",
     "@segment/analytics-next": "^1.30.0",
     "@stripe/react-stripe-js": "^1.7.0",
