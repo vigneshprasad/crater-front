@@ -10,7 +10,7 @@ import Page from "@/common/components/objects/Page";
 import WebinarApiClient from "@/community/api";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { WebinarRequestProvider } from "@/community/context/WebinarRequestContext";
-import { Webinar } from "@/community/types/community";
+import { PrivacyType, Webinar } from "@/community/types/community";
 import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamCreatorProvider } from "@/stream/context/StreamCreatorContext";
@@ -76,8 +76,17 @@ export default function Session({ webinar, id }: Props): JSX.Element {
 
   useEffect(() => {
     if (router) {
-      if (webinar.is_live) router.push(`/livestream/${webinar.id}/`);
-      else if (webinar.is_past && webinar.closed)
+      if (webinar.is_live && webinar.privacy !== PrivacyType.private) {
+        router.push(`/livestream/${webinar.id}/`);
+      } else if (
+        webinar.is_live &&
+        webinar &&
+        user &&
+        (webinar.attendees?.indexOf(user.pk) === -1 ||
+          webinar.speakers?.indexOf(user.pk) === -1)
+      ) {
+        router.push(`/livestream/${webinar.id}/`);
+      } else if (webinar.is_past && webinar.closed)
         router.push(`/video/${webinar.id}/`);
     }
   }, [router, user, webinar]);
