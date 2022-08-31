@@ -24,7 +24,7 @@
     "agora-rtc-sdk-ng": "^4.6.3",
     "axios": "^0.21.1",
     "csstype": "^3.0.8",
-    "dyte-client": "^0.30.0",
+    "dyte-client": "^0.36.10",
     "firebase": "^9.6.6",
     "framer-motion": "^7.0.0",
     "immer": "^9.0.6",
