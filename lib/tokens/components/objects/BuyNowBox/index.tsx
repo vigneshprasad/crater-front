@@ -6,7 +6,7 @@ import { SideDrawer } from "@/common/components/atoms/SideDrawer";
 import { Button } from "@/common/components/atoms/v2";
 import { SaleItem } from "@/tokens/types/store";
 
-import BuyNowPayment from "../BuyNowPayment";
+import RewardSalePayment from "../RewardSalePayment";
 import SaleItemInfo from "../SaleItemInfo";
 
 type IProps = {
@@ -34,7 +34,7 @@ export default function BuyNowBox({ saleItem }: IProps): JSX.Element {
         boxProps={{ ml: space.xs, mr: 22, pt: 28 }}
         onClose={() => setSideDrawer(false)}
       >
-        <BuyNowPayment />
+        <RewardSalePayment />
       </SideDrawer>
 
       <SaleItemInfo
