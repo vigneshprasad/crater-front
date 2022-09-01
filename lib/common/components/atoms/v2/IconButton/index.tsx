@@ -5,7 +5,13 @@ import { variant } from "styled-system";
 import { Icon, IconProps } from "../../Icon";
 import { Button, ButtonProps } from "../Button";
 
-type Variants = "flat" | "flat-icon" | "flat-accent" | "round-large" | "round";
+type Variants =
+  | "flat"
+  | "flat-icon"
+  | "flat-accent"
+  | "round-large"
+  | "round"
+  | "round-border";
 
 interface IProps extends ButtonProps {
   icon: IconProps["icon"];
@@ -76,6 +82,26 @@ const ButtonContainer = styled(Button)<ButtonProps>`
         ":disabled": {
           bg: "transparent",
           cursor: "not-allowed",
+        },
+      },
+      "round-border": {
+        width: 40,
+        height: 40,
+        px: 0,
+        py: 0,
+        borderRadius: "50%",
+        border: "1px solid #fff",
+        alignItems: "center",
+        justifyContent: "center",
+        bg: "primaryBackground",
+        ":hover": {
+          bg: "primaryLight",
+        },
+        ":disabled": {
+          bg: "primaryBackground",
+          border: `1px solid #373737`,
+          cursor: "default",
+          color: "secondaryLight",
         },
       },
     },
