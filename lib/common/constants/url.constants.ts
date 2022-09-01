@@ -172,6 +172,9 @@ export const API_URL_CONSTANTS = {
   tokens: {
     getLearnUserMeta: "/tokens/learn/meta/",
   },
+  store: {
+    getRewardSaleTopSellers: "/crater/sale/sellers/featured/",
+  },
 };
 
 export const LEARN_MORE_URL =
