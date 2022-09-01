@@ -52,6 +52,8 @@ export const API_URL_CONSTANTS = {
     subscribeCreator: "/crater/followers/notify/",
     unsubscribeCreator: (id: number): string => `/crater/followers/${id}/`,
     getStats: "/crater/creator/stats/",
+    retrieveCreatorUpiInfo: (id: string | number): string =>
+      `/crater/creator/upi/${id}/`,
   },
   groups: {
     retrieveGroupRequest: (id: string): string => `/groups/requests/${id}/`,
@@ -116,6 +118,10 @@ export const API_URL_CONSTANTS = {
     auctionSummaryForCoin: (coin: number | string): string =>
       `/crater/auction/${coin}/summary/`,
     getAllAuctions: "/crater/auction/all/",
+  },
+  sales: {
+    getSalesList: "/crater/sale/",
+    postSaleLog: "/crater/sale/log/",
   },
   coins: {
     getAuctions: "/crater/auction/",

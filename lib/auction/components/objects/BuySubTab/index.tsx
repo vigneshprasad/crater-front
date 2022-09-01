@@ -2,6 +2,8 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
+import useRewardSalesList from "@/auction/context/RewardSalesListContext";
+import { RewardSale } from "@/auction/types/sales";
 import useAuth from "@/auth/context/AuthContext";
 import {
   Box,
@@ -16,7 +18,7 @@ import { useWebinar } from "@/community/context/WebinarContext";
 
 import CreateSaleForm from "../../forms/CreateSaleForm";
 import PayItemModal from "../PayItemModal";
-import RewardCard from "../RewardCard";
+import RewardCard, { RewardCardTypes } from "../RewardCard";
 
 enum Pages {
   createBid,
@@ -29,6 +31,8 @@ export default function BuySubTab(): JSX.Element | null {
   const { webinar } = useWebinar();
   const { user } = useAuth();
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const { sales } = useRewardSalesList();
+  const [buySale, setBuySale] = useState<RewardSale | undefined>(undefined);
 
   const [currentPage, setPage] = useState(Pages.bidList);
 
@@ -141,35 +145,33 @@ export default function BuySubTab(): JSX.Element | null {
                 )}
               </Box>
               <Flex flexDirection="column" gridGap={space.xxxxs}>
-                <RewardCard
-                  webinar={webinar}
-                  buyers={12}
-                  title="Anime Artwork - Watercolor"
-                  price={500}
-                  image="https://1worknetwork-prod.s3.amazonaws.com/media/c085c770-b7c5-4fdc-bb03-8b73684ee97f.png"
-                  quantity={1}
-                  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-                  onClickBuySale={() => {
-                    setShowPurchaseModal(true);
-                  }}
-                />
-                <RewardCard
-                  webinar={webinar}
-                  buyers={12}
-                  title="Anime Artwork - Watercolor"
-                  price={500}
-                  image="https://1worknetwork-prod.s3.amazonaws.com/media/c085c770-b7c5-4fdc-bb03-8b73684ee97f.png"
-                  quantity={1}
-                />
+                {sales?.map((sale) => (
+                  <RewardCard
+                    cardType={RewardCardTypes.Sale}
+                    webinar={webinar}
+                    key={sale.id}
+                    title={sale.reward_detail.title}
+                    quantity={sale.quantity}
+                    buyers={sale.quantity_sold}
+                    price={sale.price}
+                    description={sale.reward_detail.description}
+                    image={sale.reward_detail.photo}
+                    onClickBuySale={() => {
+                      setBuySale(sale);
+                      setShowPurchaseModal(true);
+                    }}
+                  />
+                ))}
               </Flex>
             </Grid>
-            <PayItemModal
-              upiId="rohas32@oksbi"
-              name="Anime artwork made with water colors"
-              price={500}
-              visible={showPurchaseModal}
-              onClose={() => setShowPurchaseModal(false)}
-            />
+            {buySale && webinar.host_detail.creator_detail?.id && (
+              <PayItemModal
+                creator={webinar.host_detail.creator_detail.id}
+                sale={buySale}
+                visible={showPurchaseModal}
+                onClose={() => setShowPurchaseModal(false)}
+              />
+            )}
           </AnimatedBox>
         )}
 

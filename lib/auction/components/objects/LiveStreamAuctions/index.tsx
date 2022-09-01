@@ -2,8 +2,10 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
+import { RewardSalesListProvider } from "@/auction/context/RewardSalesListContext";
 import { AnimatedBox, Box, Grid } from "@/common/components/atoms";
 import SegmentedTabs from "@/common/components/objects/SegmentedTabs";
+import { Webinar } from "@/community/types/community";
 
 import AuctionsTab from "../AuctionsTab";
 import BuySubTab from "../BuySubTab";
@@ -35,7 +37,13 @@ function AnimatedTab({
   );
 }
 
-export default function LiveStreamAuctions(): JSX.Element | null {
+interface IProps {
+  webinar: Webinar;
+}
+
+export default function LiveStreamAuctions({
+  webinar,
+}: IProps): JSX.Element | null {
   const [activeTab, setActiveTab] = useState("Buy");
   const { space, colors } = useTheme();
 
@@ -63,7 +71,11 @@ export default function LiveStreamAuctions(): JSX.Element | null {
         )}
         {activeTab === "Buy" && (
           <AnimatedTab>
-            <BuySubTab />
+            <RewardSalesListProvider
+              creator={webinar.host_detail.creator_detail?.id}
+            >
+              <BuySubTab />
+            </RewardSalesListProvider>
           </AnimatedTab>
         )}
       </AnimatePresence>

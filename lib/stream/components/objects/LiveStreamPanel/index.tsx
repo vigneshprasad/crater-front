@@ -75,7 +75,9 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       {activeTab === "chat" && webinar && !webinar.closed && (
         <StreamChat stream={webinar} />
       )}
-      {activeTab === "auction" && webinar && <LiveStreamAuctions />}
+      {activeTab === "auction" && webinar && (
+        <LiveStreamAuctions webinar={webinar} />
+      )}
       {activeTab === "leaderboard" && (
         <ChallengeListProvider>
           <LeaderboardListProvider

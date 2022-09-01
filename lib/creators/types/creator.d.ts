@@ -101,3 +101,9 @@ export type CreatorStats = {
   name: string;
   value: number;
 };
+
+export type CreatorUpiInfo = {
+  id: number;
+  upi_id: string;
+  qr_code: string;
+};
