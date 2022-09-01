@@ -43,7 +43,7 @@ export const NAV_ITEMS: INavItem[] = [
   {
     key: "store",
     icon: "Store",
-    route: PageRoutes.store,
+    route: PageRoutes.store(),
     label: "Store",
   },
   {
