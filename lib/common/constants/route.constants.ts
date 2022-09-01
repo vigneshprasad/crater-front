@@ -1,4 +1,5 @@
-// import { HubTabKeys } from "../components/layouts/HubPageLayout";
+import { StoreTabKeys } from "@/tokens/types/store";
+
 import {
   HubNavHeadingKeys,
   HubNavItemKeys,
@@ -36,5 +37,5 @@ export const PageRoutes = {
   pastStreams: (id: string | number): string => `/categories/${id}/streams/`,
   leaderboard: "/leaderboard",
   category: (slug: string): string => `/category/${slug}/`,
-  store: "/store",
+  store: (tab: StoreTabKeys = "buy-now"): string => `/store/${tab}`,
 };
