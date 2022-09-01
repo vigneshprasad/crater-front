@@ -359,6 +359,11 @@ const StyledButton = styled(Grid)<ButtonProps>`
         &:hover {
           background: rgba(136, 46, 232, 0.04);
         }
+
+        &:disabled {
+          background: rgba(136, 46, 232, 0.04);
+          cursor: default;
+        }
       `,
     },
   })}
