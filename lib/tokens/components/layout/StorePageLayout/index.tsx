@@ -8,7 +8,7 @@ interface IProps {
   featured: React.ReactNode;
   explore: React.ReactNode;
   topSellers: React.ReactNode;
-  liveStreams: React.ReactNode;
+  liveStreams?: React.ReactNode;
   staticSection: React.ReactNode;
 }
 
@@ -51,7 +51,7 @@ export default function StorePageLayout({
         {explore}
       </Box>
       <Box gridArea="top-sellers">{topSellers}</Box>
-      <Box gridArea="live-streams">{liveStreams}</Box>
+      {liveStreams && <Box gridArea="live-streams">{liveStreams}</Box>}
       <Box gridArea="static-section" px={space.m}>
         {staticSection}
       </Box>
