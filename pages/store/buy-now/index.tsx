@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import Page from "@/common/components/objects/Page";
+import { FollowerProvider } from "@/creators/context/FollowerContext";
+import { RewardSaleTopSellersListProvider } from "@/tokens/context/RewardSaleTopSellersListContext";
 
 const StoreBuyNowPage = dynamic(
   () => import("@/tokens/components/pages/StoreBuyNowPage")
@@ -28,7 +30,11 @@ export default function StoreBuyNow(): JSX.Element {
       }}
     >
       <StyledBaseLayout aside={<AsideNav activeTab="store" />} overflowY="auto">
-        <StoreBuyNowPage />
+        <RewardSaleTopSellersListProvider>
+          <FollowerProvider>
+            <StoreBuyNowPage />
+          </FollowerProvider>
+        </RewardSaleTopSellersListProvider>
       </StyledBaseLayout>
     </Page>
   );
