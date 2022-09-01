@@ -32,7 +32,7 @@ export function SideDrawer({
   const { space, colors, zIndices } = useTheme();
 
   useEffect(() => {
-    const element = document.getElementById("bottom-sheet-root");
+    const element = document.getElementById("side-drawer-root");
     if (element != null) {
       setNode(element);
     }
