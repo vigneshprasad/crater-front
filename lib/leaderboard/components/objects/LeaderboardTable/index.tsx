@@ -150,14 +150,14 @@ export default function LeaderboardTable({
                 <Box>
                   <Text textStyle="tableHeader">Creator</Text>
                 </Box>
-                <Flex
+                {/* <Flex
                   alignItems="center"
                   gridGap={space.xxxs}
                   title="These numbers are indicative and not 100% accurate. They will be recomputed at the end of each day and verified at the end of the competition"
                 >
                   <Text textStyle="tableHeader">Watchtime</Text>
                   <Icon icon="Info" size={12} color={colors.slate} fill />
-                </Flex>
+                </Flex> */}
               </Grid>
               {users.map((user, index) => (
                 <Row
@@ -207,9 +207,9 @@ export default function LeaderboardTable({
                       <Text>{user.user_detail.name}</Text>
                     </Flex>
                   </Box>
-                  <Box>
+                  {/* <Box>
                     <Text>{(user.total_minutes * 1.5).toFixed(2)} mins</Text>
-                  </Box>
+                  </Box> */}
                 </Row>
               ))}
             </Box>

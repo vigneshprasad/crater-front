@@ -40,7 +40,7 @@ export function PastStreamProvider({
   categoryFilter,
   ...rest
 }: IProviderProps): JSX.Element {
-  const [nextPage, setNextPage] = useState(false);
+  const [nextPage, setNextPage] = useState(initial?.next ? true : false);
   const {
     data: streams,
     error,

@@ -11,11 +11,13 @@ import {
   Icon,
   Shimmer,
   Span,
+  Link,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { IconButton } from "@/common/components/atoms/v2";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import HeadingDivider from "@/common/components/objects/HeadingDivider";
+import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { Follower, Webinar } from "@/community/types/community";
 
@@ -79,15 +81,16 @@ export default function StreamAboutSection({
             alignItems="start"
             py={space.xxxxs}
           >
-            <Avatar
-              image={host_detail.photo}
-              size={40}
-              onClick={() => {
-                if (isMobile) {
-                  setShowAboutSheet(true);
-                }
-              }}
-            />
+            {host_detail.creator_detail?.slug && (
+              <Link
+                href={PageRoutes.creatorProfile(
+                  host_detail.creator_detail.slug
+                )}
+                boxProps={{ target: "_blank" }}
+              >
+                <Avatar image={host_detail.photo} size={40} />
+              </Link>
+            )}
             <Box
               onClick={() => {
                 if (isMobile) {
