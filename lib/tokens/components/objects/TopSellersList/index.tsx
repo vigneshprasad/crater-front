@@ -74,7 +74,10 @@ export default function TopSellersList({
                     key={seller.id}
                   >
                     <Flex gridGap={space.xs}>
-                      <Avatar size={56} image={seller.profile_detail?.photo} />
+                      <Avatar
+                        size={56}
+                        image={seller.profile_detail.photo ?? undefined}
+                      />
                       <Box>
                         <Text fontWeight={600}>
                           {seller.profile_detail.name}
