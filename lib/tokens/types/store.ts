@@ -20,3 +20,14 @@ export const STORE_ITEMS: IStoreItem[] = [
     label: "Buy Now",
   },
 ];
+
+export interface Seller {
+  id: number;
+  user: string;
+  is_subscriber: boolean;
+  profile_detail: {
+    id: number;
+    name: string;
+    photo?: string;
+  };
+}
