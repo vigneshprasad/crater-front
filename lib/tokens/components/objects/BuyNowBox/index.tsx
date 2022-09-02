@@ -34,7 +34,7 @@ export default function BuyNowBox({ saleItem }: IProps): JSX.Element {
         boxProps={{ ml: space.xs, mr: 22, pt: 28 }}
         onClose={() => setSideDrawer(false)}
       >
-        <RewardSalePayment />
+        <RewardSalePayment saleItem={saleItem} />
       </SideDrawer>
 
       <SaleItemInfo
