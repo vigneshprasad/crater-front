@@ -16,10 +16,15 @@ import {
   RewardSaleFeaturedItemsListContext,
   RewardSaleFeaturedItemsListProvider,
 } from "@/tokens/context/RewardSaleFeaturedItemsListContext";
+import {
+  RewardSaleItemsListContext,
+  RewardSaleItemsListProvider,
+} from "@/tokens/context/RewardSaleItemsListContext";
 import useRewardSaleTopSellersList from "@/tokens/context/RewardSaleTopSellersListContext";
 import { RewardSalePaymentType } from "@/tokens/types/store";
 
 import StorePageLayout from "../../layout/StorePageLayout";
+import MoreSaleItems from "../../objects/MoreSaleItems";
 import SellOnCraterStatic from "../../objects/SellOnCraterStatic";
 import StoreHeader from "../../objects/StoreHeader";
 import StoreTabs from "../../objects/StoreTabs";
@@ -77,72 +82,74 @@ export default function StoreBuyNowPage(): JSX.Element {
           <Image src="/images/img_astronaut_store.png" alt="Store Img" />
         </Box>
         <RewardSaleFeaturedItemsListProvider paymentType={paymentType}>
-          <StorePageLayout
-            header={<StoreHeader />}
-            tabs={
-              <>
-                <StoreTabs activeTab="buy-now" />
+          <RewardSaleItemsListProvider paymentType={paymentType}>
+            <StorePageLayout
+              header={<StoreHeader />}
+              tabs={
+                <>
+                  <StoreTabs activeTab="buy-now" />
 
-                <Box
-                  my={28}
-                  px={28}
-                  py={24}
-                  bg={colors.primaryDark}
-                  borderRadius={radii.xs}
-                >
-                  <Flex alignItems="center" justifyContent="space-between">
-                    <Flex alignItems="center" gridGap={space.xxxxxs}>
-                      <Toggle
-                        value={paymentType !== RewardSalePaymentType.Learn}
-                        activeColor={colors.secondaryLight}
-                        inactiveColor={colors.greenSuccess}
-                        onChange={() =>
-                          setPaymentType((prev) =>
-                            !prev ? RewardSalePaymentType.Learn : undefined
-                          )
-                        }
-                      />
-                      <Text ml={space.xxxxs} color={colors.textPrimary}>
-                        Pay using{" "}
-                        <StyledSpan fontWeight={700}>LEARN</StyledSpan> tokens
-                      </Text>
-                      <Icon icon="LearnToken" size={20} />
+                  <Box
+                    my={28}
+                    px={28}
+                    py={24}
+                    bg={colors.primaryDark}
+                    borderRadius={radii.xs}
+                  >
+                    <Flex alignItems="center" justifyContent="space-between">
+                      <Flex alignItems="center" gridGap={space.xxxxxs}>
+                        <Toggle
+                          value={paymentType !== RewardSalePaymentType.Learn}
+                          activeColor={colors.secondaryLight}
+                          inactiveColor={colors.greenSuccess}
+                          onChange={() =>
+                            setPaymentType((prev) =>
+                              !prev ? RewardSalePaymentType.Learn : undefined
+                            )
+                          }
+                        />
+                        <Text ml={space.xxxxs} color={colors.textPrimary}>
+                          Pay using{" "}
+                          <StyledSpan fontWeight={700}>LEARN</StyledSpan> tokens
+                        </Text>
+                        <Icon icon="LearnToken" size={20} />
+                      </Flex>
+                      <Flex alignItems="center" gridGap={space.xxxxs}>
+                        <Text color={colors.textPrimary}>
+                          Know more about{" "}
+                          <StyledSpan fontWeight={700}>LEARN</StyledSpan> tokens
+                        </Text>
+                        <Icon
+                          icon="PopOut"
+                          size={20}
+                          color={colors.textPrimary}
+                        />
+                      </Flex>
                     </Flex>
-                    <Flex alignItems="center" gridGap={space.xxxxs}>
-                      <Text color={colors.textPrimary}>
-                        Know more about{" "}
-                        <StyledSpan fontWeight={700}>LEARN</StyledSpan> tokens
-                      </Text>
-                      <Icon
-                        icon="PopOut"
-                        size={20}
-                        color={colors.textPrimary}
-                      />
-                    </Flex>
-                  </Flex>
-                </Box>
-              </>
-            }
-            featured={
-              <RewardSaleFeaturedItemsListContext.Consumer>
-                {() => <TopItemsForSale />}
-              </RewardSaleFeaturedItemsListContext.Consumer>
-            }
-            explore={
-              <Text textStyle="headline5" fontWeight={600}>
-                More Items on Sale 👀
-              </Text>
-            }
-            topSellers={
-              <TopSellersList
-                sellers={sellers}
-                loading={sellersLoading}
-                followingCreator={followingCreator}
-                onFollow={followCreator}
-              />
-            }
-            staticSection={<SellOnCraterStatic />}
-          />
+                  </Box>
+                </>
+              }
+              featured={
+                <RewardSaleFeaturedItemsListContext.Consumer>
+                  {() => <TopItemsForSale />}
+                </RewardSaleFeaturedItemsListContext.Consumer>
+              }
+              explore={
+                <RewardSaleItemsListContext.Consumer>
+                  {() => <MoreSaleItems />}
+                </RewardSaleItemsListContext.Consumer>
+              }
+              topSellers={
+                <TopSellersList
+                  sellers={sellers}
+                  loading={sellersLoading}
+                  followingCreator={followingCreator}
+                  onFollow={followCreator}
+                />
+              }
+              staticSection={<SellOnCraterStatic />}
+            />
+          </RewardSaleItemsListProvider>
         </RewardSaleFeaturedItemsListProvider>
       </Box>
       <Box px={[space.xxs, space.s]} py={space.xxs} bg={colors.primaryDark}>
