@@ -92,3 +92,8 @@ export { default as Clock } from "./Clock";
 export { default as ShareAlt } from "./ShareAlt";
 export { default as UsersFill } from "./UsersFill";
 export { default as Download } from "./Download";
+export { default as Store } from "./Store";
+export { default as Sparkle } from "./Sparkle";
+export { default as LearnToken } from "./LearnToken";
+export { default as Heart } from "./Heart";
+export { default as ChevronUp } from "./ChevronUp";

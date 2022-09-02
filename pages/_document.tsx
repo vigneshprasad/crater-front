@@ -50,6 +50,7 @@ export default class AppDocument extends Document {
           <NextScript />
           <div id="modal-root" />
           <div id="bottom-sheet-root" />
+          <div id="side-drawer-root" />
         </body>
       </Html>
     );
