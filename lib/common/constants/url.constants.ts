@@ -175,6 +175,7 @@ export const API_URL_CONSTANTS = {
   store: {
     getRewardSaleTopSellers: "/crater/sale/sellers/featured/",
     getFeaturedRewardSaleItems: "crater/sale/items/featured/",
+    getRewardSaleItems: "crater/sale/items/",
   },
 };
 
