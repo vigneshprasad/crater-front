@@ -13,9 +13,13 @@ import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 type IProps = {
   saleItem: SaleItem;
+  onClick?: (saleItemId: number) => void;
 };
 
-export default function SaleItemCard({ saleItem }: IProps): JSX.Element {
+export default function SaleItemCard({
+  saleItem,
+  onClick,
+}: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
 
   const rewardSale = saleItem.reward_sale_details[0];
@@ -31,6 +35,8 @@ export default function SaleItemCard({ saleItem }: IProps): JSX.Element {
       bg={colors.primaryDark}
       borderRadius={radii.xs}
       border={`1px solid ${colors.primaryLight}`}
+      cursor={onClick ? "pointer" : "default"}
+      onClick={() => onClick && onClick(saleItem.id)}
     >
       {saleItem.photo ? (
         <Image

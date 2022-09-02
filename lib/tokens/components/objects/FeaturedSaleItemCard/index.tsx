@@ -5,10 +5,12 @@ import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 type IProps = {
   saleItem: SaleItem;
+  onClick?: (saleItemId: number) => void;
 };
 
 export default function FeaturedSaleItemCard({
   saleItem,
+  onClick,
 }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
 
@@ -18,7 +20,13 @@ export default function FeaturedSaleItemCard({
     ) ?? false;
 
   return (
-    <Box maxWidth={295} p={space.xs} bg={colors.primaryDark}>
+    <Box
+      maxWidth={295}
+      p={space.xs}
+      bg={colors.primaryDark}
+      cursor={onClick ? "pointer" : "default"}
+      onClick={() => onClick && onClick(saleItem.id)}
+    >
       {saleItem.photo && (
         <Image
           src={saleItem.photo}

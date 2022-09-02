@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { useTheme } from "styled-components";
+
+import { useRouter } from "next/router";
 
 import {
   Box,
@@ -10,8 +12,10 @@ import {
   Text,
   Toggle,
 } from "@/common/components/atoms";
+import { SideDrawer } from "@/common/components/atoms/SideDrawer";
 import Footer from "@/common/components/objects/Footer";
 import { useFollower } from "@/creators/context/FollowerContext";
+import { RewardApiClient } from "@/tokens/api";
 import {
   RewardSaleFeaturedItemsListContext,
   RewardSaleFeaturedItemsListProvider,
@@ -21,10 +25,11 @@ import {
   RewardSaleItemsListProvider,
 } from "@/tokens/context/RewardSaleItemsListContext";
 import useRewardSaleTopSellersList from "@/tokens/context/RewardSaleTopSellersListContext";
-import { RewardSalePaymentType } from "@/tokens/types/store";
+import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 import StorePageLayout from "../../layout/StorePageLayout";
 import MoreSaleItems from "../../objects/MoreSaleItems";
+import RewardSalePayment from "../../objects/RewardSalePayment";
 import SellOnCraterStatic from "../../objects/SellOnCraterStatic";
 import StoreHeader from "../../objects/StoreHeader";
 import StoreTabs from "../../objects/StoreTabs";
@@ -47,6 +52,7 @@ const StyledSpan = styled(Span)`
 
 export default function StoreBuyNowPage(): JSX.Element {
   const { space, colors, radii } = useTheme();
+  const router = useRouter();
   const {
     sellers,
     loading: sellersLoading,
@@ -57,6 +63,19 @@ export default function StoreBuyNowPage(): JSX.Element {
   const [paymentType, setPaymentType] = useState<
     RewardSalePaymentType | undefined
   >(undefined);
+  const [saleItemToShow, setSaleItemToShow] = useState<SaleItem | null>(null);
+
+  useEffect(() => {
+    const saleItemId = router.query?.sale as string;
+    if (saleItemId) {
+      retrieveSaleItem();
+    }
+
+    async function retrieveSaleItem(): Promise<void> {
+      const [data] = await RewardApiClient().retrieveRewardSaleItem(saleItemId);
+      if (data) setSaleItemToShow(data);
+    }
+  }, [router.query]);
 
   const followCreator = async (creator: number): Promise<void> => {
     if (creator) {
@@ -67,8 +86,26 @@ export default function StoreBuyNowPage(): JSX.Element {
     }
   };
 
+  const onCloseSideDrawer = (): void => {
+    setSaleItemToShow(null);
+    delete router.query.sale;
+    router.push(router, undefined, { shallow: true });
+  };
+
   return (
     <Box>
+      {saleItemToShow && (
+        <SideDrawer
+          px={0}
+          py={0}
+          visible={saleItemToShow ? true : false}
+          heading="Crater Store"
+          boxProps={{ ml: space.xs, mr: 22, pt: 28 }}
+          onClose={() => onCloseSideDrawer()}
+        >
+          <RewardSalePayment saleItem={saleItemToShow} />
+        </SideDrawer>
+      )}
       <Box pt={space.l} pb={36} overflow="hidden" position="relative">
         <Box
           w={968}

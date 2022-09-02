@@ -1,5 +1,7 @@
 import styled, { useTheme } from "styled-components";
 
+import { useRouter } from "next/router";
+
 import { Box, Grid, Shimmer, Text } from "@/common/components/atoms";
 import useRewardSaleItemsList from "@/tokens/context/RewardSaleItemsListContext";
 
@@ -13,7 +15,13 @@ const StyledGrid = styled(Grid)`
 
 export default function MoreSaleItems(): JSX.Element {
   const { space, radii } = useTheme();
+  const router = useRouter();
   const { saleItems, loading } = useRewardSaleItemsList();
+
+  const openSaleItem = (saleItemId: number): void => {
+    router.query.sale = `${saleItemId}`;
+    router.push(router, undefined, { shallow: true });
+  };
 
   return (
     <Box>
@@ -37,7 +45,7 @@ export default function MoreSaleItems(): JSX.Element {
                 key={saleItem.id}
                 className={saleItem.photo ? "large" : undefined}
               >
-                <SaleItemCard saleItem={saleItem} />
+                <SaleItemCard saleItem={saleItem} onClick={openSaleItem} />
               </Box>
             ))}
           </StyledGrid>
