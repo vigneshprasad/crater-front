@@ -3,7 +3,7 @@ import { useTheme } from "styled-components";
 import { AnimatedBox, AnimatedBoxProps } from "@/common/components/atoms";
 import { SaleItem } from "@/tokens/types/store";
 
-import SaleItemCard from "../SaleItemCard";
+import FeaturedSaleItemCard from "../FeaturedSaleItemCard";
 
 type IProps = AnimatedBoxProps & {
   saleItem: SaleItem;
@@ -79,7 +79,7 @@ export default function SaleItemSlide({
       animate={animate}
       {...rest}
     >
-      <SaleItemCard saleItem={saleItem} />
+      <FeaturedSaleItemCard saleItem={saleItem} />
     </AnimatedBox>
   );
 }

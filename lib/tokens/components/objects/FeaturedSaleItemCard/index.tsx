@@ -7,7 +7,9 @@ type IProps = {
   saleItem: SaleItem;
 };
 
-export default function SaleItemCard({ saleItem }: IProps): JSX.Element {
+export default function FeaturedSaleItemCard({
+  saleItem,
+}: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
 
   const payWithLearn =
