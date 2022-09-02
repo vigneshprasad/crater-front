@@ -60,7 +60,7 @@ export default function SaleItemCard({ saleItem }: IProps): JSX.Element {
           />
         </Box>
       )}
-      <Text pt={space.xxs} textStyle="formLabel">
+      <Text pt={space.xxs} textStyle="bodyLarge" fontWeight={600}>
         {saleItem.title}
       </Text>
       <Flex pt={space.xxxs} alignItems="center" gridGap={space.xxxxs}>
