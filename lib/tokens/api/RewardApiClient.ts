@@ -5,11 +5,15 @@ import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ApiResult } from "@/common/types/api";
 
+import { SaleItem } from "../types/store";
 import { Reward } from "../types/token";
 
 interface IRewardApiClient {
   getRewardsList: () => Promise<ApiResult<Reward[], AxiosError>>;
   retrieveReward: (rewardId: string) => Promise<ApiResult<Reward, AxiosError>>;
+  retrieveRewardSaleItem: (
+    saleItemId: string
+  ) => Promise<ApiResult<SaleItem, AxiosError>>;
 }
 
 export default function RewardApiClient(
@@ -42,8 +46,23 @@ export default function RewardApiClient(
     }
   }
 
+  async function retrieveRewardSaleItem(
+    saleItemId: string
+  ): Promise<ApiResult<SaleItem, AxiosError>> {
+    try {
+      const { data } = await client.get<SaleItem>(
+        `${API_URL_CONSTANTS.store.getRewardSaleItems}${saleItemId}/`
+      );
+
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getRewardsList,
     retrieveReward,
+    retrieveRewardSaleItem,
   };
 }
