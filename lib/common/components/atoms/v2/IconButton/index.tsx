@@ -11,7 +11,8 @@ type Variants =
   | "flat-accent"
   | "round-large"
   | "round"
-  | "rounded-sqaure-med";
+  | "rounded-sqaure-med"
+  | "round-border";
 
 interface IProps extends ButtonProps {
   icon: IconProps["icon"];
@@ -94,9 +95,28 @@ const ButtonContainer = styled(Button)<ButtonProps>`
         ":hover": {
           bg: "primaryLight",
         },
+      "round-border": {
+        width: 40,
+        height: 40,
+        px: 0,
+        py: 0,
+        borderRadius: "50%",
+        border: "1px solid #fff",
+        alignItems: "center",
+        justifyContent: "center",
+        bg: "primaryBackground",
+        ":hover": {
+          bg: "primaryLight",
+        },
+        ":disabled": {
+          bg: "primaryBackground",
+          border: `1px solid #373737`,
+          cursor: "default",
+          color: "secondaryLight",
+        },
       },
     },
-  })}
+  )}
 `;
 
 export function IconButton({ icon, iconProps, ...rest }: IProps): JSX.Element {

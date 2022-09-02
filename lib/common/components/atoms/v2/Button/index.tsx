@@ -26,7 +26,9 @@ type Variants =
   | "text"
   | "filter-small"
   | "filter-selected-small"
-  | "small";
+  | "small"
+  | "primary-bg-flat"
+  | "gradient-border-flat";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -324,6 +326,59 @@ const StyledButton = styled(Grid)<ButtonProps>`
           bg: "white.1",
         },
       },
+      "primary-bg-flat": {
+        fontSize: "1.6rem",
+        lineHeight: "2.8rem",
+        fontWeight: "500",
+        p: "0.5em 0.8em",
+        bg: "primaryBackground",
+        borderRadius: "0.25em",
+        transition: "all 0.1s ease-in",
+        ":hover": {
+          bg: "rgba(136, 46, 232, 0.04)",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          cursor: "default",
+        },
+      },
+      "gradient-border-flat": css`
+        position: relative;
+        position: relative;
+        padding: 0.5em 0.8em;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border-radius: 4px;
+          border: 1px solid transparent;
+          background: linear-gradient(
+              65.32deg,
+              #f1616a,
+              #9146ff,
+              #9db3ff,
+              #0d849e
+            )
+            border-box;
+          -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0);
+          -webkit-mask-composite: destination-out;
+          mask-composite: exclude;
+        }
+
+        &:hover {
+          background: rgba(136, 46, 232, 0.04);
+        }
+
+        &:disabled {
+          background: rgba(136, 46, 232, 0.04);
+          cursor: default;
+        }
+      `,
       small: {
         fontSize: ["1.2rem"],
         p: "0.1em 0.2em",

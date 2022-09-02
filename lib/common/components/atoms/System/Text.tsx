@@ -224,6 +224,18 @@ const variants = {
     fontWeight: "500",
     lineHeight: ["2.1rem"],
   },
+  gradientHeading: {
+    fontFamily: fonts.heading,
+    fontSize: "3.6rem",
+    fontWeight: "500",
+    lineHeight: "5.4rem",
+    letterSpacing: "0.03em",
+    background: "linear-gradient(65.32deg, #F1616A, #9146FF, #9DB3FF, #0D849E)",
+    backgroundClip: "text",
+    "-webkit-background-clip": "text",
+    "-webkit-text-fill-color": "transparent",
+    textFillColor: "transparent",
+  },
 };
 
 export type TextVariants = keyof typeof variants;
