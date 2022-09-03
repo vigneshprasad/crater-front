@@ -35,7 +35,15 @@ export interface RewardSaleLog {
   quantity: number;
   price: number;
   status: RewarSaleLogStatus;
-  is_processed: boolean;
   payment: number;
   payment_type: SalePaymentType;
+  reward_sale_detail: RewardSale;
+  user_detail: {
+    pk: string;
+    photo: string;
+    email: string;
+    name: string;
+    phone_number: string;
+    linkedin_url?: string;
+  };
 }

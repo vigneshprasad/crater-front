@@ -1,4 +1,5 @@
 import { AnimatePresence } from "framer-motion";
+import { SyntheticEvent } from "react";
 import styled, { useTheme } from "styled-components";
 
 import { AnimatedBox, Box, Text, Flex, Icon } from "../../atoms";
@@ -7,7 +8,7 @@ interface IProps {
   heading?: string;
   visible: boolean;
   children?: React.ReactNode | undefined;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const Overlay = styled(AnimatedBox)`
@@ -31,7 +32,7 @@ export default function ContainerModal({
         <Overlay
           overflow="hidden"
           onClick={() => {
-            onClose();
+            onClose && onClose();
           }}
           position={["fixed", "absolute"]}
           top={0}
@@ -74,7 +75,7 @@ export default function ContainerModal({
             left={0}
             bg={colors.primaryDark}
             borderRadius="4px 4px 0 0"
-            onClick={(event) => {
+            onClick={(event: SyntheticEvent) => {
               event.stopPropagation();
             }}
           >
@@ -98,12 +99,14 @@ export default function ContainerModal({
                   </Text>
                 )}
               </Box>
-              <Icon
-                icon="Close"
-                cursor="pointer"
-                color={colors.textTertiary}
-                onClick={onClose}
-              />
+              {onClose && (
+                <Icon
+                  icon="Close"
+                  cursor="pointer"
+                  color={colors.textTertiary}
+                  onClick={onClose}
+                />
+              )}
             </Flex>
 
             <Box overflowY="auto">{children}</Box>

@@ -1,16 +1,17 @@
-import { IconProps } from "react-toastify";
 import { useTheme } from "styled-components";
 
-import { AnimatedBox, Grid, Icon, Text } from "../../atoms";
+import { AnimatedBox, Grid, Icon, Text, IconProps } from "../../atoms";
 
 export interface NotificationProps {
-  content: string;
+  title?: string;
+  description?: string;
   iconProps?: IconProps;
   onClose?: () => void;
 }
 
 export function Notification({
-  content,
+  title,
+  description,
   iconProps,
   onClose,
 }: NotificationProps): JSX.Element {
@@ -55,7 +56,12 @@ export function Notification({
         </Grid>
 
         <Grid alignItems="center" pl={space.xxxxs} pr={24}>
-          <Text textStyle="notificationContent">{content}</Text>
+          {title && <Text textStyle="notificationTitle">{title}</Text>}
+          {description && (
+            <Text color={colors.textTertiary} textStyle="notificationDesc">
+              {description}
+            </Text>
+          )}
         </Grid>
         <Icon
           icon="Close"

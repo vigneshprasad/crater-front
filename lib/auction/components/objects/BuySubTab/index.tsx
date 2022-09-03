@@ -15,7 +15,6 @@ import {
   Shimmer,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
-import { useNotifications } from "@/common/components/objects/NotificationStack/context";
 import { useWebinar } from "@/community/context/WebinarContext";
 
 import CreateSaleForm from "../../forms/CreateSaleForm";
@@ -35,7 +34,6 @@ export default function BuySubTab(): JSX.Element | null {
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const { sales, isValidating } = useRewardSalesList();
   const [buySale, setBuySale] = useState<RewardSale | undefined>(undefined);
-  const { showNotification } = useNotifications();
 
   const [currentPage, setPage] = useState(Pages.bidList);
 
@@ -152,7 +150,7 @@ export default function BuySubTab(): JSX.Element | null {
               </Box>
               <Flex flexDirection="column" gridGap={space.xxxxs}>
                 {(() => {
-                  if (isValidating || !sales) {
+                  if (isValidating && !sales) {
                     return Array(3)
                       .fill("")
                       .map((_, index) => <Shimmer key={index} h={120} />);
@@ -169,13 +167,6 @@ export default function BuySubTab(): JSX.Element | null {
                       description={sale.reward_detail.description}
                       image={sale.reward_detail.photo}
                       onClickBuySale={() => {
-                        showNotification(
-                          {
-                            content: "This is a notification",
-                          },
-                          2000,
-                          false
-                        );
                         setBuySale(sale);
                         setShowPurchaseModal(true);
                       }}

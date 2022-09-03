@@ -28,7 +28,7 @@ const colors = {
     "rgba(288,288,288,0.4)",
   ],
   blackAlpha: ["rgba(0,0,0,0.1)", "rgba(0,0,0,0.4)"],
-  error: "#FF6628",
+  error: "#FA5B5B",
   errorDeep: "#CC5D2F",
   twitter: "#1DA1F2",
   linkedin: "#2867B2",

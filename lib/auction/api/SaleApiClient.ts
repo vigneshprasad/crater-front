@@ -22,6 +22,8 @@ interface ISaleApiClient {
   postRewardSale: (
     params: CreateRewardSaleArgs
   ) => Promise<ApiResult<RewardSale, AxiosError>>;
+  postSaleLogAccept: (id: number) => Promise<ApiResult<unknown, AxiosError>>;
+  postSaleLogDecline: (id: number) => Promise<ApiResult<unknown, AxiosError>>;
 }
 
 export default function SaleApiClient(
@@ -58,8 +60,35 @@ export default function SaleApiClient(
     }
   }
 
+  async function postSaleLogAccept(
+    id: number
+  ): Promise<ApiResult<unknown, AxiosError>> {
+    try {
+      const { data } = await client.post(
+        API_URL_CONSTANTS.sales.postSaleLogAccept(id)
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
+  async function postSaleLogDecline(
+    id: number
+  ): Promise<ApiResult<unknown, AxiosError>> {
+    try {
+      const { data } = await client.post(
+        API_URL_CONSTANTS.sales.postSaleLogDecline(id)
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
   return {
     postRewardSaleLog,
     postRewardSale,
+    postSaleLogAccept,
+    postSaleLogDecline,
   };
 }

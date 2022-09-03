@@ -123,6 +123,9 @@ export const API_URL_CONSTANTS = {
     getSalesList: "/crater/sale/",
     postRewardSale: "/crater/sale/",
     postSaleLog: "/crater/sale/log/",
+    postSaleLogAccept: (id: number): string => `/crater/sale/log/${id}/accept/`,
+    postSaleLogDecline: (id: number): string =>
+      `/crater/sale/log/${id}/decline/`,
   },
   coins: {
     getAuctions: "/crater/auction/",

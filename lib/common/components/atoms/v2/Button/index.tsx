@@ -28,7 +28,9 @@ type Variants =
   | "filter-selected-small"
   | "small"
   | "primary-bg-flat"
-  | "gradient-border-flat";
+  | "gradient-border-flat"
+  | "success"
+  | "failure";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -391,6 +393,36 @@ const StyledButton = styled(Grid)<ButtonProps>`
         ":disabled": {
           bg: "primaryLight",
           color: "textSecondary",
+        },
+      },
+      success: {
+        bg: "greenSuccess",
+        px: "0.8em",
+        py: "0.4em",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "#20703D",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+          cursor: "not-allowed",
+        },
+      },
+      failure: {
+        bg: "error",
+        px: "0.8em",
+        py: "0.4em",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "#D33E3E",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+          cursor: "not-allowed",
         },
       },
     },

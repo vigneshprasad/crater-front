@@ -7,7 +7,6 @@ import {
   Flex,
   Icon,
   Image,
-  Span,
   Text,
 } from "@/common/components/atoms";
 import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
