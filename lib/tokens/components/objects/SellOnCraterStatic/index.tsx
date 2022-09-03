@@ -36,10 +36,10 @@ const GradientScrollUpBox = styled(Box)<BoxProps>`
     mask-composite: exclude;
   }
 
-  &:hover {
+  /* &:hover {
     background: ${(props) => props.theme.colors.primaryLight};
     cursor: pointer;
-  }
+  } */
 `;
 
 export default function SellOnCraterStatic(): JSX.Element {
