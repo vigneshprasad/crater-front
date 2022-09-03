@@ -26,15 +26,17 @@ export enum RewardSalePaymentType {
   Learn = 2,
 }
 
+export interface CreatorDetail {
+  id: number;
+  name: string;
+  photo: string | null;
+}
+
 export interface Seller {
   id: number;
   user: string;
   is_subscriber: boolean;
-  profile_detail: {
-    id: number;
-    name: string;
-    photo: string | null;
-  };
+  profile_detail: CreatorDetail;
 }
 
 export interface RewardSale {
@@ -52,9 +54,6 @@ export interface SaleItem {
   title: string;
   description?: string;
   photo: string | null;
-  creator_detail: {
-    id: number;
-    name: string;
-  };
+  creator_detail: CreatorDetail;
   reward_sale_details: RewardSale[];
 }

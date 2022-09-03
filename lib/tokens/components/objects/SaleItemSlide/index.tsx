@@ -1,5 +1,7 @@
 import { useTheme } from "styled-components";
 
+import { useRouter } from "next/router";
+
 import { AnimatedBox, AnimatedBoxProps } from "@/common/components/atoms";
 import { SaleItem } from "@/tokens/types/store";
 
@@ -15,6 +17,12 @@ export default function SaleItemSlide({
   ...rest
 }: IProps): JSX.Element {
   const { colors, radii } = useTheme();
+  const router = useRouter();
+
+  const openSaleItem = (saleItemId: number): void => {
+    router.query.sale = `${saleItemId}`;
+    router.push(router, undefined, { shallow: true });
+  };
 
   const variants = {
     next: {
@@ -79,7 +87,10 @@ export default function SaleItemSlide({
       animate={animate}
       {...rest}
     >
-      <FeaturedSaleItemCard saleItem={saleItem} />
+      <FeaturedSaleItemCard
+        saleItem={saleItem}
+        onClick={animate === "active" ? openSaleItem : undefined}
+      />
     </AnimatedBox>
   );
 }
