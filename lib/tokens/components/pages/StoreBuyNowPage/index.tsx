@@ -15,6 +15,7 @@ import {
 } from "@/common/components/atoms";
 import { SideDrawer } from "@/common/components/atoms/SideDrawer";
 import Footer from "@/common/components/objects/Footer";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { useFollower } from "@/creators/context/FollowerContext";
 import { RewardApiClient } from "@/tokens/api";
 import {
@@ -51,8 +52,8 @@ const StyledSpan = styled(Span)`
   textfillcolor: transparent;
 `;
 
-export default function StoreBuyNowPage(): JSX.Element {
-  const { space, colors, radii } = useTheme();
+export default function StoreBuyNowPage(): JSX.Element | null {
+  const { space, colors, radii, breakpoints } = useTheme();
   const router = useRouter();
   const {
     sellers,
@@ -65,6 +66,8 @@ export default function StoreBuyNowPage(): JSX.Element {
     RewardSalePaymentType | undefined
   >(undefined);
   const [saleItemToShow, setSaleItemToShow] = useState<SaleItem | null>(null);
+
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   useEffect(() => {
     const saleItemId = router.query?.sale as string;
@@ -92,6 +95,16 @@ export default function StoreBuyNowPage(): JSX.Element {
     delete router.query.sale;
     router.push(router, undefined, { shallow: true });
   };
+
+  if (isMobile === undefined) return null;
+
+  if (isMobile) {
+    return (
+      <Text py={space.xxs} textAlign="center">
+        Please view this in a desktop for best experience.
+      </Text>
+    );
+  }
 
   return (
     <Box>
