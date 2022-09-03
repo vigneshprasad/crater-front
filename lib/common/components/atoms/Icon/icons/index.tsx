@@ -55,7 +55,7 @@ export { default as LearnToken } from "./LearnToken";
 export { default as Linkedin } from "./Linkedin";
 export { default as LinkedinAlt } from "./LinkedinAlt";
 export { default as Linktree } from "./Linktree";
-export { default as LinktreeAlt } from "./LinktreeAlt";
+export { default as LinktreeAlt } from "./LinkTreeAlt";
 export { default as LogOut } from "./LogOut";
 export { default as Logo } from "./Logo";
 export { default as Menu } from "./Menu";
