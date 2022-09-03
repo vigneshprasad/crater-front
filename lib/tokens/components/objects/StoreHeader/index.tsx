@@ -1,6 +1,37 @@
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
-import { Box, Grid, Icon, Image, Text } from "@/common/components/atoms";
+import {
+  Box,
+  Grid,
+  Icon,
+  Image,
+  Span,
+  Text,
+  TextProps,
+} from "@/common/components/atoms";
+
+const StyledSpan1 = styled(Span)<TextProps>`
+  background: linear-gradient(65.32deg, #f1616a, #9146ff, #9db3ff, #0d849e);
+
+  backgroundclip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  textfillcolor: transparent;
+`;
+
+const StyledSpan2 = styled(Span)<TextProps>`
+  background: linear-gradient(
+    0deg,
+    #d5bbff 17.58%,
+    #9db3ff 85.38%,
+    #0d849e 85.38%
+  );
+
+  backgroundclip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  textfillcolor: transparent;
+`;
 
 export default function StoreHeader(): JSX.Element {
   const { space, fonts, radii } = useTheme();
@@ -12,11 +43,13 @@ export default function StoreHeader(): JSX.Element {
           maxLines={3}
           fontSize="3.6rem"
           lineHeight="4.6rem"
-          fontWeight={500}
+          fontWeight={400}
           fontFamily={fonts.heading}
           pb={space.xxxs}
+          w={368}
         >
-          Discover content and art by Creators
+          Discover <StyledSpan1 fontWeight={500}>content</StyledSpan1> and{" "}
+          <StyledSpan2 fontWeight={500}>art</StyledSpan2> by Creators
         </Text>
         <Icon icon="Sparkle" size={32} />
         <Box
@@ -36,6 +69,9 @@ export default function StoreHeader(): JSX.Element {
         <Box w={535} h={432} position="absolute" bottom={-10}>
           <Image src="/images/img_astronaut_store.png" alt="Store Img" />
         </Box>
+      </Box>
+      <Box w={200} h={200} justifySelf="center" alignSelf="center">
+        <Image src="/images/img_store_header_arrow.png" alt="Store Img" />
       </Box>
     </Grid>
   );

@@ -1,8 +1,12 @@
+import STATIC_IMAGES from "public/images";
 import { useMemo, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
-import { Box, Flex, Icon, Text } from "@/common/components/atoms";
+import { Box, Flex, Icon, Image, Span, Text } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
+import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
+
+import SaleItemInfo from "../SaleItemInfo";
 
 const StyledBox = styled(Box)`
   ::-webkit-scrollbar {
@@ -12,6 +16,20 @@ const StyledBox = styled(Box)`
   ::-webkit-scrollbar-thumb {
     border: 4px solid #373737;
   }
+`;
+
+const StyledSpan = styled(Span)`
+  background: linear-gradient(
+    0deg,
+    #d5bbff 17.58%,
+    #9db3ff 85.38%,
+    #0d849e 85.38%
+  );
+
+  backgroundclip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  textfillcolor: transparent;
 `;
 
 enum RewardSalePaymentFlow {
@@ -26,10 +44,17 @@ const RewardSalePaymentSteps = [
   RewardSalePaymentFlow.PurchaseSuccess,
 ];
 
-export default function RewardSalePayment(): JSX.Element {
+type IProps = {
+  saleItem: SaleItem;
+};
+
+export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [infoSheet, setInfoSheet] = useState(false);
+
+  const rewardSale = saleItem.reward_sale_details[0];
+  const payWithLearn = rewardSale.payment_type === RewardSalePaymentType.Learn;
 
   const pages = useMemo<
     {
@@ -42,7 +67,11 @@ export default function RewardSalePayment(): JSX.Element {
         key: RewardSalePaymentFlow.SaleItemDisplay,
         display: (
           <Box py={20} pl={space.xs} pr={24}>
-            {/* <SaleItemInfo creator="Sanjeev Raichur" buyers={5} stockLeft={2} /> */}
+            <SaleItemInfo
+              creator={saleItem.creator_detail.name}
+              saleItem={saleItem}
+              showPrice={false}
+            />
           </Box>
         ),
       },
@@ -66,7 +95,7 @@ export default function RewardSalePayment(): JSX.Element {
         display: <Text>Purchase Success</Text>,
       },
     ];
-  }, [space, colors]);
+  }, [space, colors, saleItem]);
 
   return (
     <Flex flexDirection="column">
@@ -89,52 +118,86 @@ export default function RewardSalePayment(): JSX.Element {
           </Flex>
         </Box>
 
-        <Flex pt={space.xxs} justifyContent="space-between" alignItems="center">
-          <IconButton icon="Share" />
-          <Flex gridGap={space.xxxxxs} alignItems="center">
-            <Text>Pay using</Text>
-            {/* <Select /> */}
-          </Flex>
+        <Flex pt={space.xxs} justifyContent="flex-end" alignItems="center">
+          {/* <IconButton icon="Share" iconProps={{ size: 24 }} /> */}
+          {payWithLearn && (
+            <Button
+              w="fit-content"
+              h={40}
+              display="flex"
+              variant="gradient-border-flat"
+              label="Learn Exclusive"
+              bg={colors.primaryBackground}
+              suffixElement={<Icon icon="LearnToken" size={14} />}
+              style={{ pointerEvents: "none" }}
+              textProps={{
+                fontSize: "1.2rem",
+                fontWeight: 700,
+                textTransform: "uppercase",
+              }}
+            />
+          )}
         </Flex>
 
         <Box pt={28}>
           <Flex pb={space.xxxs} gridGap={24}>
-            <Box
-              w={115}
-              h={115}
-              bg={colors.primaryLight}
-              borderRadius={radii.xxs}
-            />
-            <Text pt={space.xxxxs} textStyle="formLabel">
-              Ape illustration - Gold Version
-            </Text>
-          </Flex>
-          <Flex
-            px={space.xxxs}
-            py={space.xxxxxs}
-            justifyContent="space-between"
-            alignItems="center"
-            bg={colors.primaryDark}
-            border={`1px solid ${colors.primaryLight}`}
-            borderRadius={radii.xxxxs}
-          >
-            <Text textStyle="small" fontWeight={600}>
-              More Information
-            </Text>
-            {infoSheet ? (
-              <IconButton
-                icon="ChevronUp"
-                iconProps={{ size: 18 }}
-                onClick={() => setInfoSheet(false)}
+            {saleItem.photo ? (
+              <Image
+                src={saleItem.photo}
+                alt={saleItem.title}
+                objectFit="cover"
+                boxProps={{
+                  w: 115,
+                  h: 115,
+                  borderRadius: radii.xxs,
+                  position: "relative",
+                  overflow: "hidden",
+                }}
               />
             ) : (
-              <IconButton
-                icon="ChevronDown"
-                iconProps={{ size: 18 }}
-                onClick={() => setInfoSheet(true)}
+              <Image
+                src={STATIC_IMAGES.ImageDefaultSaleItem}
+                alt={saleItem.title}
+                boxProps={{
+                  w: 56,
+                  h: 56,
+                  borderRadius: radii.xxs,
+                  position: "relative",
+                }}
               />
             )}
+            <Text pt={space.xxxxs} textStyle="formLabel">
+              {saleItem.title}
+            </Text>
           </Flex>
+          {saleItem.description && (
+            <Flex
+              px={space.xxxs}
+              py={space.xxxxxs}
+              justifyContent="space-between"
+              alignItems="center"
+              bg={colors.primaryDark}
+              border={`1px solid ${colors.primaryLight}`}
+              borderRadius={radii.xxxxs}
+            >
+              <Text textStyle="small" fontWeight={600}>
+                More Information
+              </Text>
+              {infoSheet ? (
+                <IconButton
+                  icon="ChevronUp"
+                  iconProps={{ size: 18 }}
+                  onClick={() => setInfoSheet(false)}
+                />
+              ) : (
+                <IconButton
+                  icon="ChevronDown"
+                  iconProps={{ size: 18 }}
+                  onClick={() => setInfoSheet(true)}
+                />
+              )}
+            </Flex>
+          )}
           {infoSheet && (
             <StyledBox
               p={space.xxxs}
@@ -146,19 +209,7 @@ export default function RewardSalePayment(): JSX.Element {
               borderRadius="0px 0px 4px 4px"
             >
               <Text textStyle="body" fontWeight={500} lineHeight="2.1rem">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-                eget placerat enim. Fusce tempor neque ac purus hendrerit,
-                posuere ultrices dui scelerisque. Integer nec pellentesque erat,
-                et scelerisque urna. Etiam a massa quis nulla ornare tristique.
-                Aliquam pulvinar, velit id accumsan imperdiet, augue ipsum
-                varius metus, vitae consequat orci nibh eu magna. Fusce iaculis
-                turpis a leo dictum, et viverra magna rhoncus. Vivamus
-                pellentesque non orci ut tempus. Nam gravida faucibus tortor, et
-                ornare urna elementum eu. Vivamus lacus tellus, hendrerit ac
-                ligula sit amet, porttitor tempus arcu. Morbi dignissim erat
-                eros, eu pulvinar mauris luctus eu. Curabitur pellentesque justo
-                vel nibh imperdiet vulputate. Mauris non laoreet nisl. Donec
-                elementum et nisl nec consectetur
+                {saleItem.description}
               </Text>
             </StyledBox>
           )}
@@ -192,14 +243,24 @@ export default function RewardSalePayment(): JSX.Element {
               >
                 PRICE
               </Text>
-              <Text textStyle="formLabel">₹120</Text>
+              {payWithLearn ? (
+                <Flex alignItems="center" gridGap={space.xxxxxs}>
+                  <Text textStyle="formLabel">
+                    {rewardSale.price} <StyledSpan>LEARN</StyledSpan>
+                  </Text>
+                  <Icon icon="LearnToken" size={20} />
+                </Flex>
+              ) : (
+                <Text textStyle="formLabel">₹{rewardSale.price}</Text>
+              )}
             </Box>
             <Button
               w={280}
               minHeight={44}
-              label="Buy Now 🎉"
+              label="Buy Now 🎉 (Coming Soon)"
               textProps={{ fontSize: "1.6rem" }}
               onClick={() => setCurrentPage((page) => page + 1)}
+              disabled={true}
             />
           </Flex>
         </Box>

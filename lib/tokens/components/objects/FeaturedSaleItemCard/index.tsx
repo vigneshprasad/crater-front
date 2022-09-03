@@ -5,20 +5,26 @@ import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 type IProps = {
   saleItem: SaleItem;
+  onClick?: (saleItemId: number) => void;
 };
 
 export default function FeaturedSaleItemCard({
   saleItem,
+  onClick,
 }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
 
-  const payWithLearn =
-    saleItem.reward_sale_details.find(
-      (sale) => sale.payment_type === RewardSalePaymentType.Learn
-    ) ?? false;
+  const rewardSale = saleItem.reward_sale_details[0];
+  const payWithLearn = rewardSale.payment_type === RewardSalePaymentType.Learn;
 
   return (
-    <Box maxWidth={295} p={space.xs} bg={colors.primaryDark}>
+    <Box
+      maxWidth={295}
+      p={space.xs}
+      bg={colors.primaryDark}
+      cursor={onClick ? "pointer" : "default"}
+      onClick={() => onClick && onClick(saleItem.id)}
+    >
       {saleItem.photo && (
         <Image
           src={saleItem.photo}

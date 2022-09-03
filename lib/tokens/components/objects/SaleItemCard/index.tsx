@@ -7,16 +7,19 @@ import {
   Flex,
   Icon,
   Image,
-  Span,
   Text,
 } from "@/common/components/atoms";
 import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 type IProps = {
   saleItem: SaleItem;
+  onClick?: (saleItemId: number) => void;
 };
 
-export default function SaleItemCard({ saleItem }: IProps): JSX.Element {
+export default function SaleItemCard({
+  saleItem,
+  onClick,
+}: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
 
   const rewardSale = saleItem.reward_sale_details[0];
@@ -32,6 +35,8 @@ export default function SaleItemCard({ saleItem }: IProps): JSX.Element {
       bg={colors.primaryDark}
       borderRadius={radii.xs}
       border={`1px solid ${colors.primaryLight}`}
+      cursor={onClick ? "pointer" : "default"}
+      onClick={() => onClick && onClick(saleItem.id)}
     >
       {saleItem.photo ? (
         <Image
@@ -60,7 +65,7 @@ export default function SaleItemCard({ saleItem }: IProps): JSX.Element {
           />
         </Box>
       )}
-      <Text pt={space.xxs} textStyle="formLabel">
+      <Text pt={space.xxs} textStyle="bodyLarge" fontWeight={600}>
         {saleItem.title}
       </Text>
       <Flex pt={space.xxxs} alignItems="center" gridGap={space.xxxxs}>
@@ -89,7 +94,7 @@ export default function SaleItemCard({ saleItem }: IProps): JSX.Element {
         alignItems="center"
         gridGap={space.xxxxs}
       >
-        <Avatar size={24} />
+        <Avatar size={24} image={saleItem.creator_detail.photo ?? undefined} />
         <Text textStyle="captionLarge">{saleItem.creator_detail.name}</Text>
       </Flex>
     </Box>

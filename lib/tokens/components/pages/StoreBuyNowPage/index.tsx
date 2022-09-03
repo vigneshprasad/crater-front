@@ -1,25 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { useTheme } from "styled-components";
+
+import { useRouter } from "next/router";
 
 import {
   Box,
   Flex,
   Icon,
   Image,
+  Link,
   Span,
   Text,
   Toggle,
 } from "@/common/components/atoms";
+import { SideDrawer } from "@/common/components/atoms/SideDrawer";
 import Footer from "@/common/components/objects/Footer";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { useFollower } from "@/creators/context/FollowerContext";
+import { RewardApiClient } from "@/tokens/api";
 import {
   RewardSaleFeaturedItemsListContext,
   RewardSaleFeaturedItemsListProvider,
 } from "@/tokens/context/RewardSaleFeaturedItemsListContext";
+import {
+  RewardSaleItemsListContext,
+  RewardSaleItemsListProvider,
+} from "@/tokens/context/RewardSaleItemsListContext";
 import useRewardSaleTopSellersList from "@/tokens/context/RewardSaleTopSellersListContext";
-import { RewardSalePaymentType } from "@/tokens/types/store";
+import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 import StorePageLayout from "../../layout/StorePageLayout";
+import MoreSaleItems from "../../objects/MoreSaleItems";
+import RewardSalePayment from "../../objects/RewardSalePayment";
 import SellOnCraterStatic from "../../objects/SellOnCraterStatic";
 import StoreHeader from "../../objects/StoreHeader";
 import StoreTabs from "../../objects/StoreTabs";
@@ -40,8 +52,9 @@ const StyledSpan = styled(Span)`
   textfillcolor: transparent;
 `;
 
-export default function StoreBuyNowPage(): JSX.Element {
-  const { space, colors, radii } = useTheme();
+export default function StoreBuyNowPage(): JSX.Element | null {
+  const { space, colors, radii, breakpoints } = useTheme();
+  const router = useRouter();
   const {
     sellers,
     loading: sellersLoading,
@@ -52,6 +65,21 @@ export default function StoreBuyNowPage(): JSX.Element {
   const [paymentType, setPaymentType] = useState<
     RewardSalePaymentType | undefined
   >(undefined);
+  const [saleItemToShow, setSaleItemToShow] = useState<SaleItem | null>(null);
+
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  useEffect(() => {
+    const saleItemId = router.query?.sale as string;
+    if (saleItemId) {
+      retrieveSaleItem();
+    }
+
+    async function retrieveSaleItem(): Promise<void> {
+      const [data] = await RewardApiClient().retrieveRewardSaleItem(saleItemId);
+      if (data) setSaleItemToShow(data);
+    }
+  }, [router.query]);
 
   const followCreator = async (creator: number): Promise<void> => {
     if (creator) {
@@ -62,8 +90,36 @@ export default function StoreBuyNowPage(): JSX.Element {
     }
   };
 
+  const onCloseSideDrawer = (): void => {
+    setSaleItemToShow(null);
+    delete router.query.sale;
+    router.push(router, undefined, { shallow: true });
+  };
+
+  if (isMobile === undefined) return null;
+
+  if (isMobile) {
+    return (
+      <Text py={space.xxs} textAlign="center">
+        Please view this in a desktop for best experience.
+      </Text>
+    );
+  }
+
   return (
     <Box>
+      {saleItemToShow && (
+        <SideDrawer
+          px={0}
+          py={0}
+          visible={saleItemToShow ? true : false}
+          heading="Crater Store"
+          boxProps={{ ml: space.xs, mr: 22, pt: 28 }}
+          onClose={() => onCloseSideDrawer()}
+        >
+          <RewardSalePayment saleItem={saleItemToShow} />
+        </SideDrawer>
+      )}
       <Box pt={space.l} pb={36} overflow="hidden" position="relative">
         <Box
           w={968}
@@ -77,72 +133,91 @@ export default function StoreBuyNowPage(): JSX.Element {
           <Image src="/images/img_astronaut_store.png" alt="Store Img" />
         </Box>
         <RewardSaleFeaturedItemsListProvider paymentType={paymentType}>
-          <StorePageLayout
-            header={<StoreHeader />}
-            tabs={
-              <>
-                <StoreTabs activeTab="buy-now" />
+          <RewardSaleItemsListProvider paymentType={paymentType}>
+            <StorePageLayout
+              header={<StoreHeader />}
+              tabs={
+                <>
+                  <StoreTabs activeTab="buy-now" />
 
-                <Box
-                  my={28}
-                  px={28}
-                  py={24}
-                  bg={colors.primaryDark}
-                  borderRadius={radii.xs}
-                >
-                  <Flex alignItems="center" justifyContent="space-between">
-                    <Flex alignItems="center" gridGap={space.xxxxxs}>
-                      <Toggle
-                        value={paymentType !== RewardSalePaymentType.Learn}
-                        activeColor={colors.secondaryLight}
-                        inactiveColor={colors.greenSuccess}
-                        onChange={() =>
-                          setPaymentType((prev) =>
-                            !prev ? RewardSalePaymentType.Learn : undefined
-                          )
-                        }
-                      />
-                      <Text ml={space.xxxxs} color={colors.textPrimary}>
-                        Pay using{" "}
-                        <StyledSpan fontWeight={700}>LEARN</StyledSpan> tokens
-                      </Text>
-                      <Icon icon="LearnToken" size={20} />
+                  <Box
+                    my={28}
+                    px={28}
+                    py={24}
+                    bg="transparent"
+                    borderRadius={radii.xs}
+                    position="relative"
+                  >
+                    <Box
+                      position="absolute"
+                      w="100%"
+                      h="100%"
+                      background="linear-gradient(65.32deg, #f1616a, #9146ff, #9db3ff, #0d849e)"
+                      opacity={0.12}
+                      left={0}
+                      top={0}
+                      borderRadius={radii.xs}
+                    />
+                    <Flex alignItems="center" justifyContent="space-between">
+                      <Flex alignItems="center" gridGap={space.xxxxxs}>
+                        <Toggle
+                          value={paymentType !== RewardSalePaymentType.Learn}
+                          activeColor={colors.secondaryLight}
+                          inactiveColor={colors.greenSuccess}
+                          onChange={() =>
+                            setPaymentType((prev) =>
+                              !prev ? RewardSalePaymentType.Learn : undefined
+                            )
+                          }
+                        />
+                        <Text ml={space.xxxxs} color={colors.textPrimary}>
+                          Pay using{" "}
+                          <StyledSpan fontWeight={700}>LEARN</StyledSpan> tokens
+                        </Text>
+                        <Icon icon="LearnToken" size={20} />
+                      </Flex>
+                      <Link
+                        href="https://web3.crater.club/"
+                        boxProps={{ target: "_blank" }}
+                      >
+                        <Flex alignItems="center" gridGap={space.xxxxs}>
+                          <Text color={colors.textPrimary}>
+                            Know more about{" "}
+                            <StyledSpan fontWeight={700}>LEARN</StyledSpan>{" "}
+                            tokens
+                          </Text>
+                          <Icon
+                            icon="PopOut"
+                            size={20}
+                            color={colors.textPrimary}
+                          />
+                        </Flex>
+                      </Link>
                     </Flex>
-                    <Flex alignItems="center" gridGap={space.xxxxs}>
-                      <Text color={colors.textPrimary}>
-                        Know more about{" "}
-                        <StyledSpan fontWeight={700}>LEARN</StyledSpan> tokens
-                      </Text>
-                      <Icon
-                        icon="PopOut"
-                        size={20}
-                        color={colors.textPrimary}
-                      />
-                    </Flex>
-                  </Flex>
-                </Box>
-              </>
-            }
-            featured={
-              <RewardSaleFeaturedItemsListContext.Consumer>
-                {() => <TopItemsForSale />}
-              </RewardSaleFeaturedItemsListContext.Consumer>
-            }
-            explore={
-              <Text textStyle="headline5" fontWeight={600}>
-                More Items on Sale 👀
-              </Text>
-            }
-            topSellers={
-              <TopSellersList
-                sellers={sellers}
-                loading={sellersLoading}
-                followingCreator={followingCreator}
-                onFollow={followCreator}
-              />
-            }
-            staticSection={<SellOnCraterStatic />}
-          />
+                  </Box>
+                </>
+              }
+              featured={
+                <RewardSaleFeaturedItemsListContext.Consumer>
+                  {() => <TopItemsForSale />}
+                </RewardSaleFeaturedItemsListContext.Consumer>
+              }
+              explore={
+                <RewardSaleItemsListContext.Consumer>
+                  {() => <MoreSaleItems />}
+                </RewardSaleItemsListContext.Consumer>
+              }
+              topSellers={
+                <TopSellersList
+                  sellers={sellers}
+                  loading={sellersLoading}
+                  followingCreator={followingCreator}
+                  onFollow={followCreator}
+                />
+              }
+              staticSection={<SellOnCraterStatic />}
+            />
+          </RewardSaleItemsListProvider>
         </RewardSaleFeaturedItemsListProvider>
       </Box>
       <Box px={[space.xxs, space.s]} py={space.xxs} bg={colors.primaryDark}>
