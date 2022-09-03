@@ -14,10 +14,8 @@ export default function FeaturedSaleItemCard({
 }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
 
-  const payWithLearn =
-    saleItem.reward_sale_details.find(
-      (sale) => sale.payment_type === RewardSalePaymentType.Learn
-    ) ?? false;
+  const rewardSale = saleItem.reward_sale_details[0];
+  const payWithLearn = rewardSale.payment_type === RewardSalePaymentType.Learn;
 
   return (
     <Box
