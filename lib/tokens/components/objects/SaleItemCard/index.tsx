@@ -94,7 +94,7 @@ export default function SaleItemCard({
         alignItems="center"
         gridGap={space.xxxxs}
       >
-        <Avatar size={24} />
+        <Avatar size={24} image={saleItem.creator_detail.photo ?? undefined} />
         <Text textStyle="captionLarge">{saleItem.creator_detail.name}</Text>
       </Flex>
     </Box>
