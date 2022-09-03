@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { variant } from "styled-system";
 
 import { AnimatedBox, Box } from "../../atoms";
-import { Notification } from "./Notification";
+import useNotificationStackState from "./context";
 
 const variants: Variants = {
   centered: {
@@ -33,7 +33,7 @@ const Container = styled(AnimatedBox)`
 
 export function NotificationStack(): JSX.Element | null {
   const [node, setNode] = useState<HTMLElement | undefined>();
-  const [state] = useState(["visible", "visible"]);
+  const { notifications } = useNotificationStackState();
 
   useEffect(() => {
     const element = document.getElementById("notification-stack-root");
@@ -55,14 +55,8 @@ export function NotificationStack(): JSX.Element | null {
     >
       <Box position="relative" h="100%" w="100%">
         <Container layout pointerEvents="all" type="centered">
-          {state.map((item, index) => {
-            return (
-              <Notification
-                key={index}
-                index={index}
-                content="This is an error message which can extend upto two lines."
-              />
-            );
+          {notifications?.map((notification) => {
+            return notification;
           })}
         </Container>
       </Box>

@@ -7,11 +7,15 @@ import { Grid, AnimatedBox, Icon, Text, AnimatedBoxProps } from "../../atoms";
 type IProps = AnimatedBoxProps & {
   index: number;
   content: string | JSX.Element;
+  duration?: number;
+  autoHide?: boolean;
 };
 
 export function Notification({
   content,
   index,
+  duration = 2,
+  autoHide = true,
   ...props
 }: IProps): JSX.Element {
   const { colors, space, radii } = useTheme();
@@ -26,19 +30,21 @@ export function Notification({
     const showCard = async (): Promise<void> => {
       await cardAnim.start("visible");
 
-      await progressAnim.start({
-        width: "100%",
-        transition: {
-          duration: 2,
-          delay: index * 1,
-        },
-      });
+      if (autoHide) {
+        await progressAnim.start({
+          width: "100%",
+          transition: {
+            duration: duration,
+            delay: index * 1,
+          },
+        });
 
-      await cardAnim.start("hidden");
+        await cardAnim.start("hidden");
+      }
     };
 
     showCard();
-  }, [progressAnim, index, cardAnim]);
+  }, [progressAnim, index, cardAnim, duration, autoHide]);
 
   return (
     <AnimatedBox

@@ -12,6 +12,7 @@ import {
   Text,
   Flex,
   AnimatedBox,
+  Shimmer,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { useWebinar } from "@/community/context/WebinarContext";
@@ -31,7 +32,7 @@ export default function BuySubTab(): JSX.Element | null {
   const { webinar } = useWebinar();
   const { user } = useAuth();
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-  const { sales } = useRewardSalesList();
+  const { sales, isValidating } = useRewardSalesList();
   const [buySale, setBuySale] = useState<RewardSale | undefined>(undefined);
 
   const [currentPage, setPage] = useState(Pages.bidList);
@@ -53,11 +54,11 @@ export default function BuySubTab(): JSX.Element | null {
             right={0}
             bottom={0}
             initial={{
-              display: "block",
+              display: "grid",
               opacity: 0,
             }}
             animate={{
-              display: "block",
+              display: "grid",
               opacity: 1,
             }}
             exit={{
@@ -66,33 +67,36 @@ export default function BuySubTab(): JSX.Element | null {
                 display: "none",
               },
             }}
+            gridTemplateRows="max-content 1fr"
+            overflow="hidden"
+            height="100%"
           >
             <Grid
-              h="100%"
-              py={space.xxxs}
-              gridTemplateRows="max-content minmax(0, 1fr)"
+              gridTemplateColumns="1fr 1fr 1fr"
+              alignItems="center"
+              py={space.xxxxs}
             >
-              <Grid gridTemplateColumns="1fr 1fr 1fr" alignItems="center">
-                <Text
-                  fontWeight="500"
-                  textStyle="body"
-                  px={space.xxxxs}
-                  cursor="pointer"
-                  onClick={() => setPage(Pages.bidList)}
-                  color={colors["red-500"]}
-                >
-                  Discard
-                </Text>
-                <Text
-                  textAlign="center"
-                  textStyle="body"
-                  color={colors.textTertiary}
-                >
-                  NEW SALE
-                </Text>
-              </Grid>
-              <CreateSaleForm />
+              <Text
+                fontWeight="500"
+                textStyle="body"
+                px={space.xxxxs}
+                cursor="pointer"
+                onClick={() => setPage(Pages.bidList)}
+                color={colors["red-500"]}
+              >
+                Discard
+              </Text>
+              <Text
+                textAlign="center"
+                textStyle="body"
+                color={colors.textTertiary}
+              >
+                NEW SALE
+              </Text>
             </Grid>
+            <Box position="relative">
+              <CreateSaleForm />
+            </Box>
           </AnimatedBox>
         )}
 
@@ -145,23 +149,30 @@ export default function BuySubTab(): JSX.Element | null {
                 )}
               </Box>
               <Flex flexDirection="column" gridGap={space.xxxxs}>
-                {sales?.map((sale) => (
-                  <RewardCard
-                    cardType={RewardCardTypes.Sale}
-                    webinar={webinar}
-                    key={sale.id}
-                    title={sale.reward_detail.title}
-                    quantity={sale.quantity}
-                    buyers={sale.quantity_sold}
-                    price={sale.price}
-                    description={sale.reward_detail.description}
-                    image={sale.reward_detail.photo}
-                    onClickBuySale={() => {
-                      setBuySale(sale);
-                      setShowPurchaseModal(true);
-                    }}
-                  />
-                ))}
+                {(() => {
+                  if (isValidating || !sales) {
+                    return Array(3)
+                      .fill("")
+                      .map((_, index) => <Shimmer key={index} h={120} />);
+                  }
+                  return sales?.map((sale) => (
+                    <RewardCard
+                      cardType={RewardCardTypes.Sale}
+                      webinar={webinar}
+                      key={sale.id}
+                      title={sale.reward_detail.title}
+                      quantity={sale.quantity}
+                      buyers={sale.quantity_sold}
+                      price={sale.price}
+                      description={sale.reward_detail.description}
+                      image={sale.reward_detail.photo}
+                      onClickBuySale={() => {
+                        setBuySale(sale);
+                        setShowPurchaseModal(true);
+                      }}
+                    />
+                  ));
+                })()}
               </Flex>
             </Grid>
             {buySale && webinar.host_detail.creator_detail?.id && (

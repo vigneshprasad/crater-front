@@ -7,7 +7,7 @@ import { Box, BoxProps, Flex, Icon, Text } from "@/common/components/atoms";
 
 interface IProps {
   alt?: string;
-  value?: string;
+  value?: File;
   previewStyle?: BoxProps;
   onChange?: (file: File) => void;
   error?: string;

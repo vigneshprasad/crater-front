@@ -48,6 +48,7 @@ export type InputProps = BackgroundProps &
     placeholderColor?: string;
     prefixElement?: JSX.Element;
     suffixElement?: JSX.Element;
+    error?: string;
   };
 
 export const StyledInput = styled.input<InputProps>`
@@ -90,9 +91,8 @@ export const StyledInput = styled.input<InputProps>`
 `;
 
 const InputContainer = styled(Grid)`
-  border: 1px solid ${({ theme }) => theme.colors.primaryLight};
   &:focus-within {
-    border: 1px solid ${({ theme }) => theme.colors.accentLight};
+    border: 1px solid ${({ theme }) => theme.colors.textQuartenary};
   }
 `;
 
@@ -106,6 +106,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       onChange,
       prefixElement,
       suffixElement,
+      error,
       ...rest
     },
     ref
@@ -144,6 +145,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           gridTemplateColumns="max-content 1fr max-content"
           gridTemplateAreas={`"prefix input suffix"`}
           borderRadius={radii.xxxxs}
+          border={
+            error
+              ? `1px solid ${colors.error}`
+              : `1px solid ${colors.primaryLight}`
+          }
         >
           {prefixElement && <Box gridArea="prefix">{prefixElement}</Box>}
           <StyledInput
@@ -157,6 +163,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           />
           {suffixElement && <Box gridArea="suffix">{suffixElement}</Box>}
         </InputContainer>
+        {error && (
+          <Box px={space.xxxxs} py={space.xxxxxs}>
+            <Text textStyle="error" color={colors.error}>
+              {error}
+            </Text>
+          </Box>
+        )}
       </Box>
     );
   }

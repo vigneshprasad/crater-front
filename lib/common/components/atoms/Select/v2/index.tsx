@@ -23,14 +23,14 @@ export type SelectProps<T> = {
 const Container = styled(Box)`
   position: relative;
   background: ${({ theme: { colors } }) => colors.primaryBackground};
-  padding: 0.6em 1em;
+  padding: 0.8em 1em;
   border-radius: ${({ theme: { radii } }) => radii.xxxxs}px;
   border: 1px solid ${({ theme: { colors } }) => colors.primaryLight};
   cursor: pointer;
   outline: none;
 
   &:hover {
-    background: ${({ theme: { colors } }) => colors.primaryLight};
+    border: 1px solid ${({ theme: { colors } }) => colors.textQuartenary};
   }
 
   &:focus {
@@ -154,14 +154,14 @@ export default function Select<T>({
           </Text>
         )}
         <Icon
-          icon="ExpandMore"
-          color={disabled ? colors.secondaryLight : colors.textPrimary}
+          icon="ArrowDown"
+          color={disabled ? colors.secondaryLight : colors.textQuartenary}
           fill
         />
       </Grid>
       <AnimatedBox
-        p={space.xxxxs}
-        w={180}
+        py={space.xxxxs}
+        w="100%"
         animate={animate}
         initial="closed"
         variants={{
@@ -179,7 +179,7 @@ export default function Select<T>({
         zIndex={10}
         position="absolute"
         borderRadius={radii.xxxxs}
-        bg={colors.primaryLight}
+        bg={colors.primaryDark}
         right={0}
         boxShadow="0px 0px 16px #000000"
       >

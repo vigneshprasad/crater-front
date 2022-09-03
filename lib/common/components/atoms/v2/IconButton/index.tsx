@@ -95,6 +95,7 @@ const ButtonContainer = styled(Button)<ButtonProps>`
         ":hover": {
           bg: "primaryLight",
         },
+      },
       "round-border": {
         width: 40,
         height: 40,
@@ -116,7 +117,7 @@ const ButtonContainer = styled(Button)<ButtonProps>`
         },
       },
     },
-  )}
+  })}
 `;
 
 export function IconButton({ icon, iconProps, ...rest }: IProps): JSX.Element {

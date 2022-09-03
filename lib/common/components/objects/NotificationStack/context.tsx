@@ -1,13 +1,16 @@
-import { createContext, useCallback, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
 import { INotifcation, NotificationType } from "./types";
 
 export interface INotificationStackState {
-  notifications: INotifcation[];
-  showNotification: (
-    node: JSX.Element,
-    type: NotificationType
-  ) => Promise<void>;
+  notifications: JSX.Element[];
+  showNotification: (node: JSX.Element) => Promise<void>;
 }
 
 export const NotificationStackContext = createContext(
@@ -21,12 +24,9 @@ type IProviderProps = {
 export function NotificationStackProvider({
   ...rest
 }: IProviderProps): JSX.Element {
-  const [notifications, setNotifications] = useState<INotifcation[]>([]);
+  const [notifications, setNotifications] = useState<JSX.Element[]>([]);
 
-  const showNotification = useCallback(
-    async (node: JSX.Element, type: NotificationType) => {},
-    []
-  );
+  const showNotification = useCallback(async (node: JSX.Element) => {}, []);
 
   const value = useMemo<INotificationStackState>(
     () => ({
@@ -37,4 +37,14 @@ export function NotificationStackProvider({
   );
 
   return <NotificationStackContext.Provider value={value} {...rest} />;
+}
+
+export default function useNotificationStackState(): INotificationStackState {
+  const context = useContext(NotificationStackContext);
+
+  if (!context) {
+    throw new Error("Use NotificationStackProvider in tree");
+  }
+
+  return context;
 }
