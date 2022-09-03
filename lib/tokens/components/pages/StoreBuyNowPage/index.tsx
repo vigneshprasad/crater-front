@@ -131,9 +131,20 @@ export default function StoreBuyNowPage(): JSX.Element {
                     my={28}
                     px={28}
                     py={24}
-                    bg={colors.primaryDark}
+                    bg="transparent"
                     borderRadius={radii.xs}
+                    position="relative"
                   >
+                    <Box
+                      position="absolute"
+                      w="100%"
+                      h="100%"
+                      background="linear-gradient(65.32deg, #f1616a, #9146ff, #9db3ff, #0d849e)"
+                      opacity={0.12}
+                      left={0}
+                      top={0}
+                      borderRadius={radii.xs}
+                    />
                     <Flex alignItems="center" justifyContent="space-between">
                       <Flex alignItems="center" gridGap={space.xxxxxs}>
                         <Toggle

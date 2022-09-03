@@ -87,7 +87,10 @@ export default function SaleItemSlide({
       animate={animate}
       {...rest}
     >
-      <FeaturedSaleItemCard saleItem={saleItem} onClick={openSaleItem} />
+      <FeaturedSaleItemCard
+        saleItem={saleItem}
+        onClick={animate === "active" ? openSaleItem : undefined}
+      />
     </AnimatedBox>
   );
 }
