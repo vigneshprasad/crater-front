@@ -1,11 +1,12 @@
-import { Variants } from "framer-motion";
+import { Variants, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { variant } from "styled-system";
 
 import { AnimatedBox, Box } from "../../atoms";
-import useNotificationStackState from "./context";
+import { Notification } from "./Notification";
+import { useNotifications } from "./context";
 
 const variants: Variants = {
   centered: {
@@ -33,7 +34,7 @@ const Container = styled(AnimatedBox)`
 
 export function NotificationStack(): JSX.Element | null {
   const [node, setNode] = useState<HTMLElement | undefined>();
-  const { notifications } = useNotificationStackState();
+  const { notifications } = useNotifications();
 
   useEffect(() => {
     const element = document.getElementById("notification-stack-root");
@@ -55,9 +56,11 @@ export function NotificationStack(): JSX.Element | null {
     >
       <Box position="relative" h="100%" w="100%">
         <Container layout pointerEvents="all" type="centered">
-          {notifications?.map((notification) => {
-            return notification;
-          })}
+          <AnimatePresence>
+            {notifications.map((notificationProps, index) => (
+              <Notification key={index} {...notificationProps} />
+            ))}
+          </AnimatePresence>
         </Container>
       </Box>
     </Box>,

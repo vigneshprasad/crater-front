@@ -1,111 +1,72 @@
-import { useAnimation } from "framer-motion";
-import { useCallback, useEffect } from "react";
+import { IconProps } from "react-toastify";
 import { useTheme } from "styled-components";
 
-import { Grid, AnimatedBox, Icon, Text, AnimatedBoxProps } from "../../atoms";
+import { AnimatedBox, Grid, Icon, Text } from "../../atoms";
 
-type IProps = AnimatedBoxProps & {
-  index: number;
-  content: string | JSX.Element;
-  duration?: number;
-  autoHide?: boolean;
-};
+export interface NotificationProps {
+  content: string;
+  iconProps?: IconProps;
+  onClose?: () => void;
+}
 
 export function Notification({
   content,
-  index,
-  duration = 2,
-  autoHide = true,
-  ...props
-}: IProps): JSX.Element {
-  const { colors, space, radii } = useTheme();
-  const progressAnim = useAnimation();
-  const cardAnim = useAnimation();
-
-  const hideCard = useCallback(async () => {
-    await cardAnim.start("hidden");
-  }, [cardAnim]);
-
-  useEffect(() => {
-    const showCard = async (): Promise<void> => {
-      await cardAnim.start("visible");
-
-      if (autoHide) {
-        await progressAnim.start({
-          width: "100%",
-          transition: {
-            duration: duration,
-            delay: index * 1,
-          },
-        });
-
-        await cardAnim.start("hidden");
-      }
-    };
-
-    showCard();
-  }, [progressAnim, index, cardAnim, duration, autoHide]);
+  iconProps,
+  onClose,
+}: NotificationProps): JSX.Element {
+  const { colors, radii, space } = useTheme();
 
   return (
     <AnimatedBox
-      position="relative"
-      initial="hidden"
-      animate={cardAnim}
-      variants={{
-        hidden: {
-          y: -50,
-          opacity: 0,
-          transitionEnd: {
-            display: "none",
-          },
-        },
-        visible: {
-          y: 0,
-          display: "block",
-          opacity: 1,
-          transition: {
-            delay: index * 1,
-          },
+      initial={{
+        y: -50,
+        opacity: 0,
+        display: "none",
+      }}
+      animate={{
+        y: 0,
+        display: "block",
+        opacity: 1,
+      }}
+      exit={{
+        y: -50,
+        opacity: 0,
+        transitionEnd: {
+          display: "none",
         },
       }}
-      bg={colors.primaryDark}
-      overflow="hidden"
-      border={`1px solid ${colors.secondaryLight}`}
-      borderRadius={radii.xxxxs}
-      {...props}
     >
-      <Grid gridTemplateColumns="max-content 1fr">
+      <Grid
+        gridTemplateColumns="max-content 1fr"
+        maxWidth={340}
+        w="100%"
+        bg={colors.primaryDark}
+        border={`1px solid ${colors.secondaryLight}`}
+        borderRadius={radii.xxxxs}
+        position="relative"
+      >
         <Grid
           minHeight={48}
           h="100%"
           borderRight={`1px solid ${colors.secondaryLight}`}
           w={48}
         >
-          <Icon m="14px auto" icon="Info" fill color={colors.accentLight} />
+          <Icon icon="Activity" {...iconProps} m="14px auto" />
         </Grid>
-        <Grid px={space.xxxs} py={space.xxxxs} maxWidth={280}>
-          <Text textStyle="notificationContent" m="auto 0">
-            {content}
-          </Text>
+
+        <Grid alignItems="center" pl={space.xxxxs} pr={24}>
+          <Text textStyle="notificationContent">{content}</Text>
         </Grid>
+        <Icon
+          icon="Close"
+          cursor="pointer"
+          size={16}
+          position="absolute"
+          top={8}
+          right={8}
+          onClick={onClose}
+        />
       </Grid>
-      <AnimatedBox
-        animate={progressAnim}
-        initial={{
-          width: "0%",
-        }}
-        h={4}
-        bg={colors.accentLight}
-      />
-      <Icon
-        position="absolute"
-        cursor="pointer"
-        icon="Close"
-        top={4}
-        right={4}
-        size={16}
-        onClick={() => hideCard()}
-      />
     </AnimatedBox>
   );
 }

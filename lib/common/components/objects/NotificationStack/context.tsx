@@ -1,49 +1,71 @@
 import {
   createContext,
-  useCallback,
-  useContext,
   useMemo,
   useState,
+  useContext,
+  useCallback,
 } from "react";
 
-import { INotifcation, NotificationType } from "./types";
+import { NotificationProps } from "./Notification";
 
-export interface INotificationStackState {
-  notifications: JSX.Element[];
-  showNotification: (node: JSX.Element) => Promise<void>;
+export interface NotificationStackContextState {
+  notifications: NotificationProps[];
+  showNotification: (
+    props: NotificationProps,
+    duration: number,
+    autoHide: boolean
+  ) => void;
 }
 
 export const NotificationStackContext = createContext(
-  {} as INotificationStackState
+  {} as NotificationStackContextState
 );
 
-type IProviderProps = {
-  chldren?: React.ReactNode | undefined;
+type ProviderProps = {
+  children?: React.ReactNode | undefined;
 };
 
 export function NotificationStackProvider({
   ...rest
-}: IProviderProps): JSX.Element {
-  const [notifications, setNotifications] = useState<JSX.Element[]>([]);
+}: ProviderProps): JSX.Element {
+  const [notifications, setNotifications] = useState<NotificationProps[]>([]);
 
-  const showNotification = useCallback(async (node: JSX.Element) => {}, []);
+  const showNotification = useCallback(
+    (props: NotificationProps, duration: number, autoHide: boolean) => {
+      setNotifications((val) => [
+        ...val,
+        {
+          ...props,
+          onClose: () => {
+            const updated = notifications.splice(-1);
+            setNotifications(updated);
+          },
+        },
+      ]);
 
-  const value = useMemo<INotificationStackState>(
-    () => ({
-      notifications,
-      showNotification,
-    }),
+      if (autoHide) {
+        setTimeout(() => {
+          const updated = notifications.splice(-1);
+          setNotifications(updated);
+        }, duration);
+      }
+    },
+    [setNotifications, notifications]
+  );
+
+  const value = useMemo(
+    () => ({ notifications, showNotification }),
     [notifications, showNotification]
   );
 
   return <NotificationStackContext.Provider value={value} {...rest} />;
 }
 
-export default function useNotificationStackState(): INotificationStackState {
+export function useNotifications(): NotificationStackContextState {
   const context = useContext(NotificationStackContext);
 
   if (!context) {
-    throw new Error("Use NotificationStackProvider in tree");
+    throw new Error("You need to wrap NotificationStackProvider.");
   }
 
   return context;
