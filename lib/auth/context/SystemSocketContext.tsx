@@ -62,7 +62,6 @@ export function SystemSocketProvider({
       });
 
       socket.current.on("user:notification", (data: INotificationData) => {
-        console.log(data);
         switch (data.type) {
           case "creator-sale-accepted":
             showNotification(
