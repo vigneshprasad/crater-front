@@ -43,12 +43,13 @@ export default function StoreHeader(): JSX.Element {
           maxLines={3}
           fontSize="3.6rem"
           lineHeight="4.6rem"
-          fontWeight={500}
+          fontWeight={400}
           fontFamily={fonts.heading}
           pb={space.xxxs}
+          w={368}
         >
-          Discover <StyledSpan1>content</StyledSpan1> and{" "}
-          <StyledSpan2>art</StyledSpan2> by Creators
+          Discover <StyledSpan1 fontWeight={500}>content</StyledSpan1> and{" "}
+          <StyledSpan2 fontWeight={500}>art</StyledSpan2> by Creators
         </Text>
         <Icon icon="Sparkle" size={32} />
         <Box
@@ -68,6 +69,9 @@ export default function StoreHeader(): JSX.Element {
         <Box w={535} h={432} position="absolute" bottom={-10}>
           <Image src="/images/img_astronaut_store.png" alt="Store Img" />
         </Box>
+      </Box>
+      <Box w={200} h={200} justifySelf="center" alignSelf="center">
+        <Image src="/images/img_store_header_arrow.png" alt="Store Img" />
       </Box>
     </Grid>
   );
