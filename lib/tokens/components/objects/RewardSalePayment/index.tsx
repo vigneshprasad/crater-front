@@ -118,8 +118,25 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
           </Flex>
         </Box>
 
-        <Flex pt={space.xxs} alignItems="center">
-          <IconButton icon="Share" />
+        <Flex pt={space.xxs} justifyContent="flex-end" alignItems="center">
+          {/* <IconButton icon="Share" iconProps={{ size: 24 }} /> */}
+          {payWithLearn && (
+            <Button
+              w="fit-content"
+              h={40}
+              display="flex"
+              variant="gradient-border-flat"
+              label="Learn Exclusive"
+              bg={colors.primaryBackground}
+              suffixElement={<Icon icon="LearnToken" size={14} />}
+              style={{ pointerEvents: "none" }}
+              textProps={{
+                fontSize: "1.2rem",
+                fontWeight: 700,
+                textTransform: "uppercase",
+              }}
+            />
+          )}
         </Flex>
 
         <Box pt={28}>
