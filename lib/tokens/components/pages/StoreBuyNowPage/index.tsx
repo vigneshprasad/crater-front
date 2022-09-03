@@ -8,6 +8,7 @@ import {
   Flex,
   Icon,
   Image,
+  Link,
   Span,
   Text,
   Toggle,
@@ -151,17 +152,23 @@ export default function StoreBuyNowPage(): JSX.Element {
                         </Text>
                         <Icon icon="LearnToken" size={20} />
                       </Flex>
-                      <Flex alignItems="center" gridGap={space.xxxxs}>
-                        <Text color={colors.textPrimary}>
-                          Know more about{" "}
-                          <StyledSpan fontWeight={700}>LEARN</StyledSpan> tokens
-                        </Text>
-                        <Icon
-                          icon="PopOut"
-                          size={20}
-                          color={colors.textPrimary}
-                        />
-                      </Flex>
+                      <Link
+                        href="https://web3.crater.club/"
+                        boxProps={{ target: "_blank" }}
+                      >
+                        <Flex alignItems="center" gridGap={space.xxxxs}>
+                          <Text color={colors.textPrimary}>
+                            Know more about{" "}
+                            <StyledSpan fontWeight={700}>LEARN</StyledSpan>{" "}
+                            tokens
+                          </Text>
+                          <Icon
+                            icon="PopOut"
+                            size={20}
+                            color={colors.textPrimary}
+                          />
+                        </Flex>
+                      </Link>
                     </Flex>
                   </Box>
                 </>
