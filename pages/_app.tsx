@@ -23,6 +23,8 @@ import BasicSignupSheet from "@/auth/components/objects/BasicSignupSheet";
 import { AuthProvider } from "@/auth/context/AuthContext";
 import { AuthModalProvider } from "@/auth/context/AuthModalContext";
 import { SystemSocketProvider } from "@/auth/context/SystemSocketContext";
+import { NotificationStack } from "@/common/components/objects/NotificationStack";
+import { NotificationStackProvider } from "@/common/components/objects/NotificationStack/context";
 import {
   UTM_SOURCE_STORAGE_KEY,
   UTM_CAMPAIGN_STORAGE_KEY,
@@ -99,34 +101,37 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       }}
     >
       <Provider session={session}>
-        <AuthProvider user={user} profile={profile}>
-          <AuthModalProvider>
-            <AnalyticsProvider>
-              <ThemeProvider theme={theme}>
-                <LearnModalProvider>
-                  <GlobalStyle />
-                  <AsideNavProvider>
-                    <SystemSocketProvider>
-                      <Script strategy="afterInteractive">
-                        {`
+        <NotificationStackProvider>
+          <AuthProvider user={user} profile={profile}>
+            <AuthModalProvider>
+              <AnalyticsProvider>
+                <ThemeProvider theme={theme}>
+                  <LearnModalProvider>
+                    <GlobalStyle />
+                    <AsideNavProvider>
+                      <SystemSocketProvider>
+                        <Script strategy="afterInteractive">
+                          {`
                         (function(c,l,a,r,i,t,y){
                           c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
                           t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
                           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
                         })(window, document, "clarity", "script", "${CLARITY_PID}");
                       `}
-                      </Script>
-                      <Component {...pageProps} />
-                    </SystemSocketProvider>
-                  </AsideNavProvider>
-                  <LearnNEarnModal />
-                  <AuthModal />
-                  <BasicSignupSheet />
-                </LearnModalProvider>
-              </ThemeProvider>
-            </AnalyticsProvider>
-          </AuthModalProvider>
-        </AuthProvider>
+                        </Script>
+                        <Component {...pageProps} />
+                      </SystemSocketProvider>
+                    </AsideNavProvider>
+                    <LearnNEarnModal />
+                    <AuthModal />
+                    <BasicSignupSheet />
+                    <NotificationStack />
+                  </LearnModalProvider>
+                </ThemeProvider>
+              </AnalyticsProvider>
+            </AuthModalProvider>
+          </AuthProvider>
+        </NotificationStackProvider>
       </Provider>
     </SWRConfig>
   );

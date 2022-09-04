@@ -51,6 +51,7 @@ export default class AppDocument extends Document {
           <div id="modal-root" />
           <div id="bottom-sheet-root" />
           <div id="side-drawer-root" />
+          <div id="notification-stack-root" />
         </body>
       </Html>
     );

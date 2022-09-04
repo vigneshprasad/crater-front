@@ -12,6 +12,7 @@ type Variants =
   | "condensed-dark"
   | "outline"
   | "outline-condensed"
+  | "outline-dark"
   | "dark-flat"
   | "dark-flat-no-bg"
   | "round"
@@ -25,8 +26,11 @@ type Variants =
   | "text"
   | "filter-small"
   | "filter-selected-small"
+  | "small"
   | "primary-bg-flat"
-  | "gradient-border-flat";
+  | "gradient-border-flat"
+  | "success"
+  | "failure";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -173,6 +177,18 @@ const StyledButton = styled(Grid)<ButtonProps>`
         bg: "primaryDark",
         color: "accentLight",
         transition: "all 0.1s ease-in",
+      },
+      "outline-dark": {
+        fontSize: ["1.2rem"],
+        bg: "primaryBackground",
+        borderRadius: 4,
+        border: "1px solid #373737",
+        padding: "0.6em 1.2em",
+        fontWeight: "600",
+        transition: "all 0.1s ease-in",
+        ":hover": {
+          bg: "primaryLight",
+        },
       },
       round: {
         fontSize: ["1.4rem", "1.6rem"],
@@ -365,6 +381,50 @@ const StyledButton = styled(Grid)<ButtonProps>`
           cursor: default;
         }
       `,
+      small: {
+        fontSize: ["1.2rem"],
+        p: "0.1em 0.2em",
+        borderRadius: 4,
+        transition: "all 0.1s ease-in",
+        bg: "accent",
+        ":hover": {
+          bg: "accentHover",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+        },
+      },
+      success: {
+        bg: "greenSuccess",
+        px: "0.8em",
+        py: "0.4em",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "#20703D",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+          cursor: "not-allowed",
+        },
+      },
+      failure: {
+        bg: "error",
+        px: "0.8em",
+        py: "0.4em",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "#D33E3E",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+          cursor: "not-allowed",
+        },
+      },
     },
   })}
 `;

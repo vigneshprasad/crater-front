@@ -18,6 +18,7 @@ import ImageLeaderboardStep1 from "public/images/img_leaderboard_step1.png";
 import ImageLeaderboardStep2 from "public/images/img_leaderboard_step2.png";
 import ImageLeaderboardStep3 from "public/images/img_leaderboard_step3.png";
 import ImagePlaceBidIcon from "public/images/img_place_bid.png";
+import ImagePurchaseItem from "public/images/img_purchase_item.png";
 import ImageRank1 from "public/images/img_rank_1.png";
 import ImageRank2 from "public/images/img_rank_2.png";
 import ImageRank3 from "public/images/img_rank_3.png";
@@ -60,6 +61,7 @@ const STATIC_IMAGES = {
   ImageHyfiPlaceholder,
   ImageLearnLoot,
   GifLearnToken3d,
+  ImagePurchaseItem,
   BecomeACreator,
   Stream,
   Sale,

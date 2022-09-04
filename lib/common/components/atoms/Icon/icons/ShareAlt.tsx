@@ -3,16 +3,16 @@ export default function ShareAlt(
 ): JSX.Element {
   return (
     <svg
-      width="16"
-      height="15"
+      width="1em"
+      height="1em"
       viewBox="0 0 16 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
-        d="M10 0.5V4.5C2 4.5 0 8.6 0 14.5C1.04 10.54 4 8.5 8 8.5H10V12.5L16 6.18L10 0.5Z"
-        fill="currentColor"
+        d="M10 .5v4c-8 0-10 4.1-10 10 1.04-3.96 4-6 8-6h2v4l6-6.32L10 .5z"
+        fill="#fff"
       />
     </svg>
   );

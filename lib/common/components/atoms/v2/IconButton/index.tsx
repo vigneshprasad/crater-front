@@ -11,6 +11,7 @@ type Variants =
   | "flat-accent"
   | "round-large"
   | "round"
+  | "rounded-sqaure-med"
   | "round-border";
 
 interface IProps extends ButtonProps {
@@ -84,6 +85,17 @@ const ButtonContainer = styled(Button)<ButtonProps>`
           cursor: "not-allowed",
         },
       },
+      "rounded-sqaure-med": {
+        width: 28,
+        height: 28,
+        borderRadius: 4,
+        alignItems: "center",
+        justifyContent: "center",
+        bg: "#1C1C1E",
+        ":hover": {
+          bg: "primaryLight",
+        },
+      },
       "round-border": {
         width: 40,
         height: 40,
@@ -113,6 +125,14 @@ export function IconButton({ icon, iconProps, ...rest }: IProps): JSX.Element {
     if (rest.buttonStyle === "flat" || rest.buttonStyle === "flat-accent") {
       return {
         size: 20,
+        iconProps,
+        ...iconProps,
+      };
+    }
+
+    if (rest.buttonStyle === "rounded-sqaure-med") {
+      return {
+        size: 16,
         iconProps,
         ...iconProps,
       };
