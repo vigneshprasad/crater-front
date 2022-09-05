@@ -52,6 +52,8 @@ export const API_URL_CONSTANTS = {
     subscribeCreator: "/crater/followers/notify/",
     unsubscribeCreator: (id: number): string => `/crater/followers/${id}/`,
     getStats: "/crater/creator/stats/",
+    retrieveCreatorUpiInfo: (id: string | number): string =>
+      `/crater/creator/upi/${id}/`,
   },
   groups: {
     retrieveGroupRequest: (id: string): string => `/groups/requests/${id}/`,
@@ -117,6 +119,14 @@ export const API_URL_CONSTANTS = {
       `/crater/auction/${coin}/summary/`,
     getAllAuctions: "/crater/auction/all/",
   },
+  sales: {
+    getSalesList: "/crater/sale/",
+    postRewardSale: "/crater/sale/",
+    postSaleLog: "/crater/sale/log/",
+    postSaleLogAccept: (id: number): string => `/crater/sale/log/${id}/accept/`,
+    postSaleLogDecline: (id: number): string =>
+      `/crater/sale/log/${id}/decline/`,
+  },
   coins: {
     getAuctions: "/crater/auction/",
     getCointForCreator: (id: string | number): string =>
@@ -171,6 +181,11 @@ export const API_URL_CONSTANTS = {
   },
   tokens: {
     getLearnUserMeta: "/tokens/learn/meta/",
+  },
+  store: {
+    getRewardSaleTopSellers: "/crater/sale/sellers/featured/",
+    getFeaturedRewardSaleItems: "crater/sale/items/featured/",
+    getRewardSaleItems: "crater/sale/items/",
   },
 };
 

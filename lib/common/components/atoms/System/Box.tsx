@@ -75,6 +75,7 @@ export type BaseBoxProps = BackgroundProps &
     scrollBehavior?: ResponsiveValue<CSS.Property.ScrollBehavior, CustomTheme>;
     contain?: ResponsiveValue<CSS.Property.Contain, CustomTheme>;
     transition?: ResponsiveValue<CSS.Property.Transition, CustomTheme>;
+    pointerEvents?: ResponsiveValue<CSS.Property.PointerEvents, CustomTheme>;
   };
 
 export type BoxProps = BaseBoxProps & React.HTMLAttributes<HTMLDivElement>;
@@ -154,6 +155,11 @@ const transition = style({
   cssProperty: "transition",
 });
 
+const pointerEvents = style({
+  prop: "pointerEvents",
+  cssProperty: "pointerEvents",
+});
+
 export const Box = styled.div<BoxProps>`
   display: block;
   box-sizing: border-box;
@@ -186,6 +192,7 @@ export const Box = styled.div<BoxProps>`
     clear,
     scrollBehavior,
     contain,
-    transition
+    transition,
+    pointerEvents
   )}
 `;
