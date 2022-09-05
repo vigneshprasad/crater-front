@@ -1,21 +1,15 @@
 import { AnimatePresence } from "framer-motion";
+import STATIC_IMAGES from "public/images";
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
+import Image from "next/image";
+
 import useAuth from "@/auth/context/AuthContext";
-import {
-  Box,
-  Icon,
-  Grid,
-  Text,
-  Flex,
-  AnimatedBox,
-} from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/v2";
+import { Box, Grid, Text, Flex, AnimatedBox } from "@/common/components/atoms";
 import { useWebinar } from "@/community/context/WebinarContext";
 
 import CreateAuctionForm from "../../forms/CreateAuctionForm";
-import RewardCard, { RewardCardTypes } from "../RewardCard";
 
 export default function AuctionsTab(): JSX.Element | null {
   const { space, colors } = useTheme();
@@ -28,7 +22,7 @@ export default function AuctionsTab(): JSX.Element | null {
 
   if (!webinar || !user) return null;
 
-  const isHost = webinar.host === user.pk;
+  // const isHost = webinar.host === user.pk;
 
   return (
     <Box position="relative">
@@ -109,7 +103,7 @@ export default function AuctionsTab(): JSX.Element | null {
               gridGap={space.xxxxs}
             >
               <Box>
-                {isHost && (
+                {/* {isHost && (
                   <Button
                     w="100%"
                     variant="outline-dark"
@@ -130,28 +124,23 @@ export default function AuctionsTab(): JSX.Element | null {
                       <Icon fill color={colors.white[0]} icon="Add" size={18} />
                     </Flex>
                   </Button>
-                )}
+                )} */}
               </Box>
-              <Flex flexDirection="column" gridGap={space.xxxxs}>
-                <RewardCard
-                  cardType={RewardCardTypes.Auction}
-                  webinar={webinar}
-                  buyers={12}
-                  title="Anime Artwork - Watercolor"
-                  price={500}
-                  image="https://1worknetwork-prod.s3.amazonaws.com/media/c085c770-b7c5-4fdc-bb03-8b73684ee97f.png"
-                  quantity={1}
-                  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-                />
-                <RewardCard
-                  cardType={RewardCardTypes.Auction}
-                  webinar={webinar}
-                  buyers={12}
-                  title="Anime Artwork - Watercolor"
-                  price={500}
-                  image="https://1worknetwork-prod.s3.amazonaws.com/media/c085c770-b7c5-4fdc-bb03-8b73684ee97f.png"
-                  quantity={1}
-                />
+              <Flex
+                flexDirection="column"
+                gridGap={space.xxxxs}
+                alignItems="center"
+                justifyContent="center"
+                h="100%"
+              >
+                <Box w={158} h={158} position="relative">
+                  <Image
+                    src={STATIC_IMAGES.ImageAuctionEmpty}
+                    layout="fill"
+                    alt="Auctions Comming Soon."
+                  />
+                </Box>
+                <Text textAlign="center">Coming Soon...</Text>
               </Flex>
             </Grid>
           </AnimatedBox>

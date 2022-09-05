@@ -103,12 +103,17 @@ export default function BuySubTab(): JSX.Element | null {
         {/* Tab Content */}
         {currentPage === Pages.bidList && (
           <AnimatedBox
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
             initial={{
-              display: "block",
+              display: "grid",
               opacity: 0,
             }}
             animate={{
-              display: "block",
+              display: "grid",
               opacity: 1,
             }}
             exit={{
@@ -117,38 +122,46 @@ export default function BuySubTab(): JSX.Element | null {
                 display: "none",
               },
             }}
+            gridTemplateRows="max-content 1fr"
+            gridGap={space.xxxxs}
+            px={space.xxxxs}
+            py={space.xxxxs}
           >
-            <Grid
-              px={space.xxxxs}
-              py={space.xxxxs}
-              gridTemplateRows="max-content minmax(0, 1fr)"
-              gridGap={space.xxxxs}
-            >
-              <Box>
-                {isHost && (
-                  <Button
-                    w="100%"
-                    variant="outline-dark"
-                    onClick={() => setPage(Pages.createBid)}
+            <Box>
+              {isHost && (
+                <Button
+                  w="100%"
+                  variant="outline-dark"
+                  onClick={() => setPage(Pages.createBid)}
+                >
+                  <Flex
+                    alignItems="center"
+                    justifyContent="center"
+                    gridGap={space.xxxxs}
                   >
-                    <Flex
-                      alignItems="center"
-                      justifyContent="center"
-                      gridGap={space.xxxxs}
+                    <Text
+                      cursor="pointer"
+                      fontSize="inherit"
+                      fontWeight="inherit"
                     >
-                      <Text
-                        cursor="pointer"
-                        fontSize="inherit"
-                        fontWeight="inherit"
-                      >
-                        Add New
-                      </Text>
-                      <Icon fill color={colors.white[0]} icon="Add" size={18} />
-                    </Flex>
-                  </Button>
-                )}
-              </Box>
-              <Flex flexDirection="column" gridGap={space.xxxxs}>
+                      Add New
+                    </Text>
+                    <Icon fill color={colors.white[0]} icon="Add" size={18} />
+                  </Flex>
+                </Button>
+              )}
+            </Box>
+            <Box position="relative">
+              <Flex
+                flexDirection="column"
+                gridGap={space.xxxxs}
+                position="absolute"
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                overflowY="auto"
+              >
                 {(() => {
                   if (isValidating && !sales) {
                     return Array(3)
@@ -157,6 +170,8 @@ export default function BuySubTab(): JSX.Element | null {
                   }
                   return sales?.map((sale) => (
                     <RewardCard
+                      isActive={sale.is_active}
+                      paymentType={sale.payment_type}
                       cardType={RewardCardTypes.Sale}
                       webinar={webinar}
                       key={sale.id}
@@ -174,7 +189,7 @@ export default function BuySubTab(): JSX.Element | null {
                   ));
                 })()}
               </Flex>
-            </Grid>
+            </Box>
             {buySale && webinar.host_detail.creator_detail?.id && (
               <PayItemModal
                 creator={webinar.host_detail.creator_detail.id}

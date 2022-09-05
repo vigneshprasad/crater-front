@@ -74,7 +74,7 @@ export function SystemSocketProvider({
                   color: colors.greenSuccess,
                 },
               },
-              2000,
+              2 * 60 * 1000,
               true
             );
             break;
@@ -90,7 +90,7 @@ export function SystemSocketProvider({
                   color: colors.error,
                 },
               },
-              2000,
+              2 * 60 * 1000,
               true
             );
             break;

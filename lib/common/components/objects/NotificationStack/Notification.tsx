@@ -55,7 +55,7 @@ export function Notification({
           <Icon icon="Activity" {...iconProps} m="14px auto" />
         </Grid>
 
-        <Grid alignItems="center" pl={space.xxxxs} pr={24}>
+        <Grid alignItems="center" pl={space.xxxxs} pr={24} py={space.xxxs}>
           {title && <Text textStyle="notificationTitle">{title}</Text>}
           {description && (
             <Text color={colors.textTertiary} textStyle="notificationDesc">

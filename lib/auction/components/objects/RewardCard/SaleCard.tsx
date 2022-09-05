@@ -1,12 +1,27 @@
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
+import { SalePaymentType } from "@/auction/types/sales";
 import useAuth from "@/auth/context/AuthContext";
-import { Box, Flex, Span, Text } from "@/common/components/atoms";
+import { Box, Flex, Span, Text, Icon } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 
 import { IBaseRewardCardProps } from "./types";
+
+const StyledSpan = styled(Span)`
+  background: linear-gradient(
+    0deg,
+    #d5bbff 17.58%,
+    #9db3ff 85.38%,
+    #0d849e 85.38%
+  );
+
+  backgroundclip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  textfillcolor: transparent;
+`;
 
 export default function SaleCard({
   title,
@@ -14,8 +29,10 @@ export default function SaleCard({
   image,
   buyers,
   quantity,
+  paymentType,
   description,
   webinar,
+  isActive,
   onClickBuySale,
 }: IBaseRewardCardProps): JSX.Element | null {
   const { radii, space, colors } = useTheme();
@@ -46,7 +63,21 @@ export default function SaleCard({
 
         {isHost ? (
           <Text textStyle="bodyLarge" fontWeight="600">
-            ₹{price}
+            {(() => {
+              switch (paymentType) {
+                case SalePaymentType.UPI:
+                  return <>₹{price}</>;
+                case SalePaymentType.LEARN:
+                  return (
+                    <Flex alignItems="center" gridGap={space.xxxxxs}>
+                      <Text fontSize="1.4rem">
+                        {price} <StyledSpan>LEARN</StyledSpan>
+                      </Text>
+                      <Icon icon="LearnToken" size={16} />
+                    </Flex>
+                  );
+              }
+            })()}
           </Text>
         ) : (
           <Text textStyle="bodyLarge" fontWeight="600">
@@ -57,28 +88,36 @@ export default function SaleCard({
           </Text>
         )}
 
-        {isHost ? (
-          <Text
-            fontSize="1.2rem"
-            fontWeight="600"
-            w="max-content"
-            borderRadius={radii.xxxxs}
-            bg={colors.primaryLight}
-            px={space.xxxxs}
-            py={space.xxxxxs}
-          >
-            Buyers: {buyers}
-          </Text>
-        ) : (
-          <Button
-            w="max-content"
-            variant="small"
-            label="Buy Now"
-            onClick={() => {
-              onClickBuySale && onClickBuySale();
-            }}
-          />
-        )}
+        {(() => {
+          if (isHost) {
+            return (
+              <Text
+                fontSize="1.2rem"
+                fontWeight="600"
+                w="max-content"
+                borderRadius={radii.xxxxs}
+                bg={colors.primaryLight}
+                px={space.xxxxs}
+                py={space.xxxxxs}
+              >
+                Buyers: {buyers}
+              </Text>
+            );
+          }
+
+          if (!isHost && isActive) {
+            return (
+              <Button
+                w="max-content"
+                variant="small"
+                label="Buy Now"
+                onClick={() => {
+                  onClickBuySale && onClickBuySale();
+                }}
+              />
+            );
+          }
+        })()}
       </Flex>
 
       <Box position="relative">
@@ -89,7 +128,9 @@ export default function SaleCard({
           h={88}
           w={88}
         >
-          <Image src={image} alt={title} layout="fill" objectFit="cover" />
+          {image && (
+            <Image src={image} alt={title} layout="fill" objectFit="cover" />
+          )}
         </Box>
 
         <Flex
