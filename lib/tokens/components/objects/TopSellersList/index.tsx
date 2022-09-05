@@ -5,6 +5,7 @@ import {
   Avatar,
   Box,
   Flex,
+  Grid,
   Shimmer,
   Spinner,
   Text,
@@ -68,41 +69,43 @@ export default function TopSellersList({
                 const followLoading = seller.id === followingCreator;
 
                 return (
-                  <Box
+                  <Grid
                     p={space.xxs}
+                    gridAutoFlow="row"
+                    gridTemplateRows="1fr max-content"
+                    gridGap={space.xxxxs}
                     bg={colors.primaryDark}
                     borderRadius={radii.xs}
                     key={seller.id}
                   >
-                    <Flex gridGap={space.xs}>
+                    <Grid
+                      gridTemplateColumns="max-content 1fr"
+                      gridGap={space.xs}
+                    >
                       <Avatar
                         size={56}
                         image={seller.profile_detail.photo ?? undefined}
                       />
-                      <Box>
-                        <Text fontWeight={600}>
-                          {seller.profile_detail.name}
-                        </Text>
-                        <Button
-                          mt={space.xxs}
-                          w={127}
-                          h={40}
-                          variant="gradient-border-flat"
-                          label={seller.is_subscriber ? "Followed" : "Follow"}
-                          bg={colors.primaryBackground}
-                          textProps={{
-                            fontSize: "1.4rem",
-                            fontWeight: 600,
-                          }}
-                          disabled={
-                            followLoading || seller.is_subscriber ? true : false
-                          }
-                          suffixElement={followLoading && <Spinner size={24} />}
-                          onClick={() => onFollow(seller.id)}
-                        />
-                      </Box>
-                    </Flex>
-                  </Box>
+                      <Text fontWeight={600}>{seller.profile_detail.name}</Text>
+                    </Grid>
+                    <Button
+                      w={127}
+                      h={40}
+                      variant="gradient-border-flat"
+                      justifySelf="end"
+                      label={seller.is_subscriber ? "Followed" : "Follow"}
+                      bg={colors.primaryBackground}
+                      textProps={{
+                        fontSize: "1.4rem",
+                        fontWeight: 600,
+                      }}
+                      disabled={
+                        followLoading || seller.is_subscriber ? true : false
+                      }
+                      suffixElement={followLoading && <Spinner size={24} />}
+                      onClick={() => onFollow(seller.id)}
+                    />
+                  </Grid>
                 );
               }
             })}
