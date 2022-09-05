@@ -14,7 +14,7 @@ export type SelectProps<T> = {
   value?: unknown;
   defaultValue?: unknown;
   label: string;
-  disabled: boolean;
+  disabled?: boolean;
   itemLabelGetter: (val: T) => string;
   onChange?: (val: unknown) => void;
   dataTransform?: (val: T) => unknown;
@@ -80,7 +80,7 @@ export default function Select<T>({
     (item: T) => {
       if (onChange) {
         const data = dataTransform ? dataTransform(item) : item;
-        onChange(data);
+        onChange(data as T);
       }
     },
     [onChange, dataTransform]

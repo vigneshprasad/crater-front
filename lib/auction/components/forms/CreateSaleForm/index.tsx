@@ -5,12 +5,15 @@ import SaleApiClient, {
   CreateRewardSaleArgs,
 } from "@/auction/api/SaleApiClient";
 import { Box, Flex, Form, Span, Text } from "@/common/components/atoms";
+import Select from "@/common/components/atoms/Select/v2";
 import { Button, Input } from "@/common/components/atoms/v2";
 import ImageDropBox from "@/common/components/objects/ImageDropBox/v2";
+import { useNotifications } from "@/common/components/objects/NotificationStack/context";
 import QuantityInput from "@/common/components/objects/QuantityInput";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import toBase64 from "@/common/utils/image/toBase64";
+import { RewardType } from "@/tokens/types/token";
 
 type CreatSaleFormArgs = {
   title: string;
@@ -18,9 +21,19 @@ type CreatSaleFormArgs = {
   price: number;
   quantity: number;
   photo?: File;
+  type: RewardType;
 };
 
-export default function CreateSaleForm(): JSX.Element {
+interface IProps {
+  types: RewardType[];
+  onFormSubmit: () => void;
+}
+
+export default function CreateSaleForm({
+  types,
+  onFormSubmit,
+}: IProps): JSX.Element {
+  const { showNotification } = useNotifications();
   const { fields, fieldValueSetter, getValidatedData } =
     useForm<CreatSaleFormArgs>({
       fields: {
@@ -59,6 +72,15 @@ export default function CreateSaleForm(): JSX.Element {
           intialValue: undefined,
           validators: [],
         },
+        type: {
+          intialValue: types[0],
+          validators: [
+            {
+              validator: Validators.required,
+              message: "Please enter a type",
+            },
+          ],
+        },
       },
     });
   const { space, colors } = useTheme();
@@ -69,12 +91,41 @@ export default function CreateSaleForm(): JSX.Element {
     if (data) {
       const updated: CreateRewardSaleArgs = {
         ...data,
+        type: data.type.id,
         photo: data.photo ? await toBase64(data.photo) : undefined,
       };
 
-      const [res] = await SaleApiClient().postRewardSale(updated);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [_, err] = await SaleApiClient().postRewardSale(updated);
 
-      console.log(res);
+      if (err) {
+        showNotification(
+          {
+            title: "Something went wrong",
+            description: "Please try again later.",
+            iconProps: {
+              icon: "AlertCircle",
+              color: colors.error,
+            },
+          },
+          30000,
+          true
+        );
+        return;
+      }
+
+      showNotification(
+        {
+          title: "Successfully Created",
+          iconProps: {
+            icon: "CheckCircle",
+            color: colors.greenSuccess,
+          },
+        },
+        30000,
+        true
+      );
+      onFormSubmit();
     }
   };
 
@@ -150,6 +201,14 @@ export default function CreateSaleForm(): JSX.Element {
             />
             <QuantityInput label="Quantity" />
           </Flex>
+
+          <Select<RewardType>
+            label="Category"
+            onChange={(val) => fieldValueSetter("type", val as RewardType)}
+            items={types}
+            itemLabelGetter={(type) => type.name}
+            value={fields.type.value}
+          />
 
           <ImageDropBox
             value={fields.photo.value}

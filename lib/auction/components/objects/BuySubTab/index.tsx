@@ -16,6 +16,10 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { useWebinar } from "@/community/context/WebinarContext";
+import {
+  RewardTypeListContext,
+  RewardTypeListProvider,
+} from "@/tokens/context/RewardTypeListContext";
 
 import CreateSaleForm from "../../forms/CreateSaleForm";
 import PayItemModal from "../PayItemModal";
@@ -32,7 +36,7 @@ export default function BuySubTab(): JSX.Element | null {
   const { webinar } = useWebinar();
   const { user } = useAuth();
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-  const { sales, isValidating } = useRewardSalesList();
+  const { sales, isValidating, mutate } = useRewardSalesList();
   const [buySale, setBuySale] = useState<RewardSale | undefined>(undefined);
 
   const [currentPage, setPage] = useState(Pages.bidList);
@@ -95,7 +99,24 @@ export default function BuySubTab(): JSX.Element | null {
               </Text>
             </Grid>
             <Box position="relative">
-              <CreateSaleForm />
+              <RewardTypeListProvider>
+                <RewardTypeListContext.Consumer>
+                  {({ types }) => {
+                    if (types) {
+                      return (
+                        <CreateSaleForm
+                          types={types}
+                          onFormSubmit={() => {
+                            setPage(Pages.bidList);
+                            mutate();
+                          }}
+                        />
+                      );
+                    }
+                    return <Box />;
+                  }}
+                </RewardTypeListContext.Consumer>
+              </RewardTypeListProvider>
             </Box>
           </AnimatedBox>
         )}

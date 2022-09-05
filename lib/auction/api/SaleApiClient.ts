@@ -13,6 +13,7 @@ export type CreateRewardSaleArgs = {
   price: number;
   quantity: number;
   photo?: string | ArrayBuffer | null;
+  type: number;
 };
 
 interface ISaleApiClient {

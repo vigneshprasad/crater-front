@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo } from "react";
-import useSWR from "swr";
+import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
@@ -9,6 +9,7 @@ interface RewardSalesListState {
   sales?: RewardSale[];
   isValidating: boolean;
   error?: unknown;
+  mutate: SWRResponse<RewardSale[], unknown>["mutate"];
 }
 
 export const RewardSalesListContext = createContext({} as RewardSalesListState);
@@ -25,11 +26,16 @@ export function RewardSalesListProvider({
   const url = creator
     ? `${API_URL_CONSTANTS.sales.getSalesList}?reward__creator=${creator}`
     : API_URL_CONSTANTS.sales.getSalesList;
-  const { data: sales, error, isValidating } = useSWR<RewardSale[]>(url);
+  const {
+    data: sales,
+    error,
+    isValidating,
+    mutate,
+  } = useSWR<RewardSale[]>(url);
 
   const value = useMemo(
-    () => ({ sales, isValidating, error }),
-    [sales, isValidating, error]
+    () => ({ sales, isValidating, error, mutate }),
+    [sales, isValidating, error, mutate]
   );
   return <RewardSalesListContext.Provider value={value} {...rest} />;
 }

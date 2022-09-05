@@ -77,7 +77,7 @@ const GradientBorder = styled(Box)`
 `;
 
 export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
-  const [visibleModal, setVisbleModal] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false);
   const [purchaseRequest, setPurchaseRequest] = useState<
     RewardSaleLog | undefined
   >(undefined);
@@ -90,7 +90,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
   const acceptSale = async (): Promise<void> => {
     if (purchaseRequest) {
       await SaleApiClient().postSaleLogAccept(purchaseRequest.id);
-      setVisbleModal(false);
+      setVisibleModal(false);
       setPurchaseRequest(undefined);
     }
   };
@@ -98,7 +98,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
   const declineSale = async (): Promise<void> => {
     if (purchaseRequest) {
       await SaleApiClient().postSaleLogDecline(purchaseRequest.id);
-      setVisbleModal(false);
+      setVisibleModal(false);
       setPurchaseRequest(undefined);
     }
   };
@@ -119,7 +119,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       socket.on("user:notification", (data: INotificationData) => {
         if (data.type === "creator-sale-request") {
           setPurchaseRequest(data.data);
-          setVisbleModal(true);
+          setVisibleModal(true);
         }
       });
     }
