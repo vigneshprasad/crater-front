@@ -133,9 +133,10 @@ export default function AuctionsTab(): JSX.Element | null {
                 justifyContent="center"
                 h="100%"
               >
-                <Box w={158} h={158} position="relative">
+                <Box w={160} h={160} position="relative">
                   <Image
-                    src={STATIC_IMAGES.ImageAuctionEmpty}
+                    objectFit="contain"
+                    src={STATIC_IMAGES.ImageStoreHeader}
                     layout="fill"
                     alt="Auctions Comming Soon."
                   />

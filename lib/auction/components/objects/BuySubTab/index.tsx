@@ -1,6 +1,9 @@
 import { AnimatePresence } from "framer-motion";
+import STATIC_IMAGES from "public/images";
 import { useState } from "react";
 import { useTheme } from "styled-components";
+
+import Image from "next/image";
 
 import useRewardSalesList from "@/auction/context/RewardSalesListContext";
 import { RewardSale } from "@/auction/types/sales";
@@ -173,43 +176,91 @@ export default function BuySubTab(): JSX.Element | null {
               )}
             </Box>
             <Box position="relative">
-              <Flex
-                flexDirection="column"
-                gridGap={space.xxxxs}
-                position="absolute"
-                top={0}
-                left={0}
-                right={0}
-                bottom={0}
-                overflowY="auto"
-              >
-                {(() => {
-                  if (isValidating && !sales) {
-                    return Array(3)
-                      .fill("")
-                      .map((_, index) => <Shimmer key={index} h={120} />);
-                  }
-                  return sales?.map((sale) => (
-                    <RewardCard
-                      isActive={sale.is_active}
-                      paymentType={sale.payment_type}
-                      cardType={RewardCardTypes.Sale}
-                      webinar={webinar}
-                      key={sale.id}
-                      title={sale.reward_detail.title}
-                      quantity={sale.quantity}
-                      buyers={sale.quantity_sold}
-                      price={sale.price}
-                      description={sale.reward_detail.description}
-                      image={sale.reward_detail.photo}
-                      onClickBuySale={() => {
-                        setBuySale(sale);
-                        setShowPurchaseModal(true);
-                      }}
-                    />
-                  ));
-                })()}
-              </Flex>
+              {(() => {
+                if (isValidating && !sales) {
+                  return (
+                    <Flex
+                      flexDirection="column"
+                      gridGap={space.xxxxs}
+                      position="absolute"
+                      top={0}
+                      left={0}
+                      right={0}
+                      bottom={0}
+                      overflowY="auto"
+                    >
+                      {Array(3)
+                        .fill("")
+                        .map((_, index) => (
+                          <Shimmer key={index} h={120} />
+                        ))}
+                    </Flex>
+                  );
+                }
+
+                if (sales?.length === 0) {
+                  return (
+                    <Flex
+                      position="absolute"
+                      top={0}
+                      left={0}
+                      right={0}
+                      alignItems="center"
+                      justifyContent="center"
+                      bottom={0}
+                      flexDirection="column"
+                    >
+                      <Box position="relative" size={160}>
+                        <Image
+                          objectFit="contain"
+                          width={160}
+                          height={160}
+                          src={STATIC_IMAGES.ImageStoreHeader}
+                          alt="No Sale Rewards"
+                          layout="fill"
+                        />
+                      </Box>
+
+                      <Text color={colors.textTertiary}>
+                        Creator has not launched a sale yet.
+                      </Text>
+                    </Flex>
+                  );
+                }
+
+                return (
+                  <Flex
+                    flexDirection="column"
+                    gridGap={space.xxxxs}
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    right={0}
+                    bottom={0}
+                    overflowY="auto"
+                  >
+                    {sales?.map((sale) => (
+                      <RewardCard
+                        isActive={sale.is_active}
+                        paymentType={sale.payment_type}
+                        cardType={RewardCardTypes.Sale}
+                        webinar={webinar}
+                        key={sale.id}
+                        title={sale.reward_detail.title}
+                        quantity={sale.quantity}
+                        buyers={sale.quantity_sold}
+                        price={sale.price}
+                        description={sale.reward_detail.description}
+                        image={sale.reward_detail.photo}
+                        onClickBuySale={() => {
+                          setBuySale(sale);
+                          setShowPurchaseModal(true);
+                        }}
+                      />
+                    ))}
+                  </Flex>
+                );
+              })()}
             </Box>
             {buySale && webinar.host_detail.creator_detail?.id && (
               <PayItemModal
