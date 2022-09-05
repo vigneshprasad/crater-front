@@ -313,7 +313,7 @@ export default function CreatorProfileForm({
                 prefixElement={
                   <Icon
                     m="1px 10px 2px 2px"
-                    icon="LinktreeAlt"
+                    icon="LinkTreeAlt"
                     size={18}
                     color="#EDEDED"
                     fill={true}
