@@ -21,7 +21,7 @@ export default function TopItemsForSale(): JSX.Element {
       {!saleItems || loading ? (
         <Shimmer w="100%" h={450} borderRadius={radii.xxxxs} />
       ) : (
-        <Flex justifyContent="space-evenly" gridGap={space.m}>
+        <Flex justifyContent="space-evenly" gridGap={space.xl}>
           <SaleItemSlider
             saleItems={saleItems}
             activeItem={activeItem}

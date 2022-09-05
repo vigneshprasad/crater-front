@@ -26,7 +26,7 @@ export default function StoreBuyNow(): JSX.Element {
       seo={{
         title: "Discover Content and Art by Creators",
         description:
-          "Crater&apos;s digital marketplace for art, content and more. Buy, sell and discover exclusive digital assets.",
+          "Crater's digital marketplace for art, content and more. Buy, sell and discover exclusive digital assets.",
       }}
     >
       <StyledBaseLayout aside={<AsideNav activeTab="store" />} overflowY="auto">

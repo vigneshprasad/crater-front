@@ -6,7 +6,7 @@ import { SaleItem } from "@/tokens/types/store";
 
 import SaleItemSlide from "../SaleItemSlide";
 
-const HEIGHT = 540 * (9 / 16) + 240;
+const HEIGHT = 500 * (9 / 16) + 280;
 
 type IProps = {
   saleItems: SaleItem[];
@@ -74,6 +74,7 @@ export default function SaleItemSlider({
             const prev = activeItem - 1;
             setActiveItem(prev);
           }}
+          opacity={saleItems.length > 1 ? 1 : 0}
         />
         <IconButton
           buttonStyle="round-border"
@@ -85,6 +86,7 @@ export default function SaleItemSlider({
             const next = activeItem + 1;
             setActiveItem(next);
           }}
+          opacity={saleItems.length > 1 ? 1 : 0}
         />
       </Flex>
     </Grid>
