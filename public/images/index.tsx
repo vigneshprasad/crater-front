@@ -25,6 +25,7 @@ import ImageRewardBlob from "public/images/img_reward_blob.png";
 import ImageRewardCard from "public/images/img_reward_card.png";
 import Sale from "public/images/img_sale.png";
 import ImageStarryBg from "public/images/img_starry_bg.png";
+import ImageStoreHeader from "public/images/img_store_header.png";
 import Stream from "public/images/img_stream.png";
 import ImageCraterStream from "public/images/img_stream_crater.png";
 import ImageLearnLoot from "public/images/img_total_loot.png";
@@ -64,6 +65,7 @@ const STATIC_IMAGES = {
   Stream,
   Sale,
   ImageDefaultSaleItem,
+  ImageStoreHeader,
 };
 
 export default STATIC_IMAGES;

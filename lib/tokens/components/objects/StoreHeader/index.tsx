@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import styled, { useTheme } from "styled-components";
 
 import {
@@ -37,7 +38,11 @@ export default function StoreHeader(): JSX.Element {
   const { space, fonts, radii } = useTheme();
 
   return (
-    <Grid gridAutoFlow="column" gridTemplateColumns="380px 1fr 1fr">
+    <Grid
+      gridAutoFlow="column"
+      gridTemplateColumns="380px 1fr 1fr"
+      gridGap={space.s}
+    >
       <Box>
         <Text
           maxLines={3}
@@ -65,9 +70,9 @@ export default function StoreHeader(): JSX.Element {
           </Text>
         </Box>
       </Box>
-      <Box position="relative">
-        <Box w={535} h={432} position="absolute" bottom={-10}>
-          <Image src="/images/img_astronaut_store.png" alt="Store Img" />
+      <Box position="relative" alignSelf="end" justifySelf="start">
+        <Box w={535} h={430} position="absolute" left={-50} bottom={-50}>
+          <Image src={STATIC_IMAGES.ImageStoreHeader} alt="Store Img" />
         </Box>
       </Box>
       <Box w={200} h={200} justifySelf="center" alignSelf="center">
