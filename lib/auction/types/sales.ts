@@ -8,16 +8,6 @@ export interface RewardBase {
   is_active: boolean;
 }
 
-export interface RewardSale {
-  id: number;
-  price: number;
-  quantity: number;
-  quantity_sold: number;
-  is_active: boolean;
-  reward: number;
-  reward_detail: RewardBase;
-}
-
 export enum RewarSaleLogStatus {
   Pending = 1,
   Confirmed = 2,
@@ -26,6 +16,17 @@ export enum RewarSaleLogStatus {
 export enum SalePaymentType {
   UPI = 1,
   LEARN = 2,
+}
+
+export interface RewardSale {
+  id: number;
+  price: number;
+  quantity: number;
+  quantity_sold: number;
+  is_active: boolean;
+  reward: number;
+  reward_detail: RewardBase;
+  payment_type: SalePaymentType;
 }
 
 export interface RewardSaleLog {

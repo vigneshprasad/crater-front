@@ -1,3 +1,4 @@
+import { SalePaymentType } from "@/auction/types/sales";
 import { Webinar } from "@/community/types/community";
 
 export enum RewardCardTypes {
@@ -14,5 +15,7 @@ export interface IBaseRewardCardProps {
   buyers: number;
   quantity: number;
   description?: string;
+  isActive: boolean;
+  paymentType: SalePaymentType;
   onClickBuySale?: () => void;
 }

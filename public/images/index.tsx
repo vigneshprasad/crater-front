@@ -11,6 +11,7 @@ import ImageCreatorAcceptedIcon from "public/images/img_creator_accepted.png";
 import ImgDefaultAvatar from "public/images/img_default_avatar.png";
 import ImageDefaultSaleItem from "public/images/img_default_sale_item.png";
 import ImageDiscordIcon from "public/images/img_discord_icon.png";
+import ImageAuctionEmpty from "public/images/img_empty_auction.png";
 import ImageEmptyWallet from "public/images/img_empty_wallet.png";
 import ImageHand from "public/images/img_hand.png";
 import ImageHyfiPlaceholder from "public/images/img_hyfi_placeholder.png";
@@ -67,6 +68,7 @@ const STATIC_IMAGES = {
   Stream,
   Sale,
   ImageDefaultSaleItem,
+  ImageAuctionEmpty,
   ImageStoreHeader,
 };
 

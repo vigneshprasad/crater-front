@@ -1,6 +1,9 @@
 import { AnimatePresence } from "framer-motion";
+import STATIC_IMAGES from "public/images";
 import { useState } from "react";
 import { useTheme } from "styled-components";
+
+import Image from "next/image";
 
 import useRewardSalesList from "@/auction/context/RewardSalesListContext";
 import { RewardSale } from "@/auction/types/sales";
@@ -16,6 +19,10 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { useWebinar } from "@/community/context/WebinarContext";
+import {
+  RewardTypeListContext,
+  RewardTypeListProvider,
+} from "@/tokens/context/RewardTypeListContext";
 
 import CreateSaleForm from "../../forms/CreateSaleForm";
 import PayItemModal from "../PayItemModal";
@@ -32,7 +39,7 @@ export default function BuySubTab(): JSX.Element | null {
   const { webinar } = useWebinar();
   const { user } = useAuth();
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-  const { sales, isValidating } = useRewardSalesList();
+  const { sales, isValidating, mutate } = useRewardSalesList();
   const [buySale, setBuySale] = useState<RewardSale | undefined>(undefined);
 
   const [currentPage, setPage] = useState(Pages.bidList);
@@ -95,7 +102,24 @@ export default function BuySubTab(): JSX.Element | null {
               </Text>
             </Grid>
             <Box position="relative">
-              <CreateSaleForm />
+              <RewardTypeListProvider>
+                <RewardTypeListContext.Consumer>
+                  {({ types }) => {
+                    if (types) {
+                      return (
+                        <CreateSaleForm
+                          types={types}
+                          onFormSubmit={() => {
+                            setPage(Pages.bidList);
+                            mutate();
+                          }}
+                        />
+                      );
+                    }
+                    return <Box />;
+                  }}
+                </RewardTypeListContext.Consumer>
+              </RewardTypeListProvider>
             </Box>
           </AnimatedBox>
         )}
@@ -103,12 +127,17 @@ export default function BuySubTab(): JSX.Element | null {
         {/* Tab Content */}
         {currentPage === Pages.bidList && (
           <AnimatedBox
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
             initial={{
-              display: "block",
+              display: "grid",
               opacity: 0,
             }}
             animate={{
-              display: "block",
+              display: "grid",
               opacity: 1,
             }}
             exit={{
@@ -117,64 +146,122 @@ export default function BuySubTab(): JSX.Element | null {
                 display: "none",
               },
             }}
+            gridTemplateRows="max-content 1fr"
+            gridGap={space.xxxxs}
+            px={space.xxxxs}
+            py={space.xxxxs}
           >
-            <Grid
-              px={space.xxxxs}
-              py={space.xxxxs}
-              gridTemplateRows="max-content minmax(0, 1fr)"
-              gridGap={space.xxxxs}
-            >
-              <Box>
-                {isHost && (
-                  <Button
-                    w="100%"
-                    variant="outline-dark"
-                    onClick={() => setPage(Pages.createBid)}
+            <Box>
+              {isHost && (
+                <Button
+                  w="100%"
+                  variant="outline-dark"
+                  onClick={() => setPage(Pages.createBid)}
+                >
+                  <Flex
+                    alignItems="center"
+                    justifyContent="center"
+                    gridGap={space.xxxxs}
                   >
+                    <Text
+                      cursor="pointer"
+                      fontSize="inherit"
+                      fontWeight="inherit"
+                    >
+                      Add New
+                    </Text>
+                    <Icon fill color={colors.white[0]} icon="Add" size={18} />
+                  </Flex>
+                </Button>
+              )}
+            </Box>
+            <Box position="relative">
+              {(() => {
+                if (isValidating && !sales) {
+                  return (
                     <Flex
+                      flexDirection="column"
+                      gridGap={space.xxxxs}
+                      position="absolute"
+                      top={0}
+                      left={0}
+                      right={0}
+                      bottom={0}
+                      overflowY="auto"
+                    >
+                      {Array(3)
+                        .fill("")
+                        .map((_, index) => (
+                          <Shimmer key={index} h={120} />
+                        ))}
+                    </Flex>
+                  );
+                }
+
+                if (sales?.length === 0) {
+                  return (
+                    <Flex
+                      position="absolute"
+                      top={0}
+                      left={0}
+                      right={0}
                       alignItems="center"
                       justifyContent="center"
-                      gridGap={space.xxxxs}
+                      bottom={0}
+                      flexDirection="column"
                     >
-                      <Text
-                        cursor="pointer"
-                        fontSize="inherit"
-                        fontWeight="inherit"
-                      >
-                        Add New
+                      <Box position="relative" size={160}>
+                        <Image
+                          objectFit="contain"
+                          width={160}
+                          height={160}
+                          src={STATIC_IMAGES.ImageStoreHeader}
+                          alt="No Sale Rewards"
+                          layout="fill"
+                        />
+                      </Box>
+
+                      <Text color={colors.textTertiary}>
+                        Creator has not launched a sale yet.
                       </Text>
-                      <Icon fill color={colors.white[0]} icon="Add" size={18} />
                     </Flex>
-                  </Button>
-                )}
-              </Box>
-              <Flex flexDirection="column" gridGap={space.xxxxs}>
-                {(() => {
-                  if (isValidating && !sales) {
-                    return Array(3)
-                      .fill("")
-                      .map((_, index) => <Shimmer key={index} h={120} />);
-                  }
-                  return sales?.map((sale) => (
-                    <RewardCard
-                      cardType={RewardCardTypes.Sale}
-                      webinar={webinar}
-                      key={sale.id}
-                      title={sale.reward_detail.title}
-                      quantity={sale.quantity}
-                      buyers={sale.quantity_sold}
-                      price={sale.price}
-                      description={sale.reward_detail.description}
-                      image={sale.reward_detail.photo}
-                      onClickBuySale={() => {
-                        setBuySale(sale);
-                        setShowPurchaseModal(true);
-                      }}
-                    />
-                  ));
-                })()}
-              </Flex>
-            </Grid>
+                  );
+                }
+
+                return (
+                  <Flex
+                    flexDirection="column"
+                    gridGap={space.xxxxs}
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    right={0}
+                    bottom={0}
+                    overflowY="auto"
+                  >
+                    {sales?.map((sale) => (
+                      <RewardCard
+                        isActive={sale.is_active}
+                        paymentType={sale.payment_type}
+                        cardType={RewardCardTypes.Sale}
+                        webinar={webinar}
+                        key={sale.id}
+                        title={sale.reward_detail.title}
+                        quantity={sale.quantity}
+                        buyers={sale.quantity_sold}
+                        price={sale.price}
+                        description={sale.reward_detail.description}
+                        image={sale.reward_detail.photo}
+                        onClickBuySale={() => {
+                          setBuySale(sale);
+                          setShowPurchaseModal(true);
+                        }}
+                      />
+                    ))}
+                  </Flex>
+                );
+              })()}
+            </Box>
             {buySale && webinar.host_detail.creator_detail?.id && (
               <PayItemModal
                 creator={webinar.host_detail.creator_detail.id}
