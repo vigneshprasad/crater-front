@@ -6,7 +6,7 @@ import { SaleItem } from "@/tokens/types/store";
 
 import SaleItemSlide from "../SaleItemSlide";
 
-const HEIGHT = 540 * (9 / 16) + 240;
+const HEIGHT = 500 * (9 / 16) + 280;
 
 type IProps = {
   saleItems: SaleItem[];
