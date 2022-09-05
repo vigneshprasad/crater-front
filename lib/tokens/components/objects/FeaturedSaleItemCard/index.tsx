@@ -1,6 +1,14 @@
 import { useTheme } from "styled-components";
 
-import { Box, Flex, Icon, Image, Text } from "@/common/components/atoms";
+import {
+  Box,
+  Flex,
+  Grid,
+  Icon,
+  Image,
+  Span,
+  Text,
+} from "@/common/components/atoms";
 import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 type IProps = {
@@ -25,41 +33,51 @@ export default function FeaturedSaleItemCard({
       cursor={onClick ? "pointer" : "default"}
       onClick={() => onClick && onClick(saleItem.id)}
     >
-      {saleItem.photo && (
-        <Image
-          src={saleItem.photo}
-          alt={saleItem.title}
-          objectFit="cover"
-          boxProps={{
-            position: "relative",
-            w: 255,
-            h: 255,
-            borderRadius: radii.s,
-            overflow: "hidden",
-          }}
-        />
-      )}
-      <Text pt={space.xxs} textStyle="formLabel">
-        {saleItem.title}
-      </Text>
-      <Text
-        pt={space.xxxxs}
-        textStyle="body"
-        fontWeight={500}
-        color={colors.textQuartenary}
-        maxLines={3}
-        overflowY="auto"
+      <Grid
+        gridAutoFlow="row"
+        gridTemplateRows="1fr max-content max-content"
+        gridGap={space.xxs}
       >
-        {saleItem.description}
-      </Text>
-      <Flex pt={28} justifyContent="space-between" alignItems="center">
-        {payWithLearn && (
-          <Flex alignItems="center" gridGap={space.xxxxxs}>
-            <Text textStyle="menu">Pay with LEARN</Text>
-            <Icon icon="LearnToken" size={16} />
-          </Flex>
+        {saleItem.photo && (
+          <Image
+            src={saleItem.photo}
+            alt={saleItem.title}
+            objectFit="cover"
+            boxProps={{
+              position: "relative",
+              w: 255,
+              h: 255,
+              borderRadius: radii.s,
+              overflow: "hidden",
+            }}
+          />
         )}
-        {/* <Box
+        <Box>
+          <Text textStyle="formLabel">{saleItem.title}</Text>
+          <Text
+            pt={space.xxxxs}
+            textStyle="body"
+            fontWeight={500}
+            color={colors.textQuartenary}
+            maxLines={3}
+            overflowY="auto"
+          >
+            {saleItem.description}
+          </Text>
+          {saleItem.description && (
+            <Text textStyle="body" fontWeight={600} color={colors.accentLight}>
+              Show more
+            </Text>
+          )}
+        </Box>
+        <Flex justifyContent="space-between" alignItems="center">
+          {payWithLearn && (
+            <Flex alignItems="center" gridGap={space.xxxxxs}>
+              <Text textStyle="menu">Pay with LEARN</Text>
+              <Icon icon="LearnToken" size={16} />
+            </Flex>
+          )}
+          {/* <Box
           px={space.xxxs}
           py={10}
           bg={colors.primaryBackground}
@@ -70,7 +88,8 @@ export default function FeaturedSaleItemCard({
             <Text>21</Text>
           </Flex>
         </Box> */}
-      </Flex>
+        </Flex>
+      </Grid>
     </Box>
   );
 }
