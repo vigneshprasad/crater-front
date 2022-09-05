@@ -40,7 +40,7 @@ export default function StoreHeader(): JSX.Element {
   return (
     <Grid
       gridAutoFlow="column"
-      gridTemplateColumns="380px 1fr 1fr"
+      gridTemplateColumns="1fr 535px 1fr"
       gridGap={space.s}
     >
       <Box>
@@ -75,7 +75,7 @@ export default function StoreHeader(): JSX.Element {
           <Image src={STATIC_IMAGES.ImageStoreHeader} alt="Store Img" />
         </Box>
       </Box>
-      <Box w={200} h={200} justifySelf="end" alignSelf="center">
+      <Box w={200} h={200} justifySelf="center" alignSelf="center">
         <Image src="/images/img_store_header_arrow.png" alt="Store Img" />
       </Box>
     </Grid>
