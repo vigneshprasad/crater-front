@@ -74,6 +74,7 @@ export default function SaleItemSlider({
             const prev = activeItem - 1;
             setActiveItem(prev);
           }}
+          opacity={saleItems.length > 1 ? 1 : 0}
         />
         <IconButton
           buttonStyle="round-border"
@@ -85,6 +86,7 @@ export default function SaleItemSlider({
             const next = activeItem + 1;
             setActiveItem(next);
           }}
+          opacity={saleItems.length > 1 ? 1 : 0}
         />
       </Flex>
     </Grid>
