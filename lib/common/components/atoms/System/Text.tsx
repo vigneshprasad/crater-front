@@ -98,7 +98,7 @@ const variants = {
   },
   bodyLarge: {
     fontFamily: fonts.body,
-    fontSize: ["1.6rem"],
+    fontSize: ["1.5rem"],
     fontWeight: "500",
     lineHeight: ["2.4rem"],
   },
@@ -137,7 +137,7 @@ const variants = {
   small: {
     fontFamily: fonts.body,
     lineHeight: ["1.8rem"],
-    fontSize: ["1.2rem"],
+    fontSize: ["1rem"],
   },
   dropdownItem: {
     fontFamily: fonts.body,
@@ -204,6 +204,43 @@ const variants = {
     fontSize: ["1rem"],
     fontWeight: "600",
     lineHeight: ["1.3rem"],
+  },
+  segmentedTabTitle: {
+    fontFamily: fonts.body,
+    fontSize: ["1.2rem"],
+    fontWeight: "600",
+    lineHeight: ["1.7rem"],
+  },
+  inputLabel: {
+    fontFamily: fonts.body,
+    fontSize: ["1rem"],
+    fontWeight: "600",
+    lineHeight: ["1.2rem"],
+    textTransform: "uppercase",
+  },
+  notificationTitle: {
+    fontFamily: fonts.body,
+    fontSize: ["1.4rem"],
+    fontWeight: "500",
+    lineHeight: ["2.1rem"],
+  },
+  notificationDesc: {
+    fontFamily: fonts.body,
+    fontSize: ["1.2rem"],
+    fontWeight: "500",
+    lineHeight: ["1.8rem"],
+  },
+  gradientHeading: {
+    fontFamily: fonts.heading,
+    fontSize: "3.6rem",
+    fontWeight: "500",
+    lineHeight: "5.4rem",
+    letterSpacing: "0.03em",
+    background: "linear-gradient(65.32deg, #F1616A, #9146FF, #9DB3FF, #0D849E)",
+    backgroundClip: "text",
+    "-webkit-background-clip": "text",
+    "-webkit-text-fill-color": "transparent",
+    textFillColor: "transparent",
   },
   formLabel: {
     fontFamily: fonts.body,

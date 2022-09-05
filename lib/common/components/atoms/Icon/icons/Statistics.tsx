@@ -11,8 +11,8 @@ export default function Statistics(
       {...props}
     >
       <path
-        d="M3.99998 12.5H0.333313V4.5H3.99998V12.5ZM8.83331 0.5H5.16665V12.5H8.83331V0.5ZM13.6666 5.83333H9.99998V12.5H13.6666V5.83333Z"
-        fill="currentColor"
+        d="M4 12.5H.333v-8H4v8zM8.833.5H5.167v12h3.666V.5zm4.834 5.333H10V12.5h3.667V5.833z"
+        fill="#EDEDED"
       />
     </svg>
   );

@@ -28,7 +28,7 @@ const colors = {
     "rgba(288,288,288,0.4)",
   ],
   blackAlpha: ["rgba(0,0,0,0.1)", "rgba(0,0,0,0.4)"],
-  error: "#FF6628",
+  error: "#FA5B5B",
   errorDeep: "#CC5D2F",
   twitter: "#1DA1F2",
   linkedin: "#2867B2",
@@ -69,9 +69,10 @@ const colors = {
   primaryDarkSecondary: "#2B2B2B",
   textPrimary: "#FFFFFF",
   outline: "rgba(237, 237, 237, 0.6)",
-  textPlaceholder: "#787878",
+  textPlaceholder: "#959595",
   iconColor: "#FFFFFF",
   overlay: "rgba(0,0,0,0.7)",
+  "red-500": "#FA5B5B",
 };
 
 export default colors;
