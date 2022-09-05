@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
@@ -101,7 +102,7 @@ export default function HubChannelStatisticsTab({
               color={colors.textTertiary}
               textTransform="uppercase"
             >
-              FRI, 03 JUNE 2022
+              {DateTime.now().toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}
             </Text>
             <Text
               textStyle="label"
