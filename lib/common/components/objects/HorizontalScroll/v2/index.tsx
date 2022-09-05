@@ -10,10 +10,12 @@ import {
   GridProps,
   Icon,
   Text,
+  TextProps,
 } from "@/common/components/atoms";
 
 type IProps = GridProps & {
   title?: string;
+  titleProps?: TextProps;
 };
 
 const Container = styled(Grid)`
@@ -25,6 +27,7 @@ const Container = styled(Grid)`
 
 export default function HorizontalScroll({
   title,
+  titleProps,
   children,
   ...rest
 }: IProps): JSX.Element {
@@ -75,7 +78,12 @@ export default function HorizontalScroll({
 
   return (
     <Box>
-      <Flex px={space.m} justifyContent="space-between" alignItems="center">
+      <Flex
+        px={space.m}
+        justifyContent="space-between"
+        alignItems="center"
+        {...titleProps}
+      >
         {title && (
           <Text textStyle="headline5" fontWeight={600}>
             {title}

@@ -49,12 +49,13 @@ export default function TopSellersList({
 
       <HorizontalScroll
         title="Top Sellers 💯"
-        px={space.m}
+        px={space.l}
         maxWidth="100%"
         gridAutoFlow="column"
         gridAutoColumns="235px"
         gridGap={space.xs}
         overflowX="scroll"
+        titleProps={{ px: space.l }}
       >
         {loading || !sellers
           ? Array(5)
