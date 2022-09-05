@@ -55,12 +55,12 @@ export default function StoreTabs({ activeTab }: IProps): JSX.Element {
                   <Box
                     px={space.xxxxs}
                     py={space.xxxxxs}
-                    bg="#FFD700"
+                    bg={colors.primaryBanner}
                     position="absolute"
                     top={-20}
                     borderRadius={2}
                   >
-                    <Text textStyle="small" fontWeight={700} color="#A80808">
+                    <Text textStyle="small" fontWeight={700}>
                       Coming Soon
                     </Text>
                   </Box>

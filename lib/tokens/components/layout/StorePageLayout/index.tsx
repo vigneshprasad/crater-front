@@ -38,21 +38,21 @@ export default function StorePageLayout({
           `}
       gridGap={space.s}
     >
-      <Box gridArea="header" px={space.m}>
+      <Box gridArea="header" px={space.l}>
         {header}
       </Box>
-      <Box gridArea="tabs" pt={space.s} px={space.m}>
+      <Box gridArea="tabs" pt={space.s} px={space.l}>
         {tabs}
       </Box>
-      <Box gridArea="featured" px={space.m}>
+      <Box gridArea="featured" px={space.l}>
         {featured}
       </Box>
-      <Box gridArea="explore" px={space.m}>
+      <Box gridArea="explore" px={space.l}>
         {explore}
       </Box>
       <Box gridArea="top-sellers">{topSellers}</Box>
       {liveStreams && <Box gridArea="live-streams">{liveStreams}</Box>}
-      <Box gridArea="static-section" px={space.m}>
+      <Box gridArea="static-section" px={space.l}>
         {staticSection}
       </Box>
     </Grid>
