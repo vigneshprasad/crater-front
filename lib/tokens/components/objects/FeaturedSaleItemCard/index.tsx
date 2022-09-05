@@ -1,14 +1,6 @@
 import { useTheme } from "styled-components";
 
-import {
-  Box,
-  Flex,
-  Grid,
-  Icon,
-  Image,
-  Span,
-  Text,
-} from "@/common/components/atoms";
+import { Box, Flex, Grid, Icon, Image, Text } from "@/common/components/atoms";
 import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 type IProps = {
