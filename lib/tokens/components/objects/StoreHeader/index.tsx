@@ -71,11 +71,11 @@ export default function StoreHeader(): JSX.Element {
         </Box>
       </Box>
       <Box position="relative" alignSelf="end" justifySelf="start">
-        <Box w={535} h={430} position="absolute" left={-50} bottom={-50}>
+        <Box w={535} h={430} position="absolute" left={-20} bottom={-50}>
           <Image src={STATIC_IMAGES.ImageStoreHeader} alt="Store Img" />
         </Box>
       </Box>
-      <Box w={200} h={200} justifySelf="center" alignSelf="center">
+      <Box w={200} h={200} justifySelf="end" alignSelf="center">
         <Image src="/images/img_store_header_arrow.png" alt="Store Img" />
       </Box>
     </Grid>
