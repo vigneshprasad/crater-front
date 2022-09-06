@@ -70,9 +70,9 @@ export default function PayItemModal({
 
     showNotification(
       {
-        title: "Purchase Successful",
+        title: "Creator has been notified!",
         description:
-          "Our team will connect you with the creator after the stream ends.",
+          "You will get a payment confirmation from the creator soon.",
         iconProps: {
           icon: "CheckCircle",
           color: colors.greenSuccess,
