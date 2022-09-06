@@ -79,7 +79,7 @@ export default function ContainerModal({
               event.stopPropagation();
             }}
           >
-            <Flex py={4} h={12} alignItems="center" justifyContent="center">
+            <Flex py={12} h={12} alignItems="center" justifyContent="center">
               <Box w={40} h={4} borderRadius={24} bg={colors.secondaryLight} />
             </Flex>
             <Flex

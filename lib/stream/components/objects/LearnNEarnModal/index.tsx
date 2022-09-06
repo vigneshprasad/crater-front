@@ -121,6 +121,7 @@ export default function LearnNEarnModal(): JSX.Element {
                       animation="Burn"
                       label="LEARN Burned:"
                       rotation={225}
+                      value={userMeta?.learn_burned}
                     />
                   </Flex>
                 </Grid>

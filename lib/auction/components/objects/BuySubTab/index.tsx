@@ -6,6 +6,7 @@ import { useTheme } from "styled-components";
 import Image from "next/image";
 
 import useRewardSalesList from "@/auction/context/RewardSalesListContext";
+import { SalePaymentType } from "@/auction/types/sales";
 import { RewardSale } from "@/auction/types/sales";
 import useAuth from "@/auth/context/AuthContext";
 import {
@@ -25,6 +26,7 @@ import {
 } from "@/tokens/context/RewardTypeListContext";
 
 import CreateSaleForm from "../../forms/CreateSaleForm";
+import LearnItemModal from "../LearnItemModal";
 import PayItemModal from "../PayItemModal";
 import RewardCard, { RewardCardTypes } from "../RewardCard";
 
@@ -39,6 +41,7 @@ export default function BuySubTab(): JSX.Element | null {
   const { webinar } = useWebinar();
   const { user } = useAuth();
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [showLearnPurchaseModal, setShowLearnPurchaseModal] = useState(false);
   const { sales, isValidating, mutate } = useRewardSalesList();
   const [buySale, setBuySale] = useState<RewardSale | undefined>(undefined);
 
@@ -254,7 +257,13 @@ export default function BuySubTab(): JSX.Element | null {
                         image={sale.reward_detail.photo}
                         onClickBuySale={() => {
                           setBuySale(sale);
-                          setShowPurchaseModal(true);
+                          if (sale.payment_type === SalePaymentType.UPI) {
+                            setShowPurchaseModal(true);
+                          }
+
+                          if (sale.payment_type === SalePaymentType.LEARN) {
+                            setShowLearnPurchaseModal(true);
+                          }
                         }}
                       />
                     ))}
@@ -268,6 +277,15 @@ export default function BuySubTab(): JSX.Element | null {
                 sale={buySale}
                 visible={showPurchaseModal}
                 onClose={() => setShowPurchaseModal(false)}
+              />
+            )}
+
+            {buySale && webinar.host_detail.creator_detail?.id && (
+              <LearnItemModal
+                creator={webinar.host_detail.creator_detail.id}
+                sale={buySale}
+                visible={showLearnPurchaseModal}
+                onClose={() => setShowLearnPurchaseModal(false)}
               />
             )}
           </AnimatedBox>

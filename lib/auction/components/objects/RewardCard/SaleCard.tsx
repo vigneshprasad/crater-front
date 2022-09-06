@@ -81,10 +81,24 @@ export default function SaleCard({
           </Text>
         ) : (
           <Text textStyle="bodyLarge" fontWeight="600">
-            ₹{price}{" "}
-            <Span color={colors.textQuartenary} fontSize="1rem">
-              (Buyers: {buyers})
-            </Span>
+            {(() => {
+              switch (paymentType) {
+                case SalePaymentType.UPI:
+                  return <>₹{price}</>;
+                case SalePaymentType.LEARN:
+                  return (
+                    <Flex alignItems="center" gridGap={space.xxxxxs}>
+                      <Text fontSize="1.4rem">
+                        {price} <StyledSpan>LEARN</StyledSpan>
+                      </Text>
+                      <Icon icon="LearnToken" size={16} />
+                      <Text color={colors.textQuartenary} fontSize="1rem">
+                        (Buyers: {buyers})
+                      </Text>
+                    </Flex>
+                  );
+              }
+            })()}
           </Text>
         )}
 

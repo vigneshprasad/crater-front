@@ -5,11 +5,7 @@ import useSWR from "swr";
 import Image from "next/image";
 
 import SaleApiClient from "@/auction/api/SaleApiClient";
-import {
-  RewardSale,
-  RewardSaleLog,
-  SalePaymentType,
-} from "@/auction/types/sales";
+import { RewardSale, RewardSaleLog } from "@/auction/types/sales";
 import {
   Box,
   Text,
@@ -21,6 +17,7 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import ContainerModal from "@/common/components/objects/ContainerModal";
+import { useNotifications } from "@/common/components/objects/NotificationStack/context";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { CreatorUpiInfo } from "@/creators/types/creator";
 
@@ -37,6 +34,7 @@ export default function PayItemModal({
   visible,
   onClose,
 }: IProps): JSX.Element {
+  const { showNotification } = useNotifications();
   const { data: upiInfo } = useSWR<CreatorUpiInfo>(
     API_URL_CONSTANTS.creator.retrieveCreatorUpiInfo(creator)
   );
@@ -47,16 +45,42 @@ export default function PayItemModal({
       reward_sale: sale.id,
       quantity: 1,
       price: sale.price,
-      payment_type: SalePaymentType.UPI,
+      payment_type: sale.payment_type,
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [res, err] = await SaleApiClient().postRewardSaleLog(data);
 
     if (err) {
+      showNotification(
+        {
+          title: "Payment failed",
+          description: "Something went wrong try agian later.",
+          iconProps: {
+            icon: "AlertCircle",
+            color: colors.error,
+          },
+        },
+        30 * 1000,
+        true
+      );
+      onClose();
       return;
     }
 
-    console.log(res);
+    showNotification(
+      {
+        title: "Purchase Successful",
+        description:
+          "Our team will connect you with the creator after the stream ends.",
+        iconProps: {
+          icon: "CheckCircle",
+          color: colors.greenSuccess,
+        },
+      },
+      30000,
+      true
+    );
 
     onClose();
 

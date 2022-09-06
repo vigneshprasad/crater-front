@@ -396,7 +396,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
         },
       },
       success: {
-        bg: "greenSuccess",
+        bg: "#36A15E",
         px: "0.8em",
         py: "0.4em",
         transition: "all 0.1s ease-in",
@@ -411,7 +411,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
         },
       },
       failure: {
-        bg: "error",
+        bg: "#FA5B5B",
         px: "0.8em",
         py: "0.4em",
         transition: "all 0.1s ease-in",
