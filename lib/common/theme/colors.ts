@@ -18,7 +18,7 @@ const colors = {
   red: ["#E53834", "#db2d16", "#FF7A68"],
   white: ["#FFFFFF", "#b9b9b9"],
   lightGrey: "#8C8C8C",
-  greenSuccess: "#35AF27",
+  greenSuccess: "#7AD772",
   yellow: ["#FFD231"],
   green: ["#6AD361"],
   whiteAlpha: [
