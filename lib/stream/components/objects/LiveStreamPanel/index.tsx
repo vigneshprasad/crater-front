@@ -56,7 +56,8 @@ interface IProps {
 
 const GradientBorder = styled(Box)`
   position: relative;
-  padding: 0.5em 0.8em;
+  padding: 12px 16px;
+  width: 100%;
 
   &::before {
     content: "";
@@ -165,33 +166,65 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       )}
       <ContainerModal visible={visibleModal} heading="PURCHASE REQUEST">
         {purchaseRequest && (
-          <Flex gridGap={space.xxs} flexDirection="column" alignItems="center">
-            <Text m={space.xs}>Payment Confirmation</Text>
+          <Flex
+            gridGap={space.xxs}
+            flexDirection="column"
+            px={space.xxxxs}
+            py={space.xxs}
+            w="100%"
+          >
+            <Text
+              w="max-content"
+              p={4}
+              textAlign="center"
+              borderRadius={4}
+              bg={colors.primaryLight}
+              m="0 auto"
+            >
+              Payment Confirmation
+            </Text>
 
             <GradientBorder>
               <Text>
                 {purchaseRequest.reward_sale_detail.reward_detail.title}
               </Text>
             </GradientBorder>
-            <Text>
-              <Span fontWeight="600">₹${purchaseRequest.price}</Span> paid by{" "}
-              <Span fontWeight="600">{purchaseRequest.user_detail.name}</Span>.
-              Please confirm.
+            <Text
+              fontSize="1.4rem"
+              color={colors.textTertiary}
+              textAlign="center"
+            >
+              <Span
+                color={colors.textPrimary}
+                fontSize="1.6rem"
+                fontWeight="600"
+              >
+                ₹{purchaseRequest.price}
+              </Span>{" "}
+              paid by{" "}
+              <Span
+                color={colors.textPrimary}
+                fontSize="1.6rem"
+                fontWeight="600"
+              >
+                {purchaseRequest.user_detail.name}
+              </Span>
+              . Please confirm.
             </Text>
-            <Flex gridGap={space.xxs} p={space.xxxs}>
+            <Grid gridGap={space.xxs} gridTemplateColumns="1fr 1fr">
               <Button
-                flex="1"
+                w="100%"
                 variant="success"
                 label="Received"
                 onClick={() => acceptSale()}
               />
               <Button
-                flex="1"
+                w="100%"
                 variant="failure"
                 label="Not Received"
                 onClick={() => declineSale()}
               />
-            </Flex>
+            </Grid>
           </Flex>
         )}
       </ContainerModal>

@@ -51,7 +51,7 @@ export default function CreateSaleForm({
           validators: [],
         },
         price: {
-          intialValue: 50,
+          intialValue: 100,
           validators: [
             {
               validator: Validators.required,
@@ -60,7 +60,7 @@ export default function CreateSaleForm({
           ],
         },
         quantity: {
-          intialValue: 50,
+          intialValue: 1,
           validators: [
             {
               validator: Validators.required,
@@ -199,7 +199,11 @@ export default function CreateSaleForm({
                 </Flex>
               }
             />
-            <QuantityInput label="Quantity" />
+            <QuantityInput
+              label="Quantity"
+              value={fields.quantity.value}
+              onChange={(val) => fieldValueSetter("quantity", val)}
+            />
           </Flex>
 
           <Select<RewardType>

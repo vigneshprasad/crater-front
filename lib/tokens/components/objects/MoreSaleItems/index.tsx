@@ -1,17 +1,12 @@
-import styled, { useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
-import { Box, Grid, Shimmer, Text } from "@/common/components/atoms";
+import { Box, Shimmer, Text } from "@/common/components/atoms";
+import MasonryLayout from "@/common/components/objects/MasonryLayout";
 import useRewardSaleItemsList from "@/tokens/context/RewardSaleItemsListContext";
 
 import SaleItemCard from "../SaleItemCard";
-
-const StyledGrid = styled(Grid)`
-  .large {
-    grid-row: auto / span 2;
-  }
-`;
 
 export default function MoreSaleItems(): JSX.Element {
   const { space, radii } = useTheme();
@@ -35,20 +30,13 @@ export default function MoreSaleItems(): JSX.Element {
         }
 
         return (
-          <StyledGrid
-            gridAutoFlow="row dense"
-            gridTemplateColumns="repeat(auto-fill, 278px)"
-            gridGap={space.xs}
-          >
+          <MasonryLayout itemSelector=".sale-item-masonry">
             {saleItems?.map((saleItem) => (
-              <Box
-                key={saleItem.id}
-                className={saleItem.photo ? "large" : undefined}
-              >
+              <Box my={12} key={saleItem.id} className="sale-item-masonry">
                 <SaleItemCard saleItem={saleItem} onClick={openSaleItem} />
               </Box>
             ))}
-          </StyledGrid>
+          </MasonryLayout>
         );
       })()}
     </Box>
