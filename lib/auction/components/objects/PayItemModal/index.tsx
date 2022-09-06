@@ -50,13 +50,12 @@ export default function PayItemModal({
       payment_type: SalePaymentType.UPI,
     };
 
-    const [res, err] = await SaleApiClient().postRewardSaleLog(data);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, err] = await SaleApiClient().postRewardSaleLog(data);
 
     if (err) {
       return;
     }
-
-    console.log(res);
 
     onClose();
 
