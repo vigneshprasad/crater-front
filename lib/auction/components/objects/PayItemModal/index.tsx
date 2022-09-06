@@ -5,11 +5,7 @@ import useSWR from "swr";
 import Image from "next/image";
 
 import SaleApiClient from "@/auction/api/SaleApiClient";
-import {
-  RewardSale,
-  RewardSaleLog,
-  SalePaymentType,
-} from "@/auction/types/sales";
+import { RewardSale, RewardSaleLog } from "@/auction/types/sales";
 import {
   Box,
   Text,
@@ -47,7 +43,7 @@ export default function PayItemModal({
       reward_sale: sale.id,
       quantity: 1,
       price: sale.price,
-      payment_type: SalePaymentType.UPI,
+      payment_type: sale.payment_type,
     };
 
     const [res, err] = await SaleApiClient().postRewardSaleLog(data);
