@@ -68,8 +68,8 @@ export default function PayItemStaticModal({
 
     showNotification(
       {
-        title:
-          "Thank you for your confirmation. The Crater team will get in touch with you shortly.",
+        title: "Payment Confirmed",
+        description: "The Crater team will get in touch with you shortly.",
         iconProps: {
           icon: "CheckCircle",
           color: colors.greenSuccess,
