@@ -48,6 +48,8 @@ export default function RewardSalePayment({ sale }: IProps): JSX.Element {
 
   const { payment_type, price, reward_detail } = sale;
   const payWithLearn = payment_type === SalePaymentType.LEARN;
+  const disableBuyNow =
+    user?.pk === reward_detail.creator_detail.user || sale.is_active === false;
 
   return (
     <Flex flexDirection="column">
@@ -181,7 +183,11 @@ export default function RewardSalePayment({ sale }: IProps): JSX.Element {
         bottom={0}
         borderTop={`1px solid ${colors.primaryLight}`}
       >
-        <Flex justifyContent="space-between" alignItems="center">
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          gridGap={space.s}
+        >
           <Box>
             <Text
               pb={space.xxxxxs}
@@ -202,17 +208,16 @@ export default function RewardSalePayment({ sale }: IProps): JSX.Element {
               <Text textStyle="formLabel">₹{price}</Text>
             )}
           </Box>
-          {user?.pk !== reward_detail.creator_detail.user && (
-            <Button
-              w={280}
-              minHeight={44}
-              label="Buy Now 🎉"
-              textProps={{ fontSize: "1.6rem" }}
-              onClick={() => {
-                user ? setShowPurchaseModal(true) : openModal();
-              }}
-            />
-          )}
+          <Button
+            w={280}
+            minHeight={44}
+            label="Buy Now 🎉"
+            textProps={{ fontSize: "1.6rem" }}
+            onClick={() => {
+              user ? setShowPurchaseModal(true) : openModal();
+            }}
+            disabled={disableBuyNow}
+          />
         </Flex>
       </Box>
 
