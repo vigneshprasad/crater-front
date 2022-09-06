@@ -20,6 +20,7 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import ContainerModal from "@/common/components/objects/ContainerModal";
+import { useNotifications } from "@/common/components/objects/NotificationStack/context";
 import { CRATER_UPI_ID } from "@/common/constants/global.constants";
 
 interface IProps {
@@ -35,6 +36,7 @@ export default function PayItemStaticModal({
 }: IProps): JSX.Element {
   const { colors, space } = useTheme();
   const [loading, setLoading] = useState(false);
+  const { showNotification } = useNotifications();
 
   async function postRewardSaleLog(): Promise<void> {
     await setLoading(true);
@@ -49,8 +51,33 @@ export default function PayItemStaticModal({
     const [_, err] = await SaleApiClient().postRewardSaleLog(data);
 
     if (err) {
+      showNotification(
+        {
+          title: "Something went wrong",
+          description: "Please try again later.",
+          iconProps: {
+            icon: "AlertCircle",
+            color: colors.error,
+          },
+        },
+        30000,
+        true
+      );
       return;
     }
+
+    showNotification(
+      {
+        title:
+          "Thank you for your confirmation. The Crater team will get in touch with you shortly.",
+        iconProps: {
+          icon: "CheckCircle",
+          color: colors.greenSuccess,
+        },
+      },
+      30000,
+      true
+    );
 
     await setLoading(false);
     onClose();
@@ -83,7 +110,7 @@ export default function PayItemStaticModal({
           <Span color={colors.textPrimary} fontWeight="700">
             ₹{sale.price}
           </Span>{" "}
-          to Crater via UPI
+          via UPI
         </Text>
 
         <Text
@@ -107,8 +134,8 @@ export default function PayItemStaticModal({
         <Button
           w={364}
           h={44}
-          label="I made the payment, notify creator"
-          suffixElement={loading && <Spinner />}
+          label="Confirm Payment"
+          suffixElement={loading && <Spinner size={24} />}
           onClick={postRewardSaleLog}
           disabled={loading}
         />
