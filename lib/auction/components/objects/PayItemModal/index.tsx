@@ -17,6 +17,7 @@ import {
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import ContainerModal from "@/common/components/objects/ContainerModal";
+import { useNotifications } from "@/common/components/objects/NotificationStack/context";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { CreatorUpiInfo } from "@/creators/types/creator";
 
@@ -33,6 +34,7 @@ export default function PayItemModal({
   visible,
   onClose,
 }: IProps): JSX.Element {
+  const { showNotification } = useNotifications();
   const { data: upiInfo } = useSWR<CreatorUpiInfo>(
     API_URL_CONSTANTS.creator.retrieveCreatorUpiInfo(creator)
   );
@@ -46,13 +48,39 @@ export default function PayItemModal({
       payment_type: sale.payment_type,
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [res, err] = await SaleApiClient().postRewardSaleLog(data);
 
     if (err) {
+      showNotification(
+        {
+          title: "Payment failed",
+          description: "Something went wrong try agian later.",
+          iconProps: {
+            icon: "AlertCircle",
+            color: colors.error,
+          },
+        },
+        30 * 1000,
+        true
+      );
+      onClose();
       return;
     }
 
-    console.log(res);
+    showNotification(
+      {
+        title: "Purchase Successful",
+        description:
+          "Our team will connect you with the creator after the stream ends.",
+        iconProps: {
+          icon: "CheckCircle",
+          color: colors.greenSuccess,
+        },
+      },
+      30000,
+      true
+    );
 
     onClose();
 

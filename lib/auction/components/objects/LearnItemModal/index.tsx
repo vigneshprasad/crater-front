@@ -73,7 +73,7 @@ export default function LearnItemModal({
 
     showNotification(
       {
-        title: "Purchase Succesful",
+        title: "Purchase Successful",
         description:
           "Our team will connect you with the creator after the stream ends.",
         iconProps: {
