@@ -48,6 +48,7 @@ export default function LearnItemModal({
       payment_type: sale.payment_type,
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [res, err] = await SaleApiClient().postRewardSaleLog(data);
 
     if (err) {
@@ -69,8 +70,6 @@ export default function LearnItemModal({
       onClose();
       return;
     }
-
-    console.log(res);
 
     showNotification(
       {

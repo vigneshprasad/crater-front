@@ -44,8 +44,6 @@ export default function SaleCard({
 
   const isHost = webinar.host === user.pk;
 
-  console.log(paymentType);
-
   return (
     <Flex
       border={`1px solid ${colors.primaryLight}`}
