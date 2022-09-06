@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTheme } from "styled-components";
 
 import { Box, Flex, Shimmer, Text } from "@/common/components/atoms";
-import useRewardSaleFeaturedItemsList from "@/tokens/context/RewardSaleFeaturedItemsListContext";
+import useRewardSaleFeaturedItemsList from "@/tokens/context/RewardSalesFeaturedListContext";
 
 import BuyNowBox from "../BuyNowBox";
 import SaleItemSlider from "../SaleItemSlider";
@@ -10,7 +10,7 @@ import SaleItemSlider from "../SaleItemSlider";
 export default function TopItemsForSale(): JSX.Element {
   const { space, radii } = useTheme();
   const [activeItem, setActiveItem] = useState(0);
-  const { saleItems, loading } = useRewardSaleFeaturedItemsList();
+  const { sales, loading } = useRewardSaleFeaturedItemsList();
 
   return (
     <Box>
@@ -18,16 +18,16 @@ export default function TopItemsForSale(): JSX.Element {
         Top Items for Sale 🔥
       </Text>
 
-      {!saleItems || loading ? (
+      {!sales || loading ? (
         <Shimmer w="100%" h={450} borderRadius={radii.xxxxs} />
       ) : (
         <Flex justifyContent="space-evenly" gridGap={space.xl}>
           <SaleItemSlider
-            saleItems={saleItems}
+            sales={sales}
             activeItem={activeItem}
             setActiveItem={setActiveItem}
           />
-          <BuyNowBox saleItem={saleItems[activeItem]} />
+          <BuyNowBox sale={sales[activeItem]} />
         </Flex>
       )}
     </Box>

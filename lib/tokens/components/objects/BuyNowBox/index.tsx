@@ -1,16 +1,16 @@
 import { useTheme } from "styled-components";
 
+import { RewardSale } from "@/auction/types/sales";
 import { Box } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
-import { SaleItem } from "@/tokens/types/store";
 
 import SaleItemInfo from "../SaleItemInfo";
 
 type IProps = {
-  saleItem: SaleItem;
+  sale: RewardSale;
 };
 
-export default function BuyNowBox({ saleItem }: IProps): JSX.Element {
+export default function BuyNowBox({ sale }: IProps): JSX.Element {
   const { radii } = useTheme();
 
   return (
@@ -22,11 +22,7 @@ export default function BuyNowBox({ saleItem }: IProps): JSX.Element {
       background="linear-gradient(147.18deg, rgba(79, 119, 167, 0.16) 8.77%, rgba(79, 119, 167, 0) 81.65%)"
       borderRadius={radii.s}
     >
-      <SaleItemInfo
-        creator={saleItem.creator_detail.name}
-        saleItem={saleItem}
-        showPrice={true}
-      />
+      <SaleItemInfo sale={sale} showPrice={true} />
 
       <Button
         mt={24}

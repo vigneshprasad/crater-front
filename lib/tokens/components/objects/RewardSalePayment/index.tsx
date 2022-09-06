@@ -2,9 +2,9 @@ import STATIC_IMAGES from "public/images";
 import { useMemo, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
+import { RewardSale, SalePaymentType } from "@/auction/types/sales";
 import { Box, Flex, Icon, Image, Span, Text } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
-import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 import SaleItemInfo from "../SaleItemInfo";
 
@@ -45,16 +45,16 @@ const RewardSalePaymentSteps = [
 ];
 
 type IProps = {
-  saleItem: SaleItem;
+  sale: RewardSale;
 };
 
-export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
+export default function RewardSalePayment({ sale }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [infoSheet, setInfoSheet] = useState(false);
 
-  const rewardSale = saleItem.reward_sale_details[0];
-  const payWithLearn = rewardSale.payment_type === RewardSalePaymentType.Learn;
+  const { payment_type, price, reward_detail } = sale;
+  const payWithLearn = payment_type === SalePaymentType.LEARN;
 
   const pages = useMemo<
     {
@@ -67,11 +67,7 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
         key: RewardSalePaymentFlow.SaleItemDisplay,
         display: (
           <Box py={20} pl={space.xs} pr={24}>
-            <SaleItemInfo
-              creator={saleItem.creator_detail.name}
-              saleItem={saleItem}
-              showPrice={false}
-            />
+            <SaleItemInfo sale={sale} showPrice={false} />
           </Box>
         ),
       },
@@ -95,7 +91,7 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
         display: <Text>Purchase Success</Text>,
       },
     ];
-  }, [space, colors, saleItem]);
+  }, [space, colors, sale]);
 
   return (
     <Flex flexDirection="column">
@@ -141,10 +137,10 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
 
         <Box pt={28}>
           <Flex pb={space.xxxs} gridGap={24}>
-            {saleItem.photo ? (
+            {reward_detail.photo ? (
               <Image
-                src={saleItem.photo}
-                alt={saleItem.title}
+                src={reward_detail.photo}
+                alt={reward_detail.title}
                 objectFit="cover"
                 boxProps={{
                   w: 115,
@@ -157,7 +153,7 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
             ) : (
               <Image
                 src={STATIC_IMAGES.ImageDefaultSaleItem}
-                alt={saleItem.title}
+                alt={reward_detail.title}
                 boxProps={{
                   w: 56,
                   h: 56,
@@ -167,10 +163,10 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
               />
             )}
             <Text pt={space.xxxxs} textStyle="formLabel">
-              {saleItem.title}
+              {reward_detail.title}
             </Text>
           </Flex>
-          {saleItem.description && (
+          {reward_detail.description && (
             <Flex
               px={space.xxxs}
               py={space.xxxxxs}
@@ -209,7 +205,7 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
               borderRadius="0px 0px 4px 4px"
             >
               <Text textStyle="body" fontWeight={500} lineHeight="2.1rem">
-                {saleItem.description}
+                {reward_detail.description}
               </Text>
             </StyledBox>
           )}
@@ -246,12 +242,12 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
               {payWithLearn ? (
                 <Flex alignItems="center" gridGap={space.xxxxxs}>
                   <Text textStyle="formLabel">
-                    {rewardSale.price} <StyledSpan>LEARN</StyledSpan>
+                    {price} <StyledSpan>LEARN</StyledSpan>
                   </Text>
                   <Icon icon="LearnToken" size={20} />
                 </Flex>
               ) : (
-                <Text textStyle="formLabel">₹{rewardSale.price}</Text>
+                <Text textStyle="formLabel">₹{price}</Text>
               )}
             </Box>
             <Button

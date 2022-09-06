@@ -1,19 +1,19 @@
 import { AxiosError } from "axios";
 import { GetSessionOptions } from "next-auth/client";
 
+import { RewardSale } from "@/auction/types/sales";
 import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ApiResult } from "@/common/types/api";
 
-import { SaleItem } from "../types/store";
 import { Reward } from "../types/token";
 
 interface IRewardApiClient {
   getRewardsList: () => Promise<ApiResult<Reward[], AxiosError>>;
   retrieveReward: (rewardId: string) => Promise<ApiResult<Reward, AxiosError>>;
-  retrieveRewardSaleItem: (
-    saleItemId: string
-  ) => Promise<ApiResult<SaleItem, AxiosError>>;
+  retrieveRewardSale: (
+    id: string
+  ) => Promise<ApiResult<RewardSale, AxiosError>>;
 }
 
 export default function RewardApiClient(
@@ -46,12 +46,12 @@ export default function RewardApiClient(
     }
   }
 
-  async function retrieveRewardSaleItem(
-    saleItemId: string
-  ): Promise<ApiResult<SaleItem, AxiosError>> {
+  async function retrieveRewardSale(
+    id: string
+  ): Promise<ApiResult<RewardSale, AxiosError>> {
     try {
-      const { data } = await client.get<SaleItem>(
-        `${API_URL_CONSTANTS.store.getRewardSaleItems}${saleItemId}/`
+      const { data } = await client.get<RewardSale>(
+        API_URL_CONSTANTS.sales.retrieveRewardSale(id)
       );
 
       return [data, undefined];
@@ -63,6 +63,6 @@ export default function RewardApiClient(
   return {
     getRewardsList,
     retrieveReward,
-    retrieveRewardSaleItem,
+    retrieveRewardSale,
   };
 }

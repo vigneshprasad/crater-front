@@ -21,11 +21,6 @@ export const STORE_ITEMS: IStoreItem[] = [
   },
 ];
 
-export enum RewardSalePaymentType {
-  INR = 1,
-  Learn = 2,
-}
-
 export interface CreatorDetail {
   id: number;
   name: string;
@@ -37,23 +32,4 @@ export interface Seller {
   user: string;
   is_subscriber: boolean;
   profile_detail: CreatorDetail;
-}
-
-export interface RewardSale {
-  id: number;
-  payment_type: RewardSalePaymentType;
-  price: number;
-  quantity: number;
-  quantity_sold: number;
-  reward: number;
-}
-
-export interface SaleItem {
-  id: number;
-  creator: number;
-  title: string;
-  description?: string;
-  photo: string | null;
-  creator_detail: CreatorDetail;
-  reward_sale_details: RewardSale[];
 }

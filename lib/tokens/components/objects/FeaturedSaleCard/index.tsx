@@ -1,21 +1,20 @@
 import { useTheme } from "styled-components";
 
+import { RewardSale, SalePaymentType } from "@/auction/types/sales";
 import { Box, Flex, Grid, Icon, Image, Text } from "@/common/components/atoms";
-import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 type IProps = {
-  saleItem: SaleItem;
+  sale: RewardSale;
   onClick?: (saleItemId: number) => void;
 };
 
-export default function FeaturedSaleItemCard({
-  saleItem,
+export default function FeaturedSaleCard({
+  sale,
   onClick,
 }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
 
-  const rewardSale = saleItem.reward_sale_details[0];
-  const payWithLearn = rewardSale.payment_type === RewardSalePaymentType.Learn;
+  const payWithLearn = sale.payment_type === SalePaymentType.LEARN;
 
   return (
     <Box
@@ -23,17 +22,17 @@ export default function FeaturedSaleItemCard({
       p={space.xs}
       bg={colors.primaryDark}
       cursor={onClick ? "pointer" : "default"}
-      onClick={() => onClick && onClick(saleItem.id)}
+      onClick={() => onClick && onClick(sale.id)}
     >
       <Grid
         gridAutoFlow="row"
         gridTemplateRows="1fr max-content max-content"
         gridGap={space.xxs}
       >
-        {saleItem.photo && (
+        {sale.reward_detail.photo && (
           <Image
-            src={saleItem.photo}
-            alt={saleItem.title}
+            src={sale.reward_detail.photo}
+            alt={sale.reward_detail.title}
             objectFit="cover"
             boxProps={{
               position: "relative",
@@ -45,7 +44,7 @@ export default function FeaturedSaleItemCard({
           />
         )}
         <Box>
-          <Text textStyle="formLabel">{saleItem.title}</Text>
+          <Text textStyle="formLabel">{sale.reward_detail.title}</Text>
           <Text
             pt={space.xxxxs}
             textStyle="body"
@@ -54,9 +53,9 @@ export default function FeaturedSaleItemCard({
             maxLines={3}
             overflowY="auto"
           >
-            {saleItem.description}
+            {sale.reward_detail.description}
           </Text>
-          {saleItem.description && (
+          {sale.reward_detail.description && (
             <Text textStyle="body" fontWeight={600} color={colors.accentLight}>
               Show more
             </Text>

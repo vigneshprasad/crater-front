@@ -4,6 +4,11 @@ import styled, { useTheme } from "styled-components";
 import { useRouter } from "next/router";
 
 import {
+  RewardSalesListContext,
+  RewardSalesListProvider,
+} from "@/auction/context/RewardSalesListContext";
+import { RewardSale, SalePaymentType } from "@/auction/types/sales";
+import {
   Box,
   Flex,
   Icon,
@@ -18,16 +23,11 @@ import Footer from "@/common/components/objects/Footer";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { useFollower } from "@/creators/context/FollowerContext";
 import { RewardApiClient } from "@/tokens/api";
-import {
-  RewardSaleFeaturedItemsListContext,
-  RewardSaleFeaturedItemsListProvider,
-} from "@/tokens/context/RewardSaleFeaturedItemsListContext";
-import {
-  RewardSaleItemsListContext,
-  RewardSaleItemsListProvider,
-} from "@/tokens/context/RewardSaleItemsListContext";
 import useRewardSaleTopSellersList from "@/tokens/context/RewardSaleTopSellersListContext";
-import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
+import {
+  RewardSalesFeaturedListContext,
+  RewardSalesFeaturedListProvider,
+} from "@/tokens/context/RewardSalesFeaturedListContext";
 
 import StorePageLayout from "../../layout/StorePageLayout";
 import MoreSaleItems from "../../objects/MoreSaleItems";
@@ -62,22 +62,22 @@ export default function StoreBuyNowPage(): JSX.Element | null {
   } = useRewardSaleTopSellersList();
   const { subscribeCreator } = useFollower();
   const [followingCreator, setFollowingCreator] = useState<number | null>(null);
-  const [paymentType, setPaymentType] = useState<
-    RewardSalePaymentType | undefined
-  >(undefined);
-  const [saleItemToShow, setSaleItemToShow] = useState<SaleItem | null>(null);
+  const [paymentType, setPaymentType] = useState<SalePaymentType | undefined>(
+    undefined
+  );
+  const [saleToShow, setSaleToShow] = useState<RewardSale | null>(null);
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   useEffect(() => {
-    const saleItemId = router.query?.sale as string;
-    if (saleItemId) {
+    const saleId = router.query?.sale as string;
+    if (saleId) {
       retrieveSaleItem();
     }
 
     async function retrieveSaleItem(): Promise<void> {
-      const [data] = await RewardApiClient().retrieveRewardSaleItem(saleItemId);
-      if (data) setSaleItemToShow(data);
+      const [data] = await RewardApiClient().retrieveRewardSale(saleId);
+      if (data) setSaleToShow(data);
     }
   }, [router.query]);
 
@@ -91,7 +91,7 @@ export default function StoreBuyNowPage(): JSX.Element | null {
   };
 
   const onCloseSideDrawer = (): void => {
-    setSaleItemToShow(null);
+    setSaleToShow(null);
     delete router.query.sale;
     router.push(router, undefined, { shallow: true });
   };
@@ -108,16 +108,16 @@ export default function StoreBuyNowPage(): JSX.Element | null {
 
   return (
     <Box>
-      {saleItemToShow && (
+      {saleToShow && (
         <SideDrawer
           px={0}
           py={0}
-          visible={saleItemToShow ? true : false}
+          visible={saleToShow ? true : false}
           heading="Crater Store"
           boxProps={{ ml: space.xs, mr: 22, pt: 28 }}
           onClose={() => onCloseSideDrawer()}
         >
-          <RewardSalePayment saleItem={saleItemToShow} />
+          <RewardSalePayment sale={saleToShow} />
         </SideDrawer>
       )}
       <Box pt={space.l} pb={36} overflow="hidden" position="relative">
@@ -132,8 +132,8 @@ export default function StoreBuyNowPage(): JSX.Element | null {
         >
           <Image src="/images/img_astronaut_store.png" alt="Store Img" />
         </Box>
-        <RewardSaleFeaturedItemsListProvider paymentType={paymentType}>
-          <RewardSaleItemsListProvider paymentType={paymentType}>
+        <RewardSalesFeaturedListProvider paymentType={paymentType}>
+          <RewardSalesListProvider paymentType={paymentType}>
             <StorePageLayout
               header={<StoreHeader />}
               tabs={
@@ -161,12 +161,12 @@ export default function StoreBuyNowPage(): JSX.Element | null {
                     <Flex alignItems="center" justifyContent="space-between">
                       <Flex alignItems="center" gridGap={space.xxxxxs}>
                         <Toggle
-                          value={paymentType !== RewardSalePaymentType.Learn}
+                          value={paymentType !== SalePaymentType.LEARN}
                           activeColor={colors.secondaryLight}
                           inactiveColor={colors.greenSuccess}
                           onChange={() =>
                             setPaymentType((prev) =>
-                              !prev ? RewardSalePaymentType.Learn : undefined
+                              !prev ? SalePaymentType.LEARN : undefined
                             )
                           }
                         />
@@ -198,14 +198,14 @@ export default function StoreBuyNowPage(): JSX.Element | null {
                 </>
               }
               featured={
-                <RewardSaleFeaturedItemsListContext.Consumer>
+                <RewardSalesFeaturedListContext.Consumer>
                   {() => <TopItemsForSale />}
-                </RewardSaleFeaturedItemsListContext.Consumer>
+                </RewardSalesFeaturedListContext.Consumer>
               }
               explore={
-                <RewardSaleItemsListContext.Consumer>
+                <RewardSalesListContext.Consumer>
                   {() => <MoreSaleItems />}
-                </RewardSaleItemsListContext.Consumer>
+                </RewardSalesListContext.Consumer>
               }
               topSellers={
                 <TopSellersList
@@ -217,8 +217,8 @@ export default function StoreBuyNowPage(): JSX.Element | null {
               }
               staticSection={<SellOnCraterStatic />}
             />
-          </RewardSaleItemsListProvider>
-        </RewardSaleFeaturedItemsListProvider>
+          </RewardSalesListProvider>
+        </RewardSalesFeaturedListProvider>
       </Box>
       <Box px={[space.xxs, space.s]} py={space.xxs} bg={colors.primaryDark}>
         <Footer />

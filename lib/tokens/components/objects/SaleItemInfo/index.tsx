@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 
+import { RewardSale, SalePaymentType } from "@/auction/types/sales";
 import { Box, Flex, Icon, Span, Text } from "@/common/components/atoms";
-import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 const StyledSpan = styled(Span)`
   background: linear-gradient(
@@ -19,23 +19,18 @@ const StyledSpan = styled(Span)`
 `;
 
 type IProps = {
-  creator: string;
-  saleItem: SaleItem;
+  sale: RewardSale;
   showPrice: boolean;
 };
 
 export default function SaleItemInfo({
-  creator,
-  saleItem,
+  sale,
   showPrice = false,
 }: IProps): JSX.Element {
   const { space, colors } = useTheme();
 
-  const { quantity, quantity_sold } = saleItem.reward_sale_details[0];
-  const payWithLearn =
-    saleItem.reward_sale_details.find(
-      (sale) => sale.payment_type === RewardSalePaymentType.Learn
-    ) ?? false;
+  const creator = sale.reward_detail.creator_detail.name;
+  const payWithLearn = sale.payment_type === SalePaymentType.LEARN;
 
   const rows = useMemo<
     {
@@ -53,16 +48,18 @@ export default function SaleItemInfo({
       {
         key: "buyers",
         name: "Buyers",
-        value: quantity_sold === 0 ? "-" : `${quantity_sold}`,
+        value: sale.quantity_sold === 0 ? "-" : `${sale.quantity_sold}`,
       },
       {
         key: "stockLeft",
         name: "Stock Left",
         value:
-          quantity - quantity_sold === 0 ? "-" : `${quantity - quantity_sold}`,
+          sale.quantity - sale.quantity_sold === 0
+            ? "-"
+            : `${sale.quantity - sale.quantity_sold}`,
       },
     ];
-  }, [creator, quantity, quantity_sold]);
+  }, [creator, sale]);
 
   return (
     <Flex flexDirection="column" gridGap={24}>
@@ -96,49 +93,18 @@ export default function SaleItemInfo({
               {payWithLearn ? "Price with learn" : "Price without learn"}
             </Text>
 
-            {(() => {
-              const rewardSales = saleItem.reward_sale_details;
-
-              // INR price
-              const price = rewardSales.find(
-                (sale) => sale.payment_type === RewardSalePaymentType.INR
-              )?.price;
-
-              // LEARN price
-              const learnPrice = rewardSales.find(
-                (sale) => sale.payment_type === RewardSalePaymentType.Learn
-              )?.price;
-
-              if (price && learnPrice) {
-                return (
-                  <Flex alignItems="center" gridGap={space.xxxxxs}>
-                    <Text textStyle="headline5" textTransform="uppercase">
-                      ₹{price} + {learnPrice} <StyledSpan>LEARN</StyledSpan>
-                    </Text>
-                    <Icon icon="LearnToken" size={20} />
-                  </Flex>
-                );
-              }
-
-              if (price) {
-                return (
-                  <Text textStyle="headline5" textTransform="uppercase">
-                    ₹{price}
-                  </Text>
-                );
-              }
-
-              return (
-                <Flex alignItems="center" gridGap={space.xxxxxs}>
-                  <Text textStyle="headline5" textTransform="uppercase">
-                    {learnPrice} <StyledSpan>LEARN</StyledSpan>
-                  </Text>
-                  <Icon icon="LearnToken" size={20} />
-                </Flex>
-              );
-            })()}
-
-            {}
+            {payWithLearn ? (
+              <Flex alignItems="center" gridGap={space.xxxxxs}>
+                <Text textStyle="headline5" textTransform="uppercase">
+                  {sale.price} <StyledSpan>LEARN</StyledSpan>
+                </Text>
+                <Icon icon="LearnToken" size={20} />
+              </Flex>
+            ) : (
+              <Text textStyle="headline5" textTransform="uppercase">
+                ₹{sale.price}
+              </Text>
+            )}
           </Flex>
         </Box>
       )}

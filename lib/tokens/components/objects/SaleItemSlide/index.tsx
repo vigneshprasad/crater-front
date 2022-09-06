@@ -2,17 +2,17 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
+import { RewardSale } from "@/auction/types/sales";
 import { AnimatedBox, AnimatedBoxProps } from "@/common/components/atoms";
-import { SaleItem } from "@/tokens/types/store";
 
-import FeaturedSaleItemCard from "../FeaturedSaleItemCard";
+import FeaturedSaleCard from "../FeaturedSaleCard";
 
 type IProps = AnimatedBoxProps & {
-  saleItem: SaleItem;
+  sale: RewardSale;
 };
 
 export default function SaleItemSlide({
-  saleItem,
+  sale,
   animate,
   ...rest
 }: IProps): JSX.Element {
@@ -87,8 +87,8 @@ export default function SaleItemSlide({
       animate={animate}
       {...rest}
     >
-      <FeaturedSaleItemCard
-        saleItem={saleItem}
+      <FeaturedSaleCard
+        sale={sale}
         onClick={animate === "active" ? openSaleItem : undefined}
       />
     </AnimatedBox>

@@ -2,10 +2,10 @@ import styled, { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
+import useRewardSalesList from "@/auction/context/RewardSalesListContext";
 import { Box, Grid, Shimmer, Text } from "@/common/components/atoms";
-import useRewardSaleItemsList from "@/tokens/context/RewardSaleItemsListContext";
 
-import SaleItemCard from "../SaleItemCard";
+import StoreSaleCard from "../StoreSaleCard";
 
 const StyledGrid = styled(Grid)`
   .large {
@@ -16,7 +16,7 @@ const StyledGrid = styled(Grid)`
 export default function MoreSaleItems(): JSX.Element {
   const { space, radii } = useTheme();
   const router = useRouter();
-  const { saleItems, loading } = useRewardSaleItemsList();
+  const { sales, isValidating } = useRewardSalesList();
 
   const openSaleItem = (saleItemId: number): void => {
     router.query.sale = `${saleItemId}`;
@@ -30,7 +30,7 @@ export default function MoreSaleItems(): JSX.Element {
       </Text>
 
       {(() => {
-        if (loading || !saleItems) {
+        if (isValidating && !sales) {
           return <Shimmer w="100%" h={450} borderRadius={radii.xxxxs} />;
         }
 
@@ -40,12 +40,12 @@ export default function MoreSaleItems(): JSX.Element {
             gridTemplateColumns="repeat(auto-fill, 278px)"
             gridGap={space.xs}
           >
-            {saleItems?.map((saleItem) => (
+            {sales?.map((sale) => (
               <Box
-                key={saleItem.id}
-                className={saleItem.photo ? "large" : undefined}
+                key={sale.id}
+                className={sale.reward_detail.photo ? "large" : undefined}
               >
-                <SaleItemCard saleItem={saleItem} onClick={openSaleItem} />
+                <StoreSaleCard sale={sale} onClick={openSaleItem} />
               </Box>
             ))}
           </StyledGrid>

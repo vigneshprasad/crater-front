@@ -1,32 +1,32 @@
 import { Dispatch, SetStateAction, useCallback } from "react";
 
+import { RewardSale } from "@/auction/types/sales";
 import { Box, Flex, Grid } from "@/common/components/atoms";
 import { IconButton } from "@/common/components/atoms/v2";
-import { SaleItem } from "@/tokens/types/store";
 
 import SaleItemSlide from "../SaleItemSlide";
 
 const HEIGHT = 500 * (9 / 16) + 280;
 
 type IProps = {
-  saleItems: SaleItem[];
+  sales: RewardSale[];
   activeItem: number;
   setActiveItem: Dispatch<SetStateAction<number>>;
 };
 
 export default function SaleItemSlider({
-  saleItems,
+  sales,
   activeItem,
   setActiveItem,
 }: IProps): JSX.Element {
   const getVariant = useCallback(
     (index: number) => {
-      if (saleItems.length > 2) {
+      if (sales.length > 2) {
         if (activeItem === 0) {
-          if (index === saleItems.length - 1) return "prev";
+          if (index === sales.length - 1) return "prev";
         }
 
-        if (activeItem === saleItems.length - 1) {
+        if (activeItem === sales.length - 1) {
           if (index === 0) return "next";
         }
       }
@@ -35,7 +35,7 @@ export default function SaleItemSlider({
       if (index === activeItem + 1) return "next";
       return "hidden";
     },
-    [saleItems, activeItem]
+    [sales, activeItem]
   );
 
   return (
@@ -50,13 +50,13 @@ export default function SaleItemSlider({
       h={HEIGHT}
     >
       <Box gridArea="slider" position="relative">
-        {saleItems.map((saleItem, index) => {
+        {sales.map((sale, index) => {
           const variant = getVariant(index);
           return (
             <SaleItemSlide
               initial="hidden"
               animate={variant}
-              saleItem={saleItem}
+              sale={sale}
               key={index}
             />
           );
@@ -69,24 +69,24 @@ export default function SaleItemSlider({
           icon="ChevronLeft"
           onClick={() => {
             if (activeItem === 0) {
-              return setActiveItem(saleItems.length - 1);
+              return setActiveItem(sales.length - 1);
             }
             const prev = activeItem - 1;
             setActiveItem(prev);
           }}
-          opacity={saleItems.length > 1 ? 1 : 0}
+          opacity={sales.length > 1 ? 1 : 0}
         />
         <IconButton
           buttonStyle="round-border"
           icon="ChevronRight"
           onClick={() => {
-            if (activeItem === saleItems.length - 1) {
+            if (activeItem === sales.length - 1) {
               return setActiveItem(0);
             }
             const next = activeItem + 1;
             setActiveItem(next);
           }}
-          opacity={saleItems.length > 1 ? 1 : 0}
+          opacity={sales.length > 1 ? 1 : 0}
         />
       </Flex>
     </Grid>

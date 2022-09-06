@@ -3,7 +3,7 @@ import useSWR, { SWRResponse } from "swr";
 
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 
-import { RewardSale } from "../types/sales";
+import { RewardSale, SalePaymentType } from "../types/sales";
 
 interface RewardSalesListState {
   sales?: RewardSale[];
@@ -16,16 +16,25 @@ export const RewardSalesListContext = createContext({} as RewardSalesListState);
 
 type ProverProps = {
   creator?: number;
+  paymentType?: SalePaymentType;
   children?: React.ReactNode;
 };
 
 export function RewardSalesListProvider({
   creator,
+  paymentType,
   ...rest
 }: ProverProps): JSX.Element {
-  const url = creator
-    ? `${API_URL_CONSTANTS.sales.getSalesList}?reward__creator=${creator}`
-    : API_URL_CONSTANTS.sales.getSalesList;
+  let url = API_URL_CONSTANTS.sales.getSalesList;
+
+  if (creator) {
+    url = `${API_URL_CONSTANTS.sales.getSalesList}?reward__creator=${creator}`;
+  }
+
+  if (paymentType) {
+    url = `${API_URL_CONSTANTS.sales.getSalesList}?payment_type=${paymentType}`;
+  }
+
   const {
     data: sales,
     error,
