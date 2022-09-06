@@ -10,6 +10,7 @@ export interface RewardBase {
     id: number;
     name: string;
     photo: string | null;
+    user: string;
   };
 }
 
