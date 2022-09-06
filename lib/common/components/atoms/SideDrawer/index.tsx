@@ -48,7 +48,6 @@ export function SideDrawer({
     <AnimatePresence>
       {showSheet && (
         <AnimatedBox
-          onClick={onClose}
           display="grid"
           position="absolute"
           top={0}
