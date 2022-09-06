@@ -5,7 +5,7 @@ import { Box, Flex, Grid, Icon, Image, Text } from "@/common/components/atoms";
 
 type IProps = {
   sale: RewardSale;
-  onClick?: (saleItemId: number) => void;
+  onClick?: (saleId: number) => void;
 };
 
 export default function FeaturedSaleCard({

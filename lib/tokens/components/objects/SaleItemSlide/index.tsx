@@ -19,8 +19,8 @@ export default function SaleItemSlide({
   const { colors, radii } = useTheme();
   const router = useRouter();
 
-  const openSaleItem = (saleItemId: number): void => {
-    router.query.sale = `${saleItemId}`;
+  const openSale = (saleId: number): void => {
+    router.query.sale = `${saleId}`;
     router.push(router, undefined, { shallow: true });
   };
 
@@ -89,7 +89,7 @@ export default function SaleItemSlide({
     >
       <FeaturedSaleCard
         sale={sale}
-        onClick={animate === "active" ? openSaleItem : undefined}
+        onClick={animate === "active" ? openSale : undefined}
       />
     </AnimatedBox>
   );

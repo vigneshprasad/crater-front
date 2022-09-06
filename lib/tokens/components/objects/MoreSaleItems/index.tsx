@@ -18,8 +18,8 @@ export default function MoreSaleItems(): JSX.Element {
   const router = useRouter();
   const { sales, isValidating } = useRewardSalesList();
 
-  const openSaleItem = (saleItemId: number): void => {
-    router.query.sale = `${saleItemId}`;
+  const openSale = (saleId: number): void => {
+    router.query.sale = `${saleId}`;
     router.push(router, undefined, { shallow: true });
   };
 
@@ -45,7 +45,7 @@ export default function MoreSaleItems(): JSX.Element {
                 key={sale.id}
                 className={sale.reward_detail.photo ? "large" : undefined}
               >
-                <StoreSaleCard sale={sale} onClick={openSaleItem} />
+                <StoreSaleCard sale={sale} onClick={openSale} />
               </Box>
             ))}
           </StyledGrid>

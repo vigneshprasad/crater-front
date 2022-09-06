@@ -14,7 +14,7 @@ import {
 
 type IProps = {
   sale: RewardSale;
-  onClick?: (saleItemId: number) => void;
+  onClick?: (saleId: number) => void;
 };
 
 export default function StoreSaleCard({ sale, onClick }: IProps): JSX.Element {
@@ -35,7 +35,7 @@ export default function StoreSaleCard({ sale, onClick }: IProps): JSX.Element {
       borderRadius={radii.xs}
       border={`1px solid ${colors.primaryLight}`}
       cursor={onClick ? "pointer" : "default"}
-      onClick={() => onClick && onClick(reward_detail.id)}
+      onClick={() => onClick && onClick(sale.id)}
     >
       <Grid
         h="100%"

@@ -72,10 +72,10 @@ export default function StoreBuyNowPage(): JSX.Element | null {
   useEffect(() => {
     const saleId = router.query?.sale as string;
     if (saleId) {
-      retrieveSaleItem();
+      retrieveSale();
     }
 
-    async function retrieveSaleItem(): Promise<void> {
+    async function retrieveSale(): Promise<void> {
       const [data] = await RewardApiClient().retrieveRewardSale(saleId);
       if (data) setSaleToShow(data);
     }
