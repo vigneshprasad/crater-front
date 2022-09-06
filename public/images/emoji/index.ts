@@ -10,6 +10,7 @@ import ThumbsUp from "public/images/emoji/img_thumbup.png";
 import Jashvi50 from "public/images/emoji/jashvi_50.png";
 import ArreyYaar from "public/images/emoji/jashvi_arrey_yaar.png";
 import JashviOhDamn from "public/images/emoji/jashvi_oh_damn.png";
+import KaiseHo from "public/images/emoji/kaise_ho.png";
 import NotJashvi from "public/images/emoji/not_jashvi.png";
 
 const EMOJI_IMAGE_LIST = {
@@ -26,6 +27,7 @@ const EMOJI_IMAGE_LIST = {
   JashviOhDamn,
   ArreyYaar,
   NotJashvi,
+  KaiseHo,
 };
 
 export type EmojiKeys = keyof typeof EMOJI_IMAGE_LIST;
