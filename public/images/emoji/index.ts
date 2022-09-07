@@ -6,6 +6,9 @@ import Interesting from "public/images/emoji/img_interesting.png";
 import Question from "public/images/emoji/img_question.png";
 import Shy from "public/images/emoji/img_shy.png";
 import ThumbsUp from "public/images/emoji/img_thumbup.png";
+import ArreyYaar from "public/images/emoji/jashvi_arrey_yaar.png";
+import JashviOhDamn from "public/images/emoji/jashvi_oh_damn.png";
+import KaiseHo from "public/images/emoji/kaise_ho.png";
 
 const EMOJI_IMAGE_LIST = {
   Hi,
@@ -16,6 +19,9 @@ const EMOJI_IMAGE_LIST = {
   Shy,
   Question,
   ThumbsUp,
+  JashviOhDamn,
+  ArreyYaar,
+  KaiseHo,
 };
 
 export type EmojiKeys = keyof typeof EMOJI_IMAGE_LIST;
