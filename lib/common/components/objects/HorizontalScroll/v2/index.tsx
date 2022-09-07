@@ -1,5 +1,5 @@
 import { useElementScroll, useMotionValue } from "framer-motion";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
 import {
@@ -68,12 +68,17 @@ export default function HorizontalScroll({
   const onClickScrollEnd = useCallback((): void => {
     if (!ref.current) return;
     const { width } = ref.current.getBoundingClientRect();
-    ref.current.scroll(width, 0);
+    const scrollLeft = ref.current.scrollLeft;
+
+    ref.current.scroll(scrollLeft + width, 0);
   }, [ref]);
 
   const onClickScrollStart = useCallback((): void => {
     if (!ref.current) return;
-    ref.current.scroll(0, 0);
+    const { width } = ref.current.getBoundingClientRect();
+    const scrollLeft = ref.current.scrollLeft;
+
+    ref.current.scroll(scrollLeft - width, 0);
   }, [ref]);
 
   return (
@@ -134,6 +139,10 @@ export default function HorizontalScroll({
         </Flex>
       </Flex>
       <Container ref={ref} py={space.xxs} overflowX="scroll" {...rest}>
+        {children}
+        {children}
+        {children}
+        {children}
         {children}
       </Container>
       <Box w={96} />
