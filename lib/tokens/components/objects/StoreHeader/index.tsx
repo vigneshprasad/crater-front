@@ -40,7 +40,7 @@ export default function StoreHeader(): JSX.Element {
           w={368}
         >
           Discover, <StyledSpan fontWeight={500}>Buy</StyledSpan> and{" "}
-          <StyledSpan fontWeight={500}>Sell</StyledSpan> Art and Digital Goods
+          <StyledSpan fontWeight={500}>Sell</StyledSpan> Art &amp; Digital Goods
         </Text>
         <Icon icon="Sparkle" size={32} />
         <Box
