@@ -5,7 +5,14 @@ import Image from "next/image";
 
 import SaleApiClient from "@/auction/api/SaleApiClient";
 import { RewardSale, RewardSaleLog } from "@/auction/types/sales";
-import { Box, Text, Flex, Span, Icon } from "@/common/components/atoms";
+import {
+  Box,
+  Text,
+  Flex,
+  Span,
+  Icon,
+  FlexProps,
+} from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import ContainerModal from "@/common/components/objects/ContainerModal";
 import { useNotifications } from "@/common/components/objects/NotificationStack/context";
@@ -15,6 +22,8 @@ interface IProps {
   creator: number;
   sale: RewardSale;
   visible: boolean;
+  successMessage?: string;
+  contentProps?: FlexProps;
   onClose: () => void;
 }
 
@@ -35,6 +44,8 @@ const StyledSpan = styled(Span)`
 export default function LearnItemModal({
   sale,
   visible,
+  successMessage,
+  contentProps,
   onClose,
 }: IProps): JSX.Element {
   const { colors, space } = useTheme();
@@ -75,6 +86,7 @@ export default function LearnItemModal({
       {
         title: "Purchase Successful",
         description:
+          successMessage ??
           "Our team will connect you with the creator after the stream ends.",
         iconProps: {
           icon: "CheckCircle",
@@ -98,6 +110,7 @@ export default function LearnItemModal({
         alignItems="center"
         gridGap={space.xxxs}
         flexDirection="column"
+        {...contentProps}
       >
         <Box w={160} h={160} position="relative">
           <Image

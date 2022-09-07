@@ -60,7 +60,7 @@ export default function PayItemStaticModal({
             color: colors.error,
           },
         },
-        30000,
+        2 * 60 * 1000,
         true
       );
       return;
@@ -69,7 +69,7 @@ export default function PayItemStaticModal({
     showNotification(
       {
         title: "Payment Confirmed",
-        description: "The Crater team will get in touch with you shortly.",
+        description: "Our team will get in touch with you shortly.",
         iconProps: {
           icon: "CheckCircle",
           color: colors.greenSuccess,
@@ -132,9 +132,8 @@ export default function PayItemStaticModal({
         </Flex>
 
         <Button
-          w={364}
-          h={44}
-          label="Confirm Payment"
+          w="100%"
+          label="Confirm"
           suffixElement={loading && <Spinner size={24} />}
           onClick={postRewardSaleLog}
           disabled={loading}

@@ -2,6 +2,7 @@ import STATIC_IMAGES from "public/images";
 import { useState } from "react";
 import styled, { useTheme } from "styled-components";
 
+import LearnItemModal from "@/auction/components/objects/LearnItemModal";
 import PayItemStaticModal from "@/auction/components/objects/PayItemStaticModal";
 import { RewardSale, SalePaymentType } from "@/auction/types/sales";
 import useAuth from "@/auth/context/AuthContext";
@@ -45,6 +46,7 @@ export default function RewardSalePayment({ sale }: IProps): JSX.Element {
   const { openModal } = useAuthModal();
   const [infoSheet, setInfoSheet] = useState(false);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [showLearnPurchaseModal, setShowLearnPurchaseModal] = useState(false);
 
   const { payment_type, price, reward_detail } = sale;
   const payWithLearn = payment_type === SalePaymentType.LEARN;
@@ -214,7 +216,18 @@ export default function RewardSalePayment({ sale }: IProps): JSX.Element {
             label="Buy Now 🎉"
             textProps={{ fontSize: "1.6rem" }}
             onClick={() => {
-              user ? setShowPurchaseModal(true) : openModal();
+              if (!user) {
+                openModal();
+                return;
+              }
+
+              if (payWithLearn) {
+                setShowLearnPurchaseModal(true);
+                return;
+              }
+
+              setShowPurchaseModal(true);
+              return;
             }}
             disabled={disableBuyNow}
           />
@@ -225,6 +238,15 @@ export default function RewardSalePayment({ sale }: IProps): JSX.Element {
         sale={sale}
         visible={showPurchaseModal}
         onClose={() => setShowPurchaseModal(false)}
+      />
+
+      <LearnItemModal
+        creator={reward_detail.creator}
+        sale={sale}
+        visible={showLearnPurchaseModal}
+        successMessage="Our team will get in touch with you shortly."
+        contentProps={{ pt: space.xxs, pb: 28 }}
+        onClose={() => setShowLearnPurchaseModal(false)}
       />
     </Flex>
   );
