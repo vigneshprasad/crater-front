@@ -31,7 +31,7 @@ export default function Banner({ content, link }: IProps): JSX.Element {
               <Text
                 textDecoration="underline"
                 fontWeight="500"
-                textStyle="small"
+                textStyle="body"
                 textAlign="center"
               >
                 {content}
@@ -41,7 +41,7 @@ export default function Banner({ content, link }: IProps): JSX.Element {
         }
 
         return (
-          <Text fontWeight="500" textStyle="small" textAlign="center">
+          <Text fontWeight="500" textStyle="body" textAlign="center">
             {content}
           </Text>
         );
@@ -51,7 +51,7 @@ export default function Banner({ content, link }: IProps): JSX.Element {
         buttonStyle="flat-icon"
         position="absolute"
         right={16}
-        top={4}
+        top={6}
         icon="Close"
         onClick={() => setVisible(false)}
       />

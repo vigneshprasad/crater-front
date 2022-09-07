@@ -2,25 +2,25 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
+import { RewardSale } from "@/auction/types/sales";
 import { AnimatedBox, AnimatedBoxProps } from "@/common/components/atoms";
-import { SaleItem } from "@/tokens/types/store";
 
-import FeaturedSaleItemCard from "../FeaturedSaleItemCard";
+import FeaturedSaleCard from "../FeaturedSaleCard";
 
 type IProps = AnimatedBoxProps & {
-  saleItem: SaleItem;
+  sale: RewardSale;
 };
 
 export default function SaleItemSlide({
-  saleItem,
+  sale,
   animate,
   ...rest
 }: IProps): JSX.Element {
   const { colors, radii } = useTheme();
   const router = useRouter();
 
-  const openSaleItem = (saleItemId: number): void => {
-    router.query.sale = `${saleItemId}`;
+  const openSale = (saleId: number): void => {
+    router.query.sale = `${saleId}`;
     router.push(router, undefined, { shallow: true });
   };
 
@@ -87,9 +87,9 @@ export default function SaleItemSlide({
       animate={animate}
       {...rest}
     >
-      <FeaturedSaleItemCard
-        saleItem={saleItem}
-        onClick={animate === "active" ? openSaleItem : undefined}
+      <FeaturedSaleCard
+        sale={sale}
+        onClick={animate === "active" ? openSale : undefined}
       />
     </AnimatedBox>
   );

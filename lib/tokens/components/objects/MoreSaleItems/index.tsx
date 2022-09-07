@@ -2,19 +2,19 @@ import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
+import useRewardSalesList from "@/auction/context/RewardSalesListContext";
 import { Box, Shimmer, Text } from "@/common/components/atoms";
 import MasonryLayout from "@/common/components/objects/MasonryLayout";
-import useRewardSaleItemsList from "@/tokens/context/RewardSaleItemsListContext";
 
-import SaleItemCard from "../SaleItemCard";
+import StoreSaleCard from "../StoreSaleCard";
 
 export default function MoreSaleItems(): JSX.Element {
   const { space, radii } = useTheme();
   const router = useRouter();
-  const { saleItems, loading } = useRewardSaleItemsList();
+  const { sales, isValidating } = useRewardSalesList();
 
-  const openSaleItem = (saleItemId: number): void => {
-    router.query.sale = `${saleItemId}`;
+  const openSale = (saleId: number): void => {
+    router.query.sale = `${saleId}`;
     router.push(router, undefined, { shallow: true });
   };
 
@@ -25,15 +25,15 @@ export default function MoreSaleItems(): JSX.Element {
       </Text>
 
       {(() => {
-        if (loading || !saleItems) {
+        if (isValidating && !sales) {
           return <Shimmer w="100%" h={450} borderRadius={radii.xxxxs} />;
         }
 
         return (
-          <MasonryLayout itemSelector=".sale-item-masonry">
-            {saleItems?.map((saleItem) => (
-              <Box my={12} key={saleItem.id} className="sale-item-masonry">
-                <SaleItemCard saleItem={saleItem} onClick={openSaleItem} />
+          <MasonryLayout itemSelector=".sale-masonry">
+            {sales?.map((sale) => (
+              <Box my={12} key={sale.id} className="sale-masonry">
+                <StoreSaleCard sale={sale} onClick={openSale} />
               </Box>
             ))}
           </MasonryLayout>

@@ -1,6 +1,7 @@
 import STATIC_IMAGES from "public/images";
 import { useTheme } from "styled-components";
 
+import { RewardSale, SalePaymentType } from "@/auction/types/sales";
 import {
   Avatar,
   Box,
@@ -10,27 +11,23 @@ import {
   Image,
   Text,
 } from "@/common/components/atoms";
-import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 type IProps = {
-  saleItem: SaleItem;
-  onClick?: (saleItemId: number) => void;
+  sale: RewardSale;
+  onClick?: (saleId: number) => void;
 };
 
-export default function SaleItemCard({
-  saleItem,
-  onClick,
-}: IProps): JSX.Element {
+export default function StoreSaleCard({ sale, onClick }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
 
-  const rewardSale = saleItem.reward_sale_details[0];
-  const payWithLearn = rewardSale.payment_type === RewardSalePaymentType.Learn;
-  const quantitySold = rewardSale.quantity - rewardSale.quantity_sold;
+  const { payment_type, quantity, quantity_sold, reward_detail } = sale;
+  const payWithLearn = payment_type === SalePaymentType.LEARN;
+  const quantitySold = quantity - quantity_sold;
 
   return (
     <Box
       w={278}
-      h={saleItem.photo ? 468 : 300}
+      h={reward_detail.photo ? 468 : 300}
       px={space.xs}
       pt={space.xs}
       pb={space.xxs}
@@ -38,7 +35,7 @@ export default function SaleItemCard({
       borderRadius={radii.xs}
       border={`1px solid ${colors.primaryLight}`}
       cursor={onClick ? "pointer" : "default"}
-      onClick={() => onClick && onClick(saleItem.id)}
+      onClick={() => onClick && onClick(sale.id)}
     >
       <Grid
         h="100%"
@@ -46,10 +43,10 @@ export default function SaleItemCard({
         gridTemplateRows="repeat(4, 1fr)"
         gridGap={space.xxxs}
       >
-        {saleItem.photo ? (
+        {reward_detail.photo ? (
           <Image
-            src={saleItem.photo}
-            alt={saleItem.title}
+            src={reward_detail.photo}
+            alt={reward_detail.title}
             objectFit="cover"
             boxProps={{
               position: "relative",
@@ -63,7 +60,7 @@ export default function SaleItemCard({
           <Box pb={space.xxxs}>
             <Image
               src={STATIC_IMAGES.ImageDefaultSaleItem}
-              alt={saleItem.title}
+              alt={reward_detail.title}
               objectFit="cover"
               boxProps={{
                 position: "relative",
@@ -74,7 +71,7 @@ export default function SaleItemCard({
           </Box>
         )}
         <Text pt={4} textStyle="bodyLarge" fontWeight={600}>
-          {saleItem.title}
+          {reward_detail.title}
         </Text>
         <Box>
           <Flex alignItems="center" gridGap={space.xxxxs}>
@@ -83,11 +80,11 @@ export default function SaleItemCard({
             </Text>
             {payWithLearn ? (
               <Flex alignItems="center" gridGap={space.xxxxxs}>
-                <Text textStyle="menu">{rewardSale.price} LEARN</Text>
+                <Text textStyle="menu">{sale.price} LEARN</Text>
                 <Icon icon="LearnToken" size={16} />
               </Flex>
             ) : (
-              <Text textStyle="menu">₹{rewardSale.price}</Text>
+              <Text textStyle="menu">₹{sale.price}</Text>
             )}
           </Flex>
           <Flex pt={space.xxxxs} alignItems="center" gridGap={space.xxxxs}>
@@ -108,9 +105,11 @@ export default function SaleItemCard({
         >
           <Avatar
             size={24}
-            image={saleItem.creator_detail.photo ?? undefined}
+            image={reward_detail.creator_detail.photo ?? undefined}
           />
-          <Text textStyle="captionLarge">{saleItem.creator_detail.name}</Text>
+          <Text textStyle="captionLarge">
+            {reward_detail.creator_detail.name}
+          </Text>
         </Flex>
       </Grid>
     </Box>

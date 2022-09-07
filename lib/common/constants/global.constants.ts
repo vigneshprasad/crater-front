@@ -18,3 +18,4 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const SOCKET_IO_BASE_URL = process.env
   .NEXT_PUBLIC_SOCKETIO_URL as string;
 export const CLARITY_PID = process.env.NEXT_PUBLIC_CLARITY_PID;
+export const CRATER_UPI_ID = "9930474469@paytm";

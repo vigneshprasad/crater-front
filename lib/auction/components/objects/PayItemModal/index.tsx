@@ -1,4 +1,5 @@
 import STATIC_IMAGES from "public/images";
+import { useState } from "react";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
@@ -39,8 +40,10 @@ export default function PayItemModal({
     API_URL_CONSTANTS.creator.retrieveCreatorUpiInfo(creator)
   );
   const { colors, space } = useTheme();
+  const [loading, setLoading] = useState(false);
 
   async function postRewardSaleLog(): Promise<void> {
+    await setLoading(true);
     const data: Partial<RewardSaleLog> = {
       reward_sale: sale.id,
       quantity: 1,
@@ -82,6 +85,7 @@ export default function PayItemModal({
       true
     );
 
+    await setLoading(false);
     onClose();
 
     return;
@@ -145,7 +149,9 @@ export default function PayItemModal({
             <Button
               w="100%"
               label="I made the payment, notify creator"
+              suffixElement={loading && <Spinner size={24} />}
               onClick={postRewardSaleLog}
+              disabled={loading}
             />
           </Flex>
         );

@@ -121,11 +121,14 @@ export const API_URL_CONSTANTS = {
   },
   sales: {
     getSalesList: "/crater/sale/",
+    getFeaturedSalesList: "/crater/sale/featured/",
+    getRewardSaleTopSellers: "/crater/sale/sellers/featured/",
     postRewardSale: "/crater/sale/",
     postSaleLog: "/crater/sale/log/",
     postSaleLogAccept: (id: number): string => `/crater/sale/log/${id}/accept/`,
     postSaleLogDecline: (id: number): string =>
       `/crater/sale/log/${id}/decline/`,
+    retrieveRewardSale: (id: number | string): string => `/crater/sale/${id}/`,
   },
   coins: {
     getAuctions: "/crater/auction/",
@@ -181,11 +184,6 @@ export const API_URL_CONSTANTS = {
   },
   tokens: {
     getLearnUserMeta: "/tokens/learn/meta/",
-  },
-  store: {
-    getRewardSaleTopSellers: "/crater/sale/sellers/featured/",
-    getFeaturedRewardSaleItems: "crater/sale/items/featured/",
-    getRewardSaleItems: "crater/sale/items/",
   },
 };
 

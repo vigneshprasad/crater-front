@@ -1,58 +1,42 @@
 import STATIC_IMAGES from "public/images";
 import { useState } from "react";
-import styled, { useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 
 import Image from "next/image";
 
 import SaleApiClient from "@/auction/api/SaleApiClient";
-import { RewardSale, RewardSaleLog } from "@/auction/types/sales";
+import {
+  RewardSale,
+  RewardSaleLog,
+  SalePaymentType,
+} from "@/auction/types/sales";
 import {
   Box,
   Text,
   Flex,
   Span,
   Icon,
-  FlexProps,
   Spinner,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import ContainerModal from "@/common/components/objects/ContainerModal";
 import { useNotifications } from "@/common/components/objects/NotificationStack/context";
-import { GenericError } from "@/common/types/api";
+import { CRATER_UPI_ID } from "@/common/constants/global.constants";
 
 interface IProps {
-  creator: number;
   sale: RewardSale;
   visible: boolean;
-  successMessage?: string;
-  contentProps?: FlexProps;
   onClose: () => void;
 }
 
-const StyledSpan = styled(Span)`
-  background: linear-gradient(
-    0deg,
-    #d5bbff 17.58%,
-    #9db3ff 85.38%,
-    #0d849e 85.38%
-  );
-
-  backgroundclip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  textfillcolor: transparent;
-`;
-
-export default function LearnItemModal({
+export default function PayItemStaticModal({
   sale,
   visible,
-  successMessage,
-  contentProps,
   onClose,
 }: IProps): JSX.Element {
   const { colors, space } = useTheme();
-  const { showNotification } = useNotifications();
   const [loading, setLoading] = useState(false);
+  const { showNotification } = useNotifications();
 
   async function postRewardSaleLog(): Promise<void> {
     await setLoading(true);
@@ -60,38 +44,32 @@ export default function LearnItemModal({
       reward_sale: sale.id,
       quantity: 1,
       price: sale.price,
-      payment_type: sale.payment_type,
+      payment_type: SalePaymentType.UPI,
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [res, err] = await SaleApiClient().postRewardSaleLog(data);
+    const [_, err] = await SaleApiClient().postRewardSaleLog(data);
 
     if (err) {
-      const error = err.response?.data as GenericError;
-      if (error.type === "TokensInsufficient") {
-        showNotification(
-          {
-            title: "Payment failed",
-            description: error.message,
-            iconProps: {
-              icon: "AlertCircle",
-              color: colors.error,
-            },
+      showNotification(
+        {
+          title: "Something went wrong",
+          description: "Please try again later.",
+          iconProps: {
+            icon: "AlertCircle",
+            color: colors.error,
           },
-          2 * 60 * 1000,
-          true
-        );
-      }
-      onClose();
+        },
+        2 * 60 * 1000,
+        true
+      );
       return;
     }
 
     showNotification(
       {
-        title: "Purchase Successful",
-        description:
-          successMessage ??
-          "Our team will connect you with the creator after the stream ends.",
+        title: "Payment Confirmed",
+        description: "Our team will get in touch with you shortly.",
         iconProps: {
           icon: "CheckCircle",
           color: colors.greenSuccess,
@@ -111,11 +89,11 @@ export default function LearnItemModal({
     <ContainerModal heading="ITEM FOR SALE" visible={visible} onClose={onClose}>
       <Flex
         px={space.xxxs}
-        py={space.xxxxs}
+        pt={space.xxs}
+        pb={28}
         alignItems="center"
         gridGap={space.xxxs}
         flexDirection="column"
-        {...contentProps}
       >
         <Box w={160} h={160} position="relative">
           <Image
@@ -127,16 +105,31 @@ export default function LearnItemModal({
 
         <Text>{sale.reward_detail.name}</Text>
 
-        <Text display="flex" color={colors.textTertiary} textAlign="center">
+        <Text color={colors.textTertiary} textAlign="center">
           Pay{" "}
-          <Flex mx={space.xxxxs} alignItems="center" gridGap={space.xxxxxs}>
-            <Text fontSize="1.4rem">
-              {sale.price} <StyledSpan>LEARN</StyledSpan>
-            </Text>
-            <Icon icon="LearnToken" size={16} />
-          </Flex>
-          to the creator.
+          <Span color={colors.textPrimary} fontWeight="700">
+            ₹{sale.price}
+          </Span>{" "}
+          via UPI
         </Text>
+
+        <Text
+          bg={colors.primaryBackground}
+          px={space.xxs}
+          py={space.xxxs}
+          borderRadius={4}
+          textStyle="body"
+          fontWeight="600"
+        >
+          {CRATER_UPI_ID}
+        </Text>
+
+        <Flex alignItems="center" gridGap={space.xxxxs}>
+          <Icon icon="Info" size={16} fill color={colors.textPrimary} />
+          <Text textAlign="center" textStyle="small">
+            Click here to inform Crater that you made the payment.
+          </Text>
+        </Flex>
 
         <Button
           w="100%"
