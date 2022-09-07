@@ -1,10 +1,14 @@
 import STATIC_IMAGES from "public/images";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import styled, { useTheme } from "styled-components";
 
+import LearnItemModal from "@/auction/components/objects/LearnItemModal";
+import PayItemStaticModal from "@/auction/components/objects/PayItemStaticModal";
+import { RewardSale, SalePaymentType } from "@/auction/types/sales";
+import useAuth from "@/auth/context/AuthContext";
+import useAuthModal from "@/auth/context/AuthModalContext";
 import { Box, Flex, Icon, Image, Span, Text } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
-import { RewardSalePaymentType, SaleItem } from "@/tokens/types/store";
 
 import SaleItemInfo from "../SaleItemInfo";
 
@@ -32,70 +36,22 @@ const StyledSpan = styled(Span)`
   textfillcolor: transparent;
 `;
 
-enum RewardSalePaymentFlow {
-  SaleItemDisplay,
-  PurchaseRequest,
-  PurchaseSuccess,
-}
-
-const RewardSalePaymentSteps = [
-  RewardSalePaymentFlow.SaleItemDisplay,
-  RewardSalePaymentFlow.PurchaseRequest,
-  RewardSalePaymentFlow.PurchaseSuccess,
-];
-
 type IProps = {
-  saleItem: SaleItem;
+  sale: RewardSale;
 };
 
-export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
+export default function RewardSalePayment({ sale }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  const { user } = useAuth();
+  const { openModal } = useAuthModal();
   const [infoSheet, setInfoSheet] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [showLearnPurchaseModal, setShowLearnPurchaseModal] = useState(false);
 
-  const rewardSale = saleItem.reward_sale_details[0];
-  const payWithLearn = rewardSale.payment_type === RewardSalePaymentType.Learn;
-
-  const pages = useMemo<
-    {
-      key: number;
-      display?: JSX.Element;
-    }[]
-  >(() => {
-    return [
-      {
-        key: RewardSalePaymentFlow.SaleItemDisplay,
-        display: (
-          <Box py={20} pl={space.xs} pr={24}>
-            <SaleItemInfo
-              creator={saleItem.creator_detail.name}
-              saleItem={saleItem}
-              showPrice={false}
-            />
-          </Box>
-        ),
-      },
-      {
-        key: RewardSalePaymentFlow.PurchaseRequest,
-        display: (
-          <Box
-            mt={space.xxs}
-            w="100%"
-            h="40%"
-            bg={colors.primaryLight}
-            borderTop={`1px solid ${colors.primaryLight}`}
-            borderRadius="12px 12px 0px 0px"
-            position="absolute"
-            bottom={0}
-          />
-        ),
-      },
-      {
-        key: RewardSalePaymentFlow.PurchaseSuccess,
-        display: <Text>Purchase Success</Text>,
-      },
-    ];
-  }, [space, colors, saleItem]);
+  const { payment_type, price, reward_detail } = sale;
+  const payWithLearn = payment_type === SalePaymentType.LEARN;
+  const disableBuyNow =
+    user?.pk === reward_detail.creator_detail.user || sale.is_active === false;
 
   return (
     <Flex flexDirection="column">
@@ -141,10 +97,10 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
 
         <Box pt={28}>
           <Flex pb={space.xxxs} gridGap={24}>
-            {saleItem.photo ? (
+            {reward_detail.photo ? (
               <Image
-                src={saleItem.photo}
-                alt={saleItem.title}
+                src={reward_detail.photo}
+                alt={reward_detail.title}
                 objectFit="cover"
                 boxProps={{
                   w: 115,
@@ -157,7 +113,7 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
             ) : (
               <Image
                 src={STATIC_IMAGES.ImageDefaultSaleItem}
-                alt={saleItem.title}
+                alt={reward_detail.title}
                 boxProps={{
                   w: 56,
                   h: 56,
@@ -167,10 +123,10 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
               />
             )}
             <Text pt={space.xxxxs} textStyle="formLabel">
-              {saleItem.title}
+              {reward_detail.title}
             </Text>
           </Flex>
-          {saleItem.description && (
+          {reward_detail.description && (
             <Flex
               px={space.xxxs}
               py={space.xxxxxs}
@@ -209,62 +165,89 @@ export default function RewardSalePayment({ saleItem }: IProps): JSX.Element {
               borderRadius="0px 0px 4px 4px"
             >
               <Text textStyle="body" fontWeight={500} lineHeight="2.1rem">
-                {saleItem.description}
+                {reward_detail.description}
               </Text>
             </StyledBox>
           )}
         </Box>
       </Box>
 
-      {pages.map(
-        ({ key, display }) =>
-          RewardSalePaymentSteps[currentPage] === key && (
-            <Box key={key}>{display}</Box>
-          )
-      )}
+      <Box py={20} pl={space.xs} pr={24}>
+        <SaleItemInfo sale={sale} showPrice={false} />
+      </Box>
 
-      {currentPage === RewardSalePaymentFlow.SaleItemDisplay && (
-        <Box
-          w="100%"
-          py={28}
-          px={space.xs}
-          bg={colors.primaryDark}
-          position="absolute"
-          bottom={0}
-          borderTop={`1px solid ${colors.primaryLight}`}
+      <Box
+        w="100%"
+        py={28}
+        px={space.xs}
+        bg={colors.primaryDark}
+        position="absolute"
+        bottom={0}
+        borderTop={`1px solid ${colors.primaryLight}`}
+      >
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          gridGap={space.s}
         >
-          <Flex justifyContent="space-between" alignItems="center">
-            <Box>
-              <Text
-                pb={space.xxxxxs}
-                textStyle="small"
-                fontWeight={600}
-                color={colors.textQuartenary}
-              >
-                PRICE
-              </Text>
-              {payWithLearn ? (
-                <Flex alignItems="center" gridGap={space.xxxxxs}>
-                  <Text textStyle="formLabel">
-                    {rewardSale.price} <StyledSpan>LEARN</StyledSpan>
-                  </Text>
-                  <Icon icon="LearnToken" size={20} />
-                </Flex>
-              ) : (
-                <Text textStyle="formLabel">₹{rewardSale.price}</Text>
-              )}
-            </Box>
-            <Button
-              w={280}
-              minHeight={44}
-              label="Buy Now 🎉 (Coming Soon)"
-              textProps={{ fontSize: "1.6rem" }}
-              onClick={() => setCurrentPage((page) => page + 1)}
-              disabled={true}
-            />
-          </Flex>
-        </Box>
-      )}
+          <Box>
+            <Text
+              pb={space.xxxxxs}
+              textStyle="small"
+              fontWeight={600}
+              color={colors.textQuartenary}
+            >
+              PRICE
+            </Text>
+            {payWithLearn ? (
+              <Flex alignItems="center" gridGap={space.xxxxxs}>
+                <Text textStyle="formLabel">
+                  {price} <StyledSpan>LEARN</StyledSpan>
+                </Text>
+                <Icon icon="LearnToken" size={20} />
+              </Flex>
+            ) : (
+              <Text textStyle="formLabel">₹{price}</Text>
+            )}
+          </Box>
+          <Button
+            w={280}
+            minHeight={44}
+            label="Buy Now 🎉"
+            textProps={{ fontSize: "1.6rem" }}
+            onClick={() => {
+              if (!user) {
+                openModal();
+                return;
+              }
+
+              if (payWithLearn) {
+                setShowLearnPurchaseModal(true);
+                return;
+              }
+
+              setShowPurchaseModal(true);
+              return;
+            }}
+            disabled={disableBuyNow}
+          />
+        </Flex>
+      </Box>
+
+      <PayItemStaticModal
+        sale={sale}
+        visible={showPurchaseModal}
+        onClose={() => setShowPurchaseModal(false)}
+      />
+
+      <LearnItemModal
+        creator={reward_detail.creator}
+        sale={sale}
+        visible={showLearnPurchaseModal}
+        successMessage="Our team will get in touch with you shortly."
+        contentProps={{ pt: space.xxs, pb: 28 }}
+        onClose={() => setShowLearnPurchaseModal(false)}
+      />
     </Flex>
   );
 }

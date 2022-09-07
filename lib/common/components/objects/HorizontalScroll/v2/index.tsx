@@ -34,15 +34,16 @@ export default function HorizontalScroll({
   const { space, colors } = useTheme();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollXProgress } = useElementScroll(ref);
-  const opacityLeft = useMotionValue(1);
-  const opacityRight = useMotionValue(0.3);
+  const opacityLeft = useMotionValue(0.3);
+  const opacityRight = useMotionValue(1);
 
   useEffect(() => {
     function updateOpacity(): void {
       const position = scrollXProgress.get();
+
       if (position === 0) {
-        opacityLeft.set(1);
-        opacityRight.set(0.3);
+        opacityLeft.set(0.3);
+        opacityRight.set(1);
         return;
       }
 
@@ -53,8 +54,18 @@ export default function HorizontalScroll({
       }
 
       if (position >= 0.9) {
-        opacityLeft.set(0.3);
-        opacityRight.set(1);
+        opacityLeft.set(1);
+        opacityRight.set(0.3);
+        return;
+      }
+    }
+
+    // Disable right scroll button if grid is not scrollable
+    if (ref.current) {
+      const { width } = ref.current.getBoundingClientRect();
+      const scrollWidth = ref.current.scrollWidth;
+      if (scrollWidth - width === 0) {
+        opacityRight.set(0.3);
         return;
       }
     }
@@ -68,12 +79,17 @@ export default function HorizontalScroll({
   const onClickScrollEnd = useCallback((): void => {
     if (!ref.current) return;
     const { width } = ref.current.getBoundingClientRect();
-    ref.current.scroll(width, 0);
+    const scrollLeft = ref.current.scrollLeft;
+
+    ref.current.scroll(scrollLeft + width, 0);
   }, [ref]);
 
   const onClickScrollStart = useCallback((): void => {
     if (!ref.current) return;
-    ref.current.scroll(0, 0);
+    const { width } = ref.current.getBoundingClientRect();
+    const scrollLeft = ref.current.scrollLeft;
+
+    ref.current.scroll(scrollLeft - width, 0);
   }, [ref]);
 
   return (
@@ -104,7 +120,7 @@ export default function HorizontalScroll({
               backgroundColor: colors.primaryLight,
             }}
             style={{
-              opacity: opacityRight,
+              opacity: opacityLeft,
             }}
             onClick={onClickScrollStart}
           >
@@ -125,7 +141,7 @@ export default function HorizontalScroll({
               backgroundColor: colors.primaryLight,
             }}
             style={{
-              opacity: opacityLeft,
+              opacity: opacityRight,
             }}
             onClick={onClickScrollEnd}
           >

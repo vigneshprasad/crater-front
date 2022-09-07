@@ -6,6 +6,12 @@ export interface RewardBase {
   description?: string;
   photo: string;
   is_active: boolean;
+  creator_detail: {
+    id: number;
+    name: string;
+    photo: string | null;
+    user: string;
+  };
 }
 
 export enum RewarSaleLogStatus {

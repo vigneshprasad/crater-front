@@ -28,7 +28,7 @@ export function RewardSaleTopSellersListProvider({
     data: sellers,
     error,
     mutate: mutateRewardSaleTopSellers,
-  } = useSWR<Seller[]>(API_URL_CONSTANTS.store.getRewardSaleTopSellers, {
+  } = useSWR<Seller[]>(API_URL_CONSTANTS.sales.getRewardSaleTopSellers, {
     initialData: initial,
   });
 
