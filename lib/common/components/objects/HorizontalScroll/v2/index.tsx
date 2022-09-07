@@ -140,10 +140,6 @@ export default function HorizontalScroll({
       </Flex>
       <Container ref={ref} py={space.xxs} overflowX="scroll" {...rest}>
         {children}
-        {children}
-        {children}
-        {children}
-        {children}
       </Container>
       <Box w={96} />
     </Box>
