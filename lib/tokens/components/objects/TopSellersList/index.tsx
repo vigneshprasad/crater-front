@@ -48,7 +48,7 @@ export default function TopSellersList({
       />
 
       <HorizontalScroll
-        title="Top Sellers 💯"
+        title="Top Creators 💯"
         px={space.l}
         maxWidth="100%"
         gridAutoFlow="column"
