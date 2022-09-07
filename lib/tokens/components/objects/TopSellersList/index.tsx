@@ -58,7 +58,7 @@ export default function TopSellersList({
         titleProps={{ px: space.l }}
       >
         {loading || !sellers
-          ? Array(5)
+          ? Array(4)
               .fill("")
               .map((_, index) => (
                 <Shimmer w={235} h={112} borderRadius={radii.xs} key={index} />
