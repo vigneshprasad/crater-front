@@ -1,4 +1,5 @@
 import STATIC_IMAGES from "public/images";
+import { useState } from "react";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -12,6 +13,7 @@ import {
   Span,
   Icon,
   FlexProps,
+  Spinner,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import ContainerModal from "@/common/components/objects/ContainerModal";
@@ -50,8 +52,10 @@ export default function LearnItemModal({
 }: IProps): JSX.Element {
   const { colors, space } = useTheme();
   const { showNotification } = useNotifications();
+  const [loading, setLoading] = useState(false);
 
   async function postRewardSaleLog(): Promise<void> {
+    await setLoading(true);
     const data: Partial<RewardSaleLog> = {
       reward_sale: sale.id,
       quantity: 1,
@@ -97,6 +101,7 @@ export default function LearnItemModal({
       true
     );
 
+    await setLoading(false);
     onClose();
 
     return;
@@ -133,7 +138,13 @@ export default function LearnItemModal({
           to the creator.
         </Text>
 
-        <Button w="100%" label="Confirm" onClick={postRewardSaleLog} />
+        <Button
+          w="100%"
+          label="Confirm"
+          suffixElement={loading && <Spinner size={24} />}
+          onClick={postRewardSaleLog}
+          disabled={loading}
+        />
       </Flex>
     </ContainerModal>
   );
