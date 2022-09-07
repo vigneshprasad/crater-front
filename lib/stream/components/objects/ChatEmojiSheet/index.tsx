@@ -53,7 +53,7 @@ export default function ChatEmojiSheet({
             }}
             right={0}
             position="absolute"
-            w={254}
+            w={300}
             h={240}
             bg={colors.primaryDark}
             border={`1px solid ${colors.secondaryLight}`}
@@ -67,8 +67,8 @@ export default function ChatEmojiSheet({
                   <Box
                     title={item}
                     cursor="pointer"
-                    w={36}
-                    h={36}
+                    w={60}
+                    h={60}
                     position="relative"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -89,7 +89,7 @@ export default function ChatEmojiSheet({
                 <Grid
                   p={space.xxxs}
                   gridGap={space.xxxs}
-                  gridTemplateColumns="repeat(6, 1fr)"
+                  gridTemplateColumns="repeat(4, 1fr)"
                 >
                   {children}
                 </Grid>
