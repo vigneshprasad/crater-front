@@ -1,5 +1,5 @@
 import { useElementScroll, useMotionValue } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import styled, { useTheme } from "styled-components";
 
 import {
