@@ -11,22 +11,8 @@ import {
   TextProps,
 } from "@/common/components/atoms";
 
-const StyledSpan1 = styled(Span)<TextProps>`
+const StyledSpan = styled(Span)<TextProps>`
   background: linear-gradient(65.32deg, #f1616a, #9146ff, #9db3ff, #0d849e);
-
-  backgroundclip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  textfillcolor: transparent;
-`;
-
-const StyledSpan2 = styled(Span)<TextProps>`
-  background: linear-gradient(
-    0deg,
-    #d5bbff 17.58%,
-    #9db3ff 85.38%,
-    #0d849e 85.38%
-  );
 
   backgroundclip: text;
   -webkit-background-clip: text;
@@ -53,8 +39,8 @@ export default function StoreHeader(): JSX.Element {
           pb={space.xxxs}
           w={368}
         >
-          Discover <StyledSpan1 fontWeight={500}>content</StyledSpan1> and{" "}
-          <StyledSpan2 fontWeight={500}>art</StyledSpan2> by Creators
+          Discover, <StyledSpan fontWeight={500}>Buy</StyledSpan> and{" "}
+          <StyledSpan fontWeight={500}>Sell</StyledSpan> Art &amp; Digital Goods
         </Text>
         <Icon icon="Sparkle" size={32} />
         <Box
@@ -65,8 +51,8 @@ export default function StoreHeader(): JSX.Element {
           background="rgba(79, 119, 167, 0.16)"
         >
           <Text textStyle="captionLarge" lineHeight="2.4rem">
-            Crater&apos;s digital marketplace for art, content and more. Buy,
-            sell and discover exclusive digital assets.
+            Crater&apos;s live marketplace for art, content, communities and
+            more. Buy, sell and discover exclusive assets created by Creators.
           </Text>
         </Box>
       </Box>
