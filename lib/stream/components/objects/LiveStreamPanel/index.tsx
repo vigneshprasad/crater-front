@@ -15,6 +15,7 @@ import {
   Text,
   Box,
   Span,
+  Icon,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
@@ -30,7 +31,7 @@ import LiveStreamPanelTabItem from "../LiveStreamPanelTabItem";
 import StreamChat from "../StreamChat";
 import StreamLeaderboardPanel from "../StreamLeaderboardPanel";
 
-type TabKeys = "chat" | "auction" | "leaderboard";
+type TabKeys = "chat" | "store" | "leaderboard";
 
 const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
   chat: (
@@ -38,9 +39,19 @@ const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
       <LiveStreamPanelTabItem icon="Chat" label="Chat" />
     </Link>
   ),
-  auction: (
-    <Link href={PageRoutes.stream(id, "auction")} shallow>
-      <LiveStreamPanelTabItem icon="Auction" label="Auction" />
+  store: (
+    <Link href={PageRoutes.stream(id, "store")} shallow>
+      <LiveStreamPanelTabItem
+        icon="Store"
+        label={
+          <Flex alignItems="center">
+            Store
+            <Span m={4}>
+              <Icon color="#F2B25C" icon="New" size={14} />
+            </Span>
+          </Flex>
+        }
+      />
     </Link>
   ),
   leaderboard: (
@@ -148,7 +159,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       {activeTab === "chat" && webinar && !webinar.closed && (
         <StreamChat stream={webinar} />
       )}
-      {activeTab === "auction" && webinar && (
+      {activeTab === "store" && webinar && (
         <LiveStreamAuctions webinar={webinar} />
       )}
       {activeTab === "leaderboard" && (
