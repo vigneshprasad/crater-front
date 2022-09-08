@@ -58,14 +58,15 @@ export const getStaticProps: GetStaticProps<
 
   const [upcomingStreams] = await WebinarApiClient().getAllUpcomingWebinars(
     undefined,
-    undefined,
+    4,
     streamCategory.pk
   );
   const [pastStreams] = await StreamApiClient().getPastStreams(
-    undefined,
+    4,
     streamCategory.pk
   );
   const [creators] = await CreatorApiClient().getCreatorRankList(
+    5,
     streamCategory.pk
   );
 

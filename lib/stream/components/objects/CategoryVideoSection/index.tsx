@@ -3,6 +3,7 @@ import styled, { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
+import useAuth from "@/auth/context/AuthContext";
 import {
   Box,
   Flex,
@@ -33,6 +34,7 @@ const Video = styled.video`
 type IProps = {
   streamCategory: StreamCategory;
   pastStreams?: PastStreamListItemWithRecording[];
+  categoryFollower?: Partial<StreamCategory>;
   loading: boolean;
   followCategory: () => void;
   unfollowCategory: () => void;
@@ -41,11 +43,13 @@ type IProps = {
 export default function CategoryVideoSection({
   streamCategory,
   pastStreams,
+  categoryFollower,
   loading,
   followCategory,
   unfollowCategory,
 }: IProps): JSX.Element | null {
   const router = useRouter();
+  const { user } = useAuth();
   const { space, colors, radii, breakpoints } = useTheme();
   const [activePastStreamIndex, setActivePastStreamIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -65,6 +69,26 @@ export default function CategoryVideoSection({
 
   if (isMobile === undefined) return null;
 
+  const videoGradient = isMobile ? (
+    <Box
+      position="absolute"
+      background="linear-gradient(0.14deg, #010101 25.26%, rgba(1, 1, 1, 0.88) 29.64%, rgba(1, 1, 1, 0) 43.2%, rgba(18, 18, 18, 0) 81.86%)"
+      w="100%"
+      h="100%"
+      left={0}
+      top={50}
+    />
+  ) : (
+    <Box
+      position="absolute"
+      background="linear-gradient(0.14deg, #010101 43.73%, rgba(1, 1, 1, 0.88) 56.67%, rgba(18, 18, 18, 0) 81.86%)"
+      transform="rotate(90deg)"
+      w={530}
+      h={298}
+      right={250}
+    />
+  );
+
   return (
     <Box px={[0, space.xs]} py={[0, 28]}>
       <Grid
@@ -78,7 +102,7 @@ export default function CategoryVideoSection({
           "pageTitle video"
         `,
         ]}
-        gridGap={[space.xxs, space.s]}
+        gridGap={[space.xxxxs, space.s]}
       >
         <Box px={[space.xxxs, 0]} py={[0, space.xs]} gridArea="pageTitle">
           <Flex
@@ -130,7 +154,61 @@ export default function CategoryVideoSection({
             />
           )}
 
-          {streamCategory.is_follower ? (
+          {(() => {
+            if (!user || !categoryFollower) {
+              return (
+                <Shimmer
+                  mt={[space.xxxs, 40]}
+                  w={["100%", 102]}
+                  h={44}
+                  borderRadius={radii.xxxxs}
+                />
+              );
+            }
+
+            const { is_follower } = categoryFollower;
+
+            return (
+              <Button
+                w={["100%", "auto"]}
+                variant={is_follower ? "dark-flat" : "flat"}
+                mt={[space.xxxs, 40]}
+                h={44}
+                label={is_follower ? "Following" : "Follow"}
+                borderRadius={radii.xxxxs}
+                display={["flex", "block"]}
+                alignItems="center"
+                justifyContent="center"
+                prefixElement={
+                  loading ? (
+                    <Spinner size={24} />
+                  ) : is_follower ? (
+                    <Icon
+                      size={20}
+                      icon="CheckCircle"
+                      color={colors.greenSuccess}
+                    />
+                  ) : (
+                    <Icon
+                      icon="Add"
+                      size={20}
+                      color={colors.white[0]}
+                      fill={true}
+                    />
+                  )
+                }
+                textProps={{
+                  fontSize: "1.6rem",
+                  fontWeight: 600,
+                  lineHeight: "2.0rem",
+                }}
+                disabled={loading}
+                onClick={is_follower ? unfollowCategory : followCategory}
+              />
+            );
+          })()}
+
+          {/* {isCategoryFollowed ? (
             <Button
               w={["100%", "auto"]}
               variant="dark-flat"
@@ -190,41 +268,33 @@ export default function CategoryVideoSection({
               disabled={loading}
               onClick={followCategory}
             />
-          )}
+          )} */}
         </Box>
 
-        <Box gridArea="video" justifySelf="end" position="relative">
-          {!isMobile && (
-            <Box
-              position="absolute"
-              background="linear-gradient(
-                  0.14deg, #010101 43.73%, rgba(1, 1, 1, 0.88) 56.67%, rgba(18, 18, 18, 0) 81.86%
-                )"
-              transform="rotate(90deg)"
-              w={530}
-              h={298}
-              right={250}
-            />
-          )}
+        <Box gridArea="video" justifySelf={["start", "end"]}>
           {!pastStreams ? (
             <Shimmer w={["100%", 530]} h={["auto", 298]} />
           ) : (
             <Box
+              position="relative"
               w={["100%", 530]}
               h={["auto", 298]}
               cursor="pointer"
+              zIndex={-1}
               onClick={() =>
                 router.push(
                   PageRoutes.streamVideo(pastStreams[activePastStreamIndex].id)
                 )
               }
             >
+              {videoGradient}
               {pastStreams.length > 0 && (
                 <Video
                   src={`${pastStreams[activePastStreamIndex].recording_details?.recording}#t=600`}
                   autoPlay
                   muted
                   loop
+                  playsInline
                   ref={videoRef}
                   onTimeUpdate={() => {
                     if (

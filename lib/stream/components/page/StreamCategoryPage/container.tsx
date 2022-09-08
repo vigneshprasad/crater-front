@@ -34,7 +34,11 @@ export default function Container({
         categoryFilter={id}
       >
         <PastStreamsWithRecordingProvider pageSize={4} category={id}>
-          <CreatorRankListProvider initial={creators} category={id}>
+          <CreatorRankListProvider
+            initial={creators}
+            category={id}
+            page_size={5}
+          >
             <StreamCategoryProvider>{children}</StreamCategoryProvider>
           </CreatorRankListProvider>
         </PastStreamsWithRecordingProvider>
