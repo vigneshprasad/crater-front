@@ -64,6 +64,7 @@ export { default as MicOff } from "./MicOff";
 export { default as MicOn } from "./MicOn";
 export { default as Moon } from "./Moon";
 export { default as MoreVertical } from "./MoreVertical";
+export { default as New } from "./New";
 export { default as Phone } from "./Phone";
 export { default as Pin } from "./Pin";
 export { default as PlayStore } from "./PlayStore";

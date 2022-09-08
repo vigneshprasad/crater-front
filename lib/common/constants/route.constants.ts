@@ -16,7 +16,7 @@ export const PageRoutes = {
     `/session/${id}?tab=${tab ?? "about"}`,
   stream: (
     id: string | number,
-    tab?: "chat" | "auction" | "leaderboard"
+    tab?: "chat" | "store" | "leaderboard"
   ): string => `/livestream/${id}?tab=${tab ?? "chat"}`,
   creatorProfile: (slug: string | number, tab?: string | number): string =>
     `/creator/${slug}/${tab ?? "streams"}`,
