@@ -170,6 +170,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     buttonText: string;
     loading?: boolean;
     disabled?: boolean;
+    icon?: JSX.Element;
     onClick?: () => void;
   } | null>(() => {
     if (webinar) {
@@ -214,14 +215,22 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             webinarRequest.status === RequestStatus.accepted
           ) {
             return {
-              buttonText: "You'll be notified when the stream starts.",
+              buttonText: "We'll remind you",
               disabled: true,
+              icon: (
+                <Icon
+                  icon="CheckCircle"
+                  size={18}
+                  color={colors.greenSuccess}
+                />
+              ),
             };
           }
 
           return {
             buttonText: "Remind Me",
             loading: rsvpBtnLoading,
+            icon: <Icon icon="IcNotficationFill" color={colors.white[0]} />,
             onClick: () => {
               postGroupRequest();
             },
@@ -230,6 +239,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       } else {
         return {
           buttonText: "Remind Me",
+          icon: <Icon icon="IcNotficationFill" color={colors.white[0]} />,
           onClick: () => {
             track(AnalyticsEvents.rsvp_button_clicked, {
               new_user: true,
@@ -252,6 +262,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     webinarRequest,
     rsvpBtnLoading,
     autoRsvp,
+    colors,
   ]);
 
   const postGroupQuestion = useCallback(

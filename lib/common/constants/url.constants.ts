@@ -19,6 +19,8 @@ export const API_URL_CONSTANTS = {
     followStreamCategory: "/user/auth/category/follow/",
     unfollowStreamCategory: "/user/auth/category/unfollow/",
     getProfileStatus: "/user/auth/profile/status/",
+    isCategoryFollower: (slug: string): string =>
+      `/user/auth/category/follower/?category=${slug}`,
   },
   integrations: {
     dyte: {

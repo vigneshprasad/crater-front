@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { variant } from "styled-system";
 
 import { AnimatedBox, Box } from "../../atoms";
+import { NotficationLarge } from "./NotficationLarge";
 import { Notification } from "./Notification";
 import { useNotifications } from "./context";
 
@@ -15,6 +16,12 @@ const variants: Variants = {
     right: "50%",
     minWidth: 340,
     transform: "translateX(50%)",
+  },
+  bottomRight: {
+    bottom: 36,
+    right: 24,
+    width: "max-content",
+    minWidth: 360,
   },
 };
 
@@ -34,7 +41,7 @@ const Container = styled(AnimatedBox)`
 
 export function NotificationStack(): JSX.Element | null {
   const [node, setNode] = useState<HTMLElement | undefined>();
-  const { notifications } = useNotifications();
+  const { notifications, largeNotfications } = useNotifications();
 
   useEffect(() => {
     const element = document.getElementById("notification-stack-root");
@@ -61,6 +68,11 @@ export function NotificationStack(): JSX.Element | null {
               <Notification key={index} {...notificationProps} />
             ))}
           </AnimatePresence>
+        </Container>
+        <Container type="bottomRight" pointerEvents="all">
+          {largeNotfications.map((notificationProps, index) => (
+            <NotficationLarge key={index} {...notificationProps} />
+          ))}
         </Container>
       </Box>
     </Box>,

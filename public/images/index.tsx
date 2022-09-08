@@ -19,6 +19,7 @@ import ImageLeaderboardStep1 from "public/images/img_leaderboard_step1.png";
 import ImageLeaderboardStep2 from "public/images/img_leaderboard_step2.png";
 import ImageLeaderboardStep3 from "public/images/img_leaderboard_step3.png";
 import ImagePlaceBidIcon from "public/images/img_place_bid.png";
+import ImagePurchaseComplete from "public/images/img_purchase_complete.png";
 import ImagePurchaseItem from "public/images/img_purchase_item.png";
 import ImageRank1 from "public/images/img_rank_1.png";
 import ImageRank2 from "public/images/img_rank_2.png";
@@ -70,6 +71,7 @@ const STATIC_IMAGES = {
   ImageDefaultSaleItem,
   ImageAuctionEmpty,
   ImageStoreHeader,
+  ImagePurchaseComplete,
 };
 
 export default STATIC_IMAGES;
