@@ -1,6 +1,7 @@
 import { AxiosError } from "axios";
 import { GetSessionOptions } from "next-auth/client";
 
+import { RewardSale } from "@/auction/types/sales";
 import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ApiResult } from "@/common/types/api";
@@ -10,6 +11,9 @@ import { Reward } from "../types/token";
 interface IRewardApiClient {
   getRewardsList: () => Promise<ApiResult<Reward[], AxiosError>>;
   retrieveReward: (rewardId: string) => Promise<ApiResult<Reward, AxiosError>>;
+  retrieveRewardSale: (
+    id: string
+  ) => Promise<ApiResult<RewardSale, AxiosError>>;
 }
 
 export default function RewardApiClient(
@@ -42,8 +46,23 @@ export default function RewardApiClient(
     }
   }
 
+  async function retrieveRewardSale(
+    id: string
+  ): Promise<ApiResult<RewardSale, AxiosError>> {
+    try {
+      const { data } = await client.get<RewardSale>(
+        API_URL_CONSTANTS.sales.retrieveRewardSale(id)
+      );
+
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getRewardsList,
     retrieveReward,
+    retrieveRewardSale,
   };
 }

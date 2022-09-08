@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const ProgressBar = styled(Box)`
-  transition: all 20s ease-in-out;
+  transition: all 30s ease-in-out;
 `;
 
 export default function ChatNotification({
@@ -72,6 +72,7 @@ export default function ChatNotification({
             <Box flex="1">{headingElement}</Box>
             <IconButton
               icon="Close"
+              type="button"
               onClick={() => {
                 setVisible(false);
               }}

@@ -20,6 +20,7 @@ import HubUpcomingStreamsList from "../HubUpcomingStreamsList.tsx";
 
 type IProps = {
   creator: Creator | null;
+  userId?: string;
 };
 
 const sortByFields: {
@@ -46,6 +47,7 @@ const sortByFields: {
 
 export default function HubUpcomingStreamsTab({
   creator,
+  userId,
 }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
   const router = useRouter();
@@ -94,7 +96,10 @@ export default function HubUpcomingStreamsTab({
 
   return (
     <Box pt={space.xxs} overflow="auto" minWidth={1000}>
-      <UpcomingStreamsProvider host={creator?.user} sortBy={sortBy}>
+      <UpcomingStreamsProvider
+        host={userId}
+        sortBy={sortBy ?? SortByField.THIS_WEEK}
+      >
         <Grid
           gridAutoFlow="column"
           gridTemplateColumns="minmax(800px, 1fr) 250px"

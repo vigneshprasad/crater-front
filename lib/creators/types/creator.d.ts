@@ -63,24 +63,20 @@ export type TopCreators = {
 };
 
 export type ClubMembersGrowth = {
-  rsvp_at: string;
-  rsvp_count: number;
+  key: string;
+  value: number;
 };
 
 export type TrafficSourceType = {
   source_name: string;
   count: number;
+  color?: string;
 };
 
-export enum ConversionFunnelKey {
-  RSVP = "RSVP",
-  Subscribers = "Subscribers",
-  RecurringUsers = "Recurring Users",
-}
-
 export type ConversionFunnel = {
-  name: ConversionFunnelKey;
-  value: number;
+  total_rsvp: number;
+  followers_percentage: number;
+  recurring_users_percentage: number;
 };
 
 export type CreatorRank = {
@@ -99,5 +95,16 @@ export type CreatorRank = {
 
 export type CreatorStats = {
   name: string;
+  value: number;
+};
+
+export type CreatorUpiInfo = {
+  id: number;
+  upi_id: string;
+  qr_code: string;
+};
+
+export type StreamCompletionRate = {
+  key: string;
   value: number;
 };

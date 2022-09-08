@@ -70,14 +70,13 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
               ? ParticpantType.speaker
               : ParticpantType.attendee,
         };
-        const [req, err] = await WebinarApiClient().postWebinarRequest(data);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const [_, err] = await WebinarApiClient().postWebinarRequest(data);
         if (err) {
           console.log(err);
         }
 
         setLoadingRequest(false);
-
-        console.log(req);
       }
     };
     return (

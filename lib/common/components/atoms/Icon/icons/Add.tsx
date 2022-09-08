@@ -1,14 +1,14 @@
 export default function Add(props: React.SVGProps<SVGSVGElement>): JSX.Element {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
       height="1em"
       viewBox="0 0 24 24"
-      width="1em"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path d="M0 0h24v24H0V0z" fill="none" />
-      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+      <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6z" fill="currentColor" />
     </svg>
   );
 }

@@ -54,7 +54,7 @@ export default function ChatStickerItem({
       >
         {name}:
       </Span>
-      <Box w={72} h={72} position="relative">
+      <Box w={96} h={96} position="relative">
         {message.data?.sticker && (
           <Image
             src={EMOJI_IMAGE_LIST[message.data?.sticker]}

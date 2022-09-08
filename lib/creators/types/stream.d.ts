@@ -33,3 +33,24 @@ export type TopStreams = {
   // rsvp_count: number;
   // messages_count: number;
 };
+
+export type ChannelStats = {
+  total_stream_time: number;
+  total_streams: number;
+  total_followers: number;
+  average_stream_length: number;
+  average_stream_engagement: number;
+};
+
+export type PlatformStats = {
+  total_creators: number;
+  total_streams_past_week: number;
+  chat_engagement: number;
+  avg_stream_length: number;
+};
+
+export type StreamCategoryDistribution = {
+  id: number;
+  name: string;
+  value: number;
+};

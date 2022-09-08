@@ -54,6 +54,8 @@ export const API_URL_CONSTANTS = {
     subscribeCreator: "/crater/followers/notify/",
     unsubscribeCreator: (id: number): string => `/crater/followers/${id}/`,
     getStats: "/crater/creator/stats/",
+    retrieveCreatorUpiInfo: (id: string | number): string =>
+      `/crater/creator/upi/${id}/`,
   },
   groups: {
     retrieveGroupRequest: (id: string): string => `/groups/requests/${id}/`,
@@ -119,6 +121,17 @@ export const API_URL_CONSTANTS = {
       `/crater/auction/${coin}/summary/`,
     getAllAuctions: "/crater/auction/all/",
   },
+  sales: {
+    getSalesList: "/crater/sale/",
+    getFeaturedSalesList: "/crater/sale/featured/",
+    getRewardSaleTopSellers: "/crater/sale/sellers/featured/",
+    postRewardSale: "/crater/sale/",
+    postSaleLog: "/crater/sale/log/",
+    postSaleLogAccept: (id: number): string => `/crater/sale/log/${id}/accept/`,
+    postSaleLogDecline: (id: number): string =>
+      `/crater/sale/log/${id}/decline/`,
+    retrieveRewardSale: (id: number | string): string => `/crater/sale/${id}/`,
+  },
   coins: {
     getAuctions: "/crater/auction/",
     getCointForCreator: (id: string | number): string =>
@@ -152,6 +165,12 @@ export const API_URL_CONSTANTS = {
     getTrafficSourceTypes: "/crater/analytics/traffic_source_types/",
     getConversionFunnel: "/crater/analytics/conversion_funnel/",
     getUsersByCrater: "/crater/analytics/users_by_crater/",
+    getChannelStats: "/crater/analytics/channel_stats/",
+    getPlatformStats: "/crater/analytics/platform_stats/",
+    getStreamCategoryDistribution:
+      "/crater/analytics/stream_category_distribution/",
+    getStreamTime: "/crater/analytics/stream_time",
+    getStreamCompletionRate: "/crater/analytics/stream_completion",
   },
   firebase: {
     getFirebaseToken: "/integrations/firebase/token/",

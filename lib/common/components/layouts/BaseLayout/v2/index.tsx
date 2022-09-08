@@ -2,6 +2,7 @@ import { forwardRef, useEffect, useMemo } from "react";
 
 import { Grid, Box, BoxProps } from "@/common/components/atoms";
 import AppNavbar from "@/common/components/objects/AppNavBar/v2";
+import Banner from "@/common/components/objects/Banner";
 
 type IBaseLayoutProps = BoxProps & {
   aside?: React.ReactNode;
@@ -14,10 +15,12 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
         return [
           `
           "navbar"
+          "banner"
           "content"
         `,
           `
           "navbar navbar"
+          "banner banner"
           "aside content"
         `,
         ];
@@ -60,11 +63,15 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
           gridTemplateAreas={gridTemplateAreas}
           h="calc(var(--vh, 1vh) * 100)"
           gridTemplateColumns={gridTemplateColumns}
-          gridTemplateRows={["max-content 1fr"]}
+          gridTemplateRows={["max-content max-content 1fr"]}
           overflow="hidden"
         >
           <AppNavbar />
           {aside && <Box gridArea="aside">{aside}</Box>}
+          <Banner
+            content="Registration is open now: Encrypt 2022 Hackathon!"
+            link="https://encrypt.crater.club/"
+          />
           <Box gridArea="content" {...rest} ref={ref} as="main">
             {children}
           </Box>

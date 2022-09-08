@@ -6,8 +6,6 @@ import HubPageLayout, {
   getHubServerSideProps,
 } from "@/common/components/layouts/HubPageLayout/v2";
 import { Creator } from "@/creators/types/creator";
-import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
-import { SortByField } from "@/stream/types/stream";
 
 const HubUpcomingStreamsTab = dynamic(
   () => import("@/creators/components/objects/HubUpcomingStreamsTab")
@@ -46,9 +44,7 @@ export default function CreatorHubUpcomingStreams({
 }: IProps): JSX.Element {
   return (
     <HubPageLayout creator={creator} activeTab="upcoming">
-      <UpcomingStreamsProvider host={userId} sortBy={SortByField.THIS_WEEK}>
-        <HubUpcomingStreamsTab creator={creator} />
-      </UpcomingStreamsProvider>
+      <HubUpcomingStreamsTab creator={creator} userId={userId} />
     </HubPageLayout>
   );
 }

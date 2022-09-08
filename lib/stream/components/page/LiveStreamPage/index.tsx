@@ -18,7 +18,6 @@ import { Reward } from "@/tokens/types/token";
 
 import LiveStreamPageLayout from "../../layouts/LiveStreamPageLayout";
 import PastStreamsList from "../../objects/PastStreamsList/v2";
-import SimilarStreamsOverlay from "../../objects/SimilarStreamsOverlay";
 import StreamAboutSection from "../../objects/StreamAboutSection";
 import StreamShareSection from "../../objects/StreamShareSection";
 import TokenBannerOverlay from "../../objects/TokenBannerOverlay";
@@ -102,7 +101,6 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
             />
           )}
           {creator?.tokens_enabled && webinar.is_live && <TokenBannerOverlay />}
-          <SimilarStreamsOverlay />
         </>
       }
       streamDetail={

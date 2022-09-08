@@ -110,7 +110,7 @@ export default function PhotoUpload({
         gridTemplateColumns="140px 1fr"
         gridGap={space.s}
       >
-        <Text textStyle="formLabel">{heading}</Text>
+        <Text textStyle="inputLabel">{heading}</Text>
         <Grid
           gridTemplateColumns={["1fr", "min-content 1fr"]}
           gridGap={36}
@@ -121,6 +121,7 @@ export default function PhotoUpload({
             w={96}
             borderRadius="50%"
             overflow="hidden"
+            style={{ pointerEvents: value ? "none" : "auto" }}
             {...previewStyle}
           >
             <Image
@@ -130,6 +131,7 @@ export default function PhotoUpload({
               layout="fill"
               unoptimized
             />
+
             <Overlay onClick={() => inputRef.current?.click()}>
               <Icon color={colors.white[0]} fill size={48} icon="FileUpload" />
             </Overlay>
