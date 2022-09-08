@@ -193,6 +193,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
             </Box>
 
             <Flex
+              pb={space.xxxxxs}
               gridColumn="1 / span 2"
               justifyContent="space-between"
               alignItems="center"
@@ -245,8 +246,12 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
                   );
                 }
 
+                if (user?.pk === stream.host_detail.pk) {
+                  return null;
+                }
+
                 return (
-                  <Flex py={space.xxxxs} alignItems="center" gridGap={5}>
+                  <Flex alignItems="center" gridGap={5}>
                     <Text
                       textStyle="body"
                       fontWeight={600}
@@ -338,7 +343,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
                   return null;
                 }
 
-                if (user.pk === stream.host) {
+                if (user.pk === stream.host_detail.pk) {
                   return null;
                 }
 
