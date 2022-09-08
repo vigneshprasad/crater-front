@@ -51,7 +51,7 @@ export default function LearnItemModal({
   onClose,
 }: IProps): JSX.Element {
   const { colors, space } = useTheme();
-  const { showNotification } = useNotifications();
+  const { showNotification, showLargeNotification } = useNotifications();
   const [loading, setLoading] = useState(false);
 
   async function postRewardSaleLog(): Promise<void> {
@@ -86,16 +86,13 @@ export default function LearnItemModal({
       return;
     }
 
-    showNotification(
+    showLargeNotification(
       {
-        title: "Purchase Successful",
+        title: "Your purchase is complete!",
         description:
           successMessage ??
-          "Our team will connect you with the creator after the stream ends.",
-        iconProps: {
-          icon: "CheckCircle",
-          color: colors.greenSuccess,
-        },
+          "Our team will contact you shortly to assist you with the next steps.",
+        photo: STATIC_IMAGES.ImagePurchaseComplete,
       },
       30000,
       true
