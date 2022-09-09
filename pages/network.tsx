@@ -33,11 +33,7 @@ export default function ClubsTabPage({ creators }: PageProps): JSX.Element {
   };
 
   return (
-    <HomePageLayout
-      seo={seo}
-      activeTab="creators"
-      heading="Creators &amp; Educators"
-    >
+    <HomePageLayout seo={seo} heading="Creators &amp; Educators">
       <CreatorListProvider pageSize={20} initial={creators}>
         <CommunityPage />
       </CreatorListProvider>
