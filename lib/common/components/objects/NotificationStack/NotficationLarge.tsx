@@ -13,6 +13,7 @@ export interface NotificationLargeProps {
 }
 
 export function NotficationLarge({
+  onClose,
   title,
   description,
   photo,
@@ -67,14 +68,16 @@ export function NotficationLarge({
             </Text>
           )}
         </Box>
-        <IconButton
-          position="absolute"
-          top={16}
-          right={16}
-          icon="Close"
-          buttonStyle="round"
-          onClick={() => console.log("123123")}
-        />
+        {onClose && (
+          <IconButton
+            position="absolute"
+            top={16}
+            right={16}
+            icon="Close"
+            buttonStyle="round"
+            onClick={onClose}
+          />
+        )}
       </Box>
     </AnimatedBox>
   );
