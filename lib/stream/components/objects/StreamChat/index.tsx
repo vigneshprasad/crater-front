@@ -310,12 +310,14 @@ export default function StreamChat({
                         )[0]
                           ? true
                           : false;
-
+                        const isSpeaker =
+                          user?.pk === stream.host ||
+                          (stream?.speakers &&
+                            user &&
+                            stream.speakers?.indexOf(user?.pk) > -1);
                         const showCount =
                           isAdmin ||
-                          (permission.show_viewer_count &&
-                            user?.pk === stream.host);
-
+                          (permission.show_viewer_count && isSpeaker);
                         if (showCount) {
                           return <StreamViewerCount />;
                         }
