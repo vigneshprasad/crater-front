@@ -68,13 +68,9 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
         >
           <AppNavbar />
           {aside && <Box gridArea="aside">{aside}</Box>}
-          {/* <Banner
+          <Banner
             content="Registration is open now: Encrypt 2022 Hackathon!"
             link="https://encrypt.crater.club/"
-          /> */}
-          <Banner
-            content="8 hrs LIVE UI/UX Design. Registrations open!"
-            link="https://crater.club/session/4361?tab=about"
           />
           <Box gridArea="content" {...rest} ref={ref} as="main">
             {children}
