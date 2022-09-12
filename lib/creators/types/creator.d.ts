@@ -98,6 +98,12 @@ export type CreatorStats = {
   value: number;
 };
 
+export type CreatorUpiInfo = {
+  id: number;
+  upi_id: string;
+  qr_code: string;
+};
+
 export type StreamCompletionRate = {
   key: string;
   value: number;

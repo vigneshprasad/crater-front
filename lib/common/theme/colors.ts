@@ -18,7 +18,7 @@ const colors = {
   red: ["#E53834", "#db2d16", "#FF7A68"],
   white: ["#FFFFFF", "#b9b9b9"],
   lightGrey: "#8C8C8C",
-  greenSuccess: "#35AF27",
+  greenSuccess: "#7AD772",
   yellow: ["#FFD231"],
   green: ["#6AD361"],
   whiteAlpha: [
@@ -28,7 +28,7 @@ const colors = {
     "rgba(288,288,288,0.4)",
   ],
   blackAlpha: ["rgba(0,0,0,0.1)", "rgba(0,0,0,0.4)"],
-  error: "#FF6628",
+  error: "#FA5B5B",
   errorDeep: "#CC5D2F",
   twitter: "#1DA1F2",
   linkedin: "#2867B2",
@@ -55,6 +55,7 @@ const colors = {
     "#D2FC5E",
     "#FF8661",
   ],
+  primaryBanner: "#882EE8",
   inputDefaultBg: "#010101",
   textSecondary: "rgba(255, 255, 255, 0.64)",
   textSecondaryLight: "#D7D7EA",
@@ -68,9 +69,10 @@ const colors = {
   primaryDarkSecondary: "#2B2B2B",
   textPrimary: "#FFFFFF",
   outline: "rgba(237, 237, 237, 0.6)",
-  textPlaceholder: "#787878",
+  textPlaceholder: "#959595",
   iconColor: "#FFFFFF",
   overlay: "rgba(0,0,0,0.7)",
+  "red-500": "#FA5B5B",
 };
 
 export default colors;

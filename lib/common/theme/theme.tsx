@@ -9,7 +9,7 @@ const fontSizes = {
   xxxs: 12,
   xxs: 16,
   xs: 20,
-  s: 30,
+  s: 32,
   m: 40,
   l: 60,
   xl: 80,

@@ -63,7 +63,7 @@ export function FirebaseChatProvider({
         const data: Partial<ChatMessage> = {
           ...message,
           group: groupCollectionId,
-          sender: firebaseUser.uid,
+          ...(!message.display_name && { sender: firebaseUser.uid }),
           type: ChatMessageType.TEXT,
         };
 

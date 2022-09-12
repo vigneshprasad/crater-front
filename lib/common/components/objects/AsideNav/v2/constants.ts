@@ -1,7 +1,7 @@
 import { PageRoutes } from "@/common/constants/route.constants";
 import { IconOptions } from "@/common/theme";
 
-export type INavKeys = "streams" | "creators" | "leaderboard" | "hub";
+export type INavKeys = "streams" | "store" | "leaderboard" | "hub";
 export type HubNavHeadingKeys = "settings" | "streams" | "analytics";
 export type HubNavItemKeys =
   | "journey"
@@ -41,10 +41,10 @@ export const NAV_ITEMS: INavItem[] = [
     label: "Streams",
   },
   {
-    key: "creators",
-    icon: "ViewerCount",
-    route: PageRoutes.community,
-    label: "Creators",
+    key: "store",
+    icon: "Store",
+    route: PageRoutes.store(),
+    label: "Store",
   },
   {
     key: "leaderboard",

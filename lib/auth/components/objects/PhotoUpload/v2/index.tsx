@@ -110,7 +110,7 @@ export default function PhotoUpload({
         gridTemplateColumns="140px 1fr"
         gridGap={space.s}
       >
-        <Text textStyle="formLabel">{heading}</Text>
+        <Text textStyle="inputLabel">{heading}</Text>
         <Grid
           gridTemplateColumns={["1fr", "min-content 1fr"]}
           gridGap={36}

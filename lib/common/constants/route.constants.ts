@@ -1,4 +1,5 @@
-// import { HubTabKeys } from "../components/layouts/HubPageLayout";
+import { StoreTabKeys } from "@/tokens/types/store";
+
 import {
   HubNavHeadingKeys,
   HubNavItemKeys,
@@ -15,7 +16,7 @@ export const PageRoutes = {
     `/session/${id}?tab=${tab ?? "about"}`,
   stream: (
     id: string | number,
-    tab?: "chat" | "auction" | "leaderboard"
+    tab?: "chat" | "store" | "leaderboard"
   ): string => `/livestream/${id}?tab=${tab ?? "chat"}`,
   creatorProfile: (slug: string | number, tab?: string | number): string =>
     `/creator/${slug}/${tab ?? "streams"}`,
@@ -36,4 +37,5 @@ export const PageRoutes = {
   pastStreams: (id: string | number): string => `/categories/${id}/streams/`,
   leaderboard: "/leaderboard",
   category: (slug: string): string => `/category/${slug}/`,
+  store: (tab: StoreTabKeys = "buy-now"): string => `/store/${tab}`,
 };

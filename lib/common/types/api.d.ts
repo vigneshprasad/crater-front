@@ -12,3 +12,8 @@ export interface BaseApiError {
   error_code: string;
   error_message: string;
 }
+
+export interface GenericError {
+  type: string;
+  message: string;
+}

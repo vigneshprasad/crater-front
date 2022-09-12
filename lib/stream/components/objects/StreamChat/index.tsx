@@ -172,7 +172,7 @@ export default function StreamChat({
             >
               {hasActiveReward && (
                 <Link
-                  href={PageRoutes.stream(stream.id, "auction")}
+                  href={PageRoutes.stream(stream.id, "store")}
                   boxProps={{
                     display: ["none", "block"],
                   }}
@@ -217,6 +217,7 @@ export default function StreamChat({
                       if (!data.display_name) {
                         delete message.display_name;
                       }
+
                       postMessage(message);
                       fieldValueSetter("message", "");
                     }
@@ -309,12 +310,14 @@ export default function StreamChat({
                         )[0]
                           ? true
                           : false;
-
+                        const isSpeaker =
+                          user?.pk === stream.host ||
+                          (stream?.speakers &&
+                            user &&
+                            stream.speakers?.indexOf(user?.pk) > -1);
                         const showCount =
                           isAdmin ||
-                          (permission.show_viewer_count &&
-                            user?.pk === stream.host);
-
+                          (permission.show_viewer_count && isSpeaker);
                         if (showCount) {
                           return <StreamViewerCount />;
                         }

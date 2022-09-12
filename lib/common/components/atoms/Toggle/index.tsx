@@ -66,6 +66,7 @@ export function Toggle({
       h={20}
       borderRadius={16}
       w={36}
+      cursor="pointer"
     >
       <AnimatedBox
         display="grid"

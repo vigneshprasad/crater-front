@@ -5,9 +5,9 @@ import { Flex, Grid, Span, Text } from "@/common/components/atoms";
 
 interface IProps {
   totalCreators: number;
-  totalStreams: number;
+  totalStreamsPastWeek: number;
   chatEngagement: number;
-  totalStreamTime: number;
+  avgStreamLength: number;
 }
 
 type ValueKeys = keyof IProps;
@@ -17,8 +17,12 @@ export default function PlatformStatisticsSummaryBox(
 ): JSX.Element {
   const { space, colors, radii } = useTheme();
 
-  const { totalCreators, totalStreams, chatEngagement, totalStreamTime } =
-    props;
+  const {
+    totalCreators,
+    totalStreamsPastWeek,
+    chatEngagement,
+    avgStreamLength,
+  } = props;
 
   const columns = useMemo<
     {
@@ -42,17 +46,17 @@ export default function PlatformStatisticsSummaryBox(
         textColor: "#EDEDED",
       },
       {
-        key: "totalStreams",
-        title: "Total Streams",
+        key: "totalStreamsPastWeek",
+        title: "Streams past week",
         display: (
           <Text fontSize="4.0rem" fontWeight={500}>
-            {totalStreams}
+            {totalStreamsPastWeek}
           </Text>
         ),
       },
       {
         key: "chatEngagement",
-        title: "Chat Engagement",
+        title: "Avg Stream Engagement",
         display: (
           <Text fontSize="2.0rem" fontWeight={500}>
             <Span fontSize="4.0rem">{chatEngagement}</Span> questions
@@ -60,16 +64,22 @@ export default function PlatformStatisticsSummaryBox(
         ),
       },
       {
-        key: "totalStreamTime",
-        title: "Total Stream Time",
+        key: "avgStreamLength",
+        title: "Average Stream Length",
         display: (
           <Text fontSize="2.0rem" fontWeight={500}>
-            <Span fontSize="4.0rem">{totalStreamTime}</Span> mins
+            <Span fontSize="4.0rem">{avgStreamLength}</Span> mins
           </Text>
         ),
       },
     ];
-  }, [colors, totalCreators, totalStreams, chatEngagement, totalStreamTime]);
+  }, [
+    colors,
+    totalCreators,
+    totalStreamsPastWeek,
+    chatEngagement,
+    avgStreamLength,
+  ]);
 
   return (
     <Grid gridTemplateColumns="repeat(4, 1fr)" gridGap={space.xxxs}>

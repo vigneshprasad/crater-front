@@ -1,6 +1,6 @@
 import { useTheme } from "styled-components";
 
-import { Box, Flex, Shimmer, Text } from "@/common/components/atoms";
+import { Box, Shimmer, Text } from "@/common/components/atoms";
 import { StreamCompletionRate } from "@/creators/types/creator";
 
 import StreamCompletionRateChart from "../StreamCompletionRateChart";

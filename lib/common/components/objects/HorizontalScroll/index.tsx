@@ -2,6 +2,8 @@ import { useElementScroll, useMotionValue } from "framer-motion";
 import { useRef, useCallback, useEffect } from "react";
 import styled, { useTheme } from "styled-components";
 
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
+
 import { Grid, GridProps, Icon, Box, BoxProps, AnimatedBox } from "../../atoms";
 
 type IProps = GridProps & {
@@ -29,28 +31,36 @@ export default function HorizontalScroll({
   actionContainerProps,
   ...rest
 }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, breakpoints } = useTheme();
   const gridRef = useRef<HTMLDivElement>(null);
   const { scrollXProgress } = useElementScroll(gridRef);
   const opacityLeft = useMotionValue(1);
   const opacityRight = useMotionValue(0);
 
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
   useEffect(() => {
+    if (isMobile) {
+      opacityLeft.set(0);
+      return;
+    }
+
     function updateOpacity(): void {
       const position = scrollXProgress.get();
-      if (position === 0) {
+
+      if (position === 0 && !isMobile) {
         opacityLeft.set(1);
         opacityRight.set(0);
         return;
       }
 
-      if (position > 0 && position < 0.9) {
+      if (position > 0 && position < 0.9 && !isMobile) {
         opacityLeft.set(1);
         opacityRight.set(1);
         return;
       }
 
-      if (position >= 0.9) {
+      if (position >= 0.9 && !isMobile) {
         opacityLeft.set(0);
         opacityRight.set(1);
         return;
@@ -61,7 +71,7 @@ export default function HorizontalScroll({
     return () => {
       unsubsribeScrollProgress();
     };
-  }, [scrollXProgress, opacityLeft, opacityRight]);
+  }, [scrollXProgress, opacityLeft, opacityRight, isMobile]);
 
   const onClickScrollEnd = useCallback((): void => {
     if (!gridRef.current) return;

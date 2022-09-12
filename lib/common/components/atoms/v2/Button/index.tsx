@@ -12,6 +12,7 @@ type Variants =
   | "condensed-dark"
   | "outline"
   | "outline-condensed"
+  | "outline-dark"
   | "dark-flat"
   | "dark-flat-no-bg"
   | "round"
@@ -24,7 +25,13 @@ type Variants =
   | "gradient-border"
   | "text"
   | "filter-small"
-  | "filter-selected-small";
+  | "filter-selected-small"
+  | "small"
+  | "primary-bg-flat"
+  | "gradient-border-flat"
+  | "success"
+  | "failure"
+  | "flat-with-disabled-dark";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -166,11 +173,26 @@ const StyledButton = styled(Grid)<ButtonProps>`
         ":hover": {
           bg: "primaryLight",
         },
+        ":disabled": {
+          bg: "primaryDark",
+        },
       },
       "dark-flat-no-bg": {
         bg: "primaryDark",
         color: "accentLight",
         transition: "all 0.1s ease-in",
+      },
+      "outline-dark": {
+        fontSize: ["1.2rem"],
+        bg: "primaryBackground",
+        borderRadius: 4,
+        border: "1px solid #373737",
+        padding: "0.6em 1.2em",
+        fontWeight: "600",
+        transition: "all 0.1s ease-in",
+        ":hover": {
+          bg: "primaryLight",
+        },
       },
       round: {
         fontSize: ["1.4rem", "1.6rem"],
@@ -308,6 +330,117 @@ const StyledButton = styled(Grid)<ButtonProps>`
         transition: "all 0.1s ease-in",
         ":hover": {
           bg: "white.1",
+        },
+      },
+      "flat-with-disabled-dark": {
+        bg: "accent",
+        px: "0.8em",
+        py: "0.4em",
+        transition: "all 0.1s ease-in",
+        borderRadius: [0, 4],
+        ":hover": {
+          bg: "accentHover",
+        },
+        ":disabled": {
+          bg: "primaryDark",
+          color: "#828282",
+        },
+      },
+      "primary-bg-flat": {
+        fontSize: "1.6rem",
+        lineHeight: "2.8rem",
+        fontWeight: "500",
+        p: "0.5em 0.8em",
+        bg: "primaryBackground",
+        borderRadius: "0.25em",
+        transition: "all 0.1s ease-in",
+        ":hover": {
+          bg: "rgba(136, 46, 232, 0.04)",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          cursor: "default",
+        },
+      },
+      "gradient-border-flat": css`
+        position: relative;
+        position: relative;
+        padding: 0.5em 0.8em;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border-radius: 4px;
+          border: 1px solid transparent;
+          background: linear-gradient(
+              65.32deg,
+              #f1616a,
+              #9146ff,
+              #9db3ff,
+              #0d849e
+            )
+            border-box;
+          -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0);
+          -webkit-mask-composite: destination-out;
+          mask-composite: exclude;
+        }
+
+        &:hover {
+          background: rgba(136, 46, 232, 0.04);
+        }
+
+        &:disabled {
+          background: rgba(136, 46, 232, 0.04);
+          cursor: default;
+        }
+      `,
+      small: {
+        fontSize: ["1.2rem"],
+        p: "0.1em 0.2em",
+        borderRadius: 4,
+        transition: "all 0.1s ease-in",
+        bg: "accent",
+        ":hover": {
+          bg: "accentHover",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+        },
+      },
+      success: {
+        bg: "#36A15E",
+        px: "0.8em",
+        py: "0.4em",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "#20703D",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+          cursor: "not-allowed",
+        },
+      },
+      failure: {
+        bg: "#FA5B5B",
+        px: "0.8em",
+        py: "0.4em",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        ":hover": {
+          bg: "#D33E3E",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          color: "textSecondary",
+          cursor: "not-allowed",
         },
       },
     },

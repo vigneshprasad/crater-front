@@ -3,4 +3,5 @@ export interface ILearnUserMeta {
   interactions: number;
   learn_earned: number;
   daily_learn_earned: number;
+  learn_burned: number;
 }

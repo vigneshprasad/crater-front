@@ -4,7 +4,7 @@ import { Grid, Icon, Text } from "@/common/components/atoms";
 import { IconOptions } from "@/common/theme";
 
 interface IProps {
-  label: string;
+  label: string | JSX.Element;
   icon: IconOptions;
 }
 
