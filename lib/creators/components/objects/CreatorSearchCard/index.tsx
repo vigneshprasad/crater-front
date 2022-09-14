@@ -30,9 +30,9 @@ export default function CreatorSearchCard({ creator }: IProps): JSX.Element {
         <Text textStyle="caption" fontWeight={600}>
           {creator.profile_detail.name}
         </Text>
-        <Text textStyle="caption" color={colors.textQuartenary}>
+        {/* <Text textStyle="caption" color={colors.textQuartenary}>
           12 streams
-        </Text>
+        </Text> */}
       </Box>
     </Flex>
   );
