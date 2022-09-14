@@ -108,3 +108,15 @@ export type StreamCompletionRate = {
   key: string;
   value: number;
 };
+
+export type CreatorListItem = {
+  id: number;
+  user: string;
+  slug: string;
+  profile_detail: {
+    id: number;
+    name: string;
+    photo: string;
+    user: string;
+  };
+};
