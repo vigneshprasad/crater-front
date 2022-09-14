@@ -1,18 +1,18 @@
 import { useTheme } from "styled-components";
 
 import { Box, Flex, Grid, Text, Spinner } from "@/common/components/atoms";
-import useCreatorsSearchList from "@/creators/context/CreatorsSearchContext";
+import useGlobalSearch from "@/common/context/GlobalSearchContext";
 
 import CreatorSearchCard from "../CreatorSearchCard";
 
 export default function CreatorsSearchList(): JSX.Element {
   const { space, colors } = useTheme();
-  const { creators, isValidating } = useCreatorsSearchList();
+  const { creators } = useGlobalSearch();
 
   return (
     <Box>
       {(() => {
-        if (isValidating && !creators) {
+        if (creators === undefined) {
           return (
             <Flex
               flexDirection="column"
@@ -25,7 +25,7 @@ export default function CreatorsSearchList(): JSX.Element {
           );
         }
 
-        if (creators?.length === 0) {
+        if (creators.length === 0) {
           return (
             <Text textStyle="captionLarge" textAlign="center">
               There are no results that match your search.
@@ -40,7 +40,7 @@ export default function CreatorsSearchList(): JSX.Element {
             gridTemplateColumns="repeat(auto-fill, minmax(120px, 1fr))"
             gridGap={space.xxxs}
           >
-            {creators?.map((creator) => (
+            {creators.map((creator) => (
               <CreatorSearchCard creator={creator} key={creator.id} />
             ))}
           </Grid>

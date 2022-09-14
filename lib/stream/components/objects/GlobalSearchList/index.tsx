@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import {
@@ -10,75 +9,23 @@ import {
   Span,
 } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
-import { StreamListItem } from "@/community/types/community";
-import { CreatorListItem } from "@/creators/types/creator";
-import { StreamCategory } from "@/creators/types/stream";
-import usePastStreamsSearchList from "@/stream/context/PastStreamsSearchContext";
-import useStreamCategorySearchList from "@/stream/context/StreamCategorySearchContext";
-import useUpcomingStreamsSearchList from "@/stream/context/UpcomingStreamsSearchContext";
+import useGlobalSearch from "@/common/context/GlobalSearchContext";
 
 import SearchStreamCard from "../SearchStreamCard";
 
 export default function GlobalSearchList(): JSX.Element {
   const { space, colors } = useTheme();
-  const { streams: upcoming, isValidating: upcomingIsValidating } =
-    useUpcomingStreamsSearchList();
-  const { streams: past, isValidating: pastIsValidating } =
-    usePastStreamsSearchList();
-  const { categories, isValidating: categoriesIsValidating } =
-    useStreamCategorySearchList();
+  const { upcomingStreams, pastStreams, streamCategories } = useGlobalSearch();
 
-  const searchResults = useMemo<
-    | {
-        upcomingStreams?: StreamListItem[];
-        pastStreams?: StreamListItem[];
-        creators?: CreatorListItem[];
-        categories?: StreamCategory[];
-      }
-    | undefined
-    | null
-  >(() => {
-    if (
-      !upcoming &&
-      upcomingIsValidating &&
-      !past &&
-      pastIsValidating &&
-      !categories &&
-      categoriesIsValidating
-    ) {
-      return undefined;
-    }
-
-    const upcomingList = upcoming?.slice(0, 3);
-    const pastList = past?.slice(0, 3);
-    const categoriesList = categories?.slice(0, 3);
-
-    if (
-      upcomingList?.length === 0 &&
-      pastList?.length === 0 &&
-      categoriesList?.length === 0
-    ) {
-      return null;
-    }
-
-    return {
-      upcomingStreams: upcoming?.slice(0, 3),
-      pastStreams: past?.slice(0, 3),
-      categories: categories?.slice(0, 3),
-    };
-  }, [
-    categories,
-    categoriesIsValidating,
-    past,
-    pastIsValidating,
-    upcoming,
-    upcomingIsValidating,
-  ]);
+  const loading =
+    upcomingStreams === undefined ||
+    pastStreams === undefined ||
+    streamCategories === undefined;
 
   return (
     <Box>
       {(() => {
-        if (searchResults === undefined) {
+        if (loading) {
           return (
             <Flex
               flexDirection="column"
@@ -91,7 +38,11 @@ export default function GlobalSearchList(): JSX.Element {
           );
         }
 
-        if (searchResults === null) {
+        if (
+          upcomingStreams.length === 0 &&
+          pastStreams.length === 0 &&
+          streamCategories.length === 0
+        ) {
           return (
             <Text textStyle="captionLarge" textAlign="center">
               There are no results that match your search.
@@ -101,7 +52,7 @@ export default function GlobalSearchList(): JSX.Element {
 
         return (
           <>
-            {searchResults.categories?.map((category) => (
+            {streamCategories.map((category) => (
               <Link href={PageRoutes.category(category.slug)} key={category.pk}>
                 <Box
                   mb={10}
@@ -115,7 +66,7 @@ export default function GlobalSearchList(): JSX.Element {
               </Link>
             ))}
 
-            {searchResults.upcomingStreams?.map((upcomingStream) => (
+            {upcomingStreams.map((upcomingStream) => (
               <SearchStreamCard
                 stream={upcomingStream}
                 link={PageRoutes.session(upcomingStream.id)}
@@ -123,7 +74,7 @@ export default function GlobalSearchList(): JSX.Element {
               />
             ))}
 
-            {searchResults.pastStreams?.map((pastStream) => (
+            {pastStreams.map((pastStream) => (
               <SearchStreamCard
                 stream={pastStream}
                 link={PageRoutes.streamVideo(pastStream.id)}

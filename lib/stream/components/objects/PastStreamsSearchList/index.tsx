@@ -2,18 +2,18 @@ import { useTheme } from "styled-components";
 
 import { Box, Flex, Text, Spinner } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
-import usePastStreamsSearchList from "@/stream/context/PastStreamsSearchContext";
+import useGlobalSearch from "@/common/context/GlobalSearchContext";
 
 import SearchStreamCard from "../SearchStreamCard";
 
 export default function PastStreamsSearchList(): JSX.Element {
   const { space, colors } = useTheme();
-  const { streams, isValidating } = usePastStreamsSearchList();
+  const { pastStreams } = useGlobalSearch();
 
   return (
     <Box>
       {(() => {
-        if (isValidating && !streams) {
+        if (pastStreams === undefined) {
           return (
             <Flex
               flexDirection="column"
@@ -26,7 +26,7 @@ export default function PastStreamsSearchList(): JSX.Element {
           );
         }
 
-        if (streams?.length === 0) {
+        if (pastStreams.length === 0) {
           return (
             <Text textStyle="captionLarge" textAlign="center">
               There are no results that match your search.
@@ -34,7 +34,7 @@ export default function PastStreamsSearchList(): JSX.Element {
           );
         }
 
-        return streams?.map((stream) => (
+        return pastStreams.map((stream) => (
           <SearchStreamCard
             stream={stream}
             link={PageRoutes.streamVideo(stream.id)}

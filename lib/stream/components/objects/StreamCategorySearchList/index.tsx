@@ -2,16 +2,16 @@ import { useTheme } from "styled-components";
 
 import { Box, Flex, Text, Spinner, Link } from "@/common/components/atoms";
 import { PageRoutes } from "@/common/constants/route.constants";
-import useStreamCategorySearchList from "@/stream/context/StreamCategorySearchContext";
+import useGlobalSearch from "@/common/context/GlobalSearchContext";
 
 export default function StreamCategorySearchList(): JSX.Element {
   const { space, colors } = useTheme();
-  const { categories, isValidating } = useStreamCategorySearchList();
+  const { streamCategories } = useGlobalSearch();
 
   return (
     <Box>
       {(() => {
-        if (isValidating && !categories) {
+        if (streamCategories === undefined) {
           return (
             <Flex
               flexDirection="column"
@@ -24,7 +24,7 @@ export default function StreamCategorySearchList(): JSX.Element {
           );
         }
 
-        if (categories?.length === 0) {
+        if (streamCategories.length === 0) {
           return (
             <Text textStyle="captionLarge" textAlign="center">
               There are no results that match your search.
@@ -32,7 +32,7 @@ export default function StreamCategorySearchList(): JSX.Element {
           );
         }
 
-        return categories?.map((category) => (
+        return streamCategories.map((category) => (
           <Link href={PageRoutes.category(category.slug)} key={category.pk}>
             <Box
               mb={10}

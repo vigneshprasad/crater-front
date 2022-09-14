@@ -1,14 +1,11 @@
 import { useCallback, useMemo, useState } from "react";
 
+import { GlobalSearchProvider } from "@/common/context/GlobalSearchContext";
 import CreatorsSearchList from "@/creators/components/objects/CreatorsSearchList";
-import { CreatorsSearchProvider } from "@/creators/context/CreatorsSearchContext";
 import GlobalSearchList from "@/stream/components/objects/GlobalSearchList";
 import PastStreamsSearchList from "@/stream/components/objects/PastStreamsSearchList";
 import StreamCategorySearchList from "@/stream/components/objects/StreamCategorySearchList";
 import UpcomingStreamsSearchList from "@/stream/components/objects/UpcomingStreamsSearchList";
-import { PastStreamsSearchProvider } from "@/stream/context/PastStreamsSearchContext";
-import { StreamCategorySearchProvider } from "@/stream/context/StreamCategorySearchContext";
-import { UpcomingStreamsSearchProvider } from "@/stream/context/UpcomingStreamsSearchContext";
 
 import { Box } from "../../atoms";
 import SearchBar from "../../atoms/SearchBar";
@@ -68,33 +65,23 @@ export default function GlobalSearch(): JSX.Element {
   }, [selectFilter]);
 
   return (
-    <UpcomingStreamsSearchProvider search={search}>
-      <PastStreamsSearchProvider search={search}>
-        <CreatorsSearchProvider search={search}>
-          <StreamCategorySearchProvider search={search}>
-            <SearchBar
-              filter={filter}
-              filters={searchFilters}
-              setSearch={setSearch}
-            >
-              {(() => {
-                if (!search && !filter) {
-                  return <UpcomingStreamsSearchList />;
-                }
+    <GlobalSearchProvider search={search}>
+      <SearchBar filter={filter} filters={searchFilters} setSearch={setSearch}>
+        {(() => {
+          if (!search && !filter) {
+            return <UpcomingStreamsSearchList />;
+          }
 
-                if (!filter) {
-                  return <GlobalSearchList />;
-                }
+          if (!filter) {
+            return <GlobalSearchList />;
+          }
 
-                return searchFilters.map(
-                  ({ key, display }) =>
-                    key === filter && <Box key={key}>{display}</Box>
-                );
-              })()}
-            </SearchBar>
-          </StreamCategorySearchProvider>
-        </CreatorsSearchProvider>
-      </PastStreamsSearchProvider>
-    </UpcomingStreamsSearchProvider>
+          return searchFilters.map(
+            ({ key, display }) =>
+              key === filter && <Box key={key}>{display}</Box>
+          );
+        })()}
+      </SearchBar>
+    </GlobalSearchProvider>
   );
 }
