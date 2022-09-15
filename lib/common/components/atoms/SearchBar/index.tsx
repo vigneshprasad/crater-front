@@ -87,7 +87,7 @@ export default function SearchBar({
   }, [fields.searchValue.value, setSearch]);
 
   return (
-    <Box w={566} h="inherit" position="relative" display={["none", "block"]}>
+    <Box w={566} h="inherit" position="relative">
       <StyledBox
         w="inherit"
         position="absolute"

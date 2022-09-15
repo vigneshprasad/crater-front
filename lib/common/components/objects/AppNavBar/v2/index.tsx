@@ -85,7 +85,7 @@ export default function AppNavbar(): JSX.Element {
         </MenuButton>
       </Flex>
 
-      <GlobalSearch />
+      {!isMobile && <GlobalSearch />}
 
       <Flex gridGap={space.xxxs} alignItems="center">
         {(() => {
