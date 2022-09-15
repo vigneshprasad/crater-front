@@ -10,11 +10,13 @@ import {
 import styled, { useTheme } from "styled-components";
 
 import useForm from "@/common/hooks/form/useForm";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
+import HorizontalScroll from "../../objects/HorizontalScroll";
 import { AnimatedBox } from "../Animated";
 import { Icon } from "../Icon";
-import { Box, Flex, Text } from "../System";
-import { Input } from "../v2";
+import { Box, Flex, Grid, Text } from "../System";
+import { IconButton, Input } from "../v2";
 
 const StyledBox = styled(AnimatedBox)`
   background: rgba(0, 0, 0, 0.6);
@@ -51,10 +53,11 @@ export default function SearchBar({
   filters,
   children,
   setSearch,
-}: IProps): JSX.Element {
-  const { space, colors, radii, zIndices } = useTheme();
+}: IProps): JSX.Element | null {
+  const { space, colors, radii, zIndices, breakpoints } = useTheme();
   const [searchSheet, setSearchSheet] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   const handleClickOutside = (event: Event): void => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -69,7 +72,9 @@ export default function SearchBar({
     };
   }, []);
 
-  const { fields, fieldValueSetter } = useForm<{ searchValue: string }>({
+  const { fields, fieldValueSetter } = useForm<{
+    searchValue: string;
+  }>({
     fields: {
       searchValue: {
         intialValue: "",
@@ -85,6 +90,113 @@ export default function SearchBar({
 
     return () => clearTimeout(delayDebounceFunc);
   }, [fields.searchValue.value, setSearch]);
+
+  if (isMobile === undefined) return null;
+
+  if (isMobile) {
+    return (
+      <Box>
+        <Grid
+          gridTemplateColumns={searchSheet ? "max-content 1fr" : "1fr"}
+          px={space.xxxs}
+          gridGap={space.xxxs}
+          alignItems="center"
+        >
+          {searchSheet && (
+            <IconButton
+              buttonStyle="flat-icon"
+              w={30}
+              icon="ArrowLeft"
+              iconProps={{ size: 24, color: colors.textPrimary }}
+              onClick={() => setSearchSheet(false)}
+            />
+          )}
+          <Input
+            placeholder="Search for streams, creators, etc..."
+            suffixElement={
+              searchSheet ? (
+                <IconButton
+                  buttonStyle="flat-icon"
+                  w={28}
+                  h={28}
+                  icon="Close"
+                  iconProps={{ size: 28 }}
+                  onClick={() => fieldValueSetter("searchValue", "")}
+                />
+              ) : (
+                <Icon icon="Search" size={24} />
+              )
+            }
+            containerProps={{
+              px: space.xxxxs,
+              py: space.xxxxs,
+              border: `1px solid ${colors.secondaryLight}`,
+            }}
+            value={fields.searchValue.value}
+            onClick={(e) => {
+              setSearchSheet(true);
+              e.stopPropagation();
+            }}
+            onChange={(e) =>
+              fieldValueSetter("searchValue", e.currentTarget.value)
+            }
+          />
+        </Grid>
+        {searchSheet && (
+          <Box>
+            {filters && (
+              <Box
+                p={space.xxxs}
+                borderBottom={`1px solid ${colors.primaryLight}`}
+              >
+                <Text
+                  textStyle="caption"
+                  fontWeight={600}
+                  textTransform="uppercase"
+                  color={colors.textQuartenary}
+                >
+                  Search in
+                </Text>
+                <HorizontalScroll
+                  gridAutoFlow="column"
+                  gridAutoColumns="max-content"
+                  gridGap={space.xxs}
+                >
+                  {filters.map(({ key, name, onClick }) => (
+                    <Box
+                      h={34}
+                      px={space.xxxs}
+                      py={6}
+                      bg={
+                        filter === key
+                          ? colors.primaryBanner
+                          : colors.primaryBackground
+                      }
+                      border={`1px solid ${colors.primaryLight}`}
+                      borderRadius={radii.xxxxs}
+                      cursor="pointer"
+                      onClick={onClick}
+                      key={key}
+                    >
+                      <Text textStyle="captionLarge">{name}</Text>
+                    </Box>
+                  ))}
+                </HorizontalScroll>
+              </Box>
+            )}
+            <StyledScrollBox
+              px={space.xxxs}
+              pt={space.xxxs}
+              pb={space.xs}
+              overflowY="scroll"
+            >
+              {children}
+            </StyledScrollBox>
+          </Box>
+        )}
+      </Box>
+    );
+  }
 
   return (
     <Box w={566} h="inherit" position="relative">
