@@ -39,9 +39,9 @@ export default function GlobalSearchList(): JSX.Element {
         }
 
         if (
-          upcomingStreams.length === 0 &&
-          pastStreams.length === 0 &&
-          streamCategories.length === 0
+          upcomingStreams?.length === 0 &&
+          pastStreams?.length === 0 &&
+          streamCategories?.length === 0
         ) {
           return (
             <Text textStyle="captionLarge" textAlign="center">
@@ -52,7 +52,7 @@ export default function GlobalSearchList(): JSX.Element {
 
         return (
           <>
-            {streamCategories.map((category) => (
+            {streamCategories?.map((category) => (
               <Link href={PageRoutes.category(category.slug)} key={category.pk}>
                 <Box
                   mb={10}
@@ -66,7 +66,7 @@ export default function GlobalSearchList(): JSX.Element {
               </Link>
             ))}
 
-            {upcomingStreams.map((upcomingStream) => (
+            {upcomingStreams?.map((upcomingStream) => (
               <SearchStreamCard
                 stream={upcomingStream}
                 link={PageRoutes.session(upcomingStream.id)}
@@ -74,7 +74,7 @@ export default function GlobalSearchList(): JSX.Element {
               />
             ))}
 
-            {pastStreams.map((pastStream) => (
+            {pastStreams?.map((pastStream) => (
               <SearchStreamCard
                 stream={pastStream}
                 link={PageRoutes.streamVideo(pastStream.id)}
