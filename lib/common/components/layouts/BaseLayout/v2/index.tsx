@@ -36,10 +36,10 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
 
     const gridTemplateColumns = useMemo(() => {
       if (aside) {
-        return ["1fr", "max-content 1fr"];
+        return ["minmax(0, 1fr)", "max-content minmax(0, 1fr)"];
       }
 
-      return ["1fr"];
+      return ["minmax(0, 1fr)"];
     }, [aside]);
 
     useEffect(() => {
