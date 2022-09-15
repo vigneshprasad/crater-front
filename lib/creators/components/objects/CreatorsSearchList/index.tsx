@@ -37,8 +37,11 @@ export default function CreatorsSearchList(): JSX.Element {
           <Grid
             pb={space.xxs}
             gridAutoFlow="row"
-            gridTemplateColumns="repeat(auto-fill, minmax(120px, 1fr))"
-            gridGap={space.xxxs}
+            gridTemplateColumns={[
+              "repeat(auto-fill, minmax(110px, 1fr))",
+              "repeat(auto-fill, minmax(120px, 1fr))",
+            ]}
+            gridGap={[space.xxs, space.xxxs]}
           >
             {creators.map((creator) => (
               <CreatorSearchCard creator={creator} key={creator.id} />
