@@ -42,6 +42,7 @@ export function SystemSocketProvider({
     if (socket.current === null && user) {
       socket.current = io(SOCKET_IO_BASE_URL, {
         transports: ["websocket"],
+        withCredentials: true,
         query: {
           token: user.apiToken,
         },

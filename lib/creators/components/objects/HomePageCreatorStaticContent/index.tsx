@@ -104,7 +104,7 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
                   <Text fontFamily={fonts.heading} pb={space.xxxxxs}>
                     {title}
                   </Text>
-                  <Text textStyle="small" lineHeight="2.1rem" color="#C4C4C4">
+                  <Text textStyle="caption" lineHeight="2.1rem" color="#C4C4C4">
                     {text}
                   </Text>
                 </Box>
