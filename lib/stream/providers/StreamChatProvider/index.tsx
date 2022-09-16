@@ -64,6 +64,13 @@ export default function StreamChatProvider({
         }
       );
     }
+
+    return () => {
+      if (socket.current) {
+        socket.current.close();
+        socket.current = null;
+      }
+    };
   }, [id, socket, user]);
 
   const value = useMemo(
