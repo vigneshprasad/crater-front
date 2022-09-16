@@ -21,6 +21,7 @@ import useAsideNavState from "@/common/hooks/ui/useAsideNavState";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import useLearnModalContext from "@/stream/components/objects/LearnNEarnModal/context";
 
+import GlobalSearch from "../../GlobalSearch";
 import MenuButton from "../../MenuButton";
 import { MenuItem } from "../../MenuButton/MenuItem";
 import { NAV_ABOUT_LINKS } from "./contants";
@@ -83,6 +84,8 @@ export default function AppNavbar(): JSX.Element {
           </MenuContainer>
         </MenuButton>
       </Flex>
+
+      {!isMobile && <GlobalSearch />}
 
       <Flex gridGap={space.xxxs} alignItems="center">
         {(() => {

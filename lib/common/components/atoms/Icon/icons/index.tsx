@@ -103,3 +103,4 @@ export { default as ViewStream } from "./ViewStream";
 export { default as ViewerCount } from "./ViewerCount";
 export { default as Wallet } from "./Wallet";
 export { default as Whatsapp } from "./Whatsapp";
+export { default as Search } from "./Search";
