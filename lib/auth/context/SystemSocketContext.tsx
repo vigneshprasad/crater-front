@@ -98,6 +98,13 @@ export function SystemSocketProvider({
         }
       });
     }
+
+    return () => {
+      if (socket.current) {
+        socket.current.close();
+        socket.current = null;
+      }
+    };
   }, [socket, user, setPermission, colors, showNotification]);
 
   const value = useMemo(
