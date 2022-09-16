@@ -187,6 +187,12 @@ export const API_URL_CONSTANTS = {
   tokens: {
     getLearnUserMeta: "/tokens/learn/meta/",
   },
+  search: {
+    getUpcomingStreams: "/crater/search/upcoming/",
+    getPastStreams: "/crater/search/past/",
+    getCreators: "/crater/search/creators/",
+    getStreamCategories: "/crater/search/categories/",
+  },
 };
 
 export const LEARN_MORE_URL =

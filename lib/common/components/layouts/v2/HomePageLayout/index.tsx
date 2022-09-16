@@ -5,7 +5,9 @@ import { useTheme } from "styled-components";
 
 import { AnimatedBox, Box, Text } from "@/common/components/atoms";
 import { AsideNav, INavKeys } from "@/common/components/objects/AsideNav/v2";
+import GlobalSearch from "@/common/components/objects/GlobalSearch";
 import Page from "@/common/components/objects/Page";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 import BaseLayout from "../../BaseLayout/v2";
 
@@ -28,13 +30,22 @@ export default function HomePageLayout({
   activeTab,
   heading,
   subHeading,
-}: IProps): JSX.Element {
-  const { space } = useTheme();
+}: IProps): JSX.Element | null {
+  const { space, breakpoints } = useTheme();
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  if (isMobile === undefined) return null;
 
   return (
     <Page seo={seo}>
       <BaseLayout aside={<AsideNav activeTab={activeTab} />} overflowY="auto">
-        <Box px={space.xs} pt={32} pb={space.xxs}>
+        {isMobile && (
+          <Box py={space.xxxs}>
+            <GlobalSearch />
+          </Box>
+        )}
+
+        <Box px={space.xs} pt={[space.xxxs, 32]} pb={space.xxs}>
           <Text textStyle="mainHeading" maxLines={2} textAlign="center">
             {heading}
           </Text>

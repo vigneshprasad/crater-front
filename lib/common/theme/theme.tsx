@@ -60,6 +60,7 @@ const zIndices = {
   sliderControls: 5,
   asideNav: 950,
   mobileAsideNav: 1200,
+  searchBar: 1000,
 };
 
 export const icons = iconComponents;
