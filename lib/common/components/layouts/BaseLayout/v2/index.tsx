@@ -36,10 +36,10 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
 
     const gridTemplateColumns = useMemo(() => {
       if (aside) {
-        return ["1fr", "max-content 1fr"];
+        return ["minmax(0, 1fr)", "max-content minmax(0, 1fr)"];
       }
 
-      return ["1fr"];
+      return ["minmax(0, 1fr)"];
     }, [aside]);
 
     useEffect(() => {
@@ -68,9 +68,13 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
         >
           <AppNavbar />
           {aside && <Box gridArea="aside">{aside}</Box>}
-          <Banner
+          {/* <Banner
             content="Registration is open now: Encrypt 2022 Hackathon!"
             link="https://encrypt.crater.club/"
+          /> */}
+          <Banner
+            content="Become A Streamer: Find Out How! ⚡️📺"
+            link="https://calendly.com/craterclub/become-a-streamer-find-out-how?month=2022-09"
           />
           <Box gridArea="content" {...rest} ref={ref} as="main">
             {children}

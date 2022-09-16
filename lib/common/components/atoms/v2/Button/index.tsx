@@ -517,9 +517,13 @@ export function Button({
     >
       <Grid
         alignItems="center"
+        justifyContent="center"
         gridGap={space.xxxxs}
         gridTemplateAreas={`"prefix content suffix"`}
-        gridTemplateColumns="max-content max-content max-content"
+        gridTemplateColumns={[
+          "max-content 1fr max-content",
+          "max-content max-content max-content",
+        ]}
       >
         {prefixElement && <Grid gridArea="prefix">{prefixElement}</Grid>}
         <Grid gridArea="content">

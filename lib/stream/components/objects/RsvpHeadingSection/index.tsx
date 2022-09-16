@@ -16,7 +16,7 @@ export default function RsvpHeadingSection({
   id,
   onRsvpSubmit,
 }: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, zIndices } = useTheme();
   const startTime = DateTime.parse_with_milliseconds(stream.start).toFormat(
     DateTime.DEFAULT_FORMAT
   );
@@ -42,7 +42,15 @@ export default function RsvpHeadingSection({
             </Text>
           </Flex>
         </Box>
-        <RsvpButton id={id} onRsvpSubmit={onRsvpSubmit} webinar={stream} />
+        <Box
+          position={["fixed", "static"]}
+          bottom={[0, "auto"]}
+          right={[0, "auto"]}
+          left={[0, "auto"]}
+          zIndex={[zIndices.overlay - 10, "auto"]}
+        >
+          <RsvpButton id={id} onRsvpSubmit={onRsvpSubmit} webinar={stream} />
+        </Box>
       </Grid>
     </Box>
   );

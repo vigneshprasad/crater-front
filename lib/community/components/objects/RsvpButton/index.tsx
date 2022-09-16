@@ -171,7 +171,7 @@ export default function RsvpButton({
   ) {
     if (rewardSale) {
       if (rewardSale.payment_type == SalePaymentType.UPI) {
-        //Private stream with reward UPI Payment - CHECKED
+        //Private stream with reward UPI Payment - CHECK
         return (
           <>
             {saleVisible && (
@@ -187,10 +187,6 @@ export default function RsvpButton({
               </SideDrawer>
             )}
             <Button
-              position={["fixed", "static"]}
-              bottom={[0, "auto"]}
-              right={[0, "auto"]}
-              zIndex={[zIndices.overlay - 10, "auto"]}
               variant="payment-upi"
               label="Pay to get Access"
               w={["100%", "auto"]}
@@ -224,7 +220,7 @@ export default function RsvpButton({
         );
       }
       if (rewardSale.payment_type == SalePaymentType.LEARN) {
-        //Private stream with reward LEARN Payment
+        //Private stream with reward LEARN Payment - CHECK
         return (
           <>
             {saleVisible && (
@@ -277,7 +273,7 @@ export default function RsvpButton({
         );
       }
     } else {
-      //Private stream no reward - CHECKED
+      //Private stream no reward - CHECK
       return (
         <Button
           variant="flat-with-disabled-dark"
@@ -285,12 +281,9 @@ export default function RsvpButton({
           display="flex"
           justifyContent="center"
           alignItems="center"
-          position={["fixed", "static"]}
-          bottom={[0, "auto"]}
-          right={[0, "auto"]}
-          w={["100%", "auto"]}
           minHeight={44}
           h={[44, "auto"]}
+          w="100%"
           zIndex={[zIndices.overlay - 10, "auto"]}
           disabled={true}
           textProps={{
@@ -304,7 +297,7 @@ export default function RsvpButton({
   if (user) {
     if (isHost) {
       if (now < startTime.minus({ minutes: 30 })) {
-        //Host not close to live stream start - CHECKED
+        //Host not close to live stream start
         return (
           <Button
             variant="flat-with-disabled-dark"
@@ -312,13 +305,9 @@ export default function RsvpButton({
             display="flex"
             justifyContent="center"
             alignItems="center"
-            position={["fixed", "static"]}
-            bottom={[0, "auto"]}
-            right={[0, "auto"]}
-            w={["100%", "auto"]}
+            w="100%"
             minHeight={44}
             h={[44, "auto"]}
-            zIndex={[zIndices.overlay - 10, "auto"]}
             textProps={{
               textStyle: "label",
             }}
@@ -327,7 +316,7 @@ export default function RsvpButton({
         );
       }
 
-      //Host close to live stream start - CHECKED
+      //Host close to live stream start - CHECK
       return (
         <Button
           variant="flat-with-disabled-dark"
@@ -335,13 +324,9 @@ export default function RsvpButton({
           display="flex"
           justifyContent="center"
           alignItems="center"
-          position={["fixed", "static"]}
-          bottom={[0, "auto"]}
-          right={[0, "auto"]}
-          w={["100%", "auto"]}
+          w="100%"
           minHeight={44}
           h={[44, "auto"]}
-          zIndex={[zIndices.overlay - 10, "auto"]}
           textProps={{
             textStyle: "label",
           }}
@@ -350,7 +335,7 @@ export default function RsvpButton({
       );
     } else {
       if (webinar.is_live || now >= startTime.minus({ minutes: 10 })) {
-        // User case close to live stream time - CHECKED
+        // User case close to live stream time - CHECK
         return (
           <Button
             variant="flat-with-disabled-dark"
@@ -358,10 +343,7 @@ export default function RsvpButton({
             display="flex"
             justifyContent="center"
             alignItems="center"
-            position={["fixed", "static"]}
-            bottom={[0, "auto"]}
-            right={[0, "auto"]}
-            w={["100%", "auto"]}
+            w="100%"
             minHeight={44}
             h={[44, "auto"]}
             zIndex={[zIndices.overlay - 10, "auto"]}
@@ -374,7 +356,7 @@ export default function RsvpButton({
       }
 
       if (webinarRequest && webinarRequest.status === RequestStatus.accepted) {
-        // User case already joined - CHECKED
+        // User case already joined - CHECK
         return (
           <Button
             variant="flat-with-disabled-dark"
@@ -382,13 +364,9 @@ export default function RsvpButton({
             display="flex"
             justifyContent="center"
             alignItems="center"
-            position={["fixed", "static"]}
-            bottom={[0, "auto"]}
-            right={[0, "auto"]}
-            w={["100%", "auto"]}
+            w="100%"
             minHeight={44}
             h={[44, "auto"]}
-            zIndex={[zIndices.overlay - 10, "auto"]}
             disabled={true}
             suffixElement={
               rsvpBtnLoading ? (
@@ -409,7 +387,7 @@ export default function RsvpButton({
         );
       }
 
-      // User default case when not joined - CHECKED
+      // User default case when not joined - CHECK
       return (
         <Button
           variant="flat-with-disabled-dark"
@@ -417,13 +395,9 @@ export default function RsvpButton({
           display="flex"
           justifyContent="center"
           alignItems="center"
-          position={["fixed", "static"]}
-          bottom={[0, "auto"]}
-          right={[0, "auto"]}
-          w={["100%", "auto"]}
+          w="100%"
           minHeight={44}
           h={[44, "auto"]}
-          zIndex={[zIndices.overlay - 10, "auto"]}
           suffixElement={
             rsvpBtnLoading ? (
               <Spinner size={24} strokeColor={colors.white[0]} />
@@ -444,7 +418,7 @@ export default function RsvpButton({
     }
   }
 
-  //Non-user Case - CHECKED
+  //Non-user Case
   return (
     <Button
       variant="flat-with-disabled-dark"
@@ -452,13 +426,9 @@ export default function RsvpButton({
       display="flex"
       justifyContent="center"
       alignItems="center"
-      position={["fixed", "static"]}
-      bottom={[0, "auto"]}
-      right={[0, "auto"]}
-      w={["100%", "auto"]}
+      w="100%"
       minHeight={44}
       h={[44, "auto"]}
-      zIndex={[zIndices.overlay - 10, "auto"]}
       suffixElement={
         rsvpBtnLoading ? (
           <Spinner size={24} strokeColor={colors.white[0]} />

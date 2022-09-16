@@ -31,6 +31,7 @@ export default function StreamChatProvider({
     if (socket.current === null && id && user) {
       socket.current = io(`${SOCKET_IO_BASE_URL}/chat`, {
         transports: ["websocket"],
+        withCredentials: true,
         query: {
           token: user.apiToken,
         },
@@ -63,6 +64,13 @@ export default function StreamChatProvider({
         }
       );
     }
+
+    return () => {
+      if (socket.current) {
+        socket.current.close();
+        socket.current = null;
+      }
+    };
   }, [id, socket, user]);
 
   const value = useMemo(

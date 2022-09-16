@@ -49,6 +49,7 @@ export type InputProps = BackgroundProps &
     prefixElement?: JSX.Element;
     suffixElement?: JSX.Element;
     error?: string;
+    containerProps?: GridProps | BoxProps;
   };
 
 export const StyledInput = styled.input<InputProps>`
@@ -100,6 +101,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       boxProps,
+      containerProps,
       label,
       maxLength,
       value,
@@ -141,21 +143,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </Flex>
         )}
         <InputContainer
+          px={space.xxxs}
+          py={space.xxxs}
           bg={colors.inputDefaultBg}
           gridTemplateColumns="max-content 1fr max-content"
           gridTemplateAreas={`"prefix input suffix"`}
+          alignItems="center"
           borderRadius={radii.xxxxs}
           border={
             error
               ? `1px solid ${colors.error}`
               : `1px solid ${colors.primaryLight}`
           }
+          {...containerProps}
         >
           {prefixElement && <Box gridArea="prefix">{prefixElement}</Box>}
           <StyledInput
             ref={ref}
-            px={space.xxxs}
-            py={space.xxxs}
             onChange={handleOnChange}
             gridArea="input"
             value={value}

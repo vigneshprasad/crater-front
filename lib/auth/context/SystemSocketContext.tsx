@@ -42,6 +42,7 @@ export function SystemSocketProvider({
     if (socket.current === null && user) {
       socket.current = io(SOCKET_IO_BASE_URL, {
         transports: ["websocket"],
+        withCredentials: true,
         query: {
           token: user.apiToken,
         },
@@ -97,6 +98,13 @@ export function SystemSocketProvider({
         }
       });
     }
+
+    return () => {
+      if (socket.current) {
+        socket.current.close();
+        socket.current = null;
+      }
+    };
   }, [socket, user, setPermission, colors, showNotification]);
 
   const value = useMemo(
