@@ -1,4 +1,5 @@
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/client";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect } from "react";
 
@@ -7,7 +8,9 @@ import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import Page from "@/common/components/objects/Page";
+import { PageRoutes } from "@/common/constants/route.constants";
 import WebinarApiClient from "@/community/api";
+import { PrivateStreamRewardProvider } from "@/community/context/PrivateStreamRewardContext";
 import { WebinarProvider } from "@/community/context/WebinarContext";
 import { WebinarRequestProvider } from "@/community/context/WebinarRequestContext";
 import { PrivacyType, Webinar } from "@/community/types/community";
@@ -32,36 +35,55 @@ interface Props {
   webinar: Webinar;
 }
 
-export const getStaticPaths: GetStaticPaths<IParams> = async () => {
-  const [webinars] = await WebinarApiClient().getAllWebinar();
-
-  const paths = (webinars as Webinar[]).map(({ id }) => ({
-    params: { id: id.toString() },
-  }));
-
-  return { paths, fallback: "blocking" };
-};
-
-export const getStaticProps: GetStaticProps<Props, IParams> = async ({
-  params,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props, IParams> = async (
+  props
+) => {
+  const { params } = props;
   const { id } = params as IParams;
   const [webinar] = await WebinarApiClient().getWebinar(id);
+  const session = await getSession(props);
 
   if (!webinar) {
     return {
       notFound: true,
-      revalidate: 10,
     };
   }
+  const user = session?.user;
 
-  return {
-    props: {
-      id,
-      webinar,
-    },
-    revalidate: 10,
-  };
+  if (user) {
+    if (webinar.is_live) {
+      const isUserAttendee = webinar.attendees?.indexOf(user.pk) > -1;
+      const isUserSpeaker = webinar.speakers?.indexOf(user.pk) > -1;
+
+      if (webinar.privacy !== PrivacyType.private) {
+        return {
+          redirect: {
+            destination: PageRoutes.stream(webinar?.id),
+            permanent: false,
+          },
+        };
+      } else {
+        if (isUserAttendee || isUserSpeaker) {
+          return {
+            redirect: {
+              destination: PageRoutes.stream(webinar?.id),
+              permanent: false,
+            },
+          };
+        }
+      }
+    }
+    if (webinar.is_past && webinar.closed) {
+      return {
+        redirect: {
+          destination: PageRoutes.streamVideo(webinar?.id),
+          permanent: false,
+        },
+      };
+    }
+  }
+
+  return { props: { webinar, id } };
 };
 
 export default function Session({ webinar, id }: Props): JSX.Element {
@@ -73,23 +95,6 @@ export default function Session({ webinar, id }: Props): JSX.Element {
       router.reload();
     }
   }, [router]);
-
-  useEffect(() => {
-    if (router) {
-      if (webinar.is_live && webinar.privacy !== PrivacyType.private) {
-        router.push(`/livestream/${webinar.id}/`);
-      } else if (
-        webinar.is_live &&
-        webinar &&
-        user &&
-        (webinar.attendees?.indexOf(user.pk) === -1 ||
-          webinar.speakers?.indexOf(user.pk) === -1)
-      ) {
-        router.push(`/livestream/${webinar.id}/`);
-      } else if (webinar.is_past && webinar.closed)
-        router.push(`/video/${webinar.id}/`);
-    }
-  }, [router, user, webinar]);
 
   return (
     <Page
@@ -111,7 +116,9 @@ export default function Session({ webinar, id }: Props): JSX.Element {
                   <ReferralSummaryProvider>
                     <PastStreamProvider host={webinar.host}>
                       <StreamQuestionProvider group={webinar.id}>
-                        <SessionPage id={id} />
+                        <PrivateStreamRewardProvider id={id}>
+                          <SessionPage id={id} />
+                        </PrivateStreamRewardProvider>
                       </StreamQuestionProvider>
                     </PastStreamProvider>
                   </ReferralSummaryProvider>

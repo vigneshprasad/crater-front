@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -7,21 +7,8 @@ import { useRouter } from "next/router";
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 import { BottomSheet, Box, Flex, Icon, Text } from "@/common/components/atoms";
-import { UTM_SOURCE_STORAGE_KEY } from "@/common/constants/global.constants";
-import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
-import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
-import { AnalyticsEvents } from "@/common/utils/analytics/types";
-import DateTime from "@/common/utils/datetime/DateTime";
-import WebinarApiClient from "@/community/api";
 import { useWebinar } from "@/community/context/WebinarContext";
-import { useWebinarRequest } from "@/community/context/WebinarRequestContext";
-import {
-  ParticpantType,
-  PostGroupRequest,
-  RequestStatus,
-  PrivacyType,
-} from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import StreamApiClient from "@/stream/api";
 import UpcomingStreamsList from "@/stream/components//objects/UpcomingStreamsList";
@@ -34,7 +21,6 @@ import StreamShareSection from "@/stream/components/objects/StreamShareSection";
 import usePastStreams from "@/stream/context/PastStreamContext";
 import useStreamQuestions from "@/stream/context/StreamQuestionContext";
 import { StreamQuestion, StreamQuestionUpvote } from "@/stream/types/stream";
-import { useReferralSummary } from "@/tokens/context/ReferralSummaryContext";
 
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
 
@@ -45,12 +31,11 @@ interface IProps {
 export default function SessionPage({ id }: IProps): JSX.Element {
   const router = useRouter();
   const { webinar, mutateWebinar } = useWebinar();
-  const { webinarRequest, mutateRequest } = useWebinarRequest();
   const { space, colors, breakpoints } = useTheme();
   const [showSuccess, setShowSuccess] = useState(false);
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const { openModal } = useAuthModal();
-  const { track } = useAnalytics();
+  // const { track } = useAnalytics();
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const {
@@ -65,10 +50,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     loading: StreamQuestionsLoading,
     mutateStreamQuestionsPage,
   } = useStreamQuestions();
-  const { referralSummary } = useReferralSummary();
   const [showShareSheet, setShowShareSheet] = useState(false);
-  const [rsvpBtnLoading, setRsvpBtnLoading] = useState(false);
-
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   const scrollToTop = useCallback(() => {
@@ -86,75 +68,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     }
   }, [router, scrollToTop, sessionId, setSessionId]);
 
-  const isHost = useMemo(() => {
-    if (!user || !webinar) return false;
-
-    return user.pk == webinar.host || webinar.speakers?.includes(user.pk);
-  }, [user, webinar]);
-
-  const postGroupRequest = useCallback(
-    async (redirect = false): Promise<void> => {
-      if (webinar) {
-        if (webinarRequest?.status !== RequestStatus.accepted) {
-          setRsvpBtnLoading(true);
-          const data: PostGroupRequest = {
-            group: parseInt(id, 10),
-            participant_type: ParticpantType.attendee,
-            status: RequestStatus.accepted,
-          };
-
-          const [request] = await WebinarApiClient().postWebinarRequest(data);
-
-          if (request) {
-            track(AnalyticsEvents.rsvp_stream, {
-              stream: webinar.id,
-              stream_name: webinar.topic_detail?.name,
-              host: {
-                ...webinar.host_detail,
-              },
-            });
-
-            // First time RSVP analytics event tracking
-            if (
-              router.query?.join === "true" &&
-              router.query?.newUser === "true" &&
-              user &&
-              !user.email &&
-              localStorage.getItem(UTM_SOURCE_STORAGE_KEY) == "Facebook"
-            ) {
-              track(AnalyticsEvents.first_time_rsvp, {
-                stream: webinar.id,
-                stream_name: webinar.topic_detail?.name,
-                host: {
-                  ...webinar.host_detail,
-                },
-              });
-            }
-
-            mutateRequest(request);
-          }
-        }
-
-        if (redirect) {
-          track(AnalyticsEvents.join_stream, {
-            stream: webinar.id,
-            stream_name: webinar.topic_detail?.name,
-            host: {
-              ...webinar.host_detail,
-            },
-          });
-          router.push(PageRoutes.stream(webinar.id.toString()));
-
-          return;
-        }
-
-        setRsvpBtnLoading(false);
-        setShowSuccess(true);
-      }
-    },
-    [webinar, id, mutateRequest, router, track, webinarRequest, user]
-  );
-
   const autoRsvp = useCallback(async () => {
     await router.replace({
       query: {
@@ -164,106 +77,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       },
     });
     openModal();
-  }, [router, openModal]);
-
-  const ctaButton = useMemo<{
-    buttonText: string;
-    loading?: boolean;
-    disabled?: boolean;
-    icon?: JSX.Element;
-    onClick?: () => void;
-  } | null>(() => {
-    if (webinar) {
-      const startTime = DateTime.parse(webinar.start);
-      const now = DateTime.now();
-
-      if (user) {
-        if (isHost) {
-          if (now < startTime.minus({ minutes: 30 })) {
-            return {
-              buttonText: "Test livestream",
-              onClick: () => router.push(PageRoutes.stream(webinar.id)),
-            };
-          }
-
-          return {
-            buttonText: "Go live",
-            onClick: () => router.push(PageRoutes.stream(webinar.id)),
-          };
-        } else {
-          if (
-            webinar.privacy == PrivacyType.private &&
-            !(
-              webinarRequest && webinarRequest.status === RequestStatus.accepted
-            )
-          ) {
-            return {
-              buttonText: "Private Stream",
-              disabled: true,
-            };
-          }
-
-          if (webinar.is_live || now >= startTime.minus({ minutes: 10 })) {
-            return {
-              buttonText: "Join livestream",
-              onClick: () => postGroupRequest(true),
-            };
-          }
-
-          if (
-            webinarRequest &&
-            webinarRequest.status === RequestStatus.accepted
-          ) {
-            return {
-              buttonText: "We'll remind you",
-              disabled: true,
-              icon: (
-                <Icon
-                  icon="CheckCircle"
-                  size={18}
-                  color={colors.greenSuccess}
-                />
-              ),
-            };
-          }
-
-          return {
-            buttonText: "Remind Me",
-            loading: rsvpBtnLoading,
-            icon: <Icon icon="IcNotficationFill" color={colors.white[0]} />,
-            onClick: () => {
-              postGroupRequest();
-            },
-          };
-        }
-      } else {
-        return {
-          buttonText: "Remind Me",
-          icon: <Icon icon="IcNotficationFill" color={colors.white[0]} />,
-          onClick: () => {
-            track(AnalyticsEvents.rsvp_button_clicked, {
-              new_user: true,
-              session: webinar.id,
-            });
-            autoRsvp();
-          },
-        };
-      }
-    }
-
-    return null;
-  }, [
-    user,
-    webinar,
-    router,
-    track,
-    isHost,
-    postGroupRequest,
-    webinarRequest,
-    rsvpBtnLoading,
-    autoRsvp,
-    colors,
-  ]);
+  }, [openModal, router]);
 
   const postGroupQuestion = useCallback(
     async (question: string) => {
@@ -298,19 +112,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     [mutateStreamQuestionsPage]
   );
 
-  useEffect(() => {
-    const action = async (): Promise<void> => {
-      await postGroupRequest();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { join, ...query } = router.query;
-      router.replace({ query: { ...query } });
-    };
-
-    if (router.query?.join === "true" && user && webinar) {
-      if (!isHost) action();
-    }
-  }, [router, user, webinar, profile, postGroupRequest, track, isHost]);
-
   const followCreator = async (): Promise<void> => {
     const creator = webinar?.host_detail.creator_detail;
 
@@ -330,7 +131,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
       <RsvpSuccesModal
         group={webinar}
         visble={showSuccess}
-        referralSummary={referralSummary}
         onClose={() => setShowSuccess(false)}
       />
       <RsvpPageLayout
@@ -344,7 +144,11 @@ export default function SessionPage({ id }: IProps): JSX.Element {
           />
         }
         streamMain={
-          <RsvpHeadingSection stream={webinar} ctaButton={ctaButton} />
+          <RsvpHeadingSection
+            stream={webinar}
+            id={id}
+            onRsvpSubmit={() => setShowSuccess(true)}
+          />
         }
         streamDetail={
           <RsvpAboutSection

@@ -22,15 +22,12 @@ import {
 import { useFollower } from "@/creators/context/FollowerContext";
 import useStreamCreator from "@/stream/context/StreamCreatorContext";
 import useStreamsToRsvp from "@/stream/context/StreamsToRsvpContext";
-import { ReferralSummary } from "@/tokens/types/referrals";
 
 import DownloadMobileAppModalPage from "../DownloadMobileAppModalPage";
 import FollowersModalPage from "../FollowersModalPage";
-import ShareAndEarnModalPage from "../ShareAndEarnModalPage";
 
 interface IProps {
   group: Webinar;
-  referralSummary?: ReferralSummary;
   visble: boolean;
   onClose: () => void;
 }
@@ -58,7 +55,6 @@ const USER_MODAL_PAGES = [
 export default function RsvpSuccesModal({
   visble,
   group,
-  referralSummary,
   onClose,
 }: IProps): JSX.Element | null {
   const { space } = useTheme();
@@ -191,19 +187,6 @@ export default function RsvpSuccesModal({
     trackModalAnalytics(AnalyticsEvents.rsvp_modal_previous_clicked);
   }, [modalPages, currentModalPage, trackModalAnalytics]);
 
-  const shareUrl = useCallback(() => {
-    if (user && profile) {
-      const url = window.location.href;
-      let encodedUrl = url;
-
-      if (!profile.is_creator) {
-        encodedUrl = `${url}?referrer_id=${user.pk}`;
-      }
-
-      return encodeURIComponent(encodedUrl);
-    }
-  }, [user, profile]);
-
   const pages = useMemo<
     {
       key: number;
@@ -245,19 +228,6 @@ export default function RsvpSuccesModal({
         skipButton: true,
       },
       {
-        key: RsvpModalPage.ShareAndEarn,
-        display: (
-          <ShareAndEarnModalPage
-            user={user?.pk}
-            referralSummary={referralSummary}
-            shareUrl={shareUrl}
-            trackModalAnalytics={trackModalAnalytics}
-          />
-        ),
-        backButton: true,
-        skipButton: true,
-      },
-      {
         key: RsvpModalPage.DownloadMobileApp,
         display: <DownloadMobileAppModalPage />,
         backButton: true,
@@ -268,9 +238,7 @@ export default function RsvpSuccesModal({
     followersRef,
     group,
     postGroupRequest,
-    referralSummary,
     rsvpedStreams,
-    shareUrl,
     streamCreators,
     streamCreatorsLoading,
     streamsRef,
@@ -278,8 +246,6 @@ export default function RsvpSuccesModal({
     streamsToRsvpLoading,
     subscribe,
     subscribeCreator,
-    trackModalAnalytics,
-    user,
   ]);
 
   if (!user) return null;
