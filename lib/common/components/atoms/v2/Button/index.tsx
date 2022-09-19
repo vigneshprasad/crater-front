@@ -31,7 +31,9 @@ type Variants =
   | "gradient-border-flat"
   | "success"
   | "failure"
-  | "flat-with-disabled-dark";
+  | "flat-with-disabled-dark"
+  | "payment-upi"
+  | "payment-learn";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -443,6 +445,55 @@ const StyledButton = styled(Grid)<ButtonProps>`
           cursor: "not-allowed",
         },
       },
+      "payment-upi": {
+        bg: "rgba(252, 194, 1, 1)",
+        px: 0,
+        py: 0,
+        borderRadius: [0, 4],
+        transition: "all 0.1s ease-in",
+        lineHeight: ["2.2rem"],
+        fontSize: ["1.4rem"],
+        fontWeight: "600",
+        color: "black.7",
+        ":hover": {
+          bg: "rgba(197, 151, 0, 1)",
+        },
+        ":disabled": {
+          bg: "primaryLight",
+          cursor: "default",
+        },
+      },
+      "payment-learn": css`
+        position: relative;
+        position: relative;
+        background: transparent;
+        padding: 0;
+        padding-left: 0.5em;
+        line-height: 2.2rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+
+        &:hover {
+          background: #161616;
+        }
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border-radius: 4px;
+          border: 2px solid transparent;
+          background: linear-gradient(45deg, #d5bbff, #9db3ff, #0d849e)
+            border-box;
+          -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0);
+          -webkit-mask-composite: destination-out;
+          mask-composite: exclude;
+        }
+      `,
     },
   })}
 `;
@@ -466,9 +517,13 @@ export function Button({
     >
       <Grid
         alignItems="center"
+        justifyContent="center"
         gridGap={space.xxxxs}
         gridTemplateAreas={`"prefix content suffix"`}
-        gridTemplateColumns="max-content 1fr max-content"
+        gridTemplateColumns={[
+          "max-content 1fr max-content",
+          "max-content max-content max-content",
+        ]}
       >
         {prefixElement && <Grid gridArea="prefix">{prefixElement}</Grid>}
         <Grid gridArea="content">

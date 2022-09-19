@@ -68,7 +68,7 @@ export function SideDrawer({
             }
             px={space.xs}
             py={space.xxs}
-            w="40%"
+            w={["90%", "40%"]}
             h="100%"
             right={0}
             bg={colors.primaryBackground}
