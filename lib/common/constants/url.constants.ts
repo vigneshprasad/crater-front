@@ -131,6 +131,8 @@ export const API_URL_CONSTANTS = {
     postSaleLogDecline: (id: number): string =>
       `/crater/sale/log/${id}/decline/`,
     retrieveRewardSale: (id: number | string): string => `/crater/sale/${id}/`,
+    retrieveRewardSaleForStream: (id: number | string): string =>
+      `/crater/sale/${id}/stream`,
   },
   coins: {
     getAuctions: "/crater/auction/",

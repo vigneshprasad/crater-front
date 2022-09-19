@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect } from "react";
@@ -15,7 +15,6 @@ import {
   PrivacyType,
   Webinar as WebinarType,
 } from "@/community/types/community";
-import { Webinar } from "@/community/types/community";
 import CreatorApiClient from "@/creators/api";
 import { Reward } from "@/tokens/types/token";
 
@@ -34,33 +33,41 @@ interface WebinarPageProps {
   rewards: Reward[];
 }
 
-export const getStaticPaths: GetStaticPaths<IParams> = async () => {
-  const [webinars] = await WebinarApiClient().getAllWebinar();
-
-  const paths = (webinars as Webinar[]).map(({ id }) => ({
-    params: { id: id.toString() },
-  }));
-  return { paths, fallback: "blocking" };
-};
-
-export const getStaticProps: GetStaticProps<
+export const getServerSideProps: GetServerSideProps<
   WebinarPageProps,
   IParams
-> = async ({ params }) => {
+> = async (props) => {
+  const { params } = props;
   const { id } = params as IParams;
   const [webinar, error] = await WebinarApiClient().getWebinar(id);
-  const orgId = process.env.DYTE_ORG_ID as string;
+  const session = await getSession(props);
 
   if (error || !webinar) {
     return {
       notFound: true,
-      revalidate: 10,
     };
+  }
+
+  const user = session?.user;
+  if (user && webinar.privacy === PrivacyType.private) {
+    console.log(user);
+    const isUserAttendee = webinar.attendees?.indexOf(user.pk) > -1;
+    const isUserSpeaker = webinar.speakers?.indexOf(user.pk) > -1;
+    console.log(isUserAttendee, isUserSpeaker);
+    if (!isUserAttendee && !isUserSpeaker) {
+      return {
+        redirect: {
+          destination: PageRoutes.session(webinar?.id),
+          permanent: false,
+        },
+      };
+    }
   }
 
   const slug = webinar.host_detail.creator_detail?.slug;
   const [rewards] = await CreatorApiClient().getAllRewards(slug);
 
+  const orgId = process.env.DYTE_ORG_ID as string;
   return {
     props: {
       orgId,
@@ -68,18 +75,15 @@ export const getStaticProps: GetStaticProps<
       webinar,
       rewards: rewards ?? [],
     },
-    revalidate: 10,
   };
 };
-
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function WebinarPage({
   orgId,
   webinar,
   id,
   rewards,
-}: Props): JSX.Element {
+}: WebinarPageProps): JSX.Element {
   const router = useRouter();
   const { user } = useAuth();
   const { openModal } = useAuthModal();
@@ -96,19 +100,6 @@ export default function WebinarPage({
       checkAuth();
     }
   }, [router, id, openModal]);
-
-  useEffect(() => {
-    if (user) {
-      if (
-        webinar.privacy == PrivacyType.private &&
-        webinar.attendees?.indexOf(user.pk) === -1 &&
-        webinar.speakers?.indexOf(user.pk) === -1 &&
-        webinar.host !== user.pk
-      ) {
-        router.push(PageRoutes.session(webinar.id.toString()));
-      }
-    }
-  }, [webinar, user, router]);
 
   return (
     <Page
