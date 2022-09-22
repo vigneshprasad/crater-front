@@ -27,8 +27,6 @@ export function GlobalSearchProvider({
   pageSize = 8,
   ...rest
 }: IProviderProps): JSX.Element {
-  console.log("search: ", search);
-
   // Upcoming Streams Search
   const { data: upcomingStreams } = useSWRInfinite<
     PageResponse<StreamListItem>
