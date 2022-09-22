@@ -3,6 +3,8 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
 
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
+
 import { AnimatedBox, AnimatedBoxProps } from "../Animated";
 import { Box, BoxProps } from "../System/Box";
 import { Flex } from "../System/Flex";
@@ -29,7 +31,9 @@ export function SideDrawer({
 }: IProps): JSX.Element | null {
   const [showSheet, setShowSheet] = useState(visible ?? false);
   const [node, setNode] = useState<HTMLElement | undefined>();
-  const { space, colors, zIndices } = useTheme();
+  const { space, colors, zIndices, breakpoints } = useTheme();
+
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   useEffect(() => {
     const element = document.getElementById("side-drawer-root");
@@ -43,6 +47,8 @@ export function SideDrawer({
   }, [visible]);
 
   if (!node) return null;
+
+  if (isMobile === undefined) return null;
 
   return createPortal(
     <AnimatePresence>
@@ -68,7 +74,7 @@ export function SideDrawer({
             }
             px={space.xs}
             py={space.xxs}
-            w="40%"
+            w={["100%", "40%"]}
             h="100%"
             right={0}
             bg={colors.primaryBackground}
@@ -78,11 +84,10 @@ export function SideDrawer({
             borderLeft={`1px solid ${colors.primaryLight}`}
             boxShadow="-4px 0px 12px #000000"
             initial={{
-              x: "50%",
+              x: isMobile ? "0%" : "100%",
             }}
             animate={{
               x: "0%",
-              y: "0%",
             }}
             exit={{
               x: "100%",
