@@ -97,8 +97,8 @@ export default function TopSellersList({
                   .fill("")
                   .map((_, index) => (
                     <Shimmer
-                      w={235}
-                      h={112}
+                      w="100%"
+                      h={150}
                       borderRadius={radii.xs}
                       key={index}
                     />

@@ -19,7 +19,7 @@ export default function TopItemsForSale(): JSX.Element {
       </Text>
 
       {!sales || loading ? (
-        <Shimmer w="100%" h={450} borderRadius={radii.xxxxs} />
+        <Shimmer w="100%" h={300} borderRadius={radii.xxxxs} />
       ) : (
         <Flex
           flexDirection={["column", "row"]}

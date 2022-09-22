@@ -31,7 +31,7 @@ export default function MoreSaleItems(): JSX.Element {
 
       {(() => {
         if (isValidating && !sales) {
-          return <Shimmer w="100%" h={450} borderRadius={radii.xxxxs} />;
+          return <Shimmer w="100%" h={300} borderRadius={radii.xxxxs} />;
         }
 
         return (
