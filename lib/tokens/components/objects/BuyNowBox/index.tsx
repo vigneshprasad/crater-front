@@ -15,7 +15,7 @@ type IProps = {
 };
 
 export default function BuyNowBox({ sale }: IProps): JSX.Element {
-  const { radii } = useTheme();
+  const { space, radii } = useTheme();
   const router = useRouter();
   const { user } = useAuth();
   const { openModal } = useAuthModal();
@@ -31,17 +31,17 @@ export default function BuyNowBox({ sale }: IProps): JSX.Element {
 
   return (
     <Box
-      w={496}
-      h={460}
-      px={28}
-      py={32}
+      w={["100%", 496]}
+      h={["fit-content", 460]}
+      px={[space.xxxs, 28]}
+      py={[space.xs, 32]}
       background="linear-gradient(147.18deg, rgba(79, 119, 167, 0.16) 8.77%, rgba(79, 119, 167, 0) 81.65%)"
       borderRadius={radii.s}
     >
       <SaleItemInfo sale={sale} showPrice={true} />
 
       <Button
-        mt={24}
+        mt={[space.xs, 24]}
         w="100%"
         minHeight={44}
         label="Buy Now 🎉"

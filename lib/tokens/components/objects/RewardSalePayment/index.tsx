@@ -9,6 +9,7 @@ import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 import { Box, Flex, Icon, Image, Span, Text } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 import SaleItemInfo from "../SaleItemInfo";
 
@@ -40,18 +41,24 @@ type IProps = {
   sale: RewardSale;
 };
 
-export default function RewardSalePayment({ sale }: IProps): JSX.Element {
-  const { space, colors, radii } = useTheme();
+export default function RewardSalePayment({
+  sale,
+}: IProps): JSX.Element | null {
+  const { space, colors, radii, breakpoints } = useTheme();
   const { user } = useAuth();
   const { openModal } = useAuthModal();
   const [infoSheet, setInfoSheet] = useState(false);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [showLearnPurchaseModal, setShowLearnPurchaseModal] = useState(false);
 
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
   const { payment_type, price, reward_detail } = sale;
   const payWithLearn = payment_type === SalePaymentType.LEARN;
   const disableBuyNow =
     user?.pk === reward_detail.creator_detail.user || sale.is_active === false;
+
+  if (isMobile === undefined) return null;
 
   return (
     <Flex flexDirection="column">
@@ -178,22 +185,23 @@ export default function RewardSalePayment({ sale }: IProps): JSX.Element {
 
       <Box
         w="100%"
-        py={28}
-        px={space.xs}
+        py={[space.xxs, 28]}
+        px={[space.xxxs, space.xs]}
         bg={colors.primaryDark}
         position="absolute"
         bottom={0}
         borderTop={`1px solid ${colors.primaryLight}`}
       >
         <Flex
+          flexDirection={["column", "row"]}
           justifyContent="space-between"
           alignItems="center"
-          gridGap={space.s}
+          gridGap={[space.xxxs, space.s]}
         >
-          <Box>
+          <Box alignSelf={["start", "center"]}>
             <Text
               pb={space.xxxxxs}
-              textStyle="small"
+              textStyle="caption"
               fontWeight={600}
               color={colors.textQuartenary}
             >
@@ -201,17 +209,25 @@ export default function RewardSalePayment({ sale }: IProps): JSX.Element {
             </Text>
             {payWithLearn ? (
               <Flex alignItems="center" gridGap={space.xxxxxs}>
-                <Text textStyle="formLabel">
+                <Text
+                  textStyle={isMobile ? "title" : "formLabel"}
+                  fontWeight={600}
+                >
                   {price} <StyledSpan>LEARN</StyledSpan>
                 </Text>
                 <Icon icon="LearnToken" size={20} />
               </Flex>
             ) : (
-              <Text textStyle="formLabel">₹{price}</Text>
+              <Text
+                textStyle={isMobile ? "title" : "formLabel"}
+                fontWeight={600}
+              >
+                ₹{price}
+              </Text>
             )}
           </Box>
           <Button
-            w={280}
+            w={["100%", 280]}
             minHeight={44}
             label="Buy Now 🎉"
             textProps={{ fontSize: "1.6rem" }}

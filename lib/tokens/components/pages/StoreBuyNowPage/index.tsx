@@ -20,7 +20,6 @@ import {
 } from "@/common/components/atoms";
 import { SideDrawer } from "@/common/components/atoms/SideDrawer";
 import Footer from "@/common/components/objects/Footer";
-import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { useFollower } from "@/creators/context/FollowerContext";
 import { RewardApiClient } from "@/tokens/api";
 import useRewardSaleTopSellersList from "@/tokens/context/RewardSaleTopSellersListContext";
@@ -53,7 +52,7 @@ const StyledSpan = styled(Span)`
 `;
 
 export default function StoreBuyNowPage(): JSX.Element | null {
-  const { space, colors, radii, breakpoints } = useTheme();
+  const { space, colors, radii } = useTheme();
   const router = useRouter();
   const {
     sellers,
@@ -66,8 +65,6 @@ export default function StoreBuyNowPage(): JSX.Element | null {
     undefined
   );
   const [saleToShow, setSaleToShow] = useState<RewardSale | null>(null);
-
-  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   useEffect(() => {
     const saleId = router.query?.sale as string;
@@ -96,16 +93,6 @@ export default function StoreBuyNowPage(): JSX.Element | null {
     router.push(router, undefined, { shallow: true });
   };
 
-  if (isMobile === undefined) return null;
-
-  if (isMobile) {
-    return (
-      <Text py={space.xxs} textAlign="center">
-        Please view this in a desktop for best experience.
-      </Text>
-    );
-  }
-
   return (
     <Box>
       {saleToShow && (
@@ -120,7 +107,12 @@ export default function StoreBuyNowPage(): JSX.Element | null {
           <RewardSalePayment sale={saleToShow} />
         </SideDrawer>
       )}
-      <Box pt={space.l} pb={36} overflow="hidden" position="relative">
+      <Box
+        pt={[space.xxs, space.l]}
+        pb={36}
+        overflow="hidden"
+        position="relative"
+      >
         <Box
           w={968}
           h={780}
@@ -141,9 +133,10 @@ export default function StoreBuyNowPage(): JSX.Element | null {
                   <StoreTabs activeTab="buy-now" />
 
                   <Box
-                    my={28}
+                    mt={[space.xs, 28]}
+                    mb={[0, 28]}
                     px={28}
-                    py={24}
+                    py={[space.xxs, 24]}
                     bg="transparent"
                     borderRadius={radii.xs}
                     position="relative"
@@ -158,7 +151,10 @@ export default function StoreBuyNowPage(): JSX.Element | null {
                       top={0}
                       borderRadius={radii.xs}
                     />
-                    <Flex alignItems="center" justifyContent="space-between">
+                    <Flex
+                      alignItems="center"
+                      justifyContent={["center", "space-between"]}
+                    >
                       <Flex alignItems="center" gridGap={space.xxxxxs}>
                         <Toggle
                           value={paymentType !== SalePaymentType.LEARN}
@@ -170,15 +166,21 @@ export default function StoreBuyNowPage(): JSX.Element | null {
                             )
                           }
                         />
-                        <Text ml={space.xxxxs} color={colors.textPrimary}>
+                        <Text
+                          ml={[space.xxs, space.xxxxs]}
+                          color={colors.textPrimary}
+                        >
                           Pay using{" "}
                           <StyledSpan fontWeight={700}>LEARN</StyledSpan> tokens
                         </Text>
-                        <Icon icon="LearnToken" size={20} />
+                        <Icon icon="LearnToken" size={[16, 20]} />
                       </Flex>
                       <Link
                         href="https://web3.crater.club/"
-                        boxProps={{ target: "_blank" }}
+                        boxProps={{
+                          target: "_blank",
+                          display: ["none", "block"],
+                        }}
                       >
                         <Flex alignItems="center" gridGap={space.xxxxs}>
                           <Text color={colors.textPrimary}>
