@@ -2,6 +2,8 @@ import { useMemo, useRef, useState } from "react";
 import NewWindow from "react-new-window";
 import { useTheme } from "styled-components";
 
+import { useRouter } from "next/router";
+
 import useAuth from "@/auth/context/AuthContext";
 import useSystemSocket from "@/auth/context/SystemSocketContext";
 import {
@@ -66,6 +68,7 @@ export default function StreamChat({
   const windowRef = useRef<NewWindow>(null);
   const { mutateWebinar } = useWebinar();
   const [showSheet, setShowSheet] = useState(false);
+  const router = useRouter();
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
     {
@@ -108,6 +111,12 @@ export default function StreamChat({
 
   const openChatPopOut = (): void => {
     setPopOutVisible(true);
+  };
+
+  const openStoreTab = (): void => {
+    router.push(PageRoutes.stream(stream.id, "store"), undefined, {
+      shallow: true,
+    });
   };
 
   if (popOutVisible) {
@@ -320,53 +329,71 @@ export default function StreamChat({
                           (permission.show_viewer_count && isSpeaker);
                         if (showCount) {
                           return <StreamViewerCount />;
+                        } else {
+                          return (
+                            <Flex gridGap={space.xxxxs} alignItems="center">
+                              <IconButton
+                                icon="LearnToken"
+                                onClick={() => {
+                                  openStoreTab();
+                                }}
+                                iconProps={{ color: "white.0" }}
+                                buttonStyle="flat-icon"
+                              />
+                            </Flex>
+                          );
                         }
                       })()}
                     </Box>
-
-                    <Flex gridGap={space.xxxxs}>
-                      <MenuButton
-                        icon="Settings"
-                        items={[
-                          <MenuItem key="colorMode">
-                            <Flex
-                              w="max-content"
-                              gridGap={space.xxxs}
-                              alignItems="center"
-                            >
-                              <Text textStyle="tabLabel">Chat Theme</Text>
-                              <Toggle
-                                value={colorMode === "dark"}
-                                onChange={() => {
-                                  toggleColorMode();
-                                }}
+                    <Flex w="100%">
+                      <Flex
+                        w="100%"
+                        justifyContent="right"
+                        gridGap={space.xxxs}
+                      >
+                        <MenuButton
+                          icon="Settings"
+                          items={[
+                            <MenuItem key="colorMode">
+                              <Flex
+                                w="max-content"
+                                gridGap={space.xxxs}
+                                alignItems="center"
                               >
-                                {colorMode === "dark" ? (
-                                  <Icon m="auto auto" icon="Moon" size={8} />
-                                ) : (
-                                  <Icon m="auto auto" icon="Sun" size={8} />
-                                )}
-                              </Toggle>
-                            </Flex>
-                          </MenuItem>,
-                          showPopup && (
-                            <MenuItem
-                              onClick={() => {
-                                openChatPopOut();
-                              }}
-                              key="popout"
-                              label="Popout Chat"
-                              suffixElement={<Icon size={18} icon="PopOut" />}
-                            />
-                          ),
-                        ]}
-                      />
-                      <IconButton
-                        type="submit"
-                        icon="Send"
-                        iconProps={{ color: "white.0" }}
-                        buttonStyle="flat-accent"
-                      />
+                                <Text textStyle="tabLabel">Chat Theme</Text>
+                                <Toggle
+                                  value={colorMode === "dark"}
+                                  onChange={() => {
+                                    toggleColorMode();
+                                  }}
+                                >
+                                  {colorMode === "dark" ? (
+                                    <Icon m="auto auto" icon="Moon" size={8} />
+                                  ) : (
+                                    <Icon m="auto auto" icon="Sun" size={8} />
+                                  )}
+                                </Toggle>
+                              </Flex>
+                            </MenuItem>,
+                            showPopup && (
+                              <MenuItem
+                                onClick={() => {
+                                  openChatPopOut();
+                                }}
+                                key="popout"
+                                label="Popout Chat"
+                                suffixElement={<Icon size={18} icon="PopOut" />}
+                              />
+                            ),
+                          ]}
+                        />
+                        <IconButton
+                          type="submit"
+                          icon="Send"
+                          iconProps={{ color: "white.0" }}
+                          buttonStyle="flat-accent"
+                        />
+                      </Flex>
                     </Flex>
                   </Flex>
                 </Form>

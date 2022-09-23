@@ -25,14 +25,14 @@ export function RewardSalesListProvider({
   paymentType,
   ...rest
 }: ProverProps): JSX.Element {
-  let url = API_URL_CONSTANTS.sales.getSalesList;
+  let url = API_URL_CONSTANTS.sales.getSalesListStore;
 
   if (creator) {
     url = `${API_URL_CONSTANTS.sales.getSalesList}?reward__creator=${creator}`;
   }
 
   if (paymentType) {
-    url = `${API_URL_CONSTANTS.sales.getSalesList}?payment_type=${paymentType}`;
+    url = `${API_URL_CONSTANTS.sales.getSalesListStore}?payment_type=${paymentType}`;
   }
 
   const {

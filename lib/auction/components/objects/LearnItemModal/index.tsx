@@ -26,6 +26,7 @@ interface IProps {
   visible: boolean;
   successMessage?: string;
   contentProps?: FlexProps;
+  onPaymentComplete?: () => void;
   onClose: () => void;
 }
 
@@ -49,6 +50,7 @@ export default function LearnItemModal({
   successMessage,
   contentProps,
   onClose,
+  onPaymentComplete,
 }: IProps): JSX.Element {
   const { colors, space } = useTheme();
   const { showNotification, showLargeNotification } = useNotifications();
@@ -99,6 +101,7 @@ export default function LearnItemModal({
     );
 
     await setLoading(false);
+    onPaymentComplete && onPaymentComplete();
     onClose();
 
     return;
