@@ -139,6 +139,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
             layout="fill"
             objectFit="cover"
             objectPosition="center"
+            unoptimized
             src={image}
             alt={webinar.topic_detail?.name}
           />
