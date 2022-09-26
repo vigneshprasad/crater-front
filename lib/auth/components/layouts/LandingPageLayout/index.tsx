@@ -14,17 +14,16 @@ export default function LandingPageLayout({
   return (
     <Grid
       h="calc(var(--vh, 1vh) * 100)"
-      gridTemplateColumns={["minmax(0, 1fr)", "1.8fr 1fr"]}
+      gridTemplateColumns={["minmax(0, 1fr)", "1.5fr 1fr"]}
       gridTemplateRows={["max-content 1fr", "1fr"]}
-      gridGap={space.s}
+      gridGap={[space.xxxs, space.s]}
       overflow="hidden"
     >
-      <Box position="relative">
+      <Box pt="56.25%" position="relative">
         <Image
           src={STATIC_IMAGES.ImageLandingPage}
           alt="Landing Img"
           layout="fill"
-          objectFit="cover"
         />
       </Box>
       {children}
