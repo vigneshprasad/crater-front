@@ -21,7 +21,6 @@ export default function LandingPageLayout({
 
   return (
     <StyledGrid
-      pb={space.s}
       h="calc(var(--vh, 1vh) * 100)"
       gridTemplateColumns={["minmax(0, 1fr)", "1.5fr 1fr"]}
       gridTemplateRows={["max-content 1fr", "1fr"]}

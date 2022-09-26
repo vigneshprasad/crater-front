@@ -1,5 +1,7 @@
 import { useTheme } from "styled-components";
 
+import Image from "next/image";
+
 import { Box, Flex, Span, Text } from "@/common/components/atoms";
 import Page from "@/common/components/objects/Page";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
@@ -81,6 +83,47 @@ export default function LandingPage(): JSX.Element | null {
         >
           {pageHeading}
           <LandingAuthForm />
+
+          <Box mt={space.s} position="relative">
+            <Text
+              textStyle={isMobile ? "caption" : "captionLarge"}
+              fontWeight={400}
+              color={colors.textQuartenary}
+            >
+              Building live streaming awesomeness backed by
+            </Text>
+            <Flex
+              gridGap={space.xxxxs}
+              alignItems="center"
+              position={["relative", "absolute"]}
+              right={[20, 0]}
+              top={0}
+            >
+              <Box w={[108, 134]} h={[108, 134]} position="relative">
+                <Image src="/images/img_tcvf.png" alt="TCVF" layout="fill" />
+              </Box>
+              <Box w={[78, 82]} h={[78, 82]} position="relative">
+                <Image src="/images/img_nueva.png" alt="Nueva" layout="fill" />
+              </Box>
+              <Box w={[68, 80]} h={[68, 80]} position="relative">
+                <Image
+                  src="/images/img_lumikai.png"
+                  alt="Lumikai"
+                  layout="fill"
+                />
+              </Box>
+              <Box w={[58, 74]} h={[58, 74]} position="relative">
+                <Image src="/images/img_cisco.png" alt="Cisco" layout="fill" />
+              </Box>
+              <Box w={[54, 56]} h={[54, 56]} position="relative">
+                <Image
+                  src="/images/img_unichem.png"
+                  alt="Unichem"
+                  layout="fill"
+                />
+              </Box>
+            </Flex>
+          </Box>
         </Flex>
       </LandingPageLayout>
     </Page>
