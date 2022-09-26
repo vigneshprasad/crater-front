@@ -1,10 +1,18 @@
 import STATIC_IMAGES from "public/images";
 import { PropsWithChildren } from "react";
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
 
 import { Box, Grid } from "@/common/components/atoms";
+
+const StyledGrid = styled(Grid)`
+  scrollbar-width: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 export default function LandingPageLayout({
   children,
@@ -12,12 +20,14 @@ export default function LandingPageLayout({
   const { space } = useTheme();
 
   return (
-    <Grid
+    <StyledGrid
+      pb={space.s}
       h="calc(var(--vh, 1vh) * 100)"
       gridTemplateColumns={["minmax(0, 1fr)", "1.5fr 1fr"]}
       gridTemplateRows={["max-content 1fr", "1fr"]}
       gridGap={[space.xxxs, space.s]}
-      overflow="hidden"
+      overflowX="hidden"
+      overflowY={["auto", "hidden"]}
     >
       <Box pt="56.25%" position="relative">
         <Image
@@ -27,6 +37,6 @@ export default function LandingPageLayout({
         />
       </Box>
       {children}
-    </Grid>
+    </StyledGrid>
   );
 }
