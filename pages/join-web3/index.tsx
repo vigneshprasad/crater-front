@@ -1,0 +1,30 @@
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/client";
+
+import dynamic from "next/dynamic";
+
+import { PageRoutes } from "@/common/constants/route.constants";
+
+const LandingPage = dynamic(
+  () => import("@/auth/components/pages/LandingPage")
+);
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (session?.user) {
+    return {
+      redirect: {
+        destination: PageRoutes.category("web-3"),
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
+
+export default function Landing(): JSX.Element {
+  return <LandingPage />;
+}
