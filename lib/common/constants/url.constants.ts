@@ -123,6 +123,9 @@ export const API_URL_CONSTANTS = {
   },
   sales: {
     getSalesList: "/crater/sale/",
+    getSalesListStore: "/crater/sale/store",
+    getPendingSaleLog: (id: number): string =>
+      `/crater/sale/log/${id}/pending/`,
     getFeaturedSalesList: "/crater/sale/featured/",
     getRewardSaleTopSellers: "/crater/sale/sellers/featured/",
     postRewardSale: "/crater/sale/",

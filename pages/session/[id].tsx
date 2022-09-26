@@ -102,6 +102,19 @@ export default function Session({ webinar, id }: Props): JSX.Element {
         title: webinar.topic_detail?.name,
         description:
           webinar.topic_detail?.description ?? webinar.topic_detail?.name,
+        openGraph: {
+          title: webinar.topic_detail?.name,
+          description:
+            webinar.topic_detail?.description ?? webinar.topic_detail?.name,
+          images: [
+            {
+              url: webinar.topic_detail?.image,
+              width: 1600,
+              height: 900,
+              alt: webinar.topic_detail?.name,
+            },
+          ],
+        },
       }}
     >
       <FollowerProvider
