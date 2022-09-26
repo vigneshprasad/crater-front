@@ -51,6 +51,19 @@ export default function LandingPage(): JSX.Element {
         title: "Web 3.0 creators streaming now",
         description:
           "Watch live streams on Web 3.0, Crypto Trading, Blockchain and more no Crater today. 120,000 learners have already joined!",
+        openGraph: {
+          title: "Web 3.0 creators streaming now",
+          description:
+            "Watch live streams on Web 3.0, Crypto Trading, Blockchain and more no Crater today. 120,000 learners have already joined!",
+          images: [
+            {
+              url: "/public/images/img_landing_page.png",
+              width: 1600,
+              height: 900,
+              alt: "Join web 3.0",
+            },
+          ],
+        },
       }}
     >
       <LandingPageLayout>
