@@ -44,7 +44,7 @@ const Container = styled(Grid)`
   cursor: pointer;
 
   &:focus-within {
-    border: 1px solid ${({ theme }) => theme.colors.accent};
+    border: 1px solid ${({ theme }) => theme.colors.textQuartenary};
   }
 `;
 
@@ -178,12 +178,7 @@ export function PhoneInput({
       </Box>
       <AnimatePresence>
         {error && (
-          <Text
-            mt={space.xxs}
-            mx={space.xxs}
-            color={colors.error}
-            textStyle="error"
-          >
+          <Text py={space.xxxxxs} color={colors.error} textStyle="error">
             {error}
           </Text>
         )}
