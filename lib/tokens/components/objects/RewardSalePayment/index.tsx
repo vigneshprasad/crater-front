@@ -39,10 +39,12 @@ const StyledSpan = styled(Span)`
 
 type IProps = {
   sale: RewardSale;
+  onPaymentComplete?: () => void;
 };
 
 export default function RewardSalePayment({
   sale,
+  onPaymentComplete,
 }: IProps): JSX.Element | null {
   const { space, colors, radii, breakpoints } = useTheme();
   const { user } = useAuth();
@@ -251,12 +253,14 @@ export default function RewardSalePayment({
       </Box>
 
       <PayItemStaticModal
+        onPaymentComplete={onPaymentComplete}
         sale={sale}
         visible={showPurchaseModal}
         onClose={() => setShowPurchaseModal(false)}
       />
 
       <LearnItemModal
+        onPaymentComplete={onPaymentComplete}
         creator={reward_detail.creator}
         sale={sale}
         visible={showLearnPurchaseModal}

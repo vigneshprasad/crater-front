@@ -32,8 +32,8 @@ export default function SaleItemInfo({
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
-  const creator = sale.reward_detail.creator_detail.name;
-  const payWithLearn = sale.payment_type === SalePaymentType.LEARN;
+  const creator = sale?.reward_detail.creator_detail.name;
+  const payWithLearn = sale?.payment_type === SalePaymentType.LEARN;
 
   const rows = useMemo<
     {
@@ -51,15 +51,15 @@ export default function SaleItemInfo({
       {
         key: "buyers",
         name: "Buyers",
-        value: sale.quantity_sold === 0 ? "-" : `${sale.quantity_sold}`,
+        value: sale?.quantity_sold === 0 ? "-" : `${sale?.quantity_sold}`,
       },
       {
         key: "stockLeft",
         name: "Stock Left",
         value:
-          sale.quantity - sale.quantity_sold === 0
+          sale?.quantity - sale?.quantity_sold === 0
             ? "-"
-            : `${sale.quantity - sale.quantity_sold}`,
+            : `${sale?.quantity - sale?.quantity_sold}`,
       },
     ];
   }, [creator, sale]);
@@ -110,13 +110,13 @@ export default function SaleItemInfo({
             {payWithLearn ? (
               <Flex alignItems="center" gridGap={space.xxxxxs}>
                 <Text textStyle="headline5" textTransform="uppercase">
-                  {sale.price} <StyledSpan>LEARN</StyledSpan>
+                  {sale?.price} <StyledSpan>LEARN</StyledSpan>
                 </Text>
                 <Icon icon="LearnToken" size={20} />
               </Flex>
             ) : (
               <Text textStyle="headline5" textTransform="uppercase">
-                ₹{sale.price}
+                ₹{sale?.price}
               </Text>
             )}
           </Flex>

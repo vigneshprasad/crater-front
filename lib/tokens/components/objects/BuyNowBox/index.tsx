@@ -21,8 +21,8 @@ export default function BuyNowBox({ sale }: IProps): JSX.Element {
   const { openModal } = useAuthModal();
 
   const disableBuyNow =
-    user?.pk === sale.reward_detail.creator_detail.user ||
-    sale.is_active === false;
+    user?.pk === sale?.reward_detail.creator_detail.user ||
+    sale?.is_active === false;
 
   const openSale = (saleId: number): void => {
     router.query.sale = `${saleId}`;

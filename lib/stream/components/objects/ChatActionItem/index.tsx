@@ -376,7 +376,8 @@ export default function ChatActionItem({
         const chatAction = parseInt(message.action.toString());
         if (action === chatAction) {
           if (
-            chatAction === ChatActionType.STREAMS &&
+            (chatAction === ChatActionType.STREAMS ||
+              chatAction === ChatActionType.FOLLOW) &&
             profile &&
             profile?.is_creator
           ) {
