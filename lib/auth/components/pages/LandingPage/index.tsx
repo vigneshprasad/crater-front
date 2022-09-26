@@ -57,7 +57,7 @@ export default function LandingPage(): JSX.Element {
         <Flex
           px={[space.xs, 0]}
           flexDirection="column"
-          alignSelf="center"
+          alignSelf={["start", "center"]}
           maxWidth={["100%", 425]}
           gridGap={[space.xs, space.s]}
         >
