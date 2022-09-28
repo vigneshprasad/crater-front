@@ -1,9 +1,16 @@
-import { Dispatch, SetStateAction, useCallback } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { useTheme } from "styled-components";
+import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import { useRouter } from "next/router";
 
 import { RewardSale } from "@/auction/types/sales";
 import { Box, Flex, Grid } from "@/common/components/atoms";
 import { IconButton } from "@/common/components/atoms/v2";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
+import FeaturedSaleCard from "../FeaturedSaleCard";
 import SaleItemSlide from "../SaleItemSlide";
 
 const HEIGHT = 500 * (9 / 16) + 280;
@@ -18,7 +25,18 @@ export default function SaleItemSlider({
   sales,
   activeItem,
   setActiveItem,
-}: IProps): JSX.Element {
+}: IProps): JSX.Element | null {
+  const { space, colors, breakpoints } = useTheme();
+  const router = useRouter();
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  const openSale = (saleId: number): void => {
+    router.query.sale = `${saleId}`;
+    router.push(router, undefined, { shallow: true });
+  };
+
   const getVariant = useCallback(
     (index: number) => {
       if (sales.length > 2) {
@@ -37,6 +55,42 @@ export default function SaleItemSlider({
     },
     [sales, activeItem]
   );
+
+  if (isMobile === undefined) return null;
+
+  if (isMobile) {
+    return (
+      <Box>
+        <Swiper
+          slidesPerView={1}
+          onSlideChange={(swiper) => {
+            setActiveIndex(swiper.activeIndex);
+            setActiveItem(swiper.activeIndex);
+          }}
+        >
+          {sales.map((sale) => (
+            <SwiperSlide key={sale.id}>
+              <FeaturedSaleCard sale={sale} onClick={() => openSale(sale.id)} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <Flex pt={space.xs} gridGap={6} justifyContent="center">
+          {Array(sales.length)
+            .fill("")
+            .map((_, index) => (
+              <Box
+                w={6}
+                h={6}
+                bg={colors.textPrimary}
+                borderRadius="50%"
+                opacity={index === activeIndex ? 1 : 0.25}
+                key={index}
+              />
+            ))}
+        </Flex>
+      </Box>
+    );
+  }
 
   return (
     <Grid

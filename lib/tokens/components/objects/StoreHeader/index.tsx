@@ -10,6 +10,7 @@ import {
   Text,
   TextProps,
 } from "@/common/components/atoms";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 const StyledSpan = styled(Span)<TextProps>`
   background: linear-gradient(65.32deg, #f1616a, #9146ff, #9db3ff, #0d849e);
@@ -20,24 +21,28 @@ const StyledSpan = styled(Span)<TextProps>`
   textfillcolor: transparent;
 `;
 
-export default function StoreHeader(): JSX.Element {
-  const { space, fonts, radii } = useTheme();
+export default function StoreHeader(): JSX.Element | null {
+  const { space, fonts, radii, breakpoints } = useTheme();
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  if (isMobile === undefined) return null;
 
   return (
     <Grid
       gridAutoFlow="column"
-      gridTemplateColumns="1fr 535px 1fr"
-      gridGap={space.s}
+      gridTemplateColumns={["minmax(0, 1fr)", "1fr 535px 1fr"]}
+      gridTemplateRows={["1fr max-content", "1fr"]}
+      gridGap={[space.xs, space.s]}
     >
-      <Box>
+      <Box position="relative">
         <Text
-          maxLines={3}
-          fontSize="3.6rem"
-          lineHeight="4.6rem"
+          maxLines={isMobile ? undefined : 3}
+          fontSize={["2.4rem", "3.6rem"]}
+          lineHeight={["3.0rem", "4.6rem"]}
           fontWeight={400}
           fontFamily={fonts.heading}
           pb={space.xxxs}
-          w={368}
+          w={["80%", 368]}
         >
           Discover, <StyledSpan fontWeight={500}>Buy</StyledSpan> and{" "}
           <StyledSpan fontWeight={500}>Sell</StyledSpan> Art &amp; Digital Goods
@@ -45,7 +50,7 @@ export default function StoreHeader(): JSX.Element {
         <Icon icon="Sparkle" size={32} />
         <Box
           mt={space.xxxs}
-          w={334}
+          w={[315, 334]}
           p={space.xs}
           borderRadius={radii.s}
           background="rgba(79, 119, 167, 0.16)"
@@ -55,12 +60,27 @@ export default function StoreHeader(): JSX.Element {
             more. Buy, sell and discover exclusive assets created by Creators.
           </Text>
         </Box>
+        {isMobile && (
+          <Box
+            w={340}
+            h={232}
+            position="absolute"
+            top={-70}
+            left={150}
+            zIndex={-1}
+            opacity={0.6}
+          >
+            <Image src="/images/img_astronaut_store.png" alt="Store Img" />
+          </Box>
+        )}
       </Box>
-      <Box position="relative" alignSelf="end" justifySelf="start">
-        <Box w={535} h={430} position="absolute" left={-20} bottom={-50}>
-          <Image src={STATIC_IMAGES.ImageStoreHeader} alt="Store Img" />
+      {!isMobile && (
+        <Box position="relative" alignSelf="end" justifySelf="start">
+          <Box w={535} h={430} position="absolute" left={-20} bottom={-50}>
+            <Image src={STATIC_IMAGES.ImageStoreHeader} alt="Store Img" />
+          </Box>
         </Box>
-      </Box>
+      )}
       <Box w={200} h={200} justifySelf="center" alignSelf="center">
         <Image src="/images/img_store_header_arrow.png" alt="Store Img" />
       </Box>

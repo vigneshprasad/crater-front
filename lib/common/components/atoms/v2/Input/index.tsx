@@ -168,7 +168,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {suffixElement && <Box gridArea="suffix">{suffixElement}</Box>}
         </InputContainer>
         {error && (
-          <Box px={space.xxxxs} py={space.xxxxxs}>
+          <Box py={space.xxxxxs}>
             <Text textStyle="error" color={colors.error}>
               {error}
             </Text>

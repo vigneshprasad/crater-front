@@ -68,7 +68,8 @@ export default function RsvpButton({
   const { colors, zIndices, space } = useTheme();
   const { user } = useAuth();
   const { track } = useAnalytics();
-  const { rewardSale } = usePrivateStreamReward();
+  const { rewardSale, rewardSaleLog, mutateRewardSaleLog } =
+    usePrivateStreamReward();
   const { webinarRequest, mutateRequest } = useWebinarRequest();
   const { openModal } = useAuthModal();
   const router = useRouter();
@@ -170,6 +171,26 @@ export default function RsvpButton({
     !isHost
   ) {
     if (rewardSale) {
+      if (rewardSaleLog) {
+        //Private stream with reward already purchased - CHECK
+        return (
+          <Button
+            variant="flat-with-disabled-dark"
+            label="Awaiting Confirmation"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight={44}
+            h={[44, "auto"]}
+            w="100%"
+            zIndex={[zIndices.overlay - 10, "auto"]}
+            disabled={true}
+            textProps={{
+              textStyle: "label",
+            }}
+          />
+        );
+      }
       if (rewardSale.payment_type == SalePaymentType.UPI) {
         //Private stream with reward UPI Payment - CHECK
         return (
@@ -183,7 +204,14 @@ export default function RsvpButton({
                 boxProps={{ ml: space.xs, mr: 22, pt: 28 }}
                 onClose={() => setSaleVisible(false)}
               >
-                <RewardSalePayment sale={rewardSale} />
+                <RewardSalePayment
+                  onPaymentComplete={() => {
+                    setSaleVisible(false);
+                    mutateRewardSaleLog();
+                    mutateRequest();
+                  }}
+                  sale={rewardSale}
+                />
               </SideDrawer>
             )}
             <Button
@@ -232,7 +260,14 @@ export default function RsvpButton({
                 boxProps={{ ml: space.xs, mr: 22, pt: 28 }}
                 onClose={() => setSaleVisible(false)}
               >
-                <RewardSalePayment sale={rewardSale} />
+                <RewardSalePayment
+                  onPaymentComplete={() => {
+                    setSaleVisible(false);
+                    mutateRewardSaleLog();
+                    mutateRequest();
+                  }}
+                  sale={rewardSale}
+                />
               </SideDrawer>
             )}
             <Box>

@@ -14,14 +14,18 @@ export default function TopItemsForSale(): JSX.Element {
 
   return (
     <Box>
-      <Text pb={26} textStyle="headline5" fontWeight={600}>
+      <Text pb={[space.xxxs, 26]} textStyle="headline5" fontWeight={600}>
         Top Items for Sale 🔥
       </Text>
 
       {!sales || loading ? (
-        <Shimmer w="100%" h={450} borderRadius={radii.xxxxs} />
+        <Shimmer w="100%" h={300} borderRadius={radii.xxxxs} />
       ) : (
-        <Flex justifyContent="space-evenly" gridGap={space.xl}>
+        <Flex
+          flexDirection={["column", "row"]}
+          justifyContent="space-evenly"
+          gridGap={[space.xxs, space.xl]}
+        >
           <SaleItemSlider
             sales={sales}
             activeItem={activeItem}

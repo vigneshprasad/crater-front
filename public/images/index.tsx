@@ -15,6 +15,7 @@ import ImageAuctionEmpty from "public/images/img_empty_auction.png";
 import ImageEmptyWallet from "public/images/img_empty_wallet.png";
 import ImageHand from "public/images/img_hand.png";
 import ImageHyfiPlaceholder from "public/images/img_hyfi_placeholder.png";
+import ImageLandingPage from "public/images/img_landing_page.png";
 import ImageLeaderboardStep1 from "public/images/img_leaderboard_step1.png";
 import ImageLeaderboardStep2 from "public/images/img_leaderboard_step2.png";
 import ImageLeaderboardStep3 from "public/images/img_leaderboard_step3.png";
@@ -72,6 +73,7 @@ const STATIC_IMAGES = {
   ImageAuctionEmpty,
   ImageStoreHeader,
   ImagePurchaseComplete,
+  ImageLandingPage,
 };
 
 export default STATIC_IMAGES;

@@ -27,12 +27,14 @@ interface IProps {
   sale: RewardSale;
   visible: boolean;
   onClose: () => void;
+  onPaymentComplete?: () => void;
 }
 
 export default function PayItemStaticModal({
   sale,
   visible,
   onClose,
+  onPaymentComplete,
 }: IProps): JSX.Element {
   const { colors, space } = useTheme();
   const [loading, setLoading] = useState(false);
@@ -80,6 +82,7 @@ export default function PayItemStaticModal({
     );
 
     await setLoading(false);
+    onPaymentComplete && onPaymentComplete();
     onClose();
 
     return;

@@ -39,4 +39,6 @@ export enum AnalyticsEvents {
   chat_action_google_play_badge_clicked = "web_chat_action_google_play_badge_clicked",
   chat_action_appstore_badge_clicked = "web_chat_action_appstore_badge_clicked",
   first_time_rsvp = "web_first_time_rsvp",
+  web3_landing_get_otp_clicked = "web3_landing_get_otp_clicked",
+  web3_landing_phone_verified = "web3_landing_phone_verified",
 }
