@@ -42,6 +42,7 @@ import ChatMessagesList from "../ChatMessagesList";
 import StreamViewerCount from "../StreamViewerCount";
 
 interface IProps extends GridProps {
+  streamId: number;
   stream: Webinar;
   showPopup?: boolean;
 }
@@ -53,6 +54,7 @@ interface ChatFormProps {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function StreamChat({
+  streamId,
   stream,
   showPopup = true,
   ...rest
@@ -138,7 +140,7 @@ export default function StreamChat({
   }
 
   return (
-    <FirebaseChatProvider groupId={stream.id}>
+    <FirebaseChatProvider groupId={streamId}>
       <FirebaseChatContext.Consumer>
         {({ messages: allMessages, postMessage, postSticker }) => {
           const messages = allMessages.filter(
@@ -167,7 +169,6 @@ export default function StreamChat({
                   ? ["1fr max-content", "max-content 1fr max-content"]
                   : ["1fr max-content", "1fr max-content"]
               }
-              bg={colors.primaryDark}
               {...rest}
             >
               {hasActiveReward && (
@@ -199,7 +200,7 @@ export default function StreamChat({
               {permission?.allow_chat && (
                 <Form
                   position="relative"
-                  bg={colors.primaryLight}
+                  bg={colors.primaryDark}
                   display="grid"
                   px={space.xxxs}
                   py={space.xxxs}

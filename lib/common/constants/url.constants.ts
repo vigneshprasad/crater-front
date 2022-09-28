@@ -28,6 +28,8 @@ export const API_URL_CONSTANTS = {
         `/integrations/dyte/participant/${groupId}/`,
       connect: (groupId: string): string =>
         `/integrations/dyte/participant/${groupId}/connect/`,
+      getActiveLiveStreamForMeeting: (groupId: string | number): string =>
+        `/integrations/dyte/livestream/${groupId}/meeting_active_livestream/`,
     },
   },
   conversations: {
@@ -71,6 +73,10 @@ export const API_URL_CONSTANTS = {
     postGroupQuestion: "/groups/conversations/stream/questions/",
     postGroupQuestionUpvote: "/groups/conversations/stream/questions/upvote/",
     getAllVideos: "/groups/public/conversations/webinars/videos/",
+  },
+  multistream: {
+    getMultiStreamForGroup: (id: string | number): string =>
+      `/groups/multistream/${id}/group/`,
   },
   community: {
     getCommunityList: "/crater/community/",

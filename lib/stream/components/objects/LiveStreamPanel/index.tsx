@@ -63,6 +63,7 @@ const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
 
 interface IProps {
   initial?: TabKeys;
+  streamId: number;
 }
 
 const GradientBorder = styled(Box)`
@@ -88,7 +89,10 @@ const GradientBorder = styled(Box)`
   }
 `;
 
-export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
+export default function LiveStreamPanel({
+  initial,
+  streamId,
+}: IProps): JSX.Element {
   const [visibleModal, setVisibleModal] = useState(false);
   const [purchaseRequest, setPurchaseRequest] = useState<
     RewardSaleLog | undefined
@@ -146,6 +150,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       gridTemplateRows={["max-content 1fr"]}
       bg={colors.primaryBackground}
       position="relative"
+      borderLeft={`1px solid ${colors.primaryLight}`}
     >
       <BaseTabBar
         bg={colors.primaryLight}
@@ -157,7 +162,7 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       />
 
       {activeTab === "chat" && webinar && !webinar.closed && (
-        <StreamChat stream={webinar} />
+        <StreamChat stream={webinar} streamId={streamId} />
       )}
       {activeTab === "store" && webinar && (
         <LiveStreamAuctions webinar={webinar} />

@@ -31,6 +31,8 @@ import ImageStarryBg from "public/images/img_starry_bg.png";
 import ImageStoreHeader from "public/images/img_store_header.png";
 import Stream from "public/images/img_stream.png";
 import ImageCraterStream from "public/images/img_stream_crater.png";
+import ImageStreamStarting_1 from "public/images/img_stream_starting_1.png";
+import ImageStreamStarting_2 from "public/images/img_stream_starting_2.png";
 import ImageLearnLoot from "public/images/img_total_loot.png";
 import ImageTv from "public/images/img_tv.png";
 import ImageVisorMonkey from "public/images/img_visor_monkey.png";
@@ -72,6 +74,8 @@ const STATIC_IMAGES = {
   ImageAuctionEmpty,
   ImageStoreHeader,
   ImagePurchaseComplete,
+  ImageStreamStarting_1,
+  ImageStreamStarting_2,
 };
 
 export default STATIC_IMAGES;

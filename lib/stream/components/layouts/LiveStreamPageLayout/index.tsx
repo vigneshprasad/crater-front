@@ -13,6 +13,7 @@ import LiveStreamPanel from "../../objects/LiveStreamPanel";
 import SimilarStreamsOverlay from "../../objects/SimilarStreamsOverlay";
 
 interface IProps {
+  streamId: number;
   videoPlayer: React.ReactNode;
   streamDetail: React.ReactNode;
   modal?: React.ReactNode;
@@ -28,6 +29,7 @@ export default function LiveStreamPageLayout({
   shareSection,
   upcomingsStreams,
   pastStreams,
+  streamId,
 }: IProps): JSX.Element {
   const { space, borders } = useTheme();
   const { user } = useAuth();
@@ -64,7 +66,7 @@ export default function LiveStreamPageLayout({
         </Grid>
         <Grid gridArea="panel">
           <ChatColorModeProvider>
-            <LiveStreamPanel />
+            <LiveStreamPanel streamId={streamId} />
           </ChatColorModeProvider>
         </Grid>
         <Grid gridArea="about" p={[0, space.xxs]}>
