@@ -1,12 +1,17 @@
 import { useTheme } from "styled-components";
 
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
 import useRewardSalesList from "@/auction/context/RewardSalesListContext";
 import { Box, Shimmer, Text } from "@/common/components/atoms";
-import MasonryLayout from "@/common/components/objects/MasonryLayout";
 
 import StoreSaleCard from "../StoreSaleCard";
+
+const MasonryLayout = dynamic(
+  () => import("@/common/components/objects/MasonryLayout"),
+  { ssr: false }
+);
 
 export default function MoreSaleItems(): JSX.Element {
   const { space, radii } = useTheme();
@@ -20,19 +25,23 @@ export default function MoreSaleItems(): JSX.Element {
 
   return (
     <Box>
-      <Text pb={space.xxs} textStyle="headline5" fontWeight={600}>
+      <Text pb={[space.xxxs, space.xxs]} textStyle="headline5" fontWeight={600}>
         More Items on Sale 👀
       </Text>
 
       {(() => {
         if (isValidating && !sales) {
-          return <Shimmer w="100%" h={450} borderRadius={radii.xxxxs} />;
+          return <Shimmer w="100%" h={300} borderRadius={radii.xxxxs} />;
         }
 
         return (
           <MasonryLayout itemSelector=".sale-masonry">
             {sales?.map((sale) => (
-              <Box my={12} key={sale.id} className="sale-masonry">
+              <Box
+                my={[space.xxxxs, space.xxxs]}
+                key={sale.id}
+                className="sale-masonry"
+              >
                 <StoreSaleCard sale={sale} onClick={openSale} />
               </Box>
             ))}

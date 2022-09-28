@@ -18,7 +18,8 @@ export default function MasonryLayout({
     if (containerRef.current) {
       new Masonry(containerRef.current, {
         itemSelector,
-        gutter: 24,
+        gutter: 20,
+        resize: true,
       });
     }
   }, [containerRef, itemSelector]);
