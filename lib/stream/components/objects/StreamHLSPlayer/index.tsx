@@ -19,11 +19,7 @@ type IProps = AnimatedBoxProps & {
 const StreamHLSPlayer = forwardRef<HTMLVideoElement, IProps>(
   ({ streamId, ...rest }, ref) => {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const {
-      data: liveStream,
-      error,
-      isValidating,
-    } = useSWR<DyteLiveStream>(
+    const { data: liveStream, isValidating } = useSWR<DyteLiveStream>(
       API_URL_CONSTANTS.integrations.dyte.getActiveLiveStreamForMeeting(
         streamId
       )

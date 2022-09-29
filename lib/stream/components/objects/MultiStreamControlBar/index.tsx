@@ -4,10 +4,14 @@ import { Avatar, Flex, Text, Toggle } from "@/common/components/atoms";
 import { MultiStream } from "@/community/types/community";
 
 interface IProps {
+  active: boolean;
   multistream: MultiStream;
+  onChange: (value: boolean) => void;
 }
 
 export default function MultiStreamControlBar({
+  onChange,
+  active,
   multistream,
 }: IProps): JSX.Element {
   const { colors, space, radii } = useTheme();
@@ -36,7 +40,7 @@ export default function MultiStreamControlBar({
       </Flex>
 
       <Flex alignItems="center" gridGap={space.xxxxs}>
-        <Toggle />
+        <Toggle value={active} onChange={onChange} />
         <Text>Multistream Mode</Text>
       </Flex>
     </Flex>

@@ -1,18 +1,29 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useRouter } from "next/router";
 
-import { MultiStream, Webinar } from "@/community/types/community";
+import useAuth from "@/auth/context/AuthContext";
+import { useWebinar } from "@/community/context/WebinarContext";
+import { MultiStream } from "@/community/types/community";
+import { useFollower } from "@/creators/context/FollowerContext";
+import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
+import UpcomingStreamsList from "@/stream/components//objects/UpcomingStreamsList";
 import MultiLiveStreamPageLayout from "@/stream/components/layouts/MultiLiveStreamPageLayout";
 import MultiStreamControlBar from "@/stream/components/objects/MultiStreamControlBar";
 import MultiStreamPlayer from "@/stream/components/objects/MultiStreamPlayer";
+import PastStreamsList from "@/stream/components/objects/PastStreamsList/v2";
+import StreamAboutSection from "@/stream/components/objects/StreamAboutSection";
 import StreamDytePlayer from "@/stream/components/objects/StreamDytePlayer";
+import StreamShareSection from "@/stream/components/objects/StreamShareSection";
+import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
 
-interface IProps {
-  stream: Webinar;
-  streamId: number;
+import { ContainerProps } from "./container";
+
+export interface PageProps extends ContainerProps {
   multiStreamMode: boolean;
   multistream?: MultiStream;
+  onClickMultiStreamToggle: (val: boolean) => void;
+  orgId: string;
 }
 
 export function LiveStreamPage({
@@ -20,24 +31,45 @@ export function LiveStreamPage({
   streamId,
   multiStreamMode,
   multistream,
-}: IProps): JSX.Element {
+  orgId,
+  onClickMultiStreamToggle,
+}: PageProps): JSX.Element {
+  const { user } = useAuth();
   const router = useRouter();
-  const [activeStreamId, setActiveStreamId] = useState(streamId);
+  const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
+  const [loading, setLoading] = useState(false);
+  const {
+    followers,
+    loading: followersLoading,
+    subscribeCreator,
+  } = useFollower();
+  const { postMessage } = useFirebaseChat();
 
-  useEffect(() => {
-    const id = router.query.id as string;
-    id && setActiveStreamId(parseInt(id, 10));
-  }, [router]);
+  const creator = cachedWebinar?.host_detail.creator_detail;
+
+  const followCreator = async (): Promise<void> => {
+    if (creator) {
+      await subscribeCreator(creator.id);
+      await mutateWebinar();
+      setLoading(false);
+
+      const message = {
+        message: `${user?.name} just followed ${cachedWebinar?.host_detail.name}'s channel.`,
+        display_name: "Follow Update",
+      };
+      postMessage(message);
+    }
+  };
 
   return (
-    <MultiLiveStreamPageLayout streamId={activeStreamId} stream={stream}>
+    <MultiLiveStreamPageLayout streamId={streamId} stream={stream}>
       {{
         streamPlayer: (
           <>
             {multiStreamMode === true && multistream && (
               <MultiStreamPlayer
                 multistream={multistream}
-                active={activeStreamId}
+                active={streamId}
                 onClickStream={(id) => {
                   router.push(`/livestream/${id}/multi`, undefined, {
                     shallow: true,
@@ -45,12 +77,31 @@ export function LiveStreamPage({
                 }}
               />
             )}
-            {multiStreamMode === false && <StreamDytePlayer />}
+            {multiStreamMode === false && (
+              <DyteWebinarProvider id={streamId.toString()}>
+                <StreamDytePlayer stream={cachedWebinar} orgId={orgId} />
+              </DyteWebinarProvider>
+            )}
           </>
         ),
         controlBar: multistream ? (
-          <MultiStreamControlBar multistream={multistream} />
+          <MultiStreamControlBar
+            multistream={multistream}
+            active={multiStreamMode}
+            onChange={onClickMultiStreamToggle}
+          />
         ) : null,
+        streamDetail: (
+          <StreamAboutSection
+            followers={followers}
+            stream={cachedWebinar ?? stream}
+            followersLoading={followersLoading || loading}
+            onFollow={() => followCreator()}
+          />
+        ),
+        shareSection: <StreamShareSection stream={cachedWebinar} />,
+        upcomingStreams: <UpcomingStreamsList />,
+        pastStreams: <PastStreamsList />,
       }}
     </MultiLiveStreamPageLayout>
   );

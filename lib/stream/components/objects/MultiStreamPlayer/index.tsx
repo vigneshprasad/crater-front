@@ -127,7 +127,6 @@ export default function MultiStreamPlayer({
         },
       });
       const height = smallPrimaryHeight + smallSecondaryHeight + 48;
-      console.log(height);
       setHeight(height);
     }
   }, [containerRef, setVariants, setHeight, setWidth]);
