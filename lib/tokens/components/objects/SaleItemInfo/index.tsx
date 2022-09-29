@@ -3,6 +3,7 @@ import styled, { useTheme } from "styled-components";
 
 import { RewardSale, SalePaymentType } from "@/auction/types/sales";
 import { Box, Flex, Icon, Span, Text } from "@/common/components/atoms";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 const StyledSpan = styled(Span)`
   background: linear-gradient(
@@ -26,11 +27,13 @@ type IProps = {
 export default function SaleItemInfo({
   sale,
   showPrice = false,
-}: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+}: IProps): JSX.Element | null {
+  const { space, colors, breakpoints } = useTheme();
 
-  const creator = sale.reward_detail.creator_detail.name;
-  const payWithLearn = sale.payment_type === SalePaymentType.LEARN;
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  const creator = sale?.reward_detail.creator_detail.name;
+  const payWithLearn = sale?.payment_type === SalePaymentType.LEARN;
 
   const rows = useMemo<
     {
@@ -48,33 +51,41 @@ export default function SaleItemInfo({
       {
         key: "buyers",
         name: "Buyers",
-        value: sale.quantity_sold === 0 ? "-" : `${sale.quantity_sold}`,
+        value: sale?.quantity_sold === 0 ? "-" : `${sale?.quantity_sold}`,
       },
       {
         key: "stockLeft",
         name: "Stock Left",
         value:
-          sale.quantity - sale.quantity_sold === 0
+          sale?.quantity - sale?.quantity_sold === 0
             ? "-"
-            : `${sale.quantity - sale.quantity_sold}`,
+            : `${sale?.quantity - sale?.quantity_sold}`,
       },
     ];
   }, [creator, sale]);
+
+  if (isMobile === undefined) return null;
 
   return (
     <Flex flexDirection="column" gridGap={24}>
       {rows.map(({ key, name, value }) => (
         <Box borderBottom={`1px solid ${colors.textPrimary}`} key={key}>
           <Flex
-            pb={space.xxs}
+            pb={[space.xxxxs, space.xxs]}
             flexDirection="row"
             justifyContent="space-between"
             alignItems="center"
           >
-            <Text textStyle="captionLarge" textTransform="uppercase">
+            <Text
+              textStyle={isMobile ? "caption" : "captionLarge"}
+              textTransform="uppercase"
+            >
               {name}
             </Text>
-            <Text textStyle="captionLarge" textTransform="uppercase">
+            <Text
+              textStyle={isMobile ? "caption" : "captionLarge"}
+              textTransform="uppercase"
+            >
               {value}
             </Text>
           </Flex>
@@ -82,9 +93,12 @@ export default function SaleItemInfo({
       ))}
 
       {showPrice && (
-        <Box pt={space.l} borderBottom={`1px solid ${colors.textPrimary}`}>
+        <Box
+          pt={[space.s, space.l]}
+          borderBottom={`1px solid ${colors.textPrimary}`}
+        >
           <Flex
-            pb={space.xxs}
+            pb={[space.xxxxs, space.xxs]}
             flexDirection="row"
             justifyContent="space-between"
             alignItems="center"
@@ -96,13 +110,13 @@ export default function SaleItemInfo({
             {payWithLearn ? (
               <Flex alignItems="center" gridGap={space.xxxxxs}>
                 <Text textStyle="headline5" textTransform="uppercase">
-                  {sale.price} <StyledSpan>LEARN</StyledSpan>
+                  {sale?.price} <StyledSpan>LEARN</StyledSpan>
                 </Text>
                 <Icon icon="LearnToken" size={20} />
               </Flex>
             ) : (
               <Text textStyle="headline5" textTransform="uppercase">
-                ₹{sale.price}
+                ₹{sale?.price}
               </Text>
             )}
           </Flex>

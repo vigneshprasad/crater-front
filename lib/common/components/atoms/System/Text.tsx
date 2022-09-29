@@ -232,9 +232,9 @@ const variants = {
   },
   gradientHeading: {
     fontFamily: fonts.heading,
-    fontSize: "3.6rem",
+    fontSize: ["2.0rem", "3.6rem"],
     fontWeight: "500",
-    lineHeight: "5.4rem",
+    lineHeight: ["3.0rem", "5.4rem"],
     letterSpacing: "0.03em",
     background: "linear-gradient(65.32deg, #F1616A, #9146FF, #9DB3FF, #0D849E)",
     backgroundClip: "text",

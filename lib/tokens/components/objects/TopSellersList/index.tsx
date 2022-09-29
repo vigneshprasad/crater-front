@@ -1,17 +1,12 @@
 import styled, { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import {
-  Avatar,
-  Box,
-  Grid,
-  Shimmer,
-  Spinner,
-  Text,
-} from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/v2";
+import { Box, Grid, Shimmer, Text } from "@/common/components/atoms";
 import HorizontalScroll from "@/common/components/objects/HorizontalScroll/v2";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { Seller } from "@/tokens/types/store";
+
+import TopSellerCard from "../TopSellerCard";
 
 const GradientBox = styled(Box)`
   filter: blur(116px);
@@ -30,9 +25,12 @@ export default function TopSellersList({
   loading,
   followingCreator,
   onFollow,
-}: IProps): JSX.Element {
-  const { space, colors, radii } = useTheme();
+}: IProps): JSX.Element | null {
+  const { space, radii, breakpoints } = useTheme();
   const { user } = useAuth();
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  if (isMobile === undefined) return null;
 
   return (
     <Box position="relative">
@@ -47,68 +45,81 @@ export default function TopSellersList({
         zIndex={-1}
       />
 
-      <HorizontalScroll
-        title="Top Creators 💯"
-        px={space.l}
-        maxWidth="100%"
-        gridAutoFlow="column"
-        gridAutoColumns="235px"
-        gridGap={space.xs}
-        overflowX="scroll"
-        titleProps={{ px: space.l }}
-      >
-        {loading || !sellers
-          ? Array(4)
-              .fill("")
-              .map((_, index) => (
-                <Shimmer w={235} h={112} borderRadius={radii.xs} key={index} />
-              ))
-          : sellers.map((seller) => {
-              if (user?.pk !== seller.user) {
-                const followLoading = seller.id === followingCreator;
-
-                return (
-                  <Grid
-                    p={space.xxs}
-                    gridAutoFlow="row"
-                    gridTemplateRows="1fr max-content"
-                    gridGap={space.xxxxs}
-                    bg={colors.primaryDark}
+      {!isMobile ? (
+        <HorizontalScroll
+          title="Top Creators 💯"
+          px={space.l}
+          maxWidth="100%"
+          gridAutoFlow="column"
+          gridAutoColumns="235px"
+          gridGap={space.xs}
+          overflowX="scroll"
+          titleProps={{ px: space.l }}
+        >
+          {loading || !sellers
+            ? Array(4)
+                .fill("")
+                .map((_, index) => (
+                  <Shimmer
+                    w={235}
+                    h={112}
                     borderRadius={radii.xs}
-                    key={seller.id}
-                  >
-                    <Grid
-                      gridTemplateColumns="max-content 1fr"
-                      gridGap={space.xs}
-                    >
-                      <Avatar
-                        size={56}
-                        image={seller.profile_detail.photo ?? undefined}
-                      />
-                      <Text fontWeight={600}>{seller.profile_detail.name}</Text>
-                    </Grid>
-                    <Button
-                      w={127}
-                      h={40}
-                      variant="gradient-border-flat"
-                      justifySelf="end"
-                      label={seller.is_subscriber ? "Followed" : "Follow"}
-                      bg={colors.primaryBackground}
-                      textProps={{
-                        fontSize: "1.4rem",
-                        fontWeight: 600,
-                      }}
-                      disabled={
-                        followLoading || seller.is_subscriber ? true : false
-                      }
-                      suffixElement={followLoading && <Spinner size={24} />}
-                      onClick={() => onFollow(seller.id)}
+                    key={index}
+                  />
+                ))
+            : sellers.map((seller) => {
+                if (user?.pk !== seller.user) {
+                  const followLoading = seller.id === followingCreator;
+
+                  return (
+                    <TopSellerCard
+                      key={seller.id}
+                      seller={seller}
+                      loading={followLoading}
+                      onFollow={onFollow}
                     />
-                  </Grid>
-                );
-              }
-            })}
-      </HorizontalScroll>
+                  );
+                }
+              })}
+        </HorizontalScroll>
+      ) : (
+        <Box px={space.xs}>
+          <Text pb={space.xxxs} textStyle="headline5" fontWeight={600}>
+            Top Creators 💯
+          </Text>
+          <Grid
+            gridTemplateColumns="repeat(2, 1fr)"
+            gridColumnGap={space.xxxs}
+            gridRowGap={space.xs}
+          >
+            {loading || !sellers
+              ? Array(4)
+                  .fill("")
+                  .map((_, index) => (
+                    <Shimmer
+                      w="100%"
+                      h={150}
+                      borderRadius={radii.xs}
+                      key={index}
+                    />
+                  ))
+              : sellers.map((seller) => {
+                  if (user?.pk !== seller.user) {
+                    const followLoading = seller.id === followingCreator;
+
+                    return (
+                      <TopSellerCard
+                        key={seller.id}
+                        seller={seller}
+                        loading={followLoading}
+                        onFollow={onFollow}
+                      />
+                    );
+                  }
+                })}
+          </Grid>
+        </Box>
+      )}
     </Box>
   );
 }

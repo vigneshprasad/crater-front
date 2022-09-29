@@ -6,8 +6,15 @@ export async function Login(
   data: Record<string, unknown>
 ): Promise<SignInResponse | undefined> {
   if (provider === "phone-auth") {
-    const { phoneNumber, otp, utmSource, utmCampaign, utmMedium, referrerId } =
-      data;
+    const {
+      phoneNumber,
+      otp,
+      utmSource,
+      utmCampaign,
+      utmMedium,
+      referrerId,
+      name,
+    } = data;
     try {
       await signin<CredentialProviderId>("phone-auth", {
         username: phoneNumber,
@@ -17,6 +24,7 @@ export async function Login(
         utm_medium: utmMedium,
         referrer_id: referrerId,
         redirect: false,
+        name: name ?? "",
       });
     } catch (err) {
       throw new Error(err as string);

@@ -35,6 +35,9 @@ const providers: AppProviders = [
       utm_medium: {
         type: "text",
       },
+      name: {
+        type: "text",
+      },
     },
     async authorize(credentials) {
       try {

@@ -2,6 +2,8 @@ import { useMemo, useRef, useState } from "react";
 import NewWindow from "react-new-window";
 import { useTheme } from "styled-components";
 
+import { useRouter } from "next/router";
+
 import useAuth from "@/auth/context/AuthContext";
 import useSystemSocket from "@/auth/context/SystemSocketContext";
 import {
@@ -66,6 +68,7 @@ export default function StreamChat({
   const windowRef = useRef<NewWindow>(null);
   const { mutateWebinar } = useWebinar();
   const [showSheet, setShowSheet] = useState(false);
+  const router = useRouter();
 
   const { fields, fieldValueSetter, getValidatedData } = useForm<ChatFormProps>(
     {
@@ -108,6 +111,12 @@ export default function StreamChat({
 
   const openChatPopOut = (): void => {
     setPopOutVisible(true);
+  };
+
+  const openStoreTab = (): void => {
+    router.push(PageRoutes.stream(stream.id, "store"), undefined, {
+      shallow: true,
+    });
   };
 
   if (popOutVisible) {
@@ -317,6 +326,17 @@ export default function StreamChat({
                       if (showCount) {
                         return <StreamViewerCount />;
                       }
+
+                      return (
+                        <IconButton
+                          icon="LearnToken"
+                          onClick={() => {
+                            openStoreTab();
+                          }}
+                          iconProps={{ color: "white.0" }}
+                          buttonStyle="flat-icon"
+                        />
+                      );
                     })()}
                   </Box>
 
