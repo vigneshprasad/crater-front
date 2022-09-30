@@ -3,15 +3,15 @@ export default function ArrowLeft(
 ): JSX.Element {
   return (
     <svg
-      width="24"
-      height="24"
+      width="1em"
+      height="1em"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
-        d="M7.828 13.0007L13.192 18.3647L11.778 19.7787L4 12.0007L11.778 4.22266L13.192 5.63666L7.828 11.0007L20 11.0007L20 13.0007L7.828 13.0007Z"
+        d="M7.828 13l5.364 5.365-1.414 1.414L4 12l7.778-7.778 1.414 1.414L7.828 11H20v2H7.828z"
         fill="currentColor"
       />
     </svg>
