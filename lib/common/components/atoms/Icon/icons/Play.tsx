@@ -1,4 +1,4 @@
-export default function ArrowLeft(
+export default function Play(
   props: React.SVGProps<SVGSVGElement>
 ): JSX.Element {
   return (
@@ -10,10 +10,7 @@ export default function ArrowLeft(
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path
-        d="M7.828 13l5.364 5.365-1.414 1.414L4 12l7.778-7.778 1.414 1.414L7.828 11H20v2H7.828z"
-        fill="#fff"
-      />
+      <path d="M8 18.925v-14l11 7-11 7z" fill="currentColor" />
     </svg>
   );
 }

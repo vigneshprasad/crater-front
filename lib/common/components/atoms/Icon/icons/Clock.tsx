@@ -12,7 +12,7 @@ export default function Clock(
     >
       <path
         d="M10 0C4.5 0 0 4.5 0 10s4.5 10 10 10 10-4.5 10-10S15.5 0 10 0zm4.2 14.2L9 11V5h1.5v5.2l4.5 2.7-.8 1.3z"
-        fill="currentColor"
+        fill="#000"
       />
     </svg>
   );
