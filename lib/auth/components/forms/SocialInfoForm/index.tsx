@@ -21,6 +21,8 @@ export interface ISocialFormProps {
   linkedin_url: string | null;
   twitter: string | null;
   metamask_id: string | null;
+  primary_url?: string;
+  telegram?: string;
 }
 
 interface IProps {
@@ -52,6 +54,14 @@ export default function SocialInfoForm({
         },
         metamask_id: {
           intialValue: profile.metamask_id,
+          validators: [],
+        },
+        primary_url: {
+          intialValue: profile.primary_url,
+          validators: [],
+        },
+        telegram: {
+          intialValue: profile.telegram,
           validators: [],
         },
       },
@@ -188,6 +198,52 @@ export default function SocialInfoForm({
               value={fields.metamask_id.value ?? ""}
               onChange={(e) =>
                 fieldValueSetter("metamask_id", e.currentTarget.value)
+              }
+            />
+          </FormField>
+
+          <FormField
+            gridTemplateColumns={["1fr", "1fr 2fr"]}
+            gridGap={space.xxxs}
+            alignItems="center"
+            label={
+              <Grid
+                gridAutoFlow="column"
+                gridAutoColumns="max-content"
+                gridGap={space.xxxs}
+              >
+                <Icon icon="Linktree" fill color={colors.twitter} />
+                <Text>LinkTree</Text>
+              </Grid>
+            }
+          >
+            <Input
+              value={fields.primary_url.value ?? ""}
+              onChange={(e) =>
+                fieldValueSetter("primary_url", e.currentTarget.value)
+              }
+            />
+          </FormField>
+
+          <FormField
+            gridTemplateColumns={["1fr", "1fr 2fr"]}
+            gridGap={space.xxxs}
+            alignItems="center"
+            label={
+              <Grid
+                gridAutoFlow="column"
+                gridAutoColumns="max-content"
+                gridGap={space.xxxs}
+              >
+                <Icon icon="Telegram" fill color={colors.twitter} />
+                <Text>Telegram</Text>
+              </Grid>
+            }
+          >
+            <Input
+              value={fields.telegram.value ?? ""}
+              onChange={(e) =>
+                fieldValueSetter("telegram", e.currentTarget.value)
               }
             />
           </FormField>
