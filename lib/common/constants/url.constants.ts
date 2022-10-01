@@ -30,6 +30,8 @@ export const API_URL_CONSTANTS = {
         `/integrations/dyte/participant/${groupId}/connect/`,
       getActiveLiveStreamForMeeting: (groupId: string | number): string =>
         `/integrations/dyte/livestream/${groupId}/meeting_active_livestream/`,
+      updateLivestream: (id: string | number): string =>
+        `/integrations/dyte/livestream/${id}/`,
     },
   },
   conversations: {

@@ -44,6 +44,14 @@ const ButtonContainer = styled(Button)<ButtonProps>`
           color: "accent",
           bg: "transparent",
         },
+        ":disabled": {
+          color: "textSecondary",
+          bg: "transparent",
+          ":hover": {
+            color: "textSecondary",
+            bg: "transparent",
+          },
+        },
       },
       flat: {
         w: 28,

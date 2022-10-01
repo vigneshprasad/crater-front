@@ -5,7 +5,7 @@ import API from "@/common/api";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { ApiResult } from "@/common/types/api";
 
-import { DyteParticpant } from "../types/dyte";
+import { DyteLiveStream, DyteParticpant } from "../types/dyte";
 
 interface IDyteApiClientResult {
   getDyteParticpant: (
@@ -14,6 +14,10 @@ interface IDyteApiClientResult {
   postDyteWebinarConnect: (
     groupId: string
   ) => Promise<ApiResult<DyteParticpant, AxiosError>>;
+  updateDyteLivestream: (
+    id: number,
+    livestream: Partial<DyteLiveStream>
+  ) => Promise<ApiResult<DyteLiveStream, AxiosError>>;
 }
 
 export default function DyteApiClient(
@@ -47,8 +51,24 @@ export default function DyteApiClient(
     }
   }
 
+  async function updateDyteLivestream(
+    id: number,
+    livestream: Partial<DyteLiveStream>
+  ): Promise<ApiResult<DyteLiveStream, AxiosError>> {
+    try {
+      const { data } = await client.put<DyteLiveStream>(
+        API_URL_CONSTANTS.integrations.dyte.updateLivestream(id),
+        livestream
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getDyteParticpant,
     postDyteWebinarConnect,
+    updateDyteLivestream,
   };
 }

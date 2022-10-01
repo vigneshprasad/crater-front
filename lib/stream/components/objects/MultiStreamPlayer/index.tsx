@@ -83,10 +83,12 @@ export default function MultiStreamPlayer({
   useEffect(() => {
     if (containerRef.current) {
       const { width } = containerRef.current.getBoundingClientRect();
-      const largePrimaryWidth = 0.6 * width;
+
+      const largePrimaryWidth = 0.5 * width;
       const largePrimaryHeight = (largePrimaryWidth * 9) / 16;
-      const largeSecondaryWidth = 0.4 * width;
+      const largeSecondaryWidth = 0.3 * width;
       const largeSecondaryHeight = (largeSecondaryWidth * 9) / 16;
+
       const smallPrimaryWidth = 0.6 * width;
       const smallPrimaryHeight = (smallPrimaryWidth * 9) / 16;
       const smallSecondaryWidth = 0.3 * width;
@@ -147,20 +149,25 @@ export default function MultiStreamPlayer({
         >
           {streams.map((id) => (
             <StreamHLSPlayer
+              autoPlay
               streamId={id}
-              initial={{
-                display: "none",
-                opacity: 0,
+              containerProps={{
+                initial: {
+                  display: "none",
+                  opacity: 0,
+                },
+                animate: getVariant(id),
+                m: "auto auto",
+                variants: variants,
+                gridArea: `stream_${id}`,
+                layout: true,
               }}
-              animate={getVariant(id)}
-              m="auto auto"
               onClick={() => {
                 onClickStream && onClickStream(id);
               }}
               key={id}
-              variants={variants}
-              layout
-              gridArea={`stream_${id}`}
+              controls={id === active}
+              muted={id !== active}
             />
           ))}
         </Grid>
