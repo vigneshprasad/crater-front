@@ -67,6 +67,7 @@ declare module "next-auth" {
     instagram: string | null;
     twitter: string | null;
     metamask_id: string | null;
+    telegram?: string;
   }
 }
 

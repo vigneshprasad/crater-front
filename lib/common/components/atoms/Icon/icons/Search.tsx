@@ -12,7 +12,7 @@ export default function Search(
     >
       <path
         d="M11 19.5a8 8 0 100-16 8 8 0 000 16zM20.998 21.498l-4.35-4.35"
-        stroke="#C4C4C4"
+        stroke="currentColor"
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"

@@ -90,6 +90,7 @@ export { default as Store } from "./Store";
 export { default as StreamColor } from "./StreamColor";
 export { default as Subtract } from "./Subtract";
 export { default as Sun } from "./Sun";
+export { default as Telegram } from "./Telegram";
 export { default as TimeColor } from "./TimeColor";
 export { default as Tip } from "./Tip";
 export { default as TokenColor } from "./TokenColor";
