@@ -13,7 +13,7 @@ import { Box, BoxProps } from "../System";
 export type IVSVideoPlayerProps = BoxProps &
   React.VideoHTMLAttributes<HTMLVideoElement> & {
     containerProps?: AnimatedBoxProps;
-    on404Error: () => void;
+    on404Error?: () => void;
   };
 
 const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
