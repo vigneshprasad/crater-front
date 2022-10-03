@@ -21,7 +21,10 @@ const StreamHLSPlayer = forwardRef<HTMLVideoElement, IProps>(
     const { data: liveStream, isValidating } = useSWR<DyteLiveStream>(
       API_URL_CONSTANTS.integrations.dyte.getActiveLiveStreamForMeeting(
         streamId
-      )
+      ),
+      {
+        revalidateOnFocus: false,
+      }
     );
 
     const pauseVideo = useCallback(() => {
