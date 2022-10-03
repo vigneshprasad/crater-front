@@ -75,19 +75,20 @@ const HLSVideoPlayer = forwardRef<HTMLVideoElement, HLSVideoPlayerProps>(
 
       if (videoElement && src && !hls.current) {
         if (Hls.isSupported()) {
-          hls.current = new Hls({
-            ...Hls.DefaultConfig,
-            liveDurationInfinity: true,
-          });
-          hls.current.on(Hls.Events.ERROR, handleHlsError);
-          hls.current.on(Hls.Events.MANIFEST_PARSED, () => {
-            if (autoPlay) {
-              playVideo();
-            }
-          });
-
-          hls.current.loadSource(src);
+          hls.current = new Hls();
           hls.current.attachMedia(videoElement);
+
+          hls.current.on(Hls.Events.ERROR, handleHlsError);
+
+          hls.current.on(Hls.Events.MEDIA_ATTACHED, () => {
+            console.log("Media attached");
+            hls.current?.loadSource(src);
+            hls.current?.on(Hls.Events.MANIFEST_PARSED, () => {
+              if (autoPlay) {
+                playVideo();
+              }
+            });
+          });
         } else if (videoElement.canPlayType("application/vnd.apple.mpegurl")) {
           videoElement.src = src;
 
