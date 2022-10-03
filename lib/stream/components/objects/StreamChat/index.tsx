@@ -149,18 +149,18 @@ export default function StreamChat({
   return (
     <FirebaseChatContext.Consumer>
       {({ messages: allMessages, postMessage, postSticker }) => {
-        const messages = allMessages.filter(
+        const messages = allMessages?.filter(
           (val) => val.type === ChatMessageType.TEXT || ChatMessageType.STICKER
         );
 
-        const actions = allMessages.filter((val) => {
+        const actions = allMessages?.filter((val) => {
           const creation = DateTime.fromJSDate(val.created_at.toDate());
           const diff = DateTime.now().diff(creation, "seconds");
 
           return val.type === ChatMessageType.ACTION && diff.seconds < 30;
         });
 
-        const prompts = allMessages.filter((val) => {
+        const prompts = allMessages?.filter((val) => {
           const creation = DateTime.fromJSDate(val.created_at.toDate());
           const diff = DateTime.now().diff(creation, "seconds");
 
