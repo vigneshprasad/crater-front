@@ -229,7 +229,7 @@ export default function StreamChat({
                   }
                 }}
               >
-                {actions.map((action) => (
+                {actions?.map((action) => (
                   <ChatActionItem
                     stream={stream}
                     mutateStream={mutateWebinar}
@@ -275,7 +275,7 @@ export default function StreamChat({
                       setShowSheet(false);
                     }}
                   />
-                  {prompts.map((prompt) => (
+                  {prompts?.map((prompt) => (
                     <ChatMessagePrompt
                       key={prompt.group}
                       message={prompt.message}
