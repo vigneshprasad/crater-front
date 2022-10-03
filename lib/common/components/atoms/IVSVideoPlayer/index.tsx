@@ -4,7 +4,7 @@ import {
   PlayerEventType,
   MediaPlayer,
 } from "amazon-ivs-player";
-import { forwardRef, useEffect, useRef } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { mergeRefs } from "react-merge-refs";
 
 import { AnimatedBox, AnimatedBoxProps } from "../Animated";
@@ -20,9 +20,10 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
   ({ src, containerProps, on404Error, ...rest }, ref) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const playerRef = useRef<MediaPlayer>();
+    const [playing, setPlaying] = useState(false);
 
     useEffect(() => {
-      if (isPlayerSupported) {
+      if (isPlayerSupported && !playing) {
         if (playerRef.current) {
           playerRef.current.delete();
           playerRef.current = undefined;
@@ -49,14 +50,19 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
               }
             });
 
+            videoRef.current.addEventListener("pause", () => {
+              setPlaying(false);
+            });
+
             player.setAutoplay(true);
             player.load(src);
+            setPlaying(true);
           }
         } catch (err) {
           console.log(err);
         }
       }
-    }, [src, on404Error]);
+    }, [src, on404Error, playing]);
 
     return (
       <AnimatedBox {...containerProps} position="relative">
