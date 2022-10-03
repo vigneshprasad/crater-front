@@ -18,7 +18,11 @@ const StreamHLSPlayer = forwardRef<HTMLVideoElement, IProps>(
   ({ streamId, ...rest }, ref) => {
     const videoRef = useRef<HTMLVideoElement>(null);
 
-    const { data: liveStream, isValidating } = useSWR<DyteLiveStream>(
+    const {
+      data: liveStream,
+      isValidating,
+      mutate,
+    } = useSWR<DyteLiveStream>(
       API_URL_CONSTANTS.integrations.dyte.getActiveLiveStreamForMeeting(
         streamId
       ),
@@ -49,6 +53,12 @@ const StreamHLSPlayer = forwardRef<HTMLVideoElement, IProps>(
         });
       }
     };
+
+    useEffect(() => {
+      if (!liveStream) {
+        mutate();
+      }
+    }, [streamId, mutate, liveStream]);
 
     useEffect(() => {
       if (isValidating && !liveStream) pauseVideo();
