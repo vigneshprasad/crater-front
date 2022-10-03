@@ -23,7 +23,9 @@ const StreamHLSPlayer = forwardRef<HTMLVideoElement, IProps>(
         streamId
       ),
       {
+        revalidateOnMount: false,
         revalidateOnFocus: false,
+        revalidateOnReconnect: false,
       }
     );
 
