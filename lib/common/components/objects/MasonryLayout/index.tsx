@@ -1,5 +1,8 @@
 import Masonry from "masonry-layout";
 import { useEffect, useRef } from "react";
+import { mergeRefs } from "react-merge-refs";
+
+import { useMeasure } from "@/common/hooks/ui/useMeasure";
 
 import { Box } from "../../atoms";
 
@@ -13,17 +16,24 @@ export default function MasonryLayout({
   children,
 }: IProps): JSX.Element {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const { ref, bounds } = useMeasure();
 
   useEffect(() => {
     if (containerRef.current) {
       new Masonry(containerRef.current, {
         itemSelector,
-        gutter: 24,
+        gutter: 20,
+        resize: true,
       });
     }
-  }, [containerRef, itemSelector]);
+  }, [containerRef, itemSelector, bounds]);
   return (
-    <Box w="100%" h="100%" ref={containerRef} className="masonry-root">
+    <Box
+      w="100%"
+      h="100%"
+      ref={mergeRefs([containerRef, ref])}
+      className="masonry-root"
+    >
       {children}
     </Box>
   );

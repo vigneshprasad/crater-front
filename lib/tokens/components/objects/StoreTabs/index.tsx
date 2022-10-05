@@ -15,7 +15,7 @@ export default function StoreTabs({ activeTab }: IProps): JSX.Element {
   const router = useRouter();
 
   return (
-    <Flex mx="auto" w={736} alignItems="center">
+    <Flex mx="auto" w={[344, 736]} alignItems="center">
       <Flex
         flex={1}
         h={4}
@@ -58,6 +58,7 @@ export default function StoreTabs({ activeTab }: IProps): JSX.Element {
                     bg={colors.primaryBanner}
                     position="absolute"
                     top={-20}
+                    left={28}
                     borderRadius={2}
                   >
                     <Text textStyle="small" fontWeight={700}>
