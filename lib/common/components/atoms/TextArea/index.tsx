@@ -1,10 +1,15 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
-import { StyledInput, InputContainer, InputProps } from "../Input";
+import { BoxProps, GridProps } from "../System";
+import { InputContainer, InputProps, StyledInput } from "../v2";
+
+// import { StyledInput, InputContainer, InputProps } from "../Input";
 
 export type TextAreaProps = InputProps &
   React.HTMLAttributes<HTMLTextAreaElement> & {
-    inputProps?: InputProps;
+    inputProps?: (GridProps | BoxProps) & {
+      focusBorderColor?: string;
+    };
     rows?: number;
   };
 
@@ -23,8 +28,15 @@ export function TextArea({
   rows,
   ...rest
 }: TextAreaProps): JSX.Element {
+  const { space, radii } = useTheme();
+
   return (
-    <InputContainer {...inputProps}>
+    <InputContainer
+      px={space.xxxxs}
+      py={10}
+      borderRadius={radii.xxxxs}
+      {...inputProps}
+    >
       <StyledTextArea as="textarea" rows={rows ?? 5} {...rest} />
     </InputContainer>
   );
