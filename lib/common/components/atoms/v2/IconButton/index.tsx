@@ -8,6 +8,7 @@ import { Button, ButtonProps } from "../Button";
 type Variants =
   | "flat"
   | "flat-icon"
+  | "flat-video"
   | "flat-accent"
   | "round-large"
   | "round"
@@ -32,6 +33,29 @@ const ButtonContainer = styled(Button)<ButtonProps>`
         ":hover": {
           color: "accentLight",
           bg: "transparent",
+        },
+      },
+      "flat-video": {
+        px: 0,
+        py: 0,
+        height: 40,
+        width: 40,
+        alignItems: "center",
+        justifyContent: "center",
+        bg: "transparent",
+        color: "#ffffff",
+        ":hover": {
+          color: "accent",
+          bg: "transparent",
+          transform: "scale(1.2, 1.2)",
+        },
+        ":disabled": {
+          color: "textSecondary",
+          bg: "transparent",
+          ":hover": {
+            color: "textSecondary",
+            bg: "transparent",
+          },
         },
       },
       flat: {

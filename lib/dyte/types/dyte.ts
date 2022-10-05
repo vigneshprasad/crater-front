@@ -8,3 +8,20 @@ export interface DyteParticpant {
     room_name: string;
   };
 }
+
+export enum DyteLiveStreamStatus {
+  OFFLINE = "OFFLINE",
+  LIVE = "LIVE",
+}
+
+export interface DyteLiveStream {
+  id: number;
+  dyte_meeting: number;
+  status: DyteLiveStreamStatus;
+  ingest_seconds: number;
+  viewer_seconds: number;
+  ingest_server: string;
+  livestream_id: string;
+  playback_url: string;
+  stream_key: string;
+}
