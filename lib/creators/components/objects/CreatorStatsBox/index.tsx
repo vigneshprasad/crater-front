@@ -1,6 +1,5 @@
+import { useState } from "react";
 import { useTheme } from "styled-components";
-
-import { useRouter } from "next/router";
 
 import {
   Avatar,
@@ -15,6 +14,7 @@ import {
 import { Button } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { Creator, CreatorStats } from "@/creators/types/creator";
+import StreamCreationModal from "@/stream/components/objects/StreamCreationModal";
 
 type IProps = {
   creator: Creator | null;
@@ -30,10 +30,14 @@ export default function CreatorStatsBox({
   showButton = true,
 }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
-  const router = useRouter();
+  const [createStreamModal, setCreateStreamModal] = useState(false);
 
   return (
     <Box>
+      <StreamCreationModal
+        visible={createStreamModal}
+        onClose={() => setCreateStreamModal(false)}
+      />
       {!creatorStats ? (
         <Shimmer w="100%" h={500} borderRadius={radii.xxxxs} />
       ) : (
@@ -111,7 +115,7 @@ export default function CreatorStatsBox({
               alignItems="center"
               justifyContent="center"
               prefixElement={<Icon icon="CameraLive" size={18} />}
-              onClick={() => router.push(PageRoutes.hub("streams", "create"))}
+              onClick={() => setCreateStreamModal(true)}
             />
           )}
         </Grid>

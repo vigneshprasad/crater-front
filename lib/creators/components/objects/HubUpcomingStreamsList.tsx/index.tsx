@@ -16,6 +16,7 @@ import { Button } from "@/common/components/atoms/v2";
 import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Creator } from "@/creators/types/creator";
+import StreamCreationModal from "@/stream/components/objects/StreamCreationModal";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 type IProps = {
@@ -30,9 +31,14 @@ export default function HubUpcomingStreamsList({
   const [initialClick, setInitialClick] = useState(true);
   const { upcoming, loading, nextPage, setUpcomingStreamsPage } =
     useUpcomingStreams();
+  const [createStreamModal, setCreateStreamModal] = useState(false);
 
   return (
     <>
+      <StreamCreationModal
+        visible={createStreamModal}
+        onClose={() => setCreateStreamModal(false)}
+      />
       {(() => {
         if (!upcoming || loading) {
           return Array(4)
@@ -90,9 +96,7 @@ export default function HubUpcomingStreamsList({
                     alignItems="center"
                     justifyContent="center"
                     prefixElement={<Icon icon="CameraLive" size={18} />}
-                    onClick={() =>
-                      router.push(PageRoutes.hub("streams", "create"))
-                    }
+                    onClick={() => setCreateStreamModal(true)}
                   />
                 ) : (
                   <a
