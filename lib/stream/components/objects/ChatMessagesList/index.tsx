@@ -54,30 +54,25 @@ export default function ChatMessagesList({
         alignItems="flex-start"
         overflowY="auto"
       >
-        {messages &&
-          [...messages].map((message) => {
-            const messageType = parseInt(message.type.toString());
-            if (messageType === ChatMessageType.TEXT) {
-              return (
-                <ChatMessageItem
-                  message={message}
-                  key={message.created_at.seconds}
-                  textColor={
-                    colorMode === "light" ? colors.black[0] : undefined
-                  }
-                />
-              );
-            } else if (messageType === ChatMessageType.STICKER) {
-              return (
-                <ChatStickerItem
-                  message={message}
-                  textColor={
-                    colorMode === "light" ? colors.black[0] : undefined
-                  }
-                />
-              );
-            }
-          })}
+        {[...messages].map((message) => {
+          const messageType = parseInt(message.type.toString());
+          if (messageType === ChatMessageType.TEXT) {
+            return (
+              <ChatMessageItem
+                message={message}
+                key={message.created_at.toString()}
+                textColor={colorMode === "light" ? colors.black[0] : undefined}
+              />
+            );
+          } else if (messageType === ChatMessageType.STICKER) {
+            return (
+              <ChatStickerItem
+                message={message}
+                textColor={colorMode === "light" ? colors.black[0] : undefined}
+              />
+            );
+          }
+        })}
       </Flex>
     </Box>
   );

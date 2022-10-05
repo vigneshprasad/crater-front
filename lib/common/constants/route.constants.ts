@@ -18,10 +18,6 @@ export const PageRoutes = {
     id: string | number,
     tab?: "chat" | "store" | "leaderboard"
   ): string => `/livestream/${id}?tab=${tab ?? "chat"}`,
-  multistream: (
-    id: string | number,
-    tab?: "chat" | "store" | "leaderboard"
-  ): string => `/livestream/${id}/multi?tab=${tab ?? "chat"}`,
   creatorProfile: (slug: string | number, tab?: string | number): string =>
     `/creator/${slug}/${tab ?? "streams"}`,
   streamVideo: (id: string | number, tab?: string | number): string =>
