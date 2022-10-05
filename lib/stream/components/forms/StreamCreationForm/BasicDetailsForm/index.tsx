@@ -1,9 +1,19 @@
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
+import useSWR from "swr";
 
-import { Box, Flex, Icon, Text, TextArea } from "@/common/components/atoms";
+import {
+  Box,
+  Flex,
+  Icon,
+  Shimmer,
+  Text,
+  TextArea,
+} from "@/common/components/atoms";
 import { Input } from "@/common/components/atoms/v2";
 import DateTimeInput from "@/common/components/objects/DateTimeInput";
 import FormField from "@/common/components/objects/FormField";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { SuggestedTopic } from "@/stream/types/stream";
 
 type Field = {
   value: string;
@@ -12,17 +22,40 @@ type Field = {
 };
 
 type IProps = {
+  category?: number;
   topic: Field;
   description: Field;
   dateAndTime: Field;
 };
 
+const CustomBox = styled(Box)`
+  ::-webkit-scrollbar {
+    display: block;
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme: { colors } }) => colors.secondaryLight};
+  }
+`;
+
 export default function BasicDetailsForm({
+  category,
   topic,
   description,
   dateAndTime,
 }: IProps): JSX.Element {
   const { space, colors, radii, borders } = useTheme();
+
+  const { data: suggestedTopics } = useSWR<SuggestedTopic[]>(
+    category
+      ? `${API_URL_CONSTANTS.groups.getSuggestedTopics}?category=${category}`
+      : null
+  );
 
   return (
     <Box>
@@ -47,6 +80,72 @@ export default function BasicDetailsForm({
           }}
         />
       </FormField>
+      {category && (
+        <Box
+          py={space.xxs}
+          borderTop={`1px solid ${colors.primaryLight}`}
+          borderBottom={`1px solid ${colors.primaryLight}`}
+        >
+          <Flex>
+            <Box pb={space.xxs}>
+              <Text
+                textStyle="caption"
+                fontWeight={600}
+                lineHeight="1.4rem"
+                textTransform="uppercase"
+              >
+                Suggested topics for you
+              </Text>
+              <Text
+                pt={space.xxxxxs}
+                textStyle="caption"
+                lineHeight="1.4rem"
+                color={colors.textQuartenary}
+              >
+                You can use suggestions to find topics that might work well with
+                viewers on Crater.
+              </Text>
+            </Box>
+          </Flex>
+          {!suggestedTopics ? (
+            <Shimmer w="100%" h={164} borderRadius={radii.xxxxs} />
+          ) : (
+            <CustomBox
+              h={164}
+              pt={space.xxxs}
+              px={space.xxxs}
+              bg={colors.primaryLight}
+              borderRadius={radii.xxxxs}
+              overflowY="auto"
+            >
+              {(() => {
+                if (suggestedTopics.length === 0) {
+                  return (
+                    <Text
+                      textStyle="body"
+                      lineHeight="1.6rem"
+                      color={colors.textTertiary}
+                    >
+                      No suggested topics found.
+                    </Text>
+                  );
+                }
+
+                return suggestedTopics.map((suggestedTopic) => (
+                  <Text
+                    pb={24}
+                    textStyle="body"
+                    lineHeight="1.6rem"
+                    key={suggestedTopic.id}
+                  >
+                    {suggestedTopic.name}
+                  </Text>
+                ));
+              })()}
+            </CustomBox>
+          )}
+        </Box>
+      )}
       <FormField
         gridAutoFlow="row"
         gridTemplateColumns="1fr"

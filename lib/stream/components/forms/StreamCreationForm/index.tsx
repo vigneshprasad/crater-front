@@ -178,6 +178,7 @@ export default function StreamCreationForm({
     if (activeStep === StreamCreationSteps.BasicDetails) {
       return (
         <BasicDetailsForm
+          category={fields.category.value?.pk}
           topic={{
             value: fields.topic.value,
             error: fields.topic.errors[0],
