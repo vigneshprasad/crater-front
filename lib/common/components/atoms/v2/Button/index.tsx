@@ -33,7 +33,8 @@ type Variants =
   | "failure"
   | "flat-with-disabled-dark"
   | "payment-upi"
-  | "payment-learn";
+  | "payment-learn"
+  | "transparent-flat";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -43,6 +44,7 @@ export type ButtonProps = GridProps &
     suffixElement?: React.ReactNode;
     prefixElement?: React.ReactNode;
     textProps?: TextProps;
+    gridProps?: GridProps;
   };
 
 const StyledButton = styled(Grid)<ButtonProps>`
@@ -494,6 +496,20 @@ const StyledButton = styled(Grid)<ButtonProps>`
           mask-composite: exclude;
         }
       `,
+      "transparent-flat": {
+        px: "0.8em",
+        py: "0.4em",
+        bg: "transparent",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        color: "accentLight",
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: "accentLight",
+        ":hover": {
+          bg: "primaryLight",
+        },
+      },
     },
   })}
 `;
@@ -504,6 +520,7 @@ export function Button({
   suffixElement,
   prefixElement,
   textProps,
+  gridProps,
   ...rest
 }: ButtonProps): JSX.Element {
   const { space } = useTheme();
@@ -524,6 +541,7 @@ export function Button({
           "max-content 1fr max-content",
           "max-content max-content max-content",
         ]}
+        {...gridProps}
       >
         {prefixElement && <Grid gridArea="prefix">{prefixElement}</Grid>}
         <Grid gridArea="content">
