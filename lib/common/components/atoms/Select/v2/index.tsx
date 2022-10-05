@@ -1,11 +1,12 @@
 import { useAnimation } from "framer-motion";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import useSWR from "swr";
 
 import { AnimatedBox } from "../../Animated";
 import { Icon } from "../../Icon";
-import { Box, Grid, Text } from "../../System";
+import Spinner from "../../Spinner";
+import { Box, BoxProps, Grid, Text, TextProps } from "../../System";
 
 export type SelectProps<T> = {
   async?: boolean;
@@ -15,31 +16,53 @@ export type SelectProps<T> = {
   defaultValue?: unknown;
   label: string;
   disabled?: boolean;
+  error?: string;
+  containerProps?: BoxProps & {
+    hoverBorder?: string;
+  };
+  boxProps?: BoxProps;
+  labelProps?: TextProps;
+  containerItemProps?: BoxProps;
   itemLabelGetter: (val: T) => string;
   onChange?: (val: unknown) => void;
   dataTransform?: (val: T) => unknown;
 };
 
-const Container = styled(Box)`
-  position: relative;
-  background: ${({ theme: { colors } }) => colors.primaryBackground};
-  padding: 0.8em 1em;
-  border-radius: ${({ theme: { radii } }) => radii.xxxxs}px;
-  border: 1px solid ${({ theme: { colors } }) => colors.primaryLight};
-  cursor: pointer;
-  outline: none;
-
+const Container = styled(Box)<
+  BoxProps & {
+    hoverBorder?: string;
+  }
+>`
   &:hover {
-    border: 1px solid ${({ theme: { colors } }) => colors.textQuartenary};
+    border: 1px solid
+      ${({ theme: { colors }, hoverBorder }) =>
+        hoverBorder ? hoverBorder : colors.textQuartenary};
   }
 
   &:focus {
     background: ${({ theme: { colors } }) => colors.primaryBackground};
+    border: 1px solid
+      ${({ theme: { colors }, hoverBorder }) =>
+        hoverBorder ? hoverBorder : colors.textQuartenary};
   }
 
   &:disabled {
     border: 1px solid ${({ theme: { colors } }) => colors.secondaryLight};
     cursor: "not-allowed";
+  }
+`;
+
+const StyledAnimatedBox = styled(AnimatedBox)`
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme: { colors } }) => colors.secondaryLight};
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${({ theme: { colors } }) => colors.primaryDark};
   }
 `;
 
@@ -60,11 +83,16 @@ export default function Select<T>({
   onChange,
   dataTransform,
   disabled = false,
+  error,
+  containerProps,
+  boxProps,
+  labelProps,
+  containerItemProps,
 }: SelectProps<T>): JSX.Element {
   const [items, setItems] = useState<T[]>(intialItems ?? []);
   const [value, setValue] = useState<T>();
   const [opened, setOpened] = useState(false);
-  const { data: itemData, error } = useSWR<T[]>(dataUrl || null);
+  const { data: itemData, error: itemDataError } = useSWR<T[]>(dataUrl || null);
 
   const { colors, space, radii } = useTheme();
 
@@ -99,6 +127,14 @@ export default function Select<T>({
     handleItemChange(item);
   };
 
+  const border = useMemo(() => {
+    if (disabled) {
+      return `1px solid ${colors.secondaryLight}`;
+    }
+
+    return `1px solid ${error ? colors.error : colors.primaryLight}`;
+  }, [disabled, error, colors]);
+
   useEffect(() => {
     const variant = opened ? "opened" : "closed";
     animate.start(variant);
@@ -120,92 +156,108 @@ export default function Select<T>({
   }, [controlledValue, items, dataTransform]);
 
   if (async) {
-    if (!itemData || error) {
-      return <Box>Loading...</Box>;
+    if (!itemData || itemDataError) {
+      return <Spinner size={24} strokeColor={colors.textPrimary} />;
     }
   }
 
   return (
-    <Container
-      tabIndex={0}
-      onBlur={() => setOpened(false)}
-      border={disabled ? `1px solid ${colors.secondaryLight}` : "none"}
-      style={{ pointerEvents: disabled ? "none" : "auto" }}
-    >
-      <Grid
-        zIndex={50}
-        gridTemplateColumns="1fr min-content"
-        alignItems="center"
-        onClick={handleContainerClick}
-      >
-        {value ? (
-          <Text
-            textStyle="body"
-            color={disabled ? colors.secondaryLight : colors.textPrimary}
-          >
-            {itemLabelGetter(value)}
-          </Text>
-        ) : (
-          <Text
-            textStyle="body"
-            color={disabled ? colors.secondaryLight : colors.textPrimary}
-          >
-            {label}
-          </Text>
-        )}
-        <Icon
-          icon="ArrowDown"
-          color={disabled ? colors.secondaryLight : colors.textQuartenary}
-          fill
-        />
-      </Grid>
-      <AnimatedBox
-        py={space.xxxxs}
-        w="100%"
-        animate={animate}
-        initial="closed"
-        variants={{
-          closed: {
-            display: "none",
-            opacity: 0,
-            top: 0,
-          },
-          opened: {
-            display: "block",
-            opacity: 1,
-            top: "calc(100% + 4px)",
-          },
-        }}
-        zIndex={10}
-        position="absolute"
+    <Box>
+      <Container
+        position="relative"
+        p="0.8em 1em"
+        bg={colors.primaryBackground}
         borderRadius={radii.xxxxs}
-        bg={colors.primaryDark}
-        right={0}
-        boxShadow="0px 0px 16px #000000"
+        cursor="pointer"
+        tabIndex={0}
+        onBlur={() => setOpened(false)}
+        border={border}
+        style={{ pointerEvents: disabled ? "none" : "auto" }}
+        {...containerProps}
       >
-        {items.map((item) => {
-          const selectedValue = value ? itemLabelGetter(value) : defaultValue;
-          const selected = selectedValue === itemLabelGetter(item);
-
-          return (
-            <ContainerItem
-              my={space.xxxxxs}
-              cursor="pointer"
-              key={itemLabelGetter(item)}
-              px={space.xxxs}
-              py={space.xxxxs}
-              bg={selected ? colors.secondaryLight : undefined}
-              borderRadius={2}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleItemClick(item);
-              }}
+        <Grid
+          zIndex={50}
+          gridTemplateColumns="1fr min-content"
+          alignItems="center"
+          onClick={handleContainerClick}
+        >
+          {value ? (
+            <Text
+              textStyle="body"
+              color={disabled ? colors.secondaryLight : colors.textPrimary}
             >
-              <Text textStyle="body">{itemLabelGetter(item)}</Text>
-            </ContainerItem>
-          );
-        })}
-      </AnimatedBox>
-    </Container>
+              {itemLabelGetter(value)}
+            </Text>
+          ) : (
+            <Text
+              textStyle="body"
+              color={disabled ? colors.secondaryLight : colors.textPrimary}
+              {...labelProps}
+            >
+              {label}
+            </Text>
+          )}
+          <Icon
+            icon="ArrowDown"
+            color={disabled ? colors.secondaryLight : colors.textQuartenary}
+            fill
+          />
+        </Grid>
+        <StyledAnimatedBox
+          py={space.xxxxs}
+          w="100%"
+          animate={animate}
+          initial="closed"
+          variants={{
+            closed: {
+              display: "none",
+              opacity: 0,
+              top: 0,
+            },
+            opened: {
+              display: "block",
+              opacity: 1,
+              top: "calc(100% + 2px)",
+            },
+          }}
+          zIndex={10}
+          position="absolute"
+          borderRadius={radii.xxxxs}
+          bg={colors.primaryDark}
+          right={0}
+          boxShadow="0px 0px 16px #000000"
+          {...boxProps}
+        >
+          {items.map((item) => {
+            const selectedValue = value ? itemLabelGetter(value) : defaultValue;
+            const selected = selectedValue === itemLabelGetter(item);
+
+            return (
+              <ContainerItem
+                my={space.xxxxxs}
+                cursor="pointer"
+                key={itemLabelGetter(item)}
+                px={space.xxxs}
+                py={space.xxxxs}
+                bg={selected ? colors.secondaryLight : undefined}
+                borderRadius={2}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleItemClick(item);
+                }}
+                {...containerItemProps}
+              >
+                <Text textStyle="body">{itemLabelGetter(item)}</Text>
+              </ContainerItem>
+            );
+          })}
+        </StyledAnimatedBox>
+      </Container>
+      {error && (
+        <Text mt={space.xxxxxs} color={colors.error} textStyle="error">
+          {error}
+        </Text>
+      )}
+    </Box>
   );
 }
