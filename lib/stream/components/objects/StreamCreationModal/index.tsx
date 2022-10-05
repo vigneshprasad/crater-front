@@ -1,9 +1,13 @@
 import { useState } from "react";
 import styled, { useTheme } from "styled-components";
+import useSWR from "swr";
 
+import useAuth from "@/auth/context/AuthContext";
 import { Box, Flex, Grid, Icon, Text } from "@/common/components/atoms";
 import { Button, Modal } from "@/common/components/atoms/v2";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { Webinar } from "@/community/types/community";
+import { Creator } from "@/creators/types/creator";
 import { StreamCreationSteps } from "@/stream/types/stream";
 
 import StreamCreationForm from "../../forms/StreamCreationForm";
@@ -45,12 +49,17 @@ export default function StreamCreationModal({
   onClose,
 }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
+  const { user } = useAuth();
   const [showPostStreamCreationModal, setShowPostStreamCreationModal] =
     useState(false);
   const [latestStream, setLatestStream] = useState<number | undefined>(
     undefined
   );
   const [activeStep, setActiveStep] = useState(0);
+
+  const { data: creator } = useSWR<Creator>(
+    user ? API_URL_CONSTANTS.creator.getMyCreator : null
+  );
 
   const postStreamCreation = (stream: Webinar): void => {
     onClose();
@@ -187,13 +196,13 @@ export default function StreamCreationModal({
                 <Flex py={space.xxxs} alignItems="center" gridGap={6}>
                   <Icon icon="Profile" size={12} fill={true} />
                   <Text textStyle="menu" lineHeight="1.6rem">
-                    Sam Smith
+                    {creator?.point_of_contact_detail.name}
                   </Text>
                 </Flex>
                 <Flex alignItems="center" gridGap={6}>
                   <Icon icon="Phone" size={12} />
                   <Text textStyle="menu" lineHeight="1.6rem">
-                    +91 990 993 0012
+                    {creator?.point_of_contact_detail.phone_number}
                   </Text>
                 </Flex>
               </Box>
