@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function InfoFill(
   props: React.SVGProps<SVGSVGElement>
 ): JSX.Element {
