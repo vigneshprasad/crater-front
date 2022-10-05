@@ -13,9 +13,7 @@ export default function Shimmer({
   ...props
 }: IProps): JSX.Element {
   const { colors: themeColors } = useTheme();
-  const list = colors
-    ? colors
-    : [themeColors.primaryBackground, themeColors.primaryDark];
+  const list = colors ? colors : [themeColors.black[2], themeColors.black[5]];
   return (
     <AnimatedBox
       animate={{ background: list }}

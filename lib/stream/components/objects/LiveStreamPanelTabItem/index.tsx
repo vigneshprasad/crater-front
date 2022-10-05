@@ -22,7 +22,7 @@ export default function LiveStreamPanelTabItem({
       justifyContent="center"
     >
       <Icon color="inherit" size={16} icon={icon} />
-      <Text as="div" color="inherit" textStyle="tabLabel">
+      <Text color="inherit" textStyle="tabLabel">
         {label}
       </Text>
     </Grid>
