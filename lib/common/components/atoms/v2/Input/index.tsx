@@ -49,7 +49,9 @@ export type InputProps = BackgroundProps &
     prefixElement?: JSX.Element;
     suffixElement?: JSX.Element;
     error?: string;
-    containerProps?: GridProps | BoxProps;
+    containerProps?: (GridProps | BoxProps) & {
+      focusBorderColor?: string;
+    };
   };
 
 export const StyledInput = styled.input<InputProps>`
@@ -91,9 +93,15 @@ export const StyledInput = styled.input<InputProps>`
   ${grid}
 `;
 
-const InputContainer = styled(Grid)`
+export const InputContainer = styled(Grid)<
+  (GridProps | BoxProps) & {
+    focusBorderColor?: string;
+  }
+>`
   &:focus-within {
-    border: 1px solid ${({ theme }) => theme.colors.textQuartenary};
+    border: 1px solid
+      ${({ theme, focusBorderColor }) =>
+        focusBorderColor ?? theme.colors.textQuartenary};
   }
 `;
 
