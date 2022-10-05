@@ -78,6 +78,7 @@ export default function StreamCreationForm({
   const { space, colors } = useTheme();
   const { profile } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const nextPage = useCallback(
     (event: SyntheticEvent): void => {
@@ -262,6 +263,7 @@ export default function StreamCreationForm({
             error.error_code === "groupStartDateTimeNotInFuture" ||
             error.error_code === "groupStartLessThan15Minutes"
           ) {
+            setFormError("* Error in stream time & date.");
             fieldErrorSetter("dateAndTime", error.error_message);
           }
         }
@@ -284,11 +286,12 @@ export default function StreamCreationForm({
 
     const data = getValidatedData();
     if (data !== false) {
+      setFormError(null);
       handleOnSubmit(data);
+    } else {
+      setFormError("* Required fields cannot be empty.");
     }
   };
-
-  console.log();
 
   return (
     <Form
@@ -307,20 +310,39 @@ export default function StreamCreationForm({
         pl={24}
         pr={space.xxs}
         justifyContent="space-between"
+        alignItems="center"
         borderTop={`1px solid ${colors.primaryLight}`}
       >
-        <Flex
-          p={space.xxxs}
-          bg={colors.primaryLight}
-          gridGap={space.xxxxxs}
-          borderRadius={2}
-          alignItems="center"
-        >
-          <Icon icon="Info" size={16} color={colors.textPrimary} fill={true} />
-          <Text textStyle="captionLarge" lineHeight="1.6rem">
-            It takes less than 2 minutes to set up your stream in 4 easy steps.
-          </Text>
-        </Flex>
+        {activeStep === StreamCreationSteps.GetStarted && (
+          <Flex
+            p={space.xxxs}
+            bg={colors.primaryLight}
+            gridGap={space.xxxxxs}
+            borderRadius={2}
+            alignItems="center"
+          >
+            <Icon
+              icon="Info"
+              size={16}
+              color={colors.textPrimary}
+              fill={true}
+            />
+            <Text textStyle="captionLarge" lineHeight="1.6rem">
+              It takes less than 2 minutes to set up your stream in 4 easy
+              steps.
+            </Text>
+          </Flex>
+        )}
+
+        {formError && activeStep === StreamCreationSteps.OtherSettings && (
+          <Box py={space.xxxxxs}>
+            <Text textStyle="error" color={colors.error}>
+              {formError}
+            </Text>
+          </Box>
+        )}
+
+        <Box />
 
         <Flex gridGap={space.xxs}>
           {activeStep !== 0 && (
