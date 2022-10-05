@@ -223,7 +223,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
               gridGap={space.xxxxs}
             >
               <Box h={8} w={8} borderRadius="50%" bg={colors.error} />
-              <Text fonSize="1.2rem">LIVE</Text>
+              <Text fontSize="1.2rem">LIVE</Text>
             </Flex>
             <Box />
             <IconButton
