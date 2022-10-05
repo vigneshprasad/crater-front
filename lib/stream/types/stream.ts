@@ -42,3 +42,10 @@ export enum SortByField {
   THIS_MONTH = "this_month",
   RECENTLY_ADDED = "recently_added",
 }
+
+export enum StreamCreationSteps {
+  GetStarted,
+  BasicDetails,
+  AddThumbnail,
+  OtherSettings,
+}
