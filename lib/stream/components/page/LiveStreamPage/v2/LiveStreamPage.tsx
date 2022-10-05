@@ -62,7 +62,11 @@ export function LiveStreamPage({
   };
 
   return (
-    <MultiLiveStreamPageLayout streamId={streamId} stream={stream}>
+    <MultiLiveStreamPageLayout
+      streamId={streamId}
+      stream={stream}
+      multiStreamMode={multiStreamMode}
+    >
       {{
         streamPlayer: (
           <>

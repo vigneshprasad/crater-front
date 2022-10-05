@@ -54,8 +54,8 @@ const StreamHLSPlayer = forwardRef<HTMLVideoElement, IProps>(
         ref={mergeRefs([videoRef, ref])}
         poster={STARTING_IMAGES[random].src}
         src={liveStream?.playback_url}
-        {...rest}
         on404Error={handle404Error}
+        {...rest}
       />
     );
   }

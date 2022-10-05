@@ -3,12 +3,23 @@ import {
   isPlayerSupported,
   PlayerEventType,
   MediaPlayer,
+  PlayerError,
 } from "amazon-ivs-player";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  ChangeEvent,
+} from "react";
 import { mergeRefs } from "react-merge-refs";
+import styled, { useTheme } from "styled-components";
 
 import { AnimatedBox, AnimatedBoxProps } from "../Animated";
-import { Box, BoxProps } from "../System";
+import RangeInput from "../RangeInput";
+import { Box, BoxProps, Grid, Flex, Text } from "../System";
+import { IconButton } from "../v2";
 
 export type IVSVideoPlayerProps = BoxProps &
   React.VideoHTMLAttributes<HTMLVideoElement> & {
@@ -16,65 +27,213 @@ export type IVSVideoPlayerProps = BoxProps &
     on404Error?: () => void;
   };
 
+const ControlsContainer = styled(Grid)`
+  transition: all 200ms ease-in-out;
+  transform: translate(0, 70px);
+  opacity: 0;
+`;
+
+const Container = styled(AnimatedBox)`
+  overflow: hidden;
+
+  &:hover ${ControlsContainer} {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+`;
+
 const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
-  ({ src, containerProps, on404Error, ...rest }, ref) => {
+  (
+    {
+      src,
+      containerProps,
+      on404Error,
+      autoPlay,
+      muted: mutedProp,
+      controls,
+      ...rest
+    },
+    ref
+  ) => {
+    const { space, colors } = useTheme();
+    const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const playerRef = useRef<MediaPlayer>();
     const [playing, setPlaying] = useState(false);
+    const [muted, setMuted] = useState(false);
+    const [volume, setVolume] = useState(100);
+    const [initialized, setInitialized] = useState(false);
 
-    useEffect(() => {
-      if (isPlayerSupported && !playing) {
-        if (playerRef.current) {
-          playerRef.current.delete();
-          playerRef.current = undefined;
+    const handlePlayerIntialized = useCallback((): void => {
+      console.log("INITIALIZED");
+      setInitialized(true);
+    }, []);
+
+    const handleIVSError = useCallback(
+      (payload: PlayerError): void => {
+        if (payload.code === 404) {
+          on404Error && on404Error();
         }
-        try {
+      },
+      [on404Error]
+    );
+
+    const intializePlayer = useCallback(
+      (element: HTMLVideoElement, src: string, autoPlay = false) => {
+        if (isPlayerSupported) {
+          if (playerRef.current) {
+            playerRef.current.delete();
+            playerRef.current = undefined;
+          }
+
           const player = create({
             wasmBinary:
               "https://unpkg.com/amazon-ivs-player@1.11.0/dist/assets/amazon-ivs-wasmworker.min.wasm",
             wasmWorker:
               "https://unpkg.com/amazon-ivs-player@1.11.0/dist/assets/amazon-ivs-wasmworker.min.js",
           });
+
           playerRef.current = player;
+          player.attachHTMLVideoElement(element);
+          player.addEventListener(
+            PlayerEventType.INITIALIZED,
+            handlePlayerIntialized
+          );
+          player.addEventListener(PlayerEventType.ERROR, handleIVSError);
 
-          if (src && videoRef.current) {
-            videoRef.current && player.attachHTMLVideoElement(videoRef.current);
-
-            player.addEventListener(PlayerEventType.INITIALIZED, () => {
-              console.log("INITIALIZED");
-            });
-
-            player.addEventListener(PlayerEventType.ERROR, (payload) => {
-              if (payload.code === 404) {
-                on404Error && on404Error();
-              }
-            });
-
-            videoRef.current.addEventListener("pause", () => {
-              setPlaying(false);
-            });
-
-            player.setAutoplay(true);
-            player.load(src);
-            setPlaying(true);
-          }
-        } catch (err) {
-          console.log(err);
+          player.setAutoplay(autoPlay);
+          player.load(src);
+          autoPlay && setPlaying(true);
+          setMuted(player.isMuted());
+          setVolume(player.getVolume());
         }
+      },
+      [playerRef, handleIVSError, handlePlayerIntialized]
+    );
+
+    const handleFullScreenClick = (): void => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else if (containerRef.current?.requestFullscreen) {
+        containerRef.current?.requestFullscreen();
       }
-    }, [src, on404Error, playing]);
+    };
+
+    const togglePlay = (): void => {
+      if (playing) {
+        playerRef.current?.pause();
+      } else {
+        playerRef.current?.play();
+      }
+      setPlaying(!playing);
+    };
+
+    useEffect(() => {
+      if (src && videoRef.current && !initialized) {
+        console.log("start init");
+        intializePlayer(videoRef.current, src, autoPlay);
+      }
+    }, [src, playerRef, videoRef, initialized, autoPlay, intializePlayer]);
+
+    useEffect(() => {
+      if (playerRef.current && mutedProp !== undefined) {
+        playerRef.current.setMuted(mutedProp);
+        setMuted(mutedProp);
+      }
+    }, [mutedProp, playerRef]);
 
     return (
-      <AnimatedBox {...containerProps} position="relative">
+      <Container ref={containerRef} {...containerProps} position="relative">
         <Box
           {...rest}
           h="100%"
           w="100%"
           ref={mergeRefs([videoRef, ref])}
           as="video"
+          controls={false}
           playsInline
         />
-      </AnimatedBox>
+        {controls && initialized && (
+          <ControlsContainer
+            position="absolute"
+            bottom={0}
+            left={0}
+            right={0}
+            gridTemplateColumns="max-content max-content max-content 1fr max-content"
+            py={space.xxxxs}
+            pointerEvents={initialized ? "auto" : "none"}
+            opacity={initialized ? 1 : 0.2}
+          >
+            <IconButton
+              buttonStyle="flat-video"
+              icon={playing ? "Pause" : "Play"}
+              onClick={togglePlay}
+            />
+            <AnimatedBox
+              initial="hide"
+              display="flex"
+              alignItems="center"
+              whileHover="show"
+            >
+              <IconButton
+                buttonStyle="flat-video"
+                icon={muted || volume === 0 ? "VolumeOff" : "VolumeUp"}
+                onClick={() => {
+                  if (muted) {
+                    playerRef.current?.setMuted(false);
+                    setMuted(false);
+                  } else {
+                    playerRef.current?.setMuted(true);
+                    setMuted(true);
+                  }
+                }}
+              />
+              <AnimatedBox
+                mr={space.xxxs}
+                variants={{
+                  hide: {
+                    opacity: 0,
+                    transitionEnd: {
+                      display: "none",
+                    },
+                  },
+                  show: {
+                    display: "block",
+                    opacity: 1,
+                  },
+                }}
+              >
+                <RangeInput
+                  initialValue={volume}
+                  value={volume}
+                  w={72}
+                  min={0}
+                  max={100}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    const vol = event.target.valueAsNumber;
+                    setVolume(vol);
+                    playerRef.current?.setVolume(vol);
+                  }}
+                />
+              </AnimatedBox>
+            </AnimatedBox>
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              gridGap={space.xxxxs}
+            >
+              <Box h={8} w={8} borderRadius="50%" bg={colors.error} />
+              <Text fonSize="1.2rem">LIVE</Text>
+            </Flex>
+            <Box />
+            <IconButton
+              buttonStyle="flat-video"
+              icon="Fullscreen"
+              onClick={handleFullScreenClick}
+            />
+          </ControlsContainer>
+        )}
+      </Container>
     );
   }
 );
