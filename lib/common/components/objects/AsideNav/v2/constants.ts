@@ -5,7 +5,6 @@ export type INavKeys = "streams" | "store" | "leaderboard" | "hub";
 export type HubNavHeadingKeys = "settings" | "streams" | "analytics";
 export type HubNavItemKeys =
   | "journey"
-  | "create"
   | "upcoming"
   | "past"
   | "auction"
@@ -89,12 +88,6 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
     key: "streams",
     heading: "Streams",
     items: [
-      {
-        key: "create",
-        icon: "CameraLive",
-        route: PageRoutes.hub("streams", "create"),
-        label: "Create Stream",
-      },
       {
         key: "upcoming",
         icon: "Video",

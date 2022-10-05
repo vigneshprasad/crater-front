@@ -71,6 +71,7 @@ export const API_URL_CONSTANTS = {
     postGroupQuestion: "/groups/conversations/stream/questions/",
     postGroupQuestionUpvote: "/groups/conversations/stream/questions/upvote/",
     getAllVideos: "/groups/public/conversations/webinars/videos/",
+    getSuggestedTopics: "groups/conversations/suggested_topics/",
   },
   community: {
     getCommunityList: "/crater/community/",

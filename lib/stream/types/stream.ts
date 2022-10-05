@@ -35,10 +35,23 @@ export interface UserCategory {
   unfollowed_at: string;
 }
 
+export interface SuggestedTopic {
+  id: number;
+  name: string;
+  category: number;
+}
+
 export enum SortByField {
   TODAY = "today",
   THIS_WEEK = "this_week",
   NEXT_WEEK = "next_week",
   THIS_MONTH = "this_month",
   RECENTLY_ADDED = "recently_added",
+}
+
+export enum StreamCreationSteps {
+  GetStarted,
+  BasicDetails,
+  AddThumbnail,
+  OtherSettings,
 }

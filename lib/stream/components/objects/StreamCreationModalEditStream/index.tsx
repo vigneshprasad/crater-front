@@ -36,7 +36,7 @@ export default function StreamCreationModalEditStream({
       </Text>
 
       <Box gridColumn="1 / span 2">
-        <Text pb={space.xs} w={320} lineHeight="180%" maxLines={2}>
+        <Text pb={space.xs} w={320} lineHeight="180%" maxLines={3}>
           You can edit the stream details by contacting us. Here are the details
           of your POC at Crater.
         </Text>

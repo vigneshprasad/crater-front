@@ -1,8 +1,6 @@
 import { useCallback, useState } from "react";
 import { useTheme } from "styled-components";
 
-import { useRouter } from "next/router";
-
 import {
   Box,
   Flex,
@@ -19,6 +17,7 @@ import DateTime from "@/common/utils/datetime/DateTime";
 import { PastStreamListItem } from "@/community/types/community";
 import { Creator } from "@/creators/types/creator";
 import ShareStreamModal from "@/stream/components/objects/ShareStreamModal";
+import StreamCreationModal from "@/stream/components/objects/StreamCreationModal";
 import usePastStreams from "@/stream/context/PastStreamContext";
 
 type IProps = {
@@ -27,11 +26,11 @@ type IProps = {
 
 export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
   const { space, colors, radii } = useTheme();
-  const router = useRouter();
   const [initialClick, setInitialClick] = useState(true);
   const [streamToShare, setStreamToShare] = useState<PastStreamListItem>();
   const [showShareModal, setShowShareModal] = useState(false);
   const { streams, loading, nextPage, setPastStreamsPage } = usePastStreams();
+  const [createStreamModal, setCreateStreamModal] = useState(false);
 
   const handleShareClick = useCallback(
     (stream: PastStreamListItem) => {
@@ -43,6 +42,10 @@ export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
 
   return (
     <>
+      <StreamCreationModal
+        visible={createStreamModal}
+        onClose={() => setCreateStreamModal(false)}
+      />
       <ShareStreamModal
         stream={streamToShare}
         visible={showShareModal}
@@ -106,9 +109,7 @@ export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
                     alignItems="center"
                     justifyContent="center"
                     prefixElement={<Icon icon="CameraLive" size={18} />}
-                    onClick={() =>
-                      router.push(PageRoutes.hub("streams", "create"))
-                    }
+                    onClick={() => setCreateStreamModal(true)}
                   />
                 ) : (
                   <a
