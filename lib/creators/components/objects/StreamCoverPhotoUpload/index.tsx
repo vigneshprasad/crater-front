@@ -6,18 +6,21 @@ import Image from "next/image";
 
 import {
   Flex,
-  Button,
   Grid,
   Text,
   Span,
   Shimmer,
   Icon,
+  Box,
 } from "@/common/components/atoms";
+import { Button, IconButton } from "@/common/components/atoms/v2";
 import toBase64 from "@/common/utils/image/toBase64";
 import StreamApiClient from "@/stream/api";
 
 interface IProps {
   topic?: string;
+  value?: string;
+  error?: string;
   profile?: Profile;
   onChange?: (image: string) => void;
 }
@@ -36,15 +39,16 @@ const Container = styled(Grid)`
 
 export default function StreamCoverPhotoUpload({
   topic,
+  value,
+  error,
   profile,
   onChange,
 }: IProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
   const { colors, radii, space } = useTheme();
-  const error = undefined;
   const [loading, setLoading] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | undefined>(
-    undefined
+    value
   );
 
   const handleGenerateCoverPhoto = async (): Promise<void> => {
@@ -86,97 +90,137 @@ export default function StreamCoverPhotoUpload({
         onChange={handleFileInputChange}
         accept="image/jpg, image/png, image/tiff, image/bmp"
       />
-      <Container
-        position="relative"
-        pt="56.25%"
-        borderRadius={radii.xs}
-        overflow="hidden"
-      >
-        {(() => {
-          if (loading) {
-            return (
-              <Shimmer
-                display="grid"
-                position="absolute"
-                top={0}
-                bottom={0}
-                right={0}
-                left={0}
-                borderRadius={radii.xs}
-              >
-                <Flex m="auto auto" gridGap={space.xxxs}>
-                  <Icon icon="Images" color={colors.white[0]} />
-                  <Text>Generating image...</Text>
-                </Flex>
-              </Shimmer>
-            );
-          }
-
-          if (!generatedImage) {
-            return (
-              <Grid
-                position="absolute"
-                top={0}
-                bottom={0}
-                right={0}
-                left={0}
-                border={`2px dashed ${error ? colors.error : colors.slate}`}
-                borderRadius={radii.xs}
-              >
-                <Flex
-                  m="auto auto"
-                  flexDirection="column"
-                  alignItems="center"
-                  gridGap={space.xxs}
+      <Box w={440}>
+        <Container
+          h={248}
+          position="relative"
+          overflow="hidden"
+          border={`1px dashed ${error ? colors.error : colors.secondaryLight}`}
+          borderRadius={radii.xxxxs}
+        >
+          {(() => {
+            if (loading) {
+              return (
+                <Shimmer
+                  display="grid"
+                  position="absolute"
+                  top={0}
+                  bottom={0}
+                  right={0}
+                  left={0}
+                  borderRadius={radii.xs}
                 >
-                  <Button
-                    text="Generate Image"
-                    disabled={topic ? false : true}
-                    onClick={handleGenerateCoverPhoto}
-                  />
-                  <Text>
-                    or{" "}
-                    <Span
-                      cursor="pointer"
-                      color={colors.accent}
-                      onClick={() => inputRef.current?.click()}
-                    >
-                      Upload
-                    </Span>{" "}
-                    an image from your computer.
-                  </Text>
-                </Flex>
-              </Grid>
-            );
-          }
+                  <Flex m="auto auto" gridGap={space.xxxs}>
+                    <Icon icon="Images" color={colors.white[0]} />
+                    <Text>Generating image...</Text>
+                  </Flex>
+                </Shimmer>
+              );
+            }
 
-          return (
-            <>
-              <Image
-                src={generatedImage}
-                layout="fill"
-                unoptimized
-                alt="coverImage"
-                objectFit="cover"
-              />
-              <Overlay
-                position="absolute"
-                top={0}
-                bottom={0}
-                right={0}
-                left={0}
-              >
-                <Button
-                  prefixElement={<Icon icon="Shuffle" />}
-                  m="auto auto"
-                  text="Randomize"
-                  onClick={handleGenerateCoverPhoto}
+            if (!generatedImage) {
+              return (
+                <Grid position="absolute" top={0} bottom={0} right={0} left={0}>
+                  <Flex
+                    m="auto auto"
+                    flexDirection="column"
+                    alignItems="center"
+                    gridGap={space.xxxs}
+                    cursor="pointer"
+                    onClick={() => inputRef.current?.click()}
+                  >
+                    <Box position="relative" w={56} h={56}>
+                      <Image
+                        src="/images/img_add_thumbnail.png"
+                        alt="Add thumbnail"
+                        layout="fill"
+                      />
+                    </Box>
+                    <Box>
+                      <Text
+                        textStyle="captionLarge"
+                        lineHeight="1.6rem"
+                        textAlign="center"
+                      >
+                        <Span fontWeight={600} color={colors.accentLight}>
+                          Upload
+                        </Span>{" "}
+                        a thumbnail for your stream
+                      </Text>
+                      <Text
+                        py={space.xxxxxs}
+                        textStyle="caption"
+                        fontWeight={600}
+                        lineHeight="1.6rem"
+                        textAlign="center"
+                        color={colors.textQuartenary}
+                      >
+                        Recommended resolution: 1920x1080 px, Max size: 5 MB
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Grid>
+              );
+            }
+
+            return (
+              <>
+                <Image
+                  src={generatedImage}
+                  layout="fill"
+                  unoptimized
+                  alt="coverImage"
+                  objectFit="cover"
                 />
-              </Overlay>
-            </>
-          );
-        })()}
-      </Container>
+                <Overlay
+                  position="absolute"
+                  top={0}
+                  bottom={0}
+                  right={0}
+                  left={0}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <IconButton
+                    buttonStyle="flat-icon"
+                    icon="FileUpload"
+                    iconProps={{
+                      size: 48,
+                      color: colors.textPrimary,
+                      fill: true,
+                    }}
+                    onClick={() => inputRef.current?.click()}
+                  />
+                </Overlay>
+              </>
+            );
+          })()}
+        </Container>
+
+        {error && (
+          <Box py={space.xxxxxs}>
+            <Text textStyle="error" color={colors.error}>
+              {error}
+            </Text>
+          </Box>
+        )}
+
+        <Flex pt={space.xxxs} justifyContent="flex-end" display="none">
+          <Button
+            variant="transparent-flat"
+            label="Generate a thumbnail for me"
+            border={`1px solid ${colors.accentLight}`}
+            prefixElement={
+              <Icon icon="Generate" size={16} color={colors.accentLight} />
+            }
+            gridProps={{
+              gridTemplateColumns: "max-content 1fr",
+            }}
+            onClick={handleGenerateCoverPhoto}
+          />
+        </Flex>
+      </Box>
     </>
   );
 }

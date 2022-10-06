@@ -105,3 +105,7 @@ export { default as ViewStream } from "./ViewStream";
 export { default as ViewerCount } from "./ViewerCount";
 export { default as Wallet } from "./Wallet";
 export { default as Whatsapp } from "./Whatsapp";
+export { default as Page } from "./Page";
+export { default as Pages } from "./Pages";
+export { default as InfoFill } from "./InfoFill";
+export { default as Generate } from "./Generate";

@@ -1,13 +1,8 @@
 import { forwardRef, useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 
-import {
-  Box,
-  InputContainer,
-  StyledInput,
-  InputProps,
-  Text,
-} from "../../atoms";
+import { Box, Text } from "../../atoms";
+import { InputContainer, InputProps, StyledInput } from "../../atoms/v2";
 
 type IProps = InputProps;
 
@@ -22,28 +17,31 @@ function DateTimeInputWithRef({
   prefixElement,
   inputRef,
   error,
+  containerProps,
   ...rest
 }: IProps & {
   inputRef: React.ForwardedRef<HTMLInputElement>;
 }): JSX.Element {
-  const { space, colors } = useTheme();
+  const { space, colors, radii } = useTheme();
 
   const border = useMemo(() => {
-    return `2px solid ${error ? colors.error : "transparent"}`;
+    return `1px solid ${error ? colors.error : colors.primaryLight}`;
   }, [error, colors]);
   return (
     <Box>
-      <InputContainer border={border}>
+      <InputContainer
+        px={space.xxxs}
+        py={space.xxxxs}
+        bg={colors.primaryBackground}
+        borderRadius={radii.xxxxs}
+        border={border}
+        {...containerProps}
+      >
         {prefixElement && prefixElement}
         <StyledPicker ref={inputRef} type={type} {...rest} />
       </InputContainer>
       {error && (
-        <Text
-          py={space.xxxs}
-          px={space.xxxs}
-          color={colors.error}
-          textStyle="error"
-        >
+        <Text mt={space.xxxxxs} color={colors.error} textStyle="error">
           {error}
         </Text>
       )}
