@@ -243,6 +243,21 @@ export default function StreamCreationForm({
   const handleOnSubmit = useCallback(
     async (formData: IStreamCreationFormProps) => {
       setLoading(true);
+
+      if (formData.rtmpLink && !formData.rtmpKey) {
+        fieldErrorSetter("rtmpKey", "RTMP Key is required.");
+        setFormError("* Error in RTMP details provided.");
+        setLoading(false);
+        return;
+      }
+
+      if (formData.rtmpKey && !formData.rtmpLink) {
+        fieldErrorSetter("rtmpLink", "RTMP Link is required.");
+        setFormError("* Error in RTMP details provided.");
+        setLoading(false);
+        return;
+      }
+
       const requestData: CreateWebinar = {
         topic_title: formData.topic,
         topic_image: formData.image,
@@ -251,9 +266,7 @@ export default function StreamCreationForm({
           DateTime.DEFAULT_DATETIME_INPUT_FORMAT
         ),
         categories: [formData.category?.pk],
-        rtmp_link: formData.rtmpLink
-          ? `${formData.rtmpLink}/${formData.rtmpKey}`
-          : undefined,
+        rtmp_link: `${formData.rtmpLink}/${formData.rtmpKey}`,
       };
 
       const [res, err] = await CreatorApiClient().postStream(requestData);
