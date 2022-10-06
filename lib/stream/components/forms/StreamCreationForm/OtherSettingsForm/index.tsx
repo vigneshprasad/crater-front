@@ -22,7 +22,7 @@ export default function OtherSettingsForm({
   const { space, colors, radii } = useTheme();
 
   return (
-    <Box>
+    <Box pb={space.xxs}>
       <Text textStyle="formLabel" fontWeight={400}>
         Stream everywhere, at once!
       </Text>
