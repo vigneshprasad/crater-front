@@ -233,3 +233,19 @@ export type StreamListItem = {
   is_past: boolean;
   has_rsvp: boolean;
 };
+
+export type MultiStream = {
+  id: number;
+  title: string;
+  description: string;
+  category: number;
+  streams: number[];
+  host_detail_list: {
+    pk: string;
+    email: string;
+    photo?: string;
+    name: string;
+    introduction?: string;
+    slug: string;
+  }[];
+};

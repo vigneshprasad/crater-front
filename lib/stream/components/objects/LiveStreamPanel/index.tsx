@@ -10,59 +10,29 @@ import useSystemSocket from "@/auth/context/SystemSocketContext";
 import {
   Flex,
   Grid,
-  Link,
   Shimmer,
   Text,
   Box,
   Span,
-  Icon,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
 import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
 import ContainerModal from "@/common/components/objects/ContainerModal";
 import { INotificationData } from "@/common/components/objects/NotificationStack/types";
-import { PageRoutes } from "@/common/constants/route.constants";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { ChallengeListProvider } from "@/leaderboard/context/ChallegeListContext";
 import { LeaderboardListProvider } from "@/leaderboard/context/LeaderboardListContext";
 import { UserLeaderboardListProvider } from "@/leaderboard/context/UserLeaderboardListContext";
 
-import LiveStreamPanelTabItem from "../LiveStreamPanelTabItem";
 import StreamChat from "../StreamChat";
 import StreamLeaderboardPanel from "../StreamLeaderboardPanel";
 
-type TabKeys = "chat" | "store" | "leaderboard";
-
-const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
-  chat: (
-    <Link href={PageRoutes.stream(id, "chat")} shallow>
-      <LiveStreamPanelTabItem icon="Chat" label="Chat" />
-    </Link>
-  ),
-  store: (
-    <Link href={PageRoutes.stream(id, "store")} shallow>
-      <LiveStreamPanelTabItem
-        icon="Store"
-        label={
-          <Flex alignItems="center">
-            Store
-            <Span m={4}>
-              <Icon color="#F2B25C" icon="New" size={14} />
-            </Span>
-          </Flex>
-        }
-      />
-    </Link>
-  ),
-  leaderboard: (
-    <Link href={PageRoutes.stream(id, "leaderboard")} shallow>
-      <LiveStreamPanelTabItem icon="Leaderboard" label="Leaderboard" />
-    </Link>
-  ),
-});
+export type TabKeys = "chat" | "store" | "leaderboard";
 
 interface IProps {
   initial?: TabKeys;
+  streamId: number;
+  tabs: (id: string | number) => Record<TabKeys, JSX.Element>;
 }
 
 const GradientBorder = styled(Box)`
@@ -88,7 +58,11 @@ const GradientBorder = styled(Box)`
   }
 `;
 
-export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
+export default function LiveStreamPanel({
+  initial,
+  streamId,
+  tabs,
+}: IProps): JSX.Element {
   const [visibleModal, setVisibleModal] = useState(false);
   const [purchaseRequest, setPurchaseRequest] = useState<
     RewardSaleLog | undefined
@@ -146,18 +120,19 @@ export default function LiveStreamPanel({ initial }: IProps): JSX.Element {
       gridTemplateRows={["max-content 1fr"]}
       bg={colors.primaryBackground}
       position="relative"
+      borderLeft={`1px solid ${colors.primaryLight}`}
     >
       <BaseTabBar
         bg={colors.primaryLight}
         px={space.xxxs}
         activeTab={activeTab}
-        tabs={TABS(webinar.id)}
+        tabs={tabs(webinar.id)}
         borderLeft={`1px solid ${colors.black[0]}`}
         gridAutoColumns="1fr"
       />
 
       {activeTab === "chat" && webinar && !webinar.closed && (
-        <StreamChat stream={webinar} />
+        <StreamChat stream={webinar} streamId={streamId} />
       )}
       {activeTab === "store" && webinar && (
         <LiveStreamAuctions webinar={webinar} />

@@ -27,7 +27,7 @@ export function WebinarProvider({
     data: webinar,
     error,
     mutate: mutateWebinar,
-  } = useSWR<Webinar>(API_URL_CONSTANTS.conversations.retrieveGroup(id), {
+  } = useSWR<Webinar>(API_URL_CONSTANTS.conversations.retrieveWebinar(id), {
     initialData: initial,
   });
 

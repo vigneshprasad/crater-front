@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import ResizeObserver from "resize-observer-polyfill";
 
 import useCallbackRef from "./useCallbackRef";
@@ -12,7 +12,7 @@ export function useMeasure(): { bounds: Bounds; ref: (node: unknown) => void } {
   const [element, attachRef] = useCallbackRef();
   const [bounds, setBounds] = useState<Bounds>({});
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const observer = new ResizeObserver(([entry]) => {
       setBounds({
         height: entry.contentRect.height,

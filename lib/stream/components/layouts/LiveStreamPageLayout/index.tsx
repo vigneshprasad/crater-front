@@ -1,18 +1,21 @@
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import { Box, Grid } from "@/common/components/atoms";
+import { Box, Flex, Grid, Icon, Link, Span } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
+import { PageRoutes } from "@/common/constants/route.constants";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 
 import BANNER from "../../objects/Banner";
-import LiveStreamPanel from "../../objects/LiveStreamPanel";
+import LiveStreamPanel, { TabKeys } from "../../objects/LiveStreamPanel";
+import LiveStreamPanelTabItem from "../../objects/LiveStreamPanelTabItem";
 import SimilarStreamsOverlay from "../../objects/SimilarStreamsOverlay";
 
 interface IProps {
+  streamId: number;
   videoPlayer: React.ReactNode;
   streamDetail: React.ReactNode;
   modal?: React.ReactNode;
@@ -28,10 +31,39 @@ export default function LiveStreamPageLayout({
   shareSection,
   upcomingsStreams,
   pastStreams,
+  streamId,
 }: IProps): JSX.Element {
   const { space, borders } = useTheme();
   const { user } = useAuth();
   const { webinar } = useWebinar();
+
+  const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
+    chat: (
+      <Link href={PageRoutes.stream(id, "chat")} shallow>
+        <LiveStreamPanelTabItem icon="Chat" label="Chat" />
+      </Link>
+    ),
+    store: (
+      <Link href={PageRoutes.stream(id, "store")} shallow>
+        <LiveStreamPanelTabItem
+          icon="Store"
+          label={
+            <Flex alignItems="center">
+              Store
+              <Span m={4}>
+                <Icon color="#F2B25C" icon="New" size={14} />
+              </Span>
+            </Flex>
+          }
+        />
+      </Link>
+    ),
+    leaderboard: (
+      <Link href={PageRoutes.stream(id, "leaderboard")} shallow>
+        <LiveStreamPanelTabItem icon="Leaderboard" label="Leaderboard" />
+      </Link>
+    ),
+  });
 
   return (
     <BaseLayout aside={<AsideNav />} overflowY={["hidden", "auto"]}>
@@ -64,7 +96,7 @@ export default function LiveStreamPageLayout({
         </Grid>
         <Grid gridArea="panel">
           <ChatColorModeProvider>
-            <LiveStreamPanel />
+            <LiveStreamPanel tabs={TABS} streamId={streamId} />
           </ChatColorModeProvider>
         </Grid>
         <Grid gridArea="about" p={[0, space.xxs]}>
