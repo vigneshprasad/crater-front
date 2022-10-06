@@ -240,7 +240,7 @@ export default function WebinarPage({ orgId, id }: IProps): JSX.Element {
               filterCreator={webinar.host_detail.creator_detail?.id}
             >
               <UpcomingStreamsProvider>
-                <StreamChat stream={webinar} />
+                <StreamChat stream={webinar} streamId={webinar.id} />
               </UpcomingStreamsProvider>
             </AuctionListProvider>
           </CreatorCoinProvider>
