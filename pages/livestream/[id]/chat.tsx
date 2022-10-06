@@ -57,6 +57,7 @@ export default function StreamChatPage({
           <ChatColorModeProvider>
             <StreamChatProvider id={id}>
               <StreamChat
+                streamId={parseInt(id, 10)}
                 minHeight="100vh"
                 showPopup={false}
                 stream={webinar}

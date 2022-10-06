@@ -34,13 +34,16 @@ export function FirebaseChatProvider({
     return `${ENV}_${groupId}`;
   }, [groupId]);
 
-  const messagesQuery = query(
-    collection(
-      getFirestore(firebaseApp),
-      `group/${groupCollectionId}/messages`
-    ).withConverter(ChatMessageConvertor),
-    where("group", "==", groupCollectionId)
-  );
+  const messagesQuery = useMemo(() => {
+    return query(
+      collection(
+        getFirestore(firebaseApp),
+        `group/${groupCollectionId}/messages`
+      ).withConverter(ChatMessageConvertor),
+      where("group", "==", groupCollectionId)
+    );
+  }, [groupCollectionId]);
+
   const { data: tokenResponse } = useSWR<{ token: string }>(
     user ? API_URL_CONSTANTS.firebase.getFirebaseToken : null
   );
