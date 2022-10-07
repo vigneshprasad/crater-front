@@ -9,6 +9,7 @@ import { WebinarProvider } from "@/community/context/WebinarContext";
 import { Webinar } from "@/community/types/community";
 import StreamChat from "@/stream/components/objects/StreamChat";
 import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
+import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
 import StreamChatProvider from "@/stream/providers/StreamChatProvider";
 
 interface IParams extends ParsedUrlQuery {
@@ -55,14 +56,16 @@ export default function StreamChatPage({
       <ThemeProvider theme={theme}>
         <WebinarProvider initial={webinar} id={id}>
           <ChatColorModeProvider>
-            <StreamChatProvider id={id}>
-              <StreamChat
-                streamId={parseInt(id, 10)}
-                minHeight="100vh"
-                showPopup={false}
-                stream={webinar}
-              />
-            </StreamChatProvider>
+            <FirebaseChatProvider groupId={id}>
+              <StreamChatProvider id={id}>
+                <StreamChat
+                  streamId={parseInt(id, 10)}
+                  minHeight="100vh"
+                  showPopup={false}
+                  stream={webinar}
+                />
+              </StreamChatProvider>
+            </FirebaseChatProvider>
           </ChatColorModeProvider>
         </WebinarProvider>
       </ThemeProvider>

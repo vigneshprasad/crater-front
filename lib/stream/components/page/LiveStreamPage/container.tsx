@@ -6,6 +6,7 @@ import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
+import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
 import StreamChatProvider from "@/stream/providers/StreamChatProvider";
 import { BidListProvider } from "@/tokens/context/BidListContext";
 import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
@@ -47,9 +48,11 @@ export default function Container({
                 <PastStreamProvider pageSize={8}>
                   <ReferralSummaryProvider>
                     <LiveStreamPageProvider>
-                      <StreamChatProvider id={id}>
-                        {children}
-                      </StreamChatProvider>
+                      <FirebaseChatProvider groupId={id}>
+                        <StreamChatProvider id={id}>
+                          {children}
+                        </StreamChatProvider>
+                      </FirebaseChatProvider>
                     </LiveStreamPageProvider>
                   </ReferralSummaryProvider>
                 </PastStreamProvider>
