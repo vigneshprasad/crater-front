@@ -20,6 +20,7 @@ export interface ChatUserDetails {
 }
 
 export interface ChatMessage {
+  id: string;
   created_at: Timestamp;
   message: string;
   group: string | number;
@@ -40,7 +41,10 @@ export interface ChatMessage {
 export const ChatMessageConvertor = {
   toFirestore: (value: ChatMessage): ChatMessage => value,
   fromFirestore: (snap: QueryDocumentSnapshot): ChatMessage =>
-    snap.data() as ChatMessage,
+    ({
+      id: snap.id,
+      ...snap.data(),
+    } as ChatMessage),
 };
 
 export const ChatUserDetailConvertor = {
