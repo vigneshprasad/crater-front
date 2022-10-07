@@ -61,7 +61,7 @@ export default function ChatMessagesList({
               return (
                 <ChatMessageItem
                   message={message}
-                  key={message.created_at.seconds}
+                  key={message.id}
                   textColor={
                     colorMode === "light" ? colors.black[0] : undefined
                   }

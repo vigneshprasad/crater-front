@@ -83,7 +83,7 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
 
   return (
     <LiveStreamPageLayout
-      streamId={cachedWebinar?.id ?? webinar.id}
+      streamId={webinar.id}
       videoPlayer={
         <>
           {dyteParticipant && (
