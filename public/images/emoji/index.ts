@@ -1,4 +1,5 @@
 import BabuBhaiya from "public/images/emoji/img_babu_bhaiya.png";
+import BigSmiles from "public/images/emoji/img_big_smiles.png";
 import BlockchainBull from "public/images/emoji/img_blockchain_bull.png";
 import Confused from "public/images/emoji/img_confused.png";
 import Eye from "public/images/emoji/img_eye.png";
@@ -56,6 +57,7 @@ const EMOJI_IMAGE_LIST = {
   Respect,
   SpaceCat,
   YouDontSay,
+  BigSmiles,
 };
 
 export type EmojiKeys = keyof typeof EMOJI_IMAGE_LIST;
