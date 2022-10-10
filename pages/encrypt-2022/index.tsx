@@ -42,7 +42,7 @@ export default function EncryptHackathon({ category }: Props): JSX.Element {
           "Stream, Chat, learn & stand to win Rs. 100,000 for building a solution that leads us to a better world",
       }}
     >
-      <UpcomingStreamsProvider category={category}>
+      <UpcomingStreamsProvider category={category} pageSize={8}>
         <PastStreamsWithRecordingProvider category={category} pageSize={4}>
           <EncryptHackathonPage />
         </PastStreamsWithRecordingProvider>

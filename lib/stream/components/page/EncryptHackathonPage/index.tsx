@@ -71,7 +71,7 @@ export default function EncryptHackathonPage(): JSX.Element {
 
         <Box>
           <StyledHeadingDivider label="Competing Hackers" />
-          <UpcomingStreamsProvider category={category?.pk}>
+          <UpcomingStreamsProvider category={category?.pk} pageSize={8}>
             <UpcomingStreamsList />
           </UpcomingStreamsProvider>
         </Box>
