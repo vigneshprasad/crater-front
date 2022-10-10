@@ -1,4 +1,4 @@
-export default function LinkTreeAlt(
+export default function LinktreeAlt(
   props: React.SVGProps<SVGSVGElement>
 ): JSX.Element {
   return (
