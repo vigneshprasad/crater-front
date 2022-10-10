@@ -13,6 +13,8 @@ import ImageDefaultSaleItem from "public/images/img_default_sale_item.png";
 import ImageDiscordIcon from "public/images/img_discord_icon.png";
 import ImageAuctionEmpty from "public/images/img_empty_auction.png";
 import ImageEmptyWallet from "public/images/img_empty_wallet.png";
+import Encrypt2022Logo from "public/images/img_encrypt_2022_logo.png";
+import EncryptHeaderGraphic from "public/images/img_encrypt_header_graphic.png";
 import ImageHand from "public/images/img_hand.png";
 import ImageHyfiPlaceholder from "public/images/img_hyfi_placeholder.png";
 import ImageLandingPage from "public/images/img_landing_page.png";
@@ -78,6 +80,8 @@ const STATIC_IMAGES = {
   ImageStreamStarting_1,
   ImageStreamStarting_2,
   ImageLandingPage,
+  Encrypt2022Logo,
+  EncryptHeaderGraphic,
 };
 
 export default STATIC_IMAGES;
