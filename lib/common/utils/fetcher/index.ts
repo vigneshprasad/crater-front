@@ -15,4 +15,17 @@ async function fetcher<T>(
   return result.data;
 }
 
+export async function postFetcher<T>(
+  url: string,
+  options?: AxiosRequestConfig
+): Promise<T> {
+  const result = await API()
+    .post<T>(url, { ...options })
+    .catch((err) => {
+      if (err.response.status === 401) signout();
+      throw err.response;
+    });
+  return result.data;
+}
+
 export default fetcher;

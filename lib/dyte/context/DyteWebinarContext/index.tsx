@@ -1,16 +1,15 @@
-import { AxiosError } from "axios";
-import { getSession } from "next-auth/client";
 import {
   createContext,
   PropsWithChildren,
   useContext,
-  useMemo,
   useEffect,
-  useState,
+  useMemo,
 } from "react";
-import { useCallback } from "react";
+import useSWR from "swr";
 
-import DyteApiClient from "@/dyte/api";
+import useAuth from "@/auth/context/AuthContext";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import { postFetcher } from "@/common/utils/fetcher";
 import { DyteParticpant } from "@/dyte/types/dyte";
 
 interface IDyteWebinarState {
@@ -29,43 +28,20 @@ export function DyteWebinarProvider({
   id,
   ...rest
 }: IProviderProps): JSX.Element {
-  const [dyteParticipant, setDyteParticipant] = useState<
-    DyteParticpant | undefined
-  >(undefined);
-  const [error, setError] = useState<AxiosError | undefined>(undefined);
-
-  const apiCall = useCallback(
-    async (id: string): Promise<void> => {
-      const [data, serverError] = await DyteApiClient().postDyteWebinarConnect(
-        id
-      );
-
-      if (serverError) {
-        setDyteParticipant(undefined);
-        setError(serverError);
-      }
-
-      if (data) {
-        setDyteParticipant(data);
-        setError(undefined);
-      }
-    },
-    [setDyteParticipant]
+  const { user } = useAuth();
+  const {
+    data: dyteParticipant,
+    error,
+    mutate,
+  } = useSWR<DyteParticpant>(
+    user && id ? API_URL_CONSTANTS.integrations.dyte.connect(id) : null,
+    postFetcher,
+    {
+      revalidateOnMount: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
-
-  const getInitial = useCallback(
-    async (id: string) => {
-      const session = await getSession();
-      if (session && session.user) {
-        await apiCall(id);
-      }
-    },
-    [apiCall]
-  );
-
-  useEffect(() => {
-    getInitial(id);
-  }, [id, getInitial]);
 
   const value = useMemo(
     () => ({
@@ -75,6 +51,12 @@ export function DyteWebinarProvider({
     }),
     [dyteParticipant, error]
   );
+
+  useEffect(() => {
+    if (user && !dyteParticipant) {
+      mutate();
+    }
+  }, [user, dyteParticipant, mutate]);
 
   return <DyteWebinarContext.Provider value={value} {...rest} />;
 }
