@@ -3,7 +3,6 @@ import { forwardRef, useEffect, useMemo } from "react";
 import { Grid, Box, BoxProps } from "@/common/components/atoms";
 import AppNavbar from "@/common/components/objects/AppNavBar/v2";
 import Banner from "@/common/components/objects/Banner";
-import { PageRoutes } from "@/common/constants/route.constants";
 
 type IBaseLayoutProps = BoxProps & {
   aside?: React.ReactNode;
