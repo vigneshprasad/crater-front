@@ -34,7 +34,9 @@ export function DyteWebinarProvider({
     error,
     mutate,
   } = useSWR<DyteParticpant>(
-    user && id ? API_URL_CONSTANTS.integrations.dyte.connect(id) : null,
+    user?.apiToken && id
+      ? API_URL_CONSTANTS.integrations.dyte.connect(id)
+      : null,
     postFetcher,
     {
       revalidateOnMount: false,
@@ -53,7 +55,7 @@ export function DyteWebinarProvider({
   );
 
   useEffect(() => {
-    if (user && !dyteParticipant) {
+    if (user?.apiToken && !dyteParticipant) {
       mutate();
     }
   }, [user, dyteParticipant, mutate]);
