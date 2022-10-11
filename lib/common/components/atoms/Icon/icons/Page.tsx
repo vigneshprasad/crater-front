@@ -3,8 +3,8 @@ export default function Page(
 ): JSX.Element {
   return (
     <svg
-      width="16"
-      height="16"
+      width="1em"
+      height="1em"
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -13,8 +13,8 @@ export default function Page(
       <path
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M8.5714 0.570312H3.23807C2.26664 0.570312 2.09521 0.784027 2.09521 1.71317V13.9036C2.09521 14.8522 2.30474 15.0465 3.23807 15.0465H12.3809C13.3333 15.0465 13.5238 14.8675 13.5238 13.9036V5.52269H8.5714V0.570312ZM13.5238 4.37984L9.71426 0.570312V4.37984H13.5238Z"
-        fill="currentColor"
+        d="M8.571.57H3.238c-.971 0-1.143.214-1.143 1.143v12.19c0 .95.21 1.143 1.143 1.143h9.143c.952 0 1.143-.178 1.143-1.142V5.523H8.57V.57zm4.953 3.81L9.714.57v3.81h3.81z"
+        fill="#fff"
       />
     </svg>
   );
