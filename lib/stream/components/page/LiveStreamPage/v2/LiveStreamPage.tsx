@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { getSession } from "next-auth/client";
+import { useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
+import useAuthModal from "@/auth/context/AuthModalContext";
+import { Shimmer } from "@/common/components/atoms";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { MultiStream } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
@@ -39,6 +42,7 @@ export function LiveStreamPage({
   const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
   const [visiblePanelMobile, setVisiblePanelMobile] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { openModal } = useAuthModal();
   const {
     followers,
     loading: followersLoading,
@@ -62,6 +66,19 @@ export function LiveStreamPage({
     }
   };
 
+  useEffect(() => {
+    async function checkAuth(): Promise<void> {
+      const session = await getSession();
+      if (session === null) {
+        openModal();
+      }
+    }
+
+    if (router) {
+      checkAuth();
+    }
+  }, [router, openModal, user]);
+
   return (
     <MultiLiveStreamPageLayout
       visibleMobileChatPanel={visiblePanelMobile}
@@ -75,22 +92,31 @@ export function LiveStreamPage({
       {{
         streamPlayer: (
           <>
-            {multiStreamMode === true && multistream && (
-              <MultiStreamPlayer
-                multistream={multistream}
-                active={streamId}
-                onClickStream={(id) => {
-                  router.push(`/livestream/${id}/multi`, undefined, {
-                    shallow: true,
-                  });
-                }}
-              />
-            )}
-            {multiStreamMode === false && (
-              <DyteWebinarProvider id={streamId.toString()}>
-                <StreamDytePlayer stream={cachedWebinar} orgId={orgId} />
-              </DyteWebinarProvider>
-            )}
+            {(() => {
+              if (!user) {
+                return <Shimmer pt="56.25%" w="100%" />;
+              }
+
+              if (multiStreamMode && multistream) {
+                return (
+                  <MultiStreamPlayer
+                    multistream={multistream}
+                    active={streamId}
+                    onClickStream={(id) => {
+                      router.push(`/livestream/${id}/multi`, undefined, {
+                        shallow: true,
+                      });
+                    }}
+                  />
+                );
+              }
+
+              return (
+                <DyteWebinarProvider id={streamId.toString()}>
+                  <StreamDytePlayer stream={cachedWebinar} orgId={orgId} />
+                </DyteWebinarProvider>
+              );
+            })()}
           </>
         ),
         controlBar: multistream ? (

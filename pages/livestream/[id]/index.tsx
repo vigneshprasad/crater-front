@@ -1,17 +1,16 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import { ParsedUrlQuery } from "querystring";
-import { useEffect } from "react";
 
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
-import useAuth from "@/auth/context/AuthContext";
-import useAuthModal from "@/auth/context/AuthModalContext";
 import Page from "@/common/components/objects/Page";
 import { PageRoutes } from "@/common/constants/route.constants";
 import WebinarApiClient from "@/community/api";
+import MultiStreamApiClient from "@/community/api/MultiStreamApiClient";
 import {
+  MultiStream,
   PrivacyType,
   Webinar as WebinarType,
 } from "@/community/types/community";
@@ -19,7 +18,7 @@ import CreatorApiClient from "@/creators/api";
 import { Reward } from "@/tokens/types/token";
 
 const LiveStreamPage = dynamic(
-  () => import("@/stream/components/page/LiveStreamPage")
+  () => import("@/stream/components/page/LiveStreamPage/v2")
 );
 
 interface IParams extends ParsedUrlQuery {
@@ -31,6 +30,7 @@ interface WebinarPageProps {
   id: string;
   webinar: WebinarType;
   rewards: Reward[];
+  multistream: MultiStream | null;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -40,6 +40,7 @@ export const getServerSideProps: GetServerSideProps<
   const { params } = props;
   const { id } = params as IParams;
   const [webinar, error] = await WebinarApiClient().getWebinar(id);
+  const [multistream] = await MultiStreamApiClient().getSquadForGroup(id);
   const session = await getSession(props);
 
   if (error || !webinar) {
@@ -50,10 +51,8 @@ export const getServerSideProps: GetServerSideProps<
 
   const user = session?.user;
   if (user && webinar.privacy === PrivacyType.private) {
-    console.log(user);
     const isUserAttendee = webinar.attendees?.indexOf(user.pk) > -1;
     const isUserSpeaker = webinar.speakers?.indexOf(user.pk) > -1;
-    console.log(isUserAttendee, isUserSpeaker);
     if (!isUserAttendee && !isUserSpeaker) {
       return {
         redirect: {
@@ -74,32 +73,18 @@ export const getServerSideProps: GetServerSideProps<
       id,
       webinar,
       rewards: rewards ?? [],
+      multistream: multistream ? multistream : null,
     },
   };
 };
 
 export default function WebinarPage({
-  orgId,
   webinar,
-  id,
-  rewards,
+  multistream,
+  orgId,
 }: WebinarPageProps): JSX.Element {
   const router = useRouter();
-  const { user } = useAuth();
-  const { openModal } = useAuthModal();
-
-  useEffect(() => {
-    async function checkAuth(): Promise<void> {
-      const session = await getSession();
-      if (session === null) {
-        openModal();
-      }
-    }
-
-    if (router) {
-      checkAuth();
-    }
-  }, [router, id, openModal]);
+  const id = parseInt(router.query.id as string);
 
   return (
     <Page
@@ -109,11 +94,14 @@ export default function WebinarPage({
       }}
     >
       <LiveStreamPage
-        user={user}
-        webinar={webinar}
         orgId={orgId}
-        id={id}
-        rewards={rewards}
+        stream={webinar}
+        multiStreamMode={false}
+        multistream={multistream ? multistream : undefined}
+        streamId={id}
+        onClickMultiStreamToggle={() =>
+          router.push(PageRoutes.multistream(id), undefined, { shallow: true })
+        }
       />
     </Page>
   );
