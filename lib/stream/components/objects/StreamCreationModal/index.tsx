@@ -4,7 +4,7 @@ import useSWR from "swr";
 
 import useAuth from "@/auth/context/AuthContext";
 import { Box, Flex, Grid, Icon, Text } from "@/common/components/atoms";
-import { Button, Modal } from "@/common/components/atoms/v2";
+import { Modal } from "@/common/components/atoms/v2";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { Webinar } from "@/community/types/community";
 import { Creator } from "@/creators/types/creator";
@@ -116,7 +116,7 @@ export default function StreamCreationModal({
               py={space.xs}
               h="100%"
               gridAutoFlow="row"
-              gridTemplateRows="max-content 1fr max-content"
+              gridTemplateRows="1fr 1fr"
               gridRowGap={space.xs}
             >
               <Flex px={space.xxs} flexDirection="column" gridGap={space.xxxxs}>
@@ -156,7 +156,7 @@ export default function StreamCreationModal({
                 ))}
               </Flex>
 
-              <Box w="100%" borderTop={`1px solid ${colors.primaryLight}`}>
+              {/* <Box w="100%" borderTop={`1px solid ${colors.primaryLight}`}>
                 <Button
                   w={180}
                   my={space.xs}
@@ -181,9 +181,9 @@ export default function StreamCreationModal({
                     lineHeight: "1.6rem",
                   }}
                 />
-              </Box>
+              </Box> */}
 
-              <Box px={24} pb={space.xs}>
+              <Box px={24} pb={space.xs} alignSelf="end">
                 <Text
                   py={space.xxxxxs}
                   textStyle="caption"
