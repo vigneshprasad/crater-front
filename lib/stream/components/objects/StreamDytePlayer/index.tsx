@@ -84,7 +84,7 @@ export default function StreamDytePlayer({
   return (
     <Box pt="56.25%" position="relative">
       {(() => {
-        if (!dyteParticipant || loading || !stream) {
+        if (!dyteParticipant || loading) {
           return (
             <Shimmer
               position="absolute"
@@ -119,7 +119,7 @@ export default function StreamDytePlayer({
               }}
               onInit={(dyteMeeting) => {
                 meeting.current = dyteMeeting;
-                user?.pk === stream.host &&
+                user?.pk === stream?.host &&
                   meeting.current.modules.initAndAdd(backgroundModule);
                 addEventListeners();
               }}

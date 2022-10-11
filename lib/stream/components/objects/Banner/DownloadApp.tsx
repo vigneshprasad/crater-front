@@ -8,7 +8,7 @@ export default function DownloadApp({ ...props }: BoxProps): JSX.Element {
   const { colors, space, fonts } = useTheme();
   return (
     <Box position="relative" {...props}>
-      <Image src={STATIC_IMAGES.ImageAppBannerStream} alt="" />
+      <Image width="100%" src={STATIC_IMAGES.ImageAppBannerStream} alt="" />
       <Flex
         gridGap={space.xxxs}
         position="absolute"
