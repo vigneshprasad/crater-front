@@ -95,7 +95,7 @@ export function LiveStreamPage({
         streamPlayer: (
           <>
             {(() => {
-              if (!user) {
+              if (!user && user === undefined) {
                 return <Shimmer pt="56.25%" w="100%" />;
               }
 
@@ -113,14 +113,11 @@ export function LiveStreamPage({
                 );
               }
 
-              if (user) {
-                return (
-                  <DyteWebinarProvider id={streamId.toString()}>
-                    <StreamDytePlayer stream={cachedWebinar} orgId={orgId} />
-                  </DyteWebinarProvider>
-                );
-              }
-              return null;
+              return (
+                <DyteWebinarProvider id={streamId.toString()}>
+                  <StreamDytePlayer stream={cachedWebinar} orgId={orgId} />
+                </DyteWebinarProvider>
+              );
             })()}
           </>
         ),

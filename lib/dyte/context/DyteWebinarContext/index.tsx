@@ -33,6 +33,7 @@ export function DyteWebinarProvider({
     data: dyteParticipant,
     error,
     mutate,
+    isValidating,
   } = useSWR<DyteParticpant>(
     user?.apiToken && id
       ? API_URL_CONSTANTS.integrations.dyte.connect(id)
@@ -55,9 +56,9 @@ export function DyteWebinarProvider({
     () => ({
       dyteParticipant,
       error,
-      loading: !dyteParticipant && !error,
+      loading: isValidating,
     }),
-    [dyteParticipant, error]
+    [dyteParticipant, error, isValidating]
   );
 
   return <DyteWebinarContext.Provider value={value} {...rest} />;
