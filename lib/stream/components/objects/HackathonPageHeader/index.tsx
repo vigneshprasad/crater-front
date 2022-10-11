@@ -23,10 +23,12 @@ const Video = styled.video`
 
 type IProps = {
   pastStreams?: PastStreamListItemWithRecording[];
+  scrollTo: () => void;
 };
 
 export default function HackathonPageHeader({
   pastStreams,
+  scrollTo,
 }: IProps): JSX.Element | null {
   const { space, colors, fonts, breakpoints } = useTheme();
   const router = useRouter();
@@ -115,6 +117,7 @@ export default function HackathonPageHeader({
             w={148}
             h={40}
             label="Let's Go!"
+            onClick={scrollTo}
           />
         </Box>
         {/* <Box>

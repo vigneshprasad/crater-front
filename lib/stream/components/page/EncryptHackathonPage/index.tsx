@@ -1,5 +1,5 @@
 import STATIC_IMAGES from "public/images";
-import { useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import styled, { useTheme } from "styled-components";
 import useSWR from "swr";
 
@@ -30,12 +30,19 @@ const StyledBaseLayout = styled(BaseLayout)`
 export default function EncryptHackathonPage(): JSX.Element {
   const { space, colors, fonts, breakpoints } = useTheme();
   const { streams: pastStreams } = usePastStreamsWithRecording();
+  const streamsRef = useRef<HTMLDivElement>(null);
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   const { data: category } = useSWR<StreamCategory>(
     API_URL_CONSTANTS.stream.retrieveCategory("hackers")
   );
+
+  const scrollToStreams = useCallback(() => {
+    if (streamsRef.current) {
+      streamsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [streamsRef]);
 
   const sponsors = useMemo<
     {
@@ -128,7 +135,10 @@ export default function EncryptHackathonPage(): JSX.Element {
         gridTemplateColumns="minmax(0, 1fr)"
         gridGap={space.xxs}
       >
-        <HackathonPageHeader pastStreams={pastStreams} />
+        <HackathonPageHeader
+          pastStreams={pastStreams}
+          scrollTo={scrollToStreams}
+        />
 
         <Box mx="auto" w={1000} pb={[0, space.s]}>
           {isMobile ? (
@@ -181,7 +191,7 @@ export default function EncryptHackathonPage(): JSX.Element {
           </Text>
         </Box>
 
-        <Box>
+        <Box ref={streamsRef}>
           <StyledHeadingDivider label="Streams" />
           <UpcomingStreamsList />
         </Box>
