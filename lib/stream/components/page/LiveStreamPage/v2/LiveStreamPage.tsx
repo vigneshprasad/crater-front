@@ -37,6 +37,7 @@ export function LiveStreamPage({
   const { user } = useAuth();
   const router = useRouter();
   const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
+  const [visiblePanelMobile, setVisiblePanelMobile] = useState(false);
   const [loading, setLoading] = useState(false);
   const {
     followers,
@@ -63,6 +64,10 @@ export function LiveStreamPage({
 
   return (
     <MultiLiveStreamPageLayout
+      visibleMobileChatPanel={visiblePanelMobile}
+      onCloseMobileChatPabel={() => {
+        setVisiblePanelMobile(false);
+      }}
       streamId={streamId}
       stream={stream}
       multiStreamMode={multiStreamMode}
@@ -101,6 +106,9 @@ export function LiveStreamPage({
             stream={cachedWebinar ?? stream}
             followersLoading={followersLoading || loading}
             onFollow={() => followCreator()}
+            onClickChatPanelMobile={() => {
+              setVisiblePanelMobile(true);
+            }}
           />
         ),
         shareSection: <StreamShareSection stream={cachedWebinar} />,

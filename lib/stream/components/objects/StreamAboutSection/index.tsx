@@ -30,6 +30,7 @@ interface IProps {
   followersLoading: boolean;
   hideShareIcon?: boolean;
   onFollow: () => void;
+  onClickChatPanelMobile?: () => void;
 }
 
 export default function StreamAboutSection({
@@ -37,6 +38,7 @@ export default function StreamAboutSection({
   followers,
   followersLoading,
   hideShareIcon,
+  onClickChatPanelMobile,
   onFollow,
 }: IProps): JSX.Element {
   const { colors, space, radii, breakpoints } = useTheme();
@@ -53,7 +55,11 @@ export default function StreamAboutSection({
 
   return (
     <>
-      <Box as="section" bg={colors.primaryLight} borderRadius={radii.xxxxs}>
+      <Box
+        as="section"
+        bg={[colors.primaryBackground, colors.primaryLight]}
+        borderRadius={radii.xxxxs}
+      >
         <Flex
           display={["none", "flex"]}
           justifyContent="space-between"
@@ -202,6 +208,30 @@ export default function StreamAboutSection({
           </Flex>
         </Box>
       </Box>
+
+      <Flex
+        display={["flex", "none"]}
+        gridGap={space.xxxs}
+        px={space.xxxs}
+        py={space.xxxxs}
+      >
+        <Button
+          variant="dark-flat"
+          flex={1}
+          label="Share Stream"
+          suffixElement={<Icon icon="Share" />}
+          onClick={() => {
+            setShowShareSheet(true);
+          }}
+        />
+        <Button
+          variant="dark-flat"
+          flex={1}
+          label="Live Chat"
+          suffixElement={<Icon icon="Chat" />}
+          onClick={onClickChatPanelMobile}
+        />
+      </Flex>
 
       <AboutCreatorBottomSheet
         stream={stream}

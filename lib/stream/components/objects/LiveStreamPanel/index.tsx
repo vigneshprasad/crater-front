@@ -118,7 +118,7 @@ export default function LiveStreamPanel({
   return (
     <Grid
       gridTemplateRows={["max-content 1fr"]}
-      bg={colors.primaryBackground}
+      bg={["transparent", colors.primaryBackground]}
       position="relative"
       borderLeft={`1px solid ${colors.primaryLight}`}
     >
