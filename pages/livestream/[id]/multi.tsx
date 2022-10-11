@@ -1,4 +1,6 @@
 import { GetServerSideProps } from "next";
+import { Session } from "next-auth";
+import { getSession } from "next-auth/client";
 import { ParsedUrlQuery } from "querystring";
 
 import dynamic from "next/dynamic";
@@ -23,6 +25,7 @@ interface IProps {
   multistream: MultiStream | null;
   id: number;
   orgId: string;
+  session: Session | null;
 }
 
 export const getServerSideProps: GetServerSideProps<IProps, IParams> = async (
@@ -32,6 +35,7 @@ export const getServerSideProps: GetServerSideProps<IProps, IParams> = async (
   const { id } = params as IParams;
   const [webinar] = await WebinarApiClient().getWebinar(id);
   const [multistream] = await MultiStreamApiClient().getSquadForGroup(id);
+  const session = await getSession(props);
 
   if (!webinar) {
     return {
@@ -40,12 +44,24 @@ export const getServerSideProps: GetServerSideProps<IProps, IParams> = async (
   }
   const orgId = process.env.DYTE_ORG_ID as string;
 
+  const isHost = session?.user?.pk === webinar.host_detail.pk;
+
+  if (isHost) {
+    return {
+      redirect: {
+        destination: `/livestream/${id}`,
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       id: parseInt(id, 10),
       multistream: multistream ? multistream : null,
       webinar,
       orgId,
+      session,
     },
   };
 };

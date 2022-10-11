@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import { Session } from "next-auth";
 import { getSession } from "next-auth/client";
 import { ParsedUrlQuery } from "querystring";
 
@@ -31,6 +32,7 @@ interface WebinarPageProps {
   webinar: WebinarType;
   rewards: Reward[];
   multistream: MultiStream | null;
+  session: Session | null;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -74,6 +76,7 @@ export const getServerSideProps: GetServerSideProps<
       webinar,
       rewards: rewards ?? [],
       multistream: multistream ? multistream : null,
+      session,
     },
   };
 };

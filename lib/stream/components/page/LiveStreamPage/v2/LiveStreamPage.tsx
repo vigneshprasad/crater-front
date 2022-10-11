@@ -52,6 +52,8 @@ export function LiveStreamPage({
 
   const creator = cachedWebinar?.host_detail.creator_detail;
 
+  const isHost = cachedWebinar?.host_detail.pk === user?.pk;
+
   const followCreator = async (): Promise<void> => {
     if (creator) {
       await subscribeCreator(creator.id);
@@ -111,21 +113,25 @@ export function LiveStreamPage({
                 );
               }
 
-              return (
-                <DyteWebinarProvider id={streamId.toString()}>
-                  <StreamDytePlayer stream={cachedWebinar} orgId={orgId} />
-                </DyteWebinarProvider>
-              );
+              if (user) {
+                return (
+                  <DyteWebinarProvider id={streamId.toString()}>
+                    <StreamDytePlayer stream={cachedWebinar} orgId={orgId} />
+                  </DyteWebinarProvider>
+                );
+              }
+              return null;
             })()}
           </>
         ),
-        controlBar: multistream ? (
-          <MultiStreamControlBar
-            multistream={multistream}
-            active={multiStreamMode}
-            onChange={onClickMultiStreamToggle}
-          />
-        ) : null,
+        controlBar:
+          multistream && !isHost ? (
+            <MultiStreamControlBar
+              multistream={multistream}
+              active={multiStreamMode}
+              onChange={onClickMultiStreamToggle}
+            />
+          ) : null,
         streamDetail: (
           <StreamAboutSection
             followers={followers}
