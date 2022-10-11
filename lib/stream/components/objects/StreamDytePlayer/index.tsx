@@ -1,8 +1,6 @@
 import backgroundModule from "@dytesdk/background-changer-module";
-import { Meeting } from "dyte-client";
+import { Meeting, DyteMeeting } from "dyte-client";
 import { useCallback, useEffect, useRef } from "react";
-
-import dynamic from "next/dynamic";
 
 import useAuth from "@/auth/context/AuthContext";
 import { Box, Shimmer } from "@/common/components/atoms";
@@ -10,11 +8,6 @@ import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import { Webinar } from "@/community/types/community";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
-
-const DyteMeeting = dynamic(
-  import("dyte-client").then((r) => r.DyteMeeting),
-  { ssr: false }
-);
 
 interface IProps {
   stream?: Webinar;
