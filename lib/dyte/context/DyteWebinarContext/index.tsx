@@ -45,6 +45,12 @@ export function DyteWebinarProvider({
     }
   );
 
+  useEffect(() => {
+    if (user?.apiToken && !dyteParticipant) {
+      mutate();
+    }
+  }, [user, dyteParticipant, mutate]);
+
   const value = useMemo(
     () => ({
       dyteParticipant,
@@ -53,12 +59,6 @@ export function DyteWebinarProvider({
     }),
     [dyteParticipant, error]
   );
-
-  useEffect(() => {
-    if (user?.apiToken && !dyteParticipant) {
-      mutate();
-    }
-  }, [user, dyteParticipant, mutate]);
 
   return <DyteWebinarContext.Provider value={value} {...rest} />;
 }

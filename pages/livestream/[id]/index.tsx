@@ -19,7 +19,8 @@ import CreatorApiClient from "@/creators/api";
 import { Reward } from "@/tokens/types/token";
 
 const LiveStreamPage = dynamic(
-  () => import("@/stream/components/page/LiveStreamPage/v2")
+  () => import("@/stream/components/page/LiveStreamPage/v2"),
+  { ssr: false }
 );
 
 interface IParams extends ParsedUrlQuery {
