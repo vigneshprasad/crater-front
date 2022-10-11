@@ -3,6 +3,7 @@ import { forwardRef, useEffect, useMemo } from "react";
 import { Grid, Box, BoxProps } from "@/common/components/atoms";
 import AppNavbar from "@/common/components/objects/AppNavBar/v2";
 import Banner from "@/common/components/objects/Banner";
+import { PageRoutes } from "@/common/constants/route.constants";
 
 type IBaseLayoutProps = BoxProps & {
   aside?: React.ReactNode;
@@ -68,10 +69,7 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
         >
           <AppNavbar />
           {aside && <Box gridArea="aside">{aside}</Box>}
-          <Banner
-            content="Registration is open now: Encrypt 2022 Hackathon!"
-            link="https://encrypt.crater.club/"
-          />
+          <Banner content="Encrypt 2022: Explore now!" link="/encrypt-2022" />
           {/* <Banner
             content="Become A Streamer: Find Out How! ⚡️📺"
             link="https://calendly.com/craterclub/become-a-streamer-find-out-how?month=2022-09"
