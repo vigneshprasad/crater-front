@@ -43,7 +43,7 @@ export default function EncryptHackathon({ category }: Props): JSX.Element {
       }}
     >
       <UpcomingStreamsProvider category={category} pageSize={8}>
-        <PastStreamsWithRecordingProvider pageSize={4}>
+        <PastStreamsWithRecordingProvider category={category} pageSize={4}>
           <EncryptHackathonPage />
         </PastStreamsWithRecordingProvider>
       </UpcomingStreamsProvider>
