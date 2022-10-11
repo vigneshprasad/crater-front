@@ -83,8 +83,6 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
     }
   };
 
-  console.log(categoryFollower);
-
   return (
     <BaseLayout aside={<AsideNav />} overflowY="scroll">
       <Box px={[0, space.xxs]} pb={32}>
