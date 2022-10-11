@@ -3,22 +3,22 @@ export default function InfoFill(
 ): JSX.Element {
   return (
     <svg
-      width="20"
-      height="20"
+      width="1em"
+      height="1em"
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g clipPath="url(#clip0_5891_6442)">
+      <g clipPath="url(#info-fill_svg__clip0_5891_6442)">
         <path
-          d="M10 18.3346C5.39752 18.3346 1.66669 14.6038 1.66669 10.0013C1.66669 5.3988 5.39752 1.66797 10 1.66797C14.6025 1.66797 18.3334 5.3988 18.3334 10.0013C18.3334 14.6038 14.6025 18.3346 10 18.3346ZM9.16669 9.16797V14.168H10.8334V9.16797H9.16669ZM9.16669 5.83464V7.5013H10.8334V5.83464H9.16669Z"
-          fill="currentColor"
+          d="M10 18.335a8.333 8.333 0 110-16.667 8.333 8.333 0 110 16.667zm-.833-9.167v5h1.666v-5H9.167zm0-3.333V7.5h1.666V5.835H9.167z"
+          fill="#98ABF9"
         />
       </g>
       <defs>
-        <clipPath id="clip0_5891_6442">
-          <rect width="20" height="20" fill="white" />
+        <clipPath id="info-fill_svg__clip0_5891_6442">
+          <path fill="#fff" d="M0 0h20v20H0z" />
         </clipPath>
       </defs>
     </svg>

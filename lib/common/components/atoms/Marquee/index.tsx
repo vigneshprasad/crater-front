@@ -1,7 +1,7 @@
 import { useTheme } from "styled-components";
 
 import { AnimatedBox } from "../Animated";
-import { Box } from "../System/Box";
+import { Box, BoxProps } from "../System/Box";
 
 const marqueeVariants = {
   animate: {
@@ -17,11 +17,11 @@ const marqueeVariants = {
   },
 };
 
-export type IMarqueeProps = {
+export type IMarqueeProps = BoxProps & {
   children?: React.ReactNode | React.ReactNode[];
 };
 
-export function Marquee({ children }: IMarqueeProps): JSX.Element {
+export function Marquee({ children, ...rest }: IMarqueeProps): JSX.Element {
   const { space, colors } = useTheme();
   return (
     <Box
@@ -29,6 +29,7 @@ export function Marquee({ children }: IMarqueeProps): JSX.Element {
       py={space.xxxs}
       position="relative"
       overflowX="hidden"
+      {...rest}
     >
       <AnimatedBox variants={marqueeVariants} animate="animate">
         {children}
