@@ -1,7 +1,11 @@
+import STATIC_IMAGES from "public/images";
+import { useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 import useSWR from "swr";
 
-import { Box, Grid, Text } from "@/common/components/atoms";
+import Image from "next/image";
+
+import { Box, Grid, Marquee, Text } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import Footer from "@/common/components/objects/Footer";
@@ -33,6 +37,90 @@ export default function EncryptHackathonPage(): JSX.Element {
     API_URL_CONSTANTS.stream.retrieveCategory("hackers")
   );
 
+  const sponsors = useMemo<
+    {
+      name: string;
+      image: StaticImageData;
+      width: number;
+      height: number;
+    }[]
+  >(() => {
+    return [
+      {
+        name: "OG Club DAO",
+        image: STATIC_IMAGES.ImageOgClubDao,
+        width: 28,
+        height: 50,
+      },
+      {
+        name: "Builders Tribe",
+        image: STATIC_IMAGES.ImageBuildersTribe,
+        width: 82,
+        height: 42,
+      },
+      {
+        name: "Solgirls",
+        image: STATIC_IMAGES.ImageSolgirls,
+        width: 38,
+        height: 60,
+      },
+      {
+        name: "Metaschool",
+        image: STATIC_IMAGES.ImageMetaschool,
+        width: 165,
+        height: 28,
+      },
+      {
+        name: "Fueler",
+        image: STATIC_IMAGES.ImageFuelers,
+        width: 134,
+        height: 36,
+      },
+      {
+        name: "Hack2Skill",
+        image: STATIC_IMAGES.ImageHack2Skill,
+        width: 92,
+        height: 34,
+      },
+      {
+        name: "Blockchain Bulls",
+        image: STATIC_IMAGES.ImageBlockchainBulls,
+        width: 124,
+        height: 46,
+      },
+      {
+        name: "Emissary",
+        image: STATIC_IMAGES.ImageEmissary,
+        width: 88,
+        height: 55,
+      },
+      {
+        name: "Xenon Labs",
+        image: STATIC_IMAGES.ImageXenonLabs,
+        width: 110,
+        height: 34,
+      },
+    ];
+  }, []);
+
+  const sponsorsLine1 = (
+    <Grid
+      py={[0, space.xxs]}
+      gridAutoFlow="column"
+      gridTemplateColumns="repeat(auto-fit, 1fr)"
+      placeItems="center"
+      gridGap={isMobile ? space.s : space.xxxxxs}
+    >
+      {sponsors
+        .slice(0, isMobile ? sponsors.length : 6)
+        .map(({ name, image, width, height }, index) => (
+          <Box w={width} h={height} position="relative" key={index}>
+            <Image src={image} alt={name} layout="fill" />
+          </Box>
+        ))}
+    </Grid>
+  );
+
   return (
     <StyledBaseLayout aside={<AsideNav />} overflowY="scroll">
       <Grid
@@ -41,6 +129,35 @@ export default function EncryptHackathonPage(): JSX.Element {
         gridGap={space.xxs}
       >
         <HackathonPageHeader pastStreams={pastStreams} />
+
+        <Box mx="auto" w={1000} pb={[0, space.s]}>
+          {isMobile ? (
+            <Marquee py={0} bg={colors.primaryBackground}>
+              {sponsorsLine1}
+            </Marquee>
+          ) : (
+            <>
+              {sponsorsLine1}
+              <Grid
+                mx="auto"
+                w={500}
+                py={space.xxs}
+                gridAutoFlow="column"
+                gridTemplateColumns="repeat(auto-fit, 1fr)"
+                placeItems="center"
+                gridGap={space.xxxxxs}
+              >
+                {sponsors
+                  .slice(6)
+                  .map(({ name, image, width, height }, index) => (
+                    <Box w={width} h={height} position="relative" key={index}>
+                      <Image src={image} alt={name} layout="fill" />
+                    </Box>
+                  ))}
+              </Grid>
+            </>
+          )}
+        </Box>
 
         <Box justifySelf="center">
           <Text
