@@ -13,8 +13,7 @@ import MultiStreamApiClient from "@/community/api/MultiStreamApiClient";
 import { MultiStream, Webinar } from "@/community/types/community";
 
 const LiveStreamPage = dynamic(
-  () => import("@/stream/components/page/LiveStreamPage/v2"),
-  { ssr: false }
+  () => import("@/stream/components/page/LiveStreamPage/v2")
 );
 
 interface IParams extends ParsedUrlQuery {
