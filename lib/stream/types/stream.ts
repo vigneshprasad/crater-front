@@ -41,6 +41,13 @@ export interface SuggestedTopic {
   category: number;
 }
 
+export interface StreamUpvote {
+  id: number;
+  group: number;
+  user: string;
+  upvote: boolean;
+}
+
 export enum SortByField {
   TODAY = "today",
   THIS_WEEK = "this_week",
