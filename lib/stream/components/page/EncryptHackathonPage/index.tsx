@@ -129,7 +129,11 @@ export default function EncryptHackathonPage(): JSX.Element {
   );
 
   return (
-    <StyledBaseLayout aside={<AsideNav />} overflowY="scroll">
+    <StyledBaseLayout
+      aside={<AsideNav />}
+      overflowY="scroll"
+      overflowX="hidden"
+    >
       <Grid
         pb={space.m}
         gridTemplateColumns="minmax(0, 1fr)"
