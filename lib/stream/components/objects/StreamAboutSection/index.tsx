@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
+import { useRouter } from "next/router";
+
 import useAuth from "@/auth/context/AuthContext";
 import {
   Box,
@@ -19,10 +21,11 @@ import ExpandingText from "@/common/components/objects/ExpandingText";
 import HeadingDivider from "@/common/components/objects/HeadingDivider";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
-import { Follower, Webinar } from "@/community/types/community";
+import { Follower, MultiStream, Webinar } from "@/community/types/community";
 
 import AboutCreatorBottomSheet from "../AboutCreatorBottomSheet";
 import ShareStreamBottomSheet from "../ShareStreamBottomSheet";
+import StreamHLSPlayer from "../StreamHLSPlayer";
 
 interface IProps {
   stream?: Webinar;
@@ -31,6 +34,8 @@ interface IProps {
   hideShareIcon?: boolean;
   onFollow: () => void;
   onClickChatPanelMobile?: () => void;
+  multiStreamMode?: boolean;
+  multistream?: MultiStream;
 }
 
 export default function StreamAboutSection({
@@ -39,8 +44,11 @@ export default function StreamAboutSection({
   followersLoading,
   hideShareIcon,
   onClickChatPanelMobile,
+  multiStreamMode = false,
+  multistream,
   onFollow,
-}: IProps): JSX.Element {
+}: IProps): JSX.Element | null {
+  const router = useRouter();
   const { colors, space, radii, breakpoints } = useTheme();
   const [showAboutSheet, setShowAboutSheet] = useState(false);
   const [showShareSheet, setShowShareSheet] = useState(false);
@@ -52,6 +60,8 @@ export default function StreamAboutSection({
   }
 
   const { topic_detail, host_detail } = stream;
+
+  if (isMobile === undefined) return null;
 
   return (
     <>
@@ -80,6 +90,29 @@ export default function StreamAboutSection({
               {topic_detail.description}
             </ExpandingText>
           )}
+          {isMobile && multiStreamMode && multistream && stream && (
+            <Flex overflowY="auto" gridGap={space.xxxxs} py={space.xxxs}>
+              {multistream.streams
+                .filter((obj) => obj !== stream.id)
+                .map((id) => {
+                  return (
+                    <StreamHLSPlayer
+                      autoPlay
+                      muted
+                      w="152"
+                      h="86"
+                      streamId={id}
+                      key={id}
+                      onClick={() => {
+                        stream &&
+                          router.push(PageRoutes.multistream(stream.id));
+                      }}
+                    />
+                  );
+                })}
+            </Flex>
+          )}
+
           <HeadingDivider label="Speaker" />
           <Grid
             gridTemplateColumns="max-content 1fr max-content"

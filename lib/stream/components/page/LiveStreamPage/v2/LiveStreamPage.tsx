@@ -17,6 +17,7 @@ import MultiStreamPlayer from "@/stream/components/objects/MultiStreamPlayer";
 import PastStreamsList from "@/stream/components/objects/PastStreamsList/v2";
 import StreamAboutSection from "@/stream/components/objects/StreamAboutSection";
 import StreamDytePlayer from "@/stream/components/objects/StreamDytePlayer";
+import StreamHLSPlayer from "@/stream/components/objects/StreamHLSPlayer";
 import StreamShareSection from "@/stream/components/objects/StreamShareSection";
 import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
 
@@ -37,7 +38,7 @@ export function LiveStreamPage({
   orgId,
   onClickMultiStreamToggle,
 }: PageProps): JSX.Element {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const router = useRouter();
   const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
   const [visiblePanelMobile, setVisiblePanelMobile] = useState(false);
@@ -95,9 +96,14 @@ export function LiveStreamPage({
         streamPlayer: (
           <>
             {(() => {
-              if (!user && user === undefined) {
+              if (!user || user === undefined || !profile) {
                 return <Shimmer pt="56.25%" w="100%" />;
               }
+
+              const isCreator = user.pk === stream.host;
+              const isHack2Skill = profile.groups.filter(
+                (group) => group.name === "hack2skill-user"
+              )[0];
 
               if (multiStreamMode && multistream) {
                 return (
@@ -111,6 +117,10 @@ export function LiveStreamPage({
                     }}
                   />
                 );
+              }
+
+              if (!isCreator && isHack2Skill) {
+                return <StreamHLSPlayer streamId={streamId} />;
               }
 
               return (
@@ -131,6 +141,8 @@ export function LiveStreamPage({
           ) : null,
         streamDetail: (
           <StreamAboutSection
+            multiStreamMode={multiStreamMode}
+            multistream={multistream}
             followers={followers}
             stream={cachedWebinar ?? stream}
             followersLoading={followersLoading || loading}
