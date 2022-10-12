@@ -35,7 +35,7 @@ export default function EncryptHackathonPage(): JSX.Element {
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   const { data: category } = useSWR<StreamCategory>(
-    API_URL_CONSTANTS.stream.retrieveCategory("hackers")
+    API_URL_CONSTANTS.stream.retrieveCategory("hacking")
   );
 
   const scrollToStreams = useCallback(() => {
