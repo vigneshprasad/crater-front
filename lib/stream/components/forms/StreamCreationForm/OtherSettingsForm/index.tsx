@@ -22,7 +22,7 @@ export default function OtherSettingsForm({
   const { space, colors, radii } = useTheme();
 
   return (
-    <Box>
+    <Box pb={space.xxs}>
       <Text textStyle="formLabel" fontWeight={400}>
         Stream everywhere, at once!
       </Text>
@@ -109,19 +109,25 @@ export default function OtherSettingsForm({
             YouTube Studio
           </Span>
           .{" "}
-          <Span pt={space.xxs}>
-            <Flex alignItems="center" gridGap={space.xxxxxs}>
-              <Text
-                textStyle="captionLarge"
-                lineHeight="2.1rem"
-                color={colors.textTertiary}
-              >
-                For more help on RTMP URL,{" "}
-                <Span color={colors.accentLight}>visit this link</Span>
-              </Text>
-              <Icon icon="PopOut" size={14} color={colors.accentLight} />
-            </Flex>
-          </Span>
+          <a
+            href="https://www.youtube.com/watch?v=SlDjnRCaLoQ"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Span pt={space.xxs}>
+              <Flex alignItems="center" gridGap={space.xxxxxs}>
+                <Text
+                  textStyle="captionLarge"
+                  lineHeight="2.1rem"
+                  color={colors.textTertiary}
+                >
+                  For more help on RTMP URL,{" "}
+                  <Span color={colors.accentLight}>visit this link</Span>
+                </Text>
+                <Icon icon="PopOut" size={14} color={colors.accentLight} />
+              </Flex>
+            </Span>
+          </a>
         </Text>
       </Box>
     </Box>

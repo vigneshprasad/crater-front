@@ -107,7 +107,7 @@ export default function BasicDetailsForm({
               </Text>
             </Box>
           </Flex>
-          {!suggestedTopics ? (
+          {suggestedTopics === undefined ? (
             <Shimmer w="100%" h={164} borderRadius={radii.xxxxs} />
           ) : (
             <CustomBox
