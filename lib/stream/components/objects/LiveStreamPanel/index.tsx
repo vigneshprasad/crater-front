@@ -18,7 +18,6 @@ import {
 import { Button } from "@/common/components/atoms/v2";
 import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
 import ContainerModal from "@/common/components/objects/ContainerModal";
-import { INotificationData } from "@/common/components/objects/NotificationStack/types";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { ChallengeListProvider } from "@/leaderboard/context/ChallegeListContext";
 import { LeaderboardListProvider } from "@/leaderboard/context/LeaderboardListContext";
@@ -71,13 +70,14 @@ export default function LiveStreamPanel({
   const { space, colors } = useTheme();
   const { webinar } = useWebinar();
   const router = useRouter();
-  const { socket } = useSystemSocket();
+  const { notificatiions, setNotifications } = useSystemSocket();
 
   const acceptSale = async (): Promise<void> => {
     if (purchaseRequest) {
       await SaleApiClient().postSaleLogAccept(purchaseRequest.id);
       setVisibleModal(false);
       setPurchaseRequest(undefined);
+      setNotifications([]);
     }
   };
 
@@ -86,6 +86,7 @@ export default function LiveStreamPanel({
       await SaleApiClient().postSaleLogDecline(purchaseRequest.id);
       setVisibleModal(false);
       setPurchaseRequest(undefined);
+      setNotifications([]);
     }
   };
 
@@ -101,23 +102,14 @@ export default function LiveStreamPanel({
   }, [router, setActiveTab]);
 
   useEffect(() => {
-    const socketRef = socket.current;
-    const eventHandler = (data: INotificationData): void => {
-      console.log(data);
-      if (data.type === "creator-sale-request") {
-        setPurchaseRequest(data.data);
+    if (notificatiions.length > 1) {
+      const notification = notificatiions[0];
+      if (notification.type === "creator-sale-request") {
+        setPurchaseRequest(notification.data);
         setVisibleModal(true);
       }
-    };
-
-    if (socketRef !== null) {
-      socketRef.on("user:notification", eventHandler);
     }
-
-    return () => {
-      socketRef?.off("user:notification", eventHandler);
-    };
-  }, [socket]);
+  }, [notificatiions]);
 
   if (!webinar) {
     return <Shimmer h="100%" w="100%" />;

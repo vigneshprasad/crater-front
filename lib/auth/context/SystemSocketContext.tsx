@@ -1,6 +1,8 @@
 import {
   createContext,
+  Dispatch,
   MutableRefObject,
+  SetStateAction,
   useContext,
   useEffect,
   useMemo,
@@ -20,6 +22,8 @@ import useAuth from "./AuthContext";
 interface ISystemSocketContextState {
   permission?: UserPermission;
   socket: MutableRefObject<Socket | null>;
+  notificatiions: INotificationData[];
+  setNotifications: Dispatch<SetStateAction<INotificationData[]>>;
 }
 
 const SystemSocketContext = createContext({} as ISystemSocketContextState);
@@ -34,6 +38,7 @@ export function SystemSocketProvider({
   const { user } = useAuth();
   const { colors } = useTheme();
   const socket = useRef<Socket | null>(null);
+  const [notificatiions, setNotifications] = useState<INotificationData[]>([]);
   const [permission, setPermission] = useState<UserPermission | undefined>(
     undefined
   );
@@ -62,6 +67,13 @@ export function SystemSocketProvider({
       socket.current.on("user-permission:updated", (data: UserPermission) => {
         setPermission(data);
       });
+
+      socket.current.on(
+        "user:notification",
+        (data: INotificationData): void => {
+          setNotifications([data]);
+        }
+      );
 
       socket.current.on("user:notification", (data: INotificationData) => {
         switch (data.type) {
@@ -109,8 +121,8 @@ export function SystemSocketProvider({
   }, [socket, user, setPermission, colors, showNotification]);
 
   const value = useMemo(
-    () => ({ permission, socket: socket }),
-    [permission, socket]
+    () => ({ permission, socket: socket, notificatiions, setNotifications }),
+    [permission, socket, notificatiions, setNotifications]
   );
 
   return (
