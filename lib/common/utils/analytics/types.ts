@@ -41,4 +41,5 @@ export enum AnalyticsEvents {
   first_time_rsvp = "web_first_time_rsvp",
   web3_landing_get_otp_clicked = "web3_landing_get_otp_clicked",
   web3_landing_phone_verified = "web3_landing_phone_verified",
+  upvote_stream_clicked = "web_upvote_stream_clicked",
 }

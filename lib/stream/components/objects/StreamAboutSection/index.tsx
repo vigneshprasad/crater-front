@@ -30,6 +30,7 @@ interface IProps {
   followersLoading: boolean;
   hideShareIcon?: boolean;
   onFollow: () => void;
+  onUpvote?: (webinar: Webinar) => void;
 }
 
 export default function StreamAboutSection({
@@ -38,6 +39,7 @@ export default function StreamAboutSection({
   followersLoading,
   hideShareIcon,
   onFollow,
+  onUpvote,
 }: IProps): JSX.Element {
   const { colors, space, radii, breakpoints } = useTheme();
   const [showAboutSheet, setShowAboutSheet] = useState(false);
@@ -49,7 +51,7 @@ export default function StreamAboutSection({
     return <Box>Loading...</Box>;
   }
 
-  const { topic_detail, host_detail } = stream;
+  const { topic_detail, host_detail, upvote, upvotes } = stream;
 
   return (
     <>
@@ -57,12 +59,81 @@ export default function StreamAboutSection({
         <Flex
           display={["none", "flex"]}
           justifyContent="space-between"
-          p={[space.xxxs, space.xxs]}
+          px={[space.xxxs, space.xxs]}
+          py={[space.xxxs, space.xxxxs]}
           background={colors.primaryDark}
         >
-          <Text textStyle="cardHeader" color={colors.textSecondary}>
+          <Text
+            textStyle="cardHeader"
+            alignSelf="center"
+            color={colors.textSecondary}
+          >
             About the stream
           </Text>
+
+          {(() => {
+            if (user) {
+              if (user.pk !== host_detail.pk) {
+                return (
+                  <Button
+                    h={38}
+                    variant="upvote"
+                    label="Upvote"
+                    suffixElement={
+                      <Flex gridGap={space.xxxxs} alignItems="center">
+                        <Box
+                          w={4}
+                          h={4}
+                          bg={colors.textQuartenary}
+                          borderRadius="50%"
+                        />
+                        <Flex gridGap={space.xxxxxs} alignItems="center">
+                          <Text
+                            textStyle="captionLarge"
+                            color={
+                              upvote ? colors.green[0] : colors.textPrimary
+                            }
+                          >
+                            {upvotes}
+                          </Text>
+                          <Icon
+                            icon="Upvote"
+                            size={12}
+                            color={
+                              upvote ? colors.green[0] : colors.textPrimary
+                            }
+                          />
+                        </Flex>
+                      </Flex>
+                    }
+                    textProps={{
+                      textStyle: "captionLarge",
+                      color: upvote ? colors.green[0] : colors.textPrimary,
+                    }}
+                    onClick={() => onUpvote && onUpvote(stream)}
+                  />
+                );
+              }
+
+              return (
+                <Flex gridGap={space.xxxxs} alignItems="center">
+                  <Text textStyle="captionLarge">Upvotes</Text>
+                  <Box
+                    w={4}
+                    h={4}
+                    bg={colors.textQuartenary}
+                    borderRadius="50%"
+                  />
+                  <Flex gridGap={space.xxxxxs} alignItems="center">
+                    <Text textStyle="captionLarge">{upvotes}</Text>
+                    <Icon icon="Upvote" size={12} />
+                  </Flex>
+                </Flex>
+              );
+            }
+
+            return null;
+          })()}
         </Flex>
 
         <Box px={[space.xxxs, space.xxs]} py={[space.xxxxs, space.xxs]}>
@@ -186,6 +257,48 @@ export default function StreamAboutSection({
                 }}
               />
             )}
+
+            {(() => {
+              if (user) {
+                if (user.pk !== host_detail.pk) {
+                  return (
+                    <Button
+                      alignSelf="center"
+                      variant="upvote"
+                      display={["grid", "none"]}
+                      label={`${upvotes}`}
+                      alignItems="center"
+                      suffixElement={
+                        <Icon
+                          icon="Upvote"
+                          size={10}
+                          color={upvote ? colors.green[0] : colors.textPrimary}
+                        />
+                      }
+                      gridProps={{ gridGap: space.xxxxxs }}
+                      textProps={{
+                        textStyle: "captionLarge",
+                        color: upvote ? colors.green[0] : colors.textPrimary,
+                      }}
+                      onClick={() => onUpvote && onUpvote(stream)}
+                    />
+                  );
+                }
+
+                return (
+                  <Flex
+                    display={["grid", "none"]}
+                    gridGap={space.xxxxxs}
+                    alignItems="center"
+                  >
+                    <Text textStyle="captionLarge">{upvotes}</Text>
+                    <Icon icon="Upvote" size={10} />
+                  </Flex>
+                );
+              }
+
+              return null;
+            })()}
           </Grid>
 
           <Flex

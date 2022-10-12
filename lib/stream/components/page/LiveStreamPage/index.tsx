@@ -53,7 +53,7 @@ type IProps = {
 
 export function Content({ webinar, orgId }: IProps): JSX.Element {
   const { user } = useAuth();
-  const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
+  const { webinar: cachedWebinar, mutateWebinar, upvoteWebinar } = useWebinar();
   const { dyteParticipant } = useDyteWebinar();
   const { borders } = useTheme();
   const { setTokenModalVisible, tokenModalVisible, activeReward } =
@@ -78,6 +78,20 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
         display_name: "Follow Update",
       };
       postMessage(message);
+    }
+  };
+
+  const upvoteStream = async (webinar: Webinar): Promise<void> => {
+    if (user) {
+      const streamUpvote = await upvoteWebinar(webinar);
+
+      if (streamUpvote && streamUpvote.upvote) {
+        const message = {
+          message: `${user?.name} just upvoted ${cachedWebinar?.host_detail.name}'s channel.`,
+          display_name: "Upvote Update",
+        };
+        postMessage(message);
+      }
     }
   };
 
@@ -110,6 +124,7 @@ export function Content({ webinar, orgId }: IProps): JSX.Element {
           stream={cachedWebinar ?? webinar}
           followersLoading={followersLoading || loading}
           onFollow={() => followCreator()}
+          onUpvote={upvoteStream}
         />
       }
       shareSection={<StreamShareSection stream={cachedWebinar} />}
