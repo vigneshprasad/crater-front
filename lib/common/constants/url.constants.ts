@@ -110,6 +110,8 @@ export const API_URL_CONSTANTS = {
     streamsToRsvp: "/groups/conversations/webinars/suggested/",
     generateCoverPhoto:
       "https://84wp6p3fi7.execute-api.ap-south-1.amazonaws.com/test",
+    upvoteStream: (group: number): string =>
+      `/groups/conversations/webinars/${group}/upvote/`,
   },
   rewards: {
     rewardsList: "/crater/reward/",

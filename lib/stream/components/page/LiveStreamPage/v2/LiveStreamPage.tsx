@@ -7,7 +7,7 @@ import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
 import { Shimmer } from "@/common/components/atoms";
 import { useWebinar } from "@/community/context/WebinarContext";
-import { MultiStream } from "@/community/types/community";
+import { MultiStream, Webinar } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
 import UpcomingStreamsList from "@/stream/components//objects/UpcomingStreamsList";
@@ -40,8 +40,8 @@ export function LiveStreamPage({
 }: PageProps): JSX.Element {
   const { user, profile } = useAuth();
   const router = useRouter();
-  const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
   const [visiblePanelMobile, setVisiblePanelMobile] = useState(false);
+  const { webinar: cachedWebinar, mutateWebinar, upvoteWebinar } = useWebinar();
   const [loading, setLoading] = useState(false);
   const { openModal } = useAuthModal();
   const {
@@ -81,6 +81,20 @@ export function LiveStreamPage({
       checkAuth();
     }
   }, [router, openModal, user]);
+
+  const upvoteStream = async (webinar: Webinar): Promise<void> => {
+    if (user) {
+      const streamUpvote = await upvoteWebinar(webinar);
+
+      if (streamUpvote && streamUpvote.upvote) {
+        const message = {
+          message: `${user?.name} just upvoted ${cachedWebinar?.host_detail.name}'s channel.`,
+          display_name: "Upvote Update",
+        };
+        postMessage(message);
+      }
+    }
+  };
 
   return (
     <MultiLiveStreamPageLayout
@@ -152,6 +166,7 @@ export function LiveStreamPage({
             onClickChatPanelMobile={() => {
               setVisiblePanelMobile(true);
             }}
+            onUpvote={upvoteStream}
           />
         ),
         shareSection: <StreamShareSection stream={cachedWebinar} />,

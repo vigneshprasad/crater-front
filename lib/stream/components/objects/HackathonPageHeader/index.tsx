@@ -70,8 +70,6 @@ export default function HackathonPageHeader({
     />
   );
 
-  console.log(pastStreams);
-
   return (
     <Grid
       px={[0, space.xxs]}
@@ -157,7 +155,7 @@ export default function HackathonPageHeader({
               {videoGradient}
               {pastStreams.length > 0 && (
                 <Video
-                  src={`${pastStreams[activePastStreamIndex].recording_details?.recording}#t=20`}
+                  src={`${pastStreams[activePastStreamIndex].recording_details?.recording}#t=600`}
                   autoPlay
                   muted
                   loop
@@ -166,7 +164,7 @@ export default function HackathonPageHeader({
                   onTimeUpdate={() => {
                     if (
                       videoRef.current &&
-                      videoRef.current.currentTime >= 50
+                      videoRef.current.currentTime >= 625
                     ) {
                       switchPastStreamVideo();
                     }

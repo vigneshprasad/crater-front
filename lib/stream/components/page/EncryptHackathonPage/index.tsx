@@ -35,7 +35,7 @@ export default function EncryptHackathonPage(): JSX.Element {
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   const { data: category } = useSWR<StreamCategory>(
-    API_URL_CONSTANTS.stream.retrieveCategory("hackers")
+    API_URL_CONSTANTS.stream.retrieveCategory("hacking")
   );
 
   const scrollToStreams = useCallback(() => {
@@ -129,7 +129,11 @@ export default function EncryptHackathonPage(): JSX.Element {
   );
 
   return (
-    <StyledBaseLayout aside={<AsideNav />} overflowY="scroll">
+    <StyledBaseLayout
+      aside={<AsideNav />}
+      overflowY="scroll"
+      overflowX="hidden"
+    >
       <Grid
         pb={space.m}
         gridTemplateColumns="minmax(0, 1fr)"
