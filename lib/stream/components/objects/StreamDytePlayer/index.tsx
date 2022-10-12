@@ -67,6 +67,10 @@ export default function StreamDytePlayer({
         meeting.current.Events.participantJoin,
         participantJoinHandler
       );
+
+      meeting.current.on(meeting.current.Events.participantJoin, (data) => {
+        console.log(data);
+      });
     }
   }, [
     meeting,

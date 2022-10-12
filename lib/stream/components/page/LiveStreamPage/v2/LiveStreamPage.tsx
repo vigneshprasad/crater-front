@@ -120,7 +120,9 @@ export function LiveStreamPage({
               }
 
               if (!isCreator && isHack2Skill) {
-                return <StreamHLSPlayer streamId={streamId} />;
+                return (
+                  <StreamHLSPlayer streamId={streamId} autoPlay controls />
+                );
               }
 
               return (
