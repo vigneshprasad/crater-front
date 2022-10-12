@@ -170,13 +170,19 @@ export default function StreamAboutSection({
                     <StreamHLSPlayer
                       autoPlay
                       muted
-                      w="152"
-                      h="86"
+                      containerProps={{
+                        w: 152,
+                        h: 86,
+                      }}
                       streamId={id}
                       key={id}
                       onClick={() => {
                         stream &&
-                          router.push(PageRoutes.multistream(stream.id));
+                          router.push(
+                            PageRoutes.multistream(stream.id),
+                            undefined,
+                            { shallow: true }
+                          );
                       }}
                     />
                   );
