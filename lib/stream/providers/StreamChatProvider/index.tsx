@@ -28,7 +28,7 @@ export default function StreamChatProvider({
   const [viewerCount, setViewerCount] = useState<number | undefined>(undefined);
 
   useEffect(() => {
-    if (socket.current === null && id && user) {
+    if (socket.current === null && id && user?.apiToken) {
       socket.current = io(`${SOCKET_IO_BASE_URL}/chat`, {
         transports: ["websocket"],
         withCredentials: true,

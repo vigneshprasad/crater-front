@@ -101,14 +101,22 @@ export default function LiveStreamPanel({
   }, [router, setActiveTab]);
 
   useEffect(() => {
-    if (socket != null) {
-      socket.on("user:notification", (data: INotificationData) => {
-        if (data.type === "creator-sale-request") {
-          setPurchaseRequest(data.data);
-          setVisibleModal(true);
-        }
-      });
+    const socketRef = socket.current;
+    const eventHandler = (data: INotificationData): void => {
+      console.log(data);
+      if (data.type === "creator-sale-request") {
+        setPurchaseRequest(data.data);
+        setVisibleModal(true);
+      }
+    };
+
+    if (socketRef !== null) {
+      socketRef.on("user:notification", eventHandler);
     }
+
+    return () => {
+      socketRef?.off("user:notification", eventHandler);
+    };
   }, [socket]);
 
   if (!webinar) {
