@@ -50,10 +50,8 @@ export const getServerSideProps: GetServerSideProps<
 
   const user = session?.user;
   if (user && webinar.privacy === PrivacyType.private) {
-    console.log(user);
     const isUserAttendee = webinar.attendees?.indexOf(user.pk) > -1;
     const isUserSpeaker = webinar.speakers?.indexOf(user.pk) > -1;
-    console.log(isUserAttendee, isUserSpeaker);
     if (!isUserAttendee && !isUserSpeaker) {
       return {
         redirect: {

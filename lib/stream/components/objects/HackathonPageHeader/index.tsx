@@ -70,8 +70,6 @@ export default function HackathonPageHeader({
     />
   );
 
-  console.log(pastStreams);
-
   return (
     <Grid
       px={[0, space.xxs]}
