@@ -84,6 +84,7 @@ export default function MultiStreamPlayer({
 
   useEffect(() => {
     if (containerRef.current) {
+      console.log("lol");
       const { width } = containerRef.current.getBoundingClientRect();
 
       const largePrimaryWidth = 0.5 * width;
@@ -134,8 +135,6 @@ export default function MultiStreamPlayer({
       setHeight(height);
     }
   }, [containerRef, setVariants, setHeight, setWidth]);
-
-  if (isMobile === undefined) return null;
 
   if (isMobile) {
     return <StreamHLSPlayer autoPlay streamId={active} controls />;
