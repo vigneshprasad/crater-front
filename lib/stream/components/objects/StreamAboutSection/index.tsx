@@ -177,12 +177,9 @@ export default function StreamAboutSection({
                       streamId={id}
                       key={id}
                       onClick={() => {
-                        stream &&
-                          router.push(
-                            PageRoutes.multistream(stream.id),
-                            undefined,
-                            { shallow: true }
-                          );
+                        router.push(PageRoutes.multistream(id), undefined, {
+                          shallow: true,
+                        });
                       }}
                     />
                   );
