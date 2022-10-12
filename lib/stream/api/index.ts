@@ -10,6 +10,7 @@ import { StreamCategory } from "@/creators/types/stream";
 import {
   StreamQuestion,
   StreamQuestionUpvote,
+  StreamUpvote,
   UserCategory,
 } from "../types/stream";
 
@@ -40,6 +41,7 @@ interface IStreamApiClient {
   unfollowStreamCategory: (
     category: string
   ) => Promise<ApiResult<UserCategory, AxiosError>>;
+  upvoteStream: (group: number) => Promise<ApiResult<StreamUpvote, AxiosError>>;
 }
 
 export default function StreamApiClient(
@@ -170,6 +172,19 @@ export default function StreamApiClient(
     }
   }
 
+  async function upvoteStream(
+    group: number
+  ): Promise<ApiResult<StreamUpvote, AxiosError>> {
+    try {
+      const { data } = await API(context).post<StreamUpvote>(
+        API_URL_CONSTANTS.stream.upvoteStream(group)
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getPastStreams,
     getAllStreamCategories,
@@ -179,5 +194,6 @@ export default function StreamApiClient(
     postGroupQuestionUpvote,
     followStreamCategory,
     unfollowStreamCategory,
+    upvoteStream,
   };
 }

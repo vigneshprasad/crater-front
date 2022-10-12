@@ -77,6 +77,8 @@ export type Group = {
     recording: string;
     published_at: string;
   };
+  upvote: boolean;
+  upvotes: number;
 };
 
 export enum ParticpantType {

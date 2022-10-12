@@ -34,7 +34,8 @@ type Variants =
   | "flat-with-disabled-dark"
   | "payment-upi"
   | "payment-learn"
-  | "transparent-flat";
+  | "transparent-flat"
+  | "upvote";
 
 export type ButtonProps = GridProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -508,6 +509,20 @@ const StyledButton = styled(Grid)<ButtonProps>`
         borderColor: "accentLight",
         ":hover": {
           bg: "primaryLight",
+        },
+      },
+      upvote: {
+        px: "0.8em",
+        py: "0.4em",
+        bg: "primaryLight",
+        transition: "all 0.1s ease-in",
+        borderRadius: 4,
+        color: "textPrimary",
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: "secondaryLight",
+        ":hover": {
+          bg: "secondaryDark",
         },
       },
     },
