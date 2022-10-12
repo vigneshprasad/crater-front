@@ -30,7 +30,7 @@ interface IProps {
   followersLoading: boolean;
   hideShareIcon?: boolean;
   onFollow: () => void;
-  onUpvote: (webinar: Webinar) => void;
+  onUpvote?: (webinar: Webinar) => void;
 }
 
 export default function StreamAboutSection({
@@ -110,7 +110,7 @@ export default function StreamAboutSection({
                       textStyle: "captionLarge",
                       color: upvote ? colors.green[0] : colors.textPrimary,
                     }}
-                    onClick={() => onUpvote(stream)}
+                    onClick={() => onUpvote && onUpvote(stream)}
                   />
                 );
               }
@@ -280,7 +280,7 @@ export default function StreamAboutSection({
                         textStyle: "captionLarge",
                         color: upvote ? colors.green[0] : colors.textPrimary,
                       }}
-                      onClick={() => onUpvote(stream)}
+                      onClick={() => onUpvote && onUpvote(stream)}
                     />
                   );
                 }
