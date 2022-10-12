@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
-import { Shimmer } from "@/common/components/atoms";
+import { Shimmer, Box } from "@/common/components/atoms";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { MultiStream, Webinar } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
@@ -135,7 +135,20 @@ export function LiveStreamPage({
 
               if (!isCreator && isHack2Skill) {
                 return (
-                  <StreamHLSPlayer streamId={streamId} autoPlay controls />
+                  <Box pt="56.25%" position="relative">
+                    <StreamHLSPlayer
+                      containerProps={{
+                        position: "absolute",
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                      }}
+                      streamId={streamId}
+                      autoPlay
+                      controls
+                    />
+                  </Box>
                 );
               }
 
