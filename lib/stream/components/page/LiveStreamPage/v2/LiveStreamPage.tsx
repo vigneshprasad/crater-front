@@ -1,5 +1,6 @@
 import { getSession } from "next-auth/client";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 import { useRouter } from "next/router";
 
@@ -29,6 +30,11 @@ export interface PageProps extends ContainerProps {
   onClickMultiStreamToggle: (val: boolean) => void;
   orgId: string;
 }
+
+const HLSContainer = styled(Box)`
+  width: 100%;
+  aspect-ratio: 16 / 9;
+`;
 
 export function LiveStreamPage({
   stream,
@@ -135,7 +141,7 @@ export function LiveStreamPage({
 
               if (!isCreator && isHack2Skill) {
                 return (
-                  <Box pt="56.25%" position="relative">
+                  <HLSContainer p={[0, 8]} position="relative">
                     <StreamHLSPlayer
                       containerProps={{
                         position: "absolute",
@@ -148,7 +154,7 @@ export function LiveStreamPage({
                       autoPlay
                       controls
                     />
-                  </Box>
+                  </HLSContainer>
                 );
               }
 
