@@ -48,6 +48,11 @@ export interface StreamUpvote {
   upvote: boolean;
 }
 
+export interface UpvoteSummary {
+  upvotes: number;
+  upvote: boolean;
+}
+
 export enum SortByField {
   TODAY = "today",
   THIS_WEEK = "this_week",
