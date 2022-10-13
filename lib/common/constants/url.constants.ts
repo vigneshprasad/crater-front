@@ -112,6 +112,8 @@ export const API_URL_CONSTANTS = {
       "https://84wp6p3fi7.execute-api.ap-south-1.amazonaws.com/test",
     upvoteStream: (group: number): string =>
       `/groups/conversations/webinars/${group}/upvote/`,
+    retrieveUpvoteSummary: (group: number): string =>
+      `/groups/conversations/webinars/${group}/upvote_summary/`,
   },
   rewards: {
     rewardsList: "/crater/reward/",
