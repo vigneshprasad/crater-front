@@ -76,11 +76,13 @@ export default function StreamAboutSection({
           ...streamUpvote,
         });
 
-        const message = {
-          message: `${user?.name} just upvoted ${stream?.host_detail.name}'s channel.`,
-          display_name: "Upvote Update",
-        };
-        postMessage(message);
+        if (newUpvote) {
+          const message = {
+            message: `${user?.name} just upvoted ${stream?.host_detail.name}'s channel.`,
+            display_name: "Upvote Update",
+          };
+          postMessage(message);
+        }
       }
     }
   }, [user, stream, upvoteSummary, mutate, track, postMessage]);
