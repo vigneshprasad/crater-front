@@ -180,7 +180,7 @@ export default function EncryptHackathonPage(): JSX.Element {
             lineHeight="3.4rem"
             textAlign="center"
           >
-            Let the hacking begin!
+            48-hours of live Web3 talks, shows, games and more!
           </Text>
           <Text
             pt={[space.xxxxs, space.xxxs]}
@@ -190,8 +190,8 @@ export default function EncryptHackathonPage(): JSX.Element {
             color={colors.textQuartenary}
             textAlign="center"
           >
-            Stream, Chat, learn & stand to win Rs. 100,000 for building a
-            solution that leads us to a better world
+            Learn about building, investing and scaling Web3 with fun-filled
+            Live Shows!
           </Text>
         </Box>
 
