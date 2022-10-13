@@ -60,6 +60,7 @@ export function LiveStreamPage({
   const creator = cachedWebinar?.host_detail.creator_detail;
 
   const isHost = cachedWebinar?.host_detail.pk === user?.pk;
+  const isSpeaker = user && cachedWebinar?.speakers.includes(user.pk);
 
   const followCreator = async (): Promise<void> => {
     if (creator) {
@@ -120,10 +121,19 @@ export function LiveStreamPage({
                 return <Shimmer pt="56.25%" w="100%" />;
               }
 
+              const isSpeaker = stream.speakers.includes(user.pk);
               const isCreator = user.pk === stream.host;
               const isHack2Skill = profile.groups.filter(
                 (group) => group.name === "hack2skill-user"
               )[0];
+
+              if (isCreator || isSpeaker) {
+                return (
+                  <DyteWebinarProvider id={streamId.toString()}>
+                    <StreamDytePlayer stream={cachedWebinar} orgId={orgId} />
+                  </DyteWebinarProvider>
+                );
+              }
 
               if (multiStreamMode && multistream) {
                 return (
@@ -139,7 +149,7 @@ export function LiveStreamPage({
                 );
               }
 
-              if (!isCreator && isHack2Skill) {
+              if (isHack2Skill) {
                 return (
                   <HLSContainer p={[0, 8]} position="relative">
                     <StreamHLSPlayer
@@ -167,7 +177,7 @@ export function LiveStreamPage({
           </>
         ),
         controlBar:
-          multistream && !isHost ? (
+          multistream && !isHost && !isSpeaker ? (
             <MultiStreamControlBar
               multistream={multistream}
               active={multiStreamMode}
