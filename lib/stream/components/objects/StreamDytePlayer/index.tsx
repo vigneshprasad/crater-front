@@ -140,7 +140,15 @@ export default function StreamDytePlayer({
                 }}
               />
             </Box>
-            {meeting.current && <SimilarStreamsOverlay />}
+            {(() => {
+              if (!user || !stream) return null;
+              if (
+                !stream.speakers.includes(user.pk) &&
+                stream.host !== user.pk
+              ) {
+                return <SimilarStreamsOverlay />;
+              }
+            })()}
 
             {creator?.tokens_enabled && stream?.is_live && (
               <TokenBannerOverlay />
