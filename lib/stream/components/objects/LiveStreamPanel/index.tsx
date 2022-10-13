@@ -101,7 +101,6 @@ export default function LiveStreamPanel({
   }, [router, setActiveTab]);
 
   useEffect(() => {
-    const socketRef = socket.current;
     const eventHandler = (data: INotificationData): void => {
       console.log(data);
       if (data.type === "creator-sale-request") {
@@ -110,12 +109,12 @@ export default function LiveStreamPanel({
       }
     };
 
-    if (socketRef !== null) {
-      socketRef.on("user:notification", eventHandler);
+    if (socket !== null) {
+      socket.on("user:notification", eventHandler);
     }
 
     return () => {
-      socketRef?.off("user:notification", eventHandler);
+      socket?.off("user:notification", eventHandler);
     };
   }, [socket]);
 

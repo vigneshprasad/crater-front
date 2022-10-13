@@ -1,6 +1,5 @@
 import {
   createContext,
-  MutableRefObject,
   useContext,
   useEffect,
   useMemo,
@@ -19,7 +18,7 @@ import useAuth from "./AuthContext";
 
 interface ISystemSocketContextState {
   permission?: UserPermission;
-  socket: MutableRefObject<Socket | null>;
+  socket: Socket | null;
 }
 
 const SystemSocketContext = createContext({} as ISystemSocketContextState);
@@ -40,7 +39,8 @@ export function SystemSocketProvider({
   const { showNotification } = useNotifications();
 
   useEffect(() => {
-    if (socket.current === null && user?.apiToken) {
+    if (socket.current === null && user) {
+      console.log("connect");
       socket.current = io(SOCKET_IO_BASE_URL, {
         transports: ["websocket"],
         withCredentials: true,
@@ -109,7 +109,7 @@ export function SystemSocketProvider({
   }, [socket, user, setPermission, colors, showNotification]);
 
   const value = useMemo(
-    () => ({ permission, socket: socket }),
+    () => ({ permission, socket: socket.current }),
     [permission, socket]
   );
 
