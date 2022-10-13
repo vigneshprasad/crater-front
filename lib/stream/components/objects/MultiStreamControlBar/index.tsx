@@ -78,7 +78,7 @@ export default function MultiStreamControlBar({
 
       <Flex alignItems="center" gridGap={space.xxxxs}>
         <Toggle value={active} onChange={onChange} />
-        <Text>Multistream Mode</Text>
+        <Text>Multistream Beta</Text>
       </Flex>
     </Flex>
   );
