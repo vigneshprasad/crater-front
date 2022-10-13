@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTheme } from "styled-components";
+import useSWR from "swr";
 
 import useAuth from "@/auth/context/AuthContext";
 import {
@@ -18,8 +19,14 @@ import { IconButton } from "@/common/components/atoms/v2";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import HeadingDivider from "@/common/components/objects/HeadingDivider";
 import { PageRoutes } from "@/common/constants/route.constants";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import { Follower, Webinar } from "@/community/types/community";
+import StreamApiClient from "@/stream/api";
+import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
+import { UpvoteSummary } from "@/stream/types/stream";
 
 import AboutCreatorBottomSheet from "../AboutCreatorBottomSheet";
 import ShareStreamBottomSheet from "../ShareStreamBottomSheet";
@@ -30,7 +37,6 @@ interface IProps {
   followersLoading: boolean;
   hideShareIcon?: boolean;
   onFollow: () => void;
-  onUpvote?: (webinar: Webinar) => void;
 }
 
 export default function StreamAboutSection({
@@ -39,19 +45,53 @@ export default function StreamAboutSection({
   followersLoading,
   hideShareIcon,
   onFollow,
-  onUpvote,
 }: IProps): JSX.Element {
   const { colors, space, radii, breakpoints } = useTheme();
   const [showAboutSheet, setShowAboutSheet] = useState(false);
   const [showShareSheet, setShowShareSheet] = useState(false);
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
   const { user } = useAuth();
+  const { track } = useAnalytics();
+  const { postMessage } = useFirebaseChat();
+
+  const { data: upvoteSummary, mutate } = useSWR<UpvoteSummary>(
+    stream ? API_URL_CONSTANTS.stream.retrieveUpvoteSummary(stream.id) : null
+  );
+
+  const upvoteStream = useCallback(async () => {
+    if (user && stream && upvoteSummary) {
+      const [streamUpvote] = await StreamApiClient().upvoteStream(stream.id);
+      if (streamUpvote) {
+        const { upvotes: currentUpvotes } = upvoteSummary;
+
+        const newUpvote = streamUpvote.upvote;
+        const newUpvotes = newUpvote ? currentUpvotes + 1 : currentUpvotes - 1;
+
+        mutate({
+          upvote: newUpvote,
+          upvotes: newUpvotes,
+        });
+
+        track(AnalyticsEvents.upvote_stream_clicked, {
+          ...streamUpvote,
+        });
+
+        if (newUpvote) {
+          const message = {
+            message: `${user?.name} just upvoted ${stream?.host_detail.name}'s channel.`,
+            display_name: "Upvote Update",
+          };
+          postMessage(message);
+        }
+      }
+    }
+  }, [user, stream, upvoteSummary, mutate, track, postMessage]);
 
   if (!stream) {
     return <Box>Loading...</Box>;
   }
 
-  const { topic_detail, host_detail, upvote, upvotes } = stream;
+  const { topic_detail, host_detail } = stream;
 
   return (
     <>
@@ -72,6 +112,11 @@ export default function StreamAboutSection({
           </Text>
 
           {(() => {
+            if (!upvoteSummary) {
+              return <Shimmer w={138} h={38} borderRadius={radii.xxxxs} />;
+            }
+
+            const { upvotes, upvote } = upvoteSummary;
             if (user) {
               if (user.pk !== host_detail.pk) {
                 return (
@@ -110,7 +155,7 @@ export default function StreamAboutSection({
                       textStyle: "captionLarge",
                       color: upvote ? colors.green[0] : colors.textPrimary,
                     }}
-                    onClick={() => onUpvote && onUpvote(stream)}
+                    onClick={upvoteStream}
                   />
                 );
               }
@@ -259,6 +304,11 @@ export default function StreamAboutSection({
             )}
 
             {(() => {
+              if (!upvoteSummary) {
+                return <Shimmer w={50} h={30} borderRadius={radii.xxxxs} />;
+              }
+
+              const { upvotes, upvote } = upvoteSummary;
               if (user) {
                 if (user.pk !== host_detail.pk) {
                   return (
@@ -280,7 +330,7 @@ export default function StreamAboutSection({
                         textStyle: "captionLarge",
                         color: upvote ? colors.green[0] : colors.textPrimary,
                       }}
-                      onClick={() => onUpvote && onUpvote(stream)}
+                      onClick={upvoteStream}
                     />
                   );
                 }

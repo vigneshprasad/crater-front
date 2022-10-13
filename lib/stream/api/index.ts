@@ -11,6 +11,7 @@ import {
   StreamQuestion,
   StreamQuestionUpvote,
   StreamUpvote,
+  UpvoteSummary,
   UserCategory,
 } from "../types/stream";
 
@@ -42,6 +43,9 @@ interface IStreamApiClient {
     category: string
   ) => Promise<ApiResult<UserCategory, AxiosError>>;
   upvoteStream: (group: number) => Promise<ApiResult<StreamUpvote, AxiosError>>;
+  retrieveUpvoteSummary: (
+    group: number
+  ) => Promise<ApiResult<UpvoteSummary, AxiosError>>;
 }
 
 export default function StreamApiClient(
@@ -185,6 +189,19 @@ export default function StreamApiClient(
     }
   }
 
+  async function retrieveUpvoteSummary(
+    group: number
+  ): Promise<ApiResult<UpvoteSummary, AxiosError>> {
+    try {
+      const { data } = await API(context).get<UpvoteSummary>(
+        API_URL_CONSTANTS.stream.retrieveUpvoteSummary(group)
+      );
+      return [data, undefined];
+    } catch (err) {
+      return [undefined, err as AxiosError];
+    }
+  }
+
   return {
     getPastStreams,
     getAllStreamCategories,
@@ -195,5 +212,6 @@ export default function StreamApiClient(
     followStreamCategory,
     unfollowStreamCategory,
     upvoteStream,
+    retrieveUpvoteSummary,
   };
 }
