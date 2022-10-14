@@ -77,7 +77,6 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
             link="https://calendly.com/craterclub/become-a-streamer-find-out-how?month=2022-09"
           /> */}
           <Box
-            id="rootScroll"
             gridArea="content"
             {...rest}
             ref={mergeRefs([scrollRef, ref])}

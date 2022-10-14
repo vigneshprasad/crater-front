@@ -246,6 +246,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
             right={0}
             left={0}
             bottom={0}
+            zIndex={2147483647}
             onClick={() => {
               setMuted(false);
               playerRef.current?.setMuted(false);
