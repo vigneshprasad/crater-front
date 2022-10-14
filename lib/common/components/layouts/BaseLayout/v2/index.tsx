@@ -66,7 +66,7 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
           gridTemplateAreas={gridTemplateAreas}
           h="calc(var(--vh, 1vh) * 100)"
           gridTemplateColumns={gridTemplateColumns}
-          gridTemplateRows={["max-content max-content 1fr"]}
+          gridTemplateRows={["max-content 1fr", "max-content max-content 1fr"]}
           overflow="hidden"
         >
           <AppNavbar />
