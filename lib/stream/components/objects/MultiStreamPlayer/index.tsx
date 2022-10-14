@@ -136,7 +136,17 @@ export default function MultiStreamPlayer({
   }, [containerRef, setVariants, setHeight, setWidth]);
 
   if (isMobile) {
-    return <StreamHLSPlayer autoPlay streamId={active} controls />;
+    return (
+      <StreamHLSPlayer
+        containerProps={{
+          w: "100%",
+          aspectRatio: "16 / 9",
+        }}
+        autoPlay
+        streamId={active}
+        controls
+      />
+    );
   }
 
   return (
