@@ -76,6 +76,7 @@ export const API_URL_CONSTANTS = {
     postGroupQuestionUpvote: "/groups/conversations/stream/questions/upvote/",
     getAllVideos: "/groups/public/conversations/webinars/videos/",
     getSuggestedTopics: "groups/conversations/suggested_topics/",
+    getEncryptHackers: "groups/public/conversations/webinars/hacking/",
   },
   multistream: {
     getMultiStreamForGroup: (id: string | number): string =>

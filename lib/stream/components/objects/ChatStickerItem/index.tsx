@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import useAuth from "@/auth/context/AuthContext";
-import { Box, Image, Span } from "@/common/components/atoms";
+import { Box, Image, Span, Text } from "@/common/components/atoms";
 import hashString from "@/common/utils/hash/hash";
 import { ChatMessage } from "@/stream/providers/FirebaseChatProvider/types";
 
@@ -33,8 +33,9 @@ export default function ChatStickerItem({
   const toHash = name + message.sender_details?.pk;
 
   return (
-    <Box
-      py={2}
+    <Text
+      as="div"
+      pt={2}
       px={space.xxxxs}
       bg={colors.primaryLight}
       textStyle="chatText"
@@ -54,7 +55,7 @@ export default function ChatStickerItem({
       >
         {name}:
       </Span>
-      <Box w={96} h={96} position="relative">
+      <Box pb={space.xxxxxs} w={96} position="relative">
         {message.data?.sticker && (
           <Image
             src={EMOJI_IMAGE_LIST[message.data?.sticker]}
@@ -64,6 +65,6 @@ export default function ChatStickerItem({
           />
         )}
       </Box>
-    </Box>
+    </Text>
   );
 }

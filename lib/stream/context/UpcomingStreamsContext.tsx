@@ -43,6 +43,7 @@ type IProviderProps = PropsWithChildren<{
   pageSize?: number;
   category?: number;
   sortBy?: string;
+  encryptHackers?: boolean;
 }>;
 
 export function UpcomingStreamsProvider({
@@ -51,6 +52,7 @@ export function UpcomingStreamsProvider({
   pageSize: intialPageSize = 20,
   category,
   sortBy,
+  encryptHackers,
   ...rest
 }: IProviderProps): JSX.Element {
   const [pageSize, setPageSize] = useState(intialPageSize);
@@ -66,22 +68,22 @@ export function UpcomingStreamsProvider({
       const page = index + 1;
       if (previousData && !previousData.next) return null;
 
-      let url = `${API_URL_CONSTANTS.groups.getUpcominWebinars}?page=${page}&page_size=${pageSize}`;
+      const baseUrl = encryptHackers
+        ? API_URL_CONSTANTS.groups.getEncryptHackers
+        : API_URL_CONSTANTS.groups.getUpcominWebinars;
+
+      let url = `${baseUrl}?page=${page}&page_size=${pageSize}`;
       if (category) {
         url += `&categories=${category}`;
-        // return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?categories=${category}&page=${page}&page_size=${pageSize}`;
       }
       if (host) {
         url += `&host=${host}`;
-        // return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?host=${host}&page=${page}&page_size=${pageSize}`;
       }
       if (sortBy) {
         url += `&sort_by=${sortBy}`;
       }
 
       return url;
-
-      // return `${API_URL_CONSTANTS.groups.getUpcominWebinars}?page=${page}&page_size=${pageSize}`;
     },
     async (key: string) => {
       const response = await fetcher<PageResponse<Webinar>>(key);

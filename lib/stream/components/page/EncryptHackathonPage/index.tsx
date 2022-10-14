@@ -1,7 +1,6 @@
 import STATIC_IMAGES from "public/images";
 import { useCallback, useMemo, useRef } from "react";
 import styled, { useTheme } from "styled-components";
-import useSWR from "swr";
 
 import Image from "next/image";
 
@@ -10,9 +9,7 @@ import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 import { AsideNav } from "@/common/components/objects/AsideNav/v2";
 import Footer from "@/common/components/objects/Footer";
 import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
-import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
-import { StreamCategory } from "@/creators/types/stream";
 import usePastStreamsWithRecording from "@/stream/context/PastStreamsWithRecordingContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 
@@ -33,10 +30,6 @@ export default function EncryptHackathonPage(): JSX.Element {
   const streamsRef = useRef<HTMLDivElement>(null);
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
-
-  const { data: category } = useSWR<StreamCategory>(
-    API_URL_CONSTANTS.stream.retrieveCategory("hacking")
-  );
 
   const scrollToStreams = useCallback(() => {
     if (streamsRef.current) {
@@ -202,7 +195,7 @@ export default function EncryptHackathonPage(): JSX.Element {
 
         <Box>
           <StyledHeadingDivider label="Competing Hackers" />
-          <UpcomingStreamsProvider category={category?.pk} pageSize={8}>
+          <UpcomingStreamsProvider encryptHackers={true} pageSize={8}>
             <UpcomingStreamsList />
           </UpcomingStreamsProvider>
         </Box>
