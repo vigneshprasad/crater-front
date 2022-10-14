@@ -66,7 +66,6 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
     const [initialized, setInitialized] = useState(false);
 
     const handlePlayerIntialized = useCallback((): void => {
-      console.log("INITIALIZED");
       setInitialized(true);
     }, []);
 
@@ -138,7 +137,6 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
 
     useEffect(() => {
       if (src && videoRef.current && !initialized) {
-        console.log("start init");
         intializePlayer(videoRef.current, src, autoPlay);
       }
     }, [src, playerRef, videoRef, initialized, autoPlay, intializePlayer]);
