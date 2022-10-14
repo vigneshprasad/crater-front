@@ -17,6 +17,7 @@ import { mergeRefs } from "react-merge-refs";
 import styled, { useTheme } from "styled-components";
 
 import { AnimatedBox, AnimatedBoxProps } from "../Animated";
+import { Icon } from "../Icon";
 import RangeInput from "../RangeInput";
 import { Box, BoxProps, Grid, Flex, Text } from "../System";
 import { IconButton } from "../v2";
@@ -104,8 +105,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
           player.setAutoplay(autoPlay);
           player.load(src);
           autoPlay && setPlaying(true);
-          setMuted(player.isMuted());
-          setVolume(player.getVolume());
+          setMuted(autoPlay ? true : false);
         }
       },
       [playerRef, handleIVSError, handlePlayerIntialized]
@@ -170,8 +170,8 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
               onClick={togglePlay}
             />
             <AnimatedBox
+              display={["none", "flex"]}
               initial="hide"
-              display="flex"
               alignItems="center"
               whileHover="show"
             >
@@ -232,6 +232,34 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
               onClick={handleFullScreenClick}
             />
           </ControlsContainer>
+        )}
+        {autoPlay && muted && controls && initialized && (
+          <Box
+            position="absolute"
+            top={0}
+            right={0}
+            left={0}
+            bottom={0}
+            onClick={() => {
+              setMuted(false);
+              playerRef.current?.setMuted(false);
+            }}
+          >
+            <Flex
+              position="absolute"
+              top={24}
+              left={24}
+              bg={colors.white[0]}
+              p={space.xxxxs}
+              alignItems="center"
+              gridGap={space.xxxxs}
+            >
+              <Icon size={24} icon="VolumeOff" color={colors.black[0]} />
+              <Text fontSize="1.6rem" color={colors.black[0]}>
+                Tap to unmute
+              </Text>
+            </Flex>
+          </Box>
         )}
       </Container>
     );

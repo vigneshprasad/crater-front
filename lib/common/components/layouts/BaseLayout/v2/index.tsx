@@ -19,7 +19,6 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
         return [
           `
           "navbar"
-          "banner"
           "content"
         `,
           `

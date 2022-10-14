@@ -16,6 +16,7 @@ import {
 type IProps = BoxProps & {
   heading?: string;
   dialogProps?: DialogProps;
+  indicator?: boolean;
 };
 
 const StyledDialog = styled(Dialog)<DialogProps>`
@@ -44,7 +45,7 @@ const StyledDialog = styled(Dialog)<DialogProps>`
 `;
 
 export const BottomSheet = forwardRef<HTMLDialogElement, IProps>(
-  ({ children, dialogProps, heading, ...rest }, ref) => {
+  ({ children, dialogProps, heading, indicator = true, ...rest }, ref) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const { space, colors } = useTheme();
 
@@ -80,35 +81,54 @@ export const BottomSheet = forwardRef<HTMLDialogElement, IProps>(
         >
           <Box h="-webkit-fill-available" position="relative">
             <Grid
-              gridTemplateRows="max-content 1fr"
+              gridTemplateRows="max-content max-content 1fr"
               position="absolute"
               top={0}
               left={0}
               right={0}
               bottom={0}
             >
-              <Flex
-                px={space.xxs}
-                py={space.xxxs}
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Text
-                  color={colors.textSecondaryLight}
-                  fontSize="1.4rem"
-                  fontWeight="600"
-                  textTransform="uppercase"
-                >
-                  {heading}
-                </Text>
+              {indicator ? (
+                <Grid py={space.xxxs}>
+                  <Box
+                    m="auto auto"
+                    h={4}
+                    w={24}
+                    borderRadius={4}
+                    bg={colors.black[0]}
+                  />
+                </Grid>
+              ) : (
+                <Box />
+              )}
 
-                <Icon
-                  icon="Close"
-                  onClick={() => {
-                    closeDialog();
-                  }}
-                />
-              </Flex>
+              {heading ? (
+                <Flex
+                  px={space.xxs}
+                  py={space.xxxs}
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Text
+                    color={colors.textSecondaryLight}
+                    fontSize="1.4rem"
+                    fontWeight="600"
+                    textTransform="uppercase"
+                  >
+                    {heading}
+                  </Text>
+
+                  <Icon
+                    icon="Close"
+                    onClick={() => {
+                      closeDialog();
+                    }}
+                  />
+                </Flex>
+              ) : (
+                <Box />
+              )}
+
               <Grid>{children}</Grid>
             </Grid>
           </Box>

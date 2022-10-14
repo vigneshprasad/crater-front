@@ -123,7 +123,6 @@ export function LiveStreamPage({
     const player = playerContainerRef.current;
 
     if (player) {
-      console.log(player);
       const panelRect = player.getBoundingClientRect();
       const height = window.innerHeight - panelRect.bottom - 8;
       setPanelHeight(height);
@@ -275,7 +274,6 @@ export function LiveStreamPage({
             ref={panelSheetRef}
             visible={true}
             bg="primaryDark"
-            heading="LIVE CHAT"
             h={panelHeight}
           >
             <ChatColorModeProvider>

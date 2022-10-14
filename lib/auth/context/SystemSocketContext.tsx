@@ -40,7 +40,6 @@ export function SystemSocketProvider({
 
   useEffect(() => {
     if (socket.current === null && user) {
-      console.log("connect");
       socket.current = io(SOCKET_IO_BASE_URL, {
         transports: ["websocket"],
         withCredentials: true,

@@ -84,7 +84,6 @@ export default function MultiStreamPlayer({
 
   useEffect(() => {
     if (containerRef.current) {
-      console.log("lol");
       const { width } = containerRef.current.getBoundingClientRect();
 
       const largePrimaryWidth = 0.5 * width;

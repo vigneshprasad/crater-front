@@ -102,7 +102,6 @@ export default function LiveStreamPanel({
 
   useEffect(() => {
     const eventHandler = (data: INotificationData): void => {
-      console.log(data);
       if (data.type === "creator-sale-request") {
         setPurchaseRequest(data.data);
         setVisibleModal(true);
