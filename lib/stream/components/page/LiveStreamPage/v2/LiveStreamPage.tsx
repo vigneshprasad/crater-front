@@ -110,14 +110,14 @@ export function LiveStreamPage({
   }, [router, openModal, user]);
 
   useEffect(() => {
-    if (isMobile && panelSheetRef.current) {
+    if (isMobile && panelSheetRef.current && user) {
       setTimeout(() => {
         if (!panelSheetRef.current?.open) {
           panelSheetRef.current?.showModal();
         }
       }, 5000);
     }
-  }, [isMobile, panelSheetRef]);
+  }, [isMobile, panelSheetRef, user]);
 
   useLayoutEffect(() => {
     const player = playerContainerRef.current;

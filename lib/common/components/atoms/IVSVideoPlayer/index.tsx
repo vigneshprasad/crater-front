@@ -79,6 +79,12 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
       [on404Error]
     );
 
+    useEffect(() => {
+      if (mutedProp !== muted) {
+        setMuted(mutedProp);
+      }
+    }, [mutedProp, setMuted, muted]);
+
     const intializePlayer = useCallback(
       (element: HTMLVideoElement, src: string, autoPlay = false) => {
         if (isPlayerSupported) {
