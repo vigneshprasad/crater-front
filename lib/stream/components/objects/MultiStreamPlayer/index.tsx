@@ -139,7 +139,7 @@ export default function MultiStreamPlayer({
     return (
       <StreamHLSPlayer
         containerProps={{
-          w: "100%",
+          w: "calc(100vw - 4px)",
           aspectRatio: "16 / 9",
         }}
         autoPlay
