@@ -5,6 +5,7 @@ import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import { FirebaseChatProvider } from "@/stream/providers/FirebaseChatProvider";
+import StreamChatProvider from "@/stream/providers/StreamChatProvider";
 import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
 
 import { LiveStreamPageProvider } from "../context";
@@ -32,7 +33,9 @@ export function Container({
             <ReferralSummaryProvider>
               <LiveStreamPageProvider>
                 <FirebaseChatProvider groupId={streamId}>
-                  {children}
+                  <StreamChatProvider id={streamId.toString()}>
+                    {children}
+                  </StreamChatProvider>
                 </FirebaseChatProvider>
               </LiveStreamPageProvider>
             </ReferralSummaryProvider>

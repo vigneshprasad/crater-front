@@ -1,18 +1,34 @@
 import { getSession } from "next-auth/client";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { mergeRefs } from "react-merge-refs";
+import styled, { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
-import { Shimmer, Box } from "@/common/components/atoms";
+import {
+  Shimmer,
+  Box,
+  Link,
+  Flex,
+  Span,
+  Icon,
+} from "@/common/components/atoms";
+import MobileBottomSheet from "@/common/components/objects/MobileBottomSheet";
+import { PageRoutes } from "@/common/constants/route.constants";
+import { useMeasure } from "@/common/hooks/ui/useMeasure";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { useWebinar } from "@/community/context/WebinarContext";
 import { MultiStream } from "@/community/types/community";
 import { useFollower } from "@/creators/context/FollowerContext";
 import { DyteWebinarProvider } from "@/dyte/context/DyteWebinarContext";
 import UpcomingStreamsList from "@/stream/components//objects/UpcomingStreamsList";
 import MultiLiveStreamPageLayout from "@/stream/components/layouts/MultiLiveStreamPageLayout";
+import LiveStreamPanel, {
+  TabKeys,
+} from "@/stream/components/objects/LiveStreamPanel";
+import LiveStreamPanelTabItem from "@/stream/components/objects/LiveStreamPanelTabItem";
 import MultiStreamControlBar from "@/stream/components/objects/MultiStreamControlBar";
 import MultiStreamPlayer from "@/stream/components/objects/MultiStreamPlayer";
 import PastStreamsList from "@/stream/components/objects/PastStreamsList/v2";
@@ -20,6 +36,7 @@ import StreamAboutSection from "@/stream/components/objects/StreamAboutSection";
 import StreamDytePlayer from "@/stream/components/objects/StreamDytePlayer";
 import StreamHLSPlayer from "@/stream/components/objects/StreamHLSPlayer";
 import StreamShareSection from "@/stream/components/objects/StreamShareSection";
+import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
 
 import { ContainerProps } from "./container";
@@ -44,21 +61,24 @@ export function LiveStreamPage({
   orgId,
   onClickMultiStreamToggle,
 }: PageProps): JSX.Element {
+  const { ref, bounds } = useMeasure();
+  const playerContainerRef = useRef<HTMLDivElement>(null);
+  const panelSheetRef = useRef<HTMLDialogElement>(null);
+  const [panelHeight, setPanelHeight] = useState<string | number>("100%");
   const { user, profile } = useAuth();
   const router = useRouter();
-  const [visiblePanelMobile, setVisiblePanelMobile] = useState(false);
   const { webinar: cachedWebinar, mutateWebinar } = useWebinar();
   const [loading, setLoading] = useState(false);
   const { openModal } = useAuthModal();
+  const { breakpoints } = useTheme();
   const {
     followers,
     loading: followersLoading,
     subscribeCreator,
   } = useFollower();
   const { postMessage } = useFirebaseChat();
-
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
   const creator = cachedWebinar?.host_detail.creator_detail;
-
   const isHost = cachedWebinar?.host_detail.pk === user?.pk;
   const isSpeaker = user && cachedWebinar?.speakers.includes(user.pk);
 
@@ -89,15 +109,79 @@ export function LiveStreamPage({
     }
   }, [router, openModal, user]);
 
+  useEffect(() => {
+    if (isMobile && panelSheetRef.current) {
+      setTimeout(() => {
+        if (!panelSheetRef.current?.open) {
+          panelSheetRef.current?.showModal();
+        }
+      }, 5000);
+    }
+  }, [isMobile, panelSheetRef]);
+
+  useLayoutEffect(() => {
+    const player = playerContainerRef.current;
+
+    if (player) {
+      console.log(player);
+      const panelRect = player.getBoundingClientRect();
+      const height = window.innerHeight - panelRect.bottom - 8;
+      setPanelHeight(height);
+    }
+  }, [playerContainerRef, bounds]);
+
+  const TABS = (id: string | number): Record<TabKeys, JSX.Element> => ({
+    chat: (
+      <Link
+        href={
+          multiStreamMode
+            ? PageRoutes.multistream(id, "chat")
+            : PageRoutes.stream(id, "chat")
+        }
+        shallow
+      >
+        <LiveStreamPanelTabItem icon="Chat" label="Chat" />
+      </Link>
+    ),
+    store: (
+      <Link
+        href={
+          multiStreamMode
+            ? PageRoutes.multistream(id, "store")
+            : PageRoutes.stream(id, "store")
+        }
+        shallow
+      >
+        <LiveStreamPanelTabItem
+          icon="Store"
+          label={
+            <Flex alignItems="center">
+              Store
+              <Span m={4}>
+                <Icon color="#F2B25C" icon="New" size={14} />
+              </Span>
+            </Flex>
+          }
+        />
+      </Link>
+    ),
+    leaderboard: (
+      <Link
+        href={
+          multiStreamMode
+            ? PageRoutes.multistream(id, "leaderboard")
+            : PageRoutes.stream(id, "leaderboard")
+        }
+        shallow
+      >
+        <LiveStreamPanelTabItem icon="Leaderboard" label="Leaderboard" />
+      </Link>
+    ),
+  });
+
   return (
     <MultiLiveStreamPageLayout
-      visibleMobileChatPanel={visiblePanelMobile}
-      onCloseMobileChatPabel={() => {
-        setVisiblePanelMobile(false);
-      }}
-      streamId={streamId}
-      stream={stream}
-      multiStreamMode={multiStreamMode}
+      playerContainerRef={mergeRefs<HTMLDivElement>([playerContainerRef, ref])}
     >
       {{
         streamPlayer: (
@@ -179,13 +263,26 @@ export function LiveStreamPage({
             followersLoading={followersLoading || loading}
             onFollow={() => followCreator()}
             onClickChatPanelMobile={() => {
-              setVisiblePanelMobile(true);
+              panelSheetRef.current?.showModal();
             }}
           />
         ),
         shareSection: <StreamShareSection stream={cachedWebinar} />,
         upcomingStreams: <UpcomingStreamsList />,
         pastStreams: <PastStreamsList />,
+        panel: (
+          <MobileBottomSheet
+            ref={panelSheetRef}
+            visible={true}
+            bg="primaryDark"
+            heading="LIVE CHAT"
+            h={panelHeight}
+          >
+            <ChatColorModeProvider>
+              <LiveStreamPanel tabs={TABS} streamId={streamId} />
+            </ChatColorModeProvider>
+          </MobileBottomSheet>
+        ),
       }}
     </MultiLiveStreamPageLayout>
   );

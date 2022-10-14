@@ -36,7 +36,7 @@ const ControlsContainer = styled(Grid)`
 const Container = styled(AnimatedBox)`
   overflow: hidden;
 
-  &:hover ${ControlsContainer} {
+  &:hover ${ControlsContainer}, &:active ${ControlsContainer} {
     transform: translate(0, 0);
     opacity: 1;
   }
@@ -153,7 +153,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
           controls={false}
           playsInline
         />
-        {controls && initialized && (
+        {controls && (
           <ControlsContainer
             position="absolute"
             bottom={0}

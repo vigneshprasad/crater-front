@@ -128,6 +128,7 @@ export default function LiveStreamPanel({
       bg={["transparent", colors.primaryBackground]}
       position="relative"
       borderLeft={`1px solid ${colors.primaryLight}`}
+      h="100%"
     >
       <BaseTabBar
         bg={colors.primaryLight}
