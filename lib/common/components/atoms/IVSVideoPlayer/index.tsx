@@ -141,12 +141,12 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
       }
     }, [src, playerRef, videoRef, initialized, autoPlay, intializePlayer]);
 
-    useEffect(() => {
-      if (playerRef.current && mutedProp !== undefined) {
-        playerRef.current.setMuted(mutedProp);
-        setMuted(mutedProp);
-      }
-    }, [mutedProp, playerRef]);
+    // useEffect(() => {
+    //   if (playerRef.current && mutedProp !== undefined) {
+    //     playerRef.current.setMuted(mutedProp);
+    //     setMuted(mutedProp);
+    //   }
+    // }, [mutedProp, playerRef]);
 
     return (
       <Container ref={containerRef} {...containerProps} position="relative">
