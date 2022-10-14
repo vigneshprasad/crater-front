@@ -208,29 +208,31 @@ export default function StreamAboutSection({
             </ExpandingText>
           )}
           {isMobile && multiStreamMode && multistream && stream && (
-            <Flex overflowY="auto" gridGap={space.xxxxs} py={space.xxxs}>
-              {multistream.streams
-                .filter((obj) => obj !== stream.id)
-                .map((id) => {
-                  return (
-                    <StreamHLSPlayer
-                      autoPlay
-                      muted
-                      containerProps={{
-                        w: 152,
-                        h: 86,
-                      }}
-                      streamId={id}
-                      key={id}
-                      onClick={() => {
-                        router.push(PageRoutes.multistream(id), undefined, {
-                          shallow: true,
-                        });
-                      }}
-                    />
-                  );
-                })}
-            </Flex>
+            <Box overflowX="auto" w="calc(100vw - 24px)">
+              <Flex gridGap={space.xxxxs} py={space.xxxs}>
+                {multistream.streams
+                  .filter((obj) => obj !== stream.id)
+                  .map((id) => {
+                    return (
+                      <StreamHLSPlayer
+                        autoPlay
+                        muted
+                        containerProps={{
+                          w: 152,
+                          h: 86,
+                        }}
+                        streamId={id}
+                        key={id}
+                        onClick={() => {
+                          router.push(PageRoutes.multistream(id), undefined, {
+                            shallow: true,
+                          });
+                        }}
+                      />
+                    );
+                  })}
+              </Flex>
+            </Box>
           )}
 
           <HeadingDivider label="Speaker" />
