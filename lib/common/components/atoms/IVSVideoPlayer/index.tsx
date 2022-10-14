@@ -137,6 +137,8 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
 
     useEffect(() => {
       if (src && videoRef.current && !initialized) {
+        // if (videoRef.current.canPlayType("application/vnd.apple.mpegurl"))
+        //   return;
         intializePlayer(videoRef.current, src, autoPlay);
       }
     }, [src, playerRef, videoRef, initialized, autoPlay, intializePlayer]);
