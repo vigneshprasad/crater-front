@@ -26,6 +26,7 @@ export type IVSVideoPlayerProps = BoxProps &
   React.VideoHTMLAttributes<HTMLVideoElement> & {
     containerProps?: AnimatedBoxProps;
     on404Error?: () => void;
+    onUnmuteTap?: () => void;
   };
 
 const ControlsContainer = styled(Grid)`
@@ -52,6 +53,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
       autoPlay,
       muted: mutedProp,
       controls,
+      onUnmuteTap,
       ...rest
     },
     ref
@@ -137,8 +139,8 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
 
     useEffect(() => {
       if (src && videoRef.current && !initialized) {
-        if (videoRef.current.canPlayType("application/vnd.apple.mpegurl"))
-          return;
+        // if (videoRef.current.canPlayType("application/vnd.apple.mpegurl"))
+        //   return;
         intializePlayer(videoRef.current, src, autoPlay);
       }
     }, [src, playerRef, videoRef, initialized, autoPlay, intializePlayer]);
@@ -150,22 +152,22 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
     //   }
     // }, [mutedProp, playerRef]);
 
-    if (videoRef.current?.canPlayType("application/vnd.apple.mpegurl")) {
-      return (
-        <Container ref={containerRef}>
-          <Box
-            {...rest}
-            h="100%"
-            w="100%"
-            ref={mergeRefs([videoRef, ref])}
-            as="video"
-            src={src}
-            playsInline
-            controls={controls}
-          />
-        </Container>
-      );
-    }
+    // if (videoRef.current?.canPlayType("application/vnd.apple.mpegurl")) {
+    //   return (
+    //     <Container ref={containerRef}>
+    //       <Box
+    //         {...rest}
+    //         h="100%"
+    //         w="100%"
+    //         ref={mergeRefs([videoRef, ref])}
+    //         as="video"
+    //         src={src}
+    //         playsInline
+    //         controls={controls}
+    //       />
+    //     </Container>
+    //   );
+    // }
 
     return (
       <Container ref={containerRef} {...containerProps} position="relative">
@@ -269,6 +271,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
             onClick={() => {
               setMuted(false);
               playerRef.current?.setMuted(false);
+              onUnmuteTap && onUnmuteTap();
             }}
           >
             <Flex

@@ -3,10 +3,13 @@ import { forwardRef, useCallback, useEffect, useRef } from "react";
 import { mergeRefs } from "react-merge-refs";
 import useSWR from "swr";
 
+import useAuth from "@/auth/context/AuthContext";
 import IVSVideoPlayer, {
   IVSVideoPlayerProps,
 } from "@/common/components/atoms/IVSVideoPlayer";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import DyteApiClient from "@/dyte/api";
 import { DyteLiveStream, DyteLiveStreamStatus } from "@/dyte/types/dyte";
 
@@ -17,11 +20,15 @@ type IProps = IVSVideoPlayerProps & {
 const StreamHLSPlayer = forwardRef<HTMLVideoElement, IProps>(
   ({ streamId, ...rest }, ref) => {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const { track } = useAnalytics();
+    const { user } = useAuth();
 
     const { data: liveStream, isValidating } = useSWR<DyteLiveStream>(
-      API_URL_CONSTANTS.integrations.dyte.getActiveLiveStreamForMeeting(
-        streamId
-      )
+      user
+        ? API_URL_CONSTANTS.integrations.dyte.getActiveLiveStreamForMeeting(
+            streamId
+          )
+        : null
     );
 
     const pauseVideo = useCallback(() => {
@@ -56,6 +63,11 @@ const StreamHLSPlayer = forwardRef<HTMLVideoElement, IProps>(
         src={liveStream?.playback_url}
         on404Error={handle404Error}
         {...rest}
+        onUnmuteTap={() => {
+          track(AnalyticsEvents.unmute_hls_video, {
+            stream: streamId,
+          });
+        }}
       />
     );
   }
