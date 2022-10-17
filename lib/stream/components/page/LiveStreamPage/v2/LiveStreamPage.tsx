@@ -1,20 +1,13 @@
 import { getSession } from "next-auth/client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { mergeRefs } from "react-merge-refs";
-import styled, { useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 
 import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
-import {
-  Shimmer,
-  Box,
-  Link,
-  Flex,
-  Span,
-  Icon,
-} from "@/common/components/atoms";
+import { Shimmer, Link, Flex, Span, Icon } from "@/common/components/atoms";
 import MobileBottomSheet from "@/common/components/objects/MobileBottomSheet";
 import { PageRoutes } from "@/common/constants/route.constants";
 import { useMeasure } from "@/common/hooks/ui/useMeasure";
@@ -34,7 +27,6 @@ import MultiStreamPlayer from "@/stream/components/objects/MultiStreamPlayer";
 import PastStreamsList from "@/stream/components/objects/PastStreamsList/v2";
 import StreamAboutSection from "@/stream/components/objects/StreamAboutSection";
 import StreamDytePlayer from "@/stream/components/objects/StreamDytePlayer";
-import StreamHLSPlayer from "@/stream/components/objects/StreamHLSPlayer";
 import StreamShareSection from "@/stream/components/objects/StreamShareSection";
 import { ChatColorModeProvider } from "@/stream/providers/ChatColorModeProvider";
 import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
@@ -47,11 +39,6 @@ export interface PageProps extends ContainerProps {
   onClickMultiStreamToggle: (val: boolean) => void;
   orgId: string;
 }
-
-const HLSContainer = styled(Box)`
-  width: 100%;
-  aspect-ratio: 16 / 9;
-`;
 
 export function LiveStreamPage({
   stream,
@@ -190,20 +177,6 @@ export function LiveStreamPage({
                 return <Shimmer pt="56.25%" w="100%" />;
               }
 
-              const isSpeaker = stream.speakers.includes(user.pk);
-              const isCreator = user.pk === stream.host;
-              const isHack2Skill = profile.groups.filter(
-                (group) => group.name === "hack2skill-user"
-              )[0];
-
-              if (isCreator || isSpeaker) {
-                return (
-                  <DyteWebinarProvider id={streamId.toString()}>
-                    <StreamDytePlayer stream={cachedWebinar} orgId={orgId} />
-                  </DyteWebinarProvider>
-                );
-              }
-
               if (multiStreamMode && multistream) {
                 return (
                   <MultiStreamPlayer
@@ -215,25 +188,6 @@ export function LiveStreamPage({
                       });
                     }}
                   />
-                );
-              }
-
-              if (isHack2Skill) {
-                return (
-                  <HLSContainer p={[0, 8]} position="relative">
-                    <StreamHLSPlayer
-                      containerProps={{
-                        position: "absolute",
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                      }}
-                      streamId={streamId}
-                      autoPlay
-                      controls
-                    />
-                  </HLSContainer>
                 );
               }
 

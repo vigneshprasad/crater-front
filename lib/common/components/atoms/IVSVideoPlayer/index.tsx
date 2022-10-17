@@ -63,7 +63,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
     const videoRef = useRef<HTMLVideoElement>(null);
     const playerRef = useRef<MediaPlayer>();
     const [playing, setPlaying] = useState(false);
-    const [muted, setMuted] = useState(false);
+    const [muted, setMuted] = useState(true);
     const [volume, setVolume] = useState(100);
     const [initialized, setInitialized] = useState(false);
 
@@ -138,9 +138,19 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
     };
 
     useEffect(() => {
-      if (src && videoRef.current && !initialized) {
-        // if (videoRef.current.canPlayType("application/vnd.apple.mpegurl"))
-        //   return;
+      if (initialized) return;
+      if (!videoRef.current) return;
+
+      if (!src) {
+        videoRef.current.pause();
+        videoRef.current.load();
+        return;
+      }
+      if (src) {
+        if (videoRef.current.canPlayType("application/vnd.apple.mpegurl")) {
+          return;
+        }
+
         intializePlayer(videoRef.current, src, autoPlay);
       }
     }, [src, playerRef, videoRef, initialized, autoPlay, intializePlayer]);
@@ -152,22 +162,24 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
     //   }
     // }, [mutedProp, playerRef]);
 
-    // if (videoRef.current?.canPlayType("application/vnd.apple.mpegurl")) {
-    //   return (
-    //     <Container ref={containerRef}>
-    //       <Box
-    //         {...rest}
-    //         h="100%"
-    //         w="100%"
-    //         ref={mergeRefs([videoRef, ref])}
-    //         as="video"
-    //         src={src}
-    //         playsInline
-    //         controls={controls}
-    //       />
-    //     </Container>
-    //   );
-    // }
+    if (videoRef.current?.canPlayType("application/vnd.apple.mpegurl")) {
+      return (
+        <Container {...containerProps} ref={containerRef}>
+          <Box
+            {...rest}
+            h="100%"
+            w="100%"
+            ref={mergeRefs([videoRef, ref])}
+            as="video"
+            autoPlay
+            controls={controls}
+            playsInline
+            src={src}
+            muted={mutedProp}
+          />
+        </Container>
+      );
+    }
 
     return (
       <Container ref={containerRef} {...containerProps} position="relative">
@@ -260,7 +272,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
             />
           </ControlsContainer>
         )}
-        {autoPlay && muted && controls && initialized && (
+        {muted && controls && (
           <Box
             position="absolute"
             top={0}
