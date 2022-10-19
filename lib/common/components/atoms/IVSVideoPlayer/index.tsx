@@ -17,6 +17,7 @@ import { mergeRefs } from "react-merge-refs";
 import styled, { useTheme } from "styled-components";
 
 import { AnimatedBox, AnimatedBoxProps } from "../Animated";
+import { Icon } from "../Icon";
 import RangeInput from "../RangeInput";
 import { Box, BoxProps, Grid, Flex, Text } from "../System";
 import { IconButton } from "../v2";
@@ -25,6 +26,7 @@ export type IVSVideoPlayerProps = BoxProps &
   React.VideoHTMLAttributes<HTMLVideoElement> & {
     containerProps?: AnimatedBoxProps;
     on404Error?: () => void;
+    onUnmuteTap?: () => void;
   };
 
 const ControlsContainer = styled(Grid)`
@@ -36,7 +38,7 @@ const ControlsContainer = styled(Grid)`
 const Container = styled(AnimatedBox)`
   overflow: hidden;
 
-  &:hover ${ControlsContainer} {
+  &:hover ${ControlsContainer}, &:active ${ControlsContainer} {
     transform: translate(0, 0);
     opacity: 1;
   }
@@ -51,6 +53,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
       autoPlay,
       muted: mutedProp,
       controls,
+      onUnmuteTap,
       ...rest
     },
     ref
@@ -60,12 +63,11 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
     const videoRef = useRef<HTMLVideoElement>(null);
     const playerRef = useRef<MediaPlayer>();
     const [playing, setPlaying] = useState(false);
-    const [muted, setMuted] = useState(false);
+    const [muted, setMuted] = useState(true);
     const [volume, setVolume] = useState(100);
     const [initialized, setInitialized] = useState(false);
 
     const handlePlayerIntialized = useCallback((): void => {
-      console.log("INITIALIZED");
       setInitialized(true);
     }, []);
 
@@ -77,6 +79,14 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
       },
       [on404Error]
     );
+
+    useEffect(() => {
+      if (mutedProp === undefined) return;
+      if (!initialized) return;
+      if (mutedProp !== muted) {
+        setMuted(mutedProp);
+      }
+    }, [mutedProp, setMuted, muted, initialized]);
 
     const intializePlayer = useCallback(
       (element: HTMLVideoElement, src: string, autoPlay = false) => {
@@ -104,8 +114,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
           player.setAutoplay(autoPlay);
           player.load(src);
           autoPlay && setPlaying(true);
-          setMuted(player.isMuted());
-          setVolume(player.getVolume());
+          setMuted(autoPlay ? true : false);
         }
       },
       [playerRef, handleIVSError, handlePlayerIntialized]
@@ -129,18 +138,48 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
     };
 
     useEffect(() => {
-      if (src && videoRef.current && !initialized) {
-        console.log("start init");
+      if (initialized) return;
+      if (!videoRef.current) return;
+
+      if (!src) {
+        videoRef.current.pause();
+        videoRef.current.load();
+        return;
+      }
+      if (src) {
+        if (videoRef.current.canPlayType("application/vnd.apple.mpegurl")) {
+          return;
+        }
+
         intializePlayer(videoRef.current, src, autoPlay);
       }
     }, [src, playerRef, videoRef, initialized, autoPlay, intializePlayer]);
 
-    useEffect(() => {
-      if (playerRef.current && mutedProp !== undefined) {
-        playerRef.current.setMuted(mutedProp);
-        setMuted(mutedProp);
-      }
-    }, [mutedProp, playerRef]);
+    // useEffect(() => {
+    //   if (playerRef.current && mutedProp !== undefined) {
+    //     playerRef.current.setMuted(mutedProp);
+    //     setMuted(mutedProp);
+    //   }
+    // }, [mutedProp, playerRef]);
+
+    if (videoRef.current?.canPlayType("application/vnd.apple.mpegurl")) {
+      return (
+        <Container {...containerProps} ref={containerRef}>
+          <Box
+            {...rest}
+            h="100%"
+            w="100%"
+            ref={mergeRefs([videoRef, ref])}
+            as="video"
+            autoPlay
+            controls={controls}
+            playsInline
+            src={src}
+            muted={mutedProp}
+          />
+        </Container>
+      );
+    }
 
     return (
       <Container ref={containerRef} {...containerProps} position="relative">
@@ -153,7 +192,7 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
           controls={false}
           playsInline
         />
-        {controls && initialized && (
+        {controls && (
           <ControlsContainer
             position="absolute"
             bottom={0}
@@ -170,8 +209,8 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
               onClick={togglePlay}
             />
             <AnimatedBox
+              display={["none", "flex"]}
               initial="hide"
-              display="flex"
               alignItems="center"
               whileHover="show"
             >
@@ -232,6 +271,36 @@ const IVSVideoPlayer = forwardRef<HTMLVideoElement, IVSVideoPlayerProps>(
               onClick={handleFullScreenClick}
             />
           </ControlsContainer>
+        )}
+        {muted && controls && (
+          <Box
+            position="absolute"
+            top={0}
+            right={0}
+            left={0}
+            bottom={0}
+            zIndex={2147483647}
+            onClick={() => {
+              setMuted(false);
+              playerRef.current?.setMuted(false);
+              onUnmuteTap && onUnmuteTap();
+            }}
+          >
+            <Flex
+              position="absolute"
+              top={24}
+              left={24}
+              bg={colors.white[0]}
+              p={space.xxxxs}
+              alignItems="center"
+              gridGap={space.xxxxs}
+            >
+              <Icon size={24} icon="VolumeOff" color={colors.black[0]} />
+              <Text fontSize="1.6rem" color={colors.black[0]}>
+                Tap to unmute
+              </Text>
+            </Flex>
+          </Box>
         )}
       </Container>
     );

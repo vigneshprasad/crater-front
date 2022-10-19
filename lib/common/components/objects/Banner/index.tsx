@@ -19,6 +19,7 @@ export default function Banner({ content, link }: IProps): JSX.Element {
 
   return (
     <Grid
+      display={["none", "grid"]}
       gridArea="banner"
       position="relative"
       py={space.xxxxs}

@@ -76,6 +76,7 @@ export type BaseBoxProps = BackgroundProps &
     contain?: ResponsiveValue<CSS.Property.Contain, CustomTheme>;
     transition?: ResponsiveValue<CSS.Property.Transition, CustomTheme>;
     pointerEvents?: ResponsiveValue<CSS.Property.PointerEvents, CustomTheme>;
+    aspectRatio?: ResponsiveValue<CSS.Property.AspectRatio, CustomTheme>;
   };
 
 export type BoxProps = BaseBoxProps & React.HTMLAttributes<HTMLDivElement>;
@@ -159,6 +160,10 @@ const pointerEvents = style({
   prop: "pointerEvents",
   cssProperty: "pointerEvents",
 });
+const aspectRatio = style({
+  prop: "aspectRatio",
+  cssProperty: "aspectRatio",
+});
 
 export const Box = styled.div<BoxProps>`
   display: block;
@@ -193,6 +198,7 @@ export const Box = styled.div<BoxProps>`
     scrollBehavior,
     contain,
     transition,
-    pointerEvents
+    pointerEvents,
+    aspectRatio
   )}
 `;

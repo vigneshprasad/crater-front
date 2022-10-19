@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTheme } from "styled-components";
+import useSWR from "swr";
+
+import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import {
@@ -18,11 +21,18 @@ import { IconButton } from "@/common/components/atoms/v2";
 import ExpandingText from "@/common/components/objects/ExpandingText";
 import HeadingDivider from "@/common/components/objects/HeadingDivider";
 import { PageRoutes } from "@/common/constants/route.constants";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
-import { Follower, Webinar } from "@/community/types/community";
+import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
+import { AnalyticsEvents } from "@/common/utils/analytics/types";
+import { Follower, MultiStream, Webinar } from "@/community/types/community";
+import StreamApiClient from "@/stream/api";
+import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
+import { UpvoteSummary } from "@/stream/types/stream";
 
 import AboutCreatorBottomSheet from "../AboutCreatorBottomSheet";
 import ShareStreamBottomSheet from "../ShareStreamBottomSheet";
+import StreamHLSPlayer from "../StreamHLSPlayer";
 
 interface IProps {
   stream?: Webinar;
@@ -30,6 +40,9 @@ interface IProps {
   followersLoading: boolean;
   hideShareIcon?: boolean;
   onFollow: () => void;
+  onClickChatPanelMobile?: () => void;
+  multiStreamMode?: boolean;
+  multistream?: MultiStream;
   onUpvote?: (webinar: Webinar) => void;
 }
 
@@ -38,24 +51,68 @@ export default function StreamAboutSection({
   followers,
   followersLoading,
   hideShareIcon,
+  onClickChatPanelMobile,
+  multiStreamMode = false,
+  multistream,
   onFollow,
-  onUpvote,
-}: IProps): JSX.Element {
+}: IProps): JSX.Element | null {
+  const router = useRouter();
   const { colors, space, radii, breakpoints } = useTheme();
   const [showAboutSheet, setShowAboutSheet] = useState(false);
   const [showShareSheet, setShowShareSheet] = useState(false);
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
   const { user } = useAuth();
+  const { track } = useAnalytics();
+  const { postMessage } = useFirebaseChat();
+
+  const { data: upvoteSummary, mutate } = useSWR<UpvoteSummary>(
+    stream ? API_URL_CONSTANTS.stream.retrieveUpvoteSummary(stream.id) : null
+  );
+
+  const upvoteStream = useCallback(async () => {
+    if (user && stream && upvoteSummary) {
+      const [streamUpvote] = await StreamApiClient().upvoteStream(stream.id);
+      if (streamUpvote) {
+        const { upvotes: currentUpvotes } = upvoteSummary;
+
+        const newUpvote = streamUpvote.upvote;
+        const newUpvotes = newUpvote ? currentUpvotes + 1 : currentUpvotes - 1;
+
+        mutate({
+          upvote: newUpvote,
+          upvotes: newUpvotes,
+        });
+
+        track(AnalyticsEvents.upvote_stream_clicked, {
+          ...streamUpvote,
+        });
+
+        if (newUpvote) {
+          const message = {
+            message: `${user?.name} just upvoted ${stream?.host_detail.name}'s channel.`,
+            display_name: "Upvote Update",
+          };
+          postMessage(message);
+        }
+      }
+    }
+  }, [user, stream, upvoteSummary, mutate, track, postMessage]);
 
   if (!stream) {
     return <Box>Loading...</Box>;
   }
 
-  const { topic_detail, host_detail, upvote, upvotes } = stream;
+  const { topic_detail, host_detail } = stream;
+
+  if (isMobile === undefined) return null;
 
   return (
     <>
-      <Box as="section" bg={colors.primaryLight} borderRadius={radii.xxxxs}>
+      <Box
+        as="section"
+        bg={[colors.primaryBackground, colors.primaryLight]}
+        borderRadius={radii.xxxxs}
+      >
         <Flex
           display={["none", "flex"]}
           justifyContent="space-between"
@@ -72,6 +129,11 @@ export default function StreamAboutSection({
           </Text>
 
           {(() => {
+            if (!upvoteSummary) {
+              return <Shimmer w={138} h={38} borderRadius={radii.xxxxs} />;
+            }
+
+            const { upvotes, upvote } = upvoteSummary;
             if (user) {
               if (user.pk !== host_detail.pk) {
                 return (
@@ -110,7 +172,7 @@ export default function StreamAboutSection({
                       textStyle: "captionLarge",
                       color: upvote ? colors.green[0] : colors.textPrimary,
                     }}
-                    onClick={() => onUpvote && onUpvote(stream)}
+                    onClick={upvoteStream}
                   />
                 );
               }
@@ -145,6 +207,34 @@ export default function StreamAboutSection({
               {topic_detail.description}
             </ExpandingText>
           )}
+          {isMobile && multiStreamMode && multistream && stream && (
+            <Box overflowX="auto" w="calc(100vw - 24px)">
+              <Flex gridGap={space.xxxxs} py={space.xxxs}>
+                {multistream.streams
+                  .filter((obj) => obj !== stream.id)
+                  .map((id) => {
+                    return (
+                      <StreamHLSPlayer
+                        autoPlay
+                        muted
+                        containerProps={{
+                          w: 152,
+                          h: 86,
+                        }}
+                        streamId={id}
+                        key={id}
+                        onClick={() => {
+                          router.push(PageRoutes.multistream(id), undefined, {
+                            shallow: true,
+                          });
+                        }}
+                      />
+                    );
+                  })}
+              </Flex>
+            </Box>
+          )}
+
           <HeadingDivider label="Speaker" />
           <Grid
             gridTemplateColumns="max-content 1fr max-content"
@@ -259,6 +349,11 @@ export default function StreamAboutSection({
             )}
 
             {(() => {
+              if (!upvoteSummary) {
+                return <Shimmer w={50} h={30} borderRadius={radii.xxxxs} />;
+              }
+
+              const { upvotes, upvote } = upvoteSummary;
               if (user) {
                 if (user.pk !== host_detail.pk) {
                   return (
@@ -280,7 +375,7 @@ export default function StreamAboutSection({
                         textStyle: "captionLarge",
                         color: upvote ? colors.green[0] : colors.textPrimary,
                       }}
-                      onClick={() => onUpvote && onUpvote(stream)}
+                      onClick={upvoteStream}
                     />
                   );
                 }
@@ -315,6 +410,30 @@ export default function StreamAboutSection({
           </Flex>
         </Box>
       </Box>
+
+      <Flex
+        display={["flex", "none"]}
+        gridGap={space.xxxs}
+        px={space.xxxs}
+        py={space.xxxxs}
+      >
+        <Button
+          variant="dark-flat"
+          flex={1}
+          label="Share Stream"
+          suffixElement={<Icon icon="Share" />}
+          onClick={() => {
+            setShowShareSheet(true);
+          }}
+        />
+        <Button
+          variant="dark-flat"
+          flex={1}
+          label="Live Chat"
+          suffixElement={<Icon icon="Chat" />}
+          onClick={onClickChatPanelMobile}
+        />
+      </Flex>
 
       <AboutCreatorBottomSheet
         stream={stream}

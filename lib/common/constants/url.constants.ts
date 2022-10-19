@@ -76,6 +76,7 @@ export const API_URL_CONSTANTS = {
     postGroupQuestionUpvote: "/groups/conversations/stream/questions/upvote/",
     getAllVideos: "/groups/public/conversations/webinars/videos/",
     getSuggestedTopics: "groups/conversations/suggested_topics/",
+    getEncryptHackers: "groups/public/conversations/webinars/hacking/",
   },
   multistream: {
     getMultiStreamForGroup: (id: string | number): string =>
@@ -112,6 +113,8 @@ export const API_URL_CONSTANTS = {
       "https://84wp6p3fi7.execute-api.ap-south-1.amazonaws.com/test",
     upvoteStream: (group: number): string =>
       `/groups/conversations/webinars/${group}/upvote/`,
+    retrieveUpvoteSummary: (group: number): string =>
+      `/groups/conversations/webinars/${group}/upvote_summary/`,
   },
   rewards: {
     rewardsList: "/crater/reward/",
