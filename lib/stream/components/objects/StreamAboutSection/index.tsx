@@ -2,6 +2,8 @@ import { useCallback, useState } from "react";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
+import { useRouter } from "next/router";
+
 import useAuth from "@/auth/context/AuthContext";
 import {
   Box,
@@ -23,13 +25,14 @@ import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
-import { Follower, Webinar } from "@/community/types/community";
+import { Follower, MultiStream, Webinar } from "@/community/types/community";
 import StreamApiClient from "@/stream/api";
 import useFirebaseChat from "@/stream/providers/FirebaseChatProvider";
 import { UpvoteSummary } from "@/stream/types/stream";
 
 import AboutCreatorBottomSheet from "../AboutCreatorBottomSheet";
 import ShareStreamBottomSheet from "../ShareStreamBottomSheet";
+import StreamHLSPlayer from "../StreamHLSPlayer";
 
 interface IProps {
   stream?: Webinar;
@@ -37,6 +40,10 @@ interface IProps {
   followersLoading: boolean;
   hideShareIcon?: boolean;
   onFollow: () => void;
+  onClickChatPanelMobile?: () => void;
+  multiStreamMode?: boolean;
+  multistream?: MultiStream;
+  onUpvote?: (webinar: Webinar) => void;
 }
 
 export default function StreamAboutSection({
@@ -44,8 +51,12 @@ export default function StreamAboutSection({
   followers,
   followersLoading,
   hideShareIcon,
+  onClickChatPanelMobile,
+  multiStreamMode = false,
+  multistream,
   onFollow,
-}: IProps): JSX.Element {
+}: IProps): JSX.Element | null {
+  const router = useRouter();
   const { colors, space, radii, breakpoints } = useTheme();
   const [showAboutSheet, setShowAboutSheet] = useState(false);
   const [showShareSheet, setShowShareSheet] = useState(false);
@@ -93,9 +104,15 @@ export default function StreamAboutSection({
 
   const { topic_detail, host_detail } = stream;
 
+  if (isMobile === undefined) return null;
+
   return (
     <>
-      <Box as="section" bg={colors.primaryLight} borderRadius={radii.xxxxs}>
+      <Box
+        as="section"
+        bg={[colors.primaryBackground, colors.primaryLight]}
+        borderRadius={radii.xxxxs}
+      >
         <Flex
           display={["none", "flex"]}
           justifyContent="space-between"
@@ -190,6 +207,34 @@ export default function StreamAboutSection({
               {topic_detail.description}
             </ExpandingText>
           )}
+          {isMobile && multiStreamMode && multistream && stream && (
+            <Box overflowX="auto" w="calc(100vw - 24px)">
+              <Flex gridGap={space.xxxxs} py={space.xxxs}>
+                {multistream.streams
+                  .filter((obj) => obj !== stream.id)
+                  .map((id) => {
+                    return (
+                      <StreamHLSPlayer
+                        autoPlay
+                        muted
+                        containerProps={{
+                          w: 152,
+                          h: 86,
+                        }}
+                        streamId={id}
+                        key={id}
+                        onClick={() => {
+                          router.push(PageRoutes.multistream(id), undefined, {
+                            shallow: true,
+                          });
+                        }}
+                      />
+                    );
+                  })}
+              </Flex>
+            </Box>
+          )}
+
           <HeadingDivider label="Speaker" />
           <Grid
             gridTemplateColumns="max-content 1fr max-content"
@@ -365,6 +410,30 @@ export default function StreamAboutSection({
           </Flex>
         </Box>
       </Box>
+
+      <Flex
+        display={["flex", "none"]}
+        gridGap={space.xxxs}
+        px={space.xxxs}
+        py={space.xxxxs}
+      >
+        <Button
+          variant="dark-flat"
+          flex={1}
+          label="Share Stream"
+          suffixElement={<Icon icon="Share" />}
+          onClick={() => {
+            setShowShareSheet(true);
+          }}
+        />
+        <Button
+          variant="dark-flat"
+          flex={1}
+          label="Live Chat"
+          suffixElement={<Icon icon="Chat" />}
+          onClick={onClickChatPanelMobile}
+        />
+      </Flex>
 
       <AboutCreatorBottomSheet
         stream={stream}

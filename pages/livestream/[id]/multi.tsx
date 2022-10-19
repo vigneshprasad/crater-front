@@ -1,4 +1,6 @@
 import { GetServerSideProps } from "next";
+import { Session } from "next-auth";
+import { getSession } from "next-auth/client";
 import { ParsedUrlQuery } from "querystring";
 
 import dynamic from "next/dynamic";
@@ -8,7 +10,7 @@ import Page from "@/common/components/objects/Page";
 import { PageRoutes } from "@/common/constants/route.constants";
 import WebinarApiClient from "@/community/api";
 import MultiStreamApiClient from "@/community/api/MultiStreamApiClient";
-import { MultiStream, Webinar } from "@/community/types/community";
+import { MultiStream, PrivacyType, Webinar } from "@/community/types/community";
 
 const LiveStreamPage = dynamic(
   () => import("@/stream/components/page/LiveStreamPage/v2")
@@ -23,6 +25,7 @@ interface IProps {
   multistream: MultiStream | null;
   id: number;
   orgId: string;
+  session: Session | null;
 }
 
 export const getServerSideProps: GetServerSideProps<IProps, IParams> = async (
@@ -32,13 +35,39 @@ export const getServerSideProps: GetServerSideProps<IProps, IParams> = async (
   const { id } = params as IParams;
   const [webinar] = await WebinarApiClient().getWebinar(id);
   const [multistream] = await MultiStreamApiClient().getSquadForGroup(id);
+  const session = await getSession(props);
 
   if (!webinar) {
     return {
       notFound: true,
     };
   }
+
   const orgId = process.env.DYTE_ORG_ID as string;
+  const isHost = session?.user?.pk === webinar.host_detail.pk;
+  const user = session?.user;
+
+  if (user && webinar.privacy === PrivacyType.private) {
+    const isUserAttendee = webinar.attendees?.indexOf(user.pk) > -1;
+    const isUserSpeaker = webinar.speakers?.indexOf(user.pk) > -1;
+    if (!isUserAttendee && !isUserSpeaker) {
+      return {
+        redirect: {
+          destination: PageRoutes.session(webinar?.id),
+          permanent: false,
+        },
+      };
+    }
+  }
+
+  if (isHost || !multistream) {
+    return {
+      redirect: {
+        destination: `/livestream/${id}`,
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {
@@ -46,6 +75,7 @@ export const getServerSideProps: GetServerSideProps<IProps, IParams> = async (
       multistream: multistream ? multistream : null,
       webinar,
       orgId,
+      session,
     },
   };
 };

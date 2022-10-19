@@ -101,14 +101,20 @@ export default function LiveStreamPanel({
   }, [router, setActiveTab]);
 
   useEffect(() => {
-    if (socket != null) {
-      socket.on("user:notification", (data: INotificationData) => {
-        if (data.type === "creator-sale-request") {
-          setPurchaseRequest(data.data);
-          setVisibleModal(true);
-        }
-      });
+    const eventHandler = (data: INotificationData): void => {
+      if (data.type === "creator-sale-request") {
+        setPurchaseRequest(data.data);
+        setVisibleModal(true);
+      }
+    };
+
+    if (socket !== null) {
+      socket.on("user:notification", eventHandler);
     }
+
+    return () => {
+      socket?.off("user:notification", eventHandler);
+    };
   }, [socket]);
 
   if (!webinar) {
@@ -118,9 +124,10 @@ export default function LiveStreamPanel({
   return (
     <Grid
       gridTemplateRows={["max-content 1fr"]}
-      bg={colors.primaryBackground}
+      bg={["transparent", colors.primaryBackground]}
       position="relative"
       borderLeft={`1px solid ${colors.primaryLight}`}
+      h="100%"
     >
       <BaseTabBar
         bg={colors.primaryLight}

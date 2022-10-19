@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 
 import { Box, Grid, GridProps } from "@/common/components/atoms";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { MultiStream } from "@/community/types/community";
 
 import StreamHLSPlayer from "../StreamHLSPlayer";
@@ -17,13 +18,14 @@ export default function MultiStreamPlayer({
   active,
   multistream,
   onClickStream,
-}: IProps): JSX.Element {
-  const { space, colors } = useTheme();
+}: IProps): JSX.Element | null {
+  const { space, colors, breakpoints } = useTheme();
   const { streams } = multistream;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [variants, setVariants] = useState<Variants | undefined>(undefined);
   const [height, setHeight] = useState<string | number>("auto");
   const [width, setWidth] = useState<string | number>("auto");
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   const containerProps = useMemo<GridProps>(() => {
     const size = streams.length;
@@ -132,6 +134,20 @@ export default function MultiStreamPlayer({
       setHeight(height);
     }
   }, [containerRef, setVariants, setHeight, setWidth]);
+
+  if (isMobile) {
+    return (
+      <StreamHLSPlayer
+        containerProps={{
+          w: "calc(100vw - 4px)",
+          aspectRatio: "16 / 9",
+        }}
+        autoPlay
+        streamId={active}
+        controls
+      />
+    );
+  }
 
   return (
     <Box px={space.xxxxs} w="100%">

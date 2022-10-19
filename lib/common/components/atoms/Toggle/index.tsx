@@ -1,5 +1,5 @@
 import * as CSS from "csstype";
-import { Variants, useAnimation } from "framer-motion";
+import { Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 
@@ -21,7 +21,6 @@ export function Toggle({
   value,
 }: IProps): JSX.Element {
   const [active, setActive] = useState<boolean>(value ?? true);
-  const controls = useAnimation();
   const { colors } = useTheme();
   const containerVariants: Variants = {
     active: {
@@ -56,12 +55,10 @@ export function Toggle({
       onClick={() => {
         const updated = !active;
         setActive(updated);
-
-        controls.start(updated ? "active" : "inactive");
         onChange && onChange(updated);
       }}
       position="relative"
-      animate={controls}
+      animate={active ? "active" : "inactive"}
       variants={containerVariants}
       h={20}
       borderRadius={16}
@@ -70,7 +67,6 @@ export function Toggle({
     >
       <AnimatedBox
         display="grid"
-        animate={controls}
         variants={indicatorVariants}
         position="absolute"
         top="50%"
