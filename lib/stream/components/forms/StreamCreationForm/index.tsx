@@ -266,8 +266,11 @@ export default function StreamCreationForm({
           DateTime.DEFAULT_DATETIME_INPUT_FORMAT
         ),
         categories: [formData.category?.pk],
-        rtmp_link: `${formData.rtmpLink}/${formData.rtmpKey}`,
       };
+
+      if (formData.rtmpLink && formData.rtmpKey) {
+        requestData["rtmp_link"] = `${formData.rtmpLink}/${formData.rtmpKey}`;
+      }
 
       const [res, err] = await CreatorApiClient().postStream(requestData);
       if (err) {
