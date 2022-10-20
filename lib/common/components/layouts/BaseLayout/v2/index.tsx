@@ -1,8 +1,11 @@
 import { forwardRef, useEffect, useMemo } from "react";
+import { mergeRefs } from "react-merge-refs";
 
 import { Grid, Box, BoxProps } from "@/common/components/atoms";
 import AppNavbar from "@/common/components/objects/AppNavBar/v2";
 import Banner from "@/common/components/objects/Banner";
+
+import { useBaseLayout } from "./provider";
 
 type IBaseLayoutProps = BoxProps & {
   aside?: React.ReactNode;
@@ -10,12 +13,12 @@ type IBaseLayoutProps = BoxProps & {
 
 const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
   ({ aside, children, ...rest }, ref) => {
+    const { scrollRef } = useBaseLayout();
     const gridTemplateAreas = useMemo(() => {
       if (aside) {
         return [
           `
           "navbar"
-          "banner"
           "content"
         `,
           `
@@ -63,7 +66,7 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
           gridTemplateAreas={gridTemplateAreas}
           h="calc(var(--vh, 1vh) * 100)"
           gridTemplateColumns={gridTemplateColumns}
-          gridTemplateRows={["max-content max-content 1fr"]}
+          gridTemplateRows={["max-content 1fr", "max-content max-content 1fr"]}
           overflow="hidden"
         >
           <AppNavbar />
@@ -72,7 +75,12 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
             content="Become A Streamer: Find Out How! ⚡️📺"
             link="https://calendly.com/craterclub/become-a-streamer-find-out-how?month=2022-09"
           />
-          <Box gridArea="content" {...rest} ref={ref} as="main">
+          <Box
+            gridArea="content"
+            {...rest}
+            ref={mergeRefs([scrollRef, ref])}
+            as="main"
+          >
             {children}
           </Box>
         </Grid>

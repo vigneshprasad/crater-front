@@ -16,6 +16,8 @@ type IProps = AnimatedBoxProps &
     heading?: string;
     rootBoxProps?: AnimatedBoxProps;
     boxProps?: BoxProps;
+    withIndicator?: boolean;
+    overlayColor?: string;
   }>;
 
 export function BottomSheet({
@@ -25,6 +27,8 @@ export function BottomSheet({
   heading,
   rootBoxProps,
   boxProps,
+  withIndicator = true,
+  overlayColor,
   ...rest
 }: IProps): JSX.Element | null {
   const [showSheet, setShowSheet] = useState(visible ?? false);
@@ -50,12 +54,12 @@ export function BottomSheet({
         <AnimatedBox
           onClick={onClose}
           display="grid"
-          position="absolute"
+          position="fixed"
           top={0}
           bottom={0}
           right={0}
           left={0}
-          bg={colors.modalOverlay}
+          bg={overlayColor ?? colors.modalOverlay}
           zIndex={zIndices.overlay}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { when: "beforeChildren" } }}
@@ -67,17 +71,19 @@ export function BottomSheet({
             onClick={(e: React.ChangeEvent<HTMLInputElement>) =>
               e.stopPropagation()
             }
+            display="grid"
             px={space.xxxs}
             borderRadius={`${radii.s}px ${radii.s}px 0 0`}
             w="100%"
             bottom={0}
-            bg={colors.primaryLight}
+            bg={colors.primaryDark}
             position="absolute"
             zIndex={zIndices.modal}
             overflow="hidden"
-            borderTopRightRadius={radii.xxs}
-            borderTopLeftRadius={radii.xxs}
+            borderTopRightRadius={16}
+            borderTopLeftRadius={16}
             maxHeight="80vh"
+            gridTemplateRows="max-content 1fr"
             initial={{
               y: "50%",
             }}
@@ -91,21 +97,24 @@ export function BottomSheet({
             {...rest}
           >
             <Box
-              py={space.xxxs}
+              py={space.xxxxs}
               position="sticky"
               top={0}
-              bg={colors.primaryLight}
+              px={space.xxxs}
               zIndex={zIndices.modalHeader}
               {...boxProps}
             >
-              <Box h={2} bg={colors.black[0]} w={28} m="0 auto" />
+              {withIndicator && (
+                <Box h={2} bg={colors.black[0]} w={28} m="0 auto" />
+              )}
+
               <Flex justifyContent="space-between" alignItems="center">
                 <Text>{heading}</Text>
                 <IconButton icon="Close" onClick={onClose} />
               </Flex>
             </Box>
 
-            <Box>{children}</Box>
+            <Box h="100%">{children}</Box>
           </AnimatedBox>
         </AnimatedBox>
       )}

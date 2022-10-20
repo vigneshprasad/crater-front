@@ -1,5 +1,5 @@
 import backgroundModule from "@dytesdk/background-changer-module";
-import { DyteMeeting, Meeting } from "dyte-client";
+import { Meeting, DyteMeeting } from "dyte-client";
 import { useCallback, useEffect, useRef } from "react";
 
 import useAuth from "@/auth/context/AuthContext";
@@ -8,6 +8,9 @@ import useAnalytics from "@/common/utils/analytics/AnalyticsContext";
 import { AnalyticsEvents } from "@/common/utils/analytics/types";
 import { Webinar } from "@/community/types/community";
 import useDyteWebinar from "@/dyte/context/DyteWebinarContext";
+
+import SimilarStreamsOverlay from "../SimilarStreamsOverlay";
+import TokenBannerOverlay from "../TokenBannerOverlay";
 
 interface IProps {
   stream?: Webinar;
@@ -20,8 +23,8 @@ export default function StreamDytePlayer({
 }: IProps): JSX.Element {
   const meeting = useRef<Meeting>();
   const { dyteParticipant, loading } = useDyteWebinar();
-
   const { track } = useAnalytics();
+  const { user } = useAuth();
 
   const meetendEndHandler = useCallback(() => {
     // router.push(PageRoutes.session(groupId.toString()));
@@ -37,8 +40,6 @@ export default function StreamDytePlayer({
     []
   );
 
-  const { user } = useAuth();
-
   const participantJoinHandler = useCallback(() => {
     if (stream) {
       track(AnalyticsEvents.participant_joined_stream, {
@@ -50,6 +51,8 @@ export default function StreamDytePlayer({
       });
     }
   }, [track, stream]);
+
+  const creator = stream?.host_detail.creator_detail;
 
   const addEventListeners = useCallback(() => {
     if (meeting.current) {
@@ -84,7 +87,7 @@ export default function StreamDytePlayer({
   return (
     <Box pt="56.25%" position="relative">
       {(() => {
-        if (!dyteParticipant || loading || !stream) {
+        if (!dyteParticipant || loading) {
           return (
             <Shimmer
               position="absolute"
@@ -97,34 +100,56 @@ export default function StreamDytePlayer({
         }
 
         return (
-          <Box position="absolute" top={0} left={0} right={0} bottom={0}>
-            <DyteMeeting
-              uiConfig={{
-                header: false,
-                controlBarElements: {
-                  polls: false,
-                  chat: false,
-                  plugins: false,
-                  participants: false,
-                },
-                dimensions: {
-                  mode: "fillParent",
-                },
-              }}
-              clientId={orgId}
-              meetingConfig={{
-                roomName: dyteParticipant.dyte_meeting_detail.room_name,
-                authToken: dyteParticipant.auth_token,
-                showSetupScreen: false,
-              }}
-              onInit={(dyteMeeting) => {
-                meeting.current = dyteMeeting;
-                user?.pk === stream.host &&
-                  meeting.current.modules.initAndAdd(backgroundModule);
-                addEventListeners();
-              }}
-            />
-          </Box>
+          <>
+            <Box
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              overflow="hidden"
+            >
+              <DyteMeeting
+                uiConfig={{
+                  header: false,
+                  controlBarElements: {
+                    polls: false,
+                    chat: false,
+                    plugins: false,
+                    participants: false,
+                  },
+                  dimensions: {
+                    mode: "fillParent",
+                  },
+                }}
+                clientId={orgId}
+                meetingConfig={{
+                  roomName: dyteParticipant.dyte_meeting_detail.room_name,
+                  authToken: dyteParticipant.auth_token,
+                  showSetupScreen: false,
+                }}
+                onInit={(dyteMeeting) => {
+                  meeting.current = dyteMeeting;
+                  user?.pk === stream?.host &&
+                    meeting.current.modules.initAndAdd(backgroundModule);
+                  addEventListeners();
+                }}
+              />
+            </Box>
+            {(() => {
+              if (!user || !stream) return null;
+              if (
+                !stream.speakers.includes(user.pk) &&
+                stream.host !== user.pk
+              ) {
+                return <SimilarStreamsOverlay />;
+              }
+            })()}
+
+            {creator?.tokens_enabled && stream?.is_live && (
+              <TokenBannerOverlay />
+            )}
+          </>
         );
       })()}
     </Box>

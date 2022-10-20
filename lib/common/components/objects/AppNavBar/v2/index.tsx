@@ -108,19 +108,25 @@ export default function AppNavbar(): JSX.Element {
 
           return (
             <>
-              <Button
-                prefixElement={
-                  <Image
-                    height={24}
-                    width={24}
-                    src={STATIC_IMAGES.ImageCoin}
-                    alt="coin icon"
-                  />
-                }
-                variant="gradient-border"
-                label={isMobile ? "Earn" : "Learn and Earn"}
-                onClick={() => setVisible(true)}
-              />
+              {isMobile ? (
+                <Link href="/encrypt-2022">
+                  <Button variant="gradient-border" label="Encrypt" />
+                </Link>
+              ) : (
+                <Button
+                  prefixElement={
+                    <Image
+                      height={24}
+                      width={24}
+                      src={STATIC_IMAGES.ImageCoin}
+                      alt="coin icon"
+                    />
+                  }
+                  variant="gradient-border"
+                  label={isMobile ? "Earn" : "Learn and Earn"}
+                  onClick={() => setVisible(true)}
+                />
+              )}
 
               <MenuButton
                 items={[

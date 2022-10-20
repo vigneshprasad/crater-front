@@ -23,6 +23,7 @@ import BasicSignupSheet from "@/auth/components/objects/BasicSignupSheet";
 import { AuthProvider } from "@/auth/context/AuthContext";
 import { AuthModalProvider } from "@/auth/context/AuthModalContext";
 import { SystemSocketProvider } from "@/auth/context/SystemSocketContext";
+import { BaseLayoutProvider } from "@/common/components/layouts/BaseLayout/v2/provider";
 import { NotificationStack } from "@/common/components/objects/NotificationStack";
 import { NotificationStackProvider } from "@/common/components/objects/NotificationStack/context";
 import {
@@ -119,7 +120,9 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
                         })(window, document, "clarity", "script", "${CLARITY_PID}");
                       `}
                         </Script>
-                        <Component {...pageProps} />
+                        <BaseLayoutProvider>
+                          <Component {...pageProps} />
+                        </BaseLayoutProvider>
                       </SystemSocketProvider>
                     </AsideNavProvider>
                     <LearnNEarnModal />

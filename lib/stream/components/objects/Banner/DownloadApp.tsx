@@ -1,14 +1,14 @@
 import STATIC_IMAGES from "public/images";
 import { useTheme } from "styled-components";
 
-import { Box, Flex, Image, Text } from "@/common/components/atoms";
+import { Box, BoxProps, Flex, Image, Text } from "@/common/components/atoms";
 import AppLink, { AppLinkType } from "@/common/components/objects/AppLink/v2";
 
-export default function DownloadApp(): JSX.Element {
+export default function DownloadApp({ ...props }: BoxProps): JSX.Element {
   const { colors, space, fonts } = useTheme();
   return (
-    <Box position="relative">
-      <Image src={STATIC_IMAGES.ImageAppBannerStream} alt="" />
+    <Box position="relative" {...props}>
+      <Image width="100%" src={STATIC_IMAGES.ImageAppBannerStream} alt="" />
       <Flex
         gridGap={space.xxxs}
         position="absolute"
