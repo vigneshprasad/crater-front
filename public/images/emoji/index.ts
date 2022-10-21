@@ -16,9 +16,9 @@ import Hacker from "public/images/emoji/img_hacker.png";
 import HandOverHangOver from "public/images/emoji/img_handover_hang_over.png";
 import HandOverTorch from "public/images/emoji/img_handover_torch.png";
 import Happy from "public/images/emoji/img_happy.png";
-import HeemanshuMetaverse from "public/images/emoji/img_heemanshu_metaverse.png";
 import HelloHacker from "public/images/emoji/img_hello_hacker.png";
 import HelloWorld from "public/images/emoji/img_hello_world.png";
+import HemanshuMetaverse from "public/images/emoji/img_hemanshu_metaverse.png";
 import Hi from "public/images/emoji/img_hi.png";
 import HimanshuSachanBirthday from "public/images/emoji/img_himanshu_sachan_birthday.png";
 import ImIn from "public/images/emoji/img_i_am_in.png";
@@ -108,7 +108,7 @@ const EMOJI_IMAGE_LIST = {
   StackOverflow,
   Supremacy,
   YouveBeenHacked,
-  HeemanshuMetaverse,
+  HemanshuMetaverse,
   HimanshuSachanBirthday,
 };
 
