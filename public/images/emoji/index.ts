@@ -18,7 +18,9 @@ import HandOverTorch from "public/images/emoji/img_handover_torch.png";
 import Happy from "public/images/emoji/img_happy.png";
 import HelloHacker from "public/images/emoji/img_hello_hacker.png";
 import HelloWorld from "public/images/emoji/img_hello_world.png";
+import HemanshuMetaverse from "public/images/emoji/img_hemanshu_metaverse.png";
 import Hi from "public/images/emoji/img_hi.png";
+import HimanshuSachanBirthday from "public/images/emoji/img_himanshu_sachan_birthday.png";
 import ImIn from "public/images/emoji/img_i_am_in.png";
 import Interesting from "public/images/emoji/img_interesting.png";
 import IQ220 from "public/images/emoji/img_iq_220.png";
@@ -106,6 +108,8 @@ const EMOJI_IMAGE_LIST = {
   StackOverflow,
   Supremacy,
   YouveBeenHacked,
+  HemanshuMetaverse,
+  HimanshuSachanBirthday,
 };
 
 export type EmojiKeys = keyof typeof EMOJI_IMAGE_LIST;
