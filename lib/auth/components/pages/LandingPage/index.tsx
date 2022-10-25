@@ -1,9 +1,11 @@
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { Box, Flex, Span, Text } from "@/common/components/atoms";
 import Page from "@/common/components/objects/Page";
+import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 import LandingAuthForm from "../../forms/LandingAuthForm";
@@ -11,6 +13,7 @@ import LandingPageLayout from "../../layouts/LandingPageLayout";
 
 export default function LandingPage(): JSX.Element | null {
   const { space, colors, fonts, breakpoints } = useTheme();
+  const router = useRouter();
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
@@ -50,6 +53,10 @@ export default function LandingPage(): JSX.Element | null {
     </Box>
   );
 
+  const postLogin = (): void => {
+    router.push(PageRoutes.category("web-3"));
+  };
+
   if (isMobile === undefined) return null;
 
   return (
@@ -82,7 +89,7 @@ export default function LandingPage(): JSX.Element | null {
           gridGap={[space.xs, space.s]}
         >
           {pageHeading}
-          <LandingAuthForm />
+          <LandingAuthForm postSubmit={postLogin} />
 
           <Box mt={space.s} position="relative">
             <Text
