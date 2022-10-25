@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
+import STATIC_IMAGES from "public/images";
 
 import dynamic from "next/dynamic";
 
@@ -26,5 +27,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default function Landing(): JSX.Element {
-  return <LandingPage />;
+  return (
+    <LandingPage
+      primaryHeading="Web 3.0 Creators"
+      secondaryHeading="Watch live streams on Web 3.0, Crypto Trading, Blockchain and more on Crater today. 120,000 learners have already joined!"
+      image={STATIC_IMAGES.ImageWeb3LandingPage}
+    />
+  );
 }
