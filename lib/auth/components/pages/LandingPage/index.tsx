@@ -1,6 +1,7 @@
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { Box, Flex, Span, Text } from "@/common/components/atoms";
 import Page from "@/common/components/objects/Page";
@@ -13,14 +14,17 @@ type IProps = {
   primaryHeading: string;
   secondaryHeading: string;
   image: StaticImageData;
+  redirectTo: string;
 };
 
 export default function LandingPage({
   primaryHeading,
   secondaryHeading,
   image,
+  redirectTo,
 }: IProps): JSX.Element | null {
   const { space, colors, fonts, breakpoints } = useTheme();
+  const router = useRouter();
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
@@ -59,6 +63,10 @@ export default function LandingPage({
     </Box>
   );
 
+  const postLogin = (): void => {
+    router.push(redirectTo);
+  };
+
   if (isMobile === undefined) return null;
 
   return (
@@ -92,7 +100,7 @@ export default function LandingPage({
           gridGap={[space.xs, space.s]}
         >
           {pageHeading}
-          <LandingAuthForm />
+          <LandingAuthForm onSubmit={postLogin} />
 
           <Box mt={space.s} position="relative">
             <Text
