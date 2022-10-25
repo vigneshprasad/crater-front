@@ -30,8 +30,9 @@ export default function Landing(): JSX.Element {
   return (
     <LandingPage
       primaryHeading="Design & Art Creators"
-      secondaryHeading="Watch live streams on UI/UX design, Art, Sketching and more on Crater today. 120,000 learners have already joined!"
+      secondaryHeading="Watch live streams on UI/UX Design, Art, Sketching and more on Crater today."
       image={STATIC_IMAGES.ImageDesignLandingPage}
+      redirectTo={PageRoutes.category("design")}
     />
   );
 }
