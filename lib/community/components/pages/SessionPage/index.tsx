@@ -133,8 +133,6 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
   const image = webinar.topic_detail?.image;
 
-  console.log(webinarCategories);
-
   return (
     <>
       <StreamsToRsvpProvider sortByCategory={webinarCategories}>
