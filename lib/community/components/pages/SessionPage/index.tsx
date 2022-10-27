@@ -116,7 +116,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   const webinarCategories = useMemo<string[] | undefined>(() => {
     if (!webinar) return undefined;
 
-    return webinar.categories_details_list?.map((item) => item.slug);
+    return webinar.categories_detail_list?.map((item) => item.slug);
   }, [webinar]);
 
   const followCreator = async (): Promise<void> => {
@@ -132,6 +132,8 @@ export default function SessionPage({ id }: IProps): JSX.Element {
   if (!webinar || isMobile === undefined) return <Box>Loading..</Box>;
 
   const image = webinar.topic_detail?.image;
+
+  console.log(webinarCategories);
 
   return (
     <>
