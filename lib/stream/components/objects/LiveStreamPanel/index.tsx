@@ -20,14 +20,10 @@ import { BaseTabBar } from "@/common/components/objects/BaseTabBar";
 import ContainerModal from "@/common/components/objects/ContainerModal";
 import { INotificationData } from "@/common/components/objects/NotificationStack/types";
 import { useWebinar } from "@/community/context/WebinarContext";
-import { ChallengeListProvider } from "@/leaderboard/context/ChallegeListContext";
-import { LeaderboardListProvider } from "@/leaderboard/context/LeaderboardListContext";
-import { UserLeaderboardListProvider } from "@/leaderboard/context/UserLeaderboardListContext";
 
 import StreamChat from "../StreamChat";
-import StreamLeaderboardPanel from "../StreamLeaderboardPanel";
 
-export type TabKeys = "chat" | "store" | "leaderboard";
+export type TabKeys = "chat" | "store";
 
 interface IProps {
   initial?: TabKeys;
@@ -143,19 +139,6 @@ export default function LiveStreamPanel({
       )}
       {activeTab === "store" && webinar && (
         <LiveStreamAuctions webinar={webinar} />
-      )}
-      {activeTab === "leaderboard" && (
-        <ChallengeListProvider>
-          <LeaderboardListProvider
-            filterChallenge={router.query.challenge as string}
-          >
-            <UserLeaderboardListProvider
-              filterLeaderboard={router.query.leaderboard as string}
-            >
-              <StreamLeaderboardPanel />
-            </UserLeaderboardListProvider>
-          </LeaderboardListProvider>
-        </ChallengeListProvider>
       )}
       <ContainerModal visible={visibleModal} heading="PURCHASE REQUEST">
         {purchaseRequest && (
