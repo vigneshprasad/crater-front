@@ -54,7 +54,10 @@ export default function LandingPage(): JSX.Element | null {
   );
 
   const postLogin = (): void => {
-    router.push(PageRoutes.category("web-3"));
+    router.push({
+      pathname: PageRoutes.category("web-3"),
+      query: { type: "web-3" },
+    });
   };
 
   if (isMobile === undefined) return null;
