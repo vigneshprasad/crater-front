@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session?.user) {
     return {
       redirect: {
-        destination: PageRoutes.category("web-3"),
+        destination: PageRoutes.category("design"),
         permanent: false,
       },
     };
@@ -29,10 +29,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export default function Landing(): JSX.Element {
   return (
     <LandingPage
-      primaryHeading="Web 3.0 Creators"
-      secondaryHeading="Watch live streams on Web 3.0, Crypto Trading, Blockchain and more on Crater today."
-      image={STATIC_IMAGES.ImageWeb3LandingPage}
-      redirectTo={PageRoutes.category("web-3")}
+      primaryHeading="Design & Art Creators"
+      secondaryHeading="Watch live streams on UI/UX Design, Art, Sketching and more on Crater today."
+      image={STATIC_IMAGES.ImageDesignLandingPage}
+      redirectTo={PageRoutes.category("design")}
     />
   );
 }
