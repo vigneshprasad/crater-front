@@ -317,7 +317,6 @@ export default function StreamCreationForm({
       gridAutoFlow="row"
       gridTemplateRows="1fr max-content"
       gridTemplateColumns="minmax(0, 1fr)"
-      onSubmit={onClickSubmit}
     >
       <CustomBox h="90%" pt={space.xs} pl={24} pr={space.xxs} overflowY="auto">
         {formToRender}
@@ -381,10 +380,10 @@ export default function StreamCreationForm({
 
           {activeStep === STREAM_CREATION_PAGES.length - 1 && (
             <Button
-              type="submit"
               label="Submit and Create Stream"
               suffixElement={loading && <Spinner size={24} />}
               disabled={loading}
+              onClick={onClickSubmit}
             />
           )}
         </Flex>
