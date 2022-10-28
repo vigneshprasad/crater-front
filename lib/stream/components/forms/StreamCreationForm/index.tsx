@@ -48,7 +48,7 @@ const CustomBox = styled(Box)`
 `;
 
 export interface IStreamCreationFormProps {
-  category?: StreamCategory;
+  categories: StreamCategory[];
   topic: string;
   description?: string;
   dateAndTime: DateTime;
@@ -111,12 +111,12 @@ export default function StreamCreationForm({
     clearForm,
   } = useForm<IStreamCreationFormProps>({
     fields: {
-      category: {
-        intialValue: undefined,
+      categories: {
+        intialValue: [],
         validators: [
           {
-            validator: Validators.required,
-            message: "Category is required.",
+            validator: Validators.minLength,
+            message: "Categories are required.",
           },
         ],
       },
@@ -166,19 +166,21 @@ export default function StreamCreationForm({
     if (activeStep === StreamCreationSteps.GetStarted) {
       return (
         <GetStartedForm
-          value={fields.category.value}
-          error={fields.category.errors[0]}
+          value={fields.categories.value}
+          error={fields.categories.errors[0]}
           onChange={(val) =>
-            fieldValueSetter("category", val as StreamCategory)
+            fieldValueSetter("categories", val as StreamCategory[])
           }
         />
       );
     }
 
     if (activeStep === StreamCreationSteps.BasicDetails) {
+      const category = fields.categories.value[0]?.pk;
+
       return (
         <BasicDetailsForm
-          category={fields.category.value?.pk}
+          category={category}
           topic={{
             value: fields.topic.value,
             error: fields.topic.errors[0],
@@ -265,7 +267,7 @@ export default function StreamCreationForm({
         start: formData.dateAndTime.toFormat(
           DateTime.DEFAULT_DATETIME_INPUT_FORMAT
         ),
-        categories: [formData.category?.pk],
+        categories: formData.categories.map((category) => category.pk),
       };
 
       if (formData.rtmpLink && formData.rtmpKey) {
