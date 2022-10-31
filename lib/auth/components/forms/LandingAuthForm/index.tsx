@@ -33,11 +33,11 @@ type AuthFormArgs = {
 };
 
 type IProps = {
-  postSubmit?: () => void;
+  onSubmit: () => void;
 };
 
 export default function LandingAuthForm({
-  postSubmit,
+  onSubmit,
 }: IProps): JSX.Element | null {
   const router = useRouter();
   const { track } = useAnalytics();
@@ -155,7 +155,7 @@ export default function LandingAuthForm({
       track(AnalyticsEvents.web3_landing_phone_verified, {
         phoneNumber,
       });
-      postSubmit && postSubmit();
+      onSubmit();
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);

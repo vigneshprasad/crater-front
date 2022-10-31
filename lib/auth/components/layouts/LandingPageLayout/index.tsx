@@ -1,10 +1,7 @@
-import STATIC_IMAGES from "public/images";
 import { PropsWithChildren } from "react";
 import styled, { useTheme } from "styled-components";
 
-import Image from "next/image";
-
-import { Box, Grid } from "@/common/components/atoms";
+import { Grid } from "@/common/components/atoms";
 
 const StyledGrid = styled(Grid)`
   scrollbar-width: none;
@@ -28,13 +25,6 @@ export default function LandingPageLayout({
       overflowX="hidden"
       overflowY={["auto", "hidden"]}
     >
-      <Box pt="56.25%" position="relative">
-        <Image
-          src={STATIC_IMAGES.ImageLandingPage}
-          alt="Landing Img"
-          layout="fill"
-        />
-      </Box>
       {children}
     </StyledGrid>
   );
