@@ -115,6 +115,8 @@ export const API_URL_CONSTANTS = {
       `/groups/conversations/webinars/${group}/upvote/`,
     retrieveUpvoteSummary: (group: number): string =>
       `/groups/conversations/webinars/${group}/upvote_summary/`,
+    getMyUpcomingStreams: "/groups/conversations/my/streams/upcoming/",
+    getMyPastStreams: "/groups/conversations/my/streams/past/",
   },
   rewards: {
     rewardsList: "/crater/reward/",
