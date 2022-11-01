@@ -10,9 +10,9 @@ import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { Creator, CreatorStats } from "@/creators/types/creator";
 import {
-  UpcomingStreamsContext,
-  UpcomingStreamsProvider,
-} from "@/stream/context/UpcomingStreamsContext";
+  MyUpcomingStreamsContext,
+  MyUpcomingStreamsProvider,
+} from "@/stream/context/MyUpcomingStreamsContext";
 import { SortByField } from "@/stream/types/stream";
 
 import CreatorStatsBox from "../CreatorStatsBox";
@@ -96,7 +96,7 @@ export default function HubUpcomingStreamsTab({
 
   return (
     <Box pt={space.xxs} overflow="auto" minWidth={1000}>
-      <UpcomingStreamsProvider
+      <MyUpcomingStreamsProvider
         host={userId}
         sortBy={sortBy ?? SortByField.THIS_WEEK}
       >
@@ -157,7 +157,7 @@ export default function HubUpcomingStreamsTab({
             </Box>
           </Box>
 
-          <UpcomingStreamsContext.Consumer>
+          <MyUpcomingStreamsContext.Consumer>
             {({ upcoming }) => (
               <CreatorStatsBox
                 creator={creator}
@@ -165,9 +165,9 @@ export default function HubUpcomingStreamsTab({
                 showButton={upcoming && upcoming?.length > 0}
               />
             )}
-          </UpcomingStreamsContext.Consumer>
+          </MyUpcomingStreamsContext.Consumer>
         </Grid>
-      </UpcomingStreamsProvider>
+      </MyUpcomingStreamsProvider>
     </Box>
   );
 }
