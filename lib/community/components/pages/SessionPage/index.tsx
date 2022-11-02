@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useTheme } from "styled-components";
 
@@ -124,7 +125,7 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
   if (!webinar || isMobile === undefined) return <Box>Loading..</Box>;
 
-  const image = webinar.topic_detail?.image;
+  const image = webinar.topic_detail?.image ?? STATIC_IMAGES.ImageStreamDefault;
 
   return (
     <>

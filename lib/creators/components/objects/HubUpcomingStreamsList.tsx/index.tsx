@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { useState } from "react";
 import { useTheme } from "styled-components";
 
@@ -141,7 +142,10 @@ export default function HubUpcomingStreamsList({
                   <Image
                     objectFit="cover"
                     layout="fill"
-                    src={stream.topic_detail?.image}
+                    src={
+                      stream.topic_detail?.image ??
+                      STATIC_IMAGES.ImageStreamDefault
+                    }
                     alt={stream.topic_detail.name}
                   />
                 )}
