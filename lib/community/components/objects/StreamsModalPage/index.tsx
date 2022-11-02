@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { forwardRef } from "react";
 import { useTheme } from "styled-components";
 
@@ -76,14 +77,15 @@ const StreamsModalPage = forwardRef<HTMLDivElement, IProps>(
                         </Grid>
 
                         <Box position="relative" h={["none", 150]}>
-                          {stream.topic_detail?.image && (
-                            <Image
-                              objectFit="cover"
-                              layout="fill"
-                              src={stream.topic_detail?.image}
-                              alt={stream.topic_detail.name}
-                            />
-                          )}
+                          <Image
+                            objectFit="cover"
+                            layout="fill"
+                            src={
+                              stream.topic_detail?.image ??
+                              STATIC_IMAGES.ImageStreamDefault
+                            }
+                            alt={stream.topic_detail.name}
+                          />
 
                           <Box
                             borderRadius={4}

@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { useCallback, useState } from "react";
 import { useTheme } from "styled-components";
 
@@ -165,7 +166,10 @@ export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
                     <Image
                       objectFit="cover"
                       layout="fill"
-                      src={stream.topic_detail?.image}
+                      src={
+                        stream.topic_detail?.image ??
+                        STATIC_IMAGES.ImageStreamDefault
+                      }
                       alt={stream.topic_detail.name}
                     />
                   )}
