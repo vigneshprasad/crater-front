@@ -12,6 +12,7 @@ import ImageCoin from "public/images/img_coin.png";
 import ImageCreatorAcceptedIcon from "public/images/img_creator_accepted.png";
 import ImgDefaultAvatar from "public/images/img_default_avatar.png";
 import ImageDefaultSaleItem from "public/images/img_default_sale_item.png";
+import ImageDesignLandingPage from "public/images/img_design_landing_page.png";
 import ImageDiscordIcon from "public/images/img_discord_icon.png";
 import ImageEmissary from "public/images/img_emissary.png";
 import ImageAuctionEmpty from "public/images/img_empty_auction.png";
@@ -22,7 +23,6 @@ import ImageFuelers from "public/images/img_fuelers.png";
 import ImageHack2Skill from "public/images/img_hack_to_skill.png";
 import ImageHand from "public/images/img_hand.png";
 import ImageHyfiPlaceholder from "public/images/img_hyfi_placeholder.png";
-import ImageLandingPage from "public/images/img_landing_page.png";
 import ImageLeaderboardStep1 from "public/images/img_leaderboard_step1.png";
 import ImageLeaderboardStep2 from "public/images/img_leaderboard_step2.png";
 import ImageLeaderboardStep3 from "public/images/img_leaderboard_step3.png";
@@ -42,11 +42,13 @@ import ImageStarryBg from "public/images/img_starry_bg.png";
 import ImageStoreHeader from "public/images/img_store_header.png";
 import Stream from "public/images/img_stream.png";
 import ImageCraterStream from "public/images/img_stream_crater.png";
+import ImageStreamDefault from "public/images/img_stream_default.png";
 import ImageStreamStarting_1 from "public/images/img_stream_starting_1.png";
 import ImageStreamStarting_2 from "public/images/img_stream_starting_2.png";
 import ImageLearnLoot from "public/images/img_total_loot.png";
 import ImageTv from "public/images/img_tv.png";
 import ImageVisorMonkey from "public/images/img_visor_monkey.png";
+import ImageWeb3LandingPage from "public/images/img_web3_landing_page.png";
 import ImageXenonLabs from "public/images/img_xenon_labs.png";
 
 const STATIC_IMAGES = {
@@ -88,7 +90,7 @@ const STATIC_IMAGES = {
   ImagePurchaseComplete,
   ImageStreamStarting_1,
   ImageStreamStarting_2,
-  ImageLandingPage,
+  ImageWeb3LandingPage,
   Encrypt2022Logo,
   EncryptHeaderGraphic,
   ImageXenonLabs,
@@ -100,6 +102,8 @@ const STATIC_IMAGES = {
   ImageEmissary,
   ImageBuildersTribe,
   ImageBlockchainBulls,
+  ImageDesignLandingPage,
+  ImageStreamDefault,
 };
 
 export default STATIC_IMAGES;

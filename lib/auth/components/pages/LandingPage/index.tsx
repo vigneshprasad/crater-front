@@ -1,16 +1,31 @@
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { Box, Flex, Span, Text } from "@/common/components/atoms";
 import Page from "@/common/components/objects/Page";
+import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 import LandingAuthForm from "../../forms/LandingAuthForm";
 import LandingPageLayout from "../../layouts/LandingPageLayout";
 
-export default function LandingPage(): JSX.Element | null {
+type IProps = {
+  primaryHeading: string;
+  secondaryHeading: string;
+  image: StaticImageData;
+  redirectTo: string;
+};
+
+export default function LandingPage({
+  primaryHeading,
+  secondaryHeading,
+  image,
+  redirectTo,
+}: IProps): JSX.Element | null {
   const { space, colors, fonts, breakpoints } = useTheme();
+  const router = useRouter();
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
@@ -23,7 +38,7 @@ export default function LandingPage(): JSX.Element | null {
         lineHeight={["3.0rem", "3.6rem"]}
         textAlign={["center", "start"]}
       >
-        Web 3.0 creators
+        {primaryHeading}
       </Text>
       <Text
         fontFamily={fonts.heading}
@@ -40,8 +55,7 @@ export default function LandingPage(): JSX.Element | null {
         color={colors.textTertiary}
         textAlign={["center", "start"]}
       >
-        Watch live streams on Web 3.0, Crypto Trading, Blockchain and more no
-        Crater today.{" "}
+        {secondaryHeading}{" "}
         <Span fontWeight={600} color="#EDEDED">
           120,000 learners
         </Span>{" "}
@@ -50,21 +64,26 @@ export default function LandingPage(): JSX.Element | null {
     </Box>
   );
 
+  const postLogin = (): void => {
+    router.push({
+      pathname: PageRoutes.category(redirectTo),
+      query: { type: redirectTo },
+    });
+  };
+
   if (isMobile === undefined) return null;
 
   return (
     <Page
       seo={{
-        title: "Web 3.0 creators streaming now",
-        description:
-          "Watch live streams on Web 3.0, Crypto Trading, Blockchain and more no Crater today. 120,000 learners have already joined!",
+        title: primaryHeading,
+        description: secondaryHeading,
         openGraph: {
-          title: "Web 3.0 creators streaming now",
-          description:
-            "Watch live streams on Web 3.0, Crypto Trading, Blockchain and more no Crater today. 120,000 learners have already joined!",
+          title: primaryHeading,
+          description: secondaryHeading,
           images: [
             {
-              url: "/public/images/img_landing_page.png",
+              url: image.src,
               width: 1600,
               height: 900,
               alt: "Join web 3.0",
@@ -74,6 +93,9 @@ export default function LandingPage(): JSX.Element | null {
       }}
     >
       <LandingPageLayout>
+        <Box pt="56.25%" position="relative">
+          <Image src={image} alt="Landing Img" layout="fill" />
+        </Box>
         <Flex
           px={[space.xs, 0]}
           flexDirection="column"
@@ -82,7 +104,8 @@ export default function LandingPage(): JSX.Element | null {
           gridGap={[space.xs, space.s]}
         >
           {pageHeading}
-          <LandingAuthForm />
+
+          <LandingAuthForm onSubmit={postLogin} />
 
           <Box mt={space.s} position="relative">
             <Text

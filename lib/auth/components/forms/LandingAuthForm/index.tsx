@@ -16,7 +16,6 @@ import {
   UTM_MEDIUM_STORAGE_KEY,
   REFERRER_ID_STORAGE_KEY,
 } from "@/common/constants/global.constants";
-import { PageRoutes } from "@/common/constants/route.constants";
 import useForm from "@/common/hooks/form/useForm";
 import Validators from "@/common/hooks/form/validators";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
@@ -33,7 +32,13 @@ type AuthFormArgs = {
   referrerId?: string;
 };
 
-export default function LandingAuthForm(): JSX.Element | null {
+type IProps = {
+  onSubmit: () => void;
+};
+
+export default function LandingAuthForm({
+  onSubmit,
+}: IProps): JSX.Element | null {
   const router = useRouter();
   const { track } = useAnalytics();
   const { space, colors, breakpoints } = useTheme();
@@ -150,7 +155,7 @@ export default function LandingAuthForm(): JSX.Element | null {
       track(AnalyticsEvents.web3_landing_phone_verified, {
         phoneNumber,
       });
-      router.push(PageRoutes.category("web-3"));
+      onSubmit();
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);

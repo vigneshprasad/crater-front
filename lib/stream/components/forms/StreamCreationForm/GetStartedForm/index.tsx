@@ -1,12 +1,12 @@
 import { useTheme } from "styled-components";
 
 import { Box, Flex, Icon, Text } from "@/common/components/atoms";
-import Select from "@/common/components/atoms/Select/v2";
+import { MultiSelect } from "@/common/components/atoms/MultiSelect";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { StreamCategory } from "@/creators/types/stream";
 
 type IProps = {
-  value?: StreamCategory;
+  value?: StreamCategory[];
   error?: string;
   onChange: (val: unknown) => void;
 };
@@ -73,38 +73,26 @@ export default function GetStartedForm({
         </Flex>
       </Box>
       <Box>
-        <Text pb={space.xxs} textStyle="formLabel" fontWeight={400}>
-          Choose a category for your stream
+        <Text pb={space.xxxs} textStyle="formLabel" fontWeight={400}>
+          Choose one or more categories for your stream
+        </Text>
+        <Text
+          pt={space.xxxxxs}
+          pb={space.xxxs}
+          color={colors.textTertiary}
+          textStyle="small"
+        >
+          A maximum of 3 categories can be selected.
         </Text>
         <Box w={512}>
-          <Select<StreamCategory>
-            async
-            label="Select"
-            value={value}
-            itemLabelGetter={(category) => category.name}
+          <MultiSelect<StreamCategory>
+            placeholder="Select"
             dataUrl={API_URL_CONSTANTS.stream.getCategories}
-            dataTransform={(category) => category}
+            labelGetter={(item) => item.name}
             onChange={(val) => onChange(val)}
+            maxLength={3}
+            value={value}
             error={error}
-            containerProps={{
-              bg: colors.primaryLight,
-              hoverBorder: colors.accentLight,
-            }}
-            boxProps={{
-              py: 0,
-              maxHeight: 220,
-              overflowY: "auto",
-              boxShadow: "0px 4px 16px #000000",
-            }}
-            labelProps={{
-              textStyle: "captionLarge",
-              color: colors.textQuartenary,
-            }}
-            containerItemProps={{
-              my: space.xxs,
-              mx: space.xxxs,
-              borderRadius: radii.xxxxs,
-            }}
           />
         </Box>
       </Box>

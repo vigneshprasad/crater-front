@@ -20,23 +20,14 @@ interface IAuthState {
 export const AuthContext = createContext({} as IAuthState);
 
 type IProivderProps = PropsWithChildren<{
-  user?: User;
   profile?: Profile;
 }>;
 
 export function AuthProvider({
-  user: initialUser,
   profile: initialProfile,
   ...rest
 }: IProivderProps): JSX.Element {
   const [session, sessionLoading] = useSession();
-
-  const { data: user, error: userError } = useSWR<User>(
-    session ? API_URL_CONSTANTS.user.user : null,
-    {
-      initialData: initialUser ?? session?.user,
-    }
-  );
 
   const {
     data: profile,
@@ -47,26 +38,22 @@ export function AuthProvider({
   });
 
   const { data: permission, error: permissionError } = useSWR<UserPermission>(
-    user ? API_URL_CONSTANTS.auth.getUserPermission : null
+    session?.user ? API_URL_CONSTANTS.auth.getUserPermission : null
   );
 
   const value: IAuthState = useMemo(
     () => ({
-      user,
+      user: session?.user,
       profile,
-      loading: session
-        ? (!user && !userError) || (!profile && !profileError)
-        : sessionLoading,
-      error: userError || profileError || permissionError,
+      loading: session ? !profile && !profileError : sessionLoading,
+      error: profileError || permissionError,
       mutateProfile,
       session,
       permission,
     }),
     [
-      user,
       profile,
       sessionLoading,
-      userError,
       profileError,
       mutateProfile,
       session,

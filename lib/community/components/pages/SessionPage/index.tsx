@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import STATIC_IMAGES from "public/images";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -20,6 +21,7 @@ import ShareStreamBottomSheet from "@/stream/components/objects/ShareStreamBotto
 import StreamShareSection from "@/stream/components/objects/StreamShareSection";
 import usePastStreams from "@/stream/context/PastStreamContext";
 import useStreamQuestions from "@/stream/context/StreamQuestionContext";
+import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
 import { StreamQuestion, StreamQuestionUpvote } from "@/stream/types/stream";
 
 import RsvpSuccesModal from "../../objects/RsvpSuccesModal";
@@ -112,6 +114,12 @@ export default function SessionPage({ id }: IProps): JSX.Element {
     [mutateStreamQuestionsPage]
   );
 
+  const webinarCategories = useMemo<string[] | undefined>(() => {
+    if (!webinar) return undefined;
+
+    return webinar.categories_detail_list?.map((item) => item.slug);
+  }, [webinar]);
+
   const followCreator = async (): Promise<void> => {
     const creator = webinar?.host_detail.creator_detail;
 
@@ -124,15 +132,17 @@ export default function SessionPage({ id }: IProps): JSX.Element {
 
   if (!webinar || isMobile === undefined) return <Box>Loading..</Box>;
 
-  const image = webinar.topic_detail?.image;
+  const image = webinar.topic_detail?.image ?? STATIC_IMAGES.ImageStreamDefault;
 
   return (
     <>
-      <RsvpSuccesModal
-        group={webinar}
-        visble={showSuccess}
-        onClose={() => setShowSuccess(false)}
-      />
+      <StreamsToRsvpProvider sortByCategory={webinarCategories}>
+        <RsvpSuccesModal
+          group={webinar}
+          visble={showSuccess}
+          onClose={() => setShowSuccess(false)}
+        />
+      </StreamsToRsvpProvider>
       <RsvpPageLayout
         streamImage={
           <Image

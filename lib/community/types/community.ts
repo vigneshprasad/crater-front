@@ -79,6 +79,8 @@ export type Group = {
   };
   upvote: boolean;
   upvotes: number;
+  categories?: number[];
+  categories_detail_list?: StreamCategory[];
 };
 
 export enum ParticpantType {

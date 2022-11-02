@@ -33,11 +33,13 @@ export const StreamsToRsvpContext = createContext({} as IStreamsToRsvpState);
 type IProviderProps = PropsWithChildren<{
   initial?: PageResponse<Webinar>;
   pageSize?: number;
+  sortByCategory?: string[];
 }>;
 
 export function StreamsToRsvpProvider({
   initial,
   pageSize = 10,
+  sortByCategory,
   ...rest
 }: IProviderProps): JSX.Element {
   const [nextPage, setNextPage] = useState(false);
@@ -53,7 +55,13 @@ export function StreamsToRsvpProvider({
       if (!user) return null;
       if (previousData && !previousData.next) return null;
 
-      return `${API_URL_CONSTANTS.stream.streamsToRsvp}?page=${page}&page_size=${pageSize}`;
+      const url = `${API_URL_CONSTANTS.stream.streamsToRsvp}?page=${page}&page_size=${pageSize}`;
+
+      if (sortByCategory) {
+        return `${url}&sort_by_category=${sortByCategory.join()}`;
+      }
+
+      return url;
     },
     async (key: string) => {
       const response = await fetcher<PageResponse<Webinar>>(key);
