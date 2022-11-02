@@ -3,9 +3,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import useSWR from "swr";
 
-import { AnimatedBox } from "..";
+import { AnimatedBox, Flex } from "..";
 import { Icon } from "../Icon";
-import { Box } from "../System/Box";
+import { Box, BoxProps } from "../System/Box";
 import { Grid } from "../System/Grid";
 import { Text } from "../System/Text";
 
@@ -15,6 +15,11 @@ type BaseProps<T> = {
   value?: T[];
   maxLength?: number;
   error?: string;
+  containerProps?: BoxProps & {
+    hoverBorder?: string;
+  };
+  boxProps?: BoxProps;
+  containerItemProps?: BoxProps;
   onChange?: (value: T[]) => void;
 };
 
@@ -30,21 +35,41 @@ type StaticProps<T> = BaseProps<T> & {
 
 export type IMultiSelectProps<T> = AsyncProps<T> | StaticProps<T>;
 
-const Container = styled(Box)`
-  position: relative;
-  background: ${({ theme: { colors } }) => colors.black[2]};
-  padding: 10px 16px;
-  border-radius: ${({ theme: { radii } }) => radii.xxs}px;
-  cursor: pointer;
-  outline: none;
-
+const Container = styled(Box)<
+  BoxProps & {
+    hoverBorder?: string;
+  }
+>`
   &:hover {
-    background: ${({ theme: { colors } }) => colors.black[2]};
+    border: 1px solid
+      ${({ theme: { colors }, hoverBorder }) =>
+        hoverBorder ? hoverBorder : colors.textQuartenary};
   }
 
   &:focus {
-    background: ${({ theme: { colors } }) => colors.black[2]};
-    border: 2px solid ${({ theme: { colors } }) => colors.accent};
+    background: ${({ theme: { colors } }) => colors.primaryBackground};
+    border: 1px solid
+      ${({ theme: { colors }, hoverBorder }) =>
+        hoverBorder ? hoverBorder : colors.textQuartenary};
+  }
+
+  &:disabled {
+    border: 1px solid ${({ theme: { colors } }) => colors.secondaryLight};
+    cursor: "not-allowed";
+  }
+`;
+
+const StyledAnimatedBox = styled(AnimatedBox)`
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme: { colors } }) => colors.secondaryLight};
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${({ theme: { colors } }) => colors.primaryDark};
   }
 `;
 
@@ -52,7 +77,7 @@ const DropDownItemContainer = styled(Grid)`
   transition: all 200ms ease-in;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.accent};
+    background: ${({ theme }) => theme.colors.secondaryLight};
   }
 `;
 
@@ -65,6 +90,9 @@ export function MultiSelect<T>({
   labelGetter,
   onChange,
   value: controlledValue,
+  containerProps,
+  boxProps,
+  containerItemProps,
 }: IMultiSelectProps<T>): JSX.Element {
   const [value, setValue] = useState([] as T[]);
   const { colors, space, radii, zIndices } = useTheme();
@@ -115,25 +143,36 @@ export function MultiSelect<T>({
 
   const border = useMemo(() => {
     if (error) {
-      return `2px solid ${colors.error}`;
+      return `1px solid ${colors.error}`;
     }
 
-    return "2px solid transparent";
+    return `1px solid ${colors.primaryLight}`;
   }, [error, colors]);
 
   return (
     <Box>
-      <Container border={border} tabIndex={0} onBlur={handleBlur}>
+      <Container
+        position="relative"
+        p="0.8em 1em"
+        bg={colors.primaryLight}
+        borderRadius={radii.xxxxs}
+        cursor="pointer"
+        tabIndex={0}
+        border={border}
+        onBlur={handleBlur}
+        hoverBorder={colors.accentLight}
+        {...containerProps}
+      >
         <Grid
           alignItems="center"
-          gridTemplateColumns="1fr max-content"
-          onClick={handleOnClickDropDown}
+          gridTemplateColumns="1fr min-content"
           zIndex={zIndices.dropdownContainer}
+          onClick={handleOnClickDropDown}
         >
           {(() => {
             if (!value.length) {
               return (
-                <Text color={colors.slate} textStyle="placeholder">
+                <Text textStyle="captionLarge" color={colors.textQuartenary}>
                   {placeholder}
                 </Text>
               );
@@ -143,82 +182,98 @@ export function MultiSelect<T>({
               <Grid
                 gridAutoFlow="column"
                 gridAutoColumns="min-content"
+                alignItems="center"
                 gridGap={space.xxxs}
               >
                 {value.map((val) => (
-                  <Box
-                    px={space.xxxs}
+                  <Flex
+                    pl={space.xxxxs}
+                    pr={space.xxxxxs}
                     py={4}
-                    key={labelGetter(val)}
                     bg={colors.accent}
                     borderRadius={radii.xxs}
+                    gridGap={space.xxxxxs}
+                    alignItems="center"
+                    key={labelGetter(val)}
                   >
-                    <Text textStyle="dropdownItem">{labelGetter(val)}</Text>
-                  </Box>
+                    <Text textStyle="captionLarge" color={colors.textPrimary}>
+                      {labelGetter(val)}
+                    </Text>
+                    <Icon
+                      icon="Close"
+                      size={18}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleItemClick(val);
+                      }}
+                    />
+                  </Flex>
                 ))}
               </Grid>
             );
           })()}
-
-          <Icon icon="ExpandMore" color={colors.white[0]} fill />
+          <Icon icon="ArrowDown" color={colors.textQuartenary} fill />
         </Grid>
-        <AnimatedBox
-          borderRadius={`0 0 ${radii.xxs}px ${radii.xxs}px`}
-          initial="closed"
-          right={4}
-          left={4}
-          maxHeight={180}
+        <StyledAnimatedBox
+          w="100%"
+          maxHeight={220}
           overflowY="auto"
-          bg={colors.black[2]}
-          position="absolute"
           animate={animate}
-          zIndex={zIndices.dropdownSheet}
+          initial="closed"
           variants={{
             closed: {
+              display: "none",
               opacity: 0,
-              y: 0,
-              transitionEnd: {
-                display: "none",
-              },
+              top: 0,
             },
             opened: {
               display: "block",
               opacity: 1,
-              y: 16,
+              top: "calc(100% + 2px)",
             },
           }}
+          zIndex={10}
+          position="absolute"
+          borderRadius={radii.xxxxs}
+          bg={colors.primaryDark}
+          right={0}
+          boxShadow="0px 4px 16px #000000"
+          {...boxProps}
         >
           {listItems?.map((item) => {
             const checked = value.includes(item);
             return (
               <DropDownItemContainer
-                py={space.xxxs}
-                px={space.xxs}
+                my={space.xxs}
+                mx={space.xxxs}
+                cursor="pointer"
                 key={labelGetter(item)}
-                gridTemplateColumns="max-content 1fr"
+                px={space.xxxs}
+                py={space.xxxxs}
+                gridTemplateColumns="1fr max-content"
                 gridGap={space.xxxs}
-                alignItems="center"
-                onClick={() => handleItemClick(item)}
+                bg={checked ? colors.secondaryLight : undefined}
+                borderRadius={radii.xxxxs}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleItemClick(item);
+                }}
+                {...containerItemProps}
               >
+                <Text textStyle="body">{labelGetter(item)}</Text>
                 <Icon
                   visibility={checked ? "visible" : "hidden"}
                   color={colors.accent}
                   size={18}
                   icon="Check"
                 />
-                <Text>{labelGetter(item)}</Text>
               </DropDownItemContainer>
             );
           })}
-        </AnimatedBox>
+        </StyledAnimatedBox>
       </Container>
       {error && (
-        <Text
-          px={space.xxxs}
-          py={space.xxxs}
-          textStyle="error"
-          color={colors.error}
-        >
+        <Text mt={space.xxxxxs} textStyle="error" color={colors.error}>
           {error}
         </Text>
       )}
