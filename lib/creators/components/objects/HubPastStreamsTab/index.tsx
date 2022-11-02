@@ -5,9 +5,9 @@ import { Box, Flex, Grid, Text } from "@/common/components/atoms";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { Creator, CreatorStats } from "@/creators/types/creator";
 import {
-  PastStreamContext,
-  PastStreamProvider,
-} from "@/stream/context/PastStreamContext";
+  MyPastStreamsContext,
+  MyPastStreamsProvider,
+} from "@/stream/context/MyPastStreamsContext";
 
 import CreatorStatsBox from "../CreatorStatsBox";
 import HubPastStreamsList from "../HubPastStreamsList";
@@ -29,7 +29,7 @@ export default function HubPastStreamsTab({
 
   return (
     <Box pt={space.xxs} overflow="auto" minWidth={1000}>
-      <PastStreamProvider host={userId}>
+      <MyPastStreamsProvider host={userId}>
         <Grid
           gridAutoFlow="column"
           gridTemplateColumns="minmax(800px, 1fr) 250px"
@@ -72,18 +72,18 @@ export default function HubPastStreamsTab({
             </Box>
           </Box>
 
-          <PastStreamContext.Consumer>
-            {({ streams }) => (
+          <MyPastStreamsContext.Consumer>
+            {({ past }) => (
               <CreatorStatsBox
                 creator={creator}
                 creatorStats={creatorStats}
-                showButton={streams && streams?.length > 0}
+                showButton={past && past?.length > 0}
                 pastStream={true}
               />
             )}
-          </PastStreamContext.Consumer>
+          </MyPastStreamsContext.Consumer>
         </Grid>
-      </PastStreamProvider>
+      </MyPastStreamsProvider>
     </Box>
   );
 }

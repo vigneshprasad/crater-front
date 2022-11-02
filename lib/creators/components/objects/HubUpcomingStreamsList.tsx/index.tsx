@@ -17,7 +17,7 @@ import { PageRoutes } from "@/common/constants/route.constants";
 import DateTime from "@/common/utils/datetime/DateTime";
 import { Creator } from "@/creators/types/creator";
 import StreamCreationModal from "@/stream/components/objects/StreamCreationModal";
-import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
+import useMyUpcomingStreams from "@/stream/context/MyUpcomingStreamsContext";
 
 type IProps = {
   creator: Creator | null;
@@ -29,8 +29,8 @@ export default function HubUpcomingStreamsList({
   const { space, colors, radii } = useTheme();
   const router = useRouter();
   const [initialClick, setInitialClick] = useState(true);
-  const { upcoming, loading, nextPage, setUpcomingStreamsPage } =
-    useUpcomingStreams();
+  const { upcoming, loading, nextPage, setMyUpcomingStreamsPage } =
+    useMyUpcomingStreams();
   const [createStreamModal, setCreateStreamModal] = useState(false);
 
   return (
@@ -186,12 +186,12 @@ export default function HubUpcomingStreamsList({
             label="Show More"
             onClick={() => {
               if (initialClick) {
-                setUpcomingStreamsPage((page) => page + 1);
+                setMyUpcomingStreamsPage((page) => page + 1);
                 setInitialClick(false);
                 return;
               }
 
-              setUpcomingStreamsPage((page) => page + 2);
+              setMyUpcomingStreamsPage((page) => page + 2);
             }}
           />
           <Flex flex="1" h={1} bg={colors.secondaryLight} />
