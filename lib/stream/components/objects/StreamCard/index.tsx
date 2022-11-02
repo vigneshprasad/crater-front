@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { forwardRef, useState, useMemo } from "react";
 import { useTheme } from "styled-components";
 
@@ -56,7 +57,7 @@ const StreamCard = forwardRef<HTMLDivElement, IProps>(
         overflow="hidden"
       >
         <Image
-          src={stream.topic_detail.image}
+          src={stream.topic_detail.image ?? STATIC_IMAGES.ImageStreamDefault}
           layout="fill"
           alt={stream.topic_detail.name}
         />

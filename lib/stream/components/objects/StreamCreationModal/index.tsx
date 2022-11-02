@@ -196,13 +196,13 @@ export default function StreamCreationModal({
                 <Flex py={space.xxxs} alignItems="center" gridGap={6}>
                   <Icon icon="Profile" size={12} fill={true} />
                   <Text textStyle="menu" lineHeight="1.6rem">
-                    {creator?.point_of_contact_detail.name}
+                    {creator?.point_of_contact_detail?.name}
                   </Text>
                 </Flex>
                 <Flex alignItems="center" gridGap={6}>
                   <Icon icon="Phone" size={12} />
                   <Text textStyle="menu" lineHeight="1.6rem">
-                    {creator?.point_of_contact_detail.phone_number}
+                    {creator?.point_of_contact_detail?.phone_number}
                   </Text>
                 </Flex>
               </Box>
