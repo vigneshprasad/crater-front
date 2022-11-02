@@ -29,7 +29,6 @@ interface IMyPastStreamsState {
     unknown
   >["mutate"];
   setPageSize: Dispatch<SetStateAction<number>>;
-  category?: number;
 }
 
 export const MyPastStreamsContext = createContext({} as IMyPastStreamsState);

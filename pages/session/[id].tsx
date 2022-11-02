@@ -18,7 +18,6 @@ import { FollowerProvider } from "@/creators/context/FollowerContext";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamCreatorProvider } from "@/stream/context/StreamCreatorContext";
 import { StreamQuestionProvider } from "@/stream/context/StreamQuestionContext";
-import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
 import { ReferralSummaryProvider } from "@/tokens/context/ReferralSummaryContext";
 
@@ -125,17 +124,15 @@ export default function Session({ webinar, id }: Props): JSX.Element {
           <WebinarProvider id={id} initial={webinar}>
             <WebinarRequestProvider groupId={id} user={user?.pk}>
               <UpcomingStreamsProvider pageSize={4}>
-                <StreamsToRsvpProvider>
-                  <ReferralSummaryProvider>
-                    <PastStreamProvider host={webinar.host}>
-                      <StreamQuestionProvider group={webinar.id}>
-                        <PrivateStreamRewardProvider id={id}>
-                          <SessionPage id={id} />
-                        </PrivateStreamRewardProvider>
-                      </StreamQuestionProvider>
-                    </PastStreamProvider>
-                  </ReferralSummaryProvider>
-                </StreamsToRsvpProvider>
+                <ReferralSummaryProvider>
+                  <PastStreamProvider host={webinar.host}>
+                    <StreamQuestionProvider group={webinar.id}>
+                      <PrivateStreamRewardProvider id={id}>
+                        <SessionPage id={id} />
+                      </PrivateStreamRewardProvider>
+                    </StreamQuestionProvider>
+                  </PastStreamProvider>
+                </ReferralSummaryProvider>
               </UpcomingStreamsProvider>
             </WebinarRequestProvider>
           </WebinarProvider>

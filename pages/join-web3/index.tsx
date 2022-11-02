@@ -32,7 +32,7 @@ export default function Landing(): JSX.Element {
       primaryHeading="Web 3.0 Creators"
       secondaryHeading="Watch live streams on Web 3.0, Crypto Trading, Blockchain and more on Crater today."
       image={STATIC_IMAGES.ImageWeb3LandingPage}
-      redirectTo={PageRoutes.category("web-3")}
+      redirectTo="web-3"
     />
   );
 }

@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 
 import { Box, Flex, Span, Text } from "@/common/components/atoms";
 import Page from "@/common/components/objects/Page";
+import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 import LandingAuthForm from "../../forms/LandingAuthForm";
@@ -64,7 +65,10 @@ export default function LandingPage({
   );
 
   const postLogin = (): void => {
-    router.push(redirectTo);
+    router.push({
+      pathname: PageRoutes.category(redirectTo),
+      query: { type: redirectTo },
+    });
   };
 
   if (isMobile === undefined) return null;
@@ -100,6 +104,7 @@ export default function LandingPage({
           gridGap={[space.xs, space.s]}
         >
           {pageHeading}
+
           <LandingAuthForm onSubmit={postLogin} />
 
           <Box mt={space.s} position="relative">
