@@ -134,8 +134,16 @@ export default function Footer(): JSX.Element {
         </Text>
 
         <Flex gridGap={space.xxs}>
-          <AppLink buttonType={AppLinkType.android} height={50} />
-          <AppLink buttonType={AppLinkType.apple} height={56} />
+          <AppLink
+            buttonType={AppLinkType.android}
+            height={[40, 50]}
+            width={[130, 160]}
+          />
+          <AppLink
+            buttonType={AppLinkType.apple}
+            height={[44, 56]}
+            width={[130, 160]}
+          />
         </Flex>
       </Flex>
 
