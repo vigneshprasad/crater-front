@@ -51,6 +51,12 @@ const variants = {
     fontWeight: "500",
     lineHeight: ["3.6rem"],
   },
+  headline5Small: {
+    fontFamily: fonts.body,
+    fontSize: ["1.6rem", "2.4rem"],
+    fontWeight: "600",
+    lineHeight: ["2.0rem", "3.0rem"],
+  },
   headline6: {
     fontFamily: fonts.body,
     fontSize: ["1.8rem"],
