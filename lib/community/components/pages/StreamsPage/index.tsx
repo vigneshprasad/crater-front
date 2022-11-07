@@ -54,13 +54,7 @@ export default function StreamsPage(): JSX.Element {
 
       <CategoryFilteredPastList />
 
-      <Box
-        mt={space.xs}
-        px={[space.xxs, space.s]}
-        py={[space.xxs, space.s]}
-        backgroundColor={colors.primaryDark}
-      >
-        <HomePageCreatorStaticContent />
+      <Box px={[space.xxs, space.xs]} py={36}>
         <Footer />
       </Box>
     </Box>
