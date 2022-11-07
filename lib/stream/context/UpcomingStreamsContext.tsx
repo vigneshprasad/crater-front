@@ -31,6 +31,7 @@ interface IUpcomingStreamsState {
   setPageSize: Dispatch<SetStateAction<number>>;
   isValidating: boolean;
   category?: number;
+  categorySlug?: string;
 }
 
 export const UpcomingStreamsContext = createContext(
@@ -44,6 +45,7 @@ type IProviderProps = PropsWithChildren<{
   category?: number;
   sortBy?: string;
   encryptHackers?: boolean;
+  categorySlug?: string;
 }>;
 
 export function UpcomingStreamsProvider({
@@ -51,6 +53,7 @@ export function UpcomingStreamsProvider({
   initial,
   pageSize: intialPageSize = 20,
   category,
+  categorySlug,
   sortBy,
   encryptHackers,
   ...rest
@@ -75,6 +78,9 @@ export function UpcomingStreamsProvider({
       let url = `${baseUrl}?page=${page}&page_size=${pageSize}`;
       if (category) {
         url += `&categories=${category}`;
+      }
+      if (categorySlug) {
+        url += `&category=${categorySlug}`;
       }
       if (host) {
         url += `&host=${host}`;
@@ -106,6 +112,7 @@ export function UpcomingStreamsProvider({
       setPageSize,
       isValidating,
       category,
+      categorySlug,
       sortBy,
     }),
     [
@@ -117,6 +124,7 @@ export function UpcomingStreamsProvider({
       setPageSize,
       isValidating,
       category,
+      categorySlug,
       sortBy,
     ]
   );

@@ -22,6 +22,7 @@ export interface IPastStreamState {
   >["setSize"];
   nextPage?: boolean;
   category?: number;
+  categorySlug?: string;
 }
 
 export const PastStreamContext = createContext({} as IPastStreamState);
@@ -31,6 +32,7 @@ type IProviderProps = PropsWithChildren<{
   initial?: PageResponse<PastStreamListItem>;
   pageSize?: number;
   categoryFilter?: number;
+  categorySlug?: string;
 }>;
 
 export function PastStreamProvider({
@@ -38,6 +40,7 @@ export function PastStreamProvider({
   initial,
   pageSize = 10,
   categoryFilter,
+  categorySlug,
   ...rest
 }: IProviderProps): JSX.Element {
   const [nextPage, setNextPage] = useState(initial?.next ? true : false);
@@ -50,15 +53,19 @@ export function PastStreamProvider({
       const page = index + 1;
       if (previousData && !previousData.next) return null;
 
+      let url = `${API_URL_CONSTANTS.groups.getPastWebinars}?page=${page}&page_size=${pageSize}`;
+
       if (host) {
-        return `${API_URL_CONSTANTS.groups.getPastWebinars}?host=${host}&page=${page}&page_size=${pageSize}`;
+        url += `&host=${host}`;
       }
-
       if (categoryFilter) {
-        return `${API_URL_CONSTANTS.groups.getPastWebinars}?categories=${categoryFilter}&page=${page}&page_size=${pageSize}`;
+        url += `&categories=${categoryFilter}`;
+      }
+      if (categorySlug) {
+        url += `&category=${categorySlug}`;
       }
 
-      return `${API_URL_CONSTANTS.groups.getPastWebinars}?page=${page}&page_size=${pageSize}`;
+      return url;
     },
     async (key: string) => {
       const response = await fetcher<PageResponse<PastStreamListItem>>(key);
@@ -78,8 +85,9 @@ export function PastStreamProvider({
       setPastStreamsPage,
       nextPage,
       category: categoryFilter,
+      categorySlug,
     }),
-    [streams, error, setPastStreamsPage, nextPage, categoryFilter]
+    [streams, error, setPastStreamsPage, nextPage, categoryFilter, categorySlug]
   );
 
   return <PastStreamContext.Provider value={value} {...rest} />;
