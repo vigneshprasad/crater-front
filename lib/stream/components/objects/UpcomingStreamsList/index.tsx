@@ -1,9 +1,12 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useTheme } from "styled-components";
 
+import { useRouter } from "next/router";
+
 import useAuth from "@/auth/context/AuthContext";
-import { Box, Grid, Shimmer, Flex, Icon } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/v2";
+import { Box, Grid, Shimmer, Flex } from "@/common/components/atoms";
+import LazyLoadButton from "@/common/components/objects/LazyLoadButton";
+import { PageRoutes } from "@/common/constants/route.constants";
 import WebinarApiClient from "@/community/api";
 import {
   ParticpantType,
@@ -23,10 +26,16 @@ export default function UpcomingStreamsList(): JSX.Element {
 
   const [numColumns, setNumColumn] = useState(0);
   const [initialClick, setInitialClick] = useState(true);
-  const { space, colors } = useTheme();
-  const { upcoming, nextPage, setUpcomingStreamsPage, mutateUpcomingStreams } =
-    useUpcomingStreams();
+  const { space } = useTheme();
+  const {
+    upcoming,
+    nextPage,
+    categorySlug,
+    setUpcomingStreamsPage,
+    mutateUpcomingStreams,
+  } = useUpcomingStreams();
   const { user } = useAuth();
+  const router = useRouter();
 
   const postStreamRsvp = async (stream: Webinar): Promise<void> => {
     if (user) {
@@ -75,12 +84,24 @@ export default function UpcomingStreamsList(): JSX.Element {
     [numColumns]
   );
 
+  const onClick = useCallback((): void => {
+    if (categorySlug) {
+      router.push(PageRoutes.category(categorySlug));
+    }
+
+    if (initialClick) {
+      setUpcomingStreamsPage((page) => page + 1);
+      setInitialClick(false);
+      return;
+    }
+
+    setUpcomingStreamsPage((page) => page + 2);
+  }, [categorySlug, initialClick, router, setUpcomingStreamsPage]);
+
   return (
-    <Box>
+    <Box pt={space.xxxxs} pb={space.xs}>
       <Grid
-        pt={space.xxs}
         ref={gridRef}
-        px={space.xxs}
         gridTemplateColumns={`repeat(auto-fill, minmax(${ITEM_WIDTH}px, 1fr))`}
         gridGap={space.xs}
         mb={space.xs}
@@ -114,23 +135,22 @@ export default function UpcomingStreamsList(): JSX.Element {
         })()}
       </Grid>
       {nextPage && (
-        <Flex mx={space.xxs} gridGap={space.xxs} alignItems="center">
-          <Flex flex="1" h={1} bg={colors.black[0]} />
-          <Button
-            suffixElement={<Icon icon="ChevronDown" size={20} />}
-            variant="dark-flat"
-            label="Show More"
-            onClick={() => {
-              if (initialClick) {
-                setUpcomingStreamsPage((page) => page + 1);
-                setInitialClick(false);
-                return;
-              }
-
-              setUpcomingStreamsPage((page) => page + 2);
-            }}
+        <Flex py={space.xs} gridGap={space.xxxs} alignItems="center">
+          <Flex
+            flex="1"
+            h={1}
+            background="linear-gradient(-90deg, rgba(255, 255, 255, 0.24) 6.23%, rgba(255, 255, 255, 0) 74.19%)"
           />
-          <Flex flex="1" h={1} bg={colors.black[0]} />
+          <LazyLoadButton
+            label={categorySlug ? "View All" : "Show More"}
+            iconTransform={categorySlug ? "rotate(-90deg)" : undefined}
+            onClick={onClick}
+          />
+          <Flex
+            flex="1"
+            h={1}
+            background="linear-gradient(90deg, rgba(255, 255, 255, 0.24) 6.23%, rgba(255, 255, 255, 0) 74.19%)"
+          />
         </Flex>
       )}
     </Box>

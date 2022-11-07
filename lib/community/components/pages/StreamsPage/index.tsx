@@ -1,46 +1,56 @@
 import { useTheme } from "styled-components";
 
-import { Box, Text, Icon, Flex, Link } from "@/common/components/atoms";
+import { Box, Text } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spinner";
 import Footer from "@/common/components/objects/Footer";
-import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
-import { PageRoutes } from "@/common/constants/route.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import HomePageCreatorStaticContent from "@/creators/components/objects/HomePageCreatorStaticContent";
 import CategoryFilteredPastList from "@/stream/components/objects/CategoryFilteredPastList";
 import CategoryFilteredUpcomingList from "@/stream/components/objects/CategoryFilteredUpcomingList";
 import HomeLeaderboardScroller from "@/stream/components/objects/HomeLeaderboardScroller";
 import { StreamSlider } from "@/stream/components/objects/StreamSlider";
-import HomePageAuctions from "@/tokens/components/objects/HomePageAuctions";
 
 export default function StreamsPage(): JSX.Element {
   const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
-  const { space, colors, fonts } = useTheme();
+  const { space, colors } = useTheme();
 
   if (liveStreamsLoading || !liveStreams) return <Spinner />;
 
   return (
-    <>
+    <Box pl={space.xxs}>
       <Box px={[space.xxs, space.xs]}>
         <StreamSlider streams={liveStreams} />
       </Box>
 
-      <Link href={PageRoutes.leaderboard}>
-        <Flex my={space.xxs} px={[space.xxs, space.xs]} alignItems="center">
-          <Text fontFamily={fonts.heading}>Top Creators</Text>
-          <Icon mx={space.xxxxs} icon="Trophy" color="#FFAA00" />
-          <Icon icon="ChevronRight" />
-        </Flex>
-      </Link>
+      <Box
+        my={space.xs}
+        pl={space.xxxs}
+        borderLeft={`2px solid ${colors.accentLight}`}
+      >
+        <Text textStyle="headline5Small">Top Creators</Text>
+      </Box>
 
       <HomeLeaderboardScroller />
 
-      <StyledHeadingDivider label="Upcoming Streams" />
+      <Box
+        mt={space.xs}
+        mb={space.xxxxs}
+        pl={space.xxxs}
+        borderLeft={`2px solid ${colors.accentLight}`}
+      >
+        <Text textStyle="headline5Small">Upcoming Streams</Text>
+      </Box>
+
       <CategoryFilteredUpcomingList />
 
-      <HomePageAuctions />
-
-      <StyledHeadingDivider label="Previously Live" />
+      <Box
+        mt={space.xs}
+        mb={space.xxxxs}
+        pl={space.xxxs}
+        borderLeft={`2px solid ${colors.accentLight}`}
+      >
+        <Text textStyle="headline5Small">Previously Live</Text>
+      </Box>
 
       <CategoryFilteredPastList />
 
@@ -53,6 +63,6 @@ export default function StreamsPage(): JSX.Element {
         <HomePageCreatorStaticContent />
         <Footer />
       </Box>
-    </>
+    </Box>
   );
 }

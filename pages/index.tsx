@@ -45,8 +45,8 @@ export default function Home({
   pastStreams,
 }: IProps): JSX.Element {
   const router = useRouter();
-  const upcomingCategory = router.query.upcomingCategory as string | undefined;
-  const pastCategory = router.query.pastCategory as string | undefined;
+  const upcomingCategory = router.query.upcoming as string | undefined;
+  const pastCategory = router.query.past as string | undefined;
   return (
     <HomePageLayout
       seo={{
@@ -59,13 +59,11 @@ export default function Home({
       subHeading="You can watch live streams, interact with creators &amp; take part in auctions"
     >
       <LiveStreamsProvider initial={liveStreams}>
-        <UpcomingStreamsProvider
-          pageSize={8}
-          category={upcomingCategory ? parseInt(upcomingCategory) : undefined}
-        >
+        <UpcomingStreamsProvider pageSize={8} categorySlug={upcomingCategory}>
           <PastStreamProvider
+            pageSize={8}
             initial={pastStreams}
-            categoryFilter={pastCategory ? parseInt(pastCategory) : undefined}
+            categorySlug={pastCategory}
           >
             <AuctionListProvider rewardDetail={true}>
               <StreamCategoryProvider>

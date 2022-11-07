@@ -1,53 +1,44 @@
-import { useTheme } from "styled-components";
-
 import { useRouter } from "next/router";
 
-import { Box, Button, Flex, Span } from "@/common/components/atoms";
-import StyledSubHeading from "@/common/components/objects/StyledSubHeading";
-import { PageRoutes } from "@/common/constants/route.constants";
-import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import useStreamCategories from "@/stream/context/StreamCategoryContext";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 import CategoriesList from "../CategoriesList";
-import PastStreamsList from "../PastStreamsList/v2";
 import UpcomingStreamsList from "../UpcomingStreamsList";
 
 export default function CategoryFilteredUpcomingList(): JSX.Element {
-  const { space, colors } = useTheme();
-  const { category } = useUpcomingStreams();
+  const { categorySlug } = useUpcomingStreams();
   const router = useRouter();
   const { streamCategories } = useStreamCategories();
 
-  const filterQuery = router.query.upcomingCategory as string | undefined;
   return (
     <>
-      <Box px={space.xxs} mb={space.xxxs}>
-        <CategoriesList
-          categories={streamCategories}
-          selectedCategory={category}
-          onClickCategory={(cat) => {
-            if (cat.pk === category) {
-              router.push("/", undefined, { shallow: true });
-              return;
-            }
+      <CategoriesList
+        categories={streamCategories}
+        selectedCategory={categorySlug}
+        onClickCategory={(cat) => {
+          if (cat.slug === categorySlug) {
+            router.push("/", undefined, { shallow: true });
+            return;
+          }
 
-            router.push(
-              {
-                pathname: "/",
-                query: {
-                  upcomingCategory: cat.pk,
-                },
+          router.push(
+            {
+              pathname: "/",
+              query: {
+                upcoming: cat.slug,
               },
-              undefined,
-              { shallow: true }
-            );
-          }}
-        />
-      </Box>
+            },
+            undefined,
+            { shallow: true }
+          );
+        }}
+      />
 
-      <Flex flexDirection="column">
-        {filterQuery && (
+      <UpcomingStreamsList />
+
+      {/* <Flex flexDirection="column"> */}
+      {/* {filterQuery && (
           <Button
             textAlign="right"
             paddingRight={space.xs}
@@ -62,11 +53,11 @@ export default function CategoryFilteredUpcomingList(): JSX.Element {
               router.push(PageRoutes.category(slug));
             }}
           />
-        )}
-        <UpcomingStreamsList />
-      </Flex>
+        )} */}
 
-      {filterQuery && (
+      {/* </Flex> */}
+
+      {/* {filterQuery && (
         <PastStreamProvider
           categoryFilter={filterQuery ? parseInt(filterQuery) : undefined}
         >
@@ -83,7 +74,7 @@ export default function CategoryFilteredUpcomingList(): JSX.Element {
             <PastStreamsList />
           </Box>
         </PastStreamProvider>
-      )}
+      )} */}
     </>
   );
 }
