@@ -150,6 +150,7 @@ export const API_URL_CONSTANTS = {
     retrieveRewardSale: (id: number | string): string => `/crater/sale/${id}/`,
     retrieveRewardSaleForStream: (id: number | string): string =>
       `/crater/sale/${id}/stream`,
+    getRecentSalesList: "/crater/sale/recent/",
   },
   coins: {
     getAuctions: "/crater/auction/",
@@ -236,7 +237,7 @@ export const BECOME_CREATOR_CALENDLY = "https://bit.ly/3rDsnaL";
 export const LEADERBOARD_URL =
   "https://worknetwork.typeform.com/to/wMqdEEn3?utm_source=website";
 
-export const START_CREATOR_JOURNET_CALENDLY =
+export const START_CREATOR_JOURNEY_CALENDLY =
   "https://calendly.com/craterclub/apply-to-create-on-crater";
 
 export const HELP_CENTER = "https://crater.zendesk.com/hc/en-us";
