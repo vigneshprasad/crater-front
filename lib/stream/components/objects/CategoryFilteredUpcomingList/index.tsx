@@ -36,45 +36,6 @@ export default function CategoryFilteredUpcomingList(): JSX.Element {
       />
 
       <UpcomingStreamsList />
-
-      {/* <Flex flexDirection="column"> */}
-      {/* {filterQuery && (
-          <Button
-            textAlign="right"
-            paddingRight={space.xs}
-            text="View All"
-            variant="text-button"
-            color="white"
-            onClick={() => {
-              const slug =
-                category && streamCategories
-                  ? streamCategories[category - 1].slug
-                  : "";
-              router.push(PageRoutes.category(slug));
-            }}
-          />
-        )} */}
-
-      {/* </Flex> */}
-
-      {/* {filterQuery && (
-        <PastStreamProvider
-          categoryFilter={filterQuery ? parseInt(filterQuery) : undefined}
-        >
-          <Box px={space.xxs} mb={space.xxs}>
-            <StyledSubHeading
-              label={
-                <>
-                  <Span color={colors.accentLight}>Past streams</Span> in this
-                  category
-                </>
-              }
-            />
-            <Box h={space.xxs} />
-            <PastStreamsList />
-          </Box>
-        </PastStreamProvider>
-      )} */}
     </>
   );
 }
