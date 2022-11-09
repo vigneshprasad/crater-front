@@ -1,18 +1,26 @@
 import { useTheme } from "styled-components";
+import useSWR from "swr";
 
+import { RewardSale } from "@/auction/types/sales";
 import { Box, Text } from "@/common/components/atoms";
 import Spinner from "@/common/components/atoms/Spinner";
 import Footer from "@/common/components/objects/Footer";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import HomePageCreatorStaticContent from "@/creators/components/objects/HomePageCreatorStaticContent";
 import CategoryFilteredPastList from "@/stream/components/objects/CategoryFilteredPastList";
 import CategoryFilteredUpcomingList from "@/stream/components/objects/CategoryFilteredUpcomingList";
 import HomeLeaderboardScroller from "@/stream/components/objects/HomeLeaderboardScroller";
 import { StreamSlider } from "@/stream/components/objects/StreamSlider";
+import HomePageStoreSection from "@/tokens/components/objects/HomePageStoreSection";
 
 export default function StreamsPage(): JSX.Element {
   const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
   const { space, colors } = useTheme();
+
+  const { data: sales } = useSWR<RewardSale[]>(
+    API_URL_CONSTANTS.sales.getRecentSalesList
+  );
 
   if (liveStreamsLoading || !liveStreams) return <Spinner />;
 
@@ -43,6 +51,8 @@ export default function StreamsPage(): JSX.Element {
 
       <CategoryFilteredUpcomingList />
 
+      <HomePageStoreSection sales={sales} />
+
       <Box
         mt={space.xs}
         mb={space.xxxxs}
@@ -53,6 +63,8 @@ export default function StreamsPage(): JSX.Element {
       </Box>
 
       <CategoryFilteredPastList />
+
+      <HomePageCreatorStaticContent />
 
       <Box px={[space.xxs, space.xs]} py={36}>
         <Footer />

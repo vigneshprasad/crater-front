@@ -1,151 +1,83 @@
+import STATIC_IMAGES from "public/images";
 import { useTheme } from "styled-components";
 
-import {
-  Box,
-  Grid,
-  Icon,
-  Image,
-  Link,
-  Span,
-  Text,
-} from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/v2";
-import { START_CREATOR_JOURNET_CALENDLY } from "@/common/constants/url.constants";
+import Image from "next/image";
+
+import { Box, Flex, Text } from "@/common/components/atoms";
+import GlassBox from "@/common/components/atoms/GlassBox";
+import LazyLoadButton from "@/common/components/objects/LazyLoadButton";
+import { START_CREATOR_JOURNEY_CALENDLY } from "@/common/constants/url.constants";
+
+import CreatorJourneyCardSwitch from "../CreatorJourneyCardSwitch";
 
 export default function HomePageCreatorStaticContent(): JSX.Element {
-  const { space, colors, fonts } = useTheme();
-
-  const data = [
-    {
-      image: "/images/img_journey_step_1.png",
-      title: "Get Discovered",
-      text: `People come to crater to tune into content related to finance,
-      design, Web 3, marketing & other professional fields.
-      Consequently, if you are a budding creator in these fields it
-      helps you get discovered by the right audience.`,
-    },
-    {
-      image: "/images/img_journey_step_3.png",
-      title: "Stream Everywhere",
-      text: `With Crater you have the ability to go live on multiple social
-      media platforms as well. Thereby, engaging your current
-      community while also building a new community of viewers on
-      CraterClub.`,
-    },
-    {
-      image: "/images/img_journey_step_4.png",
-      title: "Analyse Data",
-      text: `Our analytics dashboard helps you create better content &
-      engage your audience. From suggesting what topics to create
-      content on to what is the completion rate & emails of your
-      followers, everything is made available to you.`,
-      button: true,
-    },
-    {
-      image: "/images/img_journey_step_8.png",
-      title: "Launch Auctions",
-      text: `Professionals want to monetize time, content, goods &
-      communities. With Crater you can host private auctions & get
-      the price for everything from the art you create on a stream
-      to the discord community that you are building up.`,
-    },
-  ];
+  const { space, radii } = useTheme();
 
   return (
-    <>
-      <Box>
-        <Text
-          fontFamily={fonts.heading}
-          textStyle="mainHeading"
-          textAlign="center"
+    <Box w="100%" h={[480, 320]} bg="#2E6BE5" borderRadius={radii.xs}>
+      <Box
+        h="100%"
+        position="relative"
+        borderRadius={radii.xs}
+        overflow="hidden"
+      >
+        <Image
+          src={STATIC_IMAGES.ImageStreamJourney}
+          alt="Stream Journey"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="20% 100px"
+        />
+
+        <Flex
+          h="100%"
+          p={[space.xxxs, 36]}
+          flexDirection={["column", "row"]}
+          alignItems={["start", "flex-end"]}
+          gridGap={[space.s, space.xl]}
         >
-          Become a Creator
-        </Text>
-        <Text textStyle="body" textAlign="center">
-          Start streaming on <Span color={colors.accentLight}>Crater</Span>,
-          here&apos;s why
-        </Text>
-      </Box>
-
-      <Grid gridTemplateColumns={["1fr", "min-content 2fr"]}>
-        <Box w={400} position="relative" display={["none", "grid"]}>
-          <Image
-            src="/images/img_become_a_creator.png"
-            alt="Become a creator"
-          />
-
-          <Box w={40} position="absolute" left={130} top={170}>
-            <Link
-              href="https://www.youtube.com/watch?v=nWqxG9srgqE&t=1s"
-              boxProps={{ target: "_blank" }}
+          <GlassBox
+            px={space.xs}
+            pt={32}
+            pb={space.xxs}
+            w={["100%", "fit-content"]}
+            flexGrow={1}
+          >
+            <Flex
+              h="100%"
+              flexDirection={["column", "row"]}
+              justifyContent="space-between"
+              gridGap={[space.xs, space.s]}
             >
-              <Image src="/images/img_play_button.png" alt="Play" />
-            </Link>
-          </Box>
-        </Box>
-
-        <Grid
-          py={[space.xs, space.s]}
-          gridTemplateColumns={["1fr", "1fr 1fr"]}
-          gridGap={[space.xs, space.m]}
-        >
-          {data.map(({ image, title, text, button }, index) => {
-            return (
-              <Grid
-                gridTemplateColumns="min-content 1fr"
-                gridGap={space.xxs}
-                justifyItems="start"
-                key={index}
+              <Text
+                fontSize={["3.2rem", "4.0rem"]}
+                fontWeight={600}
+                lineHeight={["3.8rem", "4.8rem"]}
+                maxLines={2}
               >
-                <Box w={64}>
-                  <Image src={image} alt={title} />
-                </Box>
-                <Box>
-                  <Text fontFamily={fonts.heading} pb={space.xxxxxs}>
-                    {title}
-                  </Text>
-                  <Text textStyle="caption" lineHeight="2.1rem" color="#C4C4C4">
-                    {text}
-                  </Text>
-                </Box>
+                Start streaming <br />
+                on Crater
+              </Text>
+              <Box alignSelf={["flex-start", "flex-end"]}>
+                <a
+                  href={START_CREATOR_JOURNEY_CALENDLY}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <LazyLoadButton
+                    label="Begin Your Journey"
+                    iconTransform="rotate(-90deg)"
+                  />
+                </a>
+              </Box>
+            </Flex>
+          </GlassBox>
 
-                {button && (
-                  <Box pt={space.xs} display={["none", "grid"]} gridColumn={2}>
-                    <a
-                      href={START_CREATOR_JOURNET_CALENDLY}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Button
-                        variant="flat-large"
-                        label="Start your journey"
-                        display="flex"
-                        alignItems="center"
-                        suffixElement={<Icon icon="ChevronRight" size={20} />}
-                      />
-                    </a>
-                  </Box>
-                )}
-              </Grid>
-            );
-          })}
-
-          <Box display={["grid", "none"]}>
-            <a
-              href={START_CREATOR_JOURNET_CALENDLY}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Button
-                label="Start your journey"
-                display="flex"
-                alignItems="center"
-                suffixElement={<Icon icon="ChevronRight" size={20} />}
-              />
-            </a>
+          <Box flexGrow={1}>
+            <CreatorJourneyCardSwitch />
           </Box>
-        </Grid>
-      </Grid>
-    </>
+        </Flex>
+      </Box>
+    </Box>
   );
 }
