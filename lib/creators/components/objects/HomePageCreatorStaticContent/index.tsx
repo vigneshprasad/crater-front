@@ -7,11 +7,16 @@ import { Box, Flex, Text } from "@/common/components/atoms";
 import GlassBox from "@/common/components/atoms/GlassBox";
 import LazyLoadButton from "@/common/components/objects/LazyLoadButton";
 import { START_CREATOR_JOURNEY_CALENDLY } from "@/common/constants/url.constants";
+import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 import CreatorJourneyCardSwitch from "../CreatorJourneyCardSwitch";
 
-export default function HomePageCreatorStaticContent(): JSX.Element {
-  const { space, radii } = useTheme();
+export default function HomePageCreatorStaticContent(): JSX.Element | null {
+  const { space, radii, breakpoints } = useTheme();
+
+  const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
+
+  if (isMobile === undefined) return null;
 
   return (
     <Box w="100%" h={[480, 320]} bg="#2E6BE5" borderRadius={radii.xs}>
@@ -26,7 +31,7 @@ export default function HomePageCreatorStaticContent(): JSX.Element {
           alt="Stream Journey"
           layout="fill"
           objectFit="cover"
-          objectPosition="20% 100px"
+          objectPosition={isMobile ? "20% 100px" : undefined}
         />
 
         <Flex
