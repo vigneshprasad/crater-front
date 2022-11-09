@@ -1,7 +1,7 @@
 import { Variants } from "framer-motion";
 import { NextSeoProps } from "next-seo";
 import { PropsWithChildren } from "react";
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import { AnimatedBox, Box, Text } from "@/common/components/atoms";
 import { AsideNav, INavKeys } from "@/common/components/objects/AsideNav/v2";
@@ -10,6 +10,12 @@ import Page from "@/common/components/objects/Page";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 import BaseLayout from "../../BaseLayout/v2";
+
+const StyledBaseLayout = styled(BaseLayout)`
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+`;
 
 type IProps = PropsWithChildren<{
   seo: NextSeoProps;
@@ -38,7 +44,10 @@ export default function HomePageLayout({
 
   return (
     <Page seo={seo}>
-      <BaseLayout aside={<AsideNav activeTab={activeTab} />} overflowY="auto">
+      <StyledBaseLayout
+        aside={<AsideNav activeTab={activeTab} />}
+        overflowY="auto"
+      >
         {isMobile && (
           <Box py={space.xxxs}>
             <GlobalSearch />
@@ -65,7 +74,7 @@ export default function HomePageLayout({
         >
           {children}
         </AnimatedBox>
-      </BaseLayout>
+      </StyledBaseLayout>
     </Page>
   );
 }
