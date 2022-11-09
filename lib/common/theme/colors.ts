@@ -58,7 +58,7 @@ const colors = {
   primaryBanner: "#882EE8",
   inputDefaultBg: "#010101",
   textSecondary: "rgba(255, 255, 255, 0.64)",
-  textSecondaryLight: "#D7D7EA",
+  textSecondaryLight: "#EDEDED",
   textQuartenary: "#959595",
   textTertiary: "#C4C4C4",
   primaryBackground: "#010101",
