@@ -19,7 +19,7 @@ const StyledBox = styled(Box)`
 interface IProps {
   label: string;
   iconTransform?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function LazyLoadButton({
@@ -41,7 +41,7 @@ export default function LazyLoadButton({
         <Text
           textStyle="label"
           lineHeight="1.8rem"
-          color={colors.textSecondary}
+          color={colors.textSecondaryLight}
         >
           {label}
         </Text>
