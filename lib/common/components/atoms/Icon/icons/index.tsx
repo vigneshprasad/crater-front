@@ -115,3 +115,4 @@ export { default as VolumeUp } from "./VolumeUp";
 export { default as Wallet } from "./Wallet";
 export { default as Whatsapp } from "./Whatsapp";
 export { default as ShowMore } from "./ShowMore";
+export { default as PlusSign } from "./PlusSign";
