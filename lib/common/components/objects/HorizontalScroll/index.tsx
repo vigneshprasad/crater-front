@@ -73,7 +73,7 @@ export default function HorizontalScroll({
       const { width } = gridRef.current.getBoundingClientRect();
       const scrollWidth = gridRef.current.scrollWidth;
       if (scrollWidth - width === 0) {
-        opacityLeft.set(0);
+        opacityRight.set(0);
         return;
       }
     }
