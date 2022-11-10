@@ -7,7 +7,7 @@ const StyledBox = styled(Box)`
 
   &:hover {
     .label-box {
-      background: ${({ theme }) => theme.colors.secondaryLight};
+      background: ${({ theme }) => theme.colors.accent};
     }
 
     .icon-box {
@@ -18,19 +18,28 @@ const StyledBox = styled(Box)`
 
 interface IProps {
   label: string;
+  icon?: JSX.Element;
   iconTransform?: string;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
 export default function LazyLoadButton({
   label,
+  icon,
   iconTransform,
+  disabled = false,
   onClick,
 }: IProps): JSX.Element {
   const { colors } = useTheme();
 
   return (
-    <StyledBox display="flex" alignItems="center" onClick={onClick}>
+    <StyledBox
+      display="flex"
+      alignItems="center"
+      onClick={onClick}
+      style={{ pointerEvents: disabled ? "none" : "auto" }}
+    >
       <Box
         className="label-box"
         p="9px 8px 9px 12px"
@@ -53,7 +62,9 @@ export default function LazyLoadButton({
         bg={colors.primaryDark}
         borderRadius="0px 8px 8px 0px"
       >
-        <Icon icon="ShowMore" size={14} h={20} transform={iconTransform} />
+        {icon ?? (
+          <Icon icon="ShowMore" size={14} h={20} transform={iconTransform} />
+        )}
       </Box>
     </StyledBox>
   );
