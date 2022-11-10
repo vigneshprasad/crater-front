@@ -1,11 +1,17 @@
-import STATIC_IMAGES from "public/images";
-import { useMemo } from "react";
-import styled, { useTheme } from "styled-components";
+import { useMemo, useState } from "react";
+import { useTheme } from "styled-components";
 
-import Image from "next/image";
-
-import { Box, Text, Grid, Flex, Icon, Link } from "@/common/components/atoms";
-import { Button } from "@/common/components/atoms/v2";
+import {
+  Box,
+  Text,
+  Grid,
+  Icon,
+  Link,
+  Avatar,
+  Spinner,
+} from "@/common/components/atoms";
+import GlassBox from "@/common/components/atoms/GlassBox";
+import LazyLoadButton from "@/common/components/objects/LazyLoadButton";
 import { PageRoutes } from "@/common/constants/route.constants";
 import CreatorApiClient from "@/creators/api";
 import { CreatorRank } from "@/creators/types/creator";
@@ -16,203 +22,106 @@ interface IProps {
   updatedList: () => void;
 }
 
-const Container = styled(Box)`
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0px 0px 16px 0px #000000;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0px 4px 16px 0px rgba(213, 187, 255, 0.5);
-  }
-`;
-
 export function LeaderCard({
   rank,
   creator,
   updatedList,
 }: IProps): JSX.Element {
-  const { space, colors, radii, fonts } = useTheme();
+  const { space, colors, radii } = useTheme();
+  const [loading, setLoading] = useState(false);
 
-  const rankLabel = useMemo(() => {
-    if (rank === 1) {
+  // const border = useMemo(() => {
+  //   if (rank === 1) {
+  //     return `2px solid ${colors.yellow[0]}`;
+  //   }
+
+  //   if (rank === 2) {
+  //     return `2px solid ${colors.muted.silver}`;
+  //   }
+
+  //   if (rank === 3) {
+  //     return `2px solid ${colors.muted.bronze}`;
+  //   }
+  //   return `2px solid ${colors.accentHover}`;
+  // }, [rank, colors]);
+
+  const icon = useMemo(() => {
+    if (loading) {
+      return <Spinner size={18} />;
+    }
+
+    if (creator.is_follower) {
       return (
-        <Box position="relative" w={56} h={62}>
-          <Image
-            layout="fill"
-            src={STATIC_IMAGES.ImageRank1}
-            alt=""
-            objectFit="contain"
-          />
-        </Box>
+        <Icon icon="CheckCircle" color={colors.greenSuccess} size={18} h={20} />
       );
     }
 
-    if (rank === 2) {
-      return (
-        <Box position="relative" w={56} h={62}>
-          <Image
-            layout="fill"
-            src={STATIC_IMAGES.ImageRank2}
-            alt=""
-            objectFit="contain"
-          />
-        </Box>
-      );
-    }
-
-    if (rank === 3) {
-      return (
-        <Box position="relative" w={56} h={62}>
-          <Image
-            layout="fill"
-            src={STATIC_IMAGES.ImageRank3}
-            alt=""
-            objectFit="contain"
-          />
-        </Box>
-      );
-    }
-
-    return (
-      <Grid
-        size={36}
-        border={`2px solid ${colors.accentLight}`}
-        borderRadius="50%"
-      >
-        <Text
-          color={colors.accentLight}
-          fontSize="2rem"
-          fontFamily={fonts.heading}
-          m="auto auto"
-        >
-          {rank}
-        </Text>
-      </Grid>
-    );
-  }, [rank, colors, fonts]);
-
-  const border = useMemo(() => {
-    if (rank === 1) {
-      return `2px solid ${colors.yellow[0]}`;
-    }
-
-    if (rank === 2) {
-      return `2px solid ${colors.muted.silver}`;
-    }
-
-    if (rank === 3) {
-      return `2px solid ${colors.muted.bronze}`;
-    }
-    return `2px solid ${colors.accentHover}`;
-  }, [rank, colors]);
+    return <Icon icon="PlusSign" size={12} h={20} />;
+  }, [colors, loading, creator]);
 
   const followCreator = async (): Promise<void> => {
+    await setLoading(true);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, err] = await CreatorApiClient().subscribeCreator(creator.id);
     if (err) {
-      console.log(err);
+      await setLoading(false);
       return;
     }
-    updatedList();
+    await updatedList();
+    await setLoading(false);
   };
 
   return (
-    <Link href={PageRoutes.creatorProfile(creator.slug)}>
-      <Container
-        zIndex={2}
-        bg={colors.primaryBackground}
-        borderRadius={radii.xxxxs}
-        position="relative"
+    <Box ml={space.xs} position="relative">
+      <Text
+        fontFamily="LFT Etica"
+        fontStyle="italic"
+        fontSize={["9.2rem", "12rem"]}
+        fontWeight={600}
+        lineHeight={["11.0rem", "14.4rem"]}
+        zIndex={0}
+        position="absolute"
+        left={["-16%", "-16%"]}
+        bottom={["8%", "-8%"]}
       >
-        <Box position="absolute" top={-8} left={-8}>
-          {rankLabel}
-        </Box>
-
-        <Box
-          position="relative"
-          overflow="hidden"
-          h="100%"
-          w="100%"
-          p={space.xxs}
+        {rank}
+      </Text>
+      <GlassBox
+        background="rgba(8, 43, 57, 0.12)"
+        border={`1px solid ${colors.primaryLight}`}
+        borderRadius={radii.s}
+        style={{ backdropFilter: "blur(8px)" }}
+      >
+        <Grid
+          p={[space.xxxs, space.xxs]}
+          gridTemplateColumns="max-content 1fr"
+          gridGap={space.xs}
         >
-          <Box position="absolute" top={-12} right={-12}>
-            <Box
-              position="relative"
-              borderRadius="50%"
-              size={72}
-              overflow="hidden"
-              border={border}
-            >
-              <Image
-                layout="fill"
-                objectFit="cover"
-                src={
-                  creator.profile_detail.photo ?? STATIC_IMAGES.ImgDefaultAvatar
-                }
-                alt="image"
-              />
-            </Box>
-          </Box>
-
-          <Box mt={56}>
-            <Text
-              minHeight={48}
-              color={colors.green[0]}
-              fontSize="1.2rem"
-              fontFamily={fonts.heading}
-            >
+          <Link href={PageRoutes.creatorProfile(creator.slug)}>
+            <Avatar
+              size={[36, 56]}
+              image={creator.profile_detail.photo ?? undefined}
+            />
+          </Link>
+          <Grid
+            gridAutoFlow="row"
+            gridTemplateRows="1fr 1fr"
+            gridGap={space.xxs}
+          >
+            <Text fontWeight={600} maxLines={2}>
               {creator.profile_detail.name}
             </Text>
-
-            <Box mt={space.xxxs}>
-              {(() => {
-                if (creator.is_follower) {
-                  return (
-                    <Flex alignItems="center" gridGap={space.xxxxs}>
-                      <Icon
-                        icon="CheckCircle"
-                        color={colors.green[0]}
-                        size={16}
-                      />
-                      <Text
-                        textStyle="caption"
-                        fontWeight="600"
-                        color={colors.accentLight}
-                      >
-                        FOLLOWED
-                      </Text>
-                    </Flex>
-                  );
-                }
-
-                return (
-                  <Button
-                    variant="text"
-                    label="FOLLOW"
-                    disabled={creator.is_follower}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      followCreator();
-                    }}
-                  />
-                );
-
-                // return (
-                //   <>
-                //     <Text mt={space.xxs} fontSize="1rem">
-                //       WATCH TIME
-                //     </Text>
-
-                //     <Text fontFamily={fonts.heading} color={colors.accentLight}>
-                //       {creator.watch_time}
-                //     </Text>
-                //   </>
-                // );
-              })()}
+            <Box>
+              <LazyLoadButton
+                label={creator.is_follower ? "Following" : "Follow"}
+                icon={icon}
+                onClick={followCreator}
+                disabled={loading || creator.is_follower ? true : false}
+              />
             </Box>
-          </Box>
-        </Box>
-      </Container>
-    </Link>
+          </Grid>
+        </Grid>
+      </GlassBox>
+    </Box>
   );
 }

@@ -25,7 +25,7 @@ export default function StreamsPage(): JSX.Element {
   if (liveStreamsLoading || !liveStreams) return <Spinner />;
 
   return (
-    <Box pl={space.xxs}>
+    <Box pl={[space.xxxs, space.xxs]}>
       <Box px={[space.xxs, space.xs]}>
         <StreamSlider streams={liveStreams} />
       </Box>
@@ -64,7 +64,9 @@ export default function StreamsPage(): JSX.Element {
 
       <CategoryFilteredPastList />
 
-      <HomePageCreatorStaticContent />
+      <Box pr={[space.xxxs, space.xs]}>
+        <HomePageCreatorStaticContent />
+      </Box>
 
       <Box px={[space.xxs, space.xs]} py={36}>
         <Footer />

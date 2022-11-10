@@ -87,8 +87,8 @@ export default function CreatorJourneyCardSwitch(): JSX.Element {
         {data.map(({ key, title, text }, index) => (
           <AnimatedBox
             variants={variants}
-            w={[335, 400]}
-            h={[160, 185]}
+            w={["100%", 400]}
+            h={["100%", 185]}
             py={[space.xs, 32]}
             px={[24, 40]}
             bg={colors.primaryDark}

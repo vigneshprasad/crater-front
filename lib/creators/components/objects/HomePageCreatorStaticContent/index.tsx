@@ -19,7 +19,7 @@ export default function HomePageCreatorStaticContent(): JSX.Element | null {
   if (isMobile === undefined) return null;
 
   return (
-    <Box w="100%" h={[480, 320]} bg="#2E6BE5" borderRadius={radii.xs}>
+    <Box bg="#2E6BE5" borderRadius={radii.xs}>
       <Box
         h="100%"
         position="relative"
