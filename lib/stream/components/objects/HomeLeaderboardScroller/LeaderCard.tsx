@@ -108,7 +108,7 @@ export function LeaderCard({
             gridTemplateRows="1fr 1fr"
             gridGap={space.xxs}
           >
-            <Text fontWeight={600} maxLines={2}>
+            <Text fontWeight={600} color="#6AD361" maxLines={2}>
               {creator.profile_detail.name}
             </Text>
             <Box>
