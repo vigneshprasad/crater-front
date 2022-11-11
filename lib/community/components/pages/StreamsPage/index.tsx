@@ -31,7 +31,7 @@ export default function StreamsPage(): JSX.Element {
       </Box>
 
       <Box
-        my={space.xs}
+        mt={space.xs}
         pl={space.xxxs}
         borderLeft={`2px solid ${colors.accentLight}`}
       >
