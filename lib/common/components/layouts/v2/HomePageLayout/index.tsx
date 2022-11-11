@@ -55,11 +55,14 @@ export default function HomePageLayout({
         )}
 
         <Box px={space.xs} pt={[space.xxxs, 32]} pb={space.xxs}>
-          <Text textStyle="mainHeading" maxLines={2} textAlign="center">
+          <Text textStyle="mainHeading" textAlign="center">
             {heading}
           </Text>
           {subHeading && (
-            <Text textStyle="body" textAlign="center" maxLines={2}>
+            <Text
+              textStyle={isMobile ? "caption" : "captionLarge"}
+              textAlign="center"
+            >
               {subHeading}
             </Text>
           )}

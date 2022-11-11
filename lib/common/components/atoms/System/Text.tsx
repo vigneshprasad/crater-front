@@ -194,11 +194,11 @@ const variants = {
   },
   mainHeading: {
     fontFamily: fonts.heading,
-    fontSize: "2.4rem",
+    fontSize: ["1.4rem", "2.4rem"],
     fontWeight: "500",
-    lineHeight: "3.3rem",
+    lineHeight: ["1.9rem", "3.3rem"],
     background:
-      "linear-gradient(90.47deg, #d5bbff 17.58%, #9db3ff 60.39%, #0d849e 85.38%)",
+      "linear-gradient(65.32deg, #F1616A 19.69%, #9146FF 46.24%, #9DB3FF 72.25%, #0D849E 72.25%)",
     backgroundClip: "text",
     "-webkit-background-clip": "text",
     "-webkit-text-fill-color": "transparent",

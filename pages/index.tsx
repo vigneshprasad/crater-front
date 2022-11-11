@@ -50,13 +50,13 @@ export default function Home({
   return (
     <HomePageLayout
       seo={{
-        title: "Watch, Chat & Place Bids",
+        title: "Livestream and Monetise with Crater",
         description:
-          "You can watch live streams, interact with creators & take part in auctions",
+          "Go live with Crater and host a private auction to monetise your content",
       }}
       activeTab="streams"
-      heading="Watch, Chat and Place Bids"
-      subHeading="You can watch live streams, interact with creators &amp; take part in auctions"
+      heading="Livestream and Monetise with Crater"
+      subHeading="Go live with Crater and host a private auction to monetise your content"
     >
       <LiveStreamsProvider initial={liveStreams}>
         <UpcomingStreamsProvider pageSize={8} categorySlug={upcomingCategory}>
