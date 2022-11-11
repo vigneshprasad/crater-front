@@ -45,44 +45,12 @@ export default function HomeLeaderboardScroller(): JSX.Element {
         }
         return creators.map((creator, index) => {
           return (
-            <>
-              <LeaderCard
-                rank={index + 1}
-                key={creator.id}
-                creator={creator}
-                updatedList={() => revalidate()}
-              />
-              <LeaderCard
-                rank={index + 1}
-                key={creator.id}
-                creator={creator}
-                updatedList={() => revalidate()}
-              />
-              <LeaderCard
-                rank={index + 1}
-                key={creator.id}
-                creator={creator}
-                updatedList={() => revalidate()}
-              />
-              <LeaderCard
-                rank={index + 1}
-                key={creator.id}
-                creator={creator}
-                updatedList={() => revalidate()}
-              />
-              <LeaderCard
-                rank={index + 1}
-                key={creator.id}
-                creator={creator}
-                updatedList={() => revalidate()}
-              />
-              <LeaderCard
-                rank={index + 1}
-                key={creator.id}
-                creator={creator}
-                updatedList={() => revalidate()}
-              />
-            </>
+            <LeaderCard
+              rank={index + 1}
+              key={creator.id}
+              creator={creator}
+              updatedList={() => revalidate()}
+            />
           );
         });
       })()}
