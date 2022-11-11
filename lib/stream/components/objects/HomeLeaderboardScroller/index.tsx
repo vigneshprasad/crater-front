@@ -11,26 +11,24 @@ export default function HomeLeaderboardScroller(): JSX.Element {
   const { creators, revalidate } = useCreatorRankList();
   return (
     <HorizontalScroll
-      pt={[space.xxxxs, space.xs]}
-      pb={[space.s, space.m]}
-      mt={[0, space.xs]}
-      px={[space.xs, space.s]}
+      pl={[30, space.s]}
+      py={[space.xs, space.s]}
       gridAutoFlow="column"
       gridAutoColumns="250px"
       gridGap={[space.s, space.m]}
+      actionContainerProps={{ h: 196 }}
+      zIndex={100}
     >
       <Box
-        h={[142, 220]}
+        w="100%"
+        h={[160, 196]}
         position="absolute"
         background="linear-gradient(180deg, rgba(18, 18, 18, 0) 0%, #0E0E0E 100%)"
-        top={["4%", "-24%"]}
-        right={0}
         left={0}
-        bottom={0}
-        zIndex={0}
+        top={0}
+        zIndex={-1}
         borderRadius={radii.xxs}
       />
-
       {(() => {
         if (!creators) {
           return Array(4)
@@ -47,12 +45,44 @@ export default function HomeLeaderboardScroller(): JSX.Element {
         }
         return creators.map((creator, index) => {
           return (
-            <LeaderCard
-              rank={index + 1}
-              key={creator.id}
-              creator={creator}
-              updatedList={() => revalidate()}
-            />
+            <>
+              <LeaderCard
+                rank={index + 1}
+                key={creator.id}
+                creator={creator}
+                updatedList={() => revalidate()}
+              />
+              <LeaderCard
+                rank={index + 1}
+                key={creator.id}
+                creator={creator}
+                updatedList={() => revalidate()}
+              />
+              <LeaderCard
+                rank={index + 1}
+                key={creator.id}
+                creator={creator}
+                updatedList={() => revalidate()}
+              />
+              <LeaderCard
+                rank={index + 1}
+                key={creator.id}
+                creator={creator}
+                updatedList={() => revalidate()}
+              />
+              <LeaderCard
+                rank={index + 1}
+                key={creator.id}
+                creator={creator}
+                updatedList={() => revalidate()}
+              />
+              <LeaderCard
+                rank={index + 1}
+                key={creator.id}
+                creator={creator}
+                updatedList={() => revalidate()}
+              />
+            </>
           );
         });
       })()}

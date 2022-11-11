@@ -31,11 +31,11 @@ export default function HorizontalScroll({
   actionContainerProps,
   ...rest
 }: IProps): JSX.Element {
-  const { space, colors, breakpoints } = useTheme();
+  const { space, breakpoints } = useTheme();
   const gridRef = useRef<HTMLDivElement>(null);
   const { scrollXProgress } = useElementScroll(gridRef);
   const opacityLeft = useMotionValue(0);
-  const opacityRight = useMotionValue(1);
+  const opacityRight = useMotionValue(0.9);
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
@@ -48,34 +48,36 @@ export default function HorizontalScroll({
 
     function updateOpacity(): void {
       const position = scrollXProgress.get();
+      console.log(position);
 
       if (position === 0 && !isMobile) {
         opacityLeft.set(0);
-        opacityRight.set(1);
-        return;
+        opacityRight.set(0.9);
       }
 
       if (position > 0 && position < 0.9 && !isMobile) {
-        opacityLeft.set(1);
-        opacityRight.set(1);
-        return;
+        opacityLeft.set(0.9);
+        opacityRight.set(0.9);
       }
 
       if (position >= 0.9 && !isMobile) {
-        opacityLeft.set(1);
+        opacityLeft.set(0.9);
         opacityRight.set(0);
-        return;
       }
-    }
 
-    // Disable right scroll button if grid is not scrollable
-    if (gridRef.current) {
-      const { width } = gridRef.current.getBoundingClientRect();
-      const scrollWidth = gridRef.current.scrollWidth;
-      if (scrollWidth - width === 0) {
-        opacityRight.set(0);
-        return;
+      // Disable scroll buttons if grid is not scrollable
+      if (gridRef.current) {
+        const { width } = gridRef.current.getBoundingClientRect();
+        console.log(width);
+        const scrollWidth = gridRef.current.scrollWidth;
+        console.log(scrollWidth);
+        if (scrollWidth - width === 0) {
+          opacityLeft.set(0);
+          opacityRight.set(0);
+        }
       }
+
+      return;
     }
 
     const unsubsribeScrollProgress = scrollXProgress.onChange(updateOpacity);
@@ -115,8 +117,8 @@ export default function HorizontalScroll({
             right={0}
             top={0}
             bottom={0}
-            w={56}
-            background={`linear-gradient(to left, ${colors.primaryBackground}, rgba(1, 1, 1, 0.2))`}
+            w={48}
+            background="rgba(0, 0, 0, 0.92)"
             onClick={onClickScrollEnd}
             style={{
               opacity: opacityRight,
@@ -132,8 +134,8 @@ export default function HorizontalScroll({
             left={0}
             top={0}
             bottom={0}
-            w={56}
-            background={`linear-gradient(to right, ${colors.primaryBackground}, rgba(1, 1, 1, 0.2))`}
+            w={48}
+            background="rgba(0, 0, 0, 0.92)"
             onClick={onClickScrollStart}
             style={{
               opacity: opacityLeft,
