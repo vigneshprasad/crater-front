@@ -30,7 +30,7 @@ export function AsideNav({ activeTab }: IProps): JSX.Element | null {
       gridAutoFlow="row"
       gridAutoRows="max-content"
       alignItems="center"
-      gridGap={space.xxs}
+      gridGap={space.xs}
     >
       {NAV_ITEMS.map(({ key, icon, label, route }) => {
         const active = key === activeTab;
@@ -54,10 +54,10 @@ export function AsideNav({ activeTab }: IProps): JSX.Element | null {
                       zIndex={-1}
                       style={{ backdropFilter: "blur(12px)" }}
                     />
-                    <Icon icon={icon.active} size={44} h={44} />
+                    <Icon icon={icon.active} size={44} />
                   </>
                 ) : (
-                  <Icon icon={icon.inactive} />
+                  <Icon icon={icon.inactive} size={22} />
                 )}
               </Box>
 
