@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export function AsideNav({ activeTab }: IProps): JSX.Element | null {
-  const { borders, space, colors, breakpoints } = useTheme();
+  const { borders, space, breakpoints } = useTheme();
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
@@ -23,7 +23,7 @@ export function AsideNav({ activeTab }: IProps): JSX.Element | null {
 
   return (
     <Grid
-      py={space.xxs}
+      py={space.xxxs}
       borderRight={`1px solid ${borders.primary}`}
       w={60}
       h="100%"
@@ -41,20 +41,35 @@ export function AsideNav({ activeTab }: IProps): JSX.Element | null {
               flexDirection="column"
               alignItems="center"
               justifyContent="center"
-              color={active ? colors.accentLight : colors.slate}
             >
-              <Box p={space.xxxxs}>
-                <Icon color="inherit" icon={icon} />
+              <Box p={space.xxxxxs} position="relative">
+                {active ? (
+                  <>
+                    <Box
+                      w={48}
+                      h={48}
+                      position="absolute"
+                      m="0 auto"
+                      background="radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 100%)"
+                      zIndex={-1}
+                      style={{ backdropFilter: "blur(12px)" }}
+                    />
+                    <Icon icon={icon.active} size={44} h={44} />
+                  </>
+                ) : (
+                  <Icon icon={icon.inactive} />
+                )}
               </Box>
 
-              <Text
-                fontSize={useSmallFont ? "0.8rem" : undefined}
-                color="inherit"
-                textAlign="center"
-                textStyle="navbarLabel"
-              >
-                {label}
-              </Text>
+              {active && (
+                <Text
+                  fontSize={useSmallFont ? "0.8rem" : undefined}
+                  textAlign="center"
+                  textStyle="navbarLabel"
+                >
+                  {label}
+                </Text>
+              )}
             </Flex>
           </Link>
         );
