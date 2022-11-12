@@ -209,7 +209,7 @@ const variants = {
     fontFamily: fonts.body,
     fontSize: ["1rem"],
     fontWeight: "600",
-    lineHeight: ["1.3rem"],
+    lineHeight: ["1.2rem"],
   },
   segmentedTabTitle: {
     fontFamily: fonts.body,
