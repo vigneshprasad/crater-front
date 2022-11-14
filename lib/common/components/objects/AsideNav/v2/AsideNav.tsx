@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export function AsideNav({ activeTab }: IProps): JSX.Element | null {
-  const { borders, space, breakpoints } = useTheme();
+  const { borders, space, colors, breakpoints } = useTheme();
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
@@ -30,6 +30,7 @@ export function AsideNav({ activeTab }: IProps): JSX.Element | null {
       gridAutoFlow="row"
       gridAutoRows="max-content"
       alignItems="center"
+      justifyItems="center"
       gridGap={space.xs}
     >
       {NAV_ITEMS.map(({ key, icon, label, route }) => {
@@ -42,7 +43,14 @@ export function AsideNav({ activeTab }: IProps): JSX.Element | null {
               alignItems="center"
               justifyContent="center"
             >
-              <Box p={space.xxxxxs} position="relative">
+              <Box
+                px={space.xxxxs}
+                w="100%"
+                position="relative"
+                borderRight={
+                  active ? `2px solid ${colors.accentLight}` : undefined
+                }
+              >
                 {active ? (
                   <>
                     <Box
