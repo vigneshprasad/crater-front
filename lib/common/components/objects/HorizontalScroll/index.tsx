@@ -103,7 +103,7 @@ export default function HorizontalScroll({
     <Box position="relative" {...containerProps}>
       <Container ref={gridRef} py={space.xxxs} overflowX="scroll" {...rest}>
         {children}
-        <Box w={96} />
+        {!isMobile && <Box w={96} />}
       </Container>
       {!isMobile && (
         <>
