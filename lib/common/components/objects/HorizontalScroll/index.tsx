@@ -48,7 +48,6 @@ export default function HorizontalScroll({
 
     function updateOpacity(): void {
       const position = scrollXProgress.get();
-      console.log(position);
 
       if (position === 0 && !isMobile) {
         opacityLeft.set(0);
@@ -68,9 +67,7 @@ export default function HorizontalScroll({
       // Disable scroll buttons if grid is not scrollable
       if (gridRef.current) {
         const { width } = gridRef.current.getBoundingClientRect();
-        console.log(width);
         const scrollWidth = gridRef.current.scrollWidth;
-        console.log(scrollWidth);
         if (scrollWidth - width === 0) {
           opacityLeft.set(0);
           opacityRight.set(0);
