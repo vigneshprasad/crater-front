@@ -3,31 +3,28 @@ import useSWR from "swr";
 
 import { RewardSale } from "@/auction/types/sales";
 import { Box, Text } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spinner";
 import Footer from "@/common/components/objects/Footer";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import HomePageCreatorStaticContent from "@/creators/components/objects/HomePageCreatorStaticContent";
 import CategoryFilteredPastList from "@/stream/components/objects/CategoryFilteredPastList";
 import CategoryFilteredUpcomingList from "@/stream/components/objects/CategoryFilteredUpcomingList";
+import FeaturedStreams from "@/stream/components/objects/FeaturedStreams";
 import HomeLeaderboardScroller from "@/stream/components/objects/HomeLeaderboardScroller";
-import { StreamSlider } from "@/stream/components/objects/StreamSlider";
 import HomePageStoreSection from "@/tokens/components/objects/HomePageStoreSection";
 
 export default function StreamsPage(): JSX.Element {
-  const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
   const { space, colors } = useTheme();
+  const { liveStreams } = useLiveStreams();
 
   const { data: sales } = useSWR<RewardSale[]>(
     API_URL_CONSTANTS.sales.getRecentSalesList
   );
 
-  if (liveStreamsLoading || !liveStreams) return <Spinner />;
-
   return (
     <Box pl={[space.xxxs, space.xxs]}>
-      <Box px={[space.xxs, space.xs]}>
-        <StreamSlider streams={liveStreams} />
+      <Box pr={[space.xxxs, space.xs]} py={[space.xs, 28]}>
+        <FeaturedStreams livestreams={liveStreams} />
       </Box>
 
       <Box

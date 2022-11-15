@@ -174,7 +174,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
         py: "calc(0.4em + 2px)",
         bg: "primaryDark",
         transition: "all 0.1s ease-in",
-        borderRadius: 4,
+        borderRadius: 8,
         ":hover": {
           bg: "primaryLight",
         },
