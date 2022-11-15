@@ -31,7 +31,7 @@ export function AsideNav({ activeTab }: IProps): JSX.Element | null {
       gridAutoRows="max-content"
       alignItems="center"
       justifyItems="center"
-      gridGap={space.xs}
+      gridGap={28}
     >
       {NAV_ITEMS.map(({ key, icon, label, route }) => {
         const active = key === activeTab;
