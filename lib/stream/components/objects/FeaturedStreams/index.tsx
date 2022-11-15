@@ -67,7 +67,7 @@ export default function FeaturedStreams({
   const sliderButtons = (
     <Flex
       w="inherit"
-      px={space.xxxs}
+      px={[space.xxxxs, space.xxxs]}
       position="absolute"
       justifyContent="space-between"
       alignItems="center"
@@ -77,13 +77,13 @@ export default function FeaturedStreams({
       <IconButton
         buttonStyle="slider-round"
         icon="ChevronLeft"
-        iconProps={{ h: 20, size: 20 }}
+        iconProps={{ h: [16, 20], size: [16, 20] }}
         onClick={() => swiperRef.current?.slidePrev()}
       />
       <IconButton
         buttonStyle="slider-round"
         icon="ChevronRight"
-        iconProps={{ h: 20, size: 20 }}
+        iconProps={{ h: [16, 20], size: [16, 20] }}
         onClick={() => swiperRef.current?.slideNext()}
       />
     </Flex>

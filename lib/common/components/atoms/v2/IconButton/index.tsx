@@ -142,8 +142,8 @@ const ButtonContainer = styled(Button)<ButtonProps>`
         },
       },
       "slider-round": {
-        width: 32,
-        height: 32,
+        width: [28, 32],
+        height: [28, 32],
         px: 8,
         py: 6,
         borderRadius: "50%",
