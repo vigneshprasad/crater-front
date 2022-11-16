@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 
 import {
@@ -9,6 +9,7 @@ import {
   Link,
   Avatar,
   Spinner,
+  Flex,
 } from "@/common/components/atoms";
 import GlassBox from "@/common/components/atoms/GlassBox";
 import { Button } from "@/common/components/atoms/v2";
@@ -31,20 +32,21 @@ export function LeaderCard({
   const { space, colors, radii } = useTheme();
   const [loading, setLoading] = useState(false);
 
-  // const border = useMemo(() => {
-  //   if (rank === 1) {
-  //     return `2px solid ${colors.yellow[0]}`;
-  //   }
+  const background = useMemo(() => {
+    if (rank === 1) {
+      return `linear-gradient(65.32deg, #F1C961 19.69%, #FFDBB1 30.09%, #D08C1A 46.79%, #F1A618 72.25%)`;
+    }
 
-  //   if (rank === 2) {
-  //     return `2px solid ${colors.muted.silver}`;
-  //   }
+    if (rank === 2) {
+      return `linear-gradient(65.32deg, #979BA2 19.69%, #F0F0F0 35.02%, #797A7A 46.79%, #9FB5BA 72.25%)`;
+    }
 
-  //   if (rank === 3) {
-  //     return `2px solid ${colors.muted.bronze}`;
-  //   }
-  //   return `2px solid ${colors.accentHover}`;
-  // }, [rank, colors]);
+    if (rank === 3) {
+      return "linear-gradient(65.32deg, #CB8F7B 19.69%, #E8DBCC 31.18%, #8F6658 48.7%, #CC583F 72.25%, #B85742 72.25%)";
+    }
+
+    return "linear-gradient(65.32deg, #F1616A 19.69%, #9146FF 46.24%, #9DB3FF 72.25%, #0D849E 72.25%)";
+  }, [rank]);
 
   const followCreator = async (): Promise<void> => {
     await setLoading(true);
@@ -59,17 +61,19 @@ export function LeaderCard({
   };
 
   return (
-    <Box ml={space.xs} position="relative">
+    <Flex
+      position="relative"
+      justifyContent={rank !== 10 ? "center" : "flex-end"}
+    >
       <Text
-        fontFamily="LFT Etica"
-        fontStyle="italic"
-        fontSize={["9.2rem", "12rem"]}
-        fontWeight={600}
-        lineHeight={["11.0rem", "14.4rem"]}
+        pl={space.xxxxs}
+        textStyle="rank"
         zIndex={0}
         position="absolute"
-        left={["-16%", "-16%"]}
-        bottom={["8%", "-8%"]}
+        left={rank !== 10 ? -12 : -20}
+        top={0}
+        color={colors.primaryBackground}
+        background={background}
       >
         {rank}
       </Text>
@@ -128,6 +132,6 @@ export function LeaderCard({
           </Grid>
         </Grid>
       </GlassBox>
-    </Box>
+    </Flex>
   );
 }

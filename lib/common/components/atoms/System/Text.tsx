@@ -254,6 +254,16 @@ const variants = {
     fontWeight: "600",
     lineHeight: "2.4rem",
   },
+  rank: {
+    fontFamily: fonts.other,
+    fontSize: ["9.2rem", "12rem"],
+    fontWeight: 600,
+    fontStyle: "italic",
+    lineHeight: ["11.0rem", "14.4rem"],
+    backgroundClip: "text",
+    "-webkit-background-clip": "text",
+    "-webkit-text-stroke": "8px transparent",
+  },
 };
 
 export type TextVariants = keyof typeof variants;

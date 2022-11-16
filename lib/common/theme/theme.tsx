@@ -39,6 +39,7 @@ const borders = {
 const fonts = {
   heading: "owners-xwide, sans-serif",
   body: "Inter, sans-serif",
+  other: "etica-display, sans-sarif",
 };
 
 const radii = {

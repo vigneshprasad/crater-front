@@ -14,8 +14,8 @@ export default function HomeLeaderboardScroller(): JSX.Element {
       pl={[30, space.s]}
       py={[space.xs, space.s]}
       gridAutoFlow="column"
-      gridAutoColumns="250px"
-      gridGap={[space.s, space.m]}
+      gridAutoColumns="320px"
+      gridGap={space.xs}
       actionContainerProps={{ h: 196 }}
       zIndex={100}
     >
@@ -29,6 +29,7 @@ export default function HomeLeaderboardScroller(): JSX.Element {
         zIndex={-1}
         borderRadius={radii.xxs}
       />
+
       {(() => {
         if (!creators) {
           return Array(4)
