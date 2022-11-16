@@ -11,10 +11,10 @@ export default function HomeLeaderboardScroller(): JSX.Element {
   const { creators, revalidate } = useCreatorRankList();
   return (
     <HorizontalScroll
-      pl={[30, space.s]}
-      py={[space.xs, space.s]}
+      px={[30, space.s]}
+      py={space.s}
       gridAutoFlow="column"
-      gridAutoColumns="320px"
+      gridAutoColumns={["270px", "320px"]}
       gridGap={space.xs}
       actionContainerProps={{ h: 196 }}
       zIndex={100}
@@ -25,7 +25,7 @@ export default function HomeLeaderboardScroller(): JSX.Element {
         position="absolute"
         background="linear-gradient(180deg, rgba(18, 18, 18, 0) 0%, #0E0E0E 100%)"
         left={0}
-        top={0}
+        top={[20, 0]}
         zIndex={-1}
         borderRadius={radii.xxs}
       />

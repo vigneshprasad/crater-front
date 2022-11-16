@@ -71,7 +71,7 @@ export function LeaderCard({
         zIndex={0}
         position="absolute"
         left={rank !== 10 ? -12 : -20}
-        top={0}
+        top={[5, 0]}
         color={colors.primaryBackground}
         background={background}
       >
