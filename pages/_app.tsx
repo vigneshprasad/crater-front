@@ -47,7 +47,7 @@ import { LearnModalProvider } from "@/stream/components/objects/LearnNEarnModal/
 import GlobalStyle from "../lib/common/styles/global.styled";
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
-  const { session, user, profile } = pageProps;
+  const { session, profile } = pageProps;
 
   const router = useRouter();
 
@@ -103,7 +103,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
     >
       <Provider session={session}>
         <NotificationStackProvider>
-          <AuthProvider user={user} profile={profile}>
+          <AuthProvider profile={profile}>
             <AuthModalProvider>
               <AnalyticsProvider>
                 <ThemeProvider theme={theme}>

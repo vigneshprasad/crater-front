@@ -32,7 +32,7 @@ export default function Landing(): JSX.Element {
       primaryHeading="Design & Art Creators"
       secondaryHeading="Watch live streams on UI/UX Design, Art, Sketching and more on Crater today."
       image={STATIC_IMAGES.ImageDesignLandingPage}
-      redirectTo={PageRoutes.category("design")}
+      redirectTo="design"
     />
   );
 }

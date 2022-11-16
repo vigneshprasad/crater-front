@@ -70,3 +70,5 @@ export interface UserPermission {
   allow_chat: boolean;
   show_viewer_count: boolean;
 }
+
+export type ILoginTypes = "web-3" | "design";

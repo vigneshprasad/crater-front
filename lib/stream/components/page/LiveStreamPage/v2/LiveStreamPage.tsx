@@ -151,18 +151,6 @@ export function LiveStreamPage({
         />
       </Link>
     ),
-    leaderboard: (
-      <Link
-        href={
-          multiStreamMode
-            ? PageRoutes.multistream(id, "leaderboard")
-            : PageRoutes.stream(id, "leaderboard")
-        }
-        shallow
-      >
-        <LiveStreamPanelTabItem icon="Leaderboard" label="Leaderboard" />
-      </Link>
-    ),
   });
 
   return (

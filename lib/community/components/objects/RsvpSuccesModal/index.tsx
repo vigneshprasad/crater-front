@@ -27,7 +27,7 @@ import DownloadMobileAppModalPage from "../DownloadMobileAppModalPage";
 import FollowersModalPage from "../FollowersModalPage";
 
 interface IProps {
-  group: Webinar;
+  group?: Webinar;
   visble: boolean;
   onClose: () => void;
 }
@@ -89,8 +89,8 @@ export default function RsvpSuccesModal({
   const trackModalAnalytics = useCallback(
     (eventName: string) => {
       track(eventName, {
-        stream: group.id,
-        stream_name: group.topic_detail?.name,
+        stream: group?.id,
+        stream_name: group?.topic_detail?.name,
         modal_section: modalPages[currentModalPage],
       });
     },
@@ -301,6 +301,7 @@ export default function RsvpSuccesModal({
                     trackModalAnalytics(
                       AnalyticsEvents.rsvp_modal_explore_clicked
                     );
+                    router.push(PageRoutes.home);
                   }}
                 />
               )}

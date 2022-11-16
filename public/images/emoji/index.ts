@@ -2,11 +2,14 @@ import BabuBhaiya from "public/images/emoji/img_babu_bhaiya.png";
 import BigSmiles from "public/images/emoji/img_big_smiles.png";
 import BiryaniDinner from "public/images/emoji/img_biryani_dinner.png";
 import BlockchainBull from "public/images/emoji/img_blockchain_bull.png";
+import ColorWheel from "public/images/emoji/img_colourwheel.png";
 import Confused from "public/images/emoji/img_confused.png";
 import CraterHackers from "public/images/emoji/img_crater_hackers.png";
 import Encrypt from "public/images/emoji/img_encrypt.png";
 import Eye from "public/images/emoji/img_eye.png";
 import GameOver from "public/images/emoji/img_game_over.png";
+import Goughrgeous from "public/images/emoji/img_goughrgeous.png";
+import GuessFont from "public/images/emoji/img_guess_font.png";
 import HackBlue from "public/images/emoji/img_hack_blue.png";
 import HackDude from "public/images/emoji/img_hack_dude.png";
 import HackGreen from "public/images/emoji/img_hack_green.png";
@@ -16,6 +19,9 @@ import Hacker from "public/images/emoji/img_hacker.png";
 import HandOverHangOver from "public/images/emoji/img_handover_hang_over.png";
 import HandOverTorch from "public/images/emoji/img_handover_torch.png";
 import Happy from "public/images/emoji/img_happy.png";
+import HarshitBowledOver from "public/images/emoji/img_harshit_bowled_over.png";
+import HarshitHowzat from "public/images/emoji/img_harshit_howzat.png";
+import HarshitWinningTeam from "public/images/emoji/img_harshit_winning_team.png";
 import HelloHacker from "public/images/emoji/img_hello_hacker.png";
 import HelloWorld from "public/images/emoji/img_hello_world.png";
 import HemanshuMetaverse from "public/images/emoji/img_hemanshu_metaverse.png";
@@ -26,6 +32,7 @@ import Interesting from "public/images/emoji/img_interesting.png";
 import IQ220 from "public/images/emoji/img_iq_220.png";
 import LetsHack from "public/images/emoji/img_lets_hack.png";
 import LFG from "public/images/emoji/img_lfg.png";
+import MonaLisa from "public/images/emoji/img_monalisa.png";
 import NoWay from "public/images/emoji/img_no_way.png";
 import OneHacker from "public/images/emoji/img_one_hacker.png";
 import PleasedPupper from "public/images/emoji/img_pleased_pupper.png";
@@ -108,8 +115,15 @@ const EMOJI_IMAGE_LIST = {
   StackOverflow,
   Supremacy,
   YouveBeenHacked,
+  HarshitHowzat,
+  HarshitBowledOver,
+  HarshitWinningTeam,
   HemanshuMetaverse,
   HimanshuSachanBirthday,
+  MonaLisa,
+  GuessFont,
+  Goughrgeous,
+  ColorWheel,
 };
 
 export type EmojiKeys = keyof typeof EMOJI_IMAGE_LIST;

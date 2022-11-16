@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { useCallback, useState } from "react";
 import { useTheme } from "styled-components";
 
@@ -18,7 +19,7 @@ import { PastStreamListItem } from "@/community/types/community";
 import { Creator } from "@/creators/types/creator";
 import ShareStreamModal from "@/stream/components/objects/ShareStreamModal";
 import StreamCreationModal from "@/stream/components/objects/StreamCreationModal";
-import usePastStreams from "@/stream/context/PastStreamContext";
+import useMyPastStreams from "@/stream/context/MyPastStreamsContext";
 
 type IProps = {
   creator: Creator | null;
@@ -29,7 +30,12 @@ export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
   const [initialClick, setInitialClick] = useState(true);
   const [streamToShare, setStreamToShare] = useState<PastStreamListItem>();
   const [showShareModal, setShowShareModal] = useState(false);
-  const { streams, loading, nextPage, setPastStreamsPage } = usePastStreams();
+  const {
+    past: streams,
+    loading,
+    nextPage,
+    setMyPastStreamsPage,
+  } = useMyPastStreams();
   const [createStreamModal, setCreateStreamModal] = useState(false);
 
   const handleShareClick = useCallback(
@@ -160,7 +166,10 @@ export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
                     <Image
                       objectFit="cover"
                       layout="fill"
-                      src={stream.topic_detail?.image}
+                      src={
+                        stream.topic_detail?.image ??
+                        STATIC_IMAGES.ImageStreamDefault
+                      }
                       alt={stream.topic_detail.name}
                     />
                   )}
@@ -210,12 +219,12 @@ export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
             label="Show More"
             onClick={() => {
               if (initialClick) {
-                setPastStreamsPage((page) => page + 1);
+                setMyPastStreamsPage((page) => page + 1);
                 setInitialClick(false);
                 return;
               }
 
-              setPastStreamsPage((page) => page + 2);
+              setMyPastStreamsPage((page) => page + 2);
             }}
           />
           <Flex flex="1" h={1} bg={colors.secondaryLight} />

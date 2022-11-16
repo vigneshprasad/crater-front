@@ -58,11 +58,6 @@ export default function LiveStreamPageLayout({
         />
       </Link>
     ),
-    leaderboard: (
-      <Link href={PageRoutes.stream(id, "leaderboard")} shallow>
-        <LiveStreamPanelTabItem icon="Leaderboard" label="Leaderboard" />
-      </Link>
-    ),
   });
 
   return (

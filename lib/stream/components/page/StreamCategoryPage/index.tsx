@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 import useAuth from "@/auth/context/AuthContext";
 import useAuthModal from "@/auth/context/AuthModalContext";
+import { ILoginTypes } from "@/auth/types/auth";
 import { Box } from "@/common/components/atoms";
 import BaseLayout from "@/common/components/layouts/BaseLayout/v2";
 import { AsideNav } from "@/common/components/objects/AsideNav/v2";
@@ -14,6 +15,7 @@ import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivid
 import { PageRoutes } from "@/common/constants/route.constants";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { PageResponse } from "@/common/types/api";
+import RsvpSuccesModal from "@/community/components/objects/RsvpSuccesModal";
 import { PastStreamListItem, Webinar } from "@/community/types/community";
 import TopCreatorsList from "@/creators/components/objects/TopCreatorsList";
 import { CreatorRank } from "@/creators/types/creator";
@@ -21,6 +23,7 @@ import { StreamCategory } from "@/creators/types/stream";
 import StreamApiClient from "@/stream/api";
 import usePastStreamsWithRecording from "@/stream/context/PastStreamsWithRecordingContext";
 import useStreamCategories from "@/stream/context/StreamCategoryContext";
+import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
 import CategoriesList from "../../objects/CategoriesList";
@@ -47,6 +50,10 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
   const { category: currentCategory } = useUpcomingStreams();
   const [loading, setLoading] = useState(false);
   const { streams: pastStreamsWithRecording } = usePastStreamsWithRecording();
+  const [rsvpModal, setRsvpModal] = useState(false);
+  const [categorySort, setCategorySort] = useState<string | undefined>(
+    undefined
+  );
 
   const { data: categoryFollower, mutate: categoryFollowerMutate } = useSWR<
     Partial<StreamCategory>
@@ -83,8 +90,30 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
     }
   };
 
+  useEffect(() => {
+    if (!router) return;
+
+    const loginType = router.query?.type as ILoginTypes;
+    if (!loginType) return;
+
+    setCategorySort(loginType);
+    setRsvpModal(true);
+  }, [router]);
+
+  const rsvpModalOnClose = useCallback(() => {
+    setRsvpModal(false);
+    delete router.query.type;
+    router.push(router, undefined, { shallow: true });
+  }, [router]);
+
   return (
     <BaseLayout aside={<AsideNav />} overflowY="scroll">
+      <StreamsToRsvpProvider
+        sortByCategory={categorySort ? [categorySort] : undefined}
+      >
+        <RsvpSuccesModal visble={rsvpModal} onClose={rsvpModalOnClose} />
+      </StreamsToRsvpProvider>
+
       <Box px={[0, space.xxs]} pb={32}>
         <CategoryVideoSection
           streamCategory={streamCategory}

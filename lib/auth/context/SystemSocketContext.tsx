@@ -39,7 +39,7 @@ export function SystemSocketProvider({
   const { showNotification } = useNotifications();
 
   useEffect(() => {
-    if (socket.current === null && user) {
+    if (socket.current === null && user?.apiToken) {
       socket.current = io(SOCKET_IO_BASE_URL, {
         transports: ["websocket"],
         withCredentials: true,
@@ -105,7 +105,7 @@ export function SystemSocketProvider({
         socket.current = null;
       }
     };
-  }, [socket, user, setPermission, colors, showNotification]);
+  }, [socket, user?.apiToken, setPermission, colors, showNotification]);
 
   const value = useMemo(
     () => ({ permission, socket: socket.current }),

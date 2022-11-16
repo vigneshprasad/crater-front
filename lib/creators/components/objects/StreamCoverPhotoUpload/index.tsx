@@ -1,5 +1,5 @@
 import { Profile } from "next-auth";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useRef, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
 import Image from "next/image";
@@ -51,20 +51,23 @@ export default function StreamCoverPhotoUpload({
     value
   );
 
-  const handleGenerateCoverPhoto = async (): Promise<void> => {
+  const handleGenerateCoverPhoto = async (
+    event: SyntheticEvent
+  ): Promise<void> => {
+    event.preventDefault();
     if (topic && profile && profile.photo) {
       setLoading(true);
-      const [result, error] = await StreamApiClient().generateCoverPhoto(
+      const [result, err] = await StreamApiClient().generateCoverPhoto(
         topic,
         profile.photo
       );
 
-      if (error) {
+      if (err) {
         setLoading(false);
         return;
       }
       setLoading(false);
-      setGeneratedImage(result);
+      await setGeneratedImage(result);
       onChange && onChange(result as string);
     }
   };
@@ -76,7 +79,7 @@ export default function StreamCoverPhotoUpload({
     const file = event.target.files?.[0];
     if (file) {
       const result = await toBase64(file);
-      setGeneratedImage(result as string);
+      await setGeneratedImage(result as string);
       onChange && onChange(result as string);
     }
   };
@@ -199,14 +202,14 @@ export default function StreamCoverPhotoUpload({
         </Container>
 
         {error && (
-          <Box py={space.xxxxxs}>
+          <Box pt={space.xxxxxs}>
             <Text textStyle="error" color={colors.error}>
               {error}
             </Text>
           </Box>
         )}
 
-        <Flex pt={space.xxxs} justifyContent="flex-end" display="none">
+        <Flex pt={space.xxxs} justifyContent="flex-end">
           <Button
             variant="transparent-flat"
             label="Generate a thumbnail for me"
