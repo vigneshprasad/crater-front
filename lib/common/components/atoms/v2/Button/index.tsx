@@ -356,7 +356,7 @@ const StyledButton = styled(Grid)<ButtonProps>`
         fontWeight: "500",
         p: "0.5em 0.8em",
         bg: "primaryBackground",
-        borderRadius: "0.25em",
+        borderRadius: "0.5em",
         transition: "all 0.1s ease-in",
         ":hover": {
           bg: "rgba(136, 46, 232, 0.04)",

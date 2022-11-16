@@ -11,6 +11,7 @@ import {
   Spinner,
 } from "@/common/components/atoms";
 import GlassBox from "@/common/components/atoms/GlassBox";
+import { Button } from "@/common/components/atoms/v2";
 import LazyLoadButton from "@/common/components/objects/LazyLoadButton";
 import { PageRoutes } from "@/common/constants/route.constants";
 import CreatorApiClient from "@/creators/api";
@@ -44,20 +45,6 @@ export function LeaderCard({
   //   }
   //   return `2px solid ${colors.accentHover}`;
   // }, [rank, colors]);
-
-  const icon = useMemo(() => {
-    if (loading) {
-      return <Spinner size={18} />;
-    }
-
-    if (creator.is_follower) {
-      return (
-        <Icon icon="CheckCircle" color={colors.greenSuccess} size={18} h={20} />
-      );
-    }
-
-    return <Icon icon="PlusSign" size={12} h={20} />;
-  }, [colors, loading, creator]);
 
   const followCreator = async (): Promise<void> => {
     await setLoading(true);
@@ -112,12 +99,31 @@ export function LeaderCard({
               {creator.profile_detail.name}
             </Text>
             <Box>
-              <LazyLoadButton
-                label={creator.is_follower ? "Following" : "Follow"}
-                icon={icon}
-                onClick={followCreator}
-                disabled={loading || creator.is_follower ? true : false}
-              />
+              {creator.is_follower ? (
+                <Button
+                  variant="primary-bg-flat"
+                  label="Following"
+                  disabled={true}
+                  textProps={{
+                    fontSize: "1.6rem",
+                    fontWeight: 600,
+                    color: colors.textQuartenary,
+                  }}
+                />
+              ) : (
+                <LazyLoadButton
+                  label="Follow"
+                  icon={
+                    loading ? (
+                      <Spinner size={18} />
+                    ) : (
+                      <Icon icon="PlusSign" size={12} h={20} />
+                    )
+                  }
+                  onClick={followCreator}
+                  disabled={loading}
+                />
+              )}
             </Box>
           </Grid>
         </Grid>
