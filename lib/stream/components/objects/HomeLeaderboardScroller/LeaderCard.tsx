@@ -106,7 +106,7 @@ export function LeaderCard({
                   disabled={true}
                   textProps={{
                     fontSize: "1.6rem",
-                    fontWeight: 600,
+                    fontWeight: [500, 600],
                     color: colors.textQuartenary,
                   }}
                 />
