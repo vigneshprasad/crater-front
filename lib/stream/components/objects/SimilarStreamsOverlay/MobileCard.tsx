@@ -34,7 +34,7 @@ export default function MobileCard({ stream, onClick }: IProps): JSX.Element {
     >
       <Box pt="56.25%" position="relative">
         <Image
-          src={stream.topic_detail.image}
+          src={stream.topic_detail.image ?? STATIC_IMAGES.ImageStreamDefault}
           layout="fill"
           alt={stream.topic_detail.name}
           objectFit="cover"
