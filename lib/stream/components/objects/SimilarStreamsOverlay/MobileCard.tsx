@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { useTheme } from "styled-components";
 
 import Image from "next/image";
