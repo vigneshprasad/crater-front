@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { useMemo, useRef } from "react";
 import styled, { useTheme } from "styled-components";
 import { Pagination, Navigation } from "swiper";
@@ -213,7 +214,10 @@ export default function FeaturedStreams({
                         overflow="hidden"
                       >
                         <Image
-                          src={stream.topic_detail.image}
+                          src={
+                            stream.topic_detail.image ??
+                            STATIC_IMAGES.ImageStreamDefault
+                          }
                           alt={stream.topic_detail.name}
                           layout="fill"
                         />
