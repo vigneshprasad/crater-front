@@ -28,7 +28,7 @@ export default function MultiLiveStreamPageLayout({
   const { colors, space } = useTheme();
 
   return (
-    <BaseLayout aside={<AsideNav />} overflowY="auto">
+    <BaseLayout aside={<AsideNav activeTab="streams" />} overflowY="auto">
       <Grid
         gridAutoRows={["max-content", "auto"]}
         gridTemplateColumns={["1fr", "1fr 360px"]}
