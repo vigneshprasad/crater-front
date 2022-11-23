@@ -76,7 +76,7 @@ export default function MultiLiveStreamPageLayout({
           {children.shareSection}
         </Grid>
 
-        <Grid gridArea="content">
+        <Grid gridArea="content" px={space.xxs}>
           <BANNER.DownloadApp display={["none", "block"]} />
           <StyledHeadingDivider label="Explore Streams" my={36} />
           {children.upcomingStreams}
