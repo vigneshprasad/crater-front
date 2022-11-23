@@ -141,7 +141,7 @@ export default function FeaturedStreams({
           overflow="hidden"
         >
           <Image
-            src={stream.topic_detail.image}
+            src={stream.topic_detail.image ?? STATIC_IMAGES.ImageStreamDefault}
             alt={stream.topic_detail.name}
             layout="fill"
           />
@@ -284,7 +284,7 @@ export default function FeaturedStreams({
                         />
                       </AnimatedBox>
 
-                      {sliderButtons}
+                      {featuredStreams.length > 1 && sliderButtons}
                     </AnimatedBox>
                   </SwiperSlide>
                 ))}
