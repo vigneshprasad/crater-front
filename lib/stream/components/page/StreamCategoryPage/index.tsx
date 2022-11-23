@@ -47,7 +47,7 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
   const { openModal } = useAuthModal();
   const { space, colors } = useTheme();
   const { streamCategories } = useStreamCategories();
-  const { category: currentCategory } = useUpcomingStreams();
+  const { categorySlug: currentCategory } = useUpcomingStreams();
   const [loading, setLoading] = useState(false);
   const { streams: pastStreamsWithRecording } = usePastStreamsWithRecording();
   const [rsvpModal, setRsvpModal] = useState(false);
@@ -129,7 +129,7 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
             categories={streamCategories}
             selectedCategory={currentCategory}
             onClickCategory={(cat) => {
-              if (cat.pk === currentCategory) {
+              if (cat.slug === currentCategory) {
                 return;
               }
 

@@ -23,14 +23,15 @@ export function AsideNav({ activeTab }: IProps): JSX.Element | null {
 
   return (
     <Grid
-      py={space.xxs}
+      py={space.xxxs}
       borderRight={`1px solid ${borders.primary}`}
       w={60}
       h="100%"
       gridAutoFlow="row"
       gridAutoRows="max-content"
       alignItems="center"
-      gridGap={space.xxs}
+      justifyItems="center"
+      gridGap={28}
     >
       {NAV_ITEMS.map(({ key, icon, label, route }) => {
         const active = key === activeTab;
@@ -41,20 +42,42 @@ export function AsideNav({ activeTab }: IProps): JSX.Element | null {
               flexDirection="column"
               alignItems="center"
               justifyContent="center"
-              color={active ? colors.accentLight : colors.slate}
             >
-              <Box p={space.xxxxs}>
-                <Icon color="inherit" icon={icon} />
+              <Box
+                px={space.xxxxs}
+                w="100%"
+                position="relative"
+                borderRight={
+                  active ? `2px solid ${colors.accentLight}` : undefined
+                }
+              >
+                {active ? (
+                  <>
+                    <Box
+                      w={48}
+                      h={48}
+                      position="absolute"
+                      m="0 auto"
+                      background="radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 100%)"
+                      zIndex={-1}
+                      style={{ backdropFilter: "blur(12px)" }}
+                    />
+                    <Icon icon={icon.active} size={44} />
+                  </>
+                ) : (
+                  <Icon icon={icon.inactive} size={22} />
+                )}
               </Box>
 
-              <Text
-                fontSize={useSmallFont ? "0.8rem" : undefined}
-                color="inherit"
-                textAlign="center"
-                textStyle="navbarLabel"
-              >
-                {label}
-              </Text>
+              {active && (
+                <Text
+                  fontSize={useSmallFont ? "0.8rem" : undefined}
+                  textAlign="center"
+                  textStyle="navbarLabel"
+                >
+                  {label}
+                </Text>
+              )}
             </Flex>
           </Link>
         );

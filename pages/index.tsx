@@ -45,27 +45,25 @@ export default function Home({
   pastStreams,
 }: IProps): JSX.Element {
   const router = useRouter();
-  const upcomingCategory = router.query.upcomingCategory as string | undefined;
-  const pastCategory = router.query.pastCategory as string | undefined;
+  const upcomingCategory = router.query.upcoming as string | undefined;
+  const pastCategory = router.query.past as string | undefined;
   return (
     <HomePageLayout
       seo={{
-        title: "Watch, Chat & Place Bids",
+        title: "Livestream and Monetise with Crater",
         description:
-          "You can watch live streams, interact with creators & take part in auctions",
+          "Go live with Crater and host a private auction to monetise your content",
       }}
       activeTab="streams"
-      heading="Watch, Chat and Place Bids"
-      subHeading="You can watch live streams, interact with creators &amp; take part in auctions"
+      heading="Livestream and Monetise with Crater"
+      subHeading="Go live with Crater and host a private auction to monetise your content"
     >
       <LiveStreamsProvider initial={liveStreams}>
-        <UpcomingStreamsProvider
-          pageSize={8}
-          category={upcomingCategory ? parseInt(upcomingCategory) : undefined}
-        >
+        <UpcomingStreamsProvider pageSize={8} categorySlug={upcomingCategory}>
           <PastStreamProvider
+            pageSize={8}
             initial={pastStreams}
-            categoryFilter={pastCategory ? parseInt(pastCategory) : undefined}
+            categorySlug={pastCategory}
           >
             <AuctionListProvider rewardDetail={true}>
               <StreamCategoryProvider>

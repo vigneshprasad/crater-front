@@ -15,7 +15,7 @@ import {
   Text,
 } from "@/common/components/atoms";
 import { Button } from "@/common/components/atoms/v2";
-import { START_CREATOR_JOURNET_CALENDLY } from "@/common/constants/url.constants";
+import { START_CREATOR_JOURNEY_CALENDLY } from "@/common/constants/url.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 
 const GradientScrollUpBox = styled(Box)<BoxProps>`
@@ -84,7 +84,7 @@ export default function SellOnCraterStatic(): JSX.Element | null {
 
   const startJourneyBtn = (
     <Link
-      href={START_CREATOR_JOURNET_CALENDLY}
+      href={START_CREATOR_JOURNEY_CALENDLY}
       boxProps={{
         target: "_blank",
         w: "fit-content",

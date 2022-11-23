@@ -7,26 +7,27 @@ import useCreatorRankList from "@/creators/context/CreatorRankListContext";
 import { LeaderCard } from "./LeaderCard";
 
 export default function HomeLeaderboardScroller(): JSX.Element {
-  const { space, colors, radii } = useTheme();
+  const { space, radii } = useTheme();
   const { creators, revalidate } = useCreatorRankList();
   return (
     <HorizontalScroll
-      pt={space.xxs}
-      gridAutoColumns="144px"
+      px={[30, space.s]}
+      py={space.s}
       gridAutoFlow="column"
-      px={space.xs}
-      mb={space.s}
-      pb={space.xs}
+      gridAutoColumns={["270px", "320px"]}
       gridGap={space.xs}
+      actionContainerProps={{ h: 196 }}
+      zIndex={100}
     >
       <Box
+        w="100%"
+        h={[160, 196]}
         position="absolute"
-        bg={colors.primaryDark}
-        top="40%"
-        right={0}
+        background="linear-gradient(180deg, rgba(18, 18, 18, 0) 0%, #0E0E0E 100%)"
         left={0}
-        bottom={0}
-        zIndex={0}
+        top={[20, 0]}
+        zIndex={-1}
+        borderRadius={radii.xxs}
       />
 
       {(() => {
@@ -35,10 +36,11 @@ export default function HomeLeaderboardScroller(): JSX.Element {
             .fill("")
             .map((_, index) => (
               <Shimmer
-                h={172}
+                w={235}
+                h={145}
                 zIndex={2}
                 key={index}
-                borderRadius={radii.xxxxs}
+                borderRadius={radii.s}
               />
             ));
         }

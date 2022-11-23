@@ -18,7 +18,7 @@ const StyledText = styled(Text)<
   line-height: 2.1rem;
   &:hover {
     color: ${({ theme, hoverColor }) =>
-      hoverColor ? hoverColor : theme.colors.accent};
+      hoverColor ? hoverColor : theme.colors.accentLight};
   }
 `;
 
@@ -26,7 +26,7 @@ export default function LinkText({ children, ...rest }: IProps): JSX.Element {
   const { colors } = useTheme();
   return (
     <a target="_blank" rel="noreferrer" {...rest}>
-      <StyledText color={colors.accentLight} fontSize="1.4rem">
+      <StyledText color={colors.textPrimary} fontSize="1.4rem">
         {children}
       </StyledText>
     </a>

@@ -40,9 +40,11 @@ import Sale from "public/images/img_sale.png";
 import ImageSolgirls from "public/images/img_solgirls.png";
 import ImageStarryBg from "public/images/img_starry_bg.png";
 import ImageStoreHeader from "public/images/img_store_header.png";
+import ImageStoreHome from "public/images/img_store_home.png";
 import Stream from "public/images/img_stream.png";
 import ImageCraterStream from "public/images/img_stream_crater.png";
 import ImageStreamDefault from "public/images/img_stream_default.png";
+import ImageStreamJourney from "public/images/img_stream_journey.png";
 import ImageStreamStarting_1 from "public/images/img_stream_starting_1.png";
 import ImageStreamStarting_2 from "public/images/img_stream_starting_2.png";
 import ImageLearnLoot from "public/images/img_total_loot.png";
@@ -103,6 +105,8 @@ const STATIC_IMAGES = {
   ImageBuildersTribe,
   ImageBlockchainBulls,
   ImageDesignLandingPage,
+  ImageStreamJourney,
+  ImageStoreHome,
   ImageStreamDefault,
 };
 

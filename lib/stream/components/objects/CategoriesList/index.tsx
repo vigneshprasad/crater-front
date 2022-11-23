@@ -7,7 +7,7 @@ import { StreamCategory } from "@/creators/types/stream";
 
 interface IProps {
   categories?: StreamCategory[];
-  selectedCategory?: number;
+  selectedCategory?: string;
   onClickCategory?: (category: StreamCategory) => void;
 }
 
@@ -16,7 +16,7 @@ export default function CategoriesList({
   selectedCategory,
   onClickCategory,
 }: IProps): JSX.Element {
-  const { space, fonts } = useTheme();
+  const { space } = useTheme();
 
   return (
     <HorizontalScroll
@@ -36,10 +36,10 @@ export default function CategoriesList({
         return categories.map((category) => {
           return (
             <Button
-              fontFamily={fonts.heading}
+              h={40}
               key={category.pk}
               variant={
-                selectedCategory === category.pk ? "filter-selected" : "round"
+                selectedCategory === category.slug ? "filter-selected" : "round"
               }
               label={category.name}
               onClick={() => onClickCategory && onClickCategory(category)}
