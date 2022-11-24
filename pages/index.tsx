@@ -13,7 +13,6 @@ import StreamApiClient from "@/stream/api";
 import { PastStreamProvider } from "@/stream/context/PastStreamContext";
 import { StreamCategoryProvider } from "@/stream/context/StreamCategoryContext";
 import { UpcomingStreamsProvider } from "@/stream/context/UpcomingStreamsContext";
-import { AuctionListProvider } from "@/tokens/context/AuctionListContext";
 
 const StreamsPage = dynamic(
   () => import("@/community/components/pages/StreamsPage")
@@ -65,13 +64,11 @@ export default function Home({
             initial={pastStreams}
             categorySlug={pastCategory}
           >
-            <AuctionListProvider rewardDetail={true}>
-              <StreamCategoryProvider>
-                <CreatorRankListProvider>
-                  <StreamsPage />
-                </CreatorRankListProvider>
-              </StreamCategoryProvider>
-            </AuctionListProvider>
+            <StreamCategoryProvider>
+              <CreatorRankListProvider>
+                <StreamsPage />
+              </CreatorRankListProvider>
+            </StreamCategoryProvider>
           </PastStreamProvider>
         </UpcomingStreamsProvider>
       </LiveStreamsProvider>

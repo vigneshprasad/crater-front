@@ -25,7 +25,7 @@ export default function RsvpPageLayout({
   const { space } = useTheme();
 
   return (
-    <BaseLayout aside={<AsideNav />} overflowY="auto">
+    <BaseLayout aside={<AsideNav activeTab="streams" />} overflowY="auto">
       <Grid
         p={[0, `${space.xxs}px ${space.xs}px ${space.xxs}px ${space.xxs}px`]}
         gridTemplateColumns={["1fr 1fr", "3fr 1fr"]}

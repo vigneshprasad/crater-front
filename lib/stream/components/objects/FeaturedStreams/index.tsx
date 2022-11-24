@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { useMemo, useRef } from "react";
 import styled, { useTheme } from "styled-components";
 import { Pagination, Navigation } from "swiper";
@@ -24,6 +25,7 @@ import {
 } from "@/common/components/atoms";
 import { Button, IconButton } from "@/common/components/atoms/v2";
 import HorizontalScroll from "@/common/components/objects/HorizontalScroll";
+import VideoPlayer from "@/common/components/objects/VideoPlayer";
 import { PageRoutes } from "@/common/constants/route.constants";
 import useMediaQuery from "@/common/hooks/ui/useMediaQuery";
 import { Webinar } from "@/community/types/community";
@@ -140,7 +142,7 @@ export default function FeaturedStreams({
           overflow="hidden"
         >
           <Image
-            src={stream.topic_detail.image}
+            src={stream.topic_detail.image ?? STATIC_IMAGES.ImageStreamDefault}
             alt={stream.topic_detail.name}
             layout="fill"
           />
@@ -205,19 +207,39 @@ export default function FeaturedStreams({
                       initial="rest"
                       whileHover="hover"
                     >
-                      <Box
-                        h="inherit"
-                        position="relative"
-                        pt="56.25%"
-                        borderRadius={radii.xxs}
-                        overflow="hidden"
-                      >
-                        <Image
-                          src={stream.topic_detail.image}
-                          alt={stream.topic_detail.name}
-                          layout="fill"
-                        />
-                      </Box>
+                      {stream.is_live && (
+                        <Box
+                          h="inherit"
+                          position="relative"
+                          pt="56.25%"
+                          borderRadius={radii.xxs}
+                          overflow="hidden"
+                        >
+                          <Image
+                            src={
+                              stream.topic_detail.image ??
+                              STATIC_IMAGES.ImageStreamDefault
+                            }
+                            alt={stream.topic_detail.name}
+                            layout="fill"
+                          />
+                        </Box>
+                      )}
+
+                      {stream.is_past &&
+                        stream.recording_details?.recording && (
+                          <VideoPlayer
+                            position="absolute"
+                            top={0}
+                            right={0}
+                            left={0}
+                            bottom={0}
+                            autoPlay
+                            muted
+                            loop
+                            src={`${stream.recording_details?.recording}#t=600`}
+                          />
+                        )}
 
                       {stream.is_live && (
                         <Box
@@ -280,7 +302,7 @@ export default function FeaturedStreams({
                         />
                       </AnimatedBox>
 
-                      {sliderButtons}
+                      {featuredStreams.length > 1 && sliderButtons}
                     </AnimatedBox>
                   </SwiperSlide>
                 ))}

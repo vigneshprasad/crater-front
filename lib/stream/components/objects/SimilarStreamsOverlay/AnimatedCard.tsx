@@ -1,3 +1,4 @@
+import STATIC_IMAGES from "public/images";
 import { useState } from "react";
 import styled, { useTheme } from "styled-components";
 
@@ -60,7 +61,7 @@ export default function AnimatedCard({
       <Container position="relative" pt="56.25%" w="100%">
         <Image
           alt={stream.topic_detail.name}
-          src={stream.topic_detail.image}
+          src={stream.topic_detail.image ?? STATIC_IMAGES.ImageStreamDefault}
           layout="fill"
         />
         <Overlay
