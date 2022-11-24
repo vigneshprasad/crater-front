@@ -29,7 +29,7 @@ export type IStreamsProviderProps = PropsWithChildren<{
 
 export function LiveStreamsProvider({
   initial,
-  pageSize = 10,
+  pageSize = 20,
   ...rest
 }: IStreamsProviderProps): JSX.Element {
   const [nextPage, setNextPage] = useState(false);
