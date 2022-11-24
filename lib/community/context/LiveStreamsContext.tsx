@@ -24,10 +24,12 @@ export const LiveStreamsContext = createContext({} as ILiveStreamsState);
 
 export type IStreamsProviderProps = PropsWithChildren<{
   initial?: Webinar[];
+  pageSize?: number;
 }>;
 
 export function LiveStreamsProvider({
   initial,
+  pageSize = 20,
   ...rest
 }: IStreamsProviderProps): JSX.Element {
   const [nextPage, setNextPage] = useState(false);
@@ -39,7 +41,7 @@ export function LiveStreamsProvider({
     (index, previousData) => {
       const page = index + 1;
       if (previousData && !previousData.length) return null;
-      return `${API_URL_CONSTANTS.groups.getAllLiveWebinars}?page=${page}`;
+      return `${API_URL_CONSTANTS.groups.getAllLiveWebinars}?page=${page}&page_size=${pageSize}`;
     },
     async (key: string) => {
       const response = await fetcher<PageResponse<Webinar>>(key);
