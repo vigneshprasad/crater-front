@@ -2,6 +2,7 @@ import { AnyObject } from "immer/dist/internal";
 import { Dispatch, forwardRef } from "react";
 import styled, { useTheme } from "styled-components";
 
+import useAuth from "@/auth/context/AuthContext";
 import {
   Box,
   Text,
@@ -42,6 +43,7 @@ const FollowersModalPage = forwardRef<HTMLDivElement, IProps>(
     ref
   ) => {
     const { space, colors, radii } = useTheme();
+    const { user } = useAuth();
 
     const text = `
     We will notify you prior to the stream with ${currentStream?.host_detail.name}.
@@ -76,6 +78,8 @@ const FollowersModalPage = forwardRef<HTMLDivElement, IProps>(
                 ))
             : streams?.map((stream, index) => {
                 if (currentStream && stream.id === currentStream.id) return;
+
+                if (stream.host === user?.pk) return;
 
                 return (
                   <Grid
