@@ -28,7 +28,7 @@ export default function MultiLiveStreamPageLayout({
   const { colors, space } = useTheme();
 
   return (
-    <BaseLayout aside={<AsideNav />} overflowY="auto">
+    <BaseLayout aside={<AsideNav activeTab="streams" />} overflowY="auto">
       <Grid
         gridAutoRows={["max-content", "auto"]}
         gridTemplateColumns={["1fr", "1fr 360px"]}
@@ -76,7 +76,7 @@ export default function MultiLiveStreamPageLayout({
           {children.shareSection}
         </Grid>
 
-        <Grid gridArea="content">
+        <Grid gridArea="content" px={space.xxs}>
           <BANNER.DownloadApp display={["none", "block"]} />
           <StyledHeadingDivider label="Explore Streams" my={36} />
           {children.upcomingStreams}

@@ -48,7 +48,7 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
         w="100%"
         position="relative"
         pt="56.25%"
-        borderRadius={radii.xxxxs}
+        borderRadius={radii.xxs}
         overflow="hidden"
       >
         <Image
@@ -157,7 +157,9 @@ const PastStreamCard = forwardRef<HTMLDivElement, IProps>(
               overflow="hidden"
             >
               <Image
-                src={stream.topic_detail.image}
+                src={
+                  stream.topic_detail.image ?? STATIC_IMAGES.ImageStreamDefault
+                }
                 layout="fill"
                 alt={stream.topic_detail.name}
               />

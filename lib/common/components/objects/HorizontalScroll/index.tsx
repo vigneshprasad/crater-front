@@ -31,17 +31,18 @@ export default function HorizontalScroll({
   actionContainerProps,
   ...rest
 }: IProps): JSX.Element {
-  const { space, colors, breakpoints } = useTheme();
+  const { space, breakpoints } = useTheme();
   const gridRef = useRef<HTMLDivElement>(null);
   const { scrollXProgress } = useElementScroll(gridRef);
-  const opacityLeft = useMotionValue(1);
-  const opacityRight = useMotionValue(0);
+  const opacityLeft = useMotionValue(0);
+  const opacityRight = useMotionValue(0.9);
 
   const { matches: isMobile } = useMediaQuery(`(max-width: ${breakpoints[0]})`);
 
   useEffect(() => {
     if (isMobile) {
       opacityLeft.set(0);
+      opacityRight.set(0);
       return;
     }
 
@@ -49,22 +50,31 @@ export default function HorizontalScroll({
       const position = scrollXProgress.get();
 
       if (position === 0 && !isMobile) {
-        opacityLeft.set(1);
-        opacityRight.set(0);
-        return;
+        opacityLeft.set(0);
+        opacityRight.set(0.9);
       }
 
       if (position > 0 && position < 0.9 && !isMobile) {
-        opacityLeft.set(1);
-        opacityRight.set(1);
-        return;
+        opacityLeft.set(0.9);
+        opacityRight.set(0.9);
       }
 
       if (position >= 0.9 && !isMobile) {
-        opacityLeft.set(0);
-        opacityRight.set(1);
-        return;
+        opacityLeft.set(0.9);
+        opacityRight.set(0);
       }
+
+      // Disable scroll buttons if grid is not scrollable
+      if (gridRef.current) {
+        const { width } = gridRef.current.getBoundingClientRect();
+        const scrollWidth = gridRef.current.scrollWidth;
+        if (scrollWidth - width === 0) {
+          opacityLeft.set(0);
+          opacityRight.set(0);
+        }
+      }
+
+      return;
     }
 
     const unsubsribeScrollProgress = scrollXProgress.onChange(updateOpacity);
@@ -76,54 +86,63 @@ export default function HorizontalScroll({
   const onClickScrollEnd = useCallback((): void => {
     if (!gridRef.current) return;
     const { width } = gridRef.current.getBoundingClientRect();
-    gridRef.current.scroll(width, 0);
+    const scrollLeft = gridRef.current.scrollLeft;
+
+    gridRef.current.scroll(scrollLeft + width, 0);
   }, [gridRef]);
 
   const onClickScrollStart = useCallback((): void => {
     if (!gridRef.current) return;
-    gridRef.current.scroll(0, 0);
+    const { width } = gridRef.current.getBoundingClientRect();
+    const scrollLeft = gridRef.current.scrollLeft;
+
+    gridRef.current.scroll(scrollLeft - width, 0);
   }, [gridRef]);
 
   return (
     <Box position="relative" {...containerProps}>
       <Container ref={gridRef} py={space.xxxs} overflowX="scroll" {...rest}>
         {children}
-        <Box w={96} />
+        {!isMobile && <Box w={96} />}
       </Container>
-      <ActionContainer
-        zIndex={20}
-        cursor="pointer"
-        position="absolute"
-        right={0}
-        top={0}
-        bottom={0}
-        w={56}
-        background={`linear-gradient(to left, ${colors.primaryBackground}, rgba(1, 1, 1, 0.2))`}
-        onClick={onClickScrollEnd}
-        style={{
-          opacity: opacityLeft,
-        }}
-        {...actionContainerProps}
-      >
-        <Icon className="icon" m="auto auto" icon="ChevronRight" />
-      </ActionContainer>
-      <ActionContainer
-        zIndex={20}
-        cursor="pointer"
-        position="absolute"
-        left={0}
-        top={0}
-        bottom={0}
-        w={56}
-        background={`linear-gradient(to right, ${colors.primaryBackground}, rgba(1, 1, 1, 0.2))`}
-        onClick={onClickScrollStart}
-        style={{
-          opacity: opacityRight,
-        }}
-        {...actionContainerProps}
-      >
-        <Icon className="icon" m="auto auto" icon="ChevronLeft" />
-      </ActionContainer>
+      {!isMobile && (
+        <>
+          <ActionContainer
+            zIndex={20}
+            cursor="pointer"
+            position="absolute"
+            right={0}
+            top={0}
+            bottom={0}
+            w={48}
+            background="rgba(0, 0, 0, 0.92)"
+            onClick={onClickScrollEnd}
+            style={{
+              opacity: opacityRight,
+            }}
+            {...actionContainerProps}
+          >
+            <Icon className="icon" m="auto auto" icon="ChevronRight" />
+          </ActionContainer>
+          <ActionContainer
+            zIndex={20}
+            cursor="pointer"
+            position="absolute"
+            left={0}
+            top={0}
+            bottom={0}
+            w={48}
+            background="rgba(0, 0, 0, 0.92)"
+            onClick={onClickScrollStart}
+            style={{
+              opacity: opacityLeft,
+            }}
+            {...actionContainerProps}
+          >
+            <Icon className="icon" m="auto auto" icon="ChevronLeft" />
+          </ActionContainer>
+        </>
+      )}
     </Box>
   );
 }

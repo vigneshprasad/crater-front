@@ -15,7 +15,10 @@ export type HubNavItemKeys =
 
 export type INavItem = {
   key: INavKeys;
-  icon: IconOptions;
+  icon: {
+    active: IconOptions;
+    inactive: IconOptions;
+  };
   route: string;
   label: string;
 };
@@ -35,25 +38,37 @@ export type HubNavItem = {
 export const NAV_ITEMS: INavItem[] = [
   {
     key: "streams",
-    icon: "Tv",
+    icon: {
+      active: "StreamsActive",
+      inactive: "StreamsInactive",
+    },
     route: PageRoutes.home,
     label: "Streams",
   },
   {
     key: "store",
-    icon: "Store",
+    icon: {
+      active: "StoreActive",
+      inactive: "StoreInactive",
+    },
     route: PageRoutes.store(),
     label: "Store",
   },
   {
     key: "leaderboard",
-    icon: "Trophy",
+    icon: {
+      active: "LeaderBoardActive",
+      inactive: "LeaderBoardInactive",
+    },
     route: PageRoutes.leaderboard,
     label: "Leaderboard",
   },
   {
     key: "hub",
-    icon: "Hub",
+    icon: {
+      active: "HubActive",
+      inactive: "HubInactive",
+    },
     route: PageRoutes.hub(),
     label: "Hub",
   },

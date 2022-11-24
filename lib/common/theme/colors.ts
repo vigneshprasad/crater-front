@@ -1,6 +1,6 @@
 const colors = {
-  accent: "#9146FF",
-  accentHover: "#772CE8",
+  accent: "#882EE8",
+  accentHover: "#5F1DAB",
   accentLight: "#D5BBFF",
   accentLightSecondary: "#C1ABE8",
   black: [
@@ -58,7 +58,7 @@ const colors = {
   primaryBanner: "#882EE8",
   inputDefaultBg: "#010101",
   textSecondary: "rgba(255, 255, 255, 0.64)",
-  textSecondaryLight: "#D7D7EA",
+  textSecondaryLight: "#EDEDED",
   textQuartenary: "#959595",
   textTertiary: "#C4C4C4",
   primaryBackground: "#010101",

@@ -95,11 +95,27 @@ export default function MobileNav({ activeTab }: IProps): JSX.Element {
                     <AnimatedBox
                       gridGap={space.xxxs}
                       py={space.xxs}
-                      px={space.xs}
+                      px={active ? space.xxxs : space.xs}
                       display="flex"
-                      color={active ? colors.accentLight : colors.textPrimary}
+                      alignItems="center"
+                      position="relative"
                     >
-                      <Icon color="inherit" icon={icon} />
+                      {active ? (
+                        <>
+                          <Box
+                            w={44}
+                            h={44}
+                            position="absolute"
+                            m="0 auto"
+                            background="radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 100%)"
+                            zIndex={-1}
+                            style={{ backdropFilter: "blur(12px)" }}
+                          />
+                          <Icon icon={icon.active} size={44} h={44} />
+                        </>
+                      ) : (
+                        <Icon icon={icon.inactive} />
+                      )}
                       <Text color="inherit" textStyle="menu">
                         {label}
                       </Text>

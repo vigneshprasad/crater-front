@@ -1,58 +1,73 @@
 import { useTheme } from "styled-components";
+import useSWR from "swr";
 
-import { Box, Text, Icon, Flex, Link } from "@/common/components/atoms";
-import Spinner from "@/common/components/atoms/Spinner";
+import { RewardSale } from "@/auction/types/sales";
+import { Box, Text } from "@/common/components/atoms";
 import Footer from "@/common/components/objects/Footer";
-import StyledHeadingDivider from "@/common/components/objects/StyledHeadingDivider";
-import { PageRoutes } from "@/common/constants/route.constants";
+import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import HomePageCreatorStaticContent from "@/creators/components/objects/HomePageCreatorStaticContent";
 import CategoryFilteredPastList from "@/stream/components/objects/CategoryFilteredPastList";
 import CategoryFilteredUpcomingList from "@/stream/components/objects/CategoryFilteredUpcomingList";
+import FeaturedStreams from "@/stream/components/objects/FeaturedStreams";
 import HomeLeaderboardScroller from "@/stream/components/objects/HomeLeaderboardScroller";
-import { StreamSlider } from "@/stream/components/objects/StreamSlider";
-import HomePageAuctions from "@/tokens/components/objects/HomePageAuctions";
+import HomePageStoreSection from "@/tokens/components/objects/HomePageStoreSection";
 
 export default function StreamsPage(): JSX.Element {
-  const { liveStreams, loading: liveStreamsLoading } = useLiveStreams();
-  const { space, colors, fonts } = useTheme();
+  const { space, colors } = useTheme();
+  const { liveStreams } = useLiveStreams();
 
-  if (liveStreamsLoading || !liveStreams) return <Spinner />;
+  const { data: sales } = useSWR<RewardSale[]>(
+    API_URL_CONSTANTS.sales.getRecentSalesList
+  );
 
   return (
-    <>
-      <Box px={[space.xxs, space.xs]}>
-        <StreamSlider streams={liveStreams} />
+    <Box pl={[space.xxxs, space.xxs]}>
+      <Box pr={[space.xxxs, space.xs]} py={[space.xs, 28]}>
+        <FeaturedStreams livestreams={liveStreams} />
       </Box>
-
-      <Link href={PageRoutes.leaderboard}>
-        <Flex my={space.xxs} px={[space.xxs, space.xs]} alignItems="center">
-          <Text fontFamily={fonts.heading}>Top Creators</Text>
-          <Icon mx={space.xxxxs} icon="Trophy" color="#FFAA00" />
-          <Icon icon="ChevronRight" />
-        </Flex>
-      </Link>
-
-      <HomeLeaderboardScroller />
-
-      <StyledHeadingDivider label="Upcoming Streams" />
-      <CategoryFilteredUpcomingList />
-
-      <HomePageAuctions />
-
-      <StyledHeadingDivider label="Previously Live" />
-
-      <CategoryFilteredPastList />
 
       <Box
         mt={space.xs}
-        px={[space.xxs, space.s]}
-        py={[space.xxs, space.s]}
-        backgroundColor={colors.primaryDark}
+        pl={space.xxxs}
+        borderLeft={`2px solid ${colors.accentLight}`}
       >
+        <Text textStyle="headline5Small">Top Creators</Text>
+      </Box>
+
+      <HomeLeaderboardScroller />
+
+      <Box
+        mt={space.xs}
+        mb={space.xxxxs}
+        pl={space.xxxs}
+        borderLeft={`2px solid ${colors.accentLight}`}
+      >
+        <Text textStyle="headline5Small">Upcoming Streams</Text>
+      </Box>
+
+      <CategoryFilteredUpcomingList />
+
+      <HomePageStoreSection sales={sales} />
+
+      <Box
+        mt={space.xs}
+        mb={space.xxxxs}
+        pl={space.xxxs}
+        borderLeft={`2px solid ${colors.accentLight}`}
+      >
+        <Text textStyle="headline5Small">Previously Live</Text>
+      </Box>
+
+      <CategoryFilteredPastList />
+
+      <Box pr={[space.xxxs, space.xs]}>
         <HomePageCreatorStaticContent />
+      </Box>
+
+      <Box px={[space.xxs, space.xs]} py={36}>
         <Footer />
       </Box>
-    </>
+    </Box>
   );
 }

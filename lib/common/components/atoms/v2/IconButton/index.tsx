@@ -13,7 +13,8 @@ type Variants =
   | "round-large"
   | "round"
   | "rounded-sqaure-med"
-  | "round-border";
+  | "round-border"
+  | "slider-round";
 
 interface IProps extends ButtonProps {
   icon: IconProps["icon"];
@@ -138,6 +139,19 @@ const ButtonContainer = styled(Button)<ButtonProps>`
           border: `1px solid #373737`,
           cursor: "default",
           color: "secondaryLight",
+        },
+      },
+      "slider-round": {
+        width: [28, 32],
+        height: [28, 32],
+        px: 8,
+        py: 6,
+        borderRadius: "50%",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "rgba(18, 18, 18, 0.72)",
+        ":hover": {
+          bg: "primaryBackground",
         },
       },
     },

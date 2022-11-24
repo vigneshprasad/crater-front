@@ -9,7 +9,7 @@ import { Box, GridProps } from "../System";
 
 const { colors } = theme;
 
-type Variants = "flat" | "flatNoBg" | "round" | "roundSmall";
+type Variants = "flat" | "flatNoBg" | "round" | "roundSmall" | "flatPrimaryBg";
 
 export type IconButtonProps = GridProps & {
   icon: IconOptions;
@@ -53,6 +53,16 @@ const Container = styled(Box)`
         width: 40,
         transition: "all 50ms ease-in-out",
         borderRadius: 4,
+      },
+      flatPrimaryBg: {
+        height: 32,
+        width: 32,
+        bg: "primaryDark",
+        borderRadius: 4,
+        transition: "all 50ms ease-in-out",
+        ":hover": {
+          bg: "primaryLight",
+        },
       },
     },
   })}

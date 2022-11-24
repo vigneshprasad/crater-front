@@ -18,8 +18,8 @@ export enum AppLinkType {
 interface IProps {
   buttonType: AppLinkType;
   analyticsEventName?: string;
-  width?: number;
-  height?: number;
+  width?: number | number[];
+  height?: number | number[];
 }
 
 export default function AppLink({

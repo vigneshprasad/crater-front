@@ -23,6 +23,7 @@ import { StreamCategory } from "@/creators/types/stream";
 import StreamApiClient from "@/stream/api";
 import usePastStreamsWithRecording from "@/stream/context/PastStreamsWithRecordingContext";
 import useStreamCategories from "@/stream/context/StreamCategoryContext";
+import { StreamCreatorProvider } from "@/stream/context/StreamCreatorContext";
 import { StreamsToRsvpProvider } from "@/stream/context/StreamsToRsvpContext";
 import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 
@@ -47,7 +48,7 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
   const { openModal } = useAuthModal();
   const { space, colors } = useTheme();
   const { streamCategories } = useStreamCategories();
-  const { category: currentCategory } = useUpcomingStreams();
+  const { categorySlug: currentCategory } = useUpcomingStreams();
   const [loading, setLoading] = useState(false);
   const { streams: pastStreamsWithRecording } = usePastStreamsWithRecording();
   const [rsvpModal, setRsvpModal] = useState(false);
@@ -111,7 +112,9 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
       <StreamsToRsvpProvider
         sortByCategory={categorySort ? [categorySort] : undefined}
       >
-        <RsvpSuccesModal visble={rsvpModal} onClose={rsvpModalOnClose} />
+        <StreamCreatorProvider>
+          <RsvpSuccesModal visble={rsvpModal} onClose={rsvpModalOnClose} />
+        </StreamCreatorProvider>
       </StreamsToRsvpProvider>
 
       <Box px={[0, space.xxs]} pb={32}>
@@ -129,7 +132,7 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
             categories={streamCategories}
             selectedCategory={currentCategory}
             onClickCategory={(cat) => {
-              if (cat.pk === currentCategory) {
+              if (cat.slug === currentCategory) {
                 return;
               }
 
