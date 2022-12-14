@@ -54,15 +54,15 @@ export const NAV_ITEMS: INavItem[] = [
     route: PageRoutes.store(),
     label: "Store",
   },
-  {
-    key: "leaderboard",
-    icon: {
-      active: "LeaderBoardActive",
-      inactive: "LeaderBoardInactive",
-    },
-    route: PageRoutes.leaderboard,
-    label: "Leaderboard",
-  },
+  // {
+  //   key: "leaderboard",
+  //   icon: {
+  //     active: "LeaderBoardActive",
+  //     inactive: "LeaderBoardInactive",
+  //   },
+  //   route: PageRoutes.leaderboard,
+  //   label: "Leaderboard",
+  // },
   {
     key: "hub",
     icon: {
