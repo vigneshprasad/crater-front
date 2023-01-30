@@ -109,6 +109,7 @@ export default function HubPastStreamsList({ creator }: IProps): JSX.Element {
                 {creator ? (
                   <Button
                     label="Create New Stream"
+                    disabled
                     w={200}
                     minHeight={40}
                     display="flex"
