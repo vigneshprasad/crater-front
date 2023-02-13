@@ -4,6 +4,7 @@ import { mergeRefs } from "react-merge-refs";
 import { Grid, Box, BoxProps } from "@/common/components/atoms";
 import AppNavbar from "@/common/components/objects/AppNavBar/v2";
 import Banner from "@/common/components/objects/Banner";
+import useInfoCraterDialog from "@/common/components/objects/InfoDialogCrater/provider";
 
 import { useBaseLayout } from "./provider";
 
@@ -14,6 +15,7 @@ type IBaseLayoutProps = BoxProps & {
 const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
   ({ aside, children, ...rest }, ref) => {
     const { scrollRef } = useBaseLayout();
+    const { dialogRef } = useInfoCraterDialog();
     const gridTemplateAreas = useMemo(() => {
       if (aside) {
         return [
@@ -72,8 +74,10 @@ const BaseLayout = forwardRef<HTMLDivElement, IBaseLayoutProps>(
           <AppNavbar />
           {aside && <Box gridArea="aside">{aside}</Box>}
           <Banner
-            content="Become A Streamer: Find Out How! ⚡️📺"
-            link="https://calendly.com/craterclub/become-a-streamer-find-out-how?month=2022-09"
+            content="Letter to the Crater Community"
+            onClickLink={() => {
+              dialogRef.current?.showModal();
+            }}
           />
           <Box
             gridArea="content"

@@ -24,6 +24,11 @@ import { AuthProvider } from "@/auth/context/AuthContext";
 import { AuthModalProvider } from "@/auth/context/AuthModalContext";
 import { SystemSocketProvider } from "@/auth/context/SystemSocketContext";
 import { BaseLayoutProvider } from "@/common/components/layouts/BaseLayout/v2/provider";
+import InfoDialogCrater from "@/common/components/objects/InfoDialogCrater";
+import {
+  InfoDialogCraterStateProvider,
+  InfoDialogCraterContext,
+} from "@/common/components/objects/InfoDialogCrater/provider";
 import { NotificationStack } from "@/common/components/objects/NotificationStack";
 import { NotificationStackProvider } from "@/common/components/objects/NotificationStack/context";
 import {
@@ -121,7 +126,18 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
                       `}
                         </Script>
                         <BaseLayoutProvider>
-                          <Component {...pageProps} />
+                          <InfoDialogCraterStateProvider>
+                            <InfoDialogCraterContext.Consumer>
+                              {({ dialogRef }) => {
+                                return (
+                                  <>
+                                    <Component {...pageProps} />
+                                    <InfoDialogCrater ref={dialogRef} />
+                                  </>
+                                );
+                              }}
+                            </InfoDialogCraterContext.Consumer>
+                          </InfoDialogCraterStateProvider>
                         </BaseLayoutProvider>
                       </SystemSocketProvider>
                     </AsideNavProvider>

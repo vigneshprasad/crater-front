@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { useTheme } from "styled-components";
 import useSWR from "swr";
 
 import { RewardSale } from "@/auction/types/sales";
 import { Box, Text } from "@/common/components/atoms";
 import Footer from "@/common/components/objects/Footer";
+import useInfoCraterDialog from "@/common/components/objects/InfoDialogCrater/provider";
 import { API_URL_CONSTANTS } from "@/common/constants/url.constants";
 import { useLiveStreams } from "@/community/context/LiveStreamsContext";
 import HomePageCreatorStaticContent from "@/creators/components/objects/HomePageCreatorStaticContent";
@@ -15,10 +17,17 @@ import HomePageStoreSection from "@/tokens/components/objects/HomePageStoreSecti
 export default function StreamsPage(): JSX.Element {
   const { space, colors } = useTheme();
   const { liveStreams } = useLiveStreams();
+  const { dialogRef } = useInfoCraterDialog();
 
   const { data: sales } = useSWR<RewardSale[]>(
     API_URL_CONSTANTS.sales.getRecentSalesList
   );
+
+  useEffect(() => {
+    if (dialogRef.current) {
+      dialogRef.current.showModal();
+    }
+  }, [dialogRef]);
 
   return (
     <Box pl={[space.xxxs, space.xxs]}>
