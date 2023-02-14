@@ -39,17 +39,29 @@ const StyledDialog = styled(Dialog)<DialogProps>`
       transform: translateY(0%);
     }
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints[0]}) {
+    max-width: calc(100vw - 64px);
+    width: 100%;
+  }
 `;
 
 const InfoDialogCrater = forwardRef<HTMLDialogElement & HTMLDivElement>(
   (_, ref) => {
     const { space } = useTheme();
     const dialogRef = useRef<HTMLDialogElement & HTMLDivElement>(null);
+    const videoElementRef = useRef<HTMLVideoElement>(null);
+
+    const closeDialog = (): void => {
+      dialogRef.current?.close();
+      videoElementRef.current?.pause();
+    };
+
     const handleDialogAutoCLose = (
       event: React.MouseEvent<HTMLDialogElement & HTMLDivElement>
     ): void => {
       if (event.currentTarget.tagName === "DIALOG") {
-        dialogRef.current?.close();
+        closeDialog();
       }
     };
 
@@ -60,6 +72,7 @@ const InfoDialogCrater = forwardRef<HTMLDialogElement & HTMLDivElement>(
       >
         <Box onClick={(event) => event.stopPropagation()}>
           <Box
+            ref={videoElementRef}
             as="video"
             src="/videos/mp4_crater_rewind.mp4"
             aspectRatio="16 / 7"
@@ -67,7 +80,7 @@ const InfoDialogCrater = forwardRef<HTMLDialogElement & HTMLDivElement>(
             width="100%"
             background="#000000"
           />
-          <Grid gridTemplateColumns="1fr 2fr" p={space.xxs}>
+          <Grid gridTemplateColumns={["1fr", "1fr 2fr"]} p={space.xxs}>
             <Box>
               <Text textStyle="headline5">A letter from the founders</Text>
               <Text>12th Feb, 2023</Text>
@@ -85,19 +98,19 @@ const InfoDialogCrater = forwardRef<HTMLDialogElement & HTMLDivElement>(
                 <Text pb={space.xxs}>
                   We want to share some important updates regarding the future
                   of our platform. We know that many of you have invested time,
-                  energy, and creativity into CraterClub. You guys are the heart
-                  of CraterClub and we want to make sure you are in the loop on
-                  what is going on.
+                  energy, and creativity into Crater. You are the heart of
+                  Crater and we want to make sure you are in the loop on what is
+                  going on.
                   <br />
                   <br />
                   As you may already know, the world of live streaming is
                   constantly evolving, and we were always working hard to bring
                   you the best possible experience. Moreover, as many of you
                   know that the startup ecosystem is going through some hard
-                  times. CraterClub is one of the startups that has been
-                  impacted by that. Due to various financial & personal
-                  circumstances, we have had to make the difficult decision to
-                  disable streaming on CraterClub.
+                  times. Crater is one of the startups that has been impacted by
+                  that. Due to various financial & personal circumstances, we
+                  have had to make the difficult decision to disable streaming
+                  on Crater.
                   <br />
                   While this may come as a disappointment, we want to assure you
                   that all past streams will still be available for you to watch
@@ -111,9 +124,9 @@ const InfoDialogCrater = forwardRef<HTMLDialogElement & HTMLDivElement>(
                   a part of our community. Your passion for creating and
                   consuming live streams has been amazing and we are truly
                   grateful for everything you have brought to the platform. You
-                  all helped make CraterClub what it is today and we are so
-                  lucky to have worked with you all. To recap this journey we
-                  put together a short video, linked{" "}
+                  all helped make Crater what it is today and we are so lucky to
+                  have worked with you all. To recap this journey we put
+                  together a short video, linked{" "}
                   <a href="https://www.youtube.com/watch?v=ntYwmDAgeAs">
                     here
                   </a>{" "}
@@ -129,10 +142,10 @@ const InfoDialogCrater = forwardRef<HTMLDialogElement & HTMLDivElement>(
                   smooth as possible and are always here to help.
                   <br />
                   <br />
-                  In conclusion, thank you again for being a part of the
-                  CraterClub family. We have had an amazing journey together and
-                  we cannot wait to see what the future holds. Keep creating and
-                  keep learning, we will see you all soon.
+                  In conclusion, thank you again for being a part of the Crater
+                  family. We have had an amazing journey together and we cannot
+                  wait to see what the future holds. Keep creating and keep
+                  learning, we will see you all soon.
                   <br />
                   <br />
                   Best, <br />
