@@ -96,11 +96,6 @@ export default function AppNavbar(): JSX.Element {
           if (!user || !profile) {
             return (
               <>
-                <Button
-                  prefixElement={<Icon icon="CameraLive" size={16} />}
-                  variant="condensed-dark"
-                  label="Go Live"
-                />
                 <Button variant="condensed" label="Login" onClick={openModal} />
               </>
             );

@@ -30,7 +30,6 @@ import useUpcomingStreams from "@/stream/context/UpcomingStreamsContext";
 import CategoriesList from "../../objects/CategoriesList";
 import CategoryVideoSection from "../../objects/CategoryVideoSection";
 import PastStreamsList from "../../objects/PastStreamsList/v2";
-import UpcomingStreamsList from "../../objects/UpcomingStreamsList";
 import Container from "./container";
 
 type IProps = {
@@ -140,13 +139,6 @@ export function Content({ slug, streamCategory }: IProps): JSX.Element {
             }}
           />
         </Box>
-
-        <StyledHeadingDivider
-          label="Upcoming Streams"
-          mx={[space.xs, space.xxs]}
-          mt={[28, space.s]}
-        />
-        <UpcomingStreamsList />
 
         <StyledHeadingDivider
           label="Top Creators"

@@ -7,9 +7,14 @@ import { IconButton } from "../../atoms/v2";
 interface IProps {
   content: string;
   link?: string;
+  onClickLink?: () => void;
 }
 
-export default function Banner({ content, link }: IProps): JSX.Element {
+export default function Banner({
+  content,
+  link,
+  onClickLink,
+}: IProps): JSX.Element {
   const { space, colors } = useTheme();
   const [visible, setVisible] = useState(true);
 
@@ -28,7 +33,16 @@ export default function Banner({ content, link }: IProps): JSX.Element {
       {(() => {
         if (link) {
           return (
-            <a href={link} target="_blank" rel="noreferrer">
+            <a
+              href={link}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => {
+                if (onClickLink) {
+                  onClickLink();
+                }
+              }}
+            >
               <Text
                 textDecoration="underline"
                 fontWeight="500"
@@ -42,7 +56,17 @@ export default function Banner({ content, link }: IProps): JSX.Element {
         }
 
         return (
-          <Text fontWeight="500" textStyle="body" textAlign="center">
+          <Text
+            fontWeight="500"
+            textStyle="body"
+            textAlign="center"
+            cursor="pointer"
+            onClick={() => {
+              if (onClickLink) {
+                onClickLink();
+              }
+            }}
+          >
             {content}
           </Text>
         );

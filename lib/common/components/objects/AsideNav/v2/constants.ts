@@ -122,12 +122,6 @@ export const HUB_NAV_ITEMS: HubNavItem[] = [
     user: false,
     items: [
       {
-        key: "club_members",
-        icon: "UsersFill",
-        route: PageRoutes.hub("analytics", "club_members"),
-        label: "Club Members",
-      },
-      {
         key: "channel_statistics",
         icon: "Statistics",
         route: PageRoutes.hub("analytics", "channel_statistics"),

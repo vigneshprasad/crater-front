@@ -104,12 +104,12 @@ export default function FeaturedStreams({
         fontWeight={500}
         lineHeight={["2.4rem", "3.0rem"]}
       >
-        Start streaming on Crater and grow your audience.
+        Explore past livestreams on Crater.
       </Text>
-      <Link href={PageRoutes.hub()}>
+      <Link href={PageRoutes.category("web-3")}>
         <StyledFlex pt={[24, 32]} alignItems="center" gridGap={space.xxxxxs}>
           <Text textStyle="captionLarge" fontWeight={600}>
-            Know more
+            Explore
           </Text>
           <Icon icon="ShowMore" size={10} transform="rotate(-90deg)" />
         </StyledFlex>

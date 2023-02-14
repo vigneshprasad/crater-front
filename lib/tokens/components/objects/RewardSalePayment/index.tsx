@@ -57,8 +57,6 @@ export default function RewardSalePayment({
 
   const { payment_type, price, reward_detail } = sale;
   const payWithLearn = payment_type === SalePaymentType.LEARN;
-  const disableBuyNow =
-    user?.pk === reward_detail.creator_detail.user || sale.is_active === false;
 
   if (isMobile === undefined) return null;
 
@@ -247,7 +245,7 @@ export default function RewardSalePayment({
               setShowPurchaseModal(true);
               return;
             }}
-            disabled={disableBuyNow}
+            disabled
           />
         </Flex>
       </Box>
