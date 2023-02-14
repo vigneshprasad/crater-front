@@ -20,10 +20,6 @@ export default function BuyNowBox({ sale }: IProps): JSX.Element {
   const { user } = useAuth();
   const { openModal } = useAuthModal();
 
-  const disableBuyNow =
-    user?.pk === sale?.reward_detail.creator_detail.user ||
-    sale?.is_active === false;
-
   const openSale = (saleId: number): void => {
     router.query.sale = `${saleId}`;
     router.push(router, undefined, { shallow: true });
@@ -49,7 +45,7 @@ export default function BuyNowBox({ sale }: IProps): JSX.Element {
         onClick={() => {
           user ? openSale(sale.id) : openModal();
         }}
-        disabled={disableBuyNow}
+        disabled
       />
     </Box>
   );

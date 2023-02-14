@@ -92,6 +92,7 @@ export default function HubUpcomingStreamsList({
                   <Button
                     label="Create New Stream"
                     w={200}
+                    disabled
                     minHeight={40}
                     display="flex"
                     alignItems="center"

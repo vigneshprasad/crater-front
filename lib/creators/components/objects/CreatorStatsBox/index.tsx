@@ -109,6 +109,7 @@ export default function CreatorStatsBox({
               mt={space.xs}
               justifySelf="center"
               label="Create New Stream"
+              disabled
               w={200}
               minHeight={40}
               display="flex"

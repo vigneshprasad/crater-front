@@ -122,6 +122,7 @@ export default function SaleCard({
           if (!isHost && isActive) {
             return (
               <Button
+                disabled
                 w="max-content"
                 variant="small"
                 label="Buy Now"

@@ -248,6 +248,7 @@ export default function RewardItemPage(): JSX.Element {
               variant="full-width"
               text="Buy Now"
               onClick={() => setShowModal(true)}
+              disabled
             />
 
             <Text my={space.xxs} color={colors.slate}>
